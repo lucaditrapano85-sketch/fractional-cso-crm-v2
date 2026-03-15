@@ -3,7 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fractional CSO — CRM</title>
+<title>Fractional CSO — CRM Demo</title>
+<style>
+.demo-banner{position:fixed;top:0;left:0;right:0;z-index:9999;background:#9A6E2E;color:#fff;text-align:center;font-size:12px;font-family:'DM Sans',sans-serif;padding:6px 16px;letter-spacing:.04em;display:flex;align-items:center;justify-content:center;gap:10px}
+.demo-banner strong{font-weight:600}
+.demo-banner span{opacity:.8}
+body{padding-top:32px}
+.sidebar{top:32px;height:calc(100vh - 32px);position:sticky}
+.app{height:calc(100vh - 32px)}
+</style>
 
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
 <style>
@@ -384,6 +392,11 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 
 <div class="toast" id="toast"></div>
 
+<div class="demo-banner">
+  <strong>🔒 Demo riservata</strong>
+  <span>Questo è un ambiente dimostrativo con dati fittizi — nessuna modifica viene salvata</span>
+  <strong>Fractional CSO</strong>
+</div>
 <div class="app">
   <div class="sidebar">
     <div class="sidebar-logo">
@@ -743,14 +756,18 @@ input[type=range]{flex:1;accent-color:var(--gold)}
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// -- SUPABASE ----------------------------------------------
-const { createClient } = supabase;
-const sb = createClient(
-  'https://glxwvvtdybzkxtobsiin.supabase.co',
-  'sb_publishable_iwQD1eYCxSQzqHFsLarCDQ_UTsZvGlo'
-);
+// -- DEMO MODE: Supabase rimosso, dati hardcoded --
+const DEMO_MODE = true;
+const sb = {
+  from: () => ({
+    select: () => Promise.resolve({data:[], error:null}),
+    insert: () => Promise.resolve({data:null, error:null}),
+    update: () => ({ eq: () => Promise.resolve({data:null, error:null}) }),
+    delete: () => ({ eq: () => Promise.resolve({data:null, error:null}) }),
+    upsert: () => Promise.resolve({data:null, error:null}),
+  })
+};
 
 // -- MARKET DATA -------------------------------------------
 const MARKET = {
@@ -4433,7 +4450,65 @@ function assignNextColor() {
 const STATUS_LABELS = {nuovo:'Nuovo',contattato:'Contattato',diagnosi:'Diagnosi',proposta:'Proposta',chiuso:'Chiuso'};
 
 // -- STATE -------------------------------------------------
-let prospects = [];
+let prospects = [
+  {
+    id: 'demo-001',
+    nome: 'Ferramenta Valsesia S.r.l.',
+    settore: 'manifatturiero_meccanica',
+    fase: 'Proposta inviata',
+    referente: 'Marco Galli',
+    ruolo: 'Titolare',
+    email: 'mgalli@valsesia.it',
+    telefono: '+39 0163 42811',
+    dipendenti: '28',
+    fatturato: '3.2M',
+    score_fit: 78,
+    note: 'Azienda metalmeccanica di 2ª generazione. Nessuna struttura commerciale formalizzata. Grande interesse per sistemi di prospecting B2B.',
+    dims: {vendite:2, pipeline:1, team:2, processi:1, ricavi:3, marketing:1, sitoweb:2, ecommerce:0},
+    dims_answers: {},
+    created_at: '2026-02-10T09:00:00Z',
+    next_action: 'Follow-up proposta',
+    next_action_date: '2026-03-18'
+  },
+  {
+    id: 'demo-002',
+    nome: 'Distribuzione Nord Est S.p.A.',
+    settore: 'distribuzione_b2b',
+    fase: 'Primo contatto',
+    referente: 'Silvia Trevisan',
+    ruolo: 'Direttore Generale',
+    email: 's.trevisan@dnest.it',
+    telefono: '+39 049 8834522',
+    dipendenti: '65',
+    fatturato: '11.4M',
+    score_fit: 85,
+    note: 'Distributore regionale con rete agenti non coordinata. Forte pressione margini. Cercano struttura commerciale senior senza assumere.',
+    dims: {vendite:3, pipeline:2, team:2, processi:2, ricavi:3, marketing:1, sitoweb:2, ecommerce:1},
+    dims_answers: {},
+    created_at: '2026-02-20T10:30:00Z',
+    next_action: 'Call di discovery',
+    next_action_date: '2026-03-17'
+  },
+  {
+    id: 'demo-003',
+    nome: 'Studio Legale Marchetti & Partners',
+    settore: 'servizi_professionali',
+    fase: 'Qualificazione',
+    referente: 'Avv. Lorenzo Marchetti',
+    ruolo: 'Managing Partner',
+    email: 'l.marchetti@marchetti-law.it',
+    telefono: '+39 02 7639451',
+    dipendenti: '14',
+    fatturato: '2.1M',
+    score_fit: 62,
+    note: 'Studio in crescita, vuole strutturare il business development. Approccio culturalmente distante dalla "vendita". Da lavorare sul framing.',
+    dims: {vendite:1, pipeline:1, team:1, processi:2, ricavi:3, marketing:2, sitoweb:3, ecommerce:0},
+    dims_answers: {},
+    created_at: '2026-03-01T14:00:00Z',
+    next_action: 'Invio case study',
+    next_action_date: '2026-03-20'
+  }
+];
 let currentId = null;
 let editingId = null;
 let currentCalls = [];
@@ -5063,16 +5138,15 @@ async function saveProspect() {
   btn.textContent='Salvataggio...'; btn.disabled=true;
   try {
     if(editingId) {
-      const {error}=await sb.from('prospects').update(data).eq('id',editingId);
-      if(error) throw error;
+      // DEMO: aggiornamento in memoria
       const i=prospects.findIndex(x=>x.id===editingId);
       prospects[i]={...prospects[i],...data};
-      showToast('Prospect aggiornato');
+      showToast('Prospect aggiornato (demo)');
     } else {
-      const {data:row,error}=await sb.from('prospects').insert(data).select().single();
-      if(error) throw error;
-      prospects.push(row);
-      showToast('Prospect creato');
+      // DEMO: nuovo prospect in memoria con id temporaneo
+      const newRow={...data, id:'demo-'+Date.now(), created_at:new Date().toISOString()};
+      prospects.push(newRow);
+      showToast('Prospect creato (demo)');
     }
     renderSidebar();
     closeModal('modal-prospect');
@@ -5088,10 +5162,9 @@ async function saveProspect() {
 
 async function deleteProspect() {
   if(!confirm('Eliminare questo prospect e tutte le sue call?')) return;
-  const {error}=await sb.from('prospects').delete().eq('id',currentId);
-  if(error){showToast('Errore eliminazione','error');return;}
+  // DEMO: eliminazione in memoria
   prospects=prospects.filter(x=>x.id!==currentId);
-  showToast('Prospect eliminato');
+  showToast('Prospect eliminato (demo)');
   renderSidebar();
   showView('dashboard');
 }
@@ -5260,8 +5333,12 @@ let editingEventoId = null;
 const TIPO_LABELS = {follow_up:'Follow-up', call:'Call', demo:'Demo', altro:'Altro'};
 
 async function loadEventi() {
-  const {data, error} = await sb.from('eventi').select('*, prospects(nome)').order('data', {ascending:true});
-  if (!error) allEventi = data || [];
+  // DEMO: eventi hardcoded
+  allEventi = [
+    {id:'ev-001', prospect_id:'demo-002', tipo:'Call', data:'2026-03-17', note:'Discovery call con Silvia Trevisan', prospects:{nome:'Distribuzione Nord Est S.p.A.'}},
+    {id:'ev-002', prospect_id:'demo-001', tipo:'Follow-up', data:'2026-03-18', note:'Follow-up proposta Fractional CSO - 3 mesi', prospects:{nome:'Ferramenta Valsesia S.r.l.'}},
+    {id:'ev-003', prospect_id:'demo-003', tipo:'Email', data:'2026-03-20', note:'Invio case study settore legal', prospects:{nome:'Studio Legale Marchetti & Partners'}}
+  ];
 }
 
 function renderCalendario() {
@@ -5604,10 +5681,7 @@ function closeDetailPanelDirect() {
 let benchmarkCache = {}; // key: settore_key, value: record
 
 async function loadBenchmarkCustom() {
-  const {data, error} = await sb.from('benchmark_custom').select('*');
-  if (!error && data) {
-    data.forEach(row => { benchmarkCache[row.settore_key] = row; });
-  }
+  // DEMO: nessun dato benchmark personalizzato
 }
 
 function renderMyBenchSection(subKey, subData) {
@@ -8714,9 +8788,7 @@ function mostraRisultatoDiagnosi(dims) {
 // -- INIT --------------------------------------------------
 async function init() {
   document.getElementById('dash-date').textContent=new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  const {data,error}=await sb.from('prospects').select('*').order('created_at',{ascending:false});
-  if(error){showToast('Errore connessione database','error');console.error(error);return;}
-  prospects=data||[];
+  // DEMO: prospects già caricati come hardcoded
   await loadEventi();
   await loadBenchmarkCustom();
   renderSidebar();
