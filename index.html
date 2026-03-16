@@ -5039,7 +5039,9 @@ function openEditProspect() {
   document.getElementById('f-tel').value=p.telefono||'';
   const _fatMap={'<500k':'250k-500k','1-5M':'1M-2M','5-20M':'5M-20M'};
   const _fat=p.fatturato||'500k-1M';
-  document.getElementById('f-fat').value=_fatMap[_fat]||_fat;
+  // Usa fatturato_anno_1 se disponibile per determinare la fascia corretta
+  const _fatEffettivo = _fasciaFromAnno1(p.fatturato_anno_1) || _fatMap[_fat] || _fat;
+  document.getElementById('f-fat').value=_fatEffettivo;
   document.getElementById('f-note').value=p.note||'';
   buildSliders(p.dims||{});
   openModal('modal-prospect');
