@@ -6360,14 +6360,16 @@ function _buildSubObiettivi(dimId, cur, tgt, settore, azioniDone, azioniCustom) 
   if (gap <= 0) return '\x3cdiv style="font-size:11px;color:var(--gray);padding:8px 0;font-style:italic">Imposta un obiettivo superiore allo stato attuale per vedere il piano d\'azione.\x3c/div>';
 
   let html = '\x3cdiv style="margin-top:8px">';
+  // step è il livello di partenza (es. 1 → mostra "1 → 2")
   for (let step = cur; step < tgt; step++) {
     const isFirst = step === cur;
-    const stepDesc = DIM_DESC[dimId]?.[step] || '';
+    // Descrizione del livello attuale (da cui si parte) — DIM_DESC è 0-based quindi step-1
+    const stepDesc = DIM_DESC[dimId]?.[step - 1] || '';
     html += '\x3cdiv style="margin-bottom:12px;border-left:2px solid ' + (isFirst ? 'var(--gold)' : 'var(--border2)') + ';padding-left:10px">';
-    // Header step
+    // Header step: mostra i valori reali (es. "1 → 2", "2 → 3")
     html += '\x3cdiv style="display:flex;align-items:center;gap:6px;margin-bottom:4px">';
     html += '\x3cdiv style="font-size:10px;font-weight:700;color:' + (isFirst ? 'var(--gold)' : 'var(--gray)') + ';background:' + (isFirst ? 'var(--amber-bg)' : 'var(--bg3)') + ';border:1px solid ' + (isFirst ? 'var(--gold-dim)' : 'var(--border)') + ';border-radius:4px;padding:2px 8px">';
-    html += (step + 1) + ' → ' + (step + 2) + (isFirst ? ' · Da fare ora' : '') + '\x3c/div>';
+    html += step + ' → ' + (step + 1) + (isFirst ? ' · Da fare ora' : '') + '\x3c/div>';
     html += '\x3c/div>';
     if (stepDesc) html += '\x3cdiv style="font-size:10px;color:var(--gray2);line-height:1.4;margin-bottom:4px;font-style:italic">' + stepDesc + '\x3c/div>';
     html += _buildStepBlock(dimId, step, step + 1, settore, azioniDone, azioniCustom);
@@ -6414,7 +6416,7 @@ function renderTargetEditor(p) {
   const azioniCustom = p.azioni_custom || {};
   let html = DIMS.map(d => {
     const cur = p.dims?.[d.id] || 0;
-    const tgt = targets[d.id] || cur;
+    const tgt = targets[d.id] || Math.min(cur + 1, 5);
     const scad = scadenze[d.id] || '';
     const curCol = cur >= 4 ? 'var(--green)' : cur >= 3 ? 'var(--gold)' : 'var(--red)';
     const tgtCol = tgt >= 4 ? 'var(--green)' : tgt >= 3 ? 'var(--gold)' : 'var(--red)';
