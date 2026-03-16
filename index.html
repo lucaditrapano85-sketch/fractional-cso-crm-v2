@@ -6295,52 +6295,123 @@ function drawRadar(dims_vals, targets_vals) {
   svg.innerHTML = html;
 }
 
-function _buildAzioneHtml(dimId, fromStep, toStep, azioniDone) {
+// Recupera l'azione predefinita per settore+dimensione+step
+function _getAzionePredefinita(settore, dimId, fromStep, toStep) {
   const chiave = fromStep + '-' + toStep;
-  const chiaveFallback = '1-' + toStep;
-  const azioniList = AZIONI_TARGET[dimId] && (AZIONI_TARGET[dimId][chiave] || AZIONI_TARGET[dimId][chiaveFallback]);
-  if (!azioniList) return '';
-  return '\x3cdiv style="background:var(--bg);border-radius:var(--rs);padding:8px 10px;margin-top:6px">' +
-    '\x3cdiv style="font-size:9px;font-weight:600;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Azioni ' + fromStep + ' → ' + toStep + '\x3c/div>' +
-    azioniList.map(function(a, i) {
-      const key = dimId + '_' + fromStep + '_' + toStep + '_' + i;
-      const done = !!azioniDone[key];
-      return '\x3cdiv style="display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="toggleAzione(\'' + key + '\')" id="az-' + key + '">' +
-        '\x3cdiv style="width:16px;height:16px;border-radius:4px;border:2px solid ' + (done ? 'var(--green)' : 'var(--border2)') + ';background:' + (done ? 'var(--green)' : 'transparent') + ';flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff">' + (done ? '&#10003;' : '') + '\x3c/div>' +
-        '\x3cdiv style="font-size:12px;color:' + (done ? 'var(--gray)' : 'var(--white)') + ';line-height:1.4;' + (done ? 'text-decoration:line-through;opacity:.5' : '') + '">' + a + '\x3c/div>' +
-      '\x3c/div>';
-    }).join('') +
-  '\x3c/div>';
+  // Prima cerca per settore specifico
+  if (AZIONI_TARGET_BY_SETTORE[settore] && AZIONI_TARGET_BY_SETTORE[settore][dimId] && AZIONI_TARGET_BY_SETTORE[settore][dimId][chiave]) {
+    return AZIONI_TARGET_BY_SETTORE[settore][dimId][chiave];
+  }
+  // Fallback al generico
+  if (AZIONI_TARGET_GENERIC[dimId] && AZIONI_TARGET_GENERIC[dimId][chiave]) {
+    return AZIONI_TARGET_GENERIC[dimId][chiave][0] || null;
+  }
+  return null;
 }
 
-function _buildSubObiettivi(dimId, cur, tgt, azioniDone) {
+// Costruisce il blocco azione per un singolo step (from→to) con checkbox + pulsante +
+function _buildStepBlock(dimId, fromStep, toStep, settore, azioniDone, azioniCustom) {
+  const chiave = fromStep + '-' + toStep;
+  const azPredefinita = _getAzionePredefinita(settore, dimId, fromStep, toStep);
+  const stepKey = dimId + '_' + fromStep + '_' + toStep;
+  const customList = (azioniCustom && azioniCustom[stepKey]) || [];
+
+  let html = '\x3cdiv style="background:var(--bg);border-radius:var(--rs);padding:10px 12px;margin-top:6px">';
+
+  // Azione predefinita (sempre presente se esiste)
+  if (azPredefinita) {
+    const keyPred = stepKey + '_pred';
+    const done = !!azioniDone[keyPred];
+    html += '\x3cdiv style="display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="toggleAzione(\'' + keyPred + '\')" id="az-' + keyPred + '">' +
+      '\x3cdiv style="width:16px;height:16px;border-radius:4px;border:2px solid ' + (done ? 'var(--green)' : 'var(--gold-dim)') + ';background:' + (done ? 'var(--green)' : 'transparent') + ';flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff">' + (done ? '&#10003;' : '') + '\x3c/div>' +
+      '\x3cdiv style="font-size:12px;color:' + (done ? 'var(--gray)' : 'var(--white)') + ';line-height:1.4;flex:1;' + (done ? 'text-decoration:line-through;opacity:.5;' : '') + '">' + azPredefinita + '\x3c/div>' +
+    '\x3c/div>';
+  }
+
+  // Azioni custom salvate
+  customList.forEach(function(az, i) {
+    const keyCustom = stepKey + '_custom_' + i;
+    const done = !!azioniDone[keyCustom];
+    html += '\x3cdiv style="display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="toggleAzione(\'' + keyCustom + '\')" id="az-' + keyCustom + '">' +
+      '\x3cdiv style="width:16px;height:16px;border-radius:4px;border:2px solid ' + (done ? 'var(--green)' : 'var(--border2)') + ';background:' + (done ? 'var(--green)' : 'transparent') + ';flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff">' + (done ? '&#10003;' : '') + '\x3c/div>' +
+      '\x3cdiv style="font-size:12px;color:' + (done ? 'var(--gray)' : 'var(--white)') + ';line-height:1.4;flex:1;' + (done ? 'text-decoration:line-through;opacity:.5;' : '') + '">' + az + '\x3c/div>' +
+    '\x3c/div>';
+  });
+
+  // Pulsante + per aggiungere azione custom
+  html += '\x3cdiv style="margin-top:6px">' +
+    '\x3cbutton onclick="aggiungiAzioneCustom(\'' + stepKey + '\')" style="background:none;border:1px dashed var(--border2);color:var(--gray);border-radius:4px;padding:3px 10px;font-size:11px;cursor:pointer;font-family:inherit;width:100%;text-align:left">+ Aggiungi azione personalizzata\x3c/button>' +
+    '\x3cdiv id="custom-input-' + stepKey + '" style="display:none;margin-top:6px">' +
+      '\x3cdiv style="display:flex;gap:6px">' +
+        '\x3cinput type="text" id="custom-text-' + stepKey + '" placeholder="Descrivi l\'azione..." style="flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;padding:5px 8px;color:var(--white);font-size:12px;font-family:inherit;outline:none">' +
+        '\x3cbutton onclick="salvaAzioneCustom(\'' + stepKey + '\')" style="background:var(--gold);border:none;color:#fff;border-radius:4px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">Salva\x3c/button>' +
+        '\x3cbutton onclick="document.getElementById(\'custom-input-' + stepKey + '\').style.display=\'none\'" style="background:var(--bg3);border:1px solid var(--border2);color:var(--gray);border-radius:4px;padding:5px 8px;font-size:11px;cursor:pointer;font-family:inherit">✕\x3c/button>' +
+      '\x3c/div>' +
+    '\x3c/div>' +
+  '\x3c/div>';
+
+  html += '\x3c/div>';
+  return html;
+}
+
+// Costruisce tutti gli step dal cur al tgt
+function _buildSubObiettivi(dimId, cur, tgt, settore, azioniDone, azioniCustom) {
   const gap = tgt - cur;
-  if (gap <= 0) return '';
-  // Se gap == 1: un solo step, nessun sotto-obiettivo
-  if (gap === 1) return _buildAzioneHtml(dimId, cur, tgt, azioniDone);
-  // Se gap > 1: mostra step intermedi come sotto-obiettivi
-  let html = '\x3cdiv style="margin-top:10px">';
-  html += '\x3cdiv style="font-size:9px;font-weight:600;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Percorso in ' + gap + ' step\x3c/div>';
+  if (gap <= 0) return '\x3cdiv style="font-size:11px;color:var(--gray);padding:8px 0;font-style:italic">Imposta un obiettivo superiore allo stato attuale per vedere il piano d\'azione.\x3c/div>';
+
+  let html = '\x3cdiv style="margin-top:8px">';
   for (let step = cur; step < tgt; step++) {
-    const stepDesc = DIM_DESC[dimId]?.[step] || '--'; // descrizione del livello di arrivo
     const isFirst = step === cur;
-    html += '\x3cdiv style="margin-bottom:8px;border-left:2px solid ' + (isFirst ? 'var(--gold)' : 'var(--border2)') + ';padding-left:10px">';
+    const stepDesc = DIM_DESC[dimId]?.[step] || '';
+    html += '\x3cdiv style="margin-bottom:12px;border-left:2px solid ' + (isFirst ? 'var(--gold)' : 'var(--border2)') + ';padding-left:10px">';
+    // Header step
     html += '\x3cdiv style="display:flex;align-items:center;gap:6px;margin-bottom:4px">';
-    html += '\x3cdiv style="font-size:10px;font-weight:700;color:' + (isFirst ? 'var(--gold)' : 'var(--gray)') + ';background:' + (isFirst ? 'var(--amber-bg)' : 'var(--bg3)') + ';border-radius:4px;padding:2px 8px">';
-    html += 'Step ' + (step - cur + 1) + ' · ' + step + ' → ' + (step + 1) + '\x3c/div>';
-    if (isFirst) html += '\x3cdiv style="font-size:9px;color:var(--gold);font-weight:600">Ora\x3c/div>';
+    html += '\x3cdiv style="font-size:10px;font-weight:700;color:' + (isFirst ? 'var(--gold)' : 'var(--gray)') + ';background:' + (isFirst ? 'var(--amber-bg)' : 'var(--bg3)') + ';border:1px solid ' + (isFirst ? 'var(--gold-dim)' : 'var(--border)') + ';border-radius:4px;padding:2px 8px">';
+    html += (step + 1) + ' → ' + (step + 2) + (isFirst ? ' · Da fare ora' : '') + '\x3c/div>';
     html += '\x3c/div>';
-    html += '\x3cdiv style="font-size:10px;color:var(--gray);line-height:1.4;margin-bottom:6px;font-style:italic">' + stepDesc + '\x3c/div>';
-    html += _buildAzioneHtml(dimId, step, step + 1, azioniDone);
+    if (stepDesc) html += '\x3cdiv style="font-size:10px;color:var(--gray2);line-height:1.4;margin-bottom:4px;font-style:italic">' + stepDesc + '\x3c/div>';
+    html += _buildStepBlock(dimId, step, step + 1, settore, azioniDone, azioniCustom);
     html += '\x3c/div>';
   }
   html += '\x3c/div>';
   return html;
 }
 
+// Mostra input per azione custom
+function aggiungiAzioneCustom(stepKey) {
+  const input = document.getElementById('custom-input-' + stepKey);
+  if (input) { input.style.display = 'block'; document.getElementById('custom-text-' + stepKey).focus(); }
+}
+
+// Salva azione custom nel prospect
+async function salvaAzioneCustom(stepKey) {
+  const inputEl = document.getElementById('custom-text-' + stepKey);
+  if (!inputEl) return;
+  const testo = inputEl.value.trim();
+  if (!testo) return;
+  const p = prospects.find(x => x.id === currentId);
+  if (!p) return;
+  const azioniCustom = Object.assign({}, p.azioni_custom || {});
+  if (!azioniCustom[stepKey]) azioniCustom[stepKey] = [];
+  azioniCustom[stepKey].push(testo);
+  await sb.from('prospects').update({ azioni_custom: azioniCustom }).eq('id', currentId);
+  const i = prospects.findIndex(x => x.id === currentId);
+  prospects[i].azioni_custom = azioniCustom;
+  inputEl.value = '';
+  document.getElementById('custom-input-' + stepKey).style.display = 'none';
+  // Rirenderizzo solo il blocco
+  const block = document.getElementById('az-block-' + stepKey.split('_')[0]);
+  const pi = prospects[i];
+  if (block) block.innerHTML = _buildSubObiettivi(stepKey.split('_')[0], pi.dims?.[stepKey.split('_')[0]] || 0, pi.targets?.[stepKey.split('_')[0]] || 0, pi.settore || '', pi.azioni_completate || {}, pi.azioni_custom || {});
+  showToast('Azione aggiunta!');
+}
+
 function renderTargetEditor(p) {
   const targets = p.targets || {};
   const scadenze = p.target_scadenze || {};
+  const settore = p.settore || '';
+  const azioniDone = p.azioni_completate || {};
+  const azioniCustom = p.azioni_custom || {};
   let html = DIMS.map(d => {
     const cur = p.dims?.[d.id] || 0;
     const tgt = targets[d.id] || cur;
@@ -6349,8 +6420,7 @@ function renderTargetEditor(p) {
     const tgtCol = tgt >= 4 ? 'var(--green)' : tgt >= 3 ? 'var(--gold)' : 'var(--red)';
     const curDesc = DIM_DESC[d.id]?.[cur-1] || '--';
     const tgtDesc = DIM_DESC[d.id]?.[tgt-1] || '--';
-    const azioniDone = p.azioni_completate || {};
-    const subObiettiviHtml = _buildSubObiettivi(d.id, cur, tgt, azioniDone);
+    const subObiettiviHtml = _buildSubObiettivi(d.id, cur, tgt, settore, azioniDone, azioniCustom);
     return `\x3cdiv style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)">
       \x3cdiv style="font-size:12px;font-weight:600;color:var(--white);margin-bottom:6px">${d.label}\x3c/div>
       \x3cdiv style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px">
@@ -6444,10 +6514,9 @@ function aggiornaAzioni(dimId) {
   const cur = (p.dims && p.dims[dimId]) || 0;
   const tgtEl = document.getElementById('tgt-' + dimId);
   const tgt = tgtEl ? parseInt(tgtEl.value) || 0 : 0;
-  const azioniDone = p.azioni_completate || {};
   const block = document.getElementById('az-block-' + dimId);
   if (!block) return;
-  block.innerHTML = _buildSubObiettivi(dimId, cur, tgt, azioniDone);
+  block.innerHTML = _buildSubObiettivi(dimId, cur, tgt, p.settore || '', p.azioni_completate || {}, p.azioni_custom || {});
 }
 
 async function toggleAzione(key) {
@@ -7532,7 +7601,1662 @@ async function saveBenchModal() {
 
 
 // -- AZIONI PER TARGET ----------------------------------------------------
-var AZIONI_TARGET = {
+var AZIONI_TARGET_BY_SETTORE = 
+{
+  "manifatturiero_meccanica": {
+    "vendite": {
+      "1-2": "Porta un tecnico senior in almeno 2 visite cliente al mese per affiancarti nella vendita",
+      "2-3": "Definisci un ruolo commerciale formale per il tecnico-venditore con obiettivo trattative/mese",
+      "3-4": "Attiva una rete agenti con mandato per coprire le province limitrofe non presidiate",
+      "4-5": "Nomina un responsabile commerciale interno che gestisce agenti e trattative in autonomia"
+    },
+    "pipeline": {
+      "1-2": "Crea un foglio Excel con tutte le commesse aperte: cliente, importo stimato, data consegna",
+      "2-3": "Implementa un CRM base (es. HubSpot free) e traccia ogni preventivo dalla richiesta alla chiusura",
+      "3-4": "Definisci stage del ciclo vendita (richiesta → sopralluogo → preventivo → ordine) con probabilità",
+      "4-5": "Attiva forecast mensile su pipeline con scarto < 15% e review settimanale con il team"
+    },
+    "team": {
+      "1-2": "Documenta i 10 clienti chiave con referente, storico ordini e condizioni negoziate",
+      "2-3": "Delega la gestione delle richieste di preventivo standard a un collaboratore formato",
+      "3-4": "Il responsabile tecnico gestisce autonomamente trattative sotto 50k€ senza coinvolgere il titolare",
+      "4-5": "Struttura con responsabile commerciale e tecnico-venditore: il titolare gestisce solo clienti strategici"
+    },
+    "processi": {
+      "1-2": "Scrivi un template standard per i preventivi con sezioni fisse: capitolato, tempistiche, garanzie",
+      "2-3": "Crea una checklist pre-invio preventivo e uno script per la call di discovery tecnica",
+      "3-4": "Documenta le 10 obiezioni più frequenti (prezzo, tempi, certificazioni) con risposte efficaci",
+      "4-5": "Playbook completo: discovery tecnica, offerta, follow-up, gestione obiezioni, onboarding ordine"
+    },
+    "ricavi": {
+      "1-2": "Identifica i 3 clienti con ordini ricorrenti e proponi un accordo di fornitura annuale",
+      "2-3": "Crea un forecast trimestrale basato sulle commesse in corso e sulle richieste di preventivo aperte",
+      "3-4": "Porta i contratti di fornitura annuale al 30% del fatturato totale",
+      "4-5": "Fatturato ricorrente > 50% con contratti pluriennali e forecast annuale affidabile"
+    },
+    "marketing": {
+      "1-2": "Ottimizza il profilo LinkedIn aziendale con foto officina, certificazioni e 3 casi cliente recenti",
+      "2-3": "Pubblica 1 caso cliente al mese su LinkedIn con foto del pezzo lavorato e dati tecnici",
+      "3-4": "Attiva campagna LinkedIn Ads mirata a responsabili acquisti di aziende manifatturiere",
+      "4-5": "Sistema di lead gen multi-canale: LinkedIn + fiere settoriali + referral program clienti attivi"
+    },
+    "sitoweb": {
+      "1-2": "Crea una pagina lavorazioni con foto officina, elenco macchine e tolleranze lavorabili",
+      "2-3": "Aggiungi 3 schede lavorazione con foto pezzo finito, materiali, settori di applicazione",
+      "3-4": "Ottimizza per SEO le pagine lavorazioni con keyword tipo 'tornitura CNC [città]'",
+      "4-5": "Sito con catalogo lavorazioni, form di richiesta preventivo tecnico e blog tecnico mensile"
+    },
+    "ecommerce": {
+      "1-2": "Crea profilo aziendale su Europages e Kompass con foto officina e capacità produttive",
+      "2-3": "Attiva presenza su portale di settore (es. IndustryStock) con listino lavorazioni standard",
+      "3-4": "Implementa configuratore online per preventivi rapidi su lavorazioni standard",
+      "4-5": "Portale clienti con storico ordini, stato avanzamento commesse e riordino in autonomia"
+    }
+  },
+  "manifatturiero_automotive": {
+    "vendite": {
+      "1-2": "Partecipa a 2 eventi automotive (es. Mecspe, Autopromotec) con materiale tecnico certificazioni",
+      "2-3": "Assumi o forma un key account manager dedicato ai tier-1 e OEM del tuo territorio",
+      "3-4": "Struttura un team vendite con KAM per OEM e commerciale per tier-2/tier-3",
+      "4-5": "Responsabile commerciale autonomo con gestione completa del portafoglio e dei tender RFQ"
+    },
+    "pipeline": {
+      "1-2": "Crea registro Excel di tutti i RFQ ricevuti con stato, valore, scadenza e probabilità",
+      "2-3": "Implementa CRM con gestione RFQ: data ricezione, data risposta, valore, esito",
+      "3-4": "Traccia hit rate per tipologia cliente (OEM vs tier-1 vs tier-2) e ottimizza offerta",
+      "4-5": "Forecast trimestrale su pipeline RFQ con scarto < 20% validato da storico 12 mesi"
+    },
+    "team": {
+      "1-2": "Documenta per ogni OEM/tier-1 il referente acquisti, le condizioni e il ciclo di rinnovo",
+      "2-3": "Forma un collaboratore sulla gestione documentale IATF e risposta ai RFQ standard",
+      "3-4": "Team autonomo su qualifica fornitori, PPAP e gestione non conformità senza il titolare",
+      "4-5": "Organizzazione con KAM, quality manager e supply chain coordinator in piena autonomia"
+    },
+    "processi": {
+      "1-2": "Crea template standard per risposta ai RFQ con sezioni: capacità, qualità, prezzo, lead time",
+      "2-3": "Documenta il processo di qualifica cliente OEM: dalla richiesta al PPAP approvato",
+      "3-4": "Playbook gestione non conformità: 8D report, containment, root cause, azioni correttive",
+      "4-5": "Sistema integrato IATF: tutti i processi documentati, auditabili e migliorati trimestralmente"
+    },
+    "ricavi": {
+      "1-2": "Mappa la scadenza dei LTA (Long Term Agreement) esistenti e avvia rinnovi con 6 mesi anticipo",
+      "2-3": "Porta almeno il 40% del fatturato sotto LTA pluriennali con clienti tier-1 e OEM",
+      "3-4": "Diversifica portafoglio: nessun cliente oltre 30% del fatturato, LTA su almeno 3 clienti",
+      "4-5": "Revenue ricorrente > 60% con LTA pluriennali, forecast annuale affidabile e budget commerciale"
+    },
+    "marketing": {
+      "1-2": "Crea scheda fornitori con certificazioni IATF, capacità produttive e referenze OEM",
+      "2-3": "Partecipa come espositore a 1 fiera automotive con materiale tecnico aggiornato",
+      "3-4": "Campagna di outreach diretto ai responsabili acquisti dei tier-1 target nella regione",
+      "4-5": "Presenza strutturata: fiere + LinkedIn + whitepaper tecnici su lavorazioni specializzate"
+    },
+    "sitoweb": {
+      "1-2": "Aggiungi pagina certificazioni con IATF, ISO e omologazioni specifiche per automotive",
+      "2-3": "Crea schede prodotto/lavorazione con specifiche tecniche e referenze OEM (anonimizzate)",
+      "3-4": "SEO su keyword automotive supply chain + form contatto tecnico dedicato ai buyer",
+      "4-5": "Sito con area riservata clienti, documenti qualità scaricabili e configuratore RFQ online"
+    },
+    "ecommerce": {
+      "1-2": "Iscriviti ai portali di vendor qualification dei principali OEM italiani (es. Stellantis, CNH)",
+      "2-3": "Attiva profilo su piattaforma B2B automotive (es. SupplyOn, Jaggaer) per ricevere RFQ digitali",
+      "3-4": "Integra gestione ordini e documenti qualità con il portale fornitori del tuo cliente principale",
+      "4-5": "EDI integrato con i principali clienti: ordini, conferme e spedizioni senza intervento manuale"
+    }
+  },
+  "manifatturiero_packaging": {
+    "vendite": {
+      "1-2": "Identifica 5 aziende alimentari o cosmetiche locali e proponi un incontro tecnico sul packaging",
+      "2-3": "Assegna a un commerciale interno un portafoglio clienti con obiettivo di sviluppo annuale",
+      "3-4": "Attiva rete agenti per i settori alimentare e cosmetico nelle regioni non coperte",
+      "4-5": "Responsabile commerciale con team agenti coordinato e obiettivi per settore merceologico"
+    },
+    "pipeline": {
+      "1-2": "Traccia su Excel tutte le richieste campione con cliente, quantità, data e stato follow-up",
+      "2-3": "CRM con gestione campioni: dal primo contatto alla commessa, con tempi medi per fase",
+      "3-4": "Forecast mensile basato su pipeline campioni in approvazione e commesse ricorrenti",
+      "4-5": "Pipeline trasparente con previsione produzione integrata: commerciale e operations allineati"
+    },
+    "team": {
+      "1-2": "Forma il tecnico di produzione sulla presentazione del catalogo ai clienti durante i collaudi",
+      "2-3": "Commerciale interno gestisce autonomamente richieste campione e follow-up senza il titolare",
+      "3-4": "Team con commerciale, tecnico applicativo e customer service che operano in autonomia",
+      "4-5": "Struttura matura: il titolare non gestisce più le trattative ordinarie, solo i key account"
+    },
+    "processi": {
+      "1-2": "Crea scheda tecnica standard per ogni prodotto: materiali, grammature, formati, MOQ",
+      "2-3": "Processo approvazione campioni documentato con step, responsabili e tempi massimi",
+      "3-4": "Script di discovery per capire esigenze del cliente: settore, volumi, specifiche, timing",
+      "4-5": "Playbook completo dalla prima call alla commessa: discovery, campioni, offerta, chiusura"
+    },
+    "ricavi": {
+      "1-2": "Proponi contratto di fornitura annuale con volumi minimi ai 5 clienti più ricorrenti",
+      "2-3": "Forecast trimestrale basato su ordini programmati e pipeline campioni in approvazione",
+      "3-4": "40% fatturato sotto contratti annuali con cadenza di riordino pianificata",
+      "4-5": "Revenue ricorrente > 55% con contratti pluriennali e pianificazione produzione integrata"
+    },
+    "marketing": {
+      "1-2": "Crea portfolio fotografico dei packaging realizzati diviso per settore (food, cosmetico, farmaco)",
+      "2-3": "Partecipa a Ipack-Ima o Luxe Pack con campionario e schede tecniche aggiornate",
+      "3-4": "LinkedIn con contenuti tecnici sul packaging sostenibile e casi cliente per settore",
+      "4-5": "Presenza strutturata: fiere + LinkedIn + campagna email su database buyer per settore"
+    },
+    "sitoweb": {
+      "1-2": "Crea galleria prodotti divisa per settore applicativo con foto ad alta qualità",
+      "2-3": "Aggiungi schede prodotto con materiali, certificazioni food-contact e opzioni di personalizzazione",
+      "3-4": "SEO su keyword 'imballaggio [settore] personalizzato' con landing page dedicate per settore",
+      "4-5": "Configuratore packaging online con preventivo istantaneo per formati e quantità standard"
+    },
+    "ecommerce": {
+      "1-2": "Attiva pagina su Alibaba o Made in Italy per intercettare buyer esteri nel tuo settore",
+      "2-3": "Crea shop B2B con catalogo packaging standard ordinabile online con MOQ definiti",
+      "3-4": "Portale clienti con riordino, storico commesse e download specifiche tecniche",
+      "4-5": "E-commerce B2B con configuratore, preventivo automatico e integrazione con gestionale"
+    }
+  },
+  "manifatturiero_cterzi": {
+    "vendite": {
+      "1-2": "Contatta 10 aziende manifatturiere locali proponendo un sopralluogo tecnico gratuito",
+      "2-3": "Forma un tecnico di produzione senior sulla presentazione dell'offerta ai nuovi clienti",
+      "3-4": "Attiva accordi di subfornitura con 2-3 aziende complementari per aumentare il portafoglio",
+      "4-5": "Commerciale dedicato con portafoglio clienti, obiettivi e gestione autonoma delle trattative"
+    },
+    "pipeline": {
+      "1-2": "Registro preventivi su Excel: cliente, lavorazione, importo, data invio, stato",
+      "2-3": "CRM base per tracciare preventivi dalla richiesta all'ordine con tempi medi di conversione",
+      "3-4": "Forecast mensile basato su ordini aperti e preventivi in attesa con probabilità di chiusura",
+      "4-5": "Pipeline integrata con pianificazione capacità produttiva: venduto = pianificato"
+    },
+    "team": {
+      "1-2": "Documenta le competenze tecniche disponibili e i clienti associati per ogni lavorazione",
+      "2-3": "Il capo officina gestisce autonomamente i preventivi tecnici per lavorazioni standard",
+      "3-4": "Team con commerciale e referente tecnico che gestiscono il ciclo completo senza il titolare",
+      "4-5": "Struttura autonoma: titolare su sviluppo business, team su gestione operativa e clienti"
+    },
+    "processi": {
+      "1-2": "Crea modulo standard di raccolta dati tecnici per nuovi preventivi (materiale, tolleranze, quantità)",
+      "2-3": "Processo documentato dalla richiesta al preventivo: tempi massimi per risposta e approvazione",
+      "3-4": "Script discovery per capire urgenza, volumi futuri e potenziale sviluppo del cliente",
+      "4-5": "Playbook completo: accettazione richiesta, preventivazione, negoziazione, ordine, collaudo"
+    },
+    "ricavi": {
+      "1-2": "Proponi accordi di subfornitura con impegno minimo mensile ai 3 clienti più stabili",
+      "2-3": "Forecast trimestrale basato su ordini aperti e storico riordini dei clienti abituali",
+      "3-4": "30% fatturato su accordi di subfornitura plurimensili con pianificazione produzione",
+      "4-5": "Revenue ricorrente > 50% con contratti annuali e pianificazione capacità integrata"
+    },
+    "marketing": {
+      "1-2": "Registra l'azienda su Kompass e IndustryStock con capacità produttive e lavorazioni disponibili",
+      "2-3": "Crea profilo LinkedIn con foto officina, elenco macchine e un caso lavorazione recente",
+      "3-4": "Partecipa a Mecspe o fiera di settore locale con campionario lavorazioni e certificazioni",
+      "4-5": "Outreach su LinkedIn verso responsabili acquisti manifatturieri nella tua area geografica"
+    },
+    "sitoweb": {
+      "1-2": "Crea pagina capacità produttive con foto macchinari, lavorazioni e materiali trattabili",
+      "2-3": "Aggiungi schede lavorazione con tolleranze, materiali, settori e foto pezzi finiti",
+      "3-4": "SEO locale su 'lavorazioni conto terzi [città/provincia]' con form preventivo dedicato",
+      "4-5": "Sito con configuratore preventivo rapido per lavorazioni standard e area clienti riservata"
+    },
+    "ecommerce": {
+      "1-2": "Iscriviti a piattaforme di sourcing B2B manifatturiero (Europages, Thomasnet) con scheda tecnica",
+      "2-3": "Attiva richiesta preventivo online con upload disegno tecnico e specifiche",
+      "3-4": "Portale fornitori per i clienti principali con stato avanzamento commesse in tempo reale",
+      "4-5": "Integrazione digitale con i sistemi gestionali dei 3 clienti principali per ordini automatici"
+    }
+  },
+  "manifatturiero_elettromeccanica": {
+    "vendite": {
+      "1-2": "Contatta 5 aziende industriali locali proponendo verifica gratuita dell'efficienza impianti",
+      "2-3": "Forma un tecnico elettromeccanico senior sulla vendita consulenziale di impianti e retrofit",
+      "3-4": "Attiva rete agenti specializzati per settori industria, energia e infrastrutture",
+      "4-5": "Responsabile commerciale con team tecnico-vendita che gestisce trattative e offerte in autonomia"
+    },
+    "pipeline": {
+      "1-2": "Traccia su Excel tutte le offerte aperte: cliente, valore, tipo impianto, data invio, scadenza",
+      "2-3": "CRM con gestione offerte tecniche complesse: fasi, documenti allegati, decisori coinvolti",
+      "3-4": "Forecast trimestrale su commesse in offerta con probabilità per fase e valore atteso",
+      "4-5": "Pipeline gestita in autonomia dal team con review settimanale e forecast mensile < 20% scarto"
+    },
+    "team": {
+      "1-2": "Documenta per ogni cliente impianti installati, manutenzioni in corso e referente tecnico",
+      "2-3": "Il tecnico senior gestisce autonomamente offerte di manutenzione e piccoli revamping",
+      "3-4": "Team autonomo su offerte standard; titolare solo su commesse > soglia valore definita",
+      "4-5": "Project manager dedicati ai clienti chiave, titolare fuori dalla gestione operativa"
+    },
+    "processi": {
+      "1-2": "Crea template offerta tecnica con sezioni fisse: analisi bisogno, soluzione, ROI stimato, garanzie",
+      "2-3": "Processo di discovery tecnica documentato: sopralluogo, checklist raccolta dati, tempi offerta",
+      "3-4": "Playbook obiezioni tecniche: prezzo vs ROI, tempi fermo impianto, garanzie e assistenza",
+      "4-5": "Processo completo dalla visita al collaudo: offerta, approvazione, esecuzione, commissioning"
+    },
+    "ricavi": {
+      "1-2": "Proponi contratto di manutenzione preventiva annuale ai clienti con impianti installati",
+      "2-3": "40% fatturato su contratti di manutenzione programmata pluriennali",
+      "3-4": "Forecast annuale basato su contratti attivi + pipeline revamping + nuove installazioni",
+      "4-5": "Revenue ricorrente > 55% con contratti pluriennali, budget commerciale e forecast affidabile"
+    },
+    "marketing": {
+      "1-2": "Pubblica su LinkedIn 1 caso impianto realizzato al mese con dati tecnici e risparmio energetico",
+      "2-3": "Partecipa a fiera di settore (SPS, ADIPEC, Hannover Messe) con demo tecnica",
+      "3-4": "Campagna LinkedIn verso energy manager e responsabili manutenzione delle industry target",
+      "4-5": "Lead gen multi-canale: LinkedIn + fiere + webinar tecnici su efficienza energetica"
+    },
+    "sitoweb": {
+      "1-2": "Crea pagina soluzioni con foto impianti realizzati divisi per settore applicativo",
+      "2-3": "Aggiungi schede soluzione con specifiche tecniche, ROI tipico e settori di applicazione",
+      "3-4": "SEO su 'quadri elettrici industriali [settore]' e 'revamping impianti [città]'",
+      "4-5": "Sito con calcolatore ROI online e form di richiesta sopralluogo tecnico gratuito"
+    },
+    "ecommerce": {
+      "1-2": "Attiva profilo su piattaforme di gare d'appalto (Mepa, Sintel) per forniture elettromeccaniche",
+      "2-3": "Shop online per ricambi ed accessori standard con disponibilità a magazzino in tempo reale",
+      "3-4": "Portale clienti con storico interventi, scadenze manutenzione e richiesta intervento online",
+      "4-5": "Sistema IoT per monitoraggio da remoto degli impianti installati con alert automatici"
+    }
+  },
+  "manifatturiero_tessile": {
+    "vendite": {
+      "1-2": "Partecipa a Première Vision o Texworld con campionario stagionale aggiornato",
+      "2-3": "Assumi un agente di rappresentanza per i mercati moda di Milano e Firenze",
+      "3-4": "Rete agenti nazionale con agenti per area geografica e showroom temporanei nelle fashion week",
+      "4-5": "Responsabile commerciale con rete agenti internazionale e gestione key account moda"
+    },
+    "pipeline": {
+      "1-2": "Traccia su Excel tutte le richieste campionario con buyer, brand, stagione, quantità stimate",
+      "2-3": "CRM con gestione campagne stagionali: SS e AW, con stato approvazione per ogni buyer",
+      "3-4": "Forecast stagionale per collezione con ordini confermati vs in approvazione per buyer",
+      "4-5": "Pipeline integrata con programmazione produzione: ordini SS/AW pianificati con 6 mesi anticipo"
+    },
+    "team": {
+      "1-2": "Forma il responsabile produzione sulla presentazione tecnica dei tessuti ai buyer in visita",
+      "2-3": "Agente o showroom manager gestisce le relazioni buyer in autonomia durante le fiere",
+      "3-4": "Team con commerciale, stilista/sviluppo prodotto e customer service autonomi",
+      "4-5": "Struttura con brand manager, agenti per area e team sviluppo prodotto indipendente"
+    },
+    "processi": {
+      "1-2": "Crea scheda tecnica standard per ogni articolo: composizione, grammatura, altezza, trattamenti",
+      "2-3": "Processo sviluppo campionario documentato: dal brief alla consegna con tempi massimi",
+      "3-4": "Script di discovery per buyer: target collezione, posizionamento, volumi, tempi consegna",
+      "4-5": "Playbook stagionale completo: sviluppo, campionario, fiera, ordini, produzione, consegna"
+    },
+    "ricavi": {
+      "1-2": "Proponi ordini programmati stagionali (SS + AW) ai 5 brand che riordinano più frequentemente",
+      "2-3": "Forecast stagionale per collezione basato su storico ordini e pipeline buyer attivi",
+      "3-4": "45% fatturato su ordini programmati stagionali con brand fidelizzati",
+      "4-5": "Revenue ricorrente > 55% con contratti pluristagionali e pianificazione produzione integrata"
+    },
+    "marketing": {
+      "1-2": "Crea lookbook digitale della collezione attuale con foto tessuti ad alta risoluzione",
+      "2-3": "Partecipa come espositore a Première Vision Paris o Milano Unica con stand curato",
+      "3-4": "Showroom permanente a Milano/Firenze con appuntamenti buyer durante le fashion week",
+      "4-5": "Presenza internazionale: fiere + showroom + campagna digitale su Linkedin verso buyer moda"
+    },
+    "sitoweb": {
+      "1-2": "Crea catalogo digitale online con foto tessuti, composizioni e disponibilità per stagione",
+      "2-3": "Aggiungi schede articolo con foto dettaglio trama, composizione, certificazioni (OEKO-TEX)",
+      "3-4": "Area riservata buyer con catalogo stagionale downloadable e form richiesta campioni",
+      "4-5": "Showroom digitale con visualizzatore tessuti in 3D e configuratore colori e finiture"
+    },
+    "ecommerce": {
+      "1-2": "Attiva profilo su piattaforme B2B tessile (Texhibition, Messe Frankfurt digital) con catalogo",
+      "2-3": "Shop B2B per ordini campioni e piccole quantità con MOQ e tempi di consegna chiari",
+      "3-4": "Portale buyer riservato con catalogo stagionale, ordini e tracking spedizioni in tempo reale",
+      "4-5": "Piattaforma B2B con configuratore colori, ordini automatici e integrazione magazzino"
+    }
+  },
+  "servizi_consulenza": {
+    "vendite": {
+      "1-2": "Chiedi a 3 clienti soddisfatti di presentarti a un loro contatto: la prima referenza è la più facile",
+      "2-3": "Struttura un processo di referral attivo: dopo ogni progetto chiudi con la richiesta di 2 nomi",
+      "3-4": "Assumi un business developer part-time per gestire outreach e qualificazione dei prospect",
+      "4-5": "Team commerciale con BD manager e consulenti senior che vendono in autonomia"
+    },
+    "pipeline": {
+      "1-2": "Crea lista prospect su Excel con nome, azienda, bisogno percepito e data ultimo contatto",
+      "2-3": "CRM base con gestione conversazioni: dal primo contatto alla proposta con probabilità",
+      "3-4": "Forecast trimestrale su proposte in attesa con valore e probabilità di chiusura per stage",
+      "4-5": "Pipeline trasparente gestita in team con forecast mensile affidabile e review settimanale"
+    },
+    "team": {
+      "1-2": "Porta un consulente junior in almeno 2 call di discovery al mese per trasferire il metodo",
+      "2-3": "Il consulente junior gestisce autonomamente la delivery dei progetti standard",
+      "3-4": "Team con senior e junior: il senior gestisce relazione cliente, il junior la delivery",
+      "4-5": "Struttura autonoma: managing partner su sviluppo business, team su delivery e clienti"
+    },
+    "processi": {
+      "1-2": "Crea template proposta commerciale con struttura fissa: problema, approccio, output, valore, fee",
+      "2-3": "Script di discovery documentato: 7 domande per qualificare bisogno, budget e decisore",
+      "3-4": "Playbook obiezioni consulenza: prezzo, tempi, ROI, 'lo facciamo internamente'",
+      "4-5": "Metodologia documentata: discovery, diagnosi, proposta, delivery, review e upsell"
+    },
+    "ricavi": {
+      "1-2": "Proponi un retainer mensile ai 2 clienti con cui hai il rapporto più continuativo",
+      "2-3": "30% fatturato su retainer mensili ricorrenti con clienti fidelizzati",
+      "3-4": "Forecast trimestrale affidabile: retainer + pipeline proposte in corso",
+      "4-5": "Revenue ricorrente > 60% con retainer pluriennali e forecast annuale su budget commerciale"
+    },
+    "marketing": {
+      "1-2": "Pubblica 1 articolo LinkedIn a settimana su un problema specifico del tuo cliente ideale",
+      "2-3": "Crea 1 case study mensile con problema, approccio, risultati (anonimi) e pubblicalo",
+      "3-4": "Newsletter mensile su temi di settore con 500+ iscritti dal tuo network professionale",
+      "4-5": "Thought leadership strutturata: LinkedIn + newsletter + webinar mensile + podcast/video"
+    },
+    "sitoweb": {
+      "1-2": "Crea pagina servizi con descrizione chiara del problema che risolvi e per chi",
+      "2-3": "Aggiungi 3 case study con settore, sfida, approccio e risultati misurabili",
+      "3-4": "Blog con 2 articoli SEO al mese su keyword ricercate dal tuo cliente ideale",
+      "4-5": "Sito con lead magnet (tool, checklist, assessment) e form di discovery call automatizzato"
+    },
+    "ecommerce": {
+      "1-2": "Crea profilo completo su LinkedIn con headline che descrive il problema che risolvi",
+      "2-3": "Pubblica 1 contenuto a settimana su LinkedIn con dati e insights dal tuo lavoro",
+      "3-4": "Attiva campagna LinkedIn Ads con lead magnet verso decision maker del tuo settore target",
+      "4-5": "Funnel digitale completo: contenuto → lead magnet → nurturing → discovery call → proposta"
+    }
+  },
+  "servizi_it": {
+    "vendite": {
+      "1-2": "Contatta 5 aziende manifatturiere locali proponendo un assessment gratuito della infrastruttura IT",
+      "2-3": "Forma un tecnico senior sulla vendita consulenziale di progetti IT e managed services",
+      "3-4": "Account manager dedicato per il mid-market con obiettivo di sviluppo portafoglio annuale",
+      "4-5": "Team vendite con account manager per settore e pre-sales tecnico in piena autonomia"
+    },
+    "pipeline": {
+      "1-2": "Traccia su Excel tutte le opportunità aperte con cliente, progetto, valore, fase, data chiusura",
+      "2-3": "CRM con gestione progetti IT complessi: fasi, decisori, documenti, concorrenti identificati",
+      "3-4": "Forecast trimestrale con probabilità per fase (proposta 30%, demo 50%, negoziazione 80%)",
+      "4-5": "Pipeline con forecast mensile < 15% scarto, gestita autonomamente dal team di vendita"
+    },
+    "team": {
+      "1-2": "Documenta per ogni cliente i sistemi gestiti, i contratti attivi e il referente IT",
+      "2-3": "Il system engineer gestisce rinnovi e upsell dei clienti managed services in autonomia",
+      "3-4": "Account manager gestisce il portafoglio clienti completo senza coinvolgere il titolare",
+      "4-5": "Struttura autonoma: titolare su partner e strategia, team su clienti e delivery"
+    },
+    "processi": {
+      "1-2": "Crea template assessment IT: infrastruttura, sicurezza, cloud, criticità e raccomandazioni",
+      "2-3": "Processo di discovery documentato: 8 domande chiave per qualificare un progetto IT",
+      "3-4": "Playbook obiezioni IT: prezzo managed services, migrazione cloud, sicurezza dati",
+      "4-5": "Sales playbook completo: assessment, proposta, demo, negoziazione, go-live, upsell"
+    },
+    "ricavi": {
+      "1-2": "Trasforma i 3 clienti progetto in contratti di managed services mensili",
+      "2-3": "50% fatturato su contratti managed services ricorrenti (helpdesk, monitoring, backup)",
+      "3-4": "Forecast annuale affidabile basato su MRR managed services + pipeline progetti",
+      "4-5": "MRR > 60% del fatturato con contratti pluriennali e NPS trimestrale sui clienti managed"
+    },
+    "marketing": {
+      "1-2": "Pubblica 1 post LinkedIn su un problema IT comune nelle PMI del tuo settore target",
+      "2-3": "Webinar mensile gratuito su tema IT caldo per il settore (es. cybersecurity PMI, cloud)",
+      "3-4": "Campagna LinkedIn Ads verso IT manager e titolari PMI con lead magnet assessment IT",
+      "4-5": "Funnel digitale con webinar + newsletter + remarketing + partner Google/Microsoft"
+    },
+    "sitoweb": {
+      "1-2": "Crea pagina servizi con lista chiara dei servizi managed offerti e per quali settori",
+      "2-3": "Aggiungi 3 case study IT con settore, problema, soluzione e risultati concreti",
+      "3-4": "SEO su 'managed services [città]' e 'sicurezza informatica PMI' con blog mensile",
+      "4-5": "Sito con assessment IT gratuito online, calcolatore ROI managed services e form demo"
+    },
+    "ecommerce": {
+      "1-2": "Attiva profilo su marketplace IT (Var4Var, ICT channel) per visibilità verso rivenditori",
+      "2-3": "Shop online per licenze software, hardware standard e servizi di attivazione",
+      "3-4": "Portale clienti con ticketing, knowledge base e monitoraggio SLA in tempo reale",
+      "4-5": "Piattaforma self-service con provisioning automatico, dashboard cliente e billing integrato"
+    }
+  },
+  "servizi_formazione": {
+    "vendite": {
+      "1-2": "Contatta 3 HR manager di aziende locali proponendo un'analisi gratuita dei fabbisogni formativi",
+      "2-3": "Forma un trainer senior sulla vendita consulenziale di percorsi formativi personalizzati",
+      "3-4": "Account manager dedicato alle aziende con > 50 dipendenti per sviluppo contratti formativi",
+      "4-5": "Team commerciale con account manager corporate e gestione autonoma gare FSE e finanziamenti"
+    },
+    "pipeline": {
+      "1-2": "Traccia su Excel aziende contattate, tipo corso proposto, budget stimato, decisore, stato",
+      "2-3": "CRM con gestione trattative formazione: dalla prima call alla firma con tempi di ciclo",
+      "3-4": "Forecast trimestrale su proposte in corso con probabilità per tipo cliente e finanziamento",
+      "4-5": "Pipeline con forecast su corsi finanziati FSE, corsi aziendali e open course in autonomia"
+    },
+    "team": {
+      "1-2": "Porta un trainer in 2 call di presentazione al mese per trasferire il metodo di vendita",
+      "2-3": "Il trainer senior gestisce autonomamente le trattative per corsi nel suo ambito di expertise",
+      "3-4": "Coordinatore didattico gestisce tutta la relazione cliente dalla firma all'erogazione",
+      "4-5": "Struttura con BD manager, coordinatori per area tematica e trainer in piena autonomia"
+    },
+    "processi": {
+      "1-2": "Crea template proposta formativa: fabbisogno, obiettivi, programma, metodologia, costi",
+      "2-3": "Script di analisi fabbisogni documentato: 6 domande per qualificare esigenza e budget",
+      "3-4": "Playbook finanziamenti formativi: FSE, fondi interprofessionali, 4.0 — come presentarli",
+      "4-5": "Processo end-to-end: analisi fabbisogni, progettazione, erogazione, valutazione, rendicontazione"
+    },
+    "ricavi": {
+      "1-2": "Proponi piano formativo annuale all-inclusive alle 3 aziende con cui hai già lavorato",
+      "2-3": "Forecast trimestrale su corsi programmati, finanziamenti approvati e pipeline proposte",
+      "3-4": "40% fatturato su contratti formativi annuali con aziende clienti fidelizzate",
+      "4-5": "Revenue ricorrente > 55% con contratti pluriennali e pipeline FSE strutturata"
+    },
+    "marketing": {
+      "1-2": "Pubblica 1 contenuto LinkedIn su un tema formativo caldo per le aziende del tuo settore target",
+      "2-3": "Organizza 1 webinar gratuito al mese su un tema di sviluppo competenze per HR manager",
+      "3-4": "Newsletter mensile per HR e titolari con aggiornamenti su fondi formativi e novità normative",
+      "4-5": "Thought leadership: webinar + newsletter + presenza nei network HR con contenuti autorevoli"
+    },
+    "sitoweb": {
+      "1-2": "Crea catalogo corsi online con titolo, obiettivi, destinatari, durata e modalità di finanziamento",
+      "2-3": "Aggiungi pagina finanziamenti formativi con guida pratica ai fondi disponibili per le aziende",
+      "3-4": "SEO su 'formazione finanziata [settore]' e 'corsi [competenza] per aziende'",
+      "4-5": "Sito con configuratore percorso formativo personalizzato e calcolatore risparmio finanziamenti"
+    },
+    "ecommerce": {
+      "1-2": "Pubblica 1-2 corsi open su piattaforme come Udemy o Teachable per testare il mercato",
+      "2-3": "Piattaforma e-learning per erogare corsi online asincroni ai clienti aziendali",
+      "3-4": "Portale LMS clienti con iscrizioni, materiali, test e certificazioni in autonomia",
+      "4-5": "Ecosistema digitale completo: LMS, marketplace corsi open, app mobile e analytics apprendimento"
+    }
+  },
+  "edilizia_residenziale": {
+    "vendite": {
+      "1-2": "Chiedi a 3 clienti soddisfatti di presentarti a vicini o amici che devono ristrutturare",
+      "2-3": "Collabora con 2 geometri o architetti locali per ricevere referral su lavori di costruzione",
+      "3-4": "Assegna a un commerciale la gestione dei contatti in ingresso con processo di qualificazione",
+      "4-5": "Team commerciale con account per privati, account per imprese e gestione autonoma gare"
+    },
+    "pipeline": {
+      "1-2": "Tieni un foglio Excel con tutti i preventivi aperti: cliente, lavoro, importo, data, stato",
+      "2-3": "CRM base per tracciare i contatti dal sopralluogo alla firma con tempi medi per fase",
+      "3-4": "Forecast trimestrale basato su preventivi in attesa con probabilità per valore e tipologia",
+      "4-5": "Pipeline gestita in autonomia con forecast mensile affidabile e pianificazione cantieri integrata"
+    },
+    "team": {
+      "1-2": "Porta il capo cantiere in 2 sopralluoghi commerciali al mese per trasferire la competenza tecnica",
+      "2-3": "Il geometra interno gestisce autonomamente i preventivi standard senza coinvolgere il titolare",
+      "3-4": "Project manager per cantiere che gestisce cliente, fornitori e SAL in autonomia",
+      "4-5": "Struttura con direttore tecnico, PM cantiere e responsabile commerciale in piena autonomia"
+    },
+    "processi": {
+      "1-2": "Crea computo metrico standard per i lavori più frequenti: ristrutturazione bagno, cucina, ecc.",
+      "2-3": "Processo di sopralluogo documentato: checklist raccolta dati, foto, misure e fabbisogni",
+      "3-4": "Playbook commerciale: gestione obiezioni prezzo, tempi, garanzie e materiali inclusi",
+      "4-5": "Processo end-to-end: sopralluogo, preventivo, firma, SAL, collaudo, post-lavori e referral"
+    },
+    "ricavi": {
+      "1-2": "Proponi accordo di manutenzione annuale (imbiancatura, piccoli interventi) ai clienti post-cantiere",
+      "2-3": "Forecast trimestrale basato su cantieri in corso, firme recenti e preventivi in attesa",
+      "3-4": "30% fatturato su contratti di manutenzione e accordi preferenziali con clienti fidelizzati",
+      "4-5": "Revenue ricorrente > 40% con contratti manutenzione e accordi pluriennali con immobiliaristi"
+    },
+    "marketing": {
+      "1-2": "Crea profilo Instagram con foto dei cantieri finiti: prima/dopo con descrizione lavori eseguiti",
+      "2-3": "Profilo Google Business aggiornato con foto, recensioni e risposta attiva ai commenti",
+      "3-4": "Campagna Google Ads locale su 'impresa edile [città]' e 'ristrutturazione casa [città]'",
+      "4-5": "Marketing strutturato: Google Ads + Instagram + referral program attivo + fidelizzazione clienti"
+    },
+    "sitoweb": {
+      "1-2": "Crea galleria lavori con foto prima/dopo divisi per tipologia (bagno, cucina, facciate, ecc.)",
+      "2-3": "Aggiungi pagina servizi con descrizione lavori, materiali utilizzati e garanzie offerte",
+      "3-4": "SEO locale su 'impresa edile [città]' con blog su ristrutturazioni e normative",
+      "4-5": "Sito con configuratore preventivo base, area clienti per SAL e recensioni verificate"
+    },
+    "ecommerce": {
+      "1-2": "Registra l'azienda su Habitissimo e Instapro per ricevere richieste di preventivo online",
+      "2-3": "Attiva form di richiesta preventivo online con foto allegabili per qualificazione rapida",
+      "3-4": "Portale clienti con stato avanzamento cantiere, documenti e SAL visibili in tempo reale",
+      "4-5": "App cantiere per clienti con foto giornaliere, documenti e comunicazione diretta con PM"
+    }
+  },
+  "edilizia_impianti": {
+    "vendite": {
+      "1-2": "Collabora con 3 imprese edili locali per ricevere referral su impianti in nuove costruzioni",
+      "2-3": "Forma un installatore senior sulla presentazione commerciale degli impianti ai clienti finali",
+      "3-4": "Account manager per il segmento terziario (uffici, negozi, hotel) con obiettivi annuali",
+      "4-5": "Team commerciale con account privati, account terziario e gestione autonoma gare d'appalto"
+    },
+    "pipeline": {
+      "1-2": "Registro Excel preventivi con cliente, tipo impianto, importo, data, stato e follow-up",
+      "2-3": "CRM per tracciare dalla richiesta preventivo alla firma con tempi medi per tipo impianto",
+      "3-4": "Forecast trimestrale su preventivi in attesa con probabilità per tipologia e valore",
+      "4-5": "Pipeline integrata con pianificazione risorse e forecast mensile affidabile"
+    },
+    "team": {
+      "1-2": "Il capo tecnico partecipa ai sopralluoghi commerciali per supportare la fase tecnica",
+      "2-3": "Tecnico senior gestisce autonomamente preventivi impianti standard (civile, piccolo terziario)",
+      "3-4": "Project manager gestisce cantiere, cliente e fornitori in completa autonomia",
+      "4-5": "Struttura con direttore tecnico, PM per tipo impianto e commerciale in piena autonomia"
+    },
+    "processi": {
+      "1-2": "Crea template preventivo impianti con sezioni standard: fornitura, posa, certificazioni, garanzia",
+      "2-3": "Checklist sopralluogo tecnico per ogni tipo di impianto (elettrico, idraulico, termico)",
+      "3-4": "Playbook obiezioni: prezzo vs efficienza energetica, marche, certificazioni e garanzie",
+      "4-5": "Processo end-to-end: sopralluogo, preventivo, progetto, posa, collaudo, certificazione, manutenzione"
+    },
+    "ricavi": {
+      "1-2": "Proponi contratto di manutenzione annuale impianti ai clienti con installazioni recenti",
+      "2-3": "40% fatturato su contratti manutenzione impianti ricorrenti (caldaie, elettrici, condizionatori)",
+      "3-4": "Forecast annuale affidabile basato su contratti manutenzione + pipeline nuovi impianti",
+      "4-5": "Revenue ricorrente > 55% con contratti pluriennali e pianificazione interventi ottimizzata"
+    },
+    "marketing": {
+      "1-2": "Crea profilo Google Business con foto impianti realizzati, certificazioni e recensioni",
+      "2-3": "Campagna Google Ads locale su 'installazione impianti [tipo] [città]'",
+      "3-4": "Partnership con produttori (Vaillant, Daikin, ABB) per co-marketing e certificazioni",
+      "4-5": "Marketing strutturato: Google Ads + referral network artigiani + email marketing clienti"
+    },
+    "sitoweb": {
+      "1-2": "Crea pagina servizi divisa per tipo impianto con foto realizzazioni e certificazioni",
+      "2-3": "Aggiungi calcolatore risparmio energetico per impianti termici e fotovoltaico",
+      "3-4": "SEO su 'installazione [tipo impianto] [città]' con blog su incentivi e bonus fiscali",
+      "4-5": "Sito con configuratore preventivo impianti, calcolatore incentivi e area clienti"
+    },
+    "ecommerce": {
+      "1-2": "Registra l'azienda su Habitissimo e Instapro per preventivi impianti online",
+      "2-3": "Shop online per accessori e ricambi impianti standard per clienti fidelizzati",
+      "3-4": "Portale clienti con storico interventi, scadenze manutenzione e richiesta intervento online",
+      "4-5": "App clienti con monitoraggio impianti, alert manutenzione e richiesta intervento urgente"
+    }
+  },
+  "edilizia_ristrutturazioni": {
+    "vendite": {
+      "1-2": "Chiedi referral attivi ai 3 clienti più soddisfatti degli ultimi 12 mesi con incentivo piccolo sconto",
+      "2-3": "Collabora con 2 interior designer o architetti locali per referral reciproci",
+      "3-4": "Commerciale dedicato alle ristrutturazioni chiavi in mano per privati e piccole imprese",
+      "4-5": "Team commerciale con account privati, account B2B (alberghi, negozi) e gestione gare"
+    },
+    "pipeline": {
+      "1-2": "Excel con tutti i preventivi: cliente, lavori, importo, data sopralluogo, data offerta, stato",
+      "2-3": "CRM con tracciamento dal primo contatto alla firma con probabilità per valore lavoro",
+      "3-4": "Forecast trimestrale su preventivi in attesa con probabilità per tipologia ristrutturazione",
+      "4-5": "Pipeline con forecast mensile, pianificazione cantieri e gestione subappaltatori integrata"
+    },
+    "team": {
+      "1-2": "Il geometra accompagna il titolare nei sopralluoghi per imparare a gestirli in autonomia",
+      "2-3": "Geometra o tecnico gestisce autonomamente sopralluogo, preventivo e follow-up standard",
+      "3-4": "Project manager gestisce cantiere e cliente dall'inizio alla fine senza il titolare",
+      "4-5": "Struttura con PM cantieri, commerciale e responsabile tecnico in piena autonomia"
+    },
+    "processi": {
+      "1-2": "Template preventivo ristrutturazione con lavorazioni, materiali, tempistiche e garanzie",
+      "2-3": "Checklist sopralluogo con foto, misure, stato attuale e fabbisogni del cliente",
+      "3-4": "Playbook obiezioni: prezzo, tempi, pulizia cantiere, materiali e lavori inclusi vs esclusi",
+      "4-5": "Processo completo: primo contatto, sopralluogo, preventivo, firma, cantiere, collaudo, referral"
+    },
+    "ricavi": {
+      "1-2": "Proponi piano di piccola manutenzione annuale (ritocchi, piccoli interventi) post-ristrutturazione",
+      "2-3": "Forecast trimestrale su cantieri in corso e preventivi in fase di firma",
+      "3-4": "35% fatturato su accordi preferenziali con agenzie immobiliari e property manager locali",
+      "4-5": "Revenue ricorrente > 40% con accordi B2B strutturati (agenzie, alberghi, GDO)"
+    },
+    "marketing": {
+      "1-2": "Profilo Instagram con foto prima/dopo delle ristrutturazioni più significative dell'anno",
+      "2-3": "Profilo Google Business ottimizzato con album foto divisi per tipologia lavoro",
+      "3-4": "Campagna Google Ads locale su 'ristrutturazione bagno [città]', 'ristrutturazione casa [città]'",
+      "4-5": "Marketing integrato: Google Ads + Instagram + referral network design + email clienti"
+    },
+    "sitoweb": {
+      "1-2": "Galleria lavori con foto prima/dopo per tipologia (bagno, cucina, appartamento, negozio)",
+      "2-3": "Pagina incentivi fiscali (Superbonus, Ecobonus, Sismabonus) con guida pratica aggiornata",
+      "3-4": "SEO su 'ristrutturazione [tipo] [città]' con blog su normative, materiali e tendenze",
+      "4-5": "Configuratore preventivo base online con selezione lavori, metratura e fascia qualità"
+    },
+    "ecommerce": {
+      "1-2": "Registra su Habitissimo, Instapro e Quotalo per ricevere richieste qualificate online",
+      "2-3": "Form di richiesta preventivo online con foto allegabili e selezione tipo lavoro",
+      "3-4": "Portale clienti con foto avanzamento cantiere giornaliere e SAL visibili",
+      "4-5": "App cantiere con comunicazione diretta, documenti, foto e approvazione varianti online"
+    }
+  },
+  "edilizia_serramenti": {
+    "vendite": {
+      "1-2": "Porta un installatore in 2 sopralluoghi commerciali al mese per formare la figura tecnico-venditore",
+      "2-3": "Tecnico-venditore gestisce autonomamente sopralluogo, misurazioni e preventivo standard",
+      "3-4": "Rete di posatori certificati come canale vendita nelle province non presidiate",
+      "4-5": "Team con showroom manager, tecnici-venditori per area e gestione autonoma commesse grandi"
+    },
+    "pipeline": {
+      "1-2": "Excel preventivi con cliente, tipo serramento, valore, data misura, data offerta, stato",
+      "2-3": "CRM per tracciare dalla misura alla firma con tempi medi e tasso di conversione per prodotto",
+      "3-4": "Forecast mensile su preventivi in attesa con probabilità per valore e stagionalità",
+      "4-5": "Pipeline con forecast e pianificazione produzione/fornitura integrata per ridurre lead time"
+    },
+    "team": {
+      "1-2": "Forma 1 tecnico sul rilevamento misure e sulla presentazione del catalogo in showroom",
+      "2-3": "Tecnico-venditore gestisce autonomamente l'intero ciclo dal sopralluogo all'ordine",
+      "3-4": "Team showroom + tecnici area che operano in autonomia su tutto il ciclo di vendita",
+      "4-5": "Struttura con responsabile commerciale, tecnici per area e installatori coordinati"
+    },
+    "processi": {
+      "1-2": "Crea scheda tecnica per ogni prodotto con caratteristiche, taglie, opzioni e prezzi indicativi",
+      "2-3": "Processo misura-offerta documentato: sopralluogo, scheda misure, verifica fattibilità, offerta",
+      "3-4": "Playbook obiezioni serramenti: prezzo, tempi consegna, qualità vs low cost, assistenza post-vendita",
+      "4-5": "Playbook completo: sopralluogo, misure, offerta configuratore, ordine, posa, collaudo, garanzia"
+    },
+    "ricavi": {
+      "1-2": "Proponi accordo di manutenzione annuale (lubrificazione, regolazione, guarnizioni) post-installazione",
+      "2-3": "Forecast trimestrale basato su preventivi in attesa e stagionalità (picco primavera/autunno)",
+      "3-4": "30% fatturato su accordi con imprese edili e ristrutturatori per forniture ricorrenti",
+      "4-5": "Revenue ricorrente > 40% con accordi B2B strutturati e manutenzione programmata"
+    },
+    "marketing": {
+      "1-2": "Showroom con vetrina vetri e infissi campione con esposizione dei bonus fiscali disponibili",
+      "2-3": "Profilo Google Business con foto installazioni, recensioni e info sui bonus (Ecobonus)",
+      "3-4": "Campagna Google Ads locale su 'serramenti [città]' e 'finestre [marca] [città]'",
+      "4-5": "Marketing integrato: Google Ads + Instagram showroom + email clienti + referral installatori"
+    },
+    "sitoweb": {
+      "1-2": "Catalogo prodotti online con foto, caratteristiche tecniche, certificazioni e classi energetiche",
+      "2-3": "Pagina incentivi fiscali serramenti con guida Ecobonus aggiornata e simulatore risparmio",
+      "3-4": "SEO su 'serramenti [città]' con configuratore colori e finiture e form richiesta sopralluogo",
+      "4-5": "Configuratore serramento online con anteprima visiva, preventivo istantaneo e prenotazione"
+    },
+    "ecommerce": {
+      "1-2": "Registra su Habitissimo e Instapro per ricevere richieste di preventivo serramenti online",
+      "2-3": "Preventivatore online base con selezione tipo serramento, materiale, colore e dimensione",
+      "3-4": "Portale rivenditori e posatori con catalogo riservato, sconti e ordini online",
+      "4-5": "Configuratore avanzato con visualizzatore 3D, preventivo in tempo reale e ordine online"
+    }
+  },
+  "commercio_distribuzione_industriale": {
+    "vendite": {
+      "1-2": "Visita personalmente i 10 clienti inattivi da > 6 mesi con campionario prodotti nuovi",
+      "2-3": "Agente di zona con portafoglio assegnato e obiettivo di fatturato mensile",
+      "3-4": "Rete agenti strutturata per area geografica con KPI di acquisizione nuovi clienti mensili",
+      "4-5": "Responsabile commerciale con rete agenti e inside sales in piena autonomia"
+    },
+    "pipeline": {
+      "1-2": "CRM base per tracciare clienti attivi, inattivi e prospect con data ultimo ordine e potenziale",
+      "2-3": "Pipeline con gestione sviluppo nuovi clienti separata dalla gestione clienti attivi",
+      "3-4": "Forecast mensile su nuovi clienti e sviluppo portafoglio con obiettivi per agente",
+      "4-5": "Pipeline trasparente con forecast mensile < 15% scarto e review settimanale agenti"
+    },
+    "team": {
+      "1-2": "Forma un magazziniere sulla presentazione del catalogo ai clienti che passano in sede",
+      "2-3": "Inside sales gestisce ordini ricorrenti e richieste standard senza coinvolgere il titolare",
+      "3-4": "Team agenti + inside sales che copre tutto il portafoglio clienti in autonomia",
+      "4-5": "Responsabile commerciale gestisce agenti e inside sales, titolare fuori dalla gestione clienti"
+    },
+    "processi": {
+      "1-2": "Crea listino prezzi digitale sempre aggiornato e accessibile agli agenti da smartphone",
+      "2-3": "Script per la visita cliente: review ordini, novità catalogo, proposte abbinamento prodotti",
+      "3-4": "Playbook gestione obiezioni: prezzo vs concorrenza, tempi consegna, servizio post-vendita",
+      "4-5": "Processo completo: acquisizione, onboarding cliente, sviluppo portafoglio, fidelizzazione, upsell"
+    },
+    "ricavi": {
+      "1-2": "Proponi accordo quadro annuale ai 5 clienti con ordini più regolari con sconto su volumi",
+      "2-3": "Forecast mensile basato su ordini programmati e pipeline sviluppo nuovi clienti",
+      "3-4": "40% fatturato su accordi quadro annuali con clienti industriali fidelizzati",
+      "4-5": "Revenue ricorrente > 55% con accordi pluriennali e forecast su budget clienti"
+    },
+    "marketing": {
+      "1-2": "Newsletter mensile al database clienti con novità catalogo, promozioni e schede tecniche",
+      "2-3": "Campagna email segmentata per settore con prodotti e offerte pertinenti al tipo di cliente",
+      "3-4": "LinkedIn con contenuti tecnici su applicazioni industriali dei prodotti per i decisori",
+      "4-5": "Marketing B2B strutturato: email automation + LinkedIn + fiere di settore + webinar tecnici"
+    },
+    "sitoweb": {
+      "1-2": "Catalogo online con ricerca per categoria, marca e codice prodotto sempre aggiornato",
+      "2-3": "Schede prodotto con specifiche tecniche, alternative e prodotti complementari",
+      "3-4": "SEO su brand distribuiti e categorie prodotto con area riservata clienti e listini",
+      "4-5": "E-catalog professionale con disponibilità magazzino in tempo reale e area riservata agenti"
+    },
+    "ecommerce": {
+      "1-2": "Attiva ordini online per i 50 codici prodotto più venduti con giacenze magazzino",
+      "2-3": "Shop B2B con catalogo completo, prezzi riservati per cliente e ordini ricorrenti automatici",
+      "3-4": "Portale clienti con ordini, fatture, documenti di trasporto e tracking spedizioni",
+      "4-5": "E-commerce B2B con integrazione gestionale, prezzi personalizzati e ordini automatici"
+    }
+  },
+  "commercio_ingrosso_alimentare": {
+    "vendite": {
+      "1-2": "Visita personalmente i 10 clienti (ristoranti, bar, negozi) con scadenza ordine > 30 giorni",
+      "2-3": "Agente alimentare di zona con portafoglio HO.RE.CA. e obiettivo ordini settimanali",
+      "3-4": "Rete agenti per canale (HO.RE.CA., retail, GDO) con obiettivi di sviluppo separati",
+      "4-5": "Direttore vendite con team agenti per canale e inside sales in piena autonomia"
+    },
+    "pipeline": {
+      "1-2": "Registro clienti con frequenza ordine, valore medio carrello e data ultimo acquisto",
+      "2-3": "CRM per segmentare clienti per frequenza, valore e prodotti acquistati con alert inattività",
+      "3-4": "Forecast settimanale basato su ordini programmati e stagionalità prodotti freschi",
+      "4-5": "Pipeline con forecast su sviluppo nuovi clienti e gestione promozioni stagionali integrata"
+    },
+    "team": {
+      "1-2": "Forma un magazziniere sul ricevimento ordini telefonici e gestione reclami semplici",
+      "2-3": "Inside sales gestisce ordini telefonici e richieste standard senza il titolare",
+      "3-4": "Team agenti + inside sales + customer service che coprono tutto il portafoglio",
+      "4-5": "Responsabile commerciale con team strutturato per canale in completa autonomia"
+    },
+    "processi": {
+      "1-2": "Listino digitale con prezzi del giorno per prodotti freschi accessibile agli agenti",
+      "2-3": "Script visita cliente HO.RE.CA.: review ordine, novità stagionali, proposte abbinamento",
+      "3-4": "Playbook gestione reclami qualità: procedura sostituzione, credito e fidelizzazione post-problema",
+      "4-5": "Processo completo dalla visita all'ordine: frequenza visite, upsell stagionale, fidelizzazione"
+    },
+    "ricavi": {
+      "1-2": "Proponi ordine programmato settimanale fisso ai 10 ristoranti clienti più regolari",
+      "2-3": "Forecast settimanale su ordini programmati per ottimizzare acquisti e ridurre sprechi",
+      "3-4": "50% fatturato su ordini programmati ricorrenti con clienti HO.RE.CA. fidelizzati",
+      "4-5": "Revenue ricorrente > 65% con ordini automatici, forecast integrato con acquisti e logistica"
+    },
+    "marketing": {
+      "1-2": "Newsletter settimanale ai clienti con novità prodotti, stagionalità e promozioni della settimana",
+      "2-3": "Whatsapp Business con aggiornamento listino quotidiano e promozioni flash per i clienti",
+      "3-4": "Instagram e Facebook con ricette, usi e prodotti in arrivo rivolti a chef e ristoratori",
+      "4-5": "Marketing strutturato: Whatsapp Business + email + social + fiere alimentari di settore"
+    },
+    "sitoweb": {
+      "1-2": "Catalogo online con prodotti, schede tecniche e disponibilità per canale (HO.RE.CA., retail)",
+      "2-3": "Area riservata clienti con listino personalizzato e storico ordini",
+      "3-4": "SEO su 'ingrosso alimentare [città]' con blog su stagionalità e tendenze food",
+      "4-5": "Portale B2B con catalogo aggiornato, listini personalizzati e ordini online in tempo reale"
+    },
+    "ecommerce": {
+      "1-2": "App o portale ordini online per i clienti HO.RE.CA. con catalogo e prezzi riservati",
+      "2-3": "Ordini online con cut-off per consegna giorno successivo e gestione resi online",
+      "3-4": "Portale clienti con ordini ricorrenti automatici, fatture e documenti di trasporto",
+      "4-5": "Piattaforma B2B con integrazione gestionale cliente, ordini automatici e analytics acquisti"
+    }
+  },
+  "commercio_materiali_edili": {
+    "vendite": {
+      "1-2": "Visita 10 imprese edili locali con campionario novità e promozione riservata alle imprese",
+      "2-3": "Agente dedicato al canale imprese con portafoglio e obiettivo di sviluppo nuovi clienti",
+      "3-4": "Team vendite con account imprese, account privati e account GDO/rivenditori",
+      "4-5": "Responsabile commerciale con team strutturato per canale e showroom manager autonomi"
+    },
+    "pipeline": {
+      "1-2": "Registro cantieri in zona con impresa esecutrice, tipo lavoro e stima materiali necessari",
+      "2-3": "CRM per tracciare sviluppo cantieri: dalla visita alla prima fornitura al cliente fidelizzato",
+      "3-4": "Forecast mensile su cantieri in corso e nuovi cantieri in attribuzione nella zona",
+      "4-5": "Pipeline con forecast integrato con acquisti e magazzino per ottimizzare le scorte"
+    },
+    "team": {
+      "1-2": "Forma il magazziniere sul catalogo prodotti e sulla consulenza tecnica base ai privati",
+      "2-3": "Addetto vendite showroom gestisce autonomamente clienti privati e piccole imprese",
+      "3-4": "Team showroom + commerciale imprese + customer service in piena autonomia",
+      "4-5": "Struttura con showroom manager, account imprese e responsabile acquisti autonomi"
+    },
+    "processi": {
+      "1-2": "Listino imprese con prezzi riservati, sconti per volume e condizioni di pagamento dedicate",
+      "2-3": "Processo preventivo cantiere: sopralluogo, computo materiali, offerta entro 24h",
+      "3-4": "Script consulenza showroom privati: scoperta progetto, orientamento prodotti, follow-up",
+      "4-5": "Processo end-to-end: preventivo cantiere, fornitura in cantiere, gestione varianti, fidelizzazione"
+    },
+    "ricavi": {
+      "1-2": "Proponi accordo quadro annuale con prezzi bloccati ai 5 costruttori più attivi nella zona",
+      "2-3": "Forecast trimestrale su cantieri in corso e pipeline nuovi cantieri",
+      "3-4": "40% fatturato su accordi quadro con imprese edili e ristrutturatori fidelizzati",
+      "4-5": "Revenue ricorrente > 50% con accordi pluriennali e pianificazione acquisti integrata"
+    },
+    "marketing": {
+      "1-2": "Showroom aggiornato con esposizione materiali di tendenza e informazioni sui bonus fiscali",
+      "2-3": "Newsletter mensile alle imprese con novità prodotti, promozioni e aggiornamenti normativi",
+      "3-4": "Campagna Google Ads locale su '[tipo materiale] [città]' e 'rivenditore edile [città]'",
+      "4-5": "Marketing integrato: Google Ads + newsletter imprese + eventi showroom + fiere edili"
+    },
+    "sitoweb": {
+      "1-2": "Catalogo prodotti online con foto, schede tecniche, certificazioni e disponibilità",
+      "2-3": "Pagina bonus fiscali edilizia con guide pratiche su Superbonus, Ecobonus e Sismabonus",
+      "3-4": "SEO su 'materiali edili [città]' e '[prodotto] [città]' con configuratore prezzi",
+      "4-5": "E-commerce B2B con prezzi imprese riservati, ordini online e gestione resi integrata"
+    },
+    "ecommerce": {
+      "1-2": "Attiva ordini online per i 100 codici più venduti con giacenze magazzino in tempo reale",
+      "2-3": "Shop B2B per imprese con listino riservato, carrello e ordini multipli per cantiere",
+      "3-4": "Portale imprese con ordini per cantiere, fatture, DDT e tracking consegne",
+      "4-5": "Piattaforma B2B con integrazione gestionale imprese, ordini automatici e analytics cantieri"
+    }
+  },
+  "commercio_ricambi_auto": {
+    "vendite": {
+      "1-2": "Visita 10 officine locali con campionario novità e offerta riservata per il primo ordine",
+      "2-3": "Agente dedicato alle officine con portafoglio assegnato e obiettivo ordini settimanali",
+      "3-4": "Team agenti per area con obiettivi di sviluppo nuove officine e sviluppo portafoglio",
+      "4-5": "Responsabile commerciale con rete agenti, inside sales e gestione key account OEM"
+    },
+    "pipeline": {
+      "1-2": "Registro officine clienti con frequenza ordine, valore medio, marche trattate e stato",
+      "2-3": "CRM per tracciare sviluppo officine: dal primo contatto all'ordine ricorrente",
+      "3-4": "Forecast settimanale su ordini programmati e pipeline sviluppo nuove officine",
+      "4-5": "Pipeline con forecast mensile integrato con gestione magazzino e ordini fornitori"
+    },
+    "team": {
+      "1-2": "Forma un addetto magazzino sulla ricerca codici e sulla gestione telefonica degli ordini urgenti",
+      "2-3": "Inside sales gestisce ordini telefonici, ricerca codici e urgenze senza il titolare",
+      "3-4": "Team agenti + inside sales + magazzino che operano in autonomia sul portafoglio",
+      "4-5": "Responsabile commerciale con team strutturato, titolare fuori dalla gestione quotidiana"
+    },
+    "processi": {
+      "1-2": "Processo di ricerca codice e verifica compatibilità documentato per ridurre errori ordine",
+      "2-3": "Script visita officina: review ordini, novità catalogo, promozione del mese, cross-selling",
+      "3-4": "Playbook gestione resi e reclami: procedura sostituzione rapida per mantenere l'officina attiva",
+      "4-5": "Processo completo: visita, ordine, consegna entro 2h, resi, fidelizzazione, upsell"
+    },
+    "ricavi": {
+      "1-2": "Proponi ordine programmato settimanale fisso alle 5 officine con ordini più regolari",
+      "2-3": "Forecast settimanale su ordini programmati per ottimizzare lo stock delle rotazioni veloci",
+      "3-4": "50% fatturato su ordini programmati con officine fidelizzate e contratti di fornitura",
+      "4-5": "Revenue ricorrente > 65% con ordini automatici, stock dedicato per officine key account"
+    },
+    "marketing": {
+      "1-2": "Newsletter settimanale alle officine con promozioni, novità catalogo e schede tecniche",
+      "2-3": "Whatsapp Business per invio promozioni flash, disponibilità prodotti e gestione urgenze",
+      "3-4": "Campagna email segmentata per marca auto trattata dall'officina con prodotti specifici",
+      "4-5": "Marketing strutturato: Whatsapp + email + LinkedIn verso carrozzieri e fleet manager"
+    },
+    "sitoweb": {
+      "1-2": "Catalogo online con ricerca per targa, modello o codice con disponibilità magazzino",
+      "2-3": "Area officine riservata con listino, promozioni e ordini online con consegna 2h",
+      "3-4": "SEO su 'ricambi auto [marca] [città]' e 'ricambi officina [città]'",
+      "4-5": "Portale B2B con integrazione gestionale officine, ordini automatici e analytics acquisti"
+    },
+    "ecommerce": {
+      "1-2": "App o portale ordini per le officine con ricerca targa, disponibilità e ordine in 1 clic",
+      "2-3": "E-commerce B2B con prezzi riservati officine, ordini veloci e consegna tracciata",
+      "3-4": "Portale officine con storico ordini, fatture, resi e programma fedeltà integrato",
+      "4-5": "Piattaforma B2B con integrazione gestionale officina, riordino automatico e analytics"
+    }
+  },
+  "commercio_abbigliamento_ingrosso": {
+    "vendite": {
+      "1-2": "Partecipa a 1 fiera di settore (Pitti Uomo, White, Moda) con campionario stagionale",
+      "2-3": "Agente di rappresentanza per area geografica con showroom o campionario stagionale",
+      "3-4": "Rete agenti nazionale con showroom nelle principali piazze moda (Milano, Firenze, Roma)",
+      "4-5": "Responsabile commerciale con rete agenti nazionale/internazionale e key account manager"
+    },
+    "pipeline": {
+      "1-2": "Excel con rivenditori contattati, tipo negozio, campionario presentato, ordini in attesa",
+      "2-3": "CRM stagionale con gestione campagna SS e AW: buyer visitati, ordini confermati, in attesa",
+      "3-4": "Forecast stagionale per agente con ordini confermati vs potenziale portafoglio",
+      "4-5": "Pipeline con forecast stagionale integrato con programmazione produzione/acquisti fornitore"
+    },
+    "team": {
+      "1-2": "Porta un collaboratore alla prima fiera della stagione per formare la figura di agente interno",
+      "2-3": "Agente interno gestisce autonomamente un'area geografica con il campionario stagionale",
+      "3-4": "Rete agenti con showroom manager che operano in autonomia su campagna e ordini",
+      "4-5": "Struttura con direttore vendite, agenti per area e customer service autonomi"
+    },
+    "processi": {
+      "1-2": "Scheda prodotto stagionale con foto, composizione, taglie, colori disponibili e consegna",
+      "2-3": "Processo campagna stagionale: presentazione campionario, raccolta ordini, conferma, consegna",
+      "3-4": "Playbook gestione buyer: visita showroom, selezione prodotti, negoziazione condizioni, follow-up",
+      "4-5": "Playbook completo stagione: sviluppo prodotto, campionario, agenti, fiere, ordini, consegna"
+    },
+    "ricavi": {
+      "1-2": "Proponi ordine programmato bianco SS+AW ai 5 negozi clienti più fedeli con anticipo",
+      "2-3": "Forecast stagionale affidabile basato su storico ordini per agente e tipologia cliente",
+      "3-4": "45% ordini confermati prima della stagione con anticipi e programmazione fornitore",
+      "4-5": "60% ordini programmati con contratti stagionali e pianificazione acquisti integrata"
+    },
+    "marketing": {
+      "1-2": "Lookbook digitale della collezione stagionale da inviare via email ai buyer",
+      "2-3": "Instagram brand con foto collezione, trend stagionali e contenuti per i buyer",
+      "3-4": "Campagna email segmentata per tipo negozio (boutique, multimarca, catena) per stagione",
+      "4-5": "Presenza strutturata: fiere + showroom + digital + campagna Ads verso buyer professionali"
+    },
+    "sitoweb": {
+      "1-2": "Catalogo stagionale online con foto prodotti, taglie, colori e condizioni di ordine",
+      "2-3": "Area riservata buyer con catalogo stagionale, listini e form ordini",
+      "3-4": "SEO su brand rappresentati con area B2B riservata e portale agenti",
+      "4-5": "Showroom digitale con visualizzatore collezione, ordini B2B online e area agenti riservata"
+    },
+    "ecommerce": {
+      "1-2": "Portale B2B con catalogo stagionale, prezzi buyer e form ordine stagionale",
+      "2-3": "Shop B2B con ordini stagionali, conferme automatiche e tracking spedizioni",
+      "3-4": "Portale agenti con catalogo, portafoglio clienti, ordini e statistiche venduto",
+      "4-5": "Piattaforma B2B con integrazione gestionale buyer, riordino automatico e analytics stagione"
+    }
+  },
+  "commercio_elettronica": {
+    "vendite": {
+      "1-2": "Visita 10 installatori e system integrator locali con demo dei prodotti a più alto margine",
+      "2-3": "Agente tecnico dedicato al canale installatori/system integrator con obiettivi mensili",
+      "3-4": "Team agenti per area con specialist per segmento (automazione, audio/video, sicurezza)",
+      "4-5": "Responsabile commerciale con team agenti e inside sales in piena autonomia"
+    },
+    "pipeline": {
+      "1-2": "CRM base con installatori attivi, marche trattate, frequenza ordine e valore medio",
+      "2-3": "Pipeline sviluppo nuovi installatori: dal primo contatto alla prima fornitura",
+      "3-4": "Forecast mensile su sviluppo nuovi canali e sviluppo portafoglio installatori attivi",
+      "4-5": "Pipeline con forecast integrato con gestione magazzino e ordini fornitori/brand"
+    },
+    "team": {
+      "1-2": "Forma un addetto vendite sulla dimostrazione tecnica dei prodotti chiave del catalogo",
+      "2-3": "Tecnico-venditore gestisce autonomamente demo, preventivi e ordini installatori standard",
+      "3-4": "Team tecnici-venditori per segmento prodotto in piena autonomia su portafoglio",
+      "4-5": "Struttura con product manager, account per canale e inside sales autonomi"
+    },
+    "processi": {
+      "1-2": "Schede tecniche sintetiche per prodotti chiave con argomenti di vendita e applicazioni tipiche",
+      "2-3": "Script di discovery per installatori: tipo di installazioni, volume mensile, marche usate",
+      "3-4": "Playbook obiezioni: prezzo vs concorrenza online, disponibilità, supporto tecnico post-vendita",
+      "4-5": "Processo completo: qualificazione, demo, offerta, ordine, supporto tecnico, fidelizzazione"
+    },
+    "ricavi": {
+      "1-2": "Proponi accordo quadro annuale con sconto volume agli installatori con ordini > X mensili",
+      "2-3": "Forecast mensile su ordini programmati e pipeline sviluppo nuovi installatori",
+      "3-4": "40% fatturato su accordi quadro con installatori fidelizzati e partner certificati",
+      "4-5": "Revenue ricorrente > 55% con partnership strutturate e programma rivenditori certificati"
+    },
+    "marketing": {
+      "1-2": "Newsletter mensile agli installatori con novità prodotti, promozioni e aggiornamenti tecnici",
+      "2-3": "Webinar tecnico mensile su nuovi prodotti e applicazioni per installatori e system integrator",
+      "3-4": "Campagna LinkedIn verso responsabili acquisti e titolari di imprese di installazione",
+      "4-5": "Ecosistema marketing B2B: newsletter + webinar + fiera + LinkedIn + supporto co-marketing brand"
+    },
+    "sitoweb": {
+      "1-2": "Catalogo online con schede tecniche, manuali e accessori compatibili per ogni prodotto",
+      "2-3": "Area tecnica riservata con documentazione, firmware, software e supporto prodotti",
+      "3-4": "SEO su brand distribuiti e categorie prodotto con area rivenditori riservata",
+      "4-5": "Portale B2B con listini riservati, ordini online, documentazione tecnica e ticket support"
+    },
+    "ecommerce": {
+      "1-2": "Shop online per installatori con prezzi riservati e disponibilità magazzino in tempo reale",
+      "2-3": "E-commerce B2B con ordini, pagamenti online e spedizione tracciata entro 24h",
+      "3-4": "Portale rivenditori con listino personalizzato, ordini, fatture e area tecnica",
+      "4-5": "Piattaforma B2B con integrazione gestionale rivenditore, programma fedeltà e analytics"
+    }
+  },
+  "commercio_chimici": {
+    "vendite": {
+      "1-2": "Visita 10 clienti industriali o professionali con campionario prodotti e schede tecniche",
+      "2-3": "Agente tecnico-commerciale con portafoglio per settore applicativo (pulizia, trattamento, ecc.)",
+      "3-4": "Rete agenti per settore con specialist per industria alimentare, farmaceutica, metalmeccanica",
+      "4-5": "Responsabile commerciale con team agenti per settore e key account manager autonomi"
+    },
+    "pipeline": {
+      "1-2": "Registro clienti con prodotti acquistati, frequenza riordino, valore e data ultimo ordine",
+      "2-3": "CRM con segmentazione per settore applicativo e gestione sviluppo nuovi clienti",
+      "3-4": "Forecast mensile su ordini programmati e pipeline sviluppo per settore",
+      "4-5": "Pipeline con forecast integrato con gestione magazzino e approvvigionamento fornitori"
+    },
+    "team": {
+      "1-2": "Forma un tecnico sulla presentazione applicativa dei prodotti e sulla gestione schede sicurezza",
+      "2-3": "Tecnico-commerciale gestisce autonomamente clienti esistenti e richieste di campioni",
+      "3-4": "Team con agenti tecnici per settore e inside sales per ordini ricorrenti in autonomia",
+      "4-5": "Struttura con responsabile commerciale, agenti per settore e responsabile tecnico autonomi"
+    },
+    "processi": {
+      "1-2": "Schede tecniche e di sicurezza (SDS) aggiornate e accessibili per tutti i prodotti a catalogo",
+      "2-3": "Processo campionatura: richiesta, preparazione, invio, follow-up e conversione a ordine",
+      "3-4": "Playbook per settore applicativo: argomenti tecnici, normative specifiche, alternative prodotto",
+      "4-5": "Processo completo dalla campionatura all'ordine ricorrente con gestione normativa integrata"
+    },
+    "ricavi": {
+      "1-2": "Proponi accordo di fornitura mensile con prezzo bloccato ai 5 clienti con consumi stabili",
+      "2-3": "Forecast mensile su ordini programmati per ottimizzare magazzino e ridurre rotture stock",
+      "3-4": "45% fatturato su contratti di fornitura periodica con clienti industriali fidelizzati",
+      "4-5": "Revenue ricorrente > 60% con contratti annuali e forecast integrato con acquisti"
+    },
+    "marketing": {
+      "1-2": "Newsletter tecnica mensile con aggiornamenti normativi, schede prodotto e applicazioni",
+      "2-3": "Webinar tecnico su applicazioni specifiche per i settori target (food, farmaceutica, ecc.)",
+      "3-4": "Campagna LinkedIn verso responsabili acquisti e responsabili qualità delle industrie target",
+      "4-5": "Marketing B2B strutturato: newsletter tecnica + webinar + LinkedIn + fiere di settore"
+    },
+    "sitoweb": {
+      "1-2": "Catalogo online con schede tecniche, SDS e certificazioni scaricabili per ogni prodotto",
+      "2-3": "Area tecnica con guide applicative per settore e normative di riferimento aggiornate",
+      "3-4": "SEO su 'prodotti chimici [applicazione] [settore]' con area riservata clienti",
+      "4-5": "Portale B2B con catalogo tecnico completo, ordini online e gestione documentazione normativa"
+    },
+    "ecommerce": {
+      "1-2": "Shop online con gestione ADR/REACH integrata per ordini diretti dai clienti industriali",
+      "2-3": "E-commerce B2B con prezzi riservati, documentazione normativa scaricabile e ordini",
+      "3-4": "Portale clienti con ordini ricorrenti automatici, SDS aggiornate e storico acquisti",
+      "4-5": "Piattaforma B2B con integrazione gestionale, ordini automatici e compliance normativa"
+    }
+  },
+  "commercio_medicale": {
+    "vendite": {
+      "1-2": "Visita 5 cliniche o studi medici con dimostrazione dispositivo e documentazione CE",
+      "2-3": "Agente medicale con portafoglio specialisti e strutture sanitarie per area geografica",
+      "3-4": "Team agenti per specialità (ortopedia, cardiologia, diagnostica) con obiettivi mensili",
+      "4-5": "Responsabile commerciale con team agenti specializzati e gestione gare SSN autonoma"
+    },
+    "pipeline": {
+      "1-2": "Registro strutture contattate con referente medico, dispositivo proposto, stato approvazione",
+      "2-3": "CRM con gestione ciclo vendita medicale: contatto medico → dimostrazione → approvazione → ordine",
+      "3-4": "Forecast trimestrale su gare SSN in corso, trattative cliniche private e rinnovi contratti",
+      "4-5": "Pipeline con forecast su gare pubbliche, privato e rinnovi con probabilità per fase"
+    },
+    "team": {
+      "1-2": "Forma un tecnico sul funzionamento e sulla normativa MDR dei dispositivi principali",
+      "2-3": "Agente medicale gestisce autonomamente il ciclo demo-approvazione-ordine per il suo portafoglio",
+      "3-4": "Team agenti specializzati per area terapeutica con supporto tecnico e accesso a gare",
+      "4-5": "Struttura autonoma con responsabile commerciale, agenti per specialità e ufficio gare"
+    },
+    "processi": {
+      "1-2": "Dossier tecnico-commerciale con marcatura CE, IFU, studi clinici e referenze per dispositivo",
+      "2-3": "Processo dimostrazione dispositivo: preparazione, esecuzione, follow-up medico, approvazione",
+      "3-4": "Playbook gare SSN: documentazione richiesta, tempi, criteri, gestione offerta tecnica/economica",
+      "4-5": "Processo end-to-end: qualificazione, demo, approvazione, contratto, installazione, formazione"
+    },
+    "ricavi": {
+      "1-2": "Proponi contratto di fornitura annuale con consegna programmata alle strutture con consumi stabili",
+      "2-3": "Forecast trimestrale su contratti attivi, gare in corso e pipeline sviluppo nuove strutture",
+      "3-4": "50% fatturato su contratti pluriennali con strutture private e SSN",
+      "4-5": "Revenue ricorrente > 60% con contratti pluriennali e pipeline gare SSN strutturata"
+    },
+    "marketing": {
+      "1-2": "Partecipa a congresso medico specialistico con stand e materiale tecnico aggiornato",
+      "2-3": "Webinar ECM mensile su temi clinici con focus sui dispositivi distribuiti",
+      "3-4": "Campagna LinkedIn verso medici specialisti e responsabili acquisti strutture sanitarie",
+      "4-5": "Marketing medicale strutturato: congressi + webinar ECM + LinkedIn + key opinion leader"
+    },
+    "sitoweb": {
+      "1-2": "Pagina prodotti con documentazione tecnica, certificazioni CE e studi clinici scaricabili",
+      "2-3": "Area specialisti riservata con materiale scientifico, presentazioni e aggiornamenti normativi",
+      "3-4": "SEO su dispositivi specifici con area riservata professionisti e form richiesta demo",
+      "4-5": "Portale professionisti con catalogo, documentazione, training online e richiesta dimostrazione"
+    },
+    "ecommerce": {
+      "1-2": "Portale ordini riservato alle strutture accreditate con listino e documentazione normativa",
+      "2-3": "Shop B2B per materiale di consumo con ordini ricorrenti e tracciabilità lotto",
+      "3-4": "Piattaforma clienti con ordini, DDT, fatture e documentazione post-market surveillance",
+      "4-5": "Sistema integrato con gestionale struttura sanitaria per ordini automatici e compliance MDR"
+    }
+  },
+  "commercio_auto_moto": {
+    "vendite": {
+      "1-2": "Forma un collaboratore sulla gestione dei contatti in ingresso e sulla presentazione del veicolo",
+      "2-3": "Venditore interno con portafoglio clienti assegnato e obiettivo mensile di consegne",
+      "3-4": "Team venditori con specializzazione (nuovo, usato, flotte, moto) con obiettivi individuali",
+      "4-5": "Sales manager con team venditori e fleet manager in completa autonomia"
+    },
+    "pipeline": {
+      "1-2": "CRM base per tracciare ogni lead: fonte, modello d'interesse, test drive, offerta, stato",
+      "2-3": "Pipeline con gestione test drive, offerta e follow-up sistematico entro 48h",
+      "3-4": "Forecast mensile su consegne programmate e offerte in attesa con probabilità",
+      "4-5": "Pipeline con forecast mensile affidabile e gestione scadenziario consegne integrata"
+    },
+    "team": {
+      "1-2": "Forma il collaboratore su accoglienza cliente, presentazione veicolo e gestione test drive",
+      "2-3": "Venditore gestisce autonomamente tutto il ciclo dal lead alla firma del contratto",
+      "3-4": "Team venditori + fleet manager + customer service post-vendita in autonomia",
+      "4-5": "Sales manager autonomo con team strutturato, titolare fuori dalla vendita operativa"
+    },
+    "processi": {
+      "1-2": "Script di accoglienza e presentazione veicolo standardizzato per tutti i collaboratori",
+      "2-3": "Processo follow-up lead: contatto entro 2h, offerta entro 24h, follow-up a 3-7 giorni",
+      "3-4": "Playbook obiezioni: prezzo vs concorrenza, tempi consegna, finanziamento, valore usato",
+      "4-5": "Playbook completo: accoglienza, discovery, test drive, offerta, negoziazione, contratto, consegna"
+    },
+    "ricavi": {
+      "1-2": "Attiva contratti di manutenzione programmata per i clienti con veicolo comprato negli ultimi 2 anni",
+      "2-3": "Forecast mensile su ordini confermati e consegne programmate con stima accessori",
+      "3-4": "30% fatturato su servizi post-vendita (manutenzione, assicurazioni, finanziamenti)",
+      "4-5": "Revenue da servizi > 40%: manutenzione + finanziamento + assicurazione + usato strutturato"
+    },
+    "marketing": {
+      "1-2": "Profilo Google Business ottimizzato con foto showroom, veicoli in pronta consegna e recensioni",
+      "2-3": "Campagna Google Ads su '[marca] concessionaria [città]' e 'auto usate [città]'",
+      "3-4": "Campagna Meta Ads con carousel veicoli in pronta consegna e offerte finanziamento",
+      "4-5": "Marketing strutturato: Google Ads + Meta + email database clienti + remarketing"
+    },
+    "sitoweb": {
+      "1-2": "Stock online aggiornato con foto veicoli, prezzi, allestimenti e form prenotazione test drive",
+      "2-3": "Configuratore veicolo online con calcolo rata finanziamento in tempo reale",
+      "3-4": "SEO su '[marca] [città]' con landing page per modelli principali e pronta consegna",
+      "4-5": "Sito con configuratore avanzato, valutazione usato online e prenotazione test drive automatica"
+    },
+    "ecommerce": {
+      "1-2": "Piattaforma di valutazione usato online con offerta indicativa in 24h",
+      "2-3": "Prenotazione test drive e configuratore rata online senza passare dallo showroom",
+      "3-4": "Processo di acquisto ibrido: scelta online + firma digitale + consegna a domicilio",
+      "4-5": "Customer journey digitale completo: configurazione, finanziamento, firma e consegna online"
+    }
+  },
+  "commercio_abbigliamento_dettaglio": {
+    "vendite": {
+      "1-2": "Forma un addetto vendite sulle tecniche di cross-selling (abbina capo + accessorio + scarpa)",
+      "2-3": "Addetto vendite con obiettivo di scontrino medio e conversion rate settimanale",
+      "3-4": "Team venditori con store manager che gestisce obiettivi, formazione e visual merchandising",
+      "4-5": "Store manager autonomo con team formato, titolare fuori dalla gestione operativa quotidiana"
+    },
+    "pipeline": {
+      "1-2": "Traccia scontrino medio, pezzi per scontrino e conversion rate giornaliero",
+      "2-3": "CRM clienti fidelity con storico acquisti, preferenze e date di contatto per campagne",
+      "3-4": "Forecast stagionale su sell-through per categoria con riordini programmati",
+      "4-5": "Pipeline di sviluppo clienti VIP con forecast stagionale e gestione resi integrata"
+    },
+    "team": {
+      "1-2": "Sessione formativa settimanale sulle novità di collezione e tecniche di presentazione",
+      "2-3": "Store manager gestisce autonomamente turni, formazione e obiettivi giornalieri",
+      "3-4": "Team autonomo su vendita, visual merchandising e gestione clienti fidelity",
+      "4-5": "Store manager con delega completa su team, acquisti stagionali base e gestione magazzino"
+    },
+    "processi": {
+      "1-2": "Script di accoglienza e approccio al cliente che entra: saluto, domanda aperta, accompagnamento",
+      "2-3": "Processo fidelity: iscrizione in negozio, storico acquisti, contatto per novità e promozioni",
+      "3-4": "Playbook gestione lamentele: reso facile, soluzione rapida, recupero cliente insoddisfatto",
+      "4-5": "Manuale operativo completo: apertura, vendita, visual, cassa, chiusura, reportistica"
+    },
+    "ricavi": {
+      "1-2": "Attiva programma fedeltà con punti e premio soglia per incentivare il ritorno del cliente",
+      "2-3": "Forecast stagionale su sell-through per categoria e pianificazione riordini",
+      "3-4": "30% fatturato da clienti fidelity con acquisto medio > X e frequenza > 3 volte anno",
+      "4-5": "Revenue ricorrente > 45% da clienti VIP con servizi personalizzati e acquisti programmati"
+    },
+    "marketing": {
+      "1-2": "Instagram con foto outfit completi giornalieri e stories di nuovi arrivi in negozio",
+      "2-3": "WhatsApp Business per comunicare nuovi arrivi, promozioni e appuntamenti a clienti fidelity",
+      "3-4": "Campagna Meta Ads locale su nuovi arrivi stagionali e promozioni periodiche",
+      "4-5": "Marketing integrato: Meta Ads + Instagram + email clienti + influencer locali + eventi"
+    },
+    "sitoweb": {
+      "1-2": "Profilo Google Business con foto negozio, orari, posizione e risposta alle recensioni",
+      "2-3": "Sito con galleria collezione corrente, info negozio, link Instagram e form contatto",
+      "3-4": "SEO locale su 'abbigliamento [città]' con blog tendenze stagionali e outfit guide",
+      "4-5": "Sito con e-commerce, wishlist, prenotazione articolo e ritiro in negozio"
+    },
+    "ecommerce": {
+      "1-2": "Profilo Instagram Shopping con tag prodotti sulle foto e link diretto all'acquisto",
+      "2-3": "E-commerce base con 50-100 articoli stagionali fotografati su modella/manichino",
+      "3-4": "Shop online completo con collezione aggiornata, taglia guide e reso gratuito",
+      "4-5": "Omnichannel: e-commerce + Instagram + click&collect + CRM unificato online/offline"
+    }
+  },
+  "commercio_orologi_gioielli": {
+    "vendite": {
+      "1-2": "Forma un gemmologa o orologiaio senior sulla consulenza di vendita e l'upselling",
+      "2-3": "Consulente di vendita dedicato ai clienti alta fascia con approccio su appuntamento",
+      "3-4": "Team con specialisti per categoria (orologi, gioielli, argenti) con obiettivi stagionali",
+      "4-5": "Store manager con team formato, gestione clienti VIP e sviluppo relazioni autonomi"
+    },
+    "pipeline": {
+      "1-2": "Registro clienti importanti con storico acquisti, preferenze, compleanni e anniversari",
+      "2-3": "CRM clienti con alert automatici per occasioni speciali e comunicazioni personalizzate",
+      "3-4": "Forecast stagionale su eventi (Natale, San Valentino, Festa della Mamma) e clienti VIP",
+      "4-5": "Pipeline clienti VIP con forecast annuale e gestione proattiva delle occasioni di acquisto"
+    },
+    "team": {
+      "1-2": "Formazione mensile su nuove collezioni, certificazioni gemme e tecniche di vendita consulenziale",
+      "2-3": "Consulente senior gestisce autonomamente clienti alta fascia e personalizzazioni",
+      "3-4": "Team con specialista orologi, specialista gioielli e responsabile clienti VIP autonomi",
+      "4-5": "Store manager con delega completa su team, acquisti collezioni e gestione depositi conto"
+    },
+    "processi": {
+      "1-2": "Script di accoglienza per il fine-gioielleria: benvenuto, offerta champagne/acqua, ascolto attivo",
+      "2-3": "Processo personalizzazione: dal brief cliente al preventivo gioiello custom con tempi certi",
+      "3-4": "Playbook clienti VIP: contatto proattivo per occasioni, inviti eventi privati, first look collezioni",
+      "4-5": "Manuale relazione cliente VIP: storia, preferenze, budget, occasioni, comunicazione dedicata"
+    },
+    "ricavi": {
+      "1-2": "Contatta i 20 clienti con acquisto > X negli ultimi 2 anni per presentare la nuova collezione",
+      "2-3": "Forecast stagionale su Natale, San Valentino, Pasqua con preparazione stock dedicato",
+      "3-4": "35% fatturato da clienti VIP con acquisti ricorrenti e servizi personalizzati",
+      "4-5": "Revenue ricorrente > 50% da clienti VIP fidelizzati con programma di relazione strutturato"
+    },
+    "marketing": {
+      "1-2": "Instagram con foto prodotto professionale e storytelling sul brand/artigianato per ogni pezzo",
+      "2-3": "Evento privato annuale per clienti VIP con preview nuove collezioni e aperitivo in boutique",
+      "3-4": "Campagna Meta Ads su target alto-spendenti locale per eventi stagionali (Natale, S. Valentino)",
+      "4-5": "Marketing esclusivo: eventi VIP + Meta Ads high-end + collaborazioni brand + PR locali"
+    },
+    "sitoweb": {
+      "1-2": "Galleria collezioni con foto professionali su sfondo neutro e descrizione materiali/pietre",
+      "2-3": "Pagina brand rappresentati con storytelling e link a collezioni esclusive",
+      "3-4": "SEO su 'gioielleria [città]' e 'orologi [marca] [città]' con blog gioielleria",
+      "4-5": "Sito luxury con configuratore gioiello personalizzato, prenotazione consultazione e area VIP"
+    },
+    "ecommerce": {
+      "1-2": "Wishlist digitale per i clienti: salvano i pezzi preferiti e tu li contatti per occasioni speciali",
+      "2-3": "Shop online con selezione di gioielli entry-level fotografati professionalmente",
+      "3-4": "E-commerce con certificazione digitale, assicurazione integrata e consegna sicura",
+      "4-5": "Piattaforma luxury con configuratore, appuntamento video con consulente e acquisto online"
+    }
+  },
+  "alimentare_trasformazione": {
+    "vendite": {
+      "1-2": "Visita 5 GDO locali o ristoranti top con campionatura prodotti e scheda tecnica",
+      "2-3": "Agente alimentare con portafoglio HO.RE.CA. + retail per area geografica",
+      "3-4": "Rete agenti per canale (GDO, HO.RE.CA., export) con obiettivi distinti",
+      "4-5": "Direttore commerciale con team agenti per canale e key account GDO in autonomia"
+    },
+    "pipeline": {
+      "1-2": "Registro clienti con canale, prodotti listati, rotazione stimata e data ultimo contatto",
+      "2-3": "CRM per tracciare listing GDO e sviluppo nuovi clienti HO.RE.CA. con tempi per fase",
+      "3-4": "Forecast mensile su ordini programmati per canale con gestione stagionalità",
+      "4-5": "Pipeline integrata con produzione: venduto programmato = produzione pianificata"
+    },
+    "team": {
+      "1-2": "Forma il responsabile produzione sulla presentazione del prodotto e degli argomenti di vendita",
+      "2-3": "Agente interno gestisce autonomamente un'area geografica con campionario e listino",
+      "3-4": "Team commerciale per canale con supporto marketing e gestione autonoma trattative",
+      "4-5": "Struttura con direttore commerciale, agenti per canale e category manager GDO autonomi"
+    },
+    "processi": {
+      "1-2": "Scheda prodotto con ingredienti, valori nutrizionali, shelf life, formato e prezzo per canale",
+      "2-3": "Processo campionatura: preparazione, invio, follow-up buyer e gestione listing GDO",
+      "3-4": "Playbook negoziazione GDO: condizioni, display, promozioni, listing fee, rese",
+      "4-5": "Processo end-to-end: campionatura, listing, supply chain, promozioni, category management"
+    },
+    "ricavi": {
+      "1-2": "Proponi ordine programmato mensile fisso alle 5 strutture HO.RE.CA. con consumi stabili",
+      "2-3": "Forecast mensile su ordini programmati per ottimizzare produzione e ridurre sprechi",
+      "3-4": "50% fatturato su ordini programmati con GDO e HO.RE.CA. fidelizzati",
+      "4-5": "Revenue ricorrente > 60% con contratti pluriennali GDO e forecast integrato con produzione"
+    },
+    "marketing": {
+      "1-2": "Partecipa a Cibus, SIAL o fiera alimentare locale con campionatura e materiale commerciale",
+      "2-3": "Newsletter mensile con ricette, stagionalità prodotti e promozioni per i clienti HO.RE.CA.",
+      "3-4": "Campagna LinkedIn verso buyer GDO e category manager con case study e dati rotazione",
+      "4-5": "Marketing strutturato: fiere + LinkedIn buyer + consumer (se B2C) + export promotion"
+    },
+    "sitoweb": {
+      "1-2": "Catalogo prodotti con foto professionali, schede tecniche e certificazioni (BIO, DOP, IGP)",
+      "2-3": "Pagina ricette con utilizzi professionali e suggerimenti abbinamento per chef e buyer",
+      "3-4": "SEO su prodotto + certificazione + area geografica con area riservata buyer",
+      "4-5": "Portale B2B con catalogo tecnico, listini per canale e form ordini campionatura"
+    },
+    "ecommerce": {
+      "1-2": "Shop online direct-to-consumer per test mercato e vendite a margine pieno",
+      "2-3": "Portale ordini B2B per clienti HO.RE.CA. con listino riservato e ordini ricorrenti",
+      "3-4": "E-commerce B2C strutturato con abbonamento box mensile e spedizione tutta Italia",
+      "4-5": "Doppio canale: B2B portale clienti + B2C e-commerce con analytics integrati"
+    }
+  },
+  "alimentare_vini": {
+    "vendite": {
+      "1-2": "Contatta 5 enoteche e 5 ristoranti stellati o gourmet della zona con campionatura",
+      "2-3": "Agente con portafoglio HO.RE.CA. fine dining + enoteche per area geografica",
+      "3-4": "Rete agenti per canale (HO.RE.CA., enoteche, GDO, export) con sommelier come sales tool",
+      "4-5": "Export manager + agenti per mercato con presenza strutturata nei mercati target"
+    },
+    "pipeline": {
+      "1-2": "Registro clienti con referente sommelier/titolare, vini listati, rotazione e data degustazione",
+      "2-3": "CRM con gestione degustazioni: data, partecipanti, vini presentati, follow-up ordini",
+      "3-4": "Forecast per vendemmia basato su allocazioni, prevendite e pipeline HO.RE.CA. attiva",
+      "4-5": "Pipeline con prevendita vendemmia, allocazioni export e forecast su ordini ricorrenti"
+    },
+    "team": {
+      "1-2": "Porta il cantiniere a 2 degustazioni professionali al mese per supporto tecnico",
+      "2-3": "Agente o export assistant gestisce autonomamente degustazioni e follow-up ordini",
+      "3-4": "Team con agenti per mercato, sommelier aziendale e export manager autonomi",
+      "4-5": "Struttura con direttore commerciale, agenti per mercato e team hospitality in autonomia"
+    },
+    "processi": {
+      "1-2": "Scheda tecnica per ogni vino con note organolettiche, abbinamenti e condizioni di conservazione",
+      "2-3": "Processo degustazione professionale: preparazione, conduzione, follow-up ordini entro 48h",
+      "3-4": "Playbook enoteche: presentazione cantina, posizionamento su carta vini, gestione allocazioni",
+      "4-5": "Processo end-to-end: contatto, degustazione, allocazione, vendemmia, consegna, fidelizzazione"
+    },
+    "ricavi": {
+      "1-2": "Proponi en primeur o preordine vendemmia agli importatori e clienti HO.RE.CA. principali",
+      "2-3": "Forecast per vendemmia su preordini confermati e pipeline degustazioni in corso",
+      "3-4": "40% fatturato su allocazioni pluriennali con importatori e ristoranti fine dining",
+      "4-5": "Revenue ricorrente > 55% con contratti di allocazione pluriennali e wine club strutturato"
+    },
+    "marketing": {
+      "1-2": "Partecipa a Vinitaly o ProWein con stand professionale e degustazione guidata",
+      "2-3": "Wine tasting privato in cantina per importatori e buyer selezionati con esperienza esclusiva",
+      "3-4": "Campagna email e LinkedIn verso buyer HO.RE.CA., importatori e wine shop internazionali",
+      "4-5": "Presenza strutturata: fiere internazionali + wine tour cantina + digital storytelling vendemmia"
+    },
+    "sitoweb": {
+      "1-2": "Sito con storia cantina, foto vigneti, schede vini con note di degustazione e premi",
+      "2-3": "Blog vendemmia con aggiornamenti stagionali e storytelling winemaker per coinvolgere buyer",
+      "3-4": "SEO su 'cantina [zona DOC]' con area importatori riservata e form preordine vendemmia",
+      "4-5": "Sito con e-commerce B2C, area importatori, wine club e prenotazione visite in cantina"
+    },
+    "ecommerce": {
+      "1-2": "Shop online diretto per vendite D2C con spedizione tutta Italia e box degustazione",
+      "2-3": "Wine club con abbonamento mensile a selezione curata e spedizione automatica",
+      "3-4": "Portale importatori con listini per paese, allocazioni e ordini online tracciati",
+      "4-5": "Piattaforma omnichannel: D2C + importatori + wine club + prenotazione esperienze cantina"
+    }
+  },
+  "alimentare_forno": {
+    "vendite": {
+      "1-2": "Visita 10 bar e caffetterie locali con campionatura dei prodotti da forno di punta",
+      "2-3": "Agente con portafoglio bar/caffetterie/HO.RE.CA. per area con consegna mattutina",
+      "3-4": "Rete agenti per area con sviluppo canale GDO locale e negozi specializzati",
+      "4-5": "Responsabile commerciale con agenti per canale e key account manager GDO autonomi"
+    },
+    "pipeline": {
+      "1-2": "Registro clienti con prodotti forniti, frequenza consegna, valore settimanale e stato",
+      "2-3": "CRM con gestione clienti bar/HO.RE.CA.: frequenza, prodotti, sviluppo assortimento",
+      "3-4": "Forecast settimanale su ordini programmati per ottimizzare produzione e ridurre scarti",
+      "4-5": "Pipeline integrata con produzione: ordini confermati = programmazione forno notturno"
+    },
+    "team": {
+      "1-2": "Forma un autista-consegnatario sulla presentazione dei nuovi prodotti durante le consegne",
+      "2-3": "Autista-venditore gestisce autonomamente lo sviluppo assortimento durante le consegne",
+      "3-4": "Team con agenti sviluppo + autisti-consegnatari che gestiscono il portafoglio in autonomia",
+      "4-5": "Responsabile commerciale con team strutturato, titolare fuori dalla gestione clienti"
+    },
+    "processi": {
+      "1-2": "Scheda prodotto con ingredienti, shelf life, condizioni di conservazione e presentazione",
+      "2-3": "Processo campionatura bar: consegna campioni mattutina, follow-up pomeriggio, ordine entro 24h",
+      "3-4": "Script sviluppo assortimento: proposta stagionale, prodotto del mese, cross-selling pasticceria",
+      "4-5": "Processo end-to-end: acquisizione, sviluppo assortimento, ordine programmato, fidelizzazione"
+    },
+    "ricavi": {
+      "1-2": "Proponi ordine programmato giornaliero fisso ai 10 bar con consumi più regolari",
+      "2-3": "Forecast settimanale su ordini programmati per ottimizzare la produzione quotidiana",
+      "3-4": "60% fatturato su ordini programmati giornalieri con clienti HO.RE.CA. fidelizzati",
+      "4-5": "Revenue ricorrente > 75% con ordini automatici e programmazione produzione integrata"
+    },
+    "marketing": {
+      "1-2": "Instagram con foto prodotti freschi del giorno e storytelling sul processo artigianale",
+      "2-3": "Partecipa a fiera locale dell'agroalimentare o mercato contadino con degustazione",
+      "3-4": "Campagna Google Ads locale su 'pasticceria artigianale [città]' e 'forno [città]'",
+      "4-5": "Marketing strutturato: Google Ads + Instagram + newsletter HO.RE.CA. + eventi locali"
+    },
+    "sitoweb": {
+      "1-2": "Sito con catalogo prodotti stagionali, foto artigianali e info sulla consegna ai locali",
+      "2-3": "Blog con ricette, stagionalità e storytelling sulle materie prime utilizzate",
+      "3-4": "SEO su 'forno artigianale [città]' e 'pasticceria consegna bar [città]'",
+      "4-5": "Sito con e-commerce D2C, portale ordini HO.RE.CA. e prenotazione torte personalizzate"
+    },
+    "ecommerce": {
+      "1-2": "App o portale ordini mattutini per i clienti bar con cut-off sera precedente",
+      "2-3": "Shop online con spedizione prodotti secchi e confezionati tutta Italia",
+      "3-4": "Portale HO.RE.CA. con ordini programmati, variazioni e consegna tracciata",
+      "4-5": "Piattaforma ordini integrata con produzione: ordini confermati = programmazione automatica"
+    }
+  },
+  "alimentare_conserve": {
+    "vendite": {
+      "1-2": "Partecipa a fiera alimentare locale (Cibus, SIAL, TuttoFood) con campionatura e listino",
+      "2-3": "Agente alimentare con portafoglio GDO + HO.RE.CA. + negozi specializzati per area",
+      "3-4": "Rete agenti per canale con key account GDO e sviluppo export nei mercati vicini",
+      "4-5": "Direttore commerciale con agenti per canale e export manager in piena autonomia"
+    },
+    "pipeline": {
+      "1-2": "Registro GDO contattate con buyer, prodotti presentati, stato listing e data follow-up",
+      "2-3": "CRM con gestione listing GDO: dalla presentazione all'approvazione buyer al primo ordine",
+      "3-4": "Forecast mensile su ordini GDO, HO.RE.CA. e export con gestione stagionalità",
+      "4-5": "Pipeline integrata con produzione: forecast venduto = programmazione campagna"
+    },
+    "team": {
+      "1-2": "Forma il responsabile produzione sugli argomenti di vendita per le riunioni con i buyer",
+      "2-3": "Agente o export assistant gestisce autonomamente sviluppo nuovi clienti e campionature",
+      "3-4": "Team agenti per canale con supporto tecnico e gestione autonoma trattative GDO",
+      "4-5": "Struttura con direttore commerciale, agenti per canale e responsabile export autonomi"
+    },
+    "processi": {
+      "1-2": "Scheda prodotto con ingredienti, valori nutrizionali, shelf life, formati disponibili per canale",
+      "2-3": "Processo listing GDO: preparazione dossier buyer, presentazione, test qualità, negoziazione",
+      "3-4": "Playbook negoziazione GDO: prezzo, condizioni, promozioni, listing fee, penali e rese",
+      "4-5": "Processo completo dalla campionatura alla gestione category con buyer GDO"
+    },
+    "ricavi": {
+      "1-2": "Proponi accordo di fornitura annuale con volumi minimi ai 3 buyer GDO principali",
+      "2-3": "Forecast mensile su ordini programmati GDO per ottimizzare programmazione campagna",
+      "3-4": "55% fatturato su contratti GDO annuali con promozioni pianificate",
+      "4-5": "Revenue ricorrente > 65% con contratti pluriennali GDO e forecast integrato produzione"
+    },
+    "marketing": {
+      "1-2": "Partecipa a TuttoFood, Cibus o SIAL Paris con stand e degustazione prodotti",
+      "2-3": "Newsletter ricette mensile per i clienti HO.RE.CA. con utilizzi professionali",
+      "3-4": "Campagna LinkedIn verso buyer GDO e importatori con dati sell-out e case study",
+      "4-5": "Marketing strutturato: fiere + LinkedIn buyer + consumer (se B2C) + export promotion ICE"
+    },
+    "sitoweb": {
+      "1-2": "Catalogo online con foto prodotti, schede tecniche, certificazioni e formati disponibili",
+      "2-3": "Pagina ricette con utilizzi in cucina professionale per HO.RE.CA.",
+      "3-4": "Area riservata buyer con listini per canale, dati sell-out e materiale promozionale",
+      "4-5": "Portale B2B completo con catalogo tecnico, ordini online e reportistica sell-out"
+    },
+    "ecommerce": {
+      "1-2": "Shop online D2C per vendite dirette al consumatore e test di nuovi formati",
+      "2-3": "Portale ordini HO.RE.CA. con listino riservato e ordini ricorrenti",
+      "3-4": "E-commerce strutturato B2C + portale B2B con analytics separati per canale",
+      "4-5": "Piattaforma omnichannel con GDO integrata, HO.RE.CA. portal e D2C e-commerce"
+    }
+  },
+  "alimentare_ingredienti": {
+    "vendite": {
+      "1-2": "Contatta 5 laboratori artigianali (gelaterie, panifici, pasticcerie) con campionatura ingredienti",
+      "2-3": "Agente tecnico-commerciale con portafoglio artigiani + industria alimentare per area",
+      "3-4": "Team agenti per segmento (artigiani, industria, HO.RE.CA.) con supporto applicativo",
+      "4-5": "Responsabile commerciale con team tecnico-vendita e key account industria autonomi"
+    },
+    "pipeline": {
+      "1-2": "Registro clienti con ingredienti forniti, quantità mensile, applicazione e data riordino",
+      "2-3": "CRM con gestione sviluppo: campionatura → approvazione tecnica → primo ordine → ricorrente",
+      "3-4": "Forecast mensile su ordini programmati e pipeline sviluppo nuove applicazioni",
+      "4-5": "Pipeline integrata con gestione magazzino: forecast = programmazione approvvigionamento"
+    },
+    "team": {
+      "1-2": "Forma il tecnico di laboratorio sulla presentazione degli ingredienti e le applicazioni",
+      "2-3": "Tecnico-commerciale gestisce autonomamente campionature e sviluppo nuovi clienti",
+      "3-4": "Team agenti + tecnici applicativi che seguono sviluppo e fidelizzazione in autonomia",
+      "4-5": "Struttura con responsabile commerciale, agenti per segmento e laboratorio applicativo"
+    },
+    "processi": {
+      "1-2": "Scheda ingrediente con caratteristiche tecniche, applicazioni consigliate, dosaggi e shelf life",
+      "2-3": "Processo campionatura tecnica: preparazione demo applicativa, invio, follow-up, ottimizzazione",
+      "3-4": "Playbook sviluppo applicazione: discovery bisogno tecnico, proposta, test, validazione, ordine",
+      "4-5": "Processo completo: sviluppo applicazione, approvazione, ordine ricorrente, sviluppo nuove linee"
+    },
+    "ricavi": {
+      "1-2": "Proponi accordo di fornitura mensile con prezzo bloccato ai 5 clienti con consumi costanti",
+      "2-3": "Forecast mensile su ordini programmati per ottimizzare approvvigionamento ingredienti",
+      "3-4": "50% fatturato su contratti di fornitura periodica con industria e artigiani fidelizzati",
+      "4-5": "Revenue ricorrente > 65% con contratti annuali e forecast integrato con produzione"
+    },
+    "marketing": {
+      "1-2": "Partecipa a Sigep, Cibus Tec o fiera di settore con demo applicative in loco",
+      "2-3": "Webinar tecnico mensile su nuove applicazioni ingredienti per pasticceri e gelatieri",
+      "3-4": "Newsletter tecnica bimestrale con ricette professionali, trend e aggiornamenti normativi",
+      "4-5": "Marketing strutturato: fiere + webinar tecnici + newsletter + LinkedIn verso tecnologi alimentari"
+    },
+    "sitoweb": {
+      "1-2": "Catalogo ingredienti con schede tecniche, applicazioni, dosaggi e allergenici",
+      "2-3": "Ricettario professionale con applicazioni per segmento (gelateria, pasticceria, panificazione)",
+      "3-4": "Area tecnica riservata con formulazioni, test di laboratorio e supporto applicativo",
+      "4-5": "Portale tecnico con configuratore applicazione, supporto R&D e ordini B2B integrati"
+    },
+    "ecommerce": {
+      "1-2": "Shop online per artigiani con ordini minimi accessibili e consegna 48h",
+      "2-3": "Portale B2B con listini per segmento, campioni online ordinabili e schede tecniche",
+      "3-4": "E-commerce B2B con ordini ricorrenti, gestione certificazioni e documentazione tecnica",
+      "4-5": "Piattaforma B2B con integrazione gestionale cliente e ordini automatici basati su consumi"
+    }
+  },
+  "tech_saas": {
+    "vendite": {
+      "1-2": "Attiva un processo di outbound su LinkedIn: 20 messaggi personalizzati a settimana ai decision maker",
+      "2-3": "SDR dedicato alla qualificazione inbound e outbound con 10 SQL qualificate a settimana",
+      "3-4": "Team con SDR, AE e CS: SDR qualifica, AE chiude, CS onboarda e fa upsell",
+      "4-5": "Revenue team strutturato con head of sales, SDR, AE, CSM in completa autonomia"
+    },
+    "pipeline": {
+      "1-2": "CRM con tracciamento del funnel: visitatore → trial → demo → proposta → cliente",
+      "2-3": "Pipeline con stage definiti, probabilità per stage e follow-up automatici per trial inattivi",
+      "3-4": "Forecast mensile su MRR con probabilità per stage e analisi conversion rate per fonte lead",
+      "4-5": "RevOps strutturato: pipeline, forecast MRR, churn prediction e upsell forecasting integrati"
+    },
+    "team": {
+      "1-2": "Forma un collaboratore sulle demo del prodotto e sulla gestione delle obiezioni base",
+      "2-3": "AE gestisce autonomamente demo, proposta e negoziazione per deal sotto soglia",
+      "3-4": "Team SDR + AE + CSM con manager che gestisce obiettivi e coaching in autonomia",
+      "4-5": "Head of sales con team strutturato per segmento (SMB, mid-market, enterprise) in autonomia"
+    },
+    "processi": {
+      "1-2": "Script demo prodotto: struttura fissa con discovery 10', demo 20', next step 5'",
+      "2-3": "Playbook MEDDIC o SPIN per qualificazione deal: budget, autorità, bisogno, tempistica",
+      "3-4": "Playbook obiezioni SaaS: prezzo, integrazione, sicurezza dati, cambio fornitore attuale",
+      "4-5": "Sales playbook completo con script per ogni stage, obiezioni, escalation e handoff CS"
+    },
+    "ricavi": {
+      "1-2": "Proponi piano annuale prepagato (sconto 10-15%) ai clienti mensili con buon utilizzo",
+      "2-3": "MRR forecast affidabile con churn < 5% mensile e expansion revenue > 10% mensile",
+      "3-4": "NRR (Net Revenue Retention) > 110%: upsell e expansion coprono il churn",
+      "4-5": "NRR > 120% con expansion automatica, churn prediction e playbook retention strutturato"
+    },
+    "marketing": {
+      "1-2": "Pubblica 3 contenuti a settimana su LinkedIn con insights sul problema che risolvi per il tuo ICP",
+      "2-3": "Content marketing strutturato: blog SEO + LinkedIn + newsletter settimanale al database",
+      "3-4": "Demand gen multi-canale: SEO + LinkedIn Ads + G2/Capterra + webinar mensile",
+      "4-5": "PLG + demand gen: trial self-serve + content + paid + partner channel strutturato"
+    },
+    "sitoweb": {
+      "1-2": "Landing page con value proposition chiara: per chi è, cosa risolve, pricing visibile e CTA trial",
+      "2-3": "Case study page con 3 clienti per settore target con ROI misurabili e quote",
+      "3-4": "SEO strutturato con blog, comparison page vs competitor e integrations page",
+      "4-5": "Sito ottimizzato per PLG: trial self-serve, onboarding in-app, upgrade automatico"
+    },
+    "ecommerce": {
+      "1-2": "Attiva trial gratuito 14 giorni con onboarding guidato e email sequence automatica",
+      "2-3": "Freemium o trial con upgrade in-app senza passare dalle vendite per piani SMB",
+      "3-4": "Product-led growth: attivazione self-serve, feature gate per upgrade, expansion automatica",
+      "4-5": "PLG engine completo: self-serve + sales assist per enterprise + marketplace integrazioni"
+    }
+  },
+  "tech_system_integrator": {
+    "vendite": {
+      "1-2": "Contatta 5 aziende manifatturiere o logistiche della zona per un assessment IT gratuito",
+      "2-3": "Pre-sales tecnico dedicato alla qualificazione e alla proposta con il tecnico di riferimento",
+      "3-4": "Account manager per settore (manifatturiero, retail, logistica) con obiettivi annuali",
+      "4-5": "Team vendite con account per settore, pre-sales e partner manager in piena autonomia"
+    },
+    "pipeline": {
+      "1-2": "Traccia tutte le opportunità aperte con cliente, progetto, valore, fase, data decisione",
+      "2-3": "CRM con gestione progetti complessi: stakeholder mappa, documenti, concorrenti, timeline",
+      "3-4": "Forecast trimestrale su opportunità per tipo (progetto nuovo, rinnovo, upsell) con probabilità",
+      "4-5": "Pipeline con forecast mensile affidabile, gestita autonomamente dal team di vendita"
+    },
+    "team": {
+      "1-2": "Porta un tecnico senior in 2 meeting commerciali al mese per supporto pre-sales",
+      "2-3": "Pre-sales gestisce autonomamente assessment, demo e proposta tecnica per deal standard",
+      "3-4": "Account manager gestisce relazione cliente, pre-sales la soluzione tecnica in autonomia",
+      "4-5": "Struttura con sales director, account per settore, pre-sales e partner manager autonomi"
+    },
+    "processi": {
+      "1-2": "Template assessment IT: infrastruttura attuale, gap, soluzione proposta, investimento, ROI",
+      "2-3": "Processo discovery tecnica: 8 domande chiave per qualificare un progetto di integrazione",
+      "3-4": "Playbook obiezioni system integration: make vs buy, tempi progetto, rischio cambio, ROI",
+      "4-5": "Sales playbook completo con metodologia progettuale, referenze per settore e gestione gare"
+    },
+    "ricavi": {
+      "1-2": "Proponi contratto di manutenzione evolutiva annuale ai clienti con sistemi installati",
+      "2-3": "40% fatturato su contratti di manutenzione e supporto ricorrenti",
+      "3-4": "Forecast annuale affidabile: manutenzione ricorrente + pipeline nuovi progetti",
+      "4-5": "MRR managed services > 50% con contratti pluriennali e forecast integrato"
+    },
+    "marketing": {
+      "1-2": "Pubblica 1 caso implementazione al mese su LinkedIn con challenge, soluzione e risultati",
+      "2-3": "Webinar tecnico mensile su trend di digitalizzazione per il settore target",
+      "3-4": "Partnership con vendor (SAP, Microsoft, Oracle) per co-marketing e lead sharing",
+      "4-5": "Thought leadership: webinar + whitepaper + eventi settore + partner program strutturato"
+    },
+    "sitoweb": {
+      "1-2": "Pagina soluzioni per settore con casi implementazione, tecnologie usate e risultati",
+      "2-3": "Area case study per settore con challenge, approccio, soluzione e ROI misurabili",
+      "3-4": "SEO su 'integrazione sistemi [settore]' con blog su trend e tecnologie",
+      "4-5": "Sito con ROI calculator, assessment online e area partner con documentazione tecnica"
+    },
+    "ecommerce": {
+      "1-2": "Portale partner con documentazione tecnica, training online e accesso demo environment",
+      "2-3": "Self-assessment online per i clienti per identificare il gap digitale e richiedere una call",
+      "3-4": "Marketplace soluzioni con demo on-demand e pricing indicativo per configurazioni standard",
+      "4-5": "Piattaforma clienti con ticketing, knowledge base, training e monitoring progetto integrati"
+    }
+  },
+  "tech_digital_agency": {
+    "vendite": {
+      "1-2": "Chiedi referral attivi a 3 clienti soddisfatti: la prima lead da referral chiude 3 volte più veloce",
+      "2-3": "Business developer part-time per outreach LinkedIn verso marketing manager e CMO",
+      "3-4": "BD senior con pipeline di sviluppo nuovi clienti e gestione autonoma delle trattative",
+      "4-5": "Head of growth con team BD, account manager e partnership manager in piena autonomia"
+    },
+    "pipeline": {
+      "1-2": "CRM con tracciamento dal primo contatto alla proposta: fonte lead, bisogno, budget, decision maker",
+      "2-3": "Pipeline con stage definiti e follow-up sistematico: nessuna lead senza next step schedulato",
+      "3-4": "Forecast mensile su proposte in attesa con probabilità e valore per tipo servizio",
+      "4-5": "RevOps con pipeline, forecast MRR retainer e gestione upsell integrati"
+    },
+    "team": {
+      "1-2": "Porta un account o senior su 2 call di discovery al mese per duplicare la capacità di vendita",
+      "2-3": "Account manager gestisce autonomamente il portafoglio clienti e lo sviluppo upsell",
+      "3-4": "Team con BD, account e project manager: BD porta il cliente, account lo sviluppa",
+      "4-5": "Struttura autonoma con head of growth, account per settore e partnership manager"
+    },
+    "processi": {
+      "1-2": "Template proposta commerciale con struttura fissa: obiettivo, approccio, deliverable, fee, KPI",
+      "2-3": "Script discovery: 7 domande per qualificare obiettivo di business, budget e decision making",
+      "3-4": "Playbook obiezioni agency: prezzo, benchmark risultati, tempi, risorse interne vs agenzia",
+      "4-5": "Sales playbook completo con metodologia, case study per settore e gestione gare pitch"
+    },
+    "ricavi": {
+      "1-2": "Proponi retainer mensile di consulenza/gestione ai 2 clienti con progetto in corso",
+      "2-3": "40% fatturato su retainer mensili ricorrenti con clienti fidelizzati",
+      "3-4": "Forecast affidabile: retainer confermati + pipeline sviluppo upsell + nuovi clienti",
+      "4-5": "MRR retainer > 60% con contratti pluriennali, NPS trimestrale e piano di upsell strutturato"
+    },
+    "marketing": {
+      "1-2": "Pubblica 3 contenuti su LinkedIn con dati e insights dai tuoi progetti (anonimizzati)",
+      "2-3": "Case study mensile con risultati misurabili per settore target pubblicato su sito e LinkedIn",
+      "3-4": "Campagna LinkedIn Ads con lead magnet verso CMO e marketing manager del tuo ICP",
+      "4-5": "Thought leadership strutturata: LinkedIn + newsletter + eventi settore + award partecipazione"
+    },
+    "sitoweb": {
+      "1-2": "Portfolio clienti con 5 case study recenti con settore, obiettivo, soluzione e risultati",
+      "2-3": "Pagina servizi con posizionamento chiaro: per chi, che problema risolvi, in quanto tempo",
+      "3-4": "SEO su servizi agency + settore target con blog mensile su digital marketing",
+      "4-5": "Sito con ROI calculator, case study per settore e form di audit gratuito automatizzato"
+    },
+    "ecommerce": {
+      "1-2": "Audit gratuito automatizzato (SEO, Ads, social) come lead magnet per catturare contatti qualificati",
+      "2-3": "Pacchetti servizi con prezzi indicativi online per ridurre le attese nella fase commerciale",
+      "3-4": "Portale clienti con dashboard campagne, report mensili e comunicazione centralizzata",
+      "4-5": "Piattaforma clienti self-service con dashboard risultati, approvazione creative e billing"
+    }
+  },
+  "tech_automazione": {
+    "vendite": {
+      "1-2": "Contatta 5 aziende manifatturiere locali proponendo un'analisi ROI gratuita su un processo target",
+      "2-3": "Tecnico-venditore con portafoglio per settore (automotive, food, farmaceutica) e obiettivi",
+      "3-4": "Team account per settore con pre-sales e specialist applicativo in piena autonomia",
+      "4-5": "Responsabile commerciale con team strutturato per mercato e gestione gare internazionali"
+    },
+    "pipeline": {
+      "1-2": "Traccia tutte le opportunità con cliente, processo da automatizzare, ROI stimato, fase",
+      "2-3": "CRM con gestione commesse complesse: decisori, tempi, budget, concorrenti, documentazione",
+      "3-4": "Forecast trimestrale su commesse in offerta con probabilità per fase e valore",
+      "4-5": "Pipeline con forecast mensile affidabile e pianificazione risorse progetto integrata"
+    },
+    "team": {
+      "1-2": "Porta un ingegnere di automazione in 2 visite commerciali al mese per il supporto tecnico",
+      "2-3": "Tecnico-venditore gestisce autonomamente l'analisi ROI e la proposta tecnica standard",
+      "3-4": "Account gestisce la relazione, pre-sales la soluzione, PM l'esecuzione in autonomia",
+      "4-5": "Struttura con sales director, account per settore, pre-sales e PM in piena autonomia"
+    },
+    "processi": {
+      "1-2": "Template analisi ROI: investimento, risparmio manodopera, qualità, tempi recupero",
+      "2-3": "Processo di analisi processo cliente: visita, mappatura, calcolo ROI, proposta in 2 settimane",
+      "3-4": "Playbook obiezioni automazione: investimento, tempi, impatto su personale, integrazione",
+      "4-5": "Sales playbook con metodologia, referenze per settore, gestione gare e negoziazione"
+    },
+    "ricavi": {
+      "1-2": "Proponi contratto di manutenzione preventiva annuale sugli impianti installati",
+      "2-3": "40% fatturato su contratti di manutenzione e supporto ricorrenti sugli impianti",
+      "3-4": "Forecast annuale affidabile: manutenzione + pipeline nuovi impianti + upgrade",
+      "4-5": "Revenue ricorrente > 50% con contratti pluriennali e servizi IIoT/monitoring integrati"
+    },
+    "marketing": {
+      "1-2": "Pubblica 1 caso automazione al mese su LinkedIn con video del processo e dati ROI",
+      "2-3": "Webinar tecnico mensile su automazione per settore target (food, farmaceutica, automotive)",
+      "3-4": "Partnership con vendor di automazione (Fanuc, KUKA, Siemens) per co-marketing",
+      "4-5": "Thought leadership: fiere settore + LinkedIn + whitepaper ROI automazione + webinar"
+    },
+    "sitoweb": {
+      "1-2": "Pagina soluzioni per settore con video impianti realizzati, ROI raggiunto e referenze",
+      "2-3": "Calcolatore ROI automazione online con parametri personalizzabili per settore",
+      "3-4": "SEO su 'automazione industriale [settore]' con blog su trend robotica e IIoT",
+      "4-5": "Sito con configuratore soluzione, ROI calculator avanzato e area clienti con monitoring"
+    },
+    "ecommerce": {
+      "1-2": "Portale partner con documentazione tecnica robot/sistemi, training online e demo virtuali",
+      "2-3": "Simulatore processo online per i clienti per visualizzare la soluzione di automazione",
+      "3-4": "Portale clienti con monitoring impianti da remoto, ticket manutenzione e documentazione",
+      "4-5": "Piattaforma IIoT integrata con monitoring real-time, alert predittivi e reportistica impianto"
+    }
+  }
+}
+;
+
+var AZIONI_TARGET_GENERIC = {
   vendite: {
     '1-2': ['Identifica chi in azienda puo supportarti nelle vendite — commesso, tecnico, socio', 'Forma quella persona sulle basi: come presentare il prodotto/servizio, gestire obiezioni comuni, chiudere una vendita semplice'],
     '1-3': ['Forma almeno una persona interna E definisci un ruolo commerciale chiaro con obiettivi', 'Struttura il canale principale: store con obiettivi, agenti con mandato, o rete rivenditori'],
