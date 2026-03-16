@@ -648,16 +648,17 @@ input[type=range]{flex:1;accent-color:var(--gold)}
       <div class="form-group"><label>Telefono</label><input class="form-input" id="f-tel" placeholder="+39 ..."></div>
       <div class="form-group"><label>Fatturato stimato</label>
         <select class="form-input" id="f-fat">
-          <option value="<500k">sotto 500k €</option>
+          <option value="<100k">sotto 100k €</option>
+          <option value="100k-250k">100k – 250k €</option>
+          <option value="250k-500k">250k – 500k €</option>
           <option value="500k-1M">500k – 1M €</option>
-          <option value="1-5M">1 – 5M €</option>
-          <option value="5-20M">5 – 20M €</option>
+          <option value="1M-2M">1M – 2M €</option>
+          <option value="2M-5M">2M – 5M €</option>
+          <option value="5M-20M">5M – 20M €</option>
         </select>
       </div>
     </div>
-    <div class="divider"></div>
-    <p style="font-size:12px;color:var(--gray);margin-bottom:14px;letter-spacing:.04em;text-transform:uppercase">Valutazione commerciale (1 = critico · 5 = ottimo)</p>
-    <div id="sliders-container"></div>
+
     <div class="form-group mt16 full"><label>Note iniziali</label><textarea class="form-input form-textarea" id="f-note" placeholder="Impressioni dalla prima call..."></textarea></div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeModal('modal-prospect')">Annulla</button>
@@ -4984,7 +4985,8 @@ function toggleMacro(key) {
 
 // -- MODALS ------------------------------------------------
 function buildSliders(vals={}) {
-  document.getElementById('sliders-container').innerHTML=DIMS.map(d=>{
+  const _sc=document.getElementById('sliders-container'); if(!_sc) return;
+  _sc.innerHTML=DIMS.map(d=>{
     const v=vals[d.id]||2;
     const desc=DIM_DESC[d.id]?.[v-1]||'';
     return `\x3cdiv class="slider-row">
@@ -5018,7 +5020,7 @@ function openNewProspect() {
   document.getElementById('f-settore').value='';
   document.getElementById('f-dip').value='10-30';
   document.getElementById('f-stato').value='nuovo';
-  document.getElementById('f-fat').value='1-5M';
+  document.getElementById('f-fat').value='500k-1M';
   buildSliders();
   openModal('modal-prospect');
 }
@@ -5035,7 +5037,9 @@ function openEditProspect() {
   document.getElementById('f-referente').value=p.referente||'';
   document.getElementById('f-email').value=p.email||'';
   document.getElementById('f-tel').value=p.telefono||'';
-  document.getElementById('f-fat').value=p.fatturato||'1-5M';
+  const _fatMap={'<500k':'250k-500k','1-5M':'1M-2M','5-20M':'5M-20M'};
+  const _fat=p.fatturato||'500k-1M';
+  document.getElementById('f-fat').value=_fatMap[_fat]||_fat;
   document.getElementById('f-note').value=p.note||'';
   buildSliders(p.dims||{});
   openModal('modal-prospect');
@@ -5044,8 +5048,8 @@ function openEditProspect() {
 async function saveProspect() {
   const nome=document.getElementById('f-nome').value.trim();
   if(!nome){alert('Inserisci il nome dell\'azienda');return;}
-  const dims={};
-  DIMS.forEach(d=>{dims[d.id]=parseInt(document.getElementById('sl-'+d.id).value)});
+  // Score dims: preserva quelli esistenti (sliders rimossi — usa diagnosi guidata)
+  const existingDims = editingId ? (prospects.find(x=>x.id===editingId)?.dims || {}) : {};
   const data={
     nome,
     settore:document.getElementById('f-settore').value,
@@ -5056,7 +5060,7 @@ async function saveProspect() {
     telefono:document.getElementById('f-tel').value,
     fatturato:document.getElementById('f-fat').value,
     note:document.getElementById('f-note').value,
-    dims,
+    dims: existingDims,
     color: editingId ? (prospects.find(x=>x.id===editingId)?.color || assignNextColor()) : assignNextColor(),
   };
   const btn=document.getElementById('btn-save-prospect');
