@@ -5117,8 +5117,8 @@ function openEditProspect() {
 async function saveProspect() {
   const nome=document.getElementById('f-nome').value.trim();
   if(!nome){alert('Inserisci il nome dell\'azienda');return;}
-  const dims={};
-  DIMS.forEach(d=>{dims[d.id]=parseInt(document.getElementById('sl-'+d.id).value)});
+  // DEMO: preserva i dims esistenti (sliders rimossi)
+  const existingDims = editingId ? (prospects.find(x=>x.id===editingId)?.dims || {}) : {};
   const data={
     nome,
     settore:document.getElementById('f-settore').value,
@@ -5129,7 +5129,7 @@ async function saveProspect() {
     telefono:document.getElementById('f-tel').value,
     fatturato:document.getElementById('f-fat').value,
     note:document.getElementById('f-note').value,
-    dims,
+    dims: existingDims,
     color: editingId ? (prospects.find(x=>x.id===editingId)?.color || assignNextColor()) : assignNextColor(),
   };
   const btn=document.getElementById('btn-save-prospect');
