@@ -6644,13 +6644,22 @@ async function saveTargets() {
     if (el) targets[d.id] = Math.min(5, Math.max(0, parseInt(el.value) || 0));
     if (scEl && scEl.value) scadenze[d.id] = scEl.value;
   });
-  const {error} = await sb.from('prospects').update({targets, target_scadenze: scadenze}).eq('id', currentId);
-  if (error) { showToast('Errore salvataggio target', 'error'); return; }
+  // DEMO: in memoria — pulisce azioni_completate per le dimensioni dove il target è cambiato
   const i = prospects.findIndex(x => x.id === currentId);
+  const oldTargets = prospects[i].targets || {};
+  const azioniDone = Object.assign({}, prospects[i].azioni_completate || {});
+  DIMS.forEach(d => {
+    if ((targets[d.id] || 0) !== (oldTargets[d.id] || 0)) {
+      // Target cambiato per questa dimensione: rimuovi le azioni completate relative
+      Object.keys(azioniDone).forEach(k => { if (k.startsWith(d.id + '_')) delete azioniDone[k]; });
+    }
+  });
   prospects[i].targets = targets;
   prospects[i].target_scadenze = scadenze;
+  prospects[i].azioni_completate = azioniDone;
   showToast('Obiettivi salvati!');
   drawRadar(prospects[i].dims || {}, targets);
+  renderTargetEditor(prospects[i]);
 }
 
 
