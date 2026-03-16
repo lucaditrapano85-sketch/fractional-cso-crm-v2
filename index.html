@@ -757,13 +757,15 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 <script>
 // -- DEMO MODE: Supabase rimosso, dati hardcoded --
 const DEMO_MODE = true;
+const _sbNoop = () => Promise.resolve({data:null, error:null});
+const _sbChain = { eq: _sbNoop, single: _sbNoop, order: () => _sbChain, select: () => _sbChain, then: (fn) => Promise.resolve({data:null,error:null}).then(fn) };
 const sb = {
   from: () => ({
-    select: () => Promise.resolve({data:[], error:null}),
-    insert: () => Promise.resolve({data:null, error:null}),
-    update: () => ({ eq: () => Promise.resolve({data:null, error:null}) }),
-    delete: () => ({ eq: () => Promise.resolve({data:null, error:null}) }),
-    upsert: () => Promise.resolve({data:null, error:null}),
+    select: () => Object.assign(Promise.resolve({data:[], error:null}), _sbChain),
+    insert: () => Object.assign(Promise.resolve({data:null, error:null}), _sbChain),
+    update: (d) => ({ eq: _sbNoop, select: () => _sbChain }),
+    delete: () => ({ eq: _sbNoop }),
+    upsert: _sbNoop,
   })
 };
 
@@ -5057,7 +5059,8 @@ function toggleMacro(key) {
 
 // -- MODALS ------------------------------------------------
 function buildSliders(vals={}) {
-  document.getElementById('sliders-container').innerHTML=DIMS.map(d=>{
+  const _sc=document.getElementById('sliders-container'); if(!_sc) return;
+  _sc.innerHTML=DIMS.map(d=>{
     const v=vals[d.id]||2;
     const desc=DIM_DESC[d.id]?.[v-1]||'';
     return `\x3cdiv class="slider-row">
