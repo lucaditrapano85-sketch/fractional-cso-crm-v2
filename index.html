@@ -1225,7 +1225,7 @@ const MARKET_DETAIL = {
 
   manifatturiero_meccanica: {
     ciclo_fasi: [
-      { fase: 'Primo contatto', durata: '1-2 sett.', note: 'Spesso da fiera o referral. Difficile il freddo.' },
+      { stato: 'contattato', durata: '1-2 sett.', note: 'Spesso da fiera o referral. Difficile il freddo.' },
       { fase: 'Richiesta offerta / capitolato', durata: '2-4 sett.', note: 'Il cliente prepara specifiche tecniche. Fase lunga.' },
       { fase: 'Offerta tecnica + commerciale', durata: '1-2 sett.', note: 'Spesso si compete con 3-5 fornitori.' },
       { fase: 'Negoziazione e validazione', durata: '2-6 sett.', note: 'Campionatura, test, approvazione qualita.' },
@@ -4458,7 +4458,7 @@ let prospects = [
     id: 'demo-001',
     nome: 'Ferramenta Valsesia S.r.l.',
     settore: 'manifatturiero_meccanica',
-    fase: 'Proposta inviata',
+    stato: 'proposta',
     referente: 'Marco Galli',
     ruolo: 'Titolare',
     email: 'mgalli@valsesia.it',
@@ -4477,7 +4477,7 @@ let prospects = [
     id: 'demo-002',
     nome: 'Distribuzione Nord Est S.p.A.',
     settore: 'commercio_distribuzione_industriale',
-    fase: 'Primo contatto',
+    stato: 'contattato',
     referente: 'Silvia Trevisan',
     ruolo: 'Direttore Generale',
     email: 's.trevisan@dnest.it',
@@ -4496,7 +4496,7 @@ let prospects = [
     id: 'demo-003',
     nome: 'Studio Legale Marchetti & Partners',
     settore: 'servizi_consulenza',
-    fase: 'Qualificazione',
+    stato: 'diagnosi',
     referente: 'Avv. Lorenzo Marchetti',
     ruolo: 'Managing Partner',
     email: 'l.marchetti@marchetti-law.it',
@@ -6596,10 +6596,15 @@ function aggiornaAzioni(dimId) {
   const cur = (p.dims && p.dims[dimId]) || 0;
   const tgtEl = document.getElementById('tgt-' + dimId);
   const tgt = tgtEl ? parseInt(tgtEl.value) || 0 : 0;
-  const azioniDone = p.azioni_completate || {};
+  // DEMO: se il target è cambiato rispetto a quello salvato, pulisci le azioni completate per questa dim
+  const savedTgt = (p.targets && p.targets[dimId]) || 0;
+  let azioniDone = Object.assign({}, p.azioni_completate || {});
+  if (tgt !== savedTgt) {
+    Object.keys(azioniDone).forEach(k => { if (k.startsWith(dimId + '_')) delete azioniDone[k]; });
+  }
   const block = document.getElementById('az-block-' + dimId);
   if (!block) return;
-  block.innerHTML = _buildSubObiettivi(dimId, cur, tgt, azioniDone);
+  block.innerHTML = _buildSubObiettivi(dimId, cur, tgt, p.settore || '', azioniDone, p.azioni_custom || {});
 }
 
 async function toggleAzione(key) {
