@@ -6371,6 +6371,49 @@ function drawRadar(dims_vals, targets_vals) {
   svg.innerHTML = html;
 }
 
+function _buildAzioneHtml(dimId, fromStep, toStep, azioniDone) {
+  const chiave = fromStep + '-' + toStep;
+  const chiaveFallback = '1-' + toStep;
+  const azioniList = AZIONI_TARGET[dimId] && (AZIONI_TARGET[dimId][chiave] || AZIONI_TARGET[dimId][chiaveFallback]);
+  if (!azioniList) return '';
+  return '\x3cdiv style="background:var(--bg);border-radius:var(--rs);padding:8px 10px;margin-top:6px">' +
+    '\x3cdiv style="font-size:9px;font-weight:600;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Azioni ' + fromStep + ' → ' + toStep + '\x3c/div>' +
+    azioniList.map(function(a, i) {
+      const key = dimId + '_' + fromStep + '_' + toStep + '_' + i;
+      const done = !!azioniDone[key];
+      return '\x3cdiv style="display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="toggleAzione(\'' + key + '\')" id="az-' + key + '">' +
+        '\x3cdiv style="width:16px;height:16px;border-radius:4px;border:2px solid ' + (done ? 'var(--green)' : 'var(--border2)') + ';background:' + (done ? 'var(--green)' : 'transparent') + ';flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff">' + (done ? '&#10003;' : '') + '\x3c/div>' +
+        '\x3cdiv style="font-size:12px;color:' + (done ? 'var(--gray)' : 'var(--white)') + ';line-height:1.4;' + (done ? 'text-decoration:line-through;opacity:.5' : '') + '">' + a + '\x3c/div>' +
+      '\x3c/div>';
+    }).join('') +
+  '\x3c/div>';
+}
+
+function _buildSubObiettivi(dimId, cur, tgt, azioniDone) {
+  const gap = tgt - cur;
+  if (gap <= 0) return '';
+  // Se gap == 1: un solo step, nessun sotto-obiettivo
+  if (gap === 1) return _buildAzioneHtml(dimId, cur, tgt, azioniDone);
+  // Se gap > 1: mostra step intermedi come sotto-obiettivi
+  let html = '\x3cdiv style="margin-top:10px">';
+  html += '\x3cdiv style="font-size:9px;font-weight:600;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Percorso in ' + gap + ' step\x3c/div>';
+  for (let step = cur; step < tgt; step++) {
+    const stepDesc = DIM_DESC[dimId]?.[step] || '--'; // descrizione del livello di arrivo
+    const isFirst = step === cur;
+    html += '\x3cdiv style="margin-bottom:8px;border-left:2px solid ' + (isFirst ? 'var(--gold)' : 'var(--border2)') + ';padding-left:10px">';
+    html += '\x3cdiv style="display:flex;align-items:center;gap:6px;margin-bottom:4px">';
+    html += '\x3cdiv style="font-size:10px;font-weight:700;color:' + (isFirst ? 'var(--gold)' : 'var(--gray)') + ';background:' + (isFirst ? 'var(--amber-bg)' : 'var(--bg3)') + ';border-radius:4px;padding:2px 8px">';
+    html += 'Step ' + (step - cur + 1) + ' · ' + step + ' → ' + (step + 1) + '\x3c/div>';
+    if (isFirst) html += '\x3cdiv style="font-size:9px;color:var(--gold);font-weight:600">Ora\x3c/div>';
+    html += '\x3c/div>';
+    html += '\x3cdiv style="font-size:10px;color:var(--gray);line-height:1.4;margin-bottom:6px;font-style:italic">' + stepDesc + '\x3c/div>';
+    html += _buildAzioneHtml(dimId, step, step + 1, azioniDone);
+    html += '\x3c/div>';
+  }
+  html += '\x3c/div>';
+  return html;
+}
+
 function renderTargetEditor(p) {
   const targets = p.targets || {};
   const scadenze = p.target_scadenze || {};
@@ -6382,22 +6425,8 @@ function renderTargetEditor(p) {
     const tgtCol = tgt >= 4 ? 'var(--green)' : tgt >= 3 ? 'var(--gold)' : 'var(--red)';
     const curDesc = DIM_DESC[d.id]?.[cur-1] || '--';
     const tgtDesc = DIM_DESC[d.id]?.[tgt-1] || '--';
-    const gap = tgt - cur;
-    const chiave = cur + '-' + tgt;
-    const chiaveFallback = '1-' + tgt;
-    const azioniList = gap > 0 && AZIONI_TARGET[d.id] && (AZIONI_TARGET[d.id][chiave] || AZIONI_TARGET[d.id][chiaveFallback]);
     const azioniDone = p.azioni_completate || {};
-    const azioniHtml = azioniList ? '\x3cdiv style="margin-top:8px;background:var(--bg);border-radius:var(--rs);padding:8px 10px">' +
-      '\x3cdiv style="font-size:9px;font-weight:600;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Prossimi passi\x3c/div>' +
-      azioniList.map(function(a, i) {
-        const key = d.id + '_' + cur + '_' + tgt + '_' + i;
-        const done = !!azioniDone[key];
-        return '\x3cdiv style="display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="toggleAzione(\'' + key + '\')" id="az-' + key + '">' +
-          '\x3cdiv style="width:16px;height:16px;border-radius:4px;border:2px solid ' + (done ? 'var(--green)' : 'var(--border2)') + ';background:' + (done ? 'var(--green)' : 'transparent') + ';flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff">' + (done ? '&#10003;' : '') + '\x3c/div>' +
-          '\x3cdiv style="font-size:12px;color:' + (done ? 'var(--gray)' : 'var(--white)') + ';line-height:1.4;' + (done ? 'text-decoration:line-through;opacity:.5' : '') + '">' + a + '\x3c/div>' +
-        '\x3c/div>';
-      }).join('') +
-    '\x3c/div>' : '';
+    const subObiettiviHtml = _buildSubObiettivi(d.id, cur, tgt, azioniDone);
     return `\x3cdiv style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)">
       \x3cdiv style="font-size:12px;font-weight:600;color:var(--white);margin-bottom:6px">${d.label}\x3c/div>
       \x3cdiv style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px">
@@ -6408,7 +6437,7 @@ function renderTargetEditor(p) {
         \x3c/div>
         \x3cdiv style="background:var(--amber-bg);border:1px solid var(--gold-dim);border-radius:var(--rs);padding:7px 10px">
           \x3cdiv style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
-            \x3cdiv style="font-size:9px;color:var(--gold);letter-spacing:.05em;text-transform:uppercase">Obiettivo\x3c/div>
+            \x3cdiv style="font-size:9px;color:var(--gold);letter-spacing:.05em;text-transform:uppercase">Obiettivo finale\x3c/div>
             \x3cspan id="tsem-${d.id}" style="font-size:12px;font-weight:700;white-space:nowrap">${scad ? calcolaSemaforo(scad, d.id) : ''}\x3c/span>
           \x3c/div>
           \x3cdiv style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
@@ -6423,7 +6452,7 @@ function renderTargetEditor(p) {
             style="width:100%;padding:3px 6px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;color:var(--white);font-size:11px;font-family:inherit">
         \x3c/div>
       \x3c/div>
-      \x3cdiv id="az-block-${d.id}">${azioniHtml}\x3c/div>
+      \x3cdiv id="az-block-${d.id}">${subObiettiviHtml}\x3c/div>
     \x3c/div>`;
   }).join('');
   html += `\x3cbutton class="target-save" onclick="saveTargets()">Salva obiettivi\x3c/button>`;
@@ -6491,25 +6520,10 @@ function aggiornaAzioni(dimId) {
   const cur = (p.dims && p.dims[dimId]) || 0;
   const tgtEl = document.getElementById('tgt-' + dimId);
   const tgt = tgtEl ? parseInt(tgtEl.value) || 0 : 0;
-  const gap = tgt - cur;
-  const chiave = cur + '-' + tgt;
-  const chiaveFallback = '1-' + tgt;
-  const azioniList = gap > 0 && AZIONI_TARGET[dimId] && (AZIONI_TARGET[dimId][chiave] || AZIONI_TARGET[dimId][chiaveFallback]);
   const azioniDone = p.azioni_completate || {};
   const block = document.getElementById('az-block-' + dimId);
   if (!block) return;
-  if (!azioniList) { block.innerHTML = ''; return; }
-  block.innerHTML = '\x3cdiv style="margin-top:8px;background:var(--bg);border-radius:var(--rs);padding:8px 10px">' +
-    '\x3cdiv style="font-size:9px;font-weight:600;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Prossimi passi\x3c/div>' +
-    azioniList.map(function(a, i) {
-      const key = dimId + '_' + cur + '_' + tgt + '_' + i;
-      const done = !!azioniDone[key];
-      return '\x3cdiv style="display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="toggleAzione(\'' + key + '\')" id="az-' + key + '">' +
-        '\x3cdiv style="width:16px;height:16px;border-radius:4px;border:2px solid ' + (done ? 'var(--green)' : 'var(--border2)') + ';background:' + (done ? 'var(--green)' : 'transparent') + ';flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff">' + (done ? '&#10003;' : '') + '\x3c/div>' +
-        '\x3cdiv style="font-size:12px;color:' + (done ? 'var(--gray)' : 'var(--white)') + ';line-height:1.4;' + (done ? 'text-decoration:line-through;opacity:.5' : '') + '">' + a + '\x3c/div>' +
-      '\x3c/div>';
-    }).join('') +
-  '\x3c/div>';
+  block.innerHTML = _buildSubObiettivi(dimId, cur, tgt, azioniDone);
 }
 
 async function toggleAzione(key) {
