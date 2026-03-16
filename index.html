@@ -421,7 +421,7 @@ input[type=range]{flex:1;accent-color:var(--gold)}
       <div class="sidebar-section-label">Prospect</div>
       <div id="sidebar-list"><div class="loading">Caricamento...</div></div>
     </div>
-    <button class="btn-new" onclick="openNewProspect()">+ Nuovo Prospect</button>
+    <button class="btn-new" onclick="openNewProspect()" style="display:none">+ Nuovo Prospect</button>
   </div>
 
   <div class="main">
@@ -668,9 +668,7 @@ input[type=range]{flex:1;accent-color:var(--gold)}
         </select>
       </div>
     </div>
-    <div class="divider"></div>
-    <p style="font-size:12px;color:var(--gray);margin-bottom:14px;letter-spacing:.04em;text-transform:uppercase">Valutazione commerciale (1 = critico · 5 = ottimo)</p>
-    <div id="sliders-container"></div>
+
     <div class="form-group mt16 full"><label>Note iniziali</label><textarea class="form-input form-textarea" id="f-note" placeholder="Impressioni dalla prima call..."></textarea></div>
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeModal('modal-prospect')">Annulla</button>
@@ -4692,7 +4690,7 @@ async function renderProspectDetail(id) {
           \x3cspan class="det-label-icon">${l.icon}\x3c/span>
           \x3cstrong>${l.text}\x3c/strong>
         \x3c/div>`
-  ).join('') + `\x3cdiv class="det-label" style="cursor:pointer;border-color:var(--border2)" onclick="openEditProspect()">
+  ).join('') + `\x3cdiv class="det-label" style="cursor:pointer;border-color:var(--border2)" onclick="showToast('Modifica disabilitata nella demo','error')" style="opacity:.35;cursor:not-allowed">
     \x3cspan class="det-label-icon">\x3c/span>
     \x3cstrong style="color:var(--gray)">Modifica\x3c/strong>
   \x3c/div>`;
