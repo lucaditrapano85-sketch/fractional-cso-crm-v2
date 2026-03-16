@@ -4690,7 +4690,7 @@ async function renderProspectDetail(id) {
           \x3cspan class="det-label-icon">${l.icon}\x3c/span>
           \x3cstrong>${l.text}\x3c/strong>
         \x3c/div>`
-  ).join('') + `\x3cdiv class="det-label" style="cursor:pointer;border-color:var(--border2)" onclick="showToast('Modifica disabilitata nella demo','error')" style="opacity:.35;cursor:not-allowed">
+  ).join('') + `\x3cdiv class="det-label" style="cursor:pointer;border-color:var(--border2)" onclick="openEditProspect()">
     \x3cspan class="det-label-icon">\x3c/span>
     \x3cstrong style="color:var(--gray)">Modifica\x3c/strong>
   \x3c/div>`;
