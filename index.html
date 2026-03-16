@@ -6294,6 +6294,7 @@ async function saveFinancials() {
       if (nuovaFascia && prospects[i].fatturato !== nuovaFascia) {
         prospects[i].fatturato = nuovaFascia;
         await sb.from('prospects').update({fatturato: nuovaFascia}).eq('id', currentId);
+        renderProspectDetail(currentId);
       }
     }
     showToast('Dati salvati');
