@@ -661,10 +661,13 @@ input[type=range]{flex:1;accent-color:var(--gold)}
       <div class="form-group"><label>Telefono</label><input class="form-input" id="f-tel" placeholder="+39 ..."></div>
       <div class="form-group"><label>Fatturato stimato</label>
         <select class="form-input" id="f-fat">
-          <option value="<500k">sotto 500k €</option>
+          <option value="<100k">sotto 100k €</option>
+          <option value="100k-250k">100k – 250k €</option>
+          <option value="250k-500k">250k – 500k €</option>
           <option value="500k-1M">500k – 1M €</option>
-          <option value="1-5M">1 – 5M €</option>
-          <option value="5-20M">5 – 20M €</option>
+          <option value="1M-2M">1M – 2M €</option>
+          <option value="2M-5M">2M – 5M €</option>
+          <option value="5M-20M">5M – 20M €</option>
         </select>
       </div>
     </div>
@@ -5094,7 +5097,7 @@ function openNewProspect() {
   document.getElementById('f-settore').value='';
   document.getElementById('f-dip').value='10-30';
   document.getElementById('f-stato').value='nuovo';
-  document.getElementById('f-fat').value='1-5M';
+  document.getElementById('f-fat').value='500k-1M';
   buildSliders();
   openModal('modal-prospect');
 }
@@ -5111,7 +5114,9 @@ function openEditProspect() {
   document.getElementById('f-referente').value=p.referente||'';
   document.getElementById('f-email').value=p.email||'';
   document.getElementById('f-tel').value=p.telefono||'';
-  document.getElementById('f-fat').value=p.fatturato||'1-5M';
+  const _fatMap={'<500k':'250k-500k','1-5M':'1M-2M','5-20M':'5M-20M'};
+  const _fat=p.fatturato||'500k-1M';
+  document.getElementById('f-fat').value=_fatMap[_fat]||_fat;
   document.getElementById('f-note').value=p.note||'';
   buildSliders(p.dims||{});
   openModal('modal-prospect');
