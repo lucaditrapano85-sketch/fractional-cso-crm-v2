@@ -6357,7 +6357,10 @@ function _buildStepBlock(dimId, fromStep, toStep, settore, azioniDone, azioniCus
 // Costruisce tutti gli step dal cur al tgt
 function _buildSubObiettivi(dimId, cur, tgt, settore, azioniDone, azioniCustom) {
   const gap = tgt - cur;
-  if (gap <= 0) return '\x3cdiv style="font-size:11px;color:var(--gray);padding:8px 0;font-style:italic">Imposta un obiettivo superiore allo stato attuale per vedere il piano d\'azione.\x3c/div>';
+  if (gap <= 0) {
+    if (cur >= 4) return '\x3cdiv style="font-size:11px;color:var(--green);padding:8px 0;font-weight:600">✓ Obiettivo raggiunto — livello eccellente.\x3c/div>';
+    return '\x3cdiv style="font-size:11px;color:var(--green);padding:8px 0;font-weight:600">✓ Obiettivo raggiunto. Imposta un target più alto per continuare a crescere.\x3c/div>';
+  }
 
   let html = '\x3cdiv style="margin-top:8px">';
   // step è il livello di partenza (es. 1 → mostra "1 → 2")
@@ -6416,7 +6419,8 @@ function renderTargetEditor(p) {
   const azioniCustom = p.azioni_custom || {};
   let html = DIMS.map(d => {
     const cur = p.dims?.[d.id] || 0;
-    const tgt = targets[d.id] || Math.min(cur + 1, 5);
+    const savedTgt = targets[d.id] || 0;
+    const tgt = savedTgt > cur ? savedTgt : Math.min(cur + 1, 5);
     const scad = scadenze[d.id] || '';
     const curCol = cur >= 4 ? 'var(--green)' : cur >= 3 ? 'var(--gold)' : 'var(--red)';
     const tgtCol = tgt >= 4 ? 'var(--green)' : tgt >= 3 ? 'var(--gold)' : 'var(--red)';
@@ -6451,7 +6455,7 @@ function renderTargetEditor(p) {
       \x3cdiv id="az-block-${d.id}">${subObiettiviHtml}\x3c/div>
     \x3c/div>`;
   }).join('');
-  html += `\x3cbutton class="target-save" onclick="saveTargets()">Salva obiettivi\x3c/button>`;
+  html += `\x3cdiv style="display:flex;gap:8px;margin-top:8px">\x3cbutton class="target-save" onclick="saveTargets()">Salva obiettivi\x3c/button>\x3cbutton onclick="resetTargets()" style="background:var(--bg3);border:1px solid var(--border2);color:var(--gray);border-radius:var(--rs);padding:6px 14px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">↺ Reset obiettivi\x3c/button>\x3c/div>`;
   document.getElementById('target-editor-content').innerHTML = html;
 }
 
@@ -6550,6 +6554,19 @@ async function toggleAzione(key) {
       txt.style.color = 'var(--white)';
     }
   }
+}
+
+async function resetTargets() {
+  if (!confirm('Sei sicuro di voler azzerare tutti gli obiettivi e le azioni completate per questo prospect?\nQuesta operazione non può essere annullata.')) return;
+  const {error} = await sb.from('prospects').update({targets: {}, target_scadenze: {}, azioni_completate: {}, azioni_custom: {}}).eq('id', currentId);
+  if (error) { showToast('Errore reset', 'error'); return; }
+  const i = prospects.findIndex(x => x.id === currentId);
+  prospects[i].targets = {};
+  prospects[i].target_scadenze = {};
+  prospects[i].azioni_completate = {};
+  prospects[i].azioni_custom = {};
+  showToast('Obiettivi azzerati');
+  renderProspectDetail(currentId);
 }
 
 async function saveTargets() {
