@@ -5025,7 +5025,8 @@ async function renderProspectDetail(id) {
   renderStrategico(p);
 
   // Load calls
-  const {data:calls,error}=await sb.from('calls').select('*').eq('prospect_id',id).order('data',{ascending:false});
+  const {data:calls_raw,error}=await sb.from('calls').select('*').eq('prospect_id',id);
+  const calls = calls_raw ? calls_raw.sort((a,b) => new Date(b.data) - new Date(a.data)) : [];
   currentCalls=calls||[];
   document.getElementById('call-count').textContent = currentCalls.length + ' call registrate';
   if(!currentCalls.length) {
