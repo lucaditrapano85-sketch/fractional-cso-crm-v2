@@ -491,7 +491,7 @@ input[type=range]{flex:1;accent-color:var(--gold)}
       </div>
 
       <!-- RADAR + TARGET -->
-      <div id="radar-target-row" style="margin-bottom:20px;display:flex;gap:24px;align-items:flex-start">
+      <div id="radar-target-row" style="margin-bottom:20px;display:flex;gap:24px;align-items:flex-start" id="radar-flex-row">
         <!-- Colonna sinistra: due blocchi uno sopra l altro -->
         <div style="flex:1;display:flex;flex-direction:column;gap:20px">
           <!-- Blocco 1: grafico proiezione barre -->
@@ -534,12 +534,33 @@ input[type=range]{flex:1;accent-color:var(--gold)}
           </div>
         </div>
         <!-- Colonna destra: target editor sticky -->
-        <div class="radar-card" style="width:380px;flex-shrink:0;position:sticky;top:16px">
+        <div class="radar-card" style="width:380px;flex-shrink:0">
           <div class="card-title" style="margin-bottom:4px">Obiettivi per dimensione</div>
           <div style="font-size:11px;color:var(--gray);margin-bottom:14px">Target personalizzati - si aggiorna in tempo reale</div>
-          <div id="target-editor-content" style="max-height:calc(100vh - 120px);overflow-y:auto;padding-right:4px"></div>
+          <div id="target-editor-content" style="overflow-y:auto;padding-right:4px"></div>
         </div>
       </div>
+      <script>
+      (function() {
+        function alignTargetHeight() {
+          const megaSection = document.getElementById('mega-grafico-section');
+          const targetContent = document.getElementById('target-editor-content');
+          const rightCard = targetContent?.closest('.radar-card');
+          if (!megaSection || !rightCard) return;
+          const barreCard = megaSection.closest('.radar-card');
+          if (!barreCard) return;
+          const h = barreCard.offsetHeight;
+          rightCard.style.height = h + 'px';
+          rightCard.style.overflow = 'hidden';
+          targetContent.style.maxHeight = (h - 60) + 'px';
+        }
+        // Esegui dopo il render del mega-grafico
+        const obs = new MutationObserver(alignTargetHeight);
+        obs.observe(document.body, {childList:true, subtree:true});
+        setTimeout(alignTargetHeight, 500);
+        setTimeout(alignTargetHeight, 1500);
+      })();
+      </script>
       <div class="card" id="card-cronistoria" style="display:none">
         <div class="card-title">Cronistoria crescita</div>
         <div id="cronistoria-content"></div>
