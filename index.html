@@ -493,7 +493,7 @@ input[type=range]{flex:1;accent-color:var(--gold)}
       <!-- RADAR + TARGET -->
       <div id="radar-target-row" style="margin-bottom:20px">
         <div class="radar-card">
-          <div style="display:grid;grid-template-columns:1fr 380px;gap:32px;align-items:start">
+          <div style="display:grid;grid-template-columns:1fr 380px;gap:32px;align-items:stretch">
             <!-- Radar -->
             <div>
               <div id="mega-grafico-section" style="margin-bottom:16px"></div>
@@ -539,7 +539,7 @@ input[type=range]{flex:1;accent-color:var(--gold)}
               </div>
             </div>
             <!-- Target editor -->
-            <div style="overflow-y:auto;max-height:calc(100vh - 80px);padding-right:6px">
+            <div style="overflow-y:auto;max-height:100%;overflow-y:auto;padding-right:6px">
               <div class="card-title" style="margin-bottom:4px">Obiettivi per dimensione</div>
               <div style="font-size:11px;color:var(--gray);margin-bottom:14px">Target personalizzati · si aggiorna in tempo reale</div>
               <div id="target-editor-content"></div>
