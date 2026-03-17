@@ -7209,7 +7209,15 @@ function _calcolaImpattoCumulativo(p) {
 
   const DIMS_IDS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
   const attive = DIMS_IDS.filter(id => (targets[id]||0) > (dims[id]||0));
-  if (attive.length === 0) return null;
+  let isSuggerito = false;
+  let targetsEff = targets;
+  if (attive.length === 0) {
+    isSuggerito = true;
+    targetsEff = {};
+    DIMS_IDS.forEach(id => { const c = dims[id]||0; targetsEff[id] = c < 5 ? c+1 : c; });
+  }
+  const attive2 = DIMS_IDS.filter(id => (targetsEff[id]||0) > 0 && (dims[id]||0) >= 0);
+  if (attive2.length === 0) return null;
 
   // Calcolo costi separando ricorrenti e una tantum
   let costoRicorrenteMensile = 0; // somma mensile ricorrente di tutti gli step attivi
