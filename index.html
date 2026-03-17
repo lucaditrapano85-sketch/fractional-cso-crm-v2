@@ -7209,18 +7209,38 @@ function _calcolaImpattoCumulativo(p) {
 
   const DIMS_IDS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
   const attive = DIMS_IDS.filter(id => (targets[id]||0) > (dims[id]||0));
+  const ORGANICA_CURVA = [0,0.005,0.012,0.025,0.042,0.065];
+  const ORGANICA_PESI = {
+    manifatturiero:{vendite:0.32,pipeline:0.22,team:0.18,processi:0.10,ricavi:0.09,marketing:0.06,sitoweb:0.02,ecommerce:0.01},
+    manifatturiero_meccanica:{vendite:0.34,pipeline:0.22,team:0.18,processi:0.10,ricavi:0.08,marketing:0.05,sitoweb:0.02,ecommerce:0.01},
+    manifatturiero_automotive:{vendite:0.33,pipeline:0.23,team:0.18,processi:0.11,ricavi:0.08,marketing:0.05,sitoweb:0.01,ecommerce:0.01},
+    manifatturiero_packaging:{vendite:0.30,pipeline:0.20,team:0.17,processi:0.10,ricavi:0.09,marketing:0.08,sitoweb:0.04,ecommerce:0.02},
+    manifatturiero_cterzi:{vendite:0.33,pipeline:0.21,team:0.18,processi:0.12,ricavi:0.09,marketing:0.05,sitoweb:0.01,ecommerce:0.01},
+    manifatturiero_food:{vendite:0.28,pipeline:0.18,team:0.16,processi:0.10,ricavi:0.09,marketing:0.10,sitoweb:0.05,ecommerce:0.04},
+    commercio:{vendite:0.28,pipeline:0.20,team:0.15,processi:0.10,ricavi:0.09,marketing:0.12,sitoweb:0.04,ecommerce:0.02},
+    commercio_ingrosso:{vendite:0.30,pipeline:0.22,team:0.16,processi:0.11,ricavi:0.10,marketing:0.08,sitoweb:0.02,ecommerce:0.01},
+    commercio_dettaglio:{vendite:0.22,pipeline:0.16,team:0.14,processi:0.09,ricavi:0.08,marketing:0.15,sitoweb:0.08,ecommerce:0.08},
+    commercio_auto:{vendite:0.30,pipeline:0.22,team:0.16,processi:0.10,ricavi:0.09,marketing:0.08,sitoweb:0.03,ecommerce:0.02},
+    servizi:{vendite:0.27,pipeline:0.24,team:0.20,processi:0.12,ricavi:0.09,marketing:0.06,sitoweb:0.01,ecommerce:0.01},
+    servizi_consulenza:{vendite:0.26,pipeline:0.25,team:0.22,processi:0.12,ricavi:0.09,marketing:0.05,sitoweb:0.01,ecommerce:0.00},
+    servizi_it:{vendite:0.25,pipeline:0.23,team:0.20,processi:0.12,ricavi:0.09,marketing:0.08,sitoweb:0.02,ecommerce:0.01},
+    servizi_logistica:{vendite:0.29,pipeline:0.22,team:0.18,processi:0.14,ricavi:0.09,marketing:0.06,sitoweb:0.01,ecommerce:0.01},
+    servizi_formazione:{vendite:0.25,pipeline:0.22,team:0.22,processi:0.10,ricavi:0.09,marketing:0.08,sitoweb:0.03,ecommerce:0.01},
+    ecommerce:{vendite:0.15,pipeline:0.14,team:0.10,processi:0.08,ricavi:0.10,marketing:0.22,sitoweb:0.12,ecommerce:0.09},
+    retail_digitale:{vendite:0.14,pipeline:0.13,team:0.09,processi:0.08,ricavi:0.09,marketing:0.24,sitoweb:0.13,ecommerce:0.10},
+  };
+  const pesiOrg = ORGANICA_PESI[settore] || ORGANICA_PESI[settore?.split('_')[0]] || {vendite:0.28,pipeline:0.20,team:0.17,processi:0.11,ricavi:0.09,marketing:0.09,sitoweb:0.04,ecommerce:0.02};
+  let crescitaOrg = 0;
+  DIMS_IDS.forEach(id => { crescitaOrg += (ORGANICA_CURVA[dims[id]||0]||0) * (pesiOrg[id]||0); });
+  crescitaOrg = Math.min(crescitaOrg, 0.08);
   let isSuggerito = false;
-  let targetsEff = targets;
-  if (attive.length === 0) {
-    isSuggerito = true;
-    targetsEff = {};
-    DIMS_IDS.forEach(id => { const c = dims[id]||0; targetsEff[id] = c < 5 ? c+1 : c; });
-  }
-  const attive2 = DIMS_IDS.filter(id => (targetsEff[id]||0) > 0 && (dims[id]||0) >= 0);
-  if (attive2.length === 0) return null;
+  let usaOrganica = false;
+  if (attive.length === 0) { isSuggerito = true; usaOrganica = true; }
+  const attive2 = DIMS_IDS.filter(id => !usaOrganica && (targets[id]||0) > (dims[id]||0));
+  if (attive2.length === 0 && !usaOrganica) return null;
 
   // Calcolo costi separando ricorrenti e una tantum
-  let costoRicorrenteMensile = 0; // somma mensile ricorrente di tutti gli step attivi
+  let costoRicorrenteMensile = 0;
   let costoUnaTantumTot = 0;      // somma una tantum di tutti gli step attivi
   const penalitaPerDim = {};
   attive.forEach(id => {
@@ -7404,7 +7424,7 @@ function _calcolaImpattoCumulativo(p) {
     fat, fatBase, ebitdaMargin,
     ebitdaMarginPct: ebitdaMargin ? Math.round(ebitdaMargin*1000)/10 : null,
     ebitdaBase,
-    nDimAttive: attive.length,
+    nDimAttive: usaOrganica ? DIMS_IDS.filter(id=>(dims[id]||0)>0).length : attive2.length,
     // Orizzonti fatturato
     fat6, fat12, fat24, fat36, fat48, fat60,
     pct6, pct12, pct24, pct36, pct48, pct60,
