@@ -492,12 +492,25 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 
       <!-- RADAR + TARGET -->
       <div id="radar-target-row" style="margin-bottom:20px">
-        <div class="radar-card">
+        <!-- RIGA 1: grafico barre + target -->
+        <div class="radar-card" style="margin-bottom:20px">
           <div style="display:grid;grid-template-columns:1fr 380px;gap:32px;align-items:stretch">
-            <!-- Radar -->
-            <div>
-              <div id="mega-grafico-section" style="margin-bottom:16px"></div>
+            <div><div id="mega-grafico-section"></div></div>
+            x-height:100%;overflow-y:auto;padding-right:6px">
+              <div class="card-title" style="margin-bottom:4px">Obiettivi per dimensione</div>
+              <div style="font-size:11px;color:var(--gray);margin-bottom:14px">Target personalizzati · si aggiorna in tempo reale</div>
+              <div id="target-editor-content"></div>
+            </div>
+          </div>
+        </div>
+      <
+          </div>
+        </div>
+        <!-- RIGA 2: radar + score -->
+        <div class="radar-card">
+          <div style="position:relative">
               <div style="position:sticky;top:16px">
+              
               <div class="card-title" style="margin-bottom:16px;display:flex;align-items:flex-start;justify-content:space-between">
                 Diagramma a ragnatela
                 <div id="radar-score-box" style="background:var(--bg3);border-radius:14px;padding:14px 18px;border:1px solid var(--border);min-width:160px">
@@ -539,14 +552,10 @@ input[type=range]{flex:1;accent-color:var(--gold)}
               </div>
             </div>
             <!-- Target editor -->
-            <div style="overflow-y:auto;max-height:100%;overflow-y:auto;padding-right:6px">
-              <div class="card-title" style="margin-bottom:4px">Obiettivi per dimensione</div>
-              <div style="font-size:11px;color:var(--gray);margin-bottom:14px">Target personalizzati · si aggiorna in tempo reale</div>
-              <div id="target-editor-content"></div>
-            </div>
+            <div style="overflow-y:auto;ma
           </div>
         </div>
-      </div>
+      </div>/div>
 
       <div class="card" id="card-cronistoria" style="display:none">
         <div class="card-title">Cronistoria crescita</div>
