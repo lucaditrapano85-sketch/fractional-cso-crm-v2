@@ -378,9 +378,16 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 .diag-result-item{background:var(--bg3);border-radius:var(--rs);padding:8px 12px;display:flex;align-items:center;justify-content:space-between}
 .diag-result-dim{font-size:11px;color:var(--gray)}
 .diag-result-score{font-size:14px;font-weight:700}
+.demo-banner{position:fixed;top:0;left:0;right:0;z-index:9999;background:#9A6E2E;color:#fff;text-align:center;font-size:12px;font-family:'DM Sans',sans-serif;padding:6px 16px;letter-spacing:.04em;display:flex;align-items:center;justify-content:center;gap:10px}
+.demo-banner strong{font-weight:600}
+.demo-banner span{opacity:.8}
 </style>
 </head>
 <body>
+<div class="demo-banner">
+  <strong>MODALITÀ DEMO</strong>
+  <span>Dati di esempio · nessuna modifica viene salvata</span>
+</div>
 
 <div class="toast" id="toast"></div>
 
@@ -496,12 +503,37 @@ input[type=range]{flex:1;accent-color:var(--gold)}
           <div style="display:grid;grid-template-columns:1fr 380px;gap:32px;align-items:start">
             <!-- Radar -->
             <div>
+              <div id="mega-grafico-section" style="margin-bottom:16px"></div>
+              <div style="position:sticky;top:16px">
               <div class="card-title" style="margin-bottom:16px;display:flex;align-items:flex-start;justify-content:space-between">
                 Diagramma a ragnatela
-                <div id="radar-score-box" style="text-align:center;background:var(--bg3);border-radius:12px;padding:8px 16px;min-width:80px;border:1px solid var(--border)">
-                  <div id="radar-score-num" style="font-size:42px;font-family:'DM Serif Display',serif;font-weight:700;line-height:1">—</div>
-                  <div style="font-size:9px;color:var(--gray);letter-spacing:.06em;text-transform:uppercase;margin-top:2px">/100</div>
-                  <div id="radar-score-label" style="font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-top:4px"></div>
+                <div id="radar-score-box" style="background:var(--bg3);border-radius:14px;padding:14px 18px;border:1px solid var(--border);min-width:160px">
+                  <!-- Score attuale / live -->
+                  <div style="display:flex;align-items:flex-end;gap:6px;margin-bottom:6px">
+                    <div style="flex:1">
+                      <div style="font-size:8px;color:var(--gray);letter-spacing:.07em;text-transform:uppercase;margin-bottom:2px">SCORE LIVE</div>
+                      <div style="display:flex;align-items:baseline;gap:3px">
+                        <div id="radar-score-num" style="font-size:44px;font-family:'DM Serif Display',serif;font-weight:700;line-height:1">—</div>
+                        <div style="font-size:13px;color:var(--gray);margin-bottom:4px">/100</div>
+                      </div>
+                      <div id="radar-score-label" style="font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-top:1px"></div>
+                    </div>
+                  </div>
+                  <!-- Barra progressione attuale → target -->
+                  <div id="radar-score-bar-wrap" style="display:none;margin-top:8px">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+                      <div style="font-size:8px;color:var(--gray)">Oggi</div>
+                      <div style="font-size:8px;color:var(--gold)">Con il piano</div>
+                    </div>
+                    <div style="position:relative;height:6px;background:var(--border2);border-radius:4px;overflow:hidden">
+                      <div id="radar-score-bar-live" style="position:absolute;left:0;top:0;height:100%;border-radius:4px;transition:width .4s ease"></div>
+                      <div id="radar-score-bar-target" style="position:absolute;left:0;top:0;height:100%;border-radius:4px;opacity:.35"></div>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;margin-top:4px">
+                      <div id="radar-score-base-val" style="font-size:9px;font-weight:600;color:var(--gray)"></div>
+                      <div id="radar-score-target" style="font-size:9px;font-weight:700;color:var(--gold)"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="radar-wrap" style="max-width:100%;padding-bottom:100%">
@@ -511,15 +543,21 @@ input[type=range]{flex:1;accent-color:var(--gold)}
                 <div class="radar-legend-item"><div class="radar-legend-dot" style="background:rgba(74,154,106,.35);border:1.5px solid #4A9A6A"></div>Stato attuale</div>
                 <div class="radar-legend-item"><div class="radar-legend-dot" style="background:transparent;border:1.5px dashed #C9973A"></div>Obiettivo</div>
               </div>
+              </div>
             </div>
             <!-- Target editor -->
-            <div>
+            <div style="overflow-y:auto;max-height:calc(100vh - 80px);padding-right:6px">
               <div class="card-title" style="margin-bottom:4px">Obiettivi per dimensione</div>
               <div style="font-size:11px;color:var(--gray);margin-bottom:14px">Target personalizzati · si aggiorna in tempo reale</div>
               <div id="target-editor-content"></div>
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="card" id="card-cronistoria" style="display:none">
+        <div class="card-title">Cronistoria crescita</div>
+        <div id="cronistoria-content"></div>
       </div>
 
       <div class="card">
@@ -748,10 +786,98 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 <script>
 // -- SUPABASE ----------------------------------------------
 const { createClient } = supabase;
-const sb = createClient(
-  'https://glxwvvtdybzkxtobsiin.supabase.co',
-  'sb_publishable_iwQD1eYCxSQzqHFsLarCDQ_UTsZvGlo'
-);
+// -- DEMO MODE: Supabase rimosso, dati hardcoded --
+const DEMO_MODE = true;
+
+// Calcola score da un oggetto dims generico
+function calcScoreFromDims(dims) {
+  const w = {vendite:18,pipeline:18,team:14,processi:12,ricavi:14,marketing:12,sitoweb:6,ecommerce:6};
+  let total = 0;
+  for (const [k,wt] of Object.entries(w)) total += ((dims[k]||0)/5)*wt;
+  return Math.round(total);
+}
+
+// Calcola score target dai targets impostati
+function calcScoreTarget(p) {
+  const w = {vendite:18,pipeline:18,team:14,processi:12,ricavi:14,marketing:12,sitoweb:6,ecommerce:6};
+  const dims = p.dims || {};
+  const targets = p.targets || {};
+  let total = 0;
+  for (const [k,wt] of Object.entries(w)) {
+    const tgt = targets[k] || dims[k] || 0;
+    total += (tgt/5)*wt;
+  }
+  return Math.round(total);
+}
+
+// Calcola score live: aggiorna i dims in base alle azioni completate
+// Ogni azione completata su uno step fa avanzare proporzionalmente il livello
+function calcScoreLive(p) {
+  const dims = {...(p.dims || {})};
+  const targets = p.targets || {};
+  const azioniDone = p.azioni_completate || {};
+  const azioniCustom = p.azioni_custom || {};
+  const settore = p.settore || '';
+  const DIMS_IDS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+
+  DIMS_IDS.forEach(dimId => {
+    const cur = dims[dimId] || 0;
+    const tgt = targets[dimId] || cur;
+    if (tgt <= cur) return;
+    // Per ogni step, conta azioni totali e completate
+    for (let step = cur; step < tgt; step++) {
+      const stepKey = dimId + '_' + step + '_' + (step+1);
+      const azioniCustomList = (azioniCustom[stepKey] || []);
+      // Azioni predefinite: 1 per step (la principale)
+      const totAzioni = 1 + azioniCustomList.length;
+      // Azioni completate: conta quelle flaggate
+      let completate = 0;
+      const doneKeys = azioniDone[stepKey] || {};
+      if (doneKeys.main) completate++;
+      azioniCustomList.forEach((_, i) => { if (doneKeys['custom_' + i]) completate++; });
+      // Avanza il livello proporzionalmente
+      if (totAzioni > 0) {
+        dims[dimId] = (dims[dimId] || cur) + (completate / totAzioni);
+      }
+    }
+  });
+  return calcScoreFromDims(dims);
+}
+
+// Salva snapshot score_history su Supabase
+async function salvaScoreSnapshot(p, evento, nota) {
+  const scoreAttuale = calcScore(p);
+  const scoreLive = calcScoreLive(p);
+  const history = p.score_history || [];
+  const snapshot = {
+    data: new Date().toISOString(),
+    score: scoreLive,
+    score_base: scoreAttuale,
+    dims: {...(p.dims || {})},
+    targets: {...(p.targets || {})},
+    evento: evento || 'Aggiornamento',
+    nota: nota || ''
+  };
+  // Evita duplicati a distanza di meno di 1 minuto con lo stesso score
+  const ultimo = history[history.length - 1];
+  if (ultimo && Math.abs(new Date(ultimo.data) - new Date()) < 60000 && ultimo.score === scoreLive) return;
+  const newHistory = [...history, snapshot];
+  await sb.from('prospects').update({score_history: newHistory}).eq('id', p.id);
+  const i = prospects.findIndex(x => x.id === p.id);
+  if (i >= 0) prospects[i].score_history = newHistory;
+}
+
+const _sbNoop = () => Promise.resolve({data:null, error:null});
+const _sbChain = { eq: _sbNoop, single: _sbNoop, order: () => _sbChain, select: () => _sbChain, then: (fn) => Promise.resolve({data:null,error:null}).then(fn) };
+const sb = {
+  from: () => ({
+    select: () => Object.assign(Promise.resolve({data:[], error:null}), _sbChain),
+    insert: () => Object.assign(Promise.resolve({data:null, error:null}), _sbChain),
+    update: (d) => ({ eq: _sbNoop, select: () => _sbChain }),
+    delete: () => ({ eq: _sbNoop }),
+    upsert: _sbNoop,
+  })
+};
 
 // -- MARKET DATA -------------------------------------------
 const MARKET = {
@@ -1206,7 +1332,7 @@ const MARKET_DETAIL = {
 
   manifatturiero_meccanica: {
     ciclo_fasi: [
-      { fase: 'Primo contatto', durata: '1-2 sett.', note: 'Spesso da fiera o referral. Difficile il freddo.' },
+      { stato: 'contattato', durata: '1-2 sett.', note: 'Spesso da fiera o referral. Difficile il freddo.' },
       { fase: 'Richiesta offerta / capitolato', durata: '2-4 sett.', note: 'Il cliente prepara specifiche tecniche. Fase lunga.' },
       { fase: 'Offerta tecnica + commerciale', durata: '1-2 sett.', note: 'Spesso si compete con 3-5 fornitori.' },
       { fase: 'Negoziazione e validazione', durata: '2-6 sett.', note: 'Campionatura, test, approvazione qualita.' },
@@ -4434,7 +4560,93 @@ function assignNextColor() {
 const STATUS_LABELS = {nuovo:'Nuovo',contattato:'Contattato',diagnosi:'Diagnosi',proposta:'Proposta',chiuso:'Chiuso'};
 
 // -- STATE -------------------------------------------------
-let prospects = [];
+let prospects = [
+  {
+    id: 'demo-001',
+    nome: 'Ferramenta Valsesia S.r.l.',
+    settore: 'manifatturiero_meccanica',
+    stato: 'proposta',
+    referente: 'Marco Galli',
+    ruolo: 'Titolare',
+    email: 'mgalli@valsesia.it',
+    telefono: '+39 0163 42811',
+    dipendenti: '28',
+    fatturato: '3.2M',
+    score_fit: 78,
+    note: 'Azienda metalmeccanica di 2ª generazione. Nessuna struttura commerciale formalizzata. Grande interesse per sistemi di prospecting B2B.',
+    dims: {vendite:2, pipeline:1, team:2, processi:1, ricavi:3, marketing:1, sitoweb:2, ecommerce:0},
+    dims_answers: {},
+    created_at: '2026-02-10T09:00:00Z',
+    next_action: 'Follow-up proposta',
+    next_action_date: '2026-03-18',
+    fatturato_anno_1: 3200000,
+    fatturato_anno_2: 2850000,
+    fatturato_anno_1_label: '2024',
+    ebitda: 352000,
+    margine_pct: 11.0,
+    utile_netto: 198000,
+    costi_fissi_mensili: 38000,
+    score_history: [{"data": "2025-12-17T08:56:28.878347", "score": 28, "score_base": 28, "dims": {}, "targets": {}, "evento": "Prima valutazione", "nota": "Score base all'ingresso"}, {"data": "2025-12-31T08:56:28.878347", "score": 28, "score_base": 28, "dims": {}, "targets": {}, "evento": "Target aggiornati", "nota": "Definiti obiettivi per Vendite e Pipeline"}, {"data": "2026-01-16T08:56:28.878347", "score": 31, "score_base": 28, "dims": {}, "targets": {}, "evento": "Azione completata", "nota": "Primo agente di zona contrattualizzato"}, {"data": "2026-02-10T08:56:28.878347", "score": 35, "score_base": 28, "dims": {}, "targets": {}, "evento": "Azione completata", "nota": "CRM attivato con i primi 50 contatti"}, {"data": "2026-03-02T08:56:28.878347", "score": 38, "score_base": 28, "dims": {}, "targets": {}, "evento": "Target aggiornati", "nota": "Alzato target Marketing a 3"}],
+  },
+  {
+    id: 'demo-002',
+    nome: 'Distribuzione Nord Est S.p.A.',
+    settore: 'commercio_distribuzione_industriale',
+    stato: 'contattato',
+    referente: 'Silvia Trevisan',
+    ruolo: 'Direttore Generale',
+    email: 's.trevisan@dnest.it',
+    telefono: '+39 049 8834522',
+    dipendenti: '65',
+    fatturato: '11.4M',
+    score_fit: 85,
+    note: 'Distributore regionale con rete agenti non coordinata. Forte pressione margini. Cercano struttura commerciale senior senza assumere.',
+    dims: {vendite:3, pipeline:2, team:2, processi:2, ricavi:3, marketing:1, sitoweb:2, ecommerce:1},
+    dims_answers: {},
+    created_at: '2026-02-20T10:30:00Z',
+    next_action: 'Call di discovery',
+    next_action_date: '2026-03-17',
+    fatturato_anno_1: 8700000,
+    fatturato_anno_2: 7900000,
+    fatturato_anno_1_label: '2024',
+    ebitda: 870000,
+    margine_pct: 10.0,
+    utile_netto: 520000,
+    costi_fissi_mensili: 95000,
+    score_history: [{"data": "2025-12-17T08:56:28.878381", "score": 42, "score_base": 42, "dims": {}, "targets": {}, "evento": "Prima valutazione", "nota": "Score base all'ingresso"}, {"data": "2025-12-24T08:56:28.878381", "score": 42, "score_base": 42, "dims": {}, "targets": {}, "evento": "Target aggiornati", "nota": "Definiti target su 6 dimensioni"}, {"data": "2026-01-07T08:56:28.878381", "score": 45, "score_base": 42, "dims": {}, "targets": {}, "evento": "Azione completata", "nota": "Pipeline CRM migrato su HubSpot Starter"}, {"data": "2026-01-31T08:56:28.878381", "score": 48, "score_base": 42, "dims": {}, "targets": {}, "evento": "Azione completata", "nota": "Listino prezzi per fascia cliente implementato"}, {"data": "2026-02-15T08:56:28.878381", "score": 52, "score_base": 42, "dims": {}, "targets": {}, "evento": "Azione completata", "nota": "Newsletter mensile clienti avviata"}],
+  },
+  {
+    id: 'demo-003',
+    nome: 'Studio Legale Marchetti & Partners',
+    settore: 'servizi_consulenza',
+    stato: 'diagnosi',
+    referente: 'Avv. Lorenzo Marchetti',
+    ruolo: 'Managing Partner',
+    email: 'l.marchetti@marchetti-law.it',
+    telefono: '+39 02 7639451',
+    dipendenti: '14',
+    fatturato: '1M-2M',
+    score_fit: 62,
+    note: 'Studio in crescita, vuole strutturare il business development. Approccio culturalmente distante dalla "vendita". Da lavorare sul framing.',
+    dims: {vendite:1, pipeline:1, team:2, processi:2, ricavi:3, marketing:2, sitoweb:3, ecommerce:0},
+    targets: {vendite:3, pipeline:2, team:3, processi:3, ricavi:4, marketing:3, sitoweb:4, ecommerce:1},
+    target_scadenze: {},
+    azioni_completate: {},
+    azioni_custom: {},
+    dims_answers: {},
+    created_at: '2026-03-01T14:00:00Z',
+    next_action: 'Invio case study',
+    next_action_date: '2026-03-20',
+    fatturato_anno_1: 1250000,
+    fatturato_anno_2: 1180000,
+    fatturato_anno_1_label: '2024',
+    ebitda: 262500,
+    margine_pct: 21.0,
+    utile_netto: 175000,
+    costi_fissi_mensili: 22000,
+    score_history: [{"data": "2025-12-17T11:24:19.354680", "score": 22, "score_base": 22, "dims": {}, "targets": {}, "evento": "Prima valutazione", "nota": "Score base all'ingresso"}, {"data": "2025-12-27T11:24:19.354680", "score": 22, "score_base": 22, "dims": {}, "targets": {}, "evento": "Target aggiornati", "nota": "Definiti target minimi su 4 dimensioni"}, {"data": "2026-01-11T11:24:19.354680", "score": 25, "score_base": 22, "dims": {}, "targets": {}, "evento": "Azione completata", "nota": "Profilo LinkedIn dello studio ottimizzato"}]
+  }
+];
 let currentId = null;
 let editingId = null;
 let currentCalls = [];
@@ -4581,7 +4793,6 @@ function renderDashboard() {
   }).join('');
 }
 
-// -- PROSPECT DETAIL ---------------------------------------
 async function renderProspectDetail(id) {
   const p = prospects.find(x=>x.id===id);
   if(!p) return;
@@ -4631,13 +4842,42 @@ async function renderProspectDetail(id) {
   var rsn = document.getElementById('radar-score-num');
   var rsl = document.getElementById('radar-score-label');
   var rsb = document.getElementById('radar-score-box');
-  if (rsn) { rsn.textContent = s || '—'; rsn.style.color = s ? sc.text : 'var(--gray)'; }
-  if (rsl) { rsl.textContent = s ? sc.label : ''; rsl.style.color = s ? sc.text : 'var(--gray)'; }
-  if (rsb && s) {
-    rsb.style.borderColor = sc.border;
-    // Sfondi chiari correlati al colore score
-    var bgChiaro = s >= 70 ? '#e8f5ee' : s >= 45 ? '#fdf3e3' : '#fdecea';
-    rsb.style.background = bgChiaro;
+  // Score live e target
+  const p_live = prospects.find(x => x.id === currentId);
+  const sBase = p_live ? calcScore(p_live) : s;
+  const sLive = p_live ? calcScoreLive(p_live) : s;
+  const sTgt  = p_live ? calcScoreTarget(p_live) : s;
+  const scLive = scoreColor(sLive);
+
+  // Numero grande
+  if (rsn) { rsn.textContent = sLive || '—'; rsn.style.color = sLive ? scLive.text : 'var(--gray)'; }
+  if (rsl) { rsl.textContent = sLive ? scLive.label : ''; rsl.style.color = sLive ? scLive.text : 'var(--gray)'; }
+  if (rsb && sLive) {
+    rsb.style.borderColor = scLive.border;
+    rsb.style.background = sLive >= 70 ? '#e8f5ee' : sLive >= 45 ? '#fdf3e3' : '#fdecea';
+  }
+
+  // Barra progressione
+  const barWrap = document.getElementById('radar-score-bar-wrap');
+  const barLive = document.getElementById('radar-score-bar-live');
+  const barTarget = document.getElementById('radar-score-bar-target');
+  const baseVal = document.getElementById('radar-score-base-val');
+  const rstEl = document.getElementById('radar-score-target');
+
+  if (barWrap && sTgt > 0) {
+    barWrap.style.display = 'block';
+    const pctLive = (sLive / 100 * 100).toFixed(1) + '%';
+    const pctTgt  = (sTgt  / 100 * 100).toFixed(1) + '%';
+    if (barLive)  { barLive.style.width = pctLive; barLive.style.background = scLive.text; }
+    if (barTarget){ barTarget.style.width = pctTgt; barTarget.style.background = 'var(--gold)'; }
+    if (baseVal)  { baseVal.textContent = sBase + '/100'; }
+    if (rstEl && sTgt > sLive) {
+      rstEl.textContent = '↑ ' + sTgt + ' con il piano';
+    } else if (rstEl) {
+      rstEl.textContent = '';
+    }
+  } else if (barWrap) {
+    barWrap.style.display = 'none';
   }
   document.getElementById('det-verdesc').textContent=s>=70
     ?'Struttura solida su tutti i fronti. Focus su ottimizzazione e scala.'
@@ -4666,6 +4906,13 @@ async function renderProspectDetail(id) {
   setTimeout(() => {
     drawRadar(p.dims || {}, p.targets || {});
     renderTargetEditor(p);
+    // Mega-grafico cumulativo sotto la ragnatela
+    const megaSection = document.getElementById('mega-grafico-section');
+    if (megaSection) megaSection.innerHTML = _buildMegaGrafico(p);
+    // Salva snapshot iniziale se non ha ancora storia
+    if (!p.score_history || p.score_history.length === 0) {
+      salvaScoreSnapshot(p, 'Prima valutazione');
+    }
   }, 50);
 
   document.getElementById('det-info-content').innerHTML=`
@@ -5039,7 +5286,9 @@ function openEditProspect() {
   document.getElementById('f-tel').value=p.telefono||'';
   const _fatMap={'<500k':'250k-500k','1-5M':'1M-2M','5-20M':'5M-20M'};
   const _fat=p.fatturato||'500k-1M';
-  document.getElementById('f-fat').value=_fatMap[_fat]||_fat;
+  // Usa fatturato_anno_1 se disponibile per determinare la fascia corretta
+  const _fatEffettivo = _fasciaFromAnno1(p.fatturato_anno_1) || _fatMap[_fat] || _fat;
+  document.getElementById('f-fat').value=_fatEffettivo;
   document.getElementById('f-note').value=p.note||'';
   buildSliders(p.dims||{});
   openModal('modal-prospect');
@@ -5160,7 +5409,7 @@ function _buildReportHTML(p) {
       const costo = _getCosto(settore, d.id, cur, cur + 1);
       const scad = scadenze[d.id] || null;
       const impattoRaw = _getImpatto(settore, d.id, cur, cur + 1);
-      const impattoCalc = _calcolaImpatto(impattoRaw, p.fatturato, p.fatturato_anno_1);
+      const impattoCalc = _calcolaImpatto(impattoRaw, p.fatturato, p.fatturato_anno_1, p.ebitda, p.margine_pct, p.utile_netto);
       return azione ? { dim: d.label, dimId: d.id, cur, tgt, azione, costo, scad, impatto: impattoCalc } : null;
     })
     .filter(Boolean);
@@ -5244,18 +5493,50 @@ function _buildReportHTML(p) {
           <div style="flex:1">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;flex-wrap:wrap">
               <div style="font-size:10px;color:#B8842E;letter-spacing:.06em;text-transform:uppercase;font-weight:600">${a.dim} &nbsp;${a.cur}/5 → ${a.cur+1}/5</div>
-              ${a.costo ? '<div style="font-size:10px;color:#4A9A6A;background:#E8F5EE;border-radius:20px;padding:1px 8px;font-weight:600">≈ '+a.costo+' €/mese</div>' : ''}
+               ${a.costo ? '<div style="font-size:10px;color:#4A9A6A;background:#E8F5EE;border-radius:20px;padding:1px 8px;font-weight:600">≈ ' + _formatEur(a.costo.r) + '€/mese' + (a.costo.u > 0 ? ' + ' + _formatEur(a.costo.u) + '€ setup' : '') + '</div>' : ''}
               ${a.scad ? '<div style="font-size:10px;color:#666;background:#F0EDE6;border-radius:20px;padding:1px 8px">entro '+new Date(a.scad).toLocaleDateString("it-IT",{day:"2-digit",month:"short",year:"numeric"})+'</div>' : ''}
             </div>
-            ${a.impatto ? '<div style="margin:4px 0 5px;padding:6px 10px;background:#F1F8E9;border-radius:6px;border-left:3px solid #66BB6A">' +
-              '<div style="font-size:9px;color:#2E7D32;font-weight:700;letter-spacing:.05em;margin-bottom:3px">IMPATTO ATTESO SUL FATTURATO</div>' +
-              '<div style="display:flex;gap:10px;flex-wrap:wrap">' +
-              '<div style="font-size:10px;color:#1B5E20"><b>6m:</b> +'+a.impatto.pct_6m[0]+'–'+a.impatto.pct_6m[1]+'%' + (a.impatto.eur_6m[0]>0 ? ' (+'+_formatEur(a.impatto.eur_6m[0])+'–'+_formatEur(a.impatto.eur_6m[1])+'€)' : '') + '</div>' +
-              '<div style="font-size:10px;color:#1B5E20"><b>12m:</b> +'+a.impatto.pct_12m[0]+'–'+a.impatto.pct_12m[1]+'%' + (a.impatto.eur_12m[0]>0 ? ' (+'+_formatEur(a.impatto.eur_12m[0])+'–'+_formatEur(a.impatto.eur_12m[1])+'€)' : '') + '</div>' +
-              '<div style="font-size:10px;color:#1B5E20"><b>24m:</b> +'+a.impatto.pct_24m[0]+'–'+a.impatto.pct_24m[1]+'%' + (a.impatto.eur_24m[0]>0 ? ' (+'+_formatEur(a.impatto.eur_24m[0])+'–'+_formatEur(a.impatto.eur_24m[1])+'€)' : '') + '</div>' +
-              '</div>' +
-              '<div style="font-size:9px;color:#558B2F;margin-top:3px;font-style:italic">'+a.impatto.note+'</div>' +
-            '</div>' : ''}
+            ${a.impatto ? (()=>{
+              const ic = a.impatto;
+              const hasE = ic.m6.ebitdaMin !== null;
+              return '<div style="margin:5px 0 6px;border:1px solid #C8E6C9;border-radius:6px;overflow:hidden;font-size:10px">' +
+                '<div style="background:#2E7D32;color:#fff;padding:4px 10px;font-size:9px;font-weight:700;letter-spacing:.06em;display:flex;justify-content:space-between">' +
+                  '<span>IMPATTO STIMATO SUL FATTURATO</span>' +
+                  '<span style="font-weight:400;opacity:.85">Base: '+_formatEur(ic.fatBase)+'€'+(ic.ebitdaMarginPct?' · EBITDA margin: '+ic.ebitdaMarginPct+'%':'')+'</span>' +
+                '</div>' +
+                '<table style="width:100%;border-collapse:collapse;background:#fff">' +
+                  '<tr style="background:#F1F8E9">' +
+                    '<th style="padding:3px 8px;font-size:8px;color:#558B2F;text-align:left;font-weight:700;border-bottom:1px solid #C8E6C9"></th>' +
+                    '<th style="padding:3px 8px;font-size:8px;color:#558B2F;border-bottom:1px solid #C8E6C9;border-left:1px solid #C8E6C9">CRESCITA %</th>' +
+                    '<th style="padding:3px 8px;font-size:8px;color:#558B2F;border-bottom:1px solid #C8E6C9;border-left:1px solid #C8E6C9">FATTURATO TOTALE</th>' +
+                    '<th style="padding:3px 8px;font-size:8px;color:#558B2F;border-bottom:1px solid #C8E6C9;border-left:1px solid #C8E6C9">INCREMENTO</th>' +
+                    (hasE ? '<th style="padding:3px 8px;font-size:8px;color:#558B2F;border-bottom:1px solid #C8E6C9;border-left:1px solid #C8E6C9">EBITDA PROIETTATO</th>' : '') +
+                  '</tr>' +
+                  '<tr>' +
+                    '<td style="padding:4px 8px;font-size:9px;font-weight:700;color:#1B5E20;border-bottom:1px solid #E8F5E9">6 mesi</td>' +
+                    '<td style="padding:4px 8px;font-size:10px;font-weight:700;color:#2E7D32;border-bottom:1px solid #E8F5E9;border-left:1px solid #E8F5E9">+'+ic.m6.pctMin+'–'+ic.m6.pctMax+'%</td>' +
+                    '<td style="padding:4px 8px;font-size:9px;color:#1B5E20;border-bottom:1px solid #E8F5E9;border-left:1px solid #E8F5E9">'+_formatEur(ic.m6.fatMin)+'–'+_formatEur(ic.m6.fatMax)+'€</td>' +
+                    '<td style="padding:4px 8px;font-size:9px;color:#388E3C;border-bottom:1px solid #E8F5E9;border-left:1px solid #E8F5E9">+'+_formatEur(ic.m6.deltaFatMin)+'–'+_formatEur(ic.m6.deltaFatMax)+'€</td>' +
+                    (hasE ? '<td style="padding:4px 8px;font-size:9px;color:#1B5E20;border-bottom:1px solid #E8F5E9;border-left:1px solid #E8F5E9">'+_formatEur(ic.m6.ebitdaMin)+'–'+_formatEur(ic.m6.ebitdaMax)+'€</td>' : '') +
+                  '</tr>' +
+                  '<tr style="background:#F9FBF9">' +
+                    '<td style="padding:4px 8px;font-size:9px;font-weight:700;color:#1B5E20;border-bottom:1px solid #E8F5E9">12 mesi</td>' +
+                    '<td style="padding:4px 8px;font-size:10px;font-weight:700;color:#2E7D32;border-bottom:1px solid #E8F5E9;border-left:1px solid #E8F5E9">+'+ic.m12.pctMin+'–'+ic.m12.pctMax+'%</td>' +
+                    '<td style="padding:4px 8px;font-size:9px;color:#1B5E20;border-bottom:1px solid #E8F5E9;border-left:1px solid #E8F5E9">'+_formatEur(ic.m12.fatMin)+'–'+_formatEur(ic.m12.fatMax)+'€</td>' +
+                    '<td style="padding:4px 8px;font-size:9px;color:#388E3C;border-bottom:1px solid #E8F5E9;border-left:1px solid #E8F5E9">+'+_formatEur(ic.m12.deltaFatMin)+'–'+_formatEur(ic.m12.deltaFatMax)+'€</td>' +
+                    (hasE ? '<td style="padding:4px 8px;font-size:9px;color:#1B5E20;border-bottom:1px solid #E8F5E9;border-left:1px solid #E8F5E9">'+_formatEur(ic.m12.ebitdaMin)+'–'+_formatEur(ic.m12.ebitdaMax)+'€</td>' : '') +
+                  '</tr>' +
+                  '<tr>' +
+                    '<td style="padding:4px 8px;font-size:9px;font-weight:700;color:#1B5E20">24 mesi</td>' +
+                    '<td style="padding:4px 8px;font-size:10px;font-weight:700;color:#2E7D32;border-left:1px solid #E8F5E9">+'+ic.m24.pctMin+'–'+ic.m24.pctMax+'%</td>' +
+                    '<td style="padding:4px 8px;font-size:9px;color:#1B5E20;border-left:1px solid #E8F5E9">'+_formatEur(ic.m24.fatMin)+'–'+_formatEur(ic.m24.fatMax)+'€</td>' +
+                    '<td style="padding:4px 8px;font-size:9px;color:#388E3C;border-left:1px solid #E8F5E9">+'+_formatEur(ic.m24.deltaFatMin)+'–'+_formatEur(ic.m24.deltaFatMax)+'€</td>' +
+                    (hasE ? '<td style="padding:4px 8px;font-size:9px;color:#1B5E20;border-left:1px solid #E8F5E9">'+_formatEur(ic.m24.ebitdaMin)+'–'+_formatEur(ic.m24.ebitdaMax)+'€</td>' : '') +
+                  '</tr>' +
+                '</table>' +
+                '<div style="padding:4px 10px;background:#E8F5E9;font-size:8px;color:#558B2F;font-style:italic;border-top:1px solid #C8E6C9">'+ic.note+'</div>' +
+              '</div>';
+            })() : ''}
             <div style="font-size:12px;color:#1A1A1A;line-height:1.5">${a.azione}</div>
           </div>
           <div style="width:16px;height:16px;border-radius:4px;border:2px solid #D0C9BE;flex-shrink:0;margin-top:3px"></div>
@@ -5265,8 +5546,8 @@ function _buildReportHTML(p) {
         <div style="font-size:11px;color:#888">Investimento mensile stimato:</div>
         <div style="font-size:13px;font-weight:700;color:#B8842E">${(()=>{
           const tt=priorityActions.filter(a=>a.costo).map(a=>{
-            const pp=a.costo.split('\u2013');
-            return pp.length<2?[0,0]:[parseInt(pp[0].replace(/[^0-9]/g,'')),parseInt(pp[1].replace(/[^0-9]/g,''))];
+            const c = a.costo;
+            return [c.r || 0, (c.r || 0) + Math.round((c.u || 0) / 12)];
           });
           if(!tt.length)return '—';
           return tt.reduce((s,t)=>s+t[0],0).toLocaleString('it-IT')+'–'+tt.reduce((s,t)=>s+t[1],0).toLocaleString('it-IT')+' €/mese';
@@ -6150,7 +6431,7 @@ const FIN_FORMS = {
       { id:'leasing_note', label:'Note leasing/finanziamenti', fmt:'text', placeholder:'es. Auto aziendale + macchinario' },
       { id:'banche_riferimento', label:'Banche di riferimento', fmt:'text', placeholder:'es. Intesa, UniCredit' },
       { id:'utile_netto', label:'Utile netto', fmt:'euro' },
-      { id:'ebitda', label:'EBITDA', fmt:'euro' },
+      { id:'ebitda', label:'EBITDA (calcolato)', fmt:'euro', readonly: true },
       { id:'margine_pct', label:'Margine % dichiarato', fmt:'pct' },
     ],
     bools: [{ id:'immobili_proprieta', label:'Immobili di proprieta' }],
@@ -6216,6 +6497,19 @@ const FIN_FORMS = {
   }
 };
 
+function renderCronistoria(p) {
+  const card = document.getElementById('card-cronistoria');
+  const container = document.getElementById('cronistoria-content');
+  if (!card || !container) return;
+  const history = p.score_history || [];
+  if (history.length === 0) {
+    card.style.display = 'none';
+    return;
+  }
+  card.style.display = 'block';
+  container.innerHTML = _buildCronistoria(p);
+}
+
 function openFinModal(tab) {
   const p = prospects.find(x => x.id === currentId);
   if (!p) return;
@@ -6264,6 +6558,7 @@ async function saveFinancials() {
   cfg.fields.forEach(f => {
     const el = document.getElementById('fin-' + f.id);
     if (!el) return;
+    if (f.readonly) return; // campo calcolato, non salvare
     const val = el.value.trim();
     if (f.fmt === 'euro' || f.fmt === 'pct') {
       updates[f.id] = val !== '' ? parseFloat(val) : null;
@@ -6286,12 +6581,38 @@ async function saveFinancials() {
     if (error) throw error;
     const i = prospects.findIndex(x => x.id === currentId);
     prospects[i] = {...prospects[i], ...updates};
+
+    // Auto-calcolo EBITDA dai dati finanziari inseriti
+    // Priorità: ebitda esplicito > calcolo da cogs + costi fissi > stima da utile netto
+    const pi = prospects[i];
+    // Ricalcola EBITDA se la calcolatrice P&L ha dati (cogs + costi fissi)
+    // oppure se ebitda non è ancora compilato ma ci sono dati sufficienti
+    const hasPLData = pi.costi_fissi_mensili && pi.fatturato_anno_1 && (pi.cogs_pct || pi.cogs_val);
+    if (pi.fatturato_anno_1 && (!pi.ebitda || hasPLData)) {
+      let ebitdaCalcolato = null;
+      if (hasPLData) {
+        const cogs = pi.cogs_val > 0 ? pi.cogs_val : pi.fatturato_anno_1 * pi.cogs_pct / 100;
+        const margineLordo = pi.fatturato_anno_1 - cogs;
+        ebitdaCalcolato = Math.round((margineLordo - pi.costi_fissi_mensili * 12) / 1000) * 1000;
+      } else if (pi.utile_netto && pi.fatturato_anno_1) {
+        // Stima EBITDA: utile netto + ~4% ammortamenti tipici PMI
+        ebitdaCalcolato = Math.round((pi.utile_netto + pi.fatturato_anno_1 * 0.04) / 1000) * 1000;
+      } else if (pi.margine_pct && pi.fatturato_anno_1) {
+        ebitdaCalcolato = Math.round(pi.fatturato_anno_1 * pi.margine_pct / 100 / 1000) * 1000;
+      }
+      if (ebitdaCalcolato !== null && ebitdaCalcolato > 0) {
+        prospects[i].ebitda = ebitdaCalcolato;
+        await sb.from('prospects').update({ebitda: ebitdaCalcolato}).eq('id', currentId);
+      }
+    }
+
     // Se fatturato_anno_1 aggiornato → aggiorna anche la fascia stimata
     if (updates.fatturato_anno_1) {
       const nuovaFascia = _fasciaFromAnno1(updates.fatturato_anno_1);
       if (nuovaFascia && prospects[i].fatturato !== nuovaFascia) {
         prospects[i].fatturato = nuovaFascia;
         await sb.from('prospects').update({fatturato: nuovaFascia}).eq('id', currentId);
+        renderProspectDetail(currentId);
       }
     }
     showToast('Dati salvati');
@@ -6300,6 +6621,7 @@ async function saveFinancials() {
     renderStruttura(prospects[i]);
     renderCommercialeData(prospects[i]);
     renderStrategico(prospects[i]);
+    renderCronistoria(prospects[i]);
   } catch(e) {
     showToast('Errore: ' + e.message, 'error');
   } finally {
@@ -6404,10 +6726,20 @@ function _getAzionePredefinita(settore, dimId, fromStep, toStep) {
 
 function _getCosto(settore, dimId, fromStep, toStep) {
   const chiave = fromStep + '-' + toStep;
-  if (COSTI_BY_SETTORE[settore] && COSTI_BY_SETTORE[settore][dimId] && COSTI_BY_SETTORE[settore][dimId][chiave]) {
-    return COSTI_BY_SETTORE[settore][dimId][chiave];
+  if (COSTI_BY_SETTORE[settore]?.[dimId]?.[chiave]) {
+    return COSTI_BY_SETTORE[settore][dimId][chiave]; // {r: ricorrente_mensile, u: una_tantum}
   }
   return null;
+}
+
+function _getCostoLabel(settore, dimId, fromStep, toStep) {
+  // Restituisce stringa leggibile per il badge nel UI
+  const c = _getCosto(settore, dimId, fromStep, toStep);
+  if (!c) return null;
+  const parts = [];
+  if (c.r > 0) parts.push(_formatEur(c.r) + '€/mese');
+  if (c.u > 0) parts.push(_formatEur(c.u) + '€ setup');
+  return parts.join(' + ');
 }
 
 function _getImpatto(settore, dimId, fromStep, toStep) {
@@ -6430,27 +6762,1053 @@ function _fasciaFromAnno1(fatturato_anno_1) {
   return '5M-20M';
 }
 
-function _calcolaImpatto(impatto, fatturatoPStr, fatturato_anno_1) {
+var PESI_BY_SETTORE = 
+{
+  "manifatturiero_meccanica":        {"vendite":28,"pipeline":12,"team":12,"processi":10,"ricavi":10,"marketing":14,"sitoweb":8,"ecommerce":6},
+  "manifatturiero_automotive":       {"vendite":30,"pipeline":14,"team":12,"processi":11,"ricavi":11,"marketing":12,"sitoweb":6,"ecommerce":4},
+  "manifatturiero_packaging":        {"vendite":26,"pipeline":11,"team":11,"processi":10,"ricavi":10,"marketing":16,"sitoweb":9,"ecommerce":7},
+  "manifatturiero_cterzi":           {"vendite":30,"pipeline":13,"team":13,"processi":12,"ricavi":10,"marketing":12,"sitoweb":7,"ecommerce":3},
+  "manifatturiero_elettromeccanica": {"vendite":28,"pipeline":12,"team":12,"processi":11,"ricavi":12,"marketing":13,"sitoweb":8,"ecommerce":4},
+  "manifatturiero_tessile":          {"vendite":30,"pipeline":10,"team":11,"processi":8, "ricavi":10,"marketing":20,"sitoweb":7,"ecommerce":4},
+  "servizi_consulenza":              {"vendite":25,"pipeline":18,"team":15,"processi":8, "ricavi":12,"marketing":14,"sitoweb":6,"ecommerce":2},
+  "servizi_it":                      {"vendite":24,"pipeline":17,"team":15,"processi":9, "ricavi":13,"marketing":13,"sitoweb":7,"ecommerce":2},
+  "servizi_formazione":              {"vendite":24,"pipeline":16,"team":14,"processi":9, "ricavi":13,"marketing":14,"sitoweb":6,"ecommerce":4},
+  "edilizia_residenziale":           {"vendite":32,"pipeline":14,"team":12,"processi":10,"ricavi":12,"marketing":12,"sitoweb":6,"ecommerce":2},
+  "edilizia_impianti":               {"vendite":30,"pipeline":14,"team":12,"processi":10,"ricavi":14,"marketing":12,"sitoweb":6,"ecommerce":2},
+  "edilizia_ristrutturazioni":       {"vendite":32,"pipeline":13,"team":12,"processi":10,"ricavi":11,"marketing":13,"sitoweb":6,"ecommerce":3},
+  "edilizia_serramenti":             {"vendite":26,"pipeline":13,"team":11,"processi":9, "ricavi":11,"marketing":12,"sitoweb":10,"ecommerce":8},
+  "commercio_distribuzione_industriale": {"vendite":30,"pipeline":14,"team":10,"processi":8,"ricavi":14,"marketing":10,"sitoweb":6,"ecommerce":8},
+  "commercio_ingrosso_alimentare":   {"vendite":28,"pipeline":13,"team":10,"processi":8, "ricavi":16,"marketing":10,"sitoweb":5,"ecommerce":10},
+  "commercio_materiali_edili":       {"vendite":30,"pipeline":13,"team":10,"processi":8, "ricavi":14,"marketing":11,"sitoweb":7,"ecommerce":7},
+  "commercio_ricambi_auto":          {"vendite":28,"pipeline":12,"team":10,"processi":8, "ricavi":15,"marketing":9, "sitoweb":6,"ecommerce":12},
+  "commercio_abbigliamento_ingrosso":{"vendite":28,"pipeline":12,"team":10,"processi":8, "ricavi":14,"marketing":14,"sitoweb":7,"ecommerce":7},
+  "commercio_elettronica":           {"vendite":26,"pipeline":13,"team":10,"processi":8, "ricavi":13,"marketing":11,"sitoweb":7,"ecommerce":12},
+  "commercio_chimici":               {"vendite":28,"pipeline":14,"team":10,"processi":10,"ricavi":16,"marketing":10,"sitoweb":6,"ecommerce":6},
+  "commercio_medicale":              {"vendite":35,"pipeline":18,"team":11,"processi":9, "ricavi":12,"marketing":8, "sitoweb":5,"ecommerce":2},
+  "commercio_auto_moto":             {"vendite":26,"pipeline":14,"team":10,"processi":8, "ricavi":16,"marketing":10,"sitoweb":10,"ecommerce":6},
+  "commercio_abbigliamento_dettaglio":{"vendite":20,"pipeline":10,"team":10,"processi":8,"ricavi":10,"marketing":18,"sitoweb":6,"ecommerce":18},
+  "commercio_orologi_gioielli":      {"vendite":28,"pipeline":16,"team":12,"processi":8, "ricavi":14,"marketing":12,"sitoweb":6,"ecommerce":4},
+  "alimentare_trasformazione":       {"vendite":28,"pipeline":10,"team":10,"processi":8, "ricavi":16,"marketing":16,"sitoweb":6,"ecommerce":6},
+  "alimentare_vini":                 {"vendite":24,"pipeline":10,"team":10,"processi":7, "ricavi":14,"marketing":22,"sitoweb":7,"ecommerce":6},
+  "alimentare_forno":                {"vendite":30,"pipeline":10,"team":10,"processi":8, "ricavi":22,"marketing":10,"sitoweb":5,"ecommerce":5},
+  "alimentare_conserve":             {"vendite":28,"pipeline":10,"team":10,"processi":8, "ricavi":16,"marketing":16,"sitoweb":6,"ecommerce":6},
+  "alimentare_ingredienti":          {"vendite":26,"pipeline":11,"team":11,"processi":9, "ricavi":16,"marketing":15,"sitoweb":7,"ecommerce":5},
+  "tech_saas":                       {"vendite":16,"pipeline":18,"team":14,"processi":8, "ricavi":14,"marketing":18,"sitoweb":8,"ecommerce":4},
+  "tech_system_integrator":          {"vendite":24,"pipeline":16,"team":14,"processi":9, "ricavi":14,"marketing":13,"sitoweb":7,"ecommerce":3},
+  "tech_digital_agency":             {"vendite":22,"pipeline":16,"team":14,"processi":8, "ricavi":14,"marketing":16,"sitoweb":8,"ecommerce":2},
+  "tech_automazione":                {"vendite":26,"pipeline":14,"team":14,"processi":10,"ricavi":14,"marketing":13,"sitoweb":7,"ecommerce":2}
+}
+;
+var PESI_BY_SETTORE = 
+{
+  "manifatturiero_meccanica": {
+    "vendite": 28,
+    "pipeline": 12,
+    "team": 12,
+    "processi": 10,
+    "ricavi": 10,
+    "marketing": 14,
+    "sitoweb": 8,
+    "ecommerce": 6
+  },
+  "manifatturiero_automotive": {
+    "vendite": 30,
+    "pipeline": 14,
+    "team": 12,
+    "processi": 11,
+    "ricavi": 11,
+    "marketing": 12,
+    "sitoweb": 6,
+    "ecommerce": 4
+  },
+  "manifatturiero_packaging": {
+    "vendite": 26,
+    "pipeline": 11,
+    "team": 11,
+    "processi": 10,
+    "ricavi": 10,
+    "marketing": 16,
+    "sitoweb": 9,
+    "ecommerce": 7
+  },
+  "manifatturiero_cterzi": {
+    "vendite": 30,
+    "pipeline": 13,
+    "team": 13,
+    "processi": 12,
+    "ricavi": 10,
+    "marketing": 12,
+    "sitoweb": 7,
+    "ecommerce": 3
+  },
+  "manifatturiero_elettromeccanica": {
+    "vendite": 28,
+    "pipeline": 12,
+    "team": 12,
+    "processi": 11,
+    "ricavi": 12,
+    "marketing": 13,
+    "sitoweb": 8,
+    "ecommerce": 4
+  },
+  "manifatturiero_tessile": {
+    "vendite": 30,
+    "pipeline": 10,
+    "team": 11,
+    "processi": 8,
+    "ricavi": 10,
+    "marketing": 20,
+    "sitoweb": 7,
+    "ecommerce": 4
+  },
+  "servizi_consulenza": {
+    "vendite": 25,
+    "pipeline": 18,
+    "team": 15,
+    "processi": 8,
+    "ricavi": 12,
+    "marketing": 14,
+    "sitoweb": 6,
+    "ecommerce": 2
+  },
+  "servizi_it": {
+    "vendite": 24,
+    "pipeline": 17,
+    "team": 15,
+    "processi": 9,
+    "ricavi": 13,
+    "marketing": 13,
+    "sitoweb": 7,
+    "ecommerce": 2
+  },
+  "servizi_formazione": {
+    "vendite": 24,
+    "pipeline": 16,
+    "team": 14,
+    "processi": 9,
+    "ricavi": 13,
+    "marketing": 14,
+    "sitoweb": 6,
+    "ecommerce": 4
+  },
+  "edilizia_residenziale": {
+    "vendite": 32,
+    "pipeline": 14,
+    "team": 12,
+    "processi": 10,
+    "ricavi": 12,
+    "marketing": 12,
+    "sitoweb": 6,
+    "ecommerce": 2
+  },
+  "edilizia_impianti": {
+    "vendite": 30,
+    "pipeline": 14,
+    "team": 12,
+    "processi": 10,
+    "ricavi": 14,
+    "marketing": 12,
+    "sitoweb": 6,
+    "ecommerce": 2
+  },
+  "edilizia_ristrutturazioni": {
+    "vendite": 32,
+    "pipeline": 13,
+    "team": 12,
+    "processi": 10,
+    "ricavi": 11,
+    "marketing": 13,
+    "sitoweb": 6,
+    "ecommerce": 3
+  },
+  "edilizia_serramenti": {
+    "vendite": 26,
+    "pipeline": 13,
+    "team": 11,
+    "processi": 9,
+    "ricavi": 11,
+    "marketing": 12,
+    "sitoweb": 10,
+    "ecommerce": 8
+  },
+  "commercio_distribuzione_industriale": {
+    "vendite": 30,
+    "pipeline": 14,
+    "team": 10,
+    "processi": 8,
+    "ricavi": 14,
+    "marketing": 10,
+    "sitoweb": 6,
+    "ecommerce": 8
+  },
+  "commercio_ingrosso_alimentare": {
+    "vendite": 28,
+    "pipeline": 13,
+    "team": 10,
+    "processi": 8,
+    "ricavi": 16,
+    "marketing": 10,
+    "sitoweb": 5,
+    "ecommerce": 10
+  },
+  "commercio_materiali_edili": {
+    "vendite": 30,
+    "pipeline": 13,
+    "team": 10,
+    "processi": 8,
+    "ricavi": 14,
+    "marketing": 11,
+    "sitoweb": 7,
+    "ecommerce": 7
+  },
+  "commercio_ricambi_auto": {
+    "vendite": 28,
+    "pipeline": 12,
+    "team": 10,
+    "processi": 8,
+    "ricavi": 15,
+    "marketing": 9,
+    "sitoweb": 6,
+    "ecommerce": 12
+  },
+  "commercio_abbigliamento_ingrosso": {
+    "vendite": 28,
+    "pipeline": 12,
+    "team": 10,
+    "processi": 8,
+    "ricavi": 14,
+    "marketing": 14,
+    "sitoweb": 7,
+    "ecommerce": 7
+  },
+  "commercio_elettronica": {
+    "vendite": 26,
+    "pipeline": 13,
+    "team": 10,
+    "processi": 8,
+    "ricavi": 13,
+    "marketing": 11,
+    "sitoweb": 7,
+    "ecommerce": 12
+  },
+  "commercio_chimici": {
+    "vendite": 28,
+    "pipeline": 14,
+    "team": 10,
+    "processi": 10,
+    "ricavi": 16,
+    "marketing": 10,
+    "sitoweb": 6,
+    "ecommerce": 6
+  },
+  "commercio_medicale": {
+    "vendite": 35,
+    "pipeline": 18,
+    "team": 11,
+    "processi": 9,
+    "ricavi": 12,
+    "marketing": 8,
+    "sitoweb": 5,
+    "ecommerce": 2
+  },
+  "commercio_auto_moto": {
+    "vendite": 26,
+    "pipeline": 14,
+    "team": 10,
+    "processi": 8,
+    "ricavi": 16,
+    "marketing": 10,
+    "sitoweb": 10,
+    "ecommerce": 6
+  },
+  "commercio_abbigliamento_dettaglio": {
+    "vendite": 20,
+    "pipeline": 10,
+    "team": 10,
+    "processi": 8,
+    "ricavi": 10,
+    "marketing": 18,
+    "sitoweb": 6,
+    "ecommerce": 18
+  },
+  "commercio_orologi_gioielli": {
+    "vendite": 28,
+    "pipeline": 16,
+    "team": 12,
+    "processi": 8,
+    "ricavi": 14,
+    "marketing": 12,
+    "sitoweb": 6,
+    "ecommerce": 4
+  },
+  "alimentare_trasformazione": {
+    "vendite": 28,
+    "pipeline": 10,
+    "team": 10,
+    "processi": 8,
+    "ricavi": 16,
+    "marketing": 16,
+    "sitoweb": 6,
+    "ecommerce": 6
+  },
+  "alimentare_vini": {
+    "vendite": 24,
+    "pipeline": 10,
+    "team": 10,
+    "processi": 7,
+    "ricavi": 14,
+    "marketing": 22,
+    "sitoweb": 7,
+    "ecommerce": 6
+  },
+  "alimentare_forno": {
+    "vendite": 30,
+    "pipeline": 10,
+    "team": 10,
+    "processi": 8,
+    "ricavi": 22,
+    "marketing": 10,
+    "sitoweb": 5,
+    "ecommerce": 5
+  },
+  "alimentare_conserve": {
+    "vendite": 28,
+    "pipeline": 10,
+    "team": 10,
+    "processi": 8,
+    "ricavi": 16,
+    "marketing": 16,
+    "sitoweb": 6,
+    "ecommerce": 6
+  },
+  "alimentare_ingredienti": {
+    "vendite": 26,
+    "pipeline": 11,
+    "team": 11,
+    "processi": 9,
+    "ricavi": 16,
+    "marketing": 15,
+    "sitoweb": 7,
+    "ecommerce": 5
+  },
+  "tech_saas": {
+    "vendite": 16,
+    "pipeline": 18,
+    "team": 14,
+    "processi": 8,
+    "ricavi": 14,
+    "marketing": 18,
+    "sitoweb": 8,
+    "ecommerce": 4
+  },
+  "tech_system_integrator": {
+    "vendite": 24,
+    "pipeline": 16,
+    "team": 14,
+    "processi": 9,
+    "ricavi": 14,
+    "marketing": 13,
+    "sitoweb": 7,
+    "ecommerce": 3
+  },
+  "tech_digital_agency": {
+    "vendite": 22,
+    "pipeline": 16,
+    "team": 14,
+    "processi": 8,
+    "ricavi": 14,
+    "marketing": 16,
+    "sitoweb": 8,
+    "ecommerce": 2
+  },
+  "tech_automazione": {
+    "vendite": 26,
+    "pipeline": 14,
+    "team": 14,
+    "processi": 10,
+    "ricavi": 14,
+    "marketing": 13,
+    "sitoweb": 7,
+    "ecommerce": 2
+  }
+};
+
+// ─── MODELLO CRESCITA COMPOSTA CON DIMINISHING RETURNS + PENALITÀ SBILANCIAMENTO ─
+// Formula base: crescita_totale = 1 - ∏(1 - contributo_i × peso_i/100 × efficienza_i)
+// Ogni dimensione contribuisce in modo moltiplicativo (non additivo).
+// Se una dimensione viene spinta senza bilanciare le dipendenze, subisce una penalità.
+//
+// MATRICE DIPENDENZE: quanto la dimensione A dipende dalla dimensione B
+// vendite:   pipeline(0.35) · team(0.25) · processi(0.20) · marketing(0.20)
+// pipeline:  vendite(0.40) · processi(0.35) · team(0.25)
+// team:      processi(0.40) · vendite(0.35) · pipeline(0.25)
+// processi:  team(0.35) · pipeline(0.30) · vendite(0.35)
+// ricavi:    vendite(0.35) · pipeline(0.30) · processi(0.20) · team(0.15)
+// marketing: vendite(0.30) · sitoweb(0.35) · pipeline(0.20) · processi(0.15)
+// sitoweb:   marketing(0.45) · ecommerce(0.30) · processi(0.25)
+// ecommerce: sitoweb(0.50) · marketing(0.35) · processi(0.15)
+
+
+// ─── MATRICI DI DIPENDENZA PER MACROSETTORE + OVERRIDE MICRO ──────────────────
+// Ogni valore indica quanto la dimensione A dipende dalla dimensione B
+// per esprimere il suo pieno potenziale. Somma dei pesi = 1.0 per dimensione.
+
+const _DIPENDENZE_MACRO = {
+  manifatturiero: {
+    vendite:   {pipeline:0.40, team:0.30, processi:0.20, marketing:0.10},
+    pipeline:  {vendite:0.45, processi:0.35, team:0.20},
+    team:      {processi:0.45, vendite:0.35, pipeline:0.20},
+    processi:  {team:0.40, pipeline:0.35, vendite:0.25},
+    ricavi:    {vendite:0.40, pipeline:0.35, processi:0.25},
+    marketing: {vendite:0.25, sitoweb:0.40, processi:0.20, pipeline:0.15},
+    sitoweb:   {marketing:0.50, processi:0.30, ecommerce:0.20},
+    ecommerce: {sitoweb:0.55, marketing:0.30, processi:0.15}
+  },
+  servizi: {
+    vendite:   {pipeline:0.35, team:0.30, processi:0.25, marketing:0.10},
+    pipeline:  {vendite:0.40, processi:0.30, team:0.30},
+    team:      {processi:0.35, vendite:0.40, pipeline:0.25},
+    processi:  {team:0.40, pipeline:0.30, vendite:0.30},
+    ricavi:    {vendite:0.35, pipeline:0.35, processi:0.20, team:0.10},
+    marketing: {sitoweb:0.40, vendite:0.25, pipeline:0.20, processi:0.15},
+    sitoweb:   {marketing:0.40, processi:0.30, ecommerce:0.30},
+    ecommerce: {sitoweb:0.45, marketing:0.40, processi:0.15}
+  },
+  edilizia: {
+    vendite:   {marketing:0.35, team:0.25, pipeline:0.25, processi:0.15},
+    pipeline:  {vendite:0.50, processi:0.30, team:0.20},
+    team:      {processi:0.40, vendite:0.40, pipeline:0.20},
+    processi:  {team:0.45, vendite:0.35, pipeline:0.20},
+    ricavi:    {vendite:0.45, pipeline:0.30, processi:0.25},
+    marketing: {sitoweb:0.45, vendite:0.30, processi:0.25},
+    sitoweb:   {marketing:0.50, processi:0.30, ecommerce:0.20},
+    ecommerce: {sitoweb:0.50, marketing:0.35, processi:0.15}
+  },
+  commercio: {
+    vendite:   {pipeline:0.35, team:0.25, ricavi:0.25, processi:0.15},
+    pipeline:  {vendite:0.40, ecommerce:0.30, processi:0.30},
+    team:      {vendite:0.40, processi:0.35, pipeline:0.25},
+    processi:  {pipeline:0.40, team:0.35, vendite:0.25},
+    ricavi:    {vendite:0.40, pipeline:0.35, ecommerce:0.25},
+    marketing: {ecommerce:0.35, sitoweb:0.35, vendite:0.30},
+    sitoweb:   {marketing:0.45, ecommerce:0.35, processi:0.20},
+    ecommerce: {sitoweb:0.45, marketing:0.35, pipeline:0.20}
+  },
+  alimentare: {
+    vendite:   {pipeline:0.40, team:0.35, processi:0.25},
+    pipeline:  {vendite:0.50, processi:0.30, ricavi:0.20},
+    team:      {vendite:0.45, processi:0.40, pipeline:0.15},
+    processi:  {team:0.45, pipeline:0.35, vendite:0.20},
+    ricavi:    {vendite:0.50, pipeline:0.35, processi:0.15},
+    marketing: {sitoweb:0.40, vendite:0.30, ecommerce:0.30},
+    sitoweb:   {marketing:0.50, ecommerce:0.30, processi:0.20},
+    ecommerce: {marketing:0.50, sitoweb:0.35, processi:0.15}
+  },
+  tech: {
+    vendite:   {pipeline:0.35, marketing:0.30, team:0.20, processi:0.15},
+    pipeline:  {vendite:0.35, ecommerce:0.35, processi:0.30},
+    team:      {processi:0.35, vendite:0.35, pipeline:0.30},
+    processi:  {team:0.35, pipeline:0.35, vendite:0.30},
+    ricavi:    {pipeline:0.40, ecommerce:0.35, vendite:0.25},
+    marketing: {sitoweb:0.45, ecommerce:0.30, vendite:0.25},
+    sitoweb:   {marketing:0.50, ecommerce:0.30, processi:0.20},
+    ecommerce: {sitoweb:0.45, marketing:0.40, pipeline:0.15}
+  }
+};
+
+// Override micro-settori che si discostano significativamente dal macro
+const _DIPENDENZE_OVERRIDE = {
+  tech_saas: {
+    ecommerce: {marketing:0.60, sitoweb:0.30, pipeline:0.10}
+  },
+  alimentare_forno: {
+    ricavi: {vendite:0.65, pipeline:0.35}
+  },
+  commercio_abbigliamento_dettaglio: {
+    ecommerce: {marketing:0.65, sitoweb:0.25, processi:0.10}
+  },
+  commercio_medicale: {
+    vendite: {team:0.40, processi:0.35, pipeline:0.25}
+  },
+  manifatturiero_cterzi: {
+    pipeline: {processi:0.55, vendite:0.30, team:0.15}
+  },
+  alimentare_vini: {
+    marketing: {ecommerce:0.35, sitoweb:0.35, vendite:0.30}
+  },
+  edilizia_serramenti: {
+    ecommerce: {marketing:0.45, sitoweb:0.45, processi:0.10}
+  }
+};
+
+// Mappa settore → macrosettore
+const _MACRO_MAP = {
+  manifatturiero_meccanica:'manifatturiero', manifatturiero_automotive:'manifatturiero',
+  manifatturiero_packaging:'manifatturiero', manifatturiero_cterzi:'manifatturiero',
+  manifatturiero_elettromeccanica:'manifatturiero', manifatturiero_tessile:'manifatturiero',
+  servizi_consulenza:'servizi', servizi_it:'servizi', servizi_formazione:'servizi',
+  edilizia_residenziale:'edilizia', edilizia_impianti:'edilizia',
+  edilizia_ristrutturazioni:'edilizia', edilizia_serramenti:'edilizia',
+  commercio_distribuzione_industriale:'commercio', commercio_ingrosso_alimentare:'commercio',
+  commercio_materiali_edili:'commercio', commercio_ricambi_auto:'commercio',
+  commercio_abbigliamento_ingrosso:'commercio', commercio_elettronica:'commercio',
+  commercio_chimici:'commercio', commercio_medicale:'commercio',
+  commercio_auto_moto:'commercio', commercio_abbigliamento_dettaglio:'commercio',
+  commercio_orologi_gioielli:'commercio',
+  alimentare_trasformazione:'alimentare', alimentare_vini:'alimentare',
+  alimentare_forno:'alimentare', alimentare_conserve:'alimentare',
+  alimentare_ingredienti:'alimentare',
+  tech_saas:'tech', tech_system_integrator:'tech',
+  tech_digital_agency:'tech', tech_automazione:'tech'
+};
+
+function _getDipendenze(settore, dimId) {
+  // 1. Controlla override micro-settore
+  if (_DIPENDENZE_OVERRIDE[settore] && _DIPENDENZE_OVERRIDE[settore][dimId]) {
+    return _DIPENDENZE_OVERRIDE[settore][dimId];
+  }
+  // 2. Usa matrice macrosettore
+  const macro = _MACRO_MAP[settore];
+  if (macro && _DIPENDENZE_MACRO[macro] && _DIPENDENZE_MACRO[macro][dimId]) {
+    return _DIPENDENZE_MACRO[macro][dimId];
+  }
+  // 3. Fallback generico
+  return {pipeline:0.35, team:0.25, processi:0.20, marketing:0.20};
+}
+
+
+function _calcolaPenalita(dimId, livelloTarget, dims, targets, settore) {
+  const dipendenze = _getDipendenze(settore, dimId);
+  let mediaPonderata = 0;
+  let pesotot = 0;
+  Object.entries(dipendenze).forEach(([depId, peso]) => {
+    const livelloDep = Math.max(dims[depId]||0, targets[depId]||0);
+    mediaPonderata += livelloDep * peso;
+    pesotot += peso;
+  });
+  if (pesotot === 0) return 0;
+  mediaPonderata = mediaPonderata / pesotot;
+  const gap = Math.max(0, livelloTarget - mediaPonderata);
+  return Math.min(0.60, gap * 0.12);
+}
+
+function _calcolaImpattoCumulativo(p) {
+  if (!p) return null;
+  const settore = p.settore;
+  const targets = p.targets || {};
+  const dims = p.dims || {};
+  const pesi = PESI_BY_SETTORE[settore];
+  if (!pesi) return null;
+
+  const fatBase = p.fatturato_anno_1 || null;
+  const fasciaMap = {'<100k':75000,'100k-250k':175000,'250k-500k':375000,'500k-1M':750000,'1M-2M':1500000,'2M-5M':3500000,'5M-20M':12500000};
+  const fat = fatBase || fasciaMap[p.fatturato] || null;
+  if (!fat) return null;
+
+  const ebitdaMargin = p.ebitda && fat ? p.ebitda/fat : p.margine_pct ? p.margine_pct/100 : null;
+  const leva = fat >= 2000000 ? 1.5 : fat >= 500000 ? 1.35 : 1.2;
+
+  const DIMS_IDS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+  const attive = DIMS_IDS.filter(id => (targets[id]||0) > (dims[id]||0));
+  if (attive.length === 0) return null;
+
+  // Calcolo costi separando ricorrenti e una tantum
+  let costoRicorrenteMensile = 0; // somma mensile ricorrente di tutti gli step attivi
+  let costoUnaTantumTot = 0;      // somma una tantum di tutti gli step attivi
+  const penalitaPerDim = {};
+  attive.forEach(id => {
+    const cur = dims[id] || 0;
+    const tgt = targets[id] || 0;
+    penalitaPerDim[id] = _calcolaPenalita(id, tgt, dims, targets, settore);
+    for (let step = cur; step < tgt; step++) {
+      const c = _getCosto(settore, id, step, step+1);
+      if (c) {
+        costoRicorrenteMensile += c.r || 0;
+        costoUnaTantumTot      += c.u || 0;
+      }
+    }
+  });
+  const costoMensileTot = costoRicorrenteMensile; // alias per compatibilità
+
+  // Calcola crescita composta con penalità
+  const calcCrescitaComposta = (orizzonte) => {
+    let prodotto = 1;
+    attive.forEach(id => {
+      const cur = dims[id] || 0;
+      const tgt = targets[id] || 0;
+      let contributoTot = 0;
+      for (let step = cur; step < tgt; step++) {
+        const imp = _getImpatto(settore, id, step, step+1);
+        if (imp) {
+          const pctArr = orizzonte === 6 ? imp.pct_6m : orizzonte === 12 ? imp.pct_12m : imp.pct_24m;
+          const midPct = (pctArr[0] + pctArr[1]) / 2 / 100;
+          contributoTot += midPct;
+        }
+      }
+      const peso = (pesi[id] || 0) / 100;
+      const efficienza = 1 - penalitaPerDim[id]; // riduce il contributo se sbilanciato
+      const contributoPesato = Math.min(contributoTot * peso * efficienza, 0.95);
+      prodotto *= (1 - contributoPesato);
+    });
+    return 1 - prodotto;
+  };
+
+  const crescita6  = calcCrescitaComposta(6);
+  const crescita12 = calcCrescitaComposta(12);
+  const crescita24 = calcCrescitaComposta(24);
+
+  const withRange = (c) => [
+    Math.round(fat * (1 + c * 0.82) / 1000) * 1000,
+    Math.round(fat * (1 + c * 1.18) / 1000) * 1000
+  ];
+
+  const fat6  = withRange(crescita6);
+  const fat12 = withRange(crescita12);
+  const fat24 = withRange(crescita24);
+
+  const pct6  = [Math.round(crescita6*82), Math.round(crescita6*118)];
+  const pct12 = [Math.round(crescita12*82), Math.round(crescita12*118)];
+  const pct24 = [Math.round(crescita24*82), Math.round(crescita24*118)];
+
+  const ebitda24min = ebitdaMargin ? Math.round(fat24[0] * ebitdaMargin * leva / 1000) * 1000 : null;
+  const ebitda24max = ebitdaMargin ? Math.round(fat24[1] * ebitdaMargin * leva / 1000) * 1000 : null;
+
+  // ROI calcolato dopo con costoTot24upd
+  const deltaMin24 = fat24[0] - fat;
+  const deltaMax24 = fat24[1] - fat;
+
+  // Alert sbilanciamento: dimensioni con penalità > 20%
+  const alertSbilanciamento = attive
+    .filter(id => penalitaPerDim[id] > 0.20)
+    .map(id => {
+      const LABEL = {vendite:'Struttura commerciale',pipeline:'Pipeline & CRM',team:'Capitale umano',processi:'Processi & script',ricavi:'Prevedibilità ricavi',marketing:'Marketing & lead gen',sitoweb:'Sito web',ecommerce:'E-commerce & digital'};
+      return {id, label: LABEL[id]||id, penalita: Math.round(penalitaPerDim[id]*100)};
+    });
+
+  // ─── EBITDA NETTO: formula corretta con ricorrente + una tantum ────────────
+  // Costo per periodo N mesi = (ricorrente_mensile × N) + una_tantum (pagata una volta)
+  // EBITDA netto = delta EBITDA nel periodo - costo nel periodo
+  // Delta EBITDA = EBITDA proiettato annuo - EBITDA base
+  //
+  // Orizzonti: 6 / 12 / 24 / 36 / 48 / 60 mesi
+  // EBITDA netto = delta EBITDA - costo investimento
+  // Delta EBITDA = quanto guadagno IN PIÙ rispetto alla base grazie all'investimento
+  // NON si confronta EBITDA totale vs costo — si confronta solo il guadagno incrementale
+  //
+  // Esempio corretto:
+  //   EBITDA base: 85k€ | EBITDA proiettato 24m: 105k€ | Delta: +20k€
+  //   Costo annuo investimento: 36k€
+  //   EBITDA netto 24m: +20k€ - 36k€ = -16k€ (ancora in rientro)
+  //   → Con mesi successivi il delta cresce e supera il costo → breakeven
+
+  const ebitdaBase = p.ebitda || (ebitdaMargin ? Math.round(fat * ebitdaMargin / 1000) * 1000 : null);
+
+  // Funzione costo totale per N mesi: ricorrente × N + una tantum (pagata 1 volta)
+  const costoPerMesi = (n) => Math.round((costoRicorrenteMensile * n + costoUnaTantumTot) / 1000) * 1000;
+
+  // Fatturato proiettato per orizzonti estesi usando crescita composta
+  // Usiamo i % di crescita calcolati e li estrapoliamo oltre 24m
+  const proiettaFat = (mesi) => {
+    // Crescita per anno: usiamo crescita24 come tasso annuo di regime
+    const crescitaAnnua = crescita24;
+    const anni = mesi / 12;
+    return [
+      Math.round(fat * Math.pow(1 + crescitaAnnua * 0.82, anni) / 1000) * 1000,
+      Math.round(fat * Math.pow(1 + crescitaAnnua * 1.18, anni) / 1000) * 1000
+    ];
+  };
+
+  const fat36 = proiettaFat(36); const fat48 = proiettaFat(48); const fat60 = proiettaFat(60);
+  const pct36 = [Math.round((fat36[0]/fat-1)*100), Math.round((fat36[1]/fat-1)*100)];
+  const pct48 = [Math.round((fat48[0]/fat-1)*100), Math.round((fat48[1]/fat-1)*100)];
+  const pct60 = [Math.round((fat60[0]/fat-1)*100), Math.round((fat60[1]/fat-1)*100)];
+
+  // EBITDA proiettato per ogni orizzonte (con leva operativa)
+  const eProj = (fatArr) => ebitdaMargin ? fatArr.map(f => Math.round(f * ebitdaMargin * leva / 1000) * 1000) : [null, null];
+  const [ep6min,ep6max]   = eProj(fat6);
+  const [ep12min,ep12max] = eProj(fat12);
+  const [ep24min,ep24max] = eProj(fat24);
+  const [ep36min,ep36max] = eProj(fat36);
+  const [ep48min,ep48max] = eProj(fat48);
+  const [ep60min,ep60max] = eProj(fat60);
+
+  // Delta EBITDA annualizzato per ogni orizzonte
+  // A 6m: annualizziamo il delta semestrale (×2) per confronto equo con il costo annuo
+  const deltaAnnuo = (epMin, epMax) => ebitdaBase ? [epMin - ebitdaBase, epMax - ebitdaBase] : [null, null];
+  const [d6min,d6max]   = deltaAnnuo(ep6min,  ep6max);
+  const [d12min,d12max] = deltaAnnuo(ep12min, ep12max);
+  const [d24min,d24max] = deltaAnnuo(ep24min, ep24max);
+  const [d36min,d36max] = deltaAnnuo(ep36min, ep36max);
+  const [d48min,d48max] = deltaAnnuo(ep48min, ep48max);
+  const [d60min,d60max] = deltaAnnuo(ep60min, ep60max);
+
+  // EBITDA netto = delta EBITDA annualizzato - costo annuo ricorrente
+  // (una tantum già assorbita nel calcolo del costo totale per il primo periodo)
+  const costoAnnuo = Math.round(costoRicorrenteMensile * 12 / 1000) * 1000;
+  const netto = (dMin, dMax) => dMin !== null ? [dMin - costoAnnuo, dMax - costoAnnuo] : [null, null];
+  const [ebitdaNettoMin6,  ebitdaNettoMax6]  = netto(d6min,  d6max);
+  const [ebitdaNettoMin12, ebitdaNettoMax12] = netto(d12min, d12max);
+  const [ebitdaNettoMin24, ebitdaNettoMax24] = netto(d24min, d24max);
+  const [ebitdaNettoMin36, ebitdaNettoMax36] = netto(d36min, d36max);
+  const [ebitdaNettoMin48, ebitdaNettoMax48] = netto(d48min, d48max);
+  const [ebitdaNettoMin60, ebitdaNettoMax60] = netto(d60min, d60max);
+
+  const deltaEbitda24min = d24min; const deltaEbitda24max = d24max;
+
+  // Breakeven: primo orizzonte in cui il delta EBITDA annualizzato copre il costo annuo
+  const breakevenMesi = !ebitdaBase ? null :
+    (ebitdaNettoMin6  !== null && ebitdaNettoMin6  >= 0) ? 6  :
+    (ebitdaNettoMin12 !== null && ebitdaNettoMin12 >= 0) ? 12 :
+    (ebitdaNettoMin24 !== null && ebitdaNettoMin24 >= 0) ? 24 :
+    (ebitdaNettoMin36 !== null && ebitdaNettoMin36 >= 0) ? 36 :
+    (ebitdaNettoMin48 !== null && ebitdaNettoMin48 >= 0) ? 48 :
+    (ebitdaNettoMin60 !== null && ebitdaNettoMin60 >= 0) ? 60 : null;
+
+  // Interpolazione per breakeven più preciso
+  let breakevenStr = breakevenMesi ? breakevenMesi + ' mesi' : 'oltre 60 mesi';
+  if (!breakevenMesi) {
+    // Cerca tra coppie di orizzonti adiacenti dove il netto cambia segno
+    const orizzonti = [[6,ebitdaNettoMin6],[12,ebitdaNettoMin12],[24,ebitdaNettoMin24],[36,ebitdaNettoMin36],[48,ebitdaNettoMin48],[60,ebitdaNettoMin60]];
+    for (let i = 0; i < orizzonti.length - 1; i++) {
+      const [m1, n1] = orizzonti[i]; const [m2, n2] = orizzonti[i+1];
+      if (n1 !== null && n2 !== null && n1 < 0 && n2 >= 0) {
+        const mesi = Math.round(m1 + (m2 - m1) * (-n1 / (n2 - n1)));
+        breakevenStr = '~' + mesi + ' mesi'; break;
+      }
+    }
+  }
+
+  const costoTot6 = costoPerMesi(6);
+  const sostenibilita = {
+    m6: ebitdaNettoMin6 !== null && ebitdaNettoMin6 >= 0,
+    m12: ebitdaNettoMin12 !== null && ebitdaNettoMin12 >= 0,
+    m24: ebitdaNettoMin24 !== null && ebitdaNettoMin24 >= 0,
+    breakeven: breakevenMesi, breakevenStr
+  };
+
+  // ROI aggiornato con costo totale corretto
+  const costoTot24upd = costoPerMesi(24);
+  const deltaMin24upd = fat24[0] - fat;
+  const deltaMax24upd = fat24[1] - fat;
+  const roiMin24 = costoTot24upd > 0 ? Math.round((deltaMin24upd / costoTot24upd) * 10) / 10 : null;
+  const roiMax24 = costoTot24upd > 0 ? Math.round((deltaMax24upd / costoTot24upd) * 10) / 10 : null;
+
+  return {
+    fat, fatBase, ebitdaMargin,
+    ebitdaMarginPct: ebitdaMargin ? Math.round(ebitdaMargin*1000)/10 : null,
+    ebitdaBase,
+    nDimAttive: attive.length,
+    // Orizzonti fatturato
+    fat6, fat12, fat24, fat36, fat48, fat60,
+    pct6, pct12, pct24, pct36, pct48, pct60,
+    // EBITDA proiettato
+    ebitda24min: ep24min, ebitda24max: ep24max,
+    // EBITDA netto (delta - costo annuo ricorrente)
+    ebitdaNettoMin6, ebitdaNettoMax6,
+    ebitdaNettoMin12, ebitdaNettoMax12,
+    ebitdaNettoMin24, ebitdaNettoMax24,
+    ebitdaNettoMin36, ebitdaNettoMax36,
+    ebitdaNettoMin48, ebitdaNettoMax48,
+    ebitdaNettoMin60, ebitdaNettoMax60,
+    deltaEbitda24min, deltaEbitda24max,
+    // Costi
+    costoRicorrenteMensile: Math.round(costoRicorrenteMensile/100)*100,
+    costoUnaTantumTot: Math.round(costoUnaTantumTot/100)*100,
+    costoMensileTot: Math.round(costoRicorrenteMensile/100)*100,
+    costoAnnuo,
+    costoTot6, costoTot24: costoTot24upd,
+    // ROI e sostenibilità
+    roiMin: roiMin24, roiMax: roiMax24,
+    dimAttive: attive,
+    penalitaPerDim,
+    alertSbilanciamento,
+    sostenibilita
+  };
+}
+
+
+function _buildCronistoria(p) {
+  const history = p.score_history || [];
+  if (history.length === 0) return '';
+
+  const fmt = (d) => {
+    const dt = new Date(d);
+    return dt.toLocaleDateString('it-IT', {day:'2-digit', month:'short', year:'numeric'}) +
+           ' ' + dt.toLocaleTimeString('it-IT', {hour:'2-digit', minute:'2-digit'});
+  };
+  const scoreCol = (s) => s >= 70 ? '#2E7D32' : s >= 45 ? '#B8842E' : '#C62828';
+
+  let html = '<div style="margin-top:20px">';
+  html += '<div style="font-size:10px;font-weight:700;color:var(--gray);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px">CRONISTORIA CRESCITA</div>';
+  html += '<div style="position:relative;padding-left:20px">';
+  // Linea verticale
+  html += '<div style="position:absolute;left:6px;top:8px;bottom:8px;width:2px;background:var(--border2);border-radius:2px"></div>';
+
+  history.slice().reverse().forEach((snap, idx) => {
+    const isFirst = idx === history.length - 1;
+    const isLast = idx === 0;
+    const col = scoreCol(snap.score);
+    html += '<div style="position:relative;margin-bottom:12px">';
+    // Dot
+    html += '<div style="position:absolute;left:-17px;top:4px;width:10px;height:10px;border-radius:50%;background:' + col + ';border:2px solid #fff;box-shadow:0 0 0 1px ' + col + '"></div>';
+    // Content
+    html += '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:7px 10px">';
+    html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px">';
+    html += '<div style="font-size:10px;font-weight:700;color:' + col + '">' + snap.evento + '</div>';
+    html += '<div style="font-size:18px;font-weight:700;font-family:\'DM Serif Display\',serif;color:' + col + '">' + snap.score + '<span style="font-size:10px;color:var(--gray)">/100</span></div>';
+    html += '</div>';
+    html += '<div style="font-size:9px;color:var(--gray)">' + fmt(snap.data) + (snap.nota ? ' · ' + snap.nota : '') + '</div>';
+    if (snap.score_base && snap.score_base !== snap.score) {
+      html += '<div style="font-size:9px;color:var(--gray);margin-top:2px">Score base: ' + snap.score_base + ' · Live: ' + snap.score + '</div>';
+    }
+    html += '</div></div>';
+  });
+
+  html += '</div></div>';
+  return html;
+}
+
+function _buildMegaGrafico(p) {
+  const ic = _calcolaImpattoCumulativo(p);
+  if (!ic) return '';
+
+  const fmt = _formatEur;
+  const hasEbitda = ic.ebitda24min !== null;
+  const fat = ic.fat;
+
+  // ── SVG bar chart ──────────────────────────────────────────────────────────
+  const maxVal = ic.fat60[1] * 1.08;
+  const svgW = 420, svgH = 200;
+  const labelW = 46, barH = 24, barGap = 10, xStart = labelW;
+  const scaleX = (v) => Math.round((v / maxVal) * (svgW - labelW - 60));
+
+  // Calcola EBITDA netto per ogni orizzonte e determina il colore
+  const ebitdaNettoRows = ic.ebitdaBase ? [
+    { label:'6m',  val: ic.ebitdaNettoMin6,  positivo: ic.ebitdaNettoMin6  !== null && ic.ebitdaNettoMin6  >= 0 },
+    { label:'12m', val: ic.ebitdaNettoMin12, positivo: ic.ebitdaNettoMin12 !== null && ic.ebitdaNettoMin12 >= 0 },
+    { label:'24m', val: ic.ebitdaNettoMin24, positivo: ic.ebitdaNettoMin24 !== null && ic.ebitdaNettoMin24 >= 0 },
+    { label:'36m', val: ic.ebitdaNettoMin36, positivo: ic.ebitdaNettoMin36 !== null && ic.ebitdaNettoMin36 >= 0 },
+    { label:'48m', val: ic.ebitdaNettoMin48, positivo: ic.ebitdaNettoMin48 !== null && ic.ebitdaNettoMin48 >= 0 },
+    { label:'60m', val: ic.ebitdaNettoMin60, positivo: ic.ebitdaNettoMin60 !== null && ic.ebitdaNettoMin60 >= 0 }
+  ] : [];
+
+  const rows = [
+    { label:'6m',  min:ic.fat6[0],  max:ic.fat6[1],  pctMin:ic.pct6[0],  pctMax:ic.pct6[1],  fill:'#A5D6A7', fillBg:'#E8F5E9', y:8 },
+    { label:'12m', min:ic.fat12[0], max:ic.fat12[1], pctMin:ic.pct12[0], pctMax:ic.pct12[1], fill:'#66BB6A', fillBg:'#C8E6C9', y:8+(barH+barGap) },
+    { label:'24m', min:ic.fat24[0], max:ic.fat24[1], pctMin:ic.pct24[0], pctMax:ic.pct24[1], fill:'#43A047', fillBg:'#A5D6A7', y:8+(barH+barGap)*2 },
+    { label:'36m', min:ic.fat36[0], max:ic.fat36[1], pctMin:ic.pct36[0], pctMax:ic.pct36[1], fill:'#2E7D32', fillBg:'#81C784', y:8+(barH+barGap)*3 },
+    { label:'48m', min:ic.fat48[0], max:ic.fat48[1], pctMin:ic.pct48[0], pctMax:ic.pct48[1], fill:'#1B5E20', fillBg:'#66BB6A', y:8+(barH+barGap)*4 },
+    { label:'60m', min:ic.fat60[0], max:ic.fat60[1], pctMin:ic.pct60[0], pctMax:ic.pct60[1], fill:'#0D3B14', fillBg:'#4CAF50', y:8+(barH+barGap)*5 }
+  ];
+
+  // linea base
+  const xBase = scaleX(fat) + xStart;
+  let svg = '<svg width="' + svgW + '" height="' + svgH + '" xmlns="http://www.w3.org/2000/svg">';
+  svg += '<line x1="' + xBase + '" y1="0" x2="' + xBase + '" y2="' + (svgH-18) + '" stroke="#BDBDBD" stroke-width="1" stroke-dasharray="3,2"/>';
+  svg += '<text x="' + xBase + '" y="' + (svgH-6) + '" font-size="8" fill="#BDBDBD" text-anchor="middle">Oggi</text>';
+
+  rows.forEach(r => {
+    const wMax = scaleX(r.max);
+    const wMin = scaleX(r.min);
+    svg += '<text x="0" y="' + (r.y + barH/2 + 1) + '" font-size="9" fill="#558B2F" font-weight="700" dominant-baseline="middle">' + r.label + '</text>';
+    svg += '<rect x="' + xStart + '" y="' + r.y + '" width="' + wMax + '" height="' + barH + '" rx="4" fill="' + r.fillBg + '"/>';
+    svg += '<rect x="' + xStart + '" y="' + r.y + '" width="' + wMin + '" height="' + barH + '" rx="4" fill="' + r.fill + '"/>';
+    svg += '<text x="' + (xStart + wMax + 5) + '" y="' + (r.y + barH/2 + 1) + '" font-size="9" fill="#1B5E20" font-weight="600" dominant-baseline="middle">' + fmt(r.min) + '–' + fmt(r.max) + '€ <tspan fill="#81C784">(+' + r.pctMin + '–' + r.pctMax + '%)</tspan></text>';
+  });
+  svg += '</svg>';
+
+  // ── KPI cards ──────────────────────────────────────────────────────────────
+  const nCols = hasEbitda ? 4 : 3;
+  let kpi = '<div style="display:grid;grid-template-columns:repeat(' + nCols + ',1fr);border-bottom:1px solid #C8E6C9">';
+
+  // KPI 1: fatturato target 24m
+  kpi += '<div style="padding:10px 12px;border-right:1px solid #C8E6C9">';
+  kpi += '<div style="font-size:8px;color:#558B2F;font-weight:700;letter-spacing:.05em;margin-bottom:4px">FATTURATO TARGET 24m</div>';
+  kpi += '<div style="font-size:15px;font-weight:700;color:#1B5E20;line-height:1">' + fmt(ic.fat24[0]) + '–' + fmt(ic.fat24[1]) + '€</div>';
+  kpi += '<div style="font-size:9px;color:#388E3C;margin-top:2px">+' + fmt(ic.fat24[0]-fat) + '–' + fmt(ic.fat24[1]-fat) + '€ vs oggi</div>';
+  kpi += '</div>';
+
+  // KPI 2: investimento totale
+  kpi += '<div style="padding:10px 12px;border-right:1px solid #C8E6C9">';
+  kpi += '<div style="font-size:8px;color:#558B2F;font-weight:700;letter-spacing:.05em;margin-bottom:4px">INVESTIMENTO TOTALE 24m</div>';
+  kpi += '<div style="font-size:15px;font-weight:700;color:#B8842E;line-height:1">≈ ' + fmt(ic.costoTot24) + '€</div>';
+  kpi += '<div style="font-size:9px;color:#8D6E63;margin-top:2px">≈ ' + fmt(ic.costoMensileTot) + '€/mese · ' + ic.nDimAttive + ' aree</div>';
+  kpi += '</div>';
+
+  // KPI 3: ROI
+  if (ic.roiMin) {
+    kpi += '<div style="padding:10px 12px' + (hasEbitda ? ';border-right:1px solid #C8E6C9' : '') + '">';
+    kpi += '<div style="font-size:8px;color:#558B2F;font-weight:700;letter-spacing:.05em;margin-bottom:4px">ROI STIMATO 24m</div>';
+    kpi += '<div style="font-size:15px;font-weight:700;color:#1B5E20;line-height:1">' + ic.roiMin + '–' + ic.roiMax + 'x</div>';
+    kpi += '<div style="font-size:9px;color:#388E3C;margin-top:2px">per ogni € investito</div>';
+    kpi += '</div>';
+  }
+
+  // KPI 4: EBITDA netto dopo investimento (se disponibile)
+  if (hasEbitda) {
+    const nettoMin24 = ic.ebitdaNettoMin24;
+    const nettoMax24 = ic.ebitdaNettoMax24;
+    const isPositivo = nettoMin24 !== null && nettoMin24 > (ic.ebitdaBase || 0);
+    const isNegativo = nettoMin24 !== null && nettoMin24 < 0;
+    const colore = isNegativo ? '#B71C1C' : isPositivo ? '#1B5E20' : '#E65100';
+    const bgColore = isNegativo ? '#FFEBEE' : isPositivo ? '#E8F5E9' : '#FFF3E0';
+    const labelColore = isNegativo ? '#D32F2F' : isPositivo ? '#2E7D32' : '#E65100';
+    kpi += '<div style="padding:10px 12px">';
+    kpi += '<div style="font-size:8px;color:' + labelColore + ';font-weight:700;letter-spacing:.05em;margin-bottom:4px">EBITDA NETTO 24m (dopo costi)</div>';
+    kpi += '<div style="font-size:15px;font-weight:700;color:' + colore + ';line-height:1;background:' + bgColore + ';border-radius:4px;padding:3px 6px;display:inline-block">' +
+      (nettoMin24 < 0 ? '−' : '+') + fmt(Math.abs(nettoMin24)) + '–' + (nettoMax24 < 0 ? '−' : '+') + fmt(Math.abs(nettoMax24)) + '€</div>';
+    kpi += '<div style="font-size:9px;color:' + labelColore + ';margin-top:4px">' +
+      (isNegativo ? '⚠ Breakeven stimato: ' + (ic.sostenibilita?.breakevenStr || 'oltre 36 mesi') :
+       isPositivo ? '✓ In attivo già a 24m · breakeven: ' + (ic.sostenibilita?.breakevenStr || '24 mesi') :
+       '◎ Breakeven: ' + (ic.sostenibilita?.breakevenStr || 'oltre 36 mesi')) +
+    '</div>';
+    kpi += '</div>';
+  }
+  kpi += '</div>';
+
+  // ── Legenda dimensioni attive ───────────────────────────────────────────────
+  const DIMS_LABEL = {vendite:'Struttura commerciale',pipeline:'Pipeline & CRM',team:'Capitale umano',processi:'Processi & script',ricavi:'Prevedibilità ricavi',marketing:'Marketing & lead gen',sitoweb:'Sito web',ecommerce:'E-commerce & digital'};
+  const dimTags = ic.dimAttive.map(id =>
+    '<span style="font-size:8px;background:#E8F5E9;color:#2E7D32;border-radius:20px;padding:2px 8px;border:1px solid #C8E6C9">' + (DIMS_LABEL[id]||id) + '</span>'
+  ).join(' ');
+
+  // ── Assembla tutto ─────────────────────────────────────────────────────────
+  // ── Messaggio narrativo ────────────────────────────────────────────────────
+  const narrativa =
+    '<div style="padding:10px 14px;background:#F0F7F0;border-bottom:1px solid #C8E6C9;font-size:11px;color:#1B5E20;line-height:1.5">' +
+      '<strong>Oggi sei a ' + fmt(fat) + '€ di fatturato' + (ic.ebitdaBase ? ' e ' + fmt(ic.ebitdaBase) + '€ di EBITDA' : '') + '.</strong> ' +
+      'Con questo piano (≈ ' + fmt(ic.costoMensileTot) + '€/mese su ' + ic.nDimAttive + ' aree) puoi arrivare a ' +
+      '<strong>' + fmt(ic.fat6[0]) + '–' + fmt(ic.fat6[1]) + '€ in 6 mesi</strong>, ' +
+      '<strong>' + fmt(ic.fat12[0]) + '–' + fmt(ic.fat12[1]) + '€ in 12 mesi</strong> e ' +
+      '<strong>' + fmt(ic.fat24[0]) + '–' + fmt(ic.fat24[1]) + '€ in 24 mesi</strong>' +
+      (ic.ebitdaNettoMin24 !== null ?
+        '. Il tuo EBITDA crescerà di <strong>' + fmt(ic.deltaEbitda24min||0) + '–' + fmt(ic.deltaEbitda24max||0) + '€</strong> annui. ' +
+        'L\'investimento si ripaga in <strong style="color:' + (ic.sostenibilita?.breakeven ? '#2E7D32' : '#C62828') + '">' +
+        (ic.sostenibilita?.breakevenStr || 'oltre 36 mesi') + '</strong>.' :
+        '.') +
+    '</div>';
+
+  return '<div id="mega-grafico-container"><div style="margin-top:20px;border:1px solid #C8E6C9;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(46,125,50,.08)">' +
+    // Header
+    '<div style="background:linear-gradient(135deg,#1B5E20,#2E7D32);color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center">' +
+      '<div>' +
+        '<div style="font-size:11px;font-weight:700;letter-spacing:.07em">PROIEZIONE CRESCITA COMPLESSIVA</div>' +
+        '<div style="font-size:9px;opacity:.8;margin-top:2px">Modello composto con diminishing returns · Base: ' + fmt(fat) + '€' + (ic.ebitdaMarginPct ? ' · EBITDA margin: ' + ic.ebitdaMarginPct + '%' : '') + '</div>' +
+      '</div>' +
+      '<div style="font-size:9px;opacity:.75">' + ic.nDimAttive + ' dimensioni attive</div>' +
+    '</div>' +
+    // Narrativa
+    narrativa +
+    // KPI
+    kpi +
+    // SVG chart
+    '<div style="padding:14px 14px 6px;background:#fff">' +
+      '<div style="font-size:8px;color:#9E9E9E;margin-bottom:6px;letter-spacing:.04em">PROIEZIONE FATTURATO (min–max)</div>' +
+      svg +
+    '</div>' +
+    // Legenda aree
+    // Sezione EBITDA netto con barre colorate
+    (ic.ebitdaBase ? ('<div style="padding:10px 14px;background:#FAFAFA;border-top:1px solid #E8E8E8">' +
+      '<div style="font-size:8px;color:#666;font-weight:700;letter-spacing:.05em;margin-bottom:8px">RITORNO INCREMENTALE EBITDA vs COSTO ANNUO (≈ ' + fmt(ic.costoAnnuo) + '€/anno) &nbsp;<span style="font-weight:400">🟥 in rientro &nbsp;🟧 in miglioramento &nbsp;🟩 in attivo</span></div>' +
+      '<div style="display:grid;grid-template-columns:52px 1fr;gap:4px">' +
+        ebitdaNettoRows.map((r,i) => {
+          if (r.val === null) return '';
+          const isNeg = r.val < 0;
+          const isPos = r.positivo;
+          // Confronta con il valore precedente per capire se sta migliorando
+          const valPrev = i > 0 ? ebitdaNettoRows[i-1].val : null;
+          const staMigliorando = valPrev !== null && r.val > valPrev;
+          const barColor = isPos ? '#43A047' : (staMigliorando ? '#FFA726' : '#EF5350');
+          const bgColor  = isPos ? '#E8F5E9' : (staMigliorando ? '#FFF3E0' : '#FFEBEE');
+          const maxAbs = Math.max(Math.abs(ic.ebitdaNettoMin24||1), Math.abs(ic.ebitdaBase||1), 1);
+          const barW = Math.min(95, Math.round(Math.abs(r.val) / maxAbs * 95));
+          return '<div style="font-size:9px;font-weight:700;color:#555;display:flex;align-items:center">' + ['6m','12m','24m','36m','48m','60m'][i] + '</div>' +
+            '<div style="display:flex;align-items:center;gap:6px">' +
+              '<div style="flex:1;background:#F0F0F0;border-radius:3px;height:16px;position:relative;overflow:hidden">' +
+                '<div style="position:absolute;' + (isNeg ? 'right:0' : 'left:0') + ';top:0;height:100%;width:' + barW + '%;background:' + barColor + ';border-radius:3px"></div>' +
+              '</div>' +
+              '<div style="font-size:9px;font-weight:700;color:' + barColor + ';min-width:60px;text-align:right;background:' + bgColor + ';border-radius:3px;padding:1px 5px">' +
+                (isNeg ? '−' : '+') + fmt(Math.abs(r.val)) + '€' +
+              '</div>' +
+            '</div>';
+        }).join('') +
+      '</div>' +
+    '</div>') : '') +
+    '<div style="padding:8px 14px;background:#F9FBF9;border-top:1px solid #E8F5E9">' +
+      '<span style="font-size:8px;color:#9E9E9E;margin-right:6px">Aree incluse:</span>' + dimTags +
+    '</div>' +
+    (ic.alertSbilanciamento && ic.alertSbilanciamento.length > 0 ?
+      '<div style="padding:7px 14px;background:#FFF8E1;border-top:1px solid #FFE082;display:flex;flex-wrap:wrap;gap:6px;align-items:center">' +
+        '<span style="font-size:8px;color:#F57F17;font-weight:700;margin-right:4px">⚠ SBILANCIAMENTO:</span>' +
+        ic.alertSbilanciamento.map(a => '<span style="font-size:8px;background:#FFF3CD;color:#856404;border:1px solid #FFE082;border-radius:20px;padding:2px 8px">' + a.label + ' −' + a.penalita + '% efficienza</span>').join(' ') +
+      '</div>'
+    : '') +
+  '</div></div>';
+}
+
+
+
+function _calcolaImpatto(impatto, fatturatoPStr, fatturato_anno_1, ebitda, margine_pct, utile_netto) {
   if (!impatto) return null;
-  // Priorità: fatturato_anno_1 preciso > fascia stimata
-  const fasciaEffettiva = _fasciaFromAnno1(fatturato_anno_1) || fatturatoPStr;
-  if (!fasciaEffettiva) return null;
-  // Mappa fascia fatturato → valore medio in €
-  const map = {
+  // 1. Fatturato base: valore preciso > valore medio della fascia
+  const fasciaMap = {
     '<100k': 75000, '100k-250k': 175000, '250k-500k': 375000,
     '500k-1M': 750000, '1M-2M': 1500000, '2M-5M': 3500000, '5M-20M': 12500000
   };
-  // Se abbiamo il valore preciso, usiamo quello invece del valore medio della fascia
-  const fat = fatturato_anno_1 || map[fasciaEffettiva];
-  if (!fat) return null;
-  const calc = (pct) => pct.map(p => Math.round(fat * p / 100 / 1000) * 1000);
+  const fasciaEffettiva = _fasciaFromAnno1(fatturato_anno_1) || fatturatoPStr;
+  const fatBase = fatturato_anno_1 || fasciaMap[fasciaEffettiva];
+  if (!fatBase) return null;
+
+  // 2. EBITDA margin: priorità ebitda assoluto > margine_pct dichiarato > stima da utile_netto
+  let ebitdaMargin = null;
+  if (ebitda && fatBase) {
+    ebitdaMargin = ebitda / fatBase; // es. 0.127 = 12.7%
+  } else if (margine_pct) {
+    ebitdaMargin = margine_pct / 100;
+  } else if (utile_netto && fatBase) {
+    // Stima EBITDA da utile netto: aggiungi ~4% per ammortamenti tipici PMI
+    ebitdaMargin = (utile_netto / fatBase) + 0.04;
+  }
+
+  // 3. Leva operativa: i costi fissi vengono assorbiti dalla crescita del fatturato
+  // Più alto il fatturato, più alta la leva (struttura più matura)
+  let levaOp = 1.2; // default PMI piccola
+  if (fatBase >= 2000000) levaOp = 1.5;
+  else if (fatBase >= 500000) levaOp = 1.35;
+
+  // 4. Calcolo per ogni orizzonte temporale
+  const calcOrizzonte = (pctMin, pctMax) => {
+    const fatMin = Math.round(fatBase * (1 + pctMin/100) / 1000) * 1000;
+    const fatMax = Math.round(fatBase * (1 + pctMax/100) / 1000) * 1000;
+    const deltaFatMin = fatMin - fatBase;
+    const deltaFatMax = fatMax - fatBase;
+
+    let ebitdaMin = null, ebitdaMax = null, ebitdaBaseVal = null;
+    if (ebitdaMargin !== null) {
+      ebitdaBaseVal = Math.round(fatBase * ebitdaMargin / 1000) * 1000;
+      // EBITDA cresce più del fatturato per effetto leva operativa
+      const deltaEbitdaMin = Math.round(deltaFatMin * ebitdaMargin * levaOp / 1000) * 1000;
+      const deltaEbitdaMax = Math.round(deltaFatMax * ebitdaMargin * levaOp / 1000) * 1000;
+      ebitdaMin = ebitdaBaseVal + deltaEbitdaMin;
+      ebitdaMax = ebitdaBaseVal + deltaEbitdaMax;
+    }
+
+    return {
+      pctMin, pctMax,
+      fatMin, fatMax,         // fatturato totale proiettato
+      deltaFatMin, deltaFatMax, // incremento assoluto
+      ebitdaMin, ebitdaMax,   // EBITDA proiettato (null se non disponibile)
+      ebitdaBaseVal
+    };
+  };
+
   return {
-    eur_6m: calc(impatto.pct_6m),
-    eur_12m: calc(impatto.pct_12m),
-    eur_24m: calc(impatto.pct_24m),
-    pct_6m: impatto.pct_6m,
-    pct_12m: impatto.pct_12m,
-    pct_24m: impatto.pct_24m,
+    fatBase,
+    ebitdaBase: ebitda || (ebitdaMargin ? Math.round(fatBase * ebitdaMargin / 1000) * 1000 : null),
+    ebitdaMarginPct: ebitdaMargin ? Math.round(ebitdaMargin * 1000) / 10 : null, // es. 12.7
+    m6:  calcOrizzonte(impatto.pct_6m[0],  impatto.pct_6m[1]),
+    m12: calcOrizzonte(impatto.pct_12m[0], impatto.pct_12m[1]),
+    m24: calcOrizzonte(impatto.pct_24m[0], impatto.pct_24m[1]),
     note: impatto.note
   };
 }
@@ -6463,6 +7821,7 @@ function _formatEur(n) {
 
 // Costruisce il blocco azione per un singolo step (from→to) con checkbox + pulsante +
 function _buildStepBlock(dimId, fromStep, toStep, settore, azioniDone, azioniCustom, p) {
+
   const chiave = fromStep + '-' + toStep;
   const azPredefinita = _getAzionePredefinita(settore, dimId, fromStep, toStep);
   const stepKey = dimId + '_' + fromStep + '_' + toStep;
@@ -6472,19 +7831,50 @@ function _buildStepBlock(dimId, fromStep, toStep, settore, azioniDone, azioniCus
   let html = '\x3cdiv style="background:var(--bg);border-radius:var(--rs);padding:10px 12px;margin-top:6px">';
   // Badge costo e impatto
   const impatto = _getImpatto(settore, dimId, fromStep, toStep);
-  const impattoCalc = p ? _calcolaImpatto(impatto, p.fatturato, p.fatturato_anno_1) : null;
+  let impattoCalc = null;
+  try { impattoCalc = p ? _calcolaImpatto(impatto, p.fatturato, p.fatturato_anno_1, p.ebitda, p.margine_pct, p.utile_netto) : null; } catch(e) { impattoCalc = null; }
   if (costo || impatto) {
     html += '\x3cdiv style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px">';
     if (costo) {
-      html += '\x3cspan style="font-size:10px;color:var(--gold);background:var(--amber-bg);border:1px solid var(--gold-dim);border-radius:20px;padding:2px 10px;font-weight:600">≈ ' + costo + ' €/mese\x3c/span>';
+      const costoLabel = _getCostoLabel(settore, dimId, fromStep, toStep);
+      html += '\x3cspan style="font-size:10px;color:var(--gold);background:var(--amber-bg);border:1px solid var(--gold-dim);border-radius:20px;padding:2px 10px;font-weight:600">≈ ' + (costoLabel || '—') + '\x3c/span>';
     }
-    if (impatto && impattoCalc) {
-      const e6 = impattoCalc.eur_6m[0] > 0 ? ' (+'+_formatEur(impattoCalc.eur_6m[0])+'–'+_formatEur(impattoCalc.eur_6m[1])+'€)' : '';
-      const e12 = impattoCalc.eur_12m[0] > 0 ? ' (+'+_formatEur(impattoCalc.eur_12m[0])+'–'+_formatEur(impattoCalc.eur_12m[1])+'€)' : '';
-      const e24 = impattoCalc.eur_24m[0] > 0 ? ' (+'+_formatEur(impattoCalc.eur_24m[0])+'–'+_formatEur(impattoCalc.eur_24m[1])+'€)' : '';
-      html += '\x3cspan style="font-size:10px;color:#2E7D32;background:#E8F5E9;border:1px solid #A5D6A7;border-radius:20px;padding:2px 10px;font-weight:600" title="' + impatto.note + '">📈 +' + impattoCalc.pct_6m[0] + '–' + impattoCalc.pct_6m[1] + '% a 6m'+e6+' / +' + impattoCalc.pct_12m[0] + '–' + impattoCalc.pct_12m[1] + '% a 12m'+e12+' / +' + impattoCalc.pct_24m[0] + '–' + impattoCalc.pct_24m[1] + '% a 24m'+e24+'\x3c/span>';
+    if (impatto && impattoCalc && impattoCalc.m6) {
+      const ic = impattoCalc;
+      const hasEbitda = ic.m6 && ic.m6.ebitdaMin !== null;
+      const fatBaseStr = _formatEur(ic.fatBase) + '€';
+      const ebitdaBaseStr = hasEbitda ? _formatEur(ic.ebitdaBase) + '€ (' + ic.ebitdaMarginPct + '%)' : null;
+      html += '\x3cdiv style="margin-top:8px;border:1px solid #C8E6C9;border-radius:8px;overflow:hidden;font-size:11px">' +
+        '\x3cdiv style="background:#2E7D32;color:#fff;padding:5px 10px;font-size:10px;font-weight:700;letter-spacing:.06em;display:flex;justify-content:space-between;align-items:center">' +
+          '\x3cspan>IMPATTO STIMATO SUL FATTURATO\x3c/span>' +
+          '\x3cspan style="font-weight:400;font-size:9px;opacity:.85">Base: ' + fatBaseStr + (ebitdaBaseStr ? ' · EBITDA: ' + ebitdaBaseStr : '') + '\x3c/span>' +
+        '\x3c/div>' +
+        '\x3cdiv style="display:grid;grid-template-columns:52px 1fr 1fr' + (hasEbitda ? ' 1fr' : '') + ';background:#F9FBF9">' +
+          '\x3cdiv style="padding:4px 8px;font-size:9px;color:#666;border-bottom:1px solid #E8F5E9;font-weight:600">\x3c/div>' +
+          '\x3cdiv style="padding:4px 8px;font-size:9px;color:#666;border-bottom:1px solid #E8F5E9;border-left:1px solid #E8F5E9;font-weight:600">CRESCITA %\x3c/div>' +
+          '\x3cdiv style="padding:4px 8px;font-size:9px;color:#666;border-bottom:1px solid #E8F5E9;border-left:1px solid #E8F5E9;font-weight:600">FATTURATO TOTALE\x3c/div>' +
+          (hasEbitda ? '\x3cdiv style="padding:4px 8px;font-size:9px;color:#666;border-bottom:1px solid #E8F5E9;border-left:1px solid #E8F5E9;font-weight:600">EBITDA PROIETTATO\x3c/div>' : '') +
+          // 6 mesi
+          '\x3cdiv style="padding:5px 8px;font-size:10px;font-weight:700;color:#1B5E20;background:#fff;border-bottom:1px solid #E8F5E9">6 mesi\x3c/div>' +
+          '\x3cdiv style="padding:5px 8px;font-size:11px;color:#2E7D32;font-weight:700;background:#fff;border-bottom:1px solid #E8F5E9;border-left:1px solid #E8F5E9">+' + ic.m6.pctMin + '–' + ic.m6.pctMax + '%\x3c/div>' +
+          '\x3cdiv style="padding:5px 8px;font-size:10px;color:#1B5E20;background:#fff;border-bottom:1px solid #E8F5E9;border-left:1px solid #E8F5E9">' + _formatEur(ic.m6.fatMin) + '–' + _formatEur(ic.m6.fatMax) + '€ \x3cspan style="color:#81C784;font-size:9px">(+' + _formatEur(ic.m6.deltaFatMin) + '–' + _formatEur(ic.m6.deltaFatMax) + '€)\x3c/span>\x3c/div>' +
+          (hasEbitda ? '\x3cdiv style="padding:5px 8px;font-size:10px;color:#1B5E20;background:#fff;border-bottom:1px solid #E8F5E9;border-left:1px solid #E8F5E9">' + _formatEur(ic.m6.ebitdaMin) + '–' + _formatEur(ic.m6.ebitdaMax) + '€\x3c/div>' : '') +
+          // 12 mesi
+          '\x3cdiv style="padding:5px 8px;font-size:10px;font-weight:700;color:#1B5E20;background:#F1F8E9;border-bottom:1px solid #E8F5E9">12 mesi\x3c/div>' +
+          '\x3cdiv style="padding:5px 8px;font-size:11px;color:#2E7D32;font-weight:700;background:#F1F8E9;border-bottom:1px solid #E8F5E9;border-left:1px solid #E8F5E9">+' + ic.m12.pctMin + '–' + ic.m12.pctMax + '%\x3c/div>' +
+          '\x3cdiv style="padding:5px 8px;font-size:10px;color:#1B5E20;background:#F1F8E9;border-bottom:1px solid #E8F5E9;border-left:1px solid #E8F5E9">' + _formatEur(ic.m12.fatMin) + '–' + _formatEur(ic.m12.fatMax) + '€ \x3cspan style="color:#81C784;font-size:9px">(+' + _formatEur(ic.m12.deltaFatMin) + '–' + _formatEur(ic.m12.deltaFatMax) + '€)\x3c/span>\x3c/div>' +
+          (hasEbitda ? '\x3cdiv style="padding:5px 8px;font-size:10px;color:#1B5E20;background:#F1F8E9;border-bottom:1px solid #E8F5E9;border-left:1px solid #E8F5E9">' + _formatEur(ic.m12.ebitdaMin) + '–' + _formatEur(ic.m12.ebitdaMax) + '€\x3c/div>' : '') +
+          // 24 mesi
+          '\x3cdiv style="padding:5px 8px;font-size:10px;font-weight:700;color:#1B5E20;background:#fff">24 mesi\x3c/div>' +
+          '\x3cdiv style="padding:5px 8px;font-size:11px;color:#2E7D32;font-weight:700;background:#fff;border-left:1px solid #E8F5E9">+' + ic.m24.pctMin + '–' + ic.m24.pctMax + '%\x3c/div>' +
+          '\x3cdiv style="padding:5px 8px;font-size:10px;color:#1B5E20;background:#fff;border-left:1px solid #E8F5E9">' + _formatEur(ic.m24.fatMin) + '–' + _formatEur(ic.m24.fatMax) + '€ \x3cspan style="color:#81C784;font-size:9px">(+' + _formatEur(ic.m24.deltaFatMin) + '–' + _formatEur(ic.m24.deltaFatMax) + '€)\x3c/span>\x3c/div>' +
+          (hasEbitda ? '\x3cdiv style="padding:5px 8px;font-size:10px;color:#1B5E20;background:#fff;border-left:1px solid #E8F5E9">' + _formatEur(ic.m24.ebitdaMin) + '–' + _formatEur(ic.m24.ebitdaMax) + '€\x3c/div>' : '') +
+        '\x3c/div>' +
+        '\x3cdiv style="padding:5px 10px;background:#E8F5E9;font-size:9px;color:#558B2F;font-style:italic;border-top:1px solid #C8E6C9">' + ic.note + '\x3c/div>' +
+      '\x3c/div>';
     } else if (impatto) {
-      html += '\x3cspan style="font-size:10px;color:#2E7D32;background:#E8F5E9;border:1px solid #A5D6A7;border-radius:20px;padding:2px 10px;font-weight:600" title="' + impatto.note + '">📈 +' + impatto.pct_6m[0] + '–' + impatto.pct_6m[1] + '% a 6m / +' + impatto.pct_12m[0] + '–' + impatto.pct_12m[1] + '% a 12m / +' + impatto.pct_24m[0] + '–' + impatto.pct_24m[1] + '% a 24m\x3c/span>';
+      // Fallback senza fatturato: solo % su badge compatto
+      html += '\x3cspan style="font-size:10px;color:#2E7D32;background:#E8F5E9;border:1px solid #A5D6A7;border-radius:20px;padding:2px 10px;font-weight:600">+' + impatto.pct_6m[0] + '–' + impatto.pct_6m[1] + '% a 6m / +' + impatto.pct_12m[0] + '–' + impatto.pct_12m[1] + '% a 12m / +' + impatto.pct_24m[0] + '–' + impatto.pct_24m[1] + '% a 24m\x3c/span>';
     }
     html += '\x3c/div>';
   }
@@ -6533,21 +7923,173 @@ function _buildSubObiettivi(dimId, cur, tgt, settore, azioniDone, azioniCustom, 
   }
 
   let html = '\x3cdiv style="margin-top:8px">';
-  // step è il livello di partenza (es. 1 → mostra "1 → 2")
+
+  // --- Raccolta dati progressivi per tutti gli step ---
+  const fatBase = p ? (p.fatturato_anno_1 || null) : null;
+  const ebitdaBase = p ? (p.ebitda || null) : null;
+  const ebitdaMarginBase = (ebitdaBase && fatBase) ? ebitdaBase / fatBase : null;
+  let fatProgr = fatBase;
+  let ebitdaProgr = ebitdaBase;
+
+  // Struttura dati per il grafico: un punto per step
+  // punti[i] = { step, fatMin6, fatMax6, fatMin12, fatMax12, fatMin24, fatMax24, ebitdaMin12, ebitdaMax12, costoMensile }
+  const puntiGrafico = [];
+
   for (let step = cur; step < tgt; step++) {
     const isFirst = step === cur;
-    // Descrizione del livello attuale (da cui si parte) — DIM_DESC è 0-based quindi step-1
     const stepDesc = DIM_DESC[dimId]?.[step - 1] || '';
+    const pStep = p ? {...p, fatturato_anno_1: fatProgr, ebitda: ebitdaProgr} : p;
+
+    // Raccoglie dati per il grafico
+    const impattoStep = _getImpatto(settore, dimId, step, step + 1);
+    const costoStep = _getCosto(settore, dimId, step, step + 1);
+    let costoMensile = null;
+    if (costoStep) {
+      costoMensile = costoStep.r || 0;
+    }
+    if (impattoStep && fatProgr) {
+      puntiGrafico.push({
+        step,
+        label: step + '\u2192' + (step+1),
+        fatBase: fatProgr,
+        fatMin6:  Math.round(fatProgr*(1+impattoStep.pct_6m[0]/100)/1000)*1000,
+        fatMax6:  Math.round(fatProgr*(1+impattoStep.pct_6m[1]/100)/1000)*1000,
+        fatMin12: Math.round(fatProgr*(1+impattoStep.pct_12m[0]/100)/1000)*1000,
+        fatMax12: Math.round(fatProgr*(1+impattoStep.pct_12m[1]/100)/1000)*1000,
+        fatMin24: Math.round(fatProgr*(1+impattoStep.pct_24m[0]/100)/1000)*1000,
+        fatMax24: Math.round(fatProgr*(1+impattoStep.pct_24m[1]/100)/1000)*1000,
+        ebitdaMin12: ebitdaMarginBase ? Math.round(fatProgr*(1+impattoStep.pct_12m[0]/100)*ebitdaMarginBase*(fatProgr>=2000000?1.5:fatProgr>=500000?1.35:1.2)/1000)*1000 : null,
+        ebitdaMax12: ebitdaMarginBase ? Math.round(fatProgr*(1+impattoStep.pct_12m[1]/100)*ebitdaMarginBase*(fatProgr>=2000000?1.5:fatProgr>=500000?1.35:1.2)/1000)*1000 : null,
+        costoMensile
+      });
+      // Aggiorna base per step successivo
+      const midPct12 = (impattoStep.pct_12m[0] + impattoStep.pct_12m[1]) / 2;
+      fatProgr = Math.round(fatProgr * (1 + midPct12/100) / 1000) * 1000;
+      if (ebitdaProgr && ebitdaMarginBase) {
+        const leva = fatProgr>=2000000?1.5:fatProgr>=500000?1.35:1.2;
+        ebitdaProgr = Math.round(fatProgr * ebitdaMarginBase * leva / 1000) * 1000;
+      }
+    }
+
+    // Renderizza lo step — card impatto SOLO sul primo step
     html += '\x3cdiv style="margin-bottom:12px;border-left:2px solid ' + (isFirst ? 'var(--gold)' : 'var(--border2)') + ';padding-left:10px">';
-    // Header step: mostra i valori reali (es. "1 → 2", "2 → 3")
     html += '\x3cdiv style="display:flex;align-items:center;gap:6px;margin-bottom:4px">';
     html += '\x3cdiv style="font-size:10px;font-weight:700;color:' + (isFirst ? 'var(--gold)' : 'var(--gray)') + ';background:' + (isFirst ? 'var(--amber-bg)' : 'var(--bg3)') + ';border:1px solid ' + (isFirst ? 'var(--gold-dim)' : 'var(--border)') + ';border-radius:4px;padding:2px 8px">';
-    html += step + ' → ' + (step + 1) + (isFirst ? ' · Da fare ora' : '') + '\x3c/div>';
+    html += step + ' \u2192 ' + (step+1) + (isFirst ? ' \u00b7 Da fare ora' : '') + '\x3c/div>';
     html += '\x3c/div>';
     if (stepDesc) html += '\x3cdiv style="font-size:10px;color:var(--gray2);line-height:1.4;margin-bottom:4px;font-style:italic">' + stepDesc + '\x3c/div>';
-    html += _buildStepBlock(dimId, step, step + 1, settore, azioniDone, azioniCustom, p);
+    // Card impatto solo sul primo step
+    html += _buildStepBlock(dimId, step, step+1, settore, azioniDone, azioniCustom, null);
     html += '\x3c/div>';
   }
+
+  // --- Grafico unico in fondo (solo se target > cur+1 oppure sempre se c'è impatto) ---
+  if (puntiGrafico.length > 0 && fatBase) {
+    const gap = tgt - cur;
+    const hasEbitda = puntiGrafico.some(p => p.ebitdaMin12 !== null);
+
+    // Valore finale complessivo (ultimo step, proiezione 24m)
+    const ultimo = puntiGrafico[puntiGrafico.length - 1];
+    const fatFinaleMin = ultimo.fatMin24;
+    const fatFinaleMax = ultimo.fatMax24;
+    const deltaMin = fatFinaleMin - fatBase;
+    const deltaMax = fatFinaleMax - fatBase;
+    const pctFinMin = Math.round((fatFinaleMin/fatBase - 1)*100);
+    const pctFinMax = Math.round((fatFinaleMax/fatBase - 1)*100);
+
+    // Costo totale mensile stimato (somma di tutti gli step)
+    const costoTotMensile = puntiGrafico.reduce((s,p) => s + (p.costoMensile||0), 0);
+    const costoTot24 = Math.round(costoTotMensile * 24 / 1000) * 1000;
+    const roiMin = deltaMin > 0 && costoTot24 > 0 ? Math.round((deltaMin / costoTot24) * 10) / 10 : null;
+    const roiMax = deltaMax > 0 && costoTot24 > 0 ? Math.round((deltaMax / costoTot24) * 10) / 10 : null;
+
+    // SVG bar chart — barre orizzontali per ogni step + orizzonti
+    // Larghezza massima = fatMax24 dell'ultimo step
+    const maxVal = Math.max(...puntiGrafico.map(p => p.fatMax24), fatBase) * 1.05;
+    const barH = 22;
+    const barGap = 8;
+    const labelW = 38;
+    const chartW = 320;
+    const totalH = puntiGrafico.length * (barH * 3 + barGap * 4) + 60;
+
+    let svgBars = '';
+    puntiGrafico.forEach((pt, i) => {
+      const yBase = i * (barH * 3 + barGap * 4) + 30;
+      const scaleW = (v) => Math.round((v / maxVal) * (chartW - labelW - 8));
+
+      // Label step
+      svgBars += '\x3ctext x="0" y="' + (yBase + barH*1.5) + '" font-size="9" fill="var(--gray)" font-weight="700" dominant-baseline="middle">' + pt.label + '\x3c/text>';
+
+      // Barra 6m
+      const w6min = scaleW(pt.fatMin6); const w6max = scaleW(pt.fatMax6);
+      svgBars += '\x3crect x="' + labelW + '" y="' + yBase + '" width="' + w6max + '" height="' + barH + '" rx="3" fill="#C8E6C9" opacity=".7"/>\x3c/rect>';
+      svgBars += '\x3crect x="' + labelW + '" y="' + yBase + '" width="' + w6min + '" height="' + barH + '" rx="3" fill="#81C784"/>\x3c/rect>';
+      svgBars += '\x3ctext x="' + (labelW + w6max + 4) + '" y="' + (yBase + barH/2) + '" font-size="8" fill="var(--gray)" dominant-baseline="middle">6m: ' + _formatEur(pt.fatMin6) + '–' + _formatEur(pt.fatMax6) + '€\x3c/text>';
+
+      // Barra 12m
+      const w12min = scaleW(pt.fatMin12); const w12max = scaleW(pt.fatMax12);
+      svgBars += '\x3crect x="' + labelW + '" y="' + (yBase+barH+barGap) + '" width="' + w12max + '" height="' + barH + '" rx="3" fill="#A5D6A7" opacity=".7"/>\x3c/rect>';
+      svgBars += '\x3crect x="' + labelW + '" y="' + (yBase+barH+barGap) + '" width="' + w12min + '" height="' + barH + '" rx="3" fill="#4CAF50"/>\x3c/rect>';
+      svgBars += '\x3ctext x="' + (labelW + w12max + 4) + '" y="' + (yBase+barH+barGap+barH/2) + '" font-size="8" fill="var(--gray)" dominant-baseline="middle">12m: ' + _formatEur(pt.fatMin12) + '–' + _formatEur(pt.fatMax12) + '€\x3c/text>';
+
+      // Barra 24m
+      const w24min = scaleW(pt.fatMin24); const w24max = scaleW(pt.fatMax24);
+      svgBars += '\x3crect x="' + labelW + '" y="' + (yBase+barH*2+barGap*2) + '" width="' + w24max + '" height="' + barH + '" rx="3" fill="#66BB6A" opacity=".7"/>\x3c/rect>';
+      svgBars += '\x3crect x="' + labelW + '" y="' + (yBase+barH*2+barGap*2) + '" width="' + w24min + '" height="' + barH + '" rx="3" fill="#2E7D32"/>\x3c/rect>';
+      svgBars += '\x3ctext x="' + (labelW + w24max + 4) + '" y="' + (yBase+barH*2+barGap*2+barH/2) + '" font-size="8" fill="#1B5E20" font-weight="600" dominant-baseline="middle">24m: ' + _formatEur(pt.fatMin24) + '–' + _formatEur(pt.fatMax24) + '€\x3c/text>';
+
+      // Linea separatore tra step
+      if (i < puntiGrafico.length - 1) {
+        svgBars += '\x3cline x1="0" y1="' + (yBase + barH*3 + barGap*3 + barGap/2) + '" x2="' + (chartW+60) + '" y2="' + (yBase + barH*3 + barGap*3 + barGap/2) + '" stroke="var(--border)" stroke-width="1" stroke-dasharray="3,3"/>\x3c/line>';
+      }
+    });
+
+    html += '\x3cdiv style="margin-top:16px;border:1px solid #C8E6C9;border-radius:8px;overflow:hidden">';
+    // Header
+    html += '\x3cdiv style="background:#1B5E20;color:#fff;padding:8px 12px;display:flex;justify-content:space-between;align-items:center">';
+    html += '\x3cdiv style="font-size:10px;font-weight:700;letter-spacing:.06em">PROIEZIONE CRESCITA ' + cur + ' → ' + tgt + '\x3c/div>';
+    html += '\x3cdiv style="font-size:9px;opacity:.85">Base: ' + _formatEur(fatBase) + '€' + (hasEbitda ? ' · EBITDA: ' + _formatEur(ebitdaBase) + '€' : '') + '\x3c/div>';
+    html += '\x3c/div>';
+    // Summary KPI
+    html += '\x3cdiv style="display:grid;grid-template-columns:1fr 1fr' + (roiMin ? ' 1fr' : '') + ';background:#F1F8E9;border-bottom:1px solid #C8E6C9">';
+    html += '\x3cdiv style="padding:8px 12px;border-right:1px solid #C8E6C9">';
+    html += '\x3cdiv style="font-size:8px;color:#558B2F;font-weight:700;letter-spacing:.05em;margin-bottom:3px">FATTURATO TARGET 24m\x3c/div>';
+    html += '\x3cdiv style="font-size:13px;font-weight:700;color:#1B5E20">' + _formatEur(fatFinaleMin) + '–' + _formatEur(fatFinaleMax) + '€\x3c/div>';
+    html += '\x3cdiv style="font-size:9px;color:#388E3C">+' + _formatEur(deltaMin) + '–' + _formatEur(deltaMax) + '€ (+' + pctFinMin + '–' + pctFinMax + '%)\x3c/div>';
+    html += '\x3c/div>';
+    html += '\x3cdiv style="padding:8px 12px' + (roiMin ? ';border-right:1px solid #C8E6C9' : '') + '">';
+    html += '\x3cdiv style="font-size:8px;color:#558B2F;font-weight:700;letter-spacing:.05em;margin-bottom:3px">INVESTIMENTO TOTALE 24m\x3c/div>';
+    html += '\x3cdiv style="font-size:13px;font-weight:700;color:#B8842E">≈ ' + _formatEur(costoTot24) + '€\x3c/div>';
+    html += '\x3cdiv style="font-size:9px;color:#8D6E63">≈ ' + _formatEur(Math.round(costoTotMensile/1000)*1000) + '€/mese\x3c/div>';
+    html += '\x3c/div>';
+    if (roiMin) {
+      html += '\x3cdiv style="padding:8px 12px">';
+      html += '\x3cdiv style="font-size:8px;color:#558B2F;font-weight:700;letter-spacing:.05em;margin-bottom:3px">ROI STIMATO 24m\x3c/div>';
+      html += '\x3cdiv style="font-size:13px;font-weight:700;color:#1B5E20">' + roiMin + '–' + roiMax + 'x\x3c/div>';
+      html += '\x3cdiv style="font-size:9px;color:#388E3C">per ogni € investito\x3c/div>';
+      html += '\x3c/div>';
+    }
+    html += '\x3c/div>';
+    // SVG chart
+    html += '\x3cdiv style="padding:12px;background:#fff;overflow-x:auto">';
+    html += '\x3csvg width="' + (chartW+80) + '" height="' + totalH + '" xmlns="http://www.w3.org/2000/svg">';
+    // Linea base (fatturato attuale)
+    const xBase = Math.round((fatBase / maxVal) * (chartW - labelW - 8)) + labelW;
+    html += '\x3cline x1="' + xBase + '" y1="0" x2="' + xBase + '" y2="' + (totalH-20) + '" stroke="#E0E0E0" stroke-width="1" stroke-dasharray="4,3"/>\x3c/line>';
+    html += '\x3ctext x="' + xBase + '" y="' + (totalH-8) + '" font-size="8" fill="#BDBDBD" text-anchor="middle">Base\x3c/text>';
+    html += svgBars;
+    html += '\x3c/svg>';
+    html += '\x3c/div>';
+    // Legenda colori
+    html += '\x3cdiv style="padding:6px 12px;background:#F9FBF9;border-top:1px solid #E8F5E9;display:flex;gap:16px;flex-wrap:wrap">';
+    html += '\x3cspan style="font-size:8px;color:#558B2F;display:flex;align-items:center;gap:4px">\x3cspan style="width:10px;height:10px;background:#81C784;border-radius:2px;display:inline-block">\x3c/span>6 mesi\x3c/span>';
+    html += '\x3cspan style="font-size:8px;color:#558B2F;display:flex;align-items:center;gap:4px">\x3cspan style="width:10px;height:10px;background:#4CAF50;border-radius:2px;display:inline-block">\x3c/span>12 mesi\x3c/span>';
+    html += '\x3cspan style="font-size:8px;color:#558B2F;display:flex;align-items:center;gap:4px">\x3cspan style="width:10px;height:10px;background:#2E7D32;border-radius:2px;display:inline-block">\x3c/span>24 mesi\x3c/span>';
+    html += '\x3cspan style="font-size:8px;color:#9E9E9E;display:flex;align-items:center;gap:4px">\x3cspan style="width:10px;height:1px;background:#E0E0E0;border-top:1px dashed #E0E0E0;display:inline-block">\x3c/span>fatturato base\x3c/span>';
+    html += '\x3c/div>';
+    html += '\x3c/div>';
+  }
+
   html += '\x3c/div>';
   return html;
 }
@@ -6577,7 +8119,7 @@ async function salvaAzioneCustom(stepKey) {
   // Rirenderizzo solo il blocco
   const block = document.getElementById('az-block-' + stepKey.split('_')[0]);
   const pi = prospects[i];
-  if (block) block.innerHTML = _buildSubObiettivi(stepKey.split('_')[0], pi.dims?.[stepKey.split('_')[0]] || 0, pi.targets?.[stepKey.split('_')[0]] || 0, pi.settore || '', pi.azioni_completate || {}, pi.azioni_custom || {});
+  if (block) block.innerHTML = _buildSubObiettivi(stepKey.split('_')[0], pi.dims?.[stepKey.split('_')[0]] || 0, pi.targets?.[stepKey.split('_')[0]] || 0, pi.settore || '', pi.azioni_completate || {}, pi.azioni_custom || {}, pi);
   showToast('Azione aggiunta!');
 }
 
@@ -6625,7 +8167,7 @@ function renderTargetEditor(p) {
       \x3cdiv id="az-block-${d.id}">${subObiettiviHtml}\x3c/div>
     \x3c/div>`;
   }).join('');
-  html += `\x3cdiv style="display:flex;gap:8px;margin-top:8px">\x3cbutton class="target-save" onclick="saveTargets()">Salva obiettivi\x3c/button>\x3cbutton onclick="resetTargets()" style="background:var(--bg3);border:1px solid var(--border2);color:var(--gray);border-radius:var(--rs);padding:6px 14px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">↺ Reset obiettivi\x3c/button>\x3c/div>`;
+  html += `\x3cdiv style="display:flex;gap:8px;margin-top:12px"\x3cbutton class="target-save" onclick="saveTargets()">Salva obiettivi\x3c/button>\x3cbutton onclick="resetTargets()" style="background:var(--bg3);border:1px solid var(--border2);color:var(--gray);border-radius:var(--rs);padding:6px 14px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">↺ Reset obiettivi\x3c/button>\x3c/div>`;
   document.getElementById('target-editor-content').innerHTML = html;
 }
 
@@ -6638,6 +8180,30 @@ function previewTarget() {
     if (el) preview[d.id] = parseInt(el.value) || 0;
   });
   drawRadar(p.dims || {}, preview);
+  // Aggiorna mega-grafico e score con i target in anteprima
+  const pPreview = {...p, targets: preview};
+  const megaSection = document.getElementById('mega-grafico-section');
+  if (megaSection) megaSection.innerHTML = _buildMegaGrafico(pPreview);
+  // Aggiorna score box con score target in anteprima
+  const sPreview = calcScoreTarget(pPreview);
+  const sLivePreview = calcScoreLive(pPreview);
+  const scP = scoreColor(sLivePreview);
+  const rsnEl = document.getElementById('radar-score-num');
+  const rslEl = document.getElementById('radar-score-label');
+  const rsbEl = document.getElementById('radar-score-box');
+  const barLiveEl = document.getElementById('radar-score-bar-live');
+  const barTgtEl = document.getElementById('radar-score-bar-target');
+  const baseValEl = document.getElementById('radar-score-base-val');
+  const rstElP = document.getElementById('radar-score-target');
+  const barWrapEl = document.getElementById('radar-score-bar-wrap');
+  if (rsnEl) { rsnEl.textContent = sLivePreview; rsnEl.style.color = scP.text; }
+  if (rslEl) { rslEl.textContent = scP.label; rslEl.style.color = scP.text; }
+  if (rsbEl) { rsbEl.style.borderColor = scP.border; rsbEl.style.background = sLivePreview >= 70 ? '#e8f5ee' : sLivePreview >= 45 ? '#fdf3e3' : '#fdecea'; }
+  if (barWrapEl) barWrapEl.style.display = 'block';
+  if (barLiveEl) { barLiveEl.style.width = sLivePreview + '%'; barLiveEl.style.background = scP.text; }
+  if (barTgtEl)  barTgtEl.style.width = sPreview + '%';
+  if (baseValEl) baseValEl.textContent = calcScore(p) + '/100';
+  if (rstElP)    rstElP.textContent = sPreview > sLivePreview ? '↑ ' + sPreview + ' con il piano' : '';
 }
 
 function updateTargetDesc(dimId) {
@@ -6692,7 +8258,7 @@ function aggiornaAzioni(dimId) {
   const tgt = tgtEl ? parseInt(tgtEl.value) || 0 : 0;
   const block = document.getElementById('az-block-' + dimId);
   if (!block) return;
-  block.innerHTML = _buildSubObiettivi(dimId, cur, tgt, p.settore || '', p.azioni_completate || {}, p.azioni_custom || {});
+  block.innerHTML = _buildSubObiettivi(dimId, cur, tgt, p.settore || '', p.azioni_completate || {}, p.azioni_custom || {}, p);
 }
 
 async function toggleAzione(key) {
@@ -6704,6 +8270,8 @@ async function toggleAzione(key) {
   if (error) { showToast('Errore', 'error'); return; }
   const i = prospects.findIndex(x => x.id === currentId);
   prospects[i].azioni_completate = done;
+  // Salva snapshot score
+  salvaScoreSnapshot(prospects[i], done[key] ? 'Azione completata' : 'Azione rimossa');
   const el = document.getElementById('az-' + key);
   if (el) {
     const box = el.querySelector('div');
@@ -6755,8 +8323,12 @@ async function saveTargets() {
   const i = prospects.findIndex(x => x.id === currentId);
   prospects[i].targets = targets;
   prospects[i].target_scadenze = scadenze;
+  // Salva snapshot score con i nuovi target
+  await salvaScoreSnapshot(prospects[i], 'Target aggiornati',
+    'Score target: ' + calcScoreTarget(prospects[i]));
   showToast('Obiettivi salvati!');
   drawRadar(prospects[i].dims || {}, targets);
+  renderProspectDetail(currentId);
 }
 
 
@@ -6771,6 +8343,22 @@ function fmtEuroInput(val) {
 function buildFinField(f, val) {
   const id = 'fin-' + f.id;
   const placeholder = f.placeholder || '';
+
+  // Campo calcolato (readonly) — mostra come display, non input
+  if (f.readonly) {
+    const preview = val ? fmtEuroInput(val) : '—';
+    return `\x3cdiv class="form-group">
+      \x3clabel style="display:flex;align-items:center;gap:4px;color:var(--gray)">
+        ${f.label}
+        \x3cspan style="font-size:9px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:1px 7px;color:var(--gray)">calcolato\x3c/span>
+      \x3c/label>
+      \x3cdiv style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);padding:8px 12px;font-size:13px;font-weight:600;color:var(--green)" id="${id}-display">
+        ${preview}
+      \x3c/div>
+      \x3cinput type="hidden" id="${id}" value="${val||''}">
+    \x3c/div>`;
+  }
+
   // Tooltip helper
   const ttLabel = f.tt
     ? `\x3cspan class="tt-wrap" style="display:inline-flex;align-items:center;gap:4px;cursor:default">
@@ -7192,6 +8780,14 @@ function aggiornaCalcolatrice() {
     set('plp-ebitda-pct', pct(ebitda, fatturato));
     setCol('plv-ebitda', ebitda);
     document.getElementById('plr-ebitda').style.borderLeftColor = col(ebitda);
+    // Aggiorna il campo EBITDA readonly nel form
+    const ebitdaDisplay = document.getElementById('fin-ebitda-display');
+    const ebitdaHidden  = document.getElementById('fin-ebitda');
+    if (ebitdaDisplay && ebitda) {
+      ebitdaDisplay.textContent = fmt(ebitda);
+      ebitdaDisplay.style.color = ebitda > 0 ? 'var(--green)' : 'var(--red)';
+    }
+    if (ebitdaHidden && ebitda) ebitdaHidden.value = Math.round(ebitda);
 
     // EBIT
     set('plv-ebit', fmt(ebit));
@@ -7482,6 +9078,31 @@ async function saveCommercialeForm() {
     if (error) throw error;
     const i = prospects.findIndex(x => x.id === currentId);
     prospects[i] = {...prospects[i], ...updates};
+
+    // Auto-calcolo EBITDA dai dati finanziari inseriti
+    // Priorità: ebitda esplicito > calcolo da cogs + costi fissi > stima da utile netto
+    const pi = prospects[i];
+    // Ricalcola EBITDA se la calcolatrice P&L ha dati (cogs + costi fissi)
+    // oppure se ebitda non è ancora compilato ma ci sono dati sufficienti
+    const hasPLData = pi.costi_fissi_mensili && pi.fatturato_anno_1 && (pi.cogs_pct || pi.cogs_val);
+    if (pi.fatturato_anno_1 && (!pi.ebitda || hasPLData)) {
+      let ebitdaCalcolato = null;
+      if (hasPLData) {
+        const cogs = pi.cogs_val > 0 ? pi.cogs_val : pi.fatturato_anno_1 * pi.cogs_pct / 100;
+        const margineLordo = pi.fatturato_anno_1 - cogs;
+        ebitdaCalcolato = Math.round((margineLordo - pi.costi_fissi_mensili * 12) / 1000) * 1000;
+      } else if (pi.utile_netto && pi.fatturato_anno_1) {
+        // Stima EBITDA: utile netto + ~4% ammortamenti tipici PMI
+        ebitdaCalcolato = Math.round((pi.utile_netto + pi.fatturato_anno_1 * 0.04) / 1000) * 1000;
+      } else if (pi.margine_pct && pi.fatturato_anno_1) {
+        ebitdaCalcolato = Math.round(pi.fatturato_anno_1 * pi.margine_pct / 100 / 1000) * 1000;
+      }
+      if (ebitdaCalcolato !== null && ebitdaCalcolato > 0) {
+        prospects[i].ebitda = ebitdaCalcolato;
+        await sb.from('prospects').update({ebitda: ebitdaCalcolato}).eq('id', currentId);
+      }
+    }
+
     // Se fatturato_anno_1 aggiornato → aggiorna anche la fascia stimata
     if (updates.fatturato_anno_1) {
       const nuovaFascia = _fasciaFromAnno1(updates.fatturato_anno_1);
@@ -9455,1658 +11076,7 @@ var AZIONI_TARGET_BY_SETTORE =
 
 
 var COSTI_BY_SETTORE = 
-{
-  "manifatturiero_meccanica": {
-    "vendite": {
-      "1-2": "0–200",
-      "2-3": "500–1.200",
-      "3-4": "1.500–3.000",
-      "4-5": "3.000–6.000"
-    },
-    "pipeline": {
-      "1-2": "0–50",
-      "2-3": "50–200",
-      "3-4": "200–500",
-      "4-5": "500–1.000"
-    },
-    "team": {
-      "1-2": "0–100",
-      "2-3": "200–600",
-      "3-4": "800–2.000",
-      "4-5": "2.500–5.000"
-    },
-    "processi": {
-      "1-2": "0–50",
-      "2-3": "100–300",
-      "3-4": "300–700",
-      "4-5": "700–1.500"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–900",
-      "4-5": "900–2.000"
-    },
-    "marketing": {
-      "1-2": "0–100",
-      "2-3": "200–600",
-      "3-4": "600–1.500",
-      "4-5": "1.500–3.500"
-    },
-    "sitoweb": {
-      "1-2": "500–1.500",
-      "2-3": "1.500–3.500",
-      "3-4": "3.500–7.000",
-      "4-5": "7.000–15.000"
-    },
-    "ecommerce": {
-      "1-2": "0–100",
-      "2-3": "200–600",
-      "3-4": "600–1.500",
-      "4-5": "1.500–4.000"
-    }
-  },
-  "manifatturiero_automotive": {
-    "vendite": {
-      "1-2": "200–600",
-      "2-3": "800–2.000",
-      "3-4": "2.000–5.000",
-      "4-5": "5.000–10.000"
-    },
-    "pipeline": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "team": {
-      "1-2": "100–300",
-      "2-3": "500–1.500",
-      "3-4": "1.500–4.000",
-      "4-5": "4.000–9.000"
-    },
-    "processi": {
-      "1-2": "100–300",
-      "2-3": "300–800",
-      "3-4": "800–2.000",
-      "4-5": "2.000–5.000"
-    },
-    "ricavi": {
-      "1-2": "0–200",
-      "2-3": "200–600",
-      "3-4": "600–1.500",
-      "4-5": "1.500–4.000"
-    },
-    "marketing": {
-      "1-2": "200–600",
-      "2-3": "600–1.500",
-      "3-4": "1.500–4.000",
-      "4-5": "4.000–9.000"
-    },
-    "sitoweb": {
-      "1-2": "800–2.000",
-      "2-3": "2.000–5.000",
-      "3-4": "5.000–12.000",
-      "4-5": "12.000–25.000"
-    },
-    "ecommerce": {
-      "1-2": "100–400",
-      "2-3": "400–1.200",
-      "3-4": "1.200–3.500",
-      "4-5": "3.500–9.000"
-    }
-  },
-  "manifatturiero_packaging": {
-    "vendite": {
-      "1-2": "100–400",
-      "2-3": "600–1.500",
-      "3-4": "1.500–4.000",
-      "4-5": "4.000–9.000"
-    },
-    "pipeline": {
-      "1-2": "0–50",
-      "2-3": "50–200",
-      "3-4": "200–600",
-      "4-5": "600–1.500"
-    },
-    "team": {
-      "1-2": "0–200",
-      "2-3": "300–900",
-      "3-4": "900–2.500",
-      "4-5": "2.500–6.000"
-    },
-    "processi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–900",
-      "4-5": "900–2.000"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "marketing": {
-      "1-2": "100–400",
-      "2-3": "400–1.200",
-      "3-4": "1.200–3.000",
-      "4-5": "3.000–7.000"
-    },
-    "sitoweb": {
-      "1-2": "600–1.500",
-      "2-3": "1.500–4.000",
-      "3-4": "4.000–9.000",
-      "4-5": "9.000–20.000"
-    },
-    "ecommerce": {
-      "1-2": "100–400",
-      "2-3": "400–1.200",
-      "3-4": "1.200–3.500",
-      "4-5": "3.500–9.000"
-    }
-  },
-  "manifatturiero_cterzi": {
-    "vendite": {
-      "1-2": "0–200",
-      "2-3": "400–1.000",
-      "3-4": "1.000–2.500",
-      "4-5": "2.500–5.500"
-    },
-    "pipeline": {
-      "1-2": "0–50",
-      "2-3": "50–150",
-      "3-4": "150–400",
-      "4-5": "400–900"
-    },
-    "team": {
-      "1-2": "0–100",
-      "2-3": "200–600",
-      "3-4": "600–1.800",
-      "4-5": "1.800–4.000"
-    },
-    "processi": {
-      "1-2": "0–50",
-      "2-3": "50–200",
-      "3-4": "200–600",
-      "4-5": "600–1.500"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–300",
-      "3-4": "300–800",
-      "4-5": "800–2.000"
-    },
-    "marketing": {
-      "1-2": "0–150",
-      "2-3": "150–500",
-      "3-4": "500–1.200",
-      "4-5": "1.200–3.000"
-    },
-    "sitoweb": {
-      "1-2": "400–1.000",
-      "2-3": "1.000–2.500",
-      "3-4": "2.500–6.000",
-      "4-5": "6.000–12.000"
-    },
-    "ecommerce": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.200",
-      "4-5": "1.200–3.500"
-    }
-  },
-  "manifatturiero_elettromeccanica": {
-    "vendite": {
-      "1-2": "100–400",
-      "2-3": "600–1.500",
-      "3-4": "1.500–4.000",
-      "4-5": "4.000–9.000"
-    },
-    "pipeline": {
-      "1-2": "0–100",
-      "2-3": "100–300",
-      "3-4": "300–800",
-      "4-5": "800–2.000"
-    },
-    "team": {
-      "1-2": "0–200",
-      "2-3": "400–1.200",
-      "3-4": "1.200–3.000",
-      "4-5": "3.000–7.000"
-    },
-    "processi": {
-      "1-2": "0–100",
-      "2-3": "150–500",
-      "3-4": "500–1.200",
-      "4-5": "1.200–3.000"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "marketing": {
-      "1-2": "100–400",
-      "2-3": "400–1.200",
-      "3-4": "1.200–3.000",
-      "4-5": "3.000–7.000"
-    },
-    "sitoweb": {
-      "1-2": "600–1.500",
-      "2-3": "1.500–4.000",
-      "3-4": "4.000–9.000",
-      "4-5": "9.000–20.000"
-    },
-    "ecommerce": {
-      "1-2": "0–200",
-      "2-3": "200–700",
-      "3-4": "700–2.000",
-      "4-5": "2.000–6.000"
-    }
-  },
-  "manifatturiero_tessile": {
-    "vendite": {
-      "1-2": "500–1.500",
-      "2-3": "1.500–4.000",
-      "3-4": "4.000–9.000",
-      "4-5": "9.000–20.000"
-    },
-    "pipeline": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "team": {
-      "1-2": "200–600",
-      "2-3": "800–2.000",
-      "3-4": "2.000–5.000",
-      "4-5": "5.000–12.000"
-    },
-    "processi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "ricavi": {
-      "1-2": "0–200",
-      "2-3": "200–600",
-      "3-4": "600–1.500",
-      "4-5": "1.500–4.000"
-    },
-    "marketing": {
-      "1-2": "300–900",
-      "2-3": "900–2.500",
-      "3-4": "2.500–6.000",
-      "4-5": "6.000–15.000"
-    },
-    "sitoweb": {
-      "1-2": "800–2.000",
-      "2-3": "2.000–5.000",
-      "3-4": "5.000–12.000",
-      "4-5": "12.000–28.000"
-    },
-    "ecommerce": {
-      "1-2": "200–600",
-      "2-3": "600–2.000",
-      "3-4": "2.000–6.000",
-      "4-5": "6.000–18.000"
-    }
-  },
-  "servizi_consulenza": {
-    "vendite": {
-      "1-2": "0–100",
-      "2-3": "200–600",
-      "3-4": "800–2.000",
-      "4-5": "2.500–6.000"
-    },
-    "pipeline": {
-      "1-2": "0–50",
-      "2-3": "50–150",
-      "3-4": "150–400",
-      "4-5": "400–900"
-    },
-    "team": {
-      "1-2": "0–200",
-      "2-3": "400–1.000",
-      "3-4": "1.200–3.000",
-      "4-5": "3.500–8.000"
-    },
-    "processi": {
-      "1-2": "0–50",
-      "2-3": "50–200",
-      "3-4": "200–500",
-      "4-5": "500–1.200"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–300",
-      "3-4": "300–800",
-      "4-5": "800–2.000"
-    },
-    "marketing": {
-      "1-2": "0–200",
-      "2-3": "300–800",
-      "3-4": "800–2.000",
-      "4-5": "2.000–5.000"
-    },
-    "sitoweb": {
-      "1-2": "500–1.200",
-      "2-3": "1.200–3.000",
-      "3-4": "3.000–7.000",
-      "4-5": "7.000–15.000"
-    },
-    "ecommerce": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.200",
-      "4-5": "1.200–3.500"
-    }
-  },
-  "servizi_it": {
-    "vendite": {
-      "1-2": "0–200",
-      "2-3": "400–1.000",
-      "3-4": "1.200–3.000",
-      "4-5": "3.500–8.000"
-    },
-    "pipeline": {
-      "1-2": "0–50",
-      "2-3": "50–200",
-      "3-4": "200–600",
-      "4-5": "600–1.500"
-    },
-    "team": {
-      "1-2": "0–300",
-      "2-3": "600–1.500",
-      "3-4": "1.800–4.500",
-      "4-5": "5.000–12.000"
-    },
-    "processi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "marketing": {
-      "1-2": "100–400",
-      "2-3": "400–1.200",
-      "3-4": "1.200–3.000",
-      "4-5": "3.000–7.000"
-    },
-    "sitoweb": {
-      "1-2": "600–1.500",
-      "2-3": "1.500–4.000",
-      "3-4": "4.000–9.000",
-      "4-5": "9.000–20.000"
-    },
-    "ecommerce": {
-      "1-2": "0–200",
-      "2-3": "200–700",
-      "3-4": "700–2.000",
-      "4-5": "2.000–6.000"
-    }
-  },
-  "servizi_formazione": {
-    "vendite": {
-      "1-2": "0–100",
-      "2-3": "200–600",
-      "3-4": "800–2.000",
-      "4-5": "2.500–6.000"
-    },
-    "pipeline": {
-      "1-2": "0–50",
-      "2-3": "50–150",
-      "3-4": "150–400",
-      "4-5": "400–900"
-    },
-    "team": {
-      "1-2": "0–200",
-      "2-3": "300–900",
-      "3-4": "1.000–2.500",
-      "4-5": "3.000–7.000"
-    },
-    "processi": {
-      "1-2": "0–50",
-      "2-3": "50–200",
-      "3-4": "200–600",
-      "4-5": "600–1.500"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–300",
-      "3-4": "300–800",
-      "4-5": "800–2.000"
-    },
-    "marketing": {
-      "1-2": "0–200",
-      "2-3": "200–700",
-      "3-4": "700–2.000",
-      "4-5": "2.000–5.000"
-    },
-    "sitoweb": {
-      "1-2": "400–1.000",
-      "2-3": "1.000–2.500",
-      "3-4": "2.500–6.000",
-      "4-5": "6.000–14.000"
-    },
-    "ecommerce": {
-      "1-2": "200–600",
-      "2-3": "600–2.000",
-      "3-4": "2.000–6.000",
-      "4-5": "6.000–15.000"
-    }
-  },
-  "edilizia_residenziale": {
-    "vendite": {
-      "1-2": "0–100",
-      "2-3": "200–600",
-      "3-4": "700–1.800",
-      "4-5": "2.000–5.000"
-    },
-    "pipeline": {
-      "1-2": "0–50",
-      "2-3": "50–150",
-      "3-4": "150–400",
-      "4-5": "400–900"
-    },
-    "team": {
-      "1-2": "0–100",
-      "2-3": "200–600",
-      "3-4": "700–1.800",
-      "4-5": "2.000–5.000"
-    },
-    "processi": {
-      "1-2": "0–50",
-      "2-3": "50–150",
-      "3-4": "150–400",
-      "4-5": "400–1.000"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–300",
-      "3-4": "300–700",
-      "4-5": "700–1.800"
-    },
-    "marketing": {
-      "1-2": "100–400",
-      "2-3": "400–1.200",
-      "3-4": "1.200–3.000",
-      "4-5": "3.000–7.000"
-    },
-    "sitoweb": {
-      "1-2": "400–1.000",
-      "2-3": "1.000–2.500",
-      "3-4": "2.500–6.000",
-      "4-5": "6.000–14.000"
-    },
-    "ecommerce": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.200",
-      "4-5": "1.200–3.500"
-    }
-  },
-  "edilizia_impianti": {
-    "vendite": {
-      "1-2": "0–100",
-      "2-3": "200–600",
-      "3-4": "700–1.800",
-      "4-5": "2.000–5.000"
-    },
-    "pipeline": {
-      "1-2": "0–50",
-      "2-3": "50–150",
-      "3-4": "150–400",
-      "4-5": "400–900"
-    },
-    "team": {
-      "1-2": "0–100",
-      "2-3": "200–600",
-      "3-4": "700–1.800",
-      "4-5": "2.000–5.000"
-    },
-    "processi": {
-      "1-2": "0–50",
-      "2-3": "50–150",
-      "3-4": "150–400",
-      "4-5": "400–1.000"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–300",
-      "3-4": "300–700",
-      "4-5": "700–1.800"
-    },
-    "marketing": {
-      "1-2": "100–400",
-      "2-3": "400–1.000",
-      "3-4": "1.000–2.500",
-      "4-5": "2.500–6.000"
-    },
-    "sitoweb": {
-      "1-2": "400–1.000",
-      "2-3": "1.000–2.500",
-      "3-4": "2.500–6.000",
-      "4-5": "6.000–14.000"
-    },
-    "ecommerce": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.200",
-      "4-5": "1.200–3.500"
-    }
-  },
-  "edilizia_ristrutturazioni": {
-    "vendite": {
-      "1-2": "0–100",
-      "2-3": "150–500",
-      "3-4": "600–1.500",
-      "4-5": "1.800–4.500"
-    },
-    "pipeline": {
-      "1-2": "0–50",
-      "2-3": "50–150",
-      "3-4": "150–400",
-      "4-5": "400–900"
-    },
-    "team": {
-      "1-2": "0–100",
-      "2-3": "200–600",
-      "3-4": "700–1.800",
-      "4-5": "2.000–5.000"
-    },
-    "processi": {
-      "1-2": "0–50",
-      "2-3": "50–150",
-      "3-4": "150–400",
-      "4-5": "400–1.000"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–300",
-      "3-4": "300–700",
-      "4-5": "700–1.800"
-    },
-    "marketing": {
-      "1-2": "100–400",
-      "2-3": "400–1.200",
-      "3-4": "1.200–3.000",
-      "4-5": "3.000–7.000"
-    },
-    "sitoweb": {
-      "1-2": "400–1.000",
-      "2-3": "1.000–2.500",
-      "3-4": "2.500–6.000",
-      "4-5": "6.000–14.000"
-    },
-    "ecommerce": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.200",
-      "4-5": "1.200–3.500"
-    }
-  },
-  "edilizia_serramenti": {
-    "vendite": {
-      "1-2": "0–100",
-      "2-3": "200–600",
-      "3-4": "700–1.800",
-      "4-5": "2.000–5.000"
-    },
-    "pipeline": {
-      "1-2": "0–50",
-      "2-3": "50–150",
-      "3-4": "150–400",
-      "4-5": "400–900"
-    },
-    "team": {
-      "1-2": "0–100",
-      "2-3": "200–600",
-      "3-4": "700–1.800",
-      "4-5": "2.000–5.000"
-    },
-    "processi": {
-      "1-2": "0–50",
-      "2-3": "50–150",
-      "3-4": "150–400",
-      "4-5": "400–1.000"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–300",
-      "3-4": "300–700",
-      "4-5": "700–1.800"
-    },
-    "marketing": {
-      "1-2": "100–400",
-      "2-3": "400–1.200",
-      "3-4": "1.200–3.000",
-      "4-5": "3.000–7.000"
-    },
-    "sitoweb": {
-      "1-2": "600–1.500",
-      "2-3": "1.500–4.000",
-      "3-4": "4.000–10.000",
-      "4-5": "10.000–22.000"
-    },
-    "ecommerce": {
-      "1-2": "200–600",
-      "2-3": "600–2.000",
-      "3-4": "2.000–6.000",
-      "4-5": "6.000–16.000"
-    }
-  },
-  "commercio_distribuzione_industriale": {
-    "vendite": {
-      "1-2": "0–200",
-      "2-3": "400–1.200",
-      "3-4": "1.500–4.000",
-      "4-5": "4.500–10.000"
-    },
-    "pipeline": {
-      "1-2": "0–50",
-      "2-3": "50–200",
-      "3-4": "200–600",
-      "4-5": "600–1.500"
-    },
-    "team": {
-      "1-2": "0–200",
-      "2-3": "400–1.200",
-      "3-4": "1.500–4.000",
-      "4-5": "4.500–10.000"
-    },
-    "processi": {
-      "1-2": "0–50",
-      "2-3": "100–300",
-      "3-4": "300–800",
-      "4-5": "800–2.000"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "marketing": {
-      "1-2": "100–400",
-      "2-3": "400–1.200",
-      "3-4": "1.200–3.000",
-      "4-5": "3.000–7.000"
-    },
-    "sitoweb": {
-      "1-2": "500–1.200",
-      "2-3": "1.200–3.000",
-      "3-4": "3.000–8.000",
-      "4-5": "8.000–18.000"
-    },
-    "ecommerce": {
-      "1-2": "300–900",
-      "2-3": "900–3.000",
-      "3-4": "3.000–9.000",
-      "4-5": "9.000–25.000"
-    }
-  },
-  "commercio_ingrosso_alimentare": {
-    "vendite": {
-      "1-2": "0–200",
-      "2-3": "400–1.200",
-      "3-4": "1.500–4.000",
-      "4-5": "4.500–10.000"
-    },
-    "pipeline": {
-      "1-2": "0–50",
-      "2-3": "50–200",
-      "3-4": "200–600",
-      "4-5": "600–1.500"
-    },
-    "team": {
-      "1-2": "0–200",
-      "2-3": "400–1.200",
-      "3-4": "1.500–4.000",
-      "4-5": "4.500–10.000"
-    },
-    "processi": {
-      "1-2": "0–50",
-      "2-3": "50–200",
-      "3-4": "200–500",
-      "4-5": "500–1.200"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–300",
-      "3-4": "300–800",
-      "4-5": "800–2.000"
-    },
-    "marketing": {
-      "1-2": "0–150",
-      "2-3": "150–500",
-      "3-4": "500–1.500",
-      "4-5": "1.500–4.000"
-    },
-    "sitoweb": {
-      "1-2": "400–1.000",
-      "2-3": "1.000–2.500",
-      "3-4": "2.500–7.000",
-      "4-5": "7.000–16.000"
-    },
-    "ecommerce": {
-      "1-2": "200–600",
-      "2-3": "600–2.000",
-      "3-4": "2.000–6.000",
-      "4-5": "6.000–18.000"
-    }
-  },
-  "commercio_materiali_edili": {
-    "vendite": {
-      "1-2": "0–200",
-      "2-3": "300–900",
-      "3-4": "1.000–2.500",
-      "4-5": "3.000–7.000"
-    },
-    "pipeline": {
-      "1-2": "0–50",
-      "2-3": "50–200",
-      "3-4": "200–600",
-      "4-5": "600–1.500"
-    },
-    "team": {
-      "1-2": "0–200",
-      "2-3": "300–900",
-      "3-4": "1.000–2.500",
-      "4-5": "3.000–7.000"
-    },
-    "processi": {
-      "1-2": "0–50",
-      "2-3": "50–200",
-      "3-4": "200–500",
-      "4-5": "500–1.200"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–300",
-      "3-4": "300–700",
-      "4-5": "700–1.800"
-    },
-    "marketing": {
-      "1-2": "100–400",
-      "2-3": "400–1.200",
-      "3-4": "1.200–3.000",
-      "4-5": "3.000–7.000"
-    },
-    "sitoweb": {
-      "1-2": "500–1.200",
-      "2-3": "1.200–3.000",
-      "3-4": "3.000–8.000",
-      "4-5": "8.000–18.000"
-    },
-    "ecommerce": {
-      "1-2": "300–900",
-      "2-3": "900–3.000",
-      "3-4": "3.000–9.000",
-      "4-5": "9.000–25.000"
-    }
-  },
-  "commercio_ricambi_auto": {
-    "vendite": {
-      "1-2": "0–200",
-      "2-3": "300–900",
-      "3-4": "1.000–2.500",
-      "4-5": "3.000–7.000"
-    },
-    "pipeline": {
-      "1-2": "0–50",
-      "2-3": "50–200",
-      "3-4": "200–600",
-      "4-5": "600–1.500"
-    },
-    "team": {
-      "1-2": "0–100",
-      "2-3": "200–600",
-      "3-4": "700–1.800",
-      "4-5": "2.000–5.000"
-    },
-    "processi": {
-      "1-2": "0–50",
-      "2-3": "50–150",
-      "3-4": "150–400",
-      "4-5": "400–1.000"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–300",
-      "3-4": "300–700",
-      "4-5": "700–1.800"
-    },
-    "marketing": {
-      "1-2": "0–150",
-      "2-3": "150–500",
-      "3-4": "500–1.500",
-      "4-5": "1.500–4.000"
-    },
-    "sitoweb": {
-      "1-2": "400–1.000",
-      "2-3": "1.000–2.500",
-      "3-4": "2.500–7.000",
-      "4-5": "7.000–16.000"
-    },
-    "ecommerce": {
-      "1-2": "300–900",
-      "2-3": "900–3.000",
-      "3-4": "3.000–9.000",
-      "4-5": "9.000–25.000"
-    }
-  },
-  "commercio_abbigliamento_ingrosso": {
-    "vendite": {
-      "1-2": "500–1.500",
-      "2-3": "1.500–4.000",
-      "3-4": "4.000–9.000",
-      "4-5": "9.000–20.000"
-    },
-    "pipeline": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "team": {
-      "1-2": "200–600",
-      "2-3": "800–2.000",
-      "3-4": "2.000–5.000",
-      "4-5": "5.000–12.000"
-    },
-    "processi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "ricavi": {
-      "1-2": "0–200",
-      "2-3": "200–600",
-      "3-4": "600–1.500",
-      "4-5": "1.500–4.000"
-    },
-    "marketing": {
-      "1-2": "300–900",
-      "2-3": "900–2.500",
-      "3-4": "2.500–6.000",
-      "4-5": "6.000–15.000"
-    },
-    "sitoweb": {
-      "1-2": "800–2.000",
-      "2-3": "2.000–5.000",
-      "3-4": "5.000–12.000",
-      "4-5": "12.000–28.000"
-    },
-    "ecommerce": {
-      "1-2": "200–600",
-      "2-3": "600–2.000",
-      "3-4": "2.000–6.000",
-      "4-5": "6.000–18.000"
-    }
-  },
-  "commercio_elettronica": {
-    "vendite": {
-      "1-2": "0–200",
-      "2-3": "400–1.200",
-      "3-4": "1.500–4.000",
-      "4-5": "4.500–10.000"
-    },
-    "pipeline": {
-      "1-2": "0–50",
-      "2-3": "50–200",
-      "3-4": "200–600",
-      "4-5": "600–1.500"
-    },
-    "team": {
-      "1-2": "0–200",
-      "2-3": "400–1.200",
-      "3-4": "1.500–4.000",
-      "4-5": "4.500–10.000"
-    },
-    "processi": {
-      "1-2": "0–100",
-      "2-3": "100–300",
-      "3-4": "300–800",
-      "4-5": "800–2.000"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "marketing": {
-      "1-2": "100–400",
-      "2-3": "400–1.200",
-      "3-4": "1.200–3.000",
-      "4-5": "3.000–7.000"
-    },
-    "sitoweb": {
-      "1-2": "500–1.200",
-      "2-3": "1.200–3.000",
-      "3-4": "3.000–8.000",
-      "4-5": "8.000–18.000"
-    },
-    "ecommerce": {
-      "1-2": "400–1.200",
-      "2-3": "1.200–4.000",
-      "3-4": "4.000–12.000",
-      "4-5": "12.000–30.000"
-    }
-  },
-  "commercio_chimici": {
-    "vendite": {
-      "1-2": "0–200",
-      "2-3": "400–1.200",
-      "3-4": "1.500–4.000",
-      "4-5": "4.500–10.000"
-    },
-    "pipeline": {
-      "1-2": "0–50",
-      "2-3": "50–200",
-      "3-4": "200–600",
-      "4-5": "600–1.500"
-    },
-    "team": {
-      "1-2": "0–200",
-      "2-3": "400–1.200",
-      "3-4": "1.500–4.000",
-      "4-5": "4.500–10.000"
-    },
-    "processi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "marketing": {
-      "1-2": "100–400",
-      "2-3": "400–1.200",
-      "3-4": "1.200–3.000",
-      "4-5": "3.000–7.000"
-    },
-    "sitoweb": {
-      "1-2": "500–1.200",
-      "2-3": "1.200–3.000",
-      "3-4": "3.000–8.000",
-      "4-5": "8.000–18.000"
-    },
-    "ecommerce": {
-      "1-2": "200–600",
-      "2-3": "600–2.000",
-      "3-4": "2.000–6.000",
-      "4-5": "6.000–18.000"
-    }
-  },
-  "commercio_medicale": {
-    "vendite": {
-      "1-2": "200–600",
-      "2-3": "800–2.000",
-      "3-4": "2.500–6.000",
-      "4-5": "6.000–14.000"
-    },
-    "pipeline": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "team": {
-      "1-2": "200–600",
-      "2-3": "800–2.000",
-      "3-4": "2.500–6.000",
-      "4-5": "6.000–14.000"
-    },
-    "processi": {
-      "1-2": "100–400",
-      "2-3": "400–1.200",
-      "3-4": "1.200–3.000",
-      "4-5": "3.000–7.000"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "marketing": {
-      "1-2": "300–900",
-      "2-3": "900–2.500",
-      "3-4": "2.500–6.000",
-      "4-5": "6.000–14.000"
-    },
-    "sitoweb": {
-      "1-2": "700–1.800",
-      "2-3": "1.800–4.500",
-      "3-4": "4.500–11.000",
-      "4-5": "11.000–25.000"
-    },
-    "ecommerce": {
-      "1-2": "100–400",
-      "2-3": "400–1.500",
-      "3-4": "1.500–5.000",
-      "4-5": "5.000–15.000"
-    }
-  },
-  "commercio_auto_moto": {
-    "vendite": {
-      "1-2": "0–300",
-      "2-3": "500–1.500",
-      "3-4": "1.800–4.500",
-      "4-5": "5.000–12.000"
-    },
-    "pipeline": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "team": {
-      "1-2": "0–300",
-      "2-3": "500–1.500",
-      "3-4": "1.800–4.500",
-      "4-5": "5.000–12.000"
-    },
-    "processi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "marketing": {
-      "1-2": "200–600",
-      "2-3": "600–2.000",
-      "3-4": "2.000–5.000",
-      "4-5": "5.000–12.000"
-    },
-    "sitoweb": {
-      "1-2": "600–1.500",
-      "2-3": "1.500–4.000",
-      "3-4": "4.000–10.000",
-      "4-5": "10.000–25.000"
-    },
-    "ecommerce": {
-      "1-2": "200–600",
-      "2-3": "600–2.000",
-      "3-4": "2.000–7.000",
-      "4-5": "7.000–20.000"
-    }
-  },
-  "commercio_abbigliamento_dettaglio": {
-    "vendite": {
-      "1-2": "0–100",
-      "2-3": "200–600",
-      "3-4": "700–1.800",
-      "4-5": "2.000–5.000"
-    },
-    "pipeline": {
-      "1-2": "0–50",
-      "2-3": "50–200",
-      "3-4": "200–600",
-      "4-5": "600–1.500"
-    },
-    "team": {
-      "1-2": "0–100",
-      "2-3": "200–600",
-      "3-4": "700–1.800",
-      "4-5": "2.000–5.000"
-    },
-    "processi": {
-      "1-2": "0–50",
-      "2-3": "50–150",
-      "3-4": "150–400",
-      "4-5": "400–1.000"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–300",
-      "3-4": "300–700",
-      "4-5": "700–1.800"
-    },
-    "marketing": {
-      "1-2": "100–400",
-      "2-3": "400–1.200",
-      "3-4": "1.200–3.000",
-      "4-5": "3.000–7.000"
-    },
-    "sitoweb": {
-      "1-2": "400–1.000",
-      "2-3": "1.000–2.500",
-      "3-4": "2.500–7.000",
-      "4-5": "7.000–16.000"
-    },
-    "ecommerce": {
-      "1-2": "300–900",
-      "2-3": "900–3.000",
-      "3-4": "3.000–9.000",
-      "4-5": "9.000–25.000"
-    }
-  },
-  "commercio_orologi_gioielli": {
-    "vendite": {
-      "1-2": "0–200",
-      "2-3": "400–1.200",
-      "3-4": "1.500–4.000",
-      "4-5": "4.500–11.000"
-    },
-    "pipeline": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "team": {
-      "1-2": "0–200",
-      "2-3": "400–1.200",
-      "3-4": "1.500–4.000",
-      "4-5": "4.500–11.000"
-    },
-    "processi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "marketing": {
-      "1-2": "200–700",
-      "2-3": "700–2.000",
-      "3-4": "2.000–5.000",
-      "4-5": "5.000–14.000"
-    },
-    "sitoweb": {
-      "1-2": "800–2.000",
-      "2-3": "2.000–5.500",
-      "3-4": "5.500–14.000",
-      "4-5": "14.000–35.000"
-    },
-    "ecommerce": {
-      "1-2": "300–900",
-      "2-3": "900–3.000",
-      "3-4": "3.000–10.000",
-      "4-5": "10.000–30.000"
-    }
-  },
-  "alimentare_trasformazione": {
-    "vendite": {
-      "1-2": "200–600",
-      "2-3": "600–1.800",
-      "3-4": "2.000–5.000",
-      "4-5": "5.500–13.000"
-    },
-    "pipeline": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "team": {
-      "1-2": "0–200",
-      "2-3": "400–1.200",
-      "3-4": "1.500–4.000",
-      "4-5": "4.500–10.000"
-    },
-    "processi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "marketing": {
-      "1-2": "300–900",
-      "2-3": "900–2.500",
-      "3-4": "2.500–6.000",
-      "4-5": "6.000–14.000"
-    },
-    "sitoweb": {
-      "1-2": "500–1.200",
-      "2-3": "1.200–3.000",
-      "3-4": "3.000–8.000",
-      "4-5": "8.000–18.000"
-    },
-    "ecommerce": {
-      "1-2": "400–1.200",
-      "2-3": "1.200–4.000",
-      "3-4": "4.000–12.000",
-      "4-5": "12.000–30.000"
-    }
-  },
-  "alimentare_vini": {
-    "vendite": {
-      "1-2": "400–1.200",
-      "2-3": "1.200–3.500",
-      "3-4": "3.500–9.000",
-      "4-5": "9.000–22.000"
-    },
-    "pipeline": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "team": {
-      "1-2": "200–600",
-      "2-3": "600–1.800",
-      "3-4": "2.000–5.000",
-      "4-5": "5.500–13.000"
-    },
-    "processi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "ricavi": {
-      "1-2": "0–200",
-      "2-3": "200–600",
-      "3-4": "600–1.500",
-      "4-5": "1.500–4.000"
-    },
-    "marketing": {
-      "1-2": "400–1.200",
-      "2-3": "1.200–3.500",
-      "3-4": "3.500–9.000",
-      "4-5": "9.000–22.000"
-    },
-    "sitoweb": {
-      "1-2": "700–1.800",
-      "2-3": "1.800–4.500",
-      "3-4": "4.500–12.000",
-      "4-5": "12.000–28.000"
-    },
-    "ecommerce": {
-      "1-2": "400–1.200",
-      "2-3": "1.200–4.000",
-      "3-4": "4.000–12.000",
-      "4-5": "12.000–32.000"
-    }
-  },
-  "alimentare_forno": {
-    "vendite": {
-      "1-2": "0–100",
-      "2-3": "150–500",
-      "3-4": "600–1.500",
-      "4-5": "1.800–4.500"
-    },
-    "pipeline": {
-      "1-2": "0–50",
-      "2-3": "50–150",
-      "3-4": "150–400",
-      "4-5": "400–900"
-    },
-    "team": {
-      "1-2": "0–100",
-      "2-3": "200–600",
-      "3-4": "700–1.800",
-      "4-5": "2.000–5.000"
-    },
-    "processi": {
-      "1-2": "0–50",
-      "2-3": "50–150",
-      "3-4": "150–400",
-      "4-5": "400–1.000"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–300",
-      "3-4": "300–700",
-      "4-5": "700–1.800"
-    },
-    "marketing": {
-      "1-2": "100–400",
-      "2-3": "400–1.200",
-      "3-4": "1.200–3.000",
-      "4-5": "3.000–7.000"
-    },
-    "sitoweb": {
-      "1-2": "400–1.000",
-      "2-3": "1.000–2.500",
-      "3-4": "2.500–7.000",
-      "4-5": "7.000–16.000"
-    },
-    "ecommerce": {
-      "1-2": "200–600",
-      "2-3": "600–2.000",
-      "3-4": "2.000–7.000",
-      "4-5": "7.000–20.000"
-    }
-  },
-  "alimentare_conserve": {
-    "vendite": {
-      "1-2": "200–600",
-      "2-3": "600–1.800",
-      "3-4": "2.000–5.000",
-      "4-5": "5.500–13.000"
-    },
-    "pipeline": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "team": {
-      "1-2": "0–200",
-      "2-3": "400–1.200",
-      "3-4": "1.500–4.000",
-      "4-5": "4.500–10.000"
-    },
-    "processi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "marketing": {
-      "1-2": "300–900",
-      "2-3": "900–2.500",
-      "3-4": "2.500–6.000",
-      "4-5": "6.000–14.000"
-    },
-    "sitoweb": {
-      "1-2": "500–1.200",
-      "2-3": "1.200–3.000",
-      "3-4": "3.000–8.000",
-      "4-5": "8.000–18.000"
-    },
-    "ecommerce": {
-      "1-2": "400–1.200",
-      "2-3": "1.200–4.000",
-      "3-4": "4.000–12.000",
-      "4-5": "12.000–30.000"
-    }
-  },
-  "alimentare_ingredienti": {
-    "vendite": {
-      "1-2": "0–200",
-      "2-3": "400–1.200",
-      "3-4": "1.500–4.000",
-      "4-5": "4.500–10.000"
-    },
-    "pipeline": {
-      "1-2": "0–50",
-      "2-3": "50–200",
-      "3-4": "200–600",
-      "4-5": "600–1.500"
-    },
-    "team": {
-      "1-2": "0–200",
-      "2-3": "400–1.200",
-      "3-4": "1.500–4.000",
-      "4-5": "4.500–10.000"
-    },
-    "processi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.000",
-      "4-5": "1.000–2.500"
-    },
-    "marketing": {
-      "1-2": "200–600",
-      "2-3": "600–1.800",
-      "3-4": "1.800–4.500",
-      "4-5": "4.500–11.000"
-    },
-    "sitoweb": {
-      "1-2": "500–1.200",
-      "2-3": "1.200–3.000",
-      "3-4": "3.000–8.000",
-      "4-5": "8.000–18.000"
-    },
-    "ecommerce": {
-      "1-2": "200–600",
-      "2-3": "600–2.000",
-      "3-4": "2.000–6.000",
-      "4-5": "6.000–18.000"
-    }
-  },
-  "tech_saas": {
-    "vendite": {
-      "1-2": "0–300",
-      "2-3": "600–1.800",
-      "3-4": "2.500–6.000",
-      "4-5": "7.000–18.000"
-    },
-    "pipeline": {
-      "1-2": "0–50",
-      "2-3": "50–200",
-      "3-4": "200–700",
-      "4-5": "700–2.000"
-    },
-    "team": {
-      "1-2": "0–400",
-      "2-3": "800–2.500",
-      "3-4": "3.000–8.000",
-      "4-5": "10.000–25.000"
-    },
-    "processi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.200",
-      "4-5": "1.200–3.500"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.200",
-      "4-5": "1.200–3.500"
-    },
-    "marketing": {
-      "1-2": "200–700",
-      "2-3": "700–2.500",
-      "3-4": "2.500–8.000",
-      "4-5": "8.000–25.000"
-    },
-    "sitoweb": {
-      "1-2": "800–2.500",
-      "2-3": "2.500–7.000",
-      "3-4": "7.000–18.000",
-      "4-5": "18.000–45.000"
-    },
-    "ecommerce": {
-      "1-2": "500–1.500",
-      "2-3": "1.500–5.000",
-      "3-4": "5.000–15.000",
-      "4-5": "15.000–45.000"
-    }
-  },
-  "tech_system_integrator": {
-    "vendite": {
-      "1-2": "0–300",
-      "2-3": "600–1.800",
-      "3-4": "2.000–5.500",
-      "4-5": "6.000–15.000"
-    },
-    "pipeline": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.200",
-      "4-5": "1.200–3.500"
-    },
-    "team": {
-      "1-2": "0–400",
-      "2-3": "800–2.500",
-      "3-4": "3.000–8.000",
-      "4-5": "9.000–22.000"
-    },
-    "processi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.200",
-      "4-5": "1.200–3.500"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.200",
-      "4-5": "1.200–3.500"
-    },
-    "marketing": {
-      "1-2": "200–600",
-      "2-3": "600–1.800",
-      "3-4": "1.800–5.000",
-      "4-5": "5.000–13.000"
-    },
-    "sitoweb": {
-      "1-2": "700–1.800",
-      "2-3": "1.800–5.000",
-      "3-4": "5.000–13.000",
-      "4-5": "13.000–30.000"
-    },
-    "ecommerce": {
-      "1-2": "200–700",
-      "2-3": "700–2.500",
-      "3-4": "2.500–8.000",
-      "4-5": "8.000–25.000"
-    }
-  },
-  "tech_digital_agency": {
-    "vendite": {
-      "1-2": "0–200",
-      "2-3": "400–1.200",
-      "3-4": "1.500–4.000",
-      "4-5": "5.000–12.000"
-    },
-    "pipeline": {
-      "1-2": "0–50",
-      "2-3": "50–200",
-      "3-4": "200–700",
-      "4-5": "700–2.000"
-    },
-    "team": {
-      "1-2": "0–300",
-      "2-3": "600–1.800",
-      "3-4": "2.500–6.000",
-      "4-5": "7.000–18.000"
-    },
-    "processi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.200",
-      "4-5": "1.200–3.500"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.200",
-      "4-5": "1.200–3.500"
-    },
-    "marketing": {
-      "1-2": "100–400",
-      "2-3": "400–1.500",
-      "3-4": "1.500–5.000",
-      "4-5": "5.000–15.000"
-    },
-    "sitoweb": {
-      "1-2": "700–1.800",
-      "2-3": "1.800–5.000",
-      "3-4": "5.000–13.000",
-      "4-5": "13.000–30.000"
-    },
-    "ecommerce": {
-      "1-2": "300–900",
-      "2-3": "900–3.000",
-      "3-4": "3.000–10.000",
-      "4-5": "10.000–30.000"
-    }
-  },
-  "tech_automazione": {
-    "vendite": {
-      "1-2": "100–400",
-      "2-3": "600–1.800",
-      "3-4": "2.000–5.500",
-      "4-5": "6.000–15.000"
-    },
-    "pipeline": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.200",
-      "4-5": "1.200–3.500"
-    },
-    "team": {
-      "1-2": "0–400",
-      "2-3": "800–2.500",
-      "3-4": "3.000–8.000",
-      "4-5": "9.000–22.000"
-    },
-    "processi": {
-      "1-2": "100–400",
-      "2-3": "400–1.200",
-      "3-4": "1.200–3.500",
-      "4-5": "3.500–9.000"
-    },
-    "ricavi": {
-      "1-2": "0–100",
-      "2-3": "100–400",
-      "3-4": "400–1.200",
-      "4-5": "1.200–3.500"
-    },
-    "marketing": {
-      "1-2": "200–600",
-      "2-3": "600–1.800",
-      "3-4": "1.800–5.000",
-      "4-5": "5.000–13.000"
-    },
-    "sitoweb": {
-      "1-2": "700–1.800",
-      "2-3": "1.800–5.000",
-      "3-4": "5.000–13.000",
-      "4-5": "13.000–30.000"
-    },
-    "ecommerce": {
-      "1-2": "200–700",
-      "2-3": "700–2.500",
-      "3-4": "2.500–8.000",
-      "4-5": "8.000–25.000"
-    }
-  }
-};
+{"manifatturiero_meccanica": {"vendite": {"1-2": {"r": 150, "u": 200}, "2-3": {"r": 1650, "u": 500}, "3-4": {"r": 5000, "u": 1000}, "4-5": {"r": 8500, "u": 2000}}, "pipeline": {"1-2": {"r": 25, "u": 200}, "2-3": {"r": 325, "u": 1000}, "3-4": {"r": 850, "u": 3000}, "4-5": {"r": 1850, "u": 6000}}, "team": {"1-2": {"r": 100, "u": 300}, "2-3": {"r": 3400, "u": 1500}, "3-4": {"r": 6500, "u": 2500}, "4-5": {"r": 11000, "u": 4000}}, "processi": {"1-2": {"r": 50, "u": 300}, "2-3": {"r": 400, "u": 2000}, "3-4": {"r": 850, "u": 4000}, "4-5": {"r": 1750, "u": 7000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 250, "u": 1000}, "3-4": {"r": 550, "u": 2000}, "4-5": {"r": 1050, "u": 4000}}, "marketing": {"1-2": {"r": 100, "u": 500}, "2-3": {"r": 1000, "u": 2000}, "3-4": {"r": 2100, "u": 4000}, "4-5": {"r": 4000, "u": 7000}}, "sitoweb": {"1-2": {"r": 200, "u": 1500}, "2-3": {"r": 500, "u": 4000}, "3-4": {"r": 850, "u": 6500}, "4-5": {"r": 1750, "u": 12000}}, "ecommerce": {"1-2": {"r": 50, "u": 500}, "2-3": {"r": 400, "u": 3000}, "3-4": {"r": 850, "u": 6000}, "4-5": {"r": 1750, "u": 12000}}}, "manifatturiero_automotive": {"vendite": {"1-2": {"r": 150, "u": 200}, "2-3": {"r": 1650, "u": 500}, "3-4": {"r": 5000, "u": 1000}, "4-5": {"r": 8500, "u": 2000}}, "pipeline": {"1-2": {"r": 25, "u": 200}, "2-3": {"r": 325, "u": 1000}, "3-4": {"r": 850, "u": 3000}, "4-5": {"r": 1850, "u": 6000}}, "team": {"1-2": {"r": 100, "u": 300}, "2-3": {"r": 3400, "u": 1500}, "3-4": {"r": 6500, "u": 2500}, "4-5": {"r": 11000, "u": 4000}}, "processi": {"1-2": {"r": 50, "u": 300}, "2-3": {"r": 400, "u": 2000}, "3-4": {"r": 850, "u": 4000}, "4-5": {"r": 1750, "u": 7000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 250, "u": 1000}, "3-4": {"r": 550, "u": 2000}, "4-5": {"r": 1050, "u": 4000}}, "marketing": {"1-2": {"r": 100, "u": 500}, "2-3": {"r": 1000, "u": 2000}, "3-4": {"r": 2100, "u": 4000}, "4-5": {"r": 4000, "u": 7000}}, "sitoweb": {"1-2": {"r": 200, "u": 1500}, "2-3": {"r": 500, "u": 4000}, "3-4": {"r": 850, "u": 6500}, "4-5": {"r": 1750, "u": 12000}}, "ecommerce": {"1-2": {"r": 50, "u": 500}, "2-3": {"r": 400, "u": 3000}, "3-4": {"r": 850, "u": 6000}, "4-5": {"r": 1750, "u": 12000}}}, "manifatturiero_packaging": {"vendite": {"1-2": {"r": 150, "u": 200}, "2-3": {"r": 1650, "u": 500}, "3-4": {"r": 5000, "u": 1000}, "4-5": {"r": 8500, "u": 2000}}, "pipeline": {"1-2": {"r": 25, "u": 200}, "2-3": {"r": 325, "u": 1000}, "3-4": {"r": 850, "u": 3000}, "4-5": {"r": 1850, "u": 6000}}, "team": {"1-2": {"r": 100, "u": 300}, "2-3": {"r": 3400, "u": 1500}, "3-4": {"r": 6500, "u": 2500}, "4-5": {"r": 11000, "u": 4000}}, "processi": {"1-2": {"r": 50, "u": 300}, "2-3": {"r": 400, "u": 2000}, "3-4": {"r": 850, "u": 4000}, "4-5": {"r": 1750, "u": 7000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 250, "u": 1000}, "3-4": {"r": 550, "u": 2000}, "4-5": {"r": 1050, "u": 4000}}, "marketing": {"1-2": {"r": 100, "u": 500}, "2-3": {"r": 1000, "u": 2000}, "3-4": {"r": 2100, "u": 4000}, "4-5": {"r": 4000, "u": 7000}}, "sitoweb": {"1-2": {"r": 200, "u": 1500}, "2-3": {"r": 500, "u": 4000}, "3-4": {"r": 850, "u": 6500}, "4-5": {"r": 1750, "u": 12000}}, "ecommerce": {"1-2": {"r": 50, "u": 500}, "2-3": {"r": 400, "u": 3000}, "3-4": {"r": 850, "u": 6000}, "4-5": {"r": 1750, "u": 12000}}}, "manifatturiero_cterzi": {"vendite": {"1-2": {"r": 150, "u": 200}, "2-3": {"r": 1650, "u": 500}, "3-4": {"r": 5000, "u": 1000}, "4-5": {"r": 8500, "u": 2000}}, "pipeline": {"1-2": {"r": 25, "u": 300}, "2-3": {"r": 250, "u": 1500}, "3-4": {"r": 625, "u": 4000}, "4-5": {"r": 1300, "u": 8000}}, "team": {"1-2": {"r": 100, "u": 300}, "2-3": {"r": 3400, "u": 1500}, "3-4": {"r": 6500, "u": 2500}, "4-5": {"r": 11000, "u": 4000}}, "processi": {"1-2": {"r": 50, "u": 300}, "2-3": {"r": 400, "u": 2000}, "3-4": {"r": 850, "u": 4000}, "4-5": {"r": 1750, "u": 7000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 250, "u": 1000}, "3-4": {"r": 550, "u": 2000}, "4-5": {"r": 1050, "u": 4000}}, "marketing": {"1-2": {"r": 100, "u": 500}, "2-3": {"r": 1000, "u": 2000}, "3-4": {"r": 2100, "u": 4000}, "4-5": {"r": 4000, "u": 7000}}, "sitoweb": {"1-2": {"r": 200, "u": 1500}, "2-3": {"r": 500, "u": 4000}, "3-4": {"r": 850, "u": 6500}, "4-5": {"r": 1750, "u": 12000}}, "ecommerce": {"1-2": {"r": 50, "u": 500}, "2-3": {"r": 400, "u": 3000}, "3-4": {"r": 850, "u": 6000}, "4-5": {"r": 1750, "u": 12000}}}, "manifatturiero_elettromeccanica": {"vendite": {"1-2": {"r": 150, "u": 200}, "2-3": {"r": 1650, "u": 500}, "3-4": {"r": 5000, "u": 1000}, "4-5": {"r": 8500, "u": 2000}}, "pipeline": {"1-2": {"r": 25, "u": 200}, "2-3": {"r": 325, "u": 1000}, "3-4": {"r": 850, "u": 3000}, "4-5": {"r": 1850, "u": 6000}}, "team": {"1-2": {"r": 100, "u": 300}, "2-3": {"r": 3400, "u": 1500}, "3-4": {"r": 6500, "u": 2500}, "4-5": {"r": 11000, "u": 4000}}, "processi": {"1-2": {"r": 50, "u": 300}, "2-3": {"r": 400, "u": 2000}, "3-4": {"r": 850, "u": 4000}, "4-5": {"r": 1750, "u": 7000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 250, "u": 1000}, "3-4": {"r": 550, "u": 2000}, "4-5": {"r": 1050, "u": 4000}}, "marketing": {"1-2": {"r": 100, "u": 500}, "2-3": {"r": 1000, "u": 2000}, "3-4": {"r": 2100, "u": 4000}, "4-5": {"r": 4000, "u": 7000}}, "sitoweb": {"1-2": {"r": 200, "u": 1500}, "2-3": {"r": 500, "u": 4000}, "3-4": {"r": 850, "u": 6500}, "4-5": {"r": 1750, "u": 12000}}, "ecommerce": {"1-2": {"r": 50, "u": 500}, "2-3": {"r": 400, "u": 3000}, "3-4": {"r": 850, "u": 6000}, "4-5": {"r": 1750, "u": 12000}}}, "manifatturiero_tessile": {"vendite": {"1-2": {"r": 150, "u": 200}, "2-3": {"r": 1650, "u": 500}, "3-4": {"r": 5000, "u": 1000}, "4-5": {"r": 8500, "u": 2000}}, "pipeline": {"1-2": {"r": 25, "u": 200}, "2-3": {"r": 325, "u": 1000}, "3-4": {"r": 850, "u": 3000}, "4-5": {"r": 1850, "u": 6000}}, "team": {"1-2": {"r": 100, "u": 300}, "2-3": {"r": 3400, "u": 1500}, "3-4": {"r": 6500, "u": 2500}, "4-5": {"r": 11000, "u": 4000}}, "processi": {"1-2": {"r": 50, "u": 300}, "2-3": {"r": 400, "u": 2000}, "3-4": {"r": 850, "u": 4000}, "4-5": {"r": 1750, "u": 7000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 250, "u": 1000}, "3-4": {"r": 550, "u": 2000}, "4-5": {"r": 1050, "u": 4000}}, "marketing": {"1-2": {"r": 800, "u": 2000}, "2-3": {"r": 2750, "u": 4000}, "3-4": {"r": 5500, "u": 8000}, "4-5": {"r": 11000, "u": 15000}}, "sitoweb": {"1-2": {"r": 200, "u": 1500}, "2-3": {"r": 500, "u": 4000}, "3-4": {"r": 850, "u": 6500}, "4-5": {"r": 1750, "u": 12000}}, "ecommerce": {"1-2": {"r": 400, "u": 1500}, "2-3": {"r": 1200, "u": 4000}, "3-4": {"r": 2750, "u": 8000}, "4-5": {"r": 6000, "u": 15000}}}, "servizi_consulenza": {"vendite": {"1-2": {"r": 75, "u": 150}, "2-3": {"r": 1400, "u": 400}, "3-4": {"r": 3750, "u": 800}, "4-5": {"r": 7000, "u": 1500}}, "pipeline": {"1-2": {"r": 40, "u": 300}, "2-3": {"r": 325, "u": 1500}, "3-4": {"r": 700, "u": 4000}, "4-5": {"r": 1450, "u": 8000}}, "team": {"1-2": {"r": 100, "u": 300}, "2-3": {"r": 3900, "u": 2000}, "3-4": {"r": 7250, "u": 3000}, "4-5": {"r": 13000, "u": 5000}}, "processi": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 250, "u": 1500}, "3-4": {"r": 550, "u": 3000}, "4-5": {"r": 1050, "u": 5000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 225, "u": 800}, "3-4": {"r": 500, "u": 1500}, "4-5": {"r": 850, "u": 3000}}, "marketing": {"1-2": {"r": 150, "u": 500}, "2-3": {"r": 800, "u": 2000}, "3-4": {"r": 1750, "u": 4000}, "4-5": {"r": 3750, "u": 7000}}, "sitoweb": {"1-2": {"r": 250, "u": 2000}, "2-3": {"r": 650, "u": 4500}, "3-4": {"r": 1150, "u": 7000}, "4-5": {"r": 2250, "u": 13000}}, "ecommerce": {"1-2": {"r": 50, "u": 300}, "2-3": {"r": 325, "u": 2000}, "3-4": {"r": 700, "u": 5000}, "4-5": {"r": 1550, "u": 10000}}}, "servizi_it": {"vendite": {"1-2": {"r": 75, "u": 150}, "2-3": {"r": 1400, "u": 400}, "3-4": {"r": 3750, "u": 800}, "4-5": {"r": 7000, "u": 1500}}, "pipeline": {"1-2": {"r": 40, "u": 300}, "2-3": {"r": 325, "u": 1500}, "3-4": {"r": 700, "u": 4000}, "4-5": {"r": 1450, "u": 8000}}, "team": {"1-2": {"r": 100, "u": 300}, "2-3": {"r": 3900, "u": 2000}, "3-4": {"r": 7250, "u": 3000}, "4-5": {"r": 13000, "u": 5000}}, "processi": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 250, "u": 1500}, "3-4": {"r": 550, "u": 3000}, "4-5": {"r": 1050, "u": 5000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 225, "u": 800}, "3-4": {"r": 500, "u": 1500}, "4-5": {"r": 850, "u": 3000}}, "marketing": {"1-2": {"r": 150, "u": 500}, "2-3": {"r": 800, "u": 2000}, "3-4": {"r": 1750, "u": 4000}, "4-5": {"r": 3750, "u": 7000}}, "sitoweb": {"1-2": {"r": 250, "u": 2000}, "2-3": {"r": 650, "u": 4500}, "3-4": {"r": 1150, "u": 7000}, "4-5": {"r": 2250, "u": 13000}}, "ecommerce": {"1-2": {"r": 50, "u": 300}, "2-3": {"r": 325, "u": 2000}, "3-4": {"r": 700, "u": 5000}, "4-5": {"r": 1550, "u": 10000}}}, "servizi_formazione": {"vendite": {"1-2": {"r": 75, "u": 150}, "2-3": {"r": 1400, "u": 400}, "3-4": {"r": 3750, "u": 800}, "4-5": {"r": 7000, "u": 1500}}, "pipeline": {"1-2": {"r": 40, "u": 300}, "2-3": {"r": 325, "u": 1500}, "3-4": {"r": 700, "u": 4000}, "4-5": {"r": 1450, "u": 8000}}, "team": {"1-2": {"r": 100, "u": 300}, "2-3": {"r": 3900, "u": 2000}, "3-4": {"r": 7250, "u": 3000}, "4-5": {"r": 13000, "u": 5000}}, "processi": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 250, "u": 1500}, "3-4": {"r": 550, "u": 3000}, "4-5": {"r": 1050, "u": 5000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 225, "u": 800}, "3-4": {"r": 500, "u": 1500}, "4-5": {"r": 850, "u": 3000}}, "marketing": {"1-2": {"r": 150, "u": 500}, "2-3": {"r": 800, "u": 2000}, "3-4": {"r": 1750, "u": 4000}, "4-5": {"r": 3750, "u": 7000}}, "sitoweb": {"1-2": {"r": 250, "u": 2000}, "2-3": {"r": 650, "u": 4500}, "3-4": {"r": 1150, "u": 7000}, "4-5": {"r": 2250, "u": 13000}}, "ecommerce": {"1-2": {"r": 50, "u": 300}, "2-3": {"r": 325, "u": 2000}, "3-4": {"r": 700, "u": 5000}, "4-5": {"r": 1550, "u": 10000}}}, "edilizia_residenziale": {"vendite": {"1-2": {"r": 75, "u": 150}, "2-3": {"r": 1250, "u": 400}, "3-4": {"r": 3750, "u": 800}, "4-5": {"r": 7000, "u": 1500}}, "pipeline": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 250, "u": 1000}, "3-4": {"r": 550, "u": 2500}, "4-5": {"r": 1150, "u": 5000}}, "team": {"1-2": {"r": 75, "u": 200}, "2-3": {"r": 3250, "u": 1500}, "3-4": {"r": 6000, "u": 2500}, "4-5": {"r": 9500, "u": 4000}}, "processi": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 225, "u": 1500}, "3-4": {"r": 500, "u": 3000}, "4-5": {"r": 1000, "u": 5000}}, "ricavi": {"1-2": {"r": 50, "u": 150}, "2-3": {"r": 225, "u": 800}, "3-4": {"r": 500, "u": 1500}, "4-5": {"r": 850, "u": 3000}}, "marketing": {"1-2": {"r": 325, "u": 500}, "2-3": {"r": 1000, "u": 1500}, "3-4": {"r": 2100, "u": 3000}, "4-5": {"r": 4000, "u": 6000}}, "sitoweb": {"1-2": {"r": 225, "u": 1500}, "2-3": {"r": 550, "u": 3500}, "3-4": {"r": 1050, "u": 5500}, "4-5": {"r": 2100, "u": 10000}}, "ecommerce": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 325, "u": 2000}, "3-4": {"r": 700, "u": 5000}, "4-5": {"r": 1550, "u": 10000}}}, "edilizia_impianti": {"vendite": {"1-2": {"r": 75, "u": 150}, "2-3": {"r": 1250, "u": 400}, "3-4": {"r": 3750, "u": 800}, "4-5": {"r": 7000, "u": 1500}}, "pipeline": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 250, "u": 1000}, "3-4": {"r": 550, "u": 2500}, "4-5": {"r": 1150, "u": 5000}}, "team": {"1-2": {"r": 75, "u": 200}, "2-3": {"r": 3250, "u": 1500}, "3-4": {"r": 6000, "u": 2500}, "4-5": {"r": 9500, "u": 4000}}, "processi": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 225, "u": 1500}, "3-4": {"r": 500, "u": 3000}, "4-5": {"r": 1000, "u": 5000}}, "ricavi": {"1-2": {"r": 50, "u": 150}, "2-3": {"r": 225, "u": 800}, "3-4": {"r": 500, "u": 1500}, "4-5": {"r": 850, "u": 3000}}, "marketing": {"1-2": {"r": 325, "u": 500}, "2-3": {"r": 1000, "u": 1500}, "3-4": {"r": 2100, "u": 3000}, "4-5": {"r": 4000, "u": 6000}}, "sitoweb": {"1-2": {"r": 225, "u": 1500}, "2-3": {"r": 550, "u": 3500}, "3-4": {"r": 1050, "u": 5500}, "4-5": {"r": 2100, "u": 10000}}, "ecommerce": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 325, "u": 2000}, "3-4": {"r": 700, "u": 5000}, "4-5": {"r": 1550, "u": 10000}}}, "edilizia_ristrutturazioni": {"vendite": {"1-2": {"r": 75, "u": 150}, "2-3": {"r": 1250, "u": 400}, "3-4": {"r": 3750, "u": 800}, "4-5": {"r": 7000, "u": 1500}}, "pipeline": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 250, "u": 1000}, "3-4": {"r": 550, "u": 2500}, "4-5": {"r": 1150, "u": 5000}}, "team": {"1-2": {"r": 75, "u": 200}, "2-3": {"r": 3250, "u": 1500}, "3-4": {"r": 6000, "u": 2500}, "4-5": {"r": 9500, "u": 4000}}, "processi": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 225, "u": 1500}, "3-4": {"r": 500, "u": 3000}, "4-5": {"r": 1000, "u": 5000}}, "ricavi": {"1-2": {"r": 50, "u": 150}, "2-3": {"r": 225, "u": 800}, "3-4": {"r": 500, "u": 1500}, "4-5": {"r": 850, "u": 3000}}, "marketing": {"1-2": {"r": 325, "u": 500}, "2-3": {"r": 1000, "u": 1500}, "3-4": {"r": 2100, "u": 3000}, "4-5": {"r": 4000, "u": 6000}}, "sitoweb": {"1-2": {"r": 225, "u": 1500}, "2-3": {"r": 550, "u": 3500}, "3-4": {"r": 1050, "u": 5500}, "4-5": {"r": 2100, "u": 10000}}, "ecommerce": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 325, "u": 2000}, "3-4": {"r": 700, "u": 5000}, "4-5": {"r": 1550, "u": 10000}}}, "edilizia_serramenti": {"vendite": {"1-2": {"r": 75, "u": 150}, "2-3": {"r": 1250, "u": 400}, "3-4": {"r": 3750, "u": 800}, "4-5": {"r": 7000, "u": 1500}}, "pipeline": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 250, "u": 1000}, "3-4": {"r": 550, "u": 2500}, "4-5": {"r": 1150, "u": 5000}}, "team": {"1-2": {"r": 75, "u": 200}, "2-3": {"r": 3250, "u": 1500}, "3-4": {"r": 6000, "u": 2500}, "4-5": {"r": 9500, "u": 4000}}, "processi": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 225, "u": 1500}, "3-4": {"r": 500, "u": 3000}, "4-5": {"r": 1000, "u": 5000}}, "ricavi": {"1-2": {"r": 50, "u": 150}, "2-3": {"r": 225, "u": 800}, "3-4": {"r": 500, "u": 1500}, "4-5": {"r": 850, "u": 3000}}, "marketing": {"1-2": {"r": 325, "u": 500}, "2-3": {"r": 1000, "u": 1500}, "3-4": {"r": 2100, "u": 3000}, "4-5": {"r": 4000, "u": 6000}}, "sitoweb": {"1-2": {"r": 300, "u": 2000}, "2-3": {"r": 700, "u": 5000}, "3-4": {"r": 1250, "u": 8000}, "4-5": {"r": 2500, "u": 14000}}, "ecommerce": {"1-2": {"r": 300, "u": 1500}, "2-3": {"r": 800, "u": 4000}, "3-4": {"r": 1750, "u": 8000}, "4-5": {"r": 4000, "u": 15000}}}, "commercio_distribuzione_industriale": {"vendite": {"1-2": {"r": 100, "u": 200}, "2-3": {"r": 2050, "u": 500}, "3-4": {"r": 5250, "u": 1000}, "4-5": {"r": 10000, "u": 2000}}, "pipeline": {"1-2": {"r": 40, "u": 300}, "2-3": {"r": 325, "u": 1200}, "3-4": {"r": 700, "u": 3000}, "4-5": {"r": 1450, "u": 6000}}, "team": {"1-2": {"r": 100, "u": 300}, "2-3": {"r": 3650, "u": 1500}, "3-4": {"r": 6750, "u": 2500}, "4-5": {"r": 11750, "u": 4000}}, "processi": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 250, "u": 1500}, "3-4": {"r": 550, "u": 3000}, "4-5": {"r": 1000, "u": 5000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 225, "u": 800}, "3-4": {"r": 625, "u": 1500}, "4-5": {"r": 1300, "u": 3000}}, "marketing": {"1-2": {"r": 325, "u": 500}, "2-3": {"r": 1000, "u": 2000}, "3-4": {"r": 2100, "u": 4000}, "4-5": {"r": 3750, "u": 7000}}, "sitoweb": {"1-2": {"r": 250, "u": 1500}, "2-3": {"r": 625, "u": 3500}, "3-4": {"r": 1250, "u": 6000}, "4-5": {"r": 2500, "u": 11000}}, "ecommerce": {"1-2": {"r": 600, "u": 2000}, "2-3": {"r": 1650, "u": 5000}, "3-4": {"r": 3750, "u": 10000}, "4-5": {"r": 8500, "u": 18000}}}, "commercio_ingrosso_alimentare": {"vendite": {"1-2": {"r": 100, "u": 200}, "2-3": {"r": 2050, "u": 500}, "3-4": {"r": 5250, "u": 1000}, "4-5": {"r": 10000, "u": 2000}}, "pipeline": {"1-2": {"r": 40, "u": 300}, "2-3": {"r": 325, "u": 1200}, "3-4": {"r": 700, "u": 3000}, "4-5": {"r": 1450, "u": 6000}}, "team": {"1-2": {"r": 100, "u": 300}, "2-3": {"r": 3650, "u": 1500}, "3-4": {"r": 6750, "u": 2500}, "4-5": {"r": 11750, "u": 4000}}, "processi": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 250, "u": 1500}, "3-4": {"r": 550, "u": 3000}, "4-5": {"r": 1000, "u": 5000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 225, "u": 800}, "3-4": {"r": 625, "u": 1500}, "4-5": {"r": 1300, "u": 3000}}, "marketing": {"1-2": {"r": 325, "u": 500}, "2-3": {"r": 1000, "u": 2000}, "3-4": {"r": 2100, "u": 4000}, "4-5": {"r": 3750, "u": 7000}}, "sitoweb": {"1-2": {"r": 250, "u": 1500}, "2-3": {"r": 625, "u": 3500}, "3-4": {"r": 1250, "u": 6000}, "4-5": {"r": 2500, "u": 11000}}, "ecommerce": {"1-2": {"r": 600, "u": 2000}, "2-3": {"r": 1650, "u": 5000}, "3-4": {"r": 3750, "u": 10000}, "4-5": {"r": 8500, "u": 18000}}}, "commercio_materiali_edili": {"vendite": {"1-2": {"r": 100, "u": 200}, "2-3": {"r": 2050, "u": 500}, "3-4": {"r": 5250, "u": 1000}, "4-5": {"r": 10000, "u": 2000}}, "pipeline": {"1-2": {"r": 40, "u": 300}, "2-3": {"r": 325, "u": 1200}, "3-4": {"r": 700, "u": 3000}, "4-5": {"r": 1450, "u": 6000}}, "team": {"1-2": {"r": 100, "u": 300}, "2-3": {"r": 3650, "u": 1500}, "3-4": {"r": 6750, "u": 2500}, "4-5": {"r": 11750, "u": 4000}}, "processi": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 250, "u": 1500}, "3-4": {"r": 550, "u": 3000}, "4-5": {"r": 1000, "u": 5000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 225, "u": 800}, "3-4": {"r": 625, "u": 1500}, "4-5": {"r": 1300, "u": 3000}}, "marketing": {"1-2": {"r": 325, "u": 500}, "2-3": {"r": 1000, "u": 2000}, "3-4": {"r": 2100, "u": 4000}, "4-5": {"r": 3750, "u": 7000}}, "sitoweb": {"1-2": {"r": 250, "u": 1500}, "2-3": {"r": 625, "u": 3500}, "3-4": {"r": 1250, "u": 6000}, "4-5": {"r": 2500, "u": 11000}}, "ecommerce": {"1-2": {"r": 600, "u": 2000}, "2-3": {"r": 1650, "u": 5000}, "3-4": {"r": 3750, "u": 10000}, "4-5": {"r": 8500, "u": 18000}}}, "commercio_ricambi_auto": {"vendite": {"1-2": {"r": 100, "u": 200}, "2-3": {"r": 2050, "u": 500}, "3-4": {"r": 5250, "u": 1000}, "4-5": {"r": 10000, "u": 2000}}, "pipeline": {"1-2": {"r": 40, "u": 300}, "2-3": {"r": 325, "u": 1200}, "3-4": {"r": 700, "u": 3000}, "4-5": {"r": 1450, "u": 6000}}, "team": {"1-2": {"r": 100, "u": 300}, "2-3": {"r": 3650, "u": 1500}, "3-4": {"r": 6750, "u": 2500}, "4-5": {"r": 11750, "u": 4000}}, "processi": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 250, "u": 1500}, "3-4": {"r": 550, "u": 3000}, "4-5": {"r": 1000, "u": 5000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 225, "u": 800}, "3-4": {"r": 625, "u": 1500}, "4-5": {"r": 1300, "u": 3000}}, "marketing": {"1-2": {"r": 325, "u": 500}, "2-3": {"r": 1000, "u": 2000}, "3-4": {"r": 2100, "u": 4000}, "4-5": {"r": 3750, "u": 7000}}, "sitoweb": {"1-2": {"r": 250, "u": 1500}, "2-3": {"r": 625, "u": 3500}, "3-4": {"r": 1250, "u": 6000}, "4-5": {"r": 2500, "u": 11000}}, "ecommerce": {"1-2": {"r": 600, "u": 2000}, "2-3": {"r": 1650, "u": 5000}, "3-4": {"r": 3750, "u": 10000}, "4-5": {"r": 8500, "u": 18000}}}, "commercio_abbigliamento_ingrosso": {"vendite": {"1-2": {"r": 100, "u": 200}, "2-3": {"r": 2050, "u": 500}, "3-4": {"r": 5250, "u": 1000}, "4-5": {"r": 10000, "u": 2000}}, "pipeline": {"1-2": {"r": 40, "u": 300}, "2-3": {"r": 325, "u": 1200}, "3-4": {"r": 700, "u": 3000}, "4-5": {"r": 1450, "u": 6000}}, "team": {"1-2": {"r": 100, "u": 300}, "2-3": {"r": 3650, "u": 1500}, "3-4": {"r": 6750, "u": 2500}, "4-5": {"r": 11750, "u": 4000}}, "processi": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 250, "u": 1500}, "3-4": {"r": 550, "u": 3000}, "4-5": {"r": 1000, "u": 5000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 225, "u": 800}, "3-4": {"r": 625, "u": 1500}, "4-5": {"r": 1300, "u": 3000}}, "marketing": {"1-2": {"r": 325, "u": 500}, "2-3": {"r": 1000, "u": 2000}, "3-4": {"r": 2100, "u": 4000}, "4-5": {"r": 3750, "u": 7000}}, "sitoweb": {"1-2": {"r": 250, "u": 1500}, "2-3": {"r": 625, "u": 3500}, "3-4": {"r": 1250, "u": 6000}, "4-5": {"r": 2500, "u": 11000}}, "ecommerce": {"1-2": {"r": 600, "u": 2000}, "2-3": {"r": 1650, "u": 5000}, "3-4": {"r": 3750, "u": 10000}, "4-5": {"r": 8500, "u": 18000}}}, "commercio_elettronica": {"vendite": {"1-2": {"r": 100, "u": 200}, "2-3": {"r": 2050, "u": 500}, "3-4": {"r": 5250, "u": 1000}, "4-5": {"r": 10000, "u": 2000}}, "pipeline": {"1-2": {"r": 40, "u": 300}, "2-3": {"r": 325, "u": 1200}, "3-4": {"r": 700, "u": 3000}, "4-5": {"r": 1450, "u": 6000}}, "team": {"1-2": {"r": 100, "u": 300}, "2-3": {"r": 3650, "u": 1500}, "3-4": {"r": 6750, "u": 2500}, "4-5": {"r": 11750, "u": 4000}}, "processi": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 250, "u": 1500}, "3-4": {"r": 550, "u": 3000}, "4-5": {"r": 1000, "u": 5000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 225, "u": 800}, "3-4": {"r": 625, "u": 1500}, "4-5": {"r": 1300, "u": 3000}}, "marketing": {"1-2": {"r": 325, "u": 500}, "2-3": {"r": 1000, "u": 2000}, "3-4": {"r": 2100, "u": 4000}, "4-5": {"r": 3750, "u": 7000}}, "sitoweb": {"1-2": {"r": 250, "u": 1500}, "2-3": {"r": 625, "u": 3500}, "3-4": {"r": 1250, "u": 6000}, "4-5": {"r": 2500, "u": 11000}}, "ecommerce": {"1-2": {"r": 600, "u": 2000}, "2-3": {"r": 1650, "u": 5000}, "3-4": {"r": 3750, "u": 10000}, "4-5": {"r": 8500, "u": 18000}}}, "commercio_chimici": {"vendite": {"1-2": {"r": 100, "u": 200}, "2-3": {"r": 2050, "u": 500}, "3-4": {"r": 5250, "u": 1000}, "4-5": {"r": 10000, "u": 2000}}, "pipeline": {"1-2": {"r": 40, "u": 300}, "2-3": {"r": 325, "u": 1200}, "3-4": {"r": 700, "u": 3000}, "4-5": {"r": 1450, "u": 6000}}, "team": {"1-2": {"r": 100, "u": 300}, "2-3": {"r": 3650, "u": 1500}, "3-4": {"r": 6750, "u": 2500}, "4-5": {"r": 11750, "u": 4000}}, "processi": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 250, "u": 1500}, "3-4": {"r": 550, "u": 3000}, "4-5": {"r": 1000, "u": 5000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 225, "u": 800}, "3-4": {"r": 625, "u": 1500}, "4-5": {"r": 1300, "u": 3000}}, "marketing": {"1-2": {"r": 325, "u": 500}, "2-3": {"r": 1000, "u": 2000}, "3-4": {"r": 2100, "u": 4000}, "4-5": {"r": 3750, "u": 7000}}, "sitoweb": {"1-2": {"r": 250, "u": 1500}, "2-3": {"r": 625, "u": 3500}, "3-4": {"r": 1250, "u": 6000}, "4-5": {"r": 2500, "u": 11000}}, "ecommerce": {"1-2": {"r": 600, "u": 2000}, "2-3": {"r": 1650, "u": 5000}, "3-4": {"r": 3750, "u": 10000}, "4-5": {"r": 8500, "u": 18000}}}, "commercio_medicale": {"vendite": {"1-2": {"r": 450, "u": 800}, "2-3": {"r": 2750, "u": 1500}, "3-4": {"r": 6500, "u": 2500}, "4-5": {"r": 12000, "u": 4000}}, "pipeline": {"1-2": {"r": 40, "u": 300}, "2-3": {"r": 325, "u": 1200}, "3-4": {"r": 700, "u": 3000}, "4-5": {"r": 1450, "u": 6000}}, "team": {"1-2": {"r": 100, "u": 300}, "2-3": {"r": 3650, "u": 1500}, "3-4": {"r": 6750, "u": 2500}, "4-5": {"r": 11750, "u": 4000}}, "processi": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 250, "u": 1500}, "3-4": {"r": 550, "u": 3000}, "4-5": {"r": 1000, "u": 5000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 225, "u": 800}, "3-4": {"r": 625, "u": 1500}, "4-5": {"r": 1300, "u": 3000}}, "marketing": {"1-2": {"r": 800, "u": 2000}, "2-3": {"r": 2100, "u": 4000}, "3-4": {"r": 3750, "u": 7000}, "4-5": {"r": 8000, "u": 12000}}, "sitoweb": {"1-2": {"r": 250, "u": 1500}, "2-3": {"r": 625, "u": 3500}, "3-4": {"r": 1250, "u": 6000}, "4-5": {"r": 2500, "u": 11000}}, "ecommerce": {"1-2": {"r": 600, "u": 2000}, "2-3": {"r": 1650, "u": 5000}, "3-4": {"r": 3750, "u": 10000}, "4-5": {"r": 8500, "u": 18000}}}, "commercio_auto_moto": {"vendite": {"1-2": {"r": 100, "u": 200}, "2-3": {"r": 2050, "u": 500}, "3-4": {"r": 5250, "u": 1000}, "4-5": {"r": 10000, "u": 2000}}, "pipeline": {"1-2": {"r": 40, "u": 300}, "2-3": {"r": 325, "u": 1200}, "3-4": {"r": 700, "u": 3000}, "4-5": {"r": 1450, "u": 6000}}, "team": {"1-2": {"r": 100, "u": 300}, "2-3": {"r": 3650, "u": 1500}, "3-4": {"r": 6750, "u": 2500}, "4-5": {"r": 11750, "u": 4000}}, "processi": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 250, "u": 1500}, "3-4": {"r": 550, "u": 3000}, "4-5": {"r": 1000, "u": 5000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 225, "u": 800}, "3-4": {"r": 625, "u": 1500}, "4-5": {"r": 1300, "u": 3000}}, "marketing": {"1-2": {"r": 325, "u": 500}, "2-3": {"r": 1000, "u": 2000}, "3-4": {"r": 2100, "u": 4000}, "4-5": {"r": 3750, "u": 7000}}, "sitoweb": {"1-2": {"r": 250, "u": 1500}, "2-3": {"r": 625, "u": 3500}, "3-4": {"r": 1250, "u": 6000}, "4-5": {"r": 2500, "u": 11000}}, "ecommerce": {"1-2": {"r": 600, "u": 2000}, "2-3": {"r": 1650, "u": 5000}, "3-4": {"r": 3750, "u": 10000}, "4-5": {"r": 8500, "u": 18000}}}, "commercio_abbigliamento_dettaglio": {"vendite": {"1-2": {"r": 100, "u": 200}, "2-3": {"r": 2050, "u": 500}, "3-4": {"r": 5250, "u": 1000}, "4-5": {"r": 10000, "u": 2000}}, "pipeline": {"1-2": {"r": 40, "u": 300}, "2-3": {"r": 325, "u": 1200}, "3-4": {"r": 700, "u": 3000}, "4-5": {"r": 1450, "u": 6000}}, "team": {"1-2": {"r": 100, "u": 300}, "2-3": {"r": 3650, "u": 1500}, "3-4": {"r": 6750, "u": 2500}, "4-5": {"r": 11750, "u": 4000}}, "processi": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 250, "u": 1500}, "3-4": {"r": 550, "u": 3000}, "4-5": {"r": 1000, "u": 5000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 225, "u": 800}, "3-4": {"r": 625, "u": 1500}, "4-5": {"r": 1300, "u": 3000}}, "marketing": {"1-2": {"r": 325, "u": 800}, "2-3": {"r": 1000, "u": 2000}, "3-4": {"r": 2100, "u": 4000}, "4-5": {"r": 4000, "u": 8000}}, "sitoweb": {"1-2": {"r": 250, "u": 1500}, "2-3": {"r": 625, "u": 3500}, "3-4": {"r": 1250, "u": 6000}, "4-5": {"r": 2500, "u": 11000}}, "ecommerce": {"1-2": {"r": 600, "u": 2000}, "2-3": {"r": 1650, "u": 5000}, "3-4": {"r": 3750, "u": 10000}, "4-5": {"r": 9000, "u": 18000}}}, "commercio_orologi_gioielli": {"vendite": {"1-2": {"r": 100, "u": 200}, "2-3": {"r": 2050, "u": 500}, "3-4": {"r": 5250, "u": 1000}, "4-5": {"r": 10000, "u": 2000}}, "pipeline": {"1-2": {"r": 40, "u": 300}, "2-3": {"r": 325, "u": 1200}, "3-4": {"r": 700, "u": 3000}, "4-5": {"r": 1450, "u": 6000}}, "team": {"1-2": {"r": 100, "u": 300}, "2-3": {"r": 3650, "u": 1500}, "3-4": {"r": 6750, "u": 2500}, "4-5": {"r": 11750, "u": 4000}}, "processi": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 250, "u": 1500}, "3-4": {"r": 550, "u": 3000}, "4-5": {"r": 1000, "u": 5000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 225, "u": 800}, "3-4": {"r": 625, "u": 1500}, "4-5": {"r": 1300, "u": 3000}}, "marketing": {"1-2": {"r": 325, "u": 500}, "2-3": {"r": 1000, "u": 2000}, "3-4": {"r": 2100, "u": 4000}, "4-5": {"r": 3750, "u": 7000}}, "sitoweb": {"1-2": {"r": 250, "u": 1500}, "2-3": {"r": 625, "u": 3500}, "3-4": {"r": 1250, "u": 6000}, "4-5": {"r": 2500, "u": 11000}}, "ecommerce": {"1-2": {"r": 600, "u": 2000}, "2-3": {"r": 1650, "u": 5000}, "3-4": {"r": 3750, "u": 10000}, "4-5": {"r": 8500, "u": 18000}}}, "alimentare_trasformazione": {"vendite": {"1-2": {"r": 450, "u": 500}, "2-3": {"r": 2500, "u": 800}, "3-4": {"r": 5250, "u": 1500}, "4-5": {"r": 10000, "u": 2500}}, "pipeline": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 250, "u": 1000}, "3-4": {"r": 625, "u": 2500}, "4-5": {"r": 1300, "u": 5000}}, "team": {"1-2": {"r": 100, "u": 300}, "2-3": {"r": 3650, "u": 1500}, "3-4": {"r": 6750, "u": 2500}, "4-5": {"r": 11750, "u": 4000}}, "processi": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 325, "u": 1500}, "3-4": {"r": 700, "u": 3000}, "4-5": {"r": 1300, "u": 5000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 250, "u": 800}, "3-4": {"r": 625, "u": 1500}, "4-5": {"r": 1300, "u": 3000}}, "marketing": {"1-2": {"r": 850, "u": 1500}, "2-3": {"r": 2100, "u": 3000}, "3-4": {"r": 4500, "u": 6000}, "4-5": {"r": 8500, "u": 12000}}, "sitoweb": {"1-2": {"r": 250, "u": 1500}, "2-3": {"r": 625, "u": 3500}, "3-4": {"r": 1150, "u": 6000}, "4-5": {"r": 2250, "u": 11000}}, "ecommerce": {"1-2": {"r": 800, "u": 2500}, "2-3": {"r": 2000, "u": 6000}, "3-4": {"r": 4750, "u": 12000}, "4-5": {"r": 10500, "u": 20000}}}, "alimentare_vini": {"vendite": {"1-2": {"r": 450, "u": 500}, "2-3": {"r": 2500, "u": 800}, "3-4": {"r": 5250, "u": 1500}, "4-5": {"r": 10000, "u": 2500}}, "pipeline": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 250, "u": 1000}, "3-4": {"r": 625, "u": 2500}, "4-5": {"r": 1300, "u": 5000}}, "team": {"1-2": {"r": 100, "u": 300}, "2-3": {"r": 3650, "u": 1500}, "3-4": {"r": 6750, "u": 2500}, "4-5": {"r": 11750, "u": 4000}}, "processi": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 325, "u": 1500}, "3-4": {"r": 700, "u": 3000}, "4-5": {"r": 1300, "u": 5000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 250, "u": 800}, "3-4": {"r": 625, "u": 1500}, "4-5": {"r": 1300, "u": 3000}}, "marketing": {"1-2": {"r": 1000, "u": 2500}, "2-3": {"r": 2750, "u": 5000}, "3-4": {"r": 5500, "u": 10000}, "4-5": {"r": 11000, "u": 18000}}, "sitoweb": {"1-2": {"r": 250, "u": 1500}, "2-3": {"r": 625, "u": 3500}, "3-4": {"r": 1150, "u": 6000}, "4-5": {"r": 2250, "u": 11000}}, "ecommerce": {"1-2": {"r": 700, "u": 2000}, "2-3": {"r": 1750, "u": 5000}, "3-4": {"r": 4000, "u": 10000}, "4-5": {"r": 9000, "u": 18000}}}, "alimentare_forno": {"vendite": {"1-2": {"r": 450, "u": 500}, "2-3": {"r": 2500, "u": 800}, "3-4": {"r": 5250, "u": 1500}, "4-5": {"r": 10000, "u": 2500}}, "pipeline": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 250, "u": 1000}, "3-4": {"r": 625, "u": 2500}, "4-5": {"r": 1300, "u": 5000}}, "team": {"1-2": {"r": 100, "u": 300}, "2-3": {"r": 3650, "u": 1500}, "3-4": {"r": 6750, "u": 2500}, "4-5": {"r": 11750, "u": 4000}}, "processi": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 325, "u": 1500}, "3-4": {"r": 700, "u": 3000}, "4-5": {"r": 1300, "u": 5000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 250, "u": 800}, "3-4": {"r": 625, "u": 1500}, "4-5": {"r": 1300, "u": 3000}}, "marketing": {"1-2": {"r": 325, "u": 800}, "2-3": {"r": 850, "u": 1500}, "3-4": {"r": 1750, "u": 3000}, "4-5": {"r": 3250, "u": 6000}}, "sitoweb": {"1-2": {"r": 250, "u": 1500}, "2-3": {"r": 625, "u": 3500}, "3-4": {"r": 1150, "u": 6000}, "4-5": {"r": 2250, "u": 11000}}, "ecommerce": {"1-2": {"r": 400, "u": 1500}, "2-3": {"r": 1200, "u": 4000}, "3-4": {"r": 2750, "u": 8000}, "4-5": {"r": 6000, "u": 14000}}}, "alimentare_conserve": {"vendite": {"1-2": {"r": 450, "u": 500}, "2-3": {"r": 2500, "u": 800}, "3-4": {"r": 5250, "u": 1500}, "4-5": {"r": 10000, "u": 2500}}, "pipeline": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 250, "u": 1000}, "3-4": {"r": 625, "u": 2500}, "4-5": {"r": 1300, "u": 5000}}, "team": {"1-2": {"r": 100, "u": 300}, "2-3": {"r": 3650, "u": 1500}, "3-4": {"r": 6750, "u": 2500}, "4-5": {"r": 11750, "u": 4000}}, "processi": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 325, "u": 1500}, "3-4": {"r": 700, "u": 3000}, "4-5": {"r": 1300, "u": 5000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 250, "u": 800}, "3-4": {"r": 625, "u": 1500}, "4-5": {"r": 1300, "u": 3000}}, "marketing": {"1-2": {"r": 850, "u": 1500}, "2-3": {"r": 2100, "u": 3000}, "3-4": {"r": 4500, "u": 6000}, "4-5": {"r": 8500, "u": 12000}}, "sitoweb": {"1-2": {"r": 250, "u": 1500}, "2-3": {"r": 625, "u": 3500}, "3-4": {"r": 1150, "u": 6000}, "4-5": {"r": 2250, "u": 11000}}, "ecommerce": {"1-2": {"r": 800, "u": 2500}, "2-3": {"r": 2000, "u": 6000}, "3-4": {"r": 4750, "u": 12000}, "4-5": {"r": 10500, "u": 20000}}}, "alimentare_ingredienti": {"vendite": {"1-2": {"r": 450, "u": 500}, "2-3": {"r": 2500, "u": 800}, "3-4": {"r": 5250, "u": 1500}, "4-5": {"r": 10000, "u": 2500}}, "pipeline": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 250, "u": 1000}, "3-4": {"r": 625, "u": 2500}, "4-5": {"r": 1300, "u": 5000}}, "team": {"1-2": {"r": 100, "u": 300}, "2-3": {"r": 3650, "u": 1500}, "3-4": {"r": 6750, "u": 2500}, "4-5": {"r": 11750, "u": 4000}}, "processi": {"1-2": {"r": 40, "u": 200}, "2-3": {"r": 325, "u": 1500}, "3-4": {"r": 700, "u": 3000}, "4-5": {"r": 1300, "u": 5000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 250, "u": 800}, "3-4": {"r": 625, "u": 1500}, "4-5": {"r": 1300, "u": 3000}}, "marketing": {"1-2": {"r": 850, "u": 1500}, "2-3": {"r": 2100, "u": 3000}, "3-4": {"r": 4500, "u": 6000}, "4-5": {"r": 8500, "u": 12000}}, "sitoweb": {"1-2": {"r": 250, "u": 1500}, "2-3": {"r": 625, "u": 3500}, "3-4": {"r": 1150, "u": 6000}, "4-5": {"r": 2250, "u": 11000}}, "ecommerce": {"1-2": {"r": 800, "u": 2500}, "2-3": {"r": 2000, "u": 6000}, "3-4": {"r": 4750, "u": 12000}, "4-5": {"r": 10500, "u": 20000}}}, "tech_saas": {"vendite": {"1-2": {"r": 150, "u": 300}, "2-3": {"r": 2050, "u": 800}, "3-4": {"r": 5500, "u": 1500}, "4-5": {"r": 11500, "u": 3000}}, "pipeline": {"1-2": {"r": 75, "u": 600}, "2-3": {"r": 500, "u": 3000}, "3-4": {"r": 1250, "u": 7000}, "4-5": {"r": 2250, "u": 13000}}, "team": {"1-2": {"r": 200, "u": 500}, "2-3": {"r": 4750, "u": 3000}, "3-4": {"r": 9500, "u": 5000}, "4-5": {"r": 16500, "u": 8000}}, "processi": {"1-2": {"r": 50, "u": 300}, "2-3": {"r": 325, "u": 2000}, "3-4": {"r": 850, "u": 4000}, "4-5": {"r": 1750, "u": 7000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 250, "u": 1000}, "3-4": {"r": 675, "u": 2000}, "4-5": {"r": 1550, "u": 4000}}, "marketing": {"1-2": {"r": 650, "u": 1500}, "2-3": {"r": 2100, "u": 4000}, "3-4": {"r": 4500, "u": 8000}, "4-5": {"r": 8000, "u": 14000}}, "sitoweb": {"1-2": {"r": 550, "u": 2500}, "2-3": {"r": 1250, "u": 5500}, "3-4": {"r": 2750, "u": 9000}, "4-5": {"r": 5750, "u": 16000}}, "ecommerce": {"1-2": {"r": 1250, "u": 4000}, "2-3": {"r": 2750, "u": 9000}, "3-4": {"r": 5500, "u": 16000}, "4-5": {"r": 13000, "u": 27000}}}, "tech_system_integrator": {"vendite": {"1-2": {"r": 150, "u": 300}, "2-3": {"r": 2050, "u": 800}, "3-4": {"r": 5500, "u": 1500}, "4-5": {"r": 11500, "u": 3000}}, "pipeline": {"1-2": {"r": 50, "u": 400}, "2-3": {"r": 375, "u": 2000}, "3-4": {"r": 950, "u": 5000}, "4-5": {"r": 1750, "u": 10000}}, "team": {"1-2": {"r": 200, "u": 500}, "2-3": {"r": 4750, "u": 3000}, "3-4": {"r": 9500, "u": 5000}, "4-5": {"r": 16500, "u": 8000}}, "processi": {"1-2": {"r": 50, "u": 300}, "2-3": {"r": 325, "u": 2000}, "3-4": {"r": 850, "u": 4000}, "4-5": {"r": 1750, "u": 7000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 250, "u": 1000}, "3-4": {"r": 675, "u": 2000}, "4-5": {"r": 1550, "u": 4000}}, "marketing": {"1-2": {"r": 550, "u": 1000}, "2-3": {"r": 1650, "u": 3000}, "3-4": {"r": 3500, "u": 6000}, "4-5": {"r": 6500, "u": 10000}}, "sitoweb": {"1-2": {"r": 550, "u": 2500}, "2-3": {"r": 1250, "u": 5500}, "3-4": {"r": 2750, "u": 9000}, "4-5": {"r": 5750, "u": 16000}}, "ecommerce": {"1-2": {"r": 1000, "u": 3500}, "2-3": {"r": 2350, "u": 8000}, "3-4": {"r": 5250, "u": 15000}, "4-5": {"r": 12000, "u": 25000}}}, "tech_digital_agency": {"vendite": {"1-2": {"r": 150, "u": 300}, "2-3": {"r": 2050, "u": 800}, "3-4": {"r": 5500, "u": 1500}, "4-5": {"r": 11500, "u": 3000}}, "pipeline": {"1-2": {"r": 50, "u": 400}, "2-3": {"r": 375, "u": 2000}, "3-4": {"r": 950, "u": 5000}, "4-5": {"r": 1750, "u": 10000}}, "team": {"1-2": {"r": 200, "u": 500}, "2-3": {"r": 4750, "u": 3000}, "3-4": {"r": 9500, "u": 5000}, "4-5": {"r": 16500, "u": 8000}}, "processi": {"1-2": {"r": 50, "u": 300}, "2-3": {"r": 325, "u": 2000}, "3-4": {"r": 850, "u": 4000}, "4-5": {"r": 1750, "u": 7000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 250, "u": 1000}, "3-4": {"r": 675, "u": 2000}, "4-5": {"r": 1550, "u": 4000}}, "marketing": {"1-2": {"r": 550, "u": 1000}, "2-3": {"r": 1650, "u": 3000}, "3-4": {"r": 3500, "u": 6000}, "4-5": {"r": 6500, "u": 10000}}, "sitoweb": {"1-2": {"r": 550, "u": 2500}, "2-3": {"r": 1250, "u": 5500}, "3-4": {"r": 2750, "u": 9000}, "4-5": {"r": 5750, "u": 16000}}, "ecommerce": {"1-2": {"r": 1000, "u": 3500}, "2-3": {"r": 2350, "u": 8000}, "3-4": {"r": 5250, "u": 15000}, "4-5": {"r": 12000, "u": 25000}}}, "tech_automazione": {"vendite": {"1-2": {"r": 150, "u": 300}, "2-3": {"r": 2050, "u": 800}, "3-4": {"r": 5500, "u": 1500}, "4-5": {"r": 11500, "u": 3000}}, "pipeline": {"1-2": {"r": 50, "u": 400}, "2-3": {"r": 375, "u": 2000}, "3-4": {"r": 950, "u": 5000}, "4-5": {"r": 1750, "u": 10000}}, "team": {"1-2": {"r": 200, "u": 500}, "2-3": {"r": 4750, "u": 3000}, "3-4": {"r": 9500, "u": 5000}, "4-5": {"r": 16500, "u": 8000}}, "processi": {"1-2": {"r": 50, "u": 300}, "2-3": {"r": 325, "u": 2000}, "3-4": {"r": 850, "u": 4000}, "4-5": {"r": 1750, "u": 7000}}, "ricavi": {"1-2": {"r": 50, "u": 200}, "2-3": {"r": 250, "u": 1000}, "3-4": {"r": 675, "u": 2000}, "4-5": {"r": 1550, "u": 4000}}, "marketing": {"1-2": {"r": 550, "u": 1000}, "2-3": {"r": 1650, "u": 3000}, "3-4": {"r": 3500, "u": 6000}, "4-5": {"r": 6500, "u": 10000}}, "sitoweb": {"1-2": {"r": 550, "u": 2500}, "2-3": {"r": 1250, "u": 5500}, "3-4": {"r": 2750, "u": 9000}, "4-5": {"r": 5750, "u": 16000}}, "ecommerce": {"1-2": {"r": 1000, "u": 3500}, "2-3": {"r": 2350, "u": 8000}, "3-4": {"r": 5250, "u": 15000}, "4-5": {"r": 12000, "u": 25000}}}};
 
 
 var IMPATTO_BY_SETTORE = 
@@ -12312,9 +12282,12 @@ function mostraRisultatoDiagnosi(dims) {
 // -- INIT --------------------------------------------------
 async function init() {
   document.getElementById('dash-date').textContent=new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  const {data,error}=await sb.from('prospects').select('*').order('created_at',{ascending:false});
-  if(error){showToast('Errore connessione database','error');console.error(error);return;}
-  prospects=data||[];
+  // DEMO: non sovrascrivere i prospect hardcoded
+  if (typeof DEMO_MODE === "undefined" || !DEMO_MODE) {
+    const {data,error}=await sb.from('prospects').select('*').order('created_at',{ascending:false});
+    if(error){showToast('Errore connessione database','error');console.error(error);return;}
+    prospects=data||[];
+  }
   await loadEventi();
   await loadBenchmarkCustom();
   renderSidebar();
