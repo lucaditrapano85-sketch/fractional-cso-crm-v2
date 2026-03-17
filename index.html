@@ -491,63 +491,55 @@ input[type=range]{flex:1;accent-color:var(--gold)}
       </div>
 
       <!-- RADAR + TARGET -->
-      <div id="radar-target-row" style="margin-bottom:20px">
-        <div class="radar-card">
-          <div style="display:grid;grid-template-columns:1fr 380px;gap:32px;align-items:stretch">
-            <!-- Radar -->
-            <div>
-              <div id="mega-grafico-section" style="margin-bottom:16px"></div>
-              <div style="position:sticky;top:16px">
-              <div class="card-title" style="margin-bottom:16px;display:flex;align-items:flex-start;justify-content:space-between">
-                Diagramma a ragnatela
-                <div id="radar-score-box" style="background:var(--bg3);border-radius:14px;padding:14px 18px;border:1px solid var(--border);min-width:160px">
-                  <!-- Score attuale / live -->
-                  <div style="display:flex;align-items:flex-end;gap:6px;margin-bottom:6px">
-                    <div style="flex:1">
-                      <div style="font-size:8px;color:var(--gray);letter-spacing:.07em;text-transform:uppercase;margin-bottom:2px">SCORE LIVE</div>
-                      <div style="display:flex;align-items:baseline;gap:3px">
-                        <div id="radar-score-num" style="font-size:44px;font-family:'DM Serif Display',serif;font-weight:700;line-height:1">—</div>
-                        <div style="font-size:13px;color:var(--gray);margin-bottom:4px">/100</div>
-                      </div>
-                      <div id="radar-score-label" style="font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-top:1px"></div>
+      <div id="radar-target-row" style="margin-bottom:20px;display:flex;gap:24px;align-items:flex-start">
+        <!-- Colonna sinistra: due blocchi uno sopra l altro -->
+        <div style="flex:1;display:flex;flex-direction:column;gap:20px">
+          <!-- Blocco 1: grafico proiezione barre -->
+          <div class="radar-card">
+            <div id="mega-grafico-section"></div>
+          </div>
+          <!-- Blocco 2: radar + score live -->
+          <div class="radar-card">
+            <div class="card-title" style="margin-bottom:16px;display:flex;align-items:flex-start;justify-content:space-between">
+              Diagramma a ragnatela
+              <div id="radar-score-box" style="background:var(--bg3);border-radius:14px;padding:14px 18px;border:1px solid var(--border);min-width:160px">
+                <div style="display:flex;align-items:flex-end;gap:6px;margin-bottom:6px">
+                  <div style="flex:1">
+                    <div style="font-size:8px;color:var(--gray);letter-spacing:.07em;text-transform:uppercase;margin-bottom:2px">SCORE LIVE</div>
+                    <div style="display:flex;align-items:baseline;gap:3px">
+                      <div id="radar-score-num" style="font-size:44px;font-family:'DM Serif Display',serif;font-weight:700;line-height:1">-</div>
+                      <div style="font-size:13px;color:var(--gray);margin-bottom:4px">/100</div>
                     </div>
+                    <div id="radar-score-label" style="font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-top:1px"></div>
                   </div>
-                  <!-- Barra progressione attuale → target -->
-                  <div id="radar-score-bar-wrap" style="display:none;margin-top:8px">
-                    <div style="display:flex;justify-content:space-between;margin-bottom:4px">
-                      <div style="font-size:8px;color:var(--gray)">Oggi</div>
-                      <div style="font-size:8px;color:var(--gold)">Con il piano</div>
-                    </div>
-                    <div style="position:relative;height:6px;background:var(--border2);border-radius:4px;overflow:hidden">
-                      <div id="radar-score-bar-live" style="position:absolute;left:0;top:0;height:100%;border-radius:4px;transition:width .4s ease"></div>
-                      <div id="radar-score-bar-target" style="position:absolute;left:0;top:0;height:100%;border-radius:4px;opacity:.35"></div>
-                    </div>
-                    <div style="display:flex;justify-content:space-between;margin-top:4px">
-                      <div id="radar-score-base-val" style="font-size:9px;font-weight:600;color:var(--gray)"></div>
-                      <div id="radar-score-target" style="font-size:9px;font-weight:700;color:var(--gold)"></div>
-                    </div>
+                </div>
+                <div id="radar-score-bar-wrap" style="display:none;margin-top:8px">
+                  <div style="font-size:9px;color:var(--gray);margin-bottom:4px;display:flex;justify-content:space-between"><span>OGGI</span><span>CON IL PIANO</span></div>
+                  <div style="background:var(--border);border-radius:4px;height:6px;position:relative">
+                    <div id="radar-score-bar-now" style="position:absolute;left:0;top:0;height:100%;background:var(--red);border-radius:4px;transition:width .3s"></div>
+                    <div id="radar-score-bar-tgt" style="position:absolute;left:0;top:0;height:100%;background:var(--green);border-radius:4px;opacity:.5;transition:width .3s"></div>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;margin-top:3px">
+                    <div id="radar-score-now-val" style="font-size:10px;font-weight:700"></div>
+                    <div id="radar-score-tgt-val" style="font-size:10px;font-weight:700;color:var(--green)"></div>
                   </div>
                 </div>
               </div>
-              <div class="radar-wrap" style="max-width:100%;padding-bottom:100%">
-                <svg id="radar-svg" viewBox="0 0 360 360" style="position:absolute;inset:0;width:100%;height:100%"></svg>
-              </div>
-              <div class="radar-legend" style="margin-top:14px">
-                <div class="radar-legend-item"><div class="radar-legend-dot" style="background:rgba(74,154,106,.35);border:1.5px solid #4A9A6A"></div>Stato attuale</div>
-                <div class="radar-legend-item"><div class="radar-legend-dot" style="background:transparent;border:1.5px dashed #C9973A"></div>Obiettivo</div>
-              </div>
-              </div>
             </div>
-            <!-- Target editor -->
-            <div style="overflow-y:auto;max-height:100%;overflow-y:auto;padding-right:6px">
-              <div class="card-title" style="margin-bottom:4px">Obiettivi per dimensione</div>
-              <div style="font-size:11px;color:var(--gray);margin-bottom:14px">Target personalizzati · si aggiorna in tempo reale</div>
-              <div id="target-editor-content"></div>
+            <svg id="radar-svg" viewBox="0 0 360 360" style="width:100%;max-width:680px;display:block;margin:0 auto"></svg>
+            <div style="display:flex;justify-content:center;gap:16px;margin-top:8px;font-size:10px;color:var(--gray)">
+              <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:var(--green);border-radius:2px;display:inline-block;opacity:.7"></span>Stato attuale</span>
+              <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border:2px dashed var(--gold);border-radius:2px;display:inline-block"></span>Obiettivo</span>
             </div>
           </div>
         </div>
+        <!-- Colonna destra: target editor sticky -->
+        <div class="radar-card" style="width:380px;flex-shrink:0;position:sticky;top:16px">
+          <div class="card-title" style="margin-bottom:4px">Obiettivi per dimensione</div>
+          <div style="font-size:11px;color:var(--gray);margin-bottom:14px">Target personalizzati - si aggiorna in tempo reale</div>
+          <div id="target-editor-content" style="max-height:calc(100vh - 120px);overflow-y:auto;padding-right:4px"></div>
+        </div>
       </div>
-
       <div class="card" id="card-cronistoria" style="display:none">
         <div class="card-title">Cronistoria crescita</div>
         <div id="cronistoria-content"></div>
