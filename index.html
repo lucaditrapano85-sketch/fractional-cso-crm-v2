@@ -8115,8 +8115,7 @@ function renderTargetEditor(p) {
       \x3cdiv id="az-block-${d.id}">${subObiettiviHtml}\x3c/div>
     \x3c/div>`;
   }).join('');
-  html += `\x3cdiv style="display:flex;gap:8px;margin-top:12px"\x3cbutton class="target-save" onclick="saveTargets()">Salva obiettivi\x3c/button>\x3cbutton onclick="resetTargets()" style="background:var(--bg3);border:1px solid var(--border2);color:var(--gray);border-radius:var(--rs);padding:6px 14px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">↺ Reset obiettivi\x3c/button>\x3c/div>`;
-  document.getElementById('target-editor-content').innerHTML = html;
+    document.getElementById('target-editor-content').innerHTML = html;
   // Aggiorna mega-grafico ogni volta che il target editor viene renderizzato
   const megaSection = document.getElementById('mega-grafico-section');
   if (megaSection) megaSection.innerHTML = _buildMegaGrafico(p);
