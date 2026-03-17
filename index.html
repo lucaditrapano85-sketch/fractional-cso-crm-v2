@@ -534,10 +534,14 @@ input[type=range]{flex:1;accent-color:var(--gold)}
           </div>
         </div>
         <!-- Colonna destra: target editor sticky -->
-        <div class="radar-card" style="width:380px;flex-shrink:0">
+        <div class="radar-card" style="width:380px;flex-shrink:0;display:flex;flex-direction:column">
           <div class="card-title" style="margin-bottom:4px">Obiettivi per dimensione</div>
           <div style="font-size:11px;color:var(--gray);margin-bottom:14px">Target personalizzati - si aggiorna in tempo reale</div>
-          <div id="target-editor-content" style="overflow-y:auto;padding-right:4px"></div>
+          <div id="target-editor-content" style="overflow-y:auto;padding-right:4px;flex:1"></div>
+          <div style="padding-top:12px;border-top:1px solid var(--border);margin-top:12px;display:flex;gap:8px">
+            <button class="target-save" onclick="saveTargets()" style="flex:1">Salva obiettivi</button>
+            <button onclick="resetTargets()" style="background:transparent;border:1px solid var(--border2);color:var(--gray2);border-radius:var(--rs);padding:6px 12px;font-size:11px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">&#8635; Reset</button>
+          </div>
         </div>
       </div>
       <script>
