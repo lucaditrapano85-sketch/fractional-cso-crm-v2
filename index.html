@@ -4806,7 +4806,7 @@ async function renderProspectDetail(id) {
     renderTargetEditor(p);
     // Mega-grafico cumulativo sotto la ragnatela
     const megaSection = document.getElementById('mega-grafico-section');
-    if (megaSection) megaSection.innerHTML = _buildMegaGrafico(p);
+    if (megaSection) { const _mg = _buildMegaGrafico(p); if (_mg !== null) megaSection.innerHTML = _mg; }
     // Salva snapshot iniziale se non ha ancora storia
     if (!p.score_history || p.score_history.length === 0) {
       salvaScoreSnapshot(p, 'Prima valutazione');
