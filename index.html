@@ -8031,7 +8031,7 @@ function renderTargetEditor(p) {
   let html = DIMS.map(d => {
     const cur = p.dims?.[d.id] || 0;
     const savedTgt = (d.id in targets) ? targets[d.id] : null;
-    const tgt = (savedTgt !== null && savedTgt > 0) ? savedTgt : Math.min(cur + 1, 5);
+    const tgt = (savedTgt !== null && savedTgt > 0) ? savedTgt : cur;
     const scad = scadenze[d.id] || '';
     const curCol = cur >= 4 ? 'var(--green)' : cur >= 3 ? 'var(--gold)' : 'var(--red)';
     const tgtCol = tgt >= 4 ? 'var(--green)' : tgt >= 3 ? 'var(--gold)' : 'var(--red)';
