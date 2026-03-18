@@ -7282,6 +7282,7 @@ function _calcolaPenalita(dimId, livelloTarget, dims, targets, settore) {
 
 function _calcolaImpattoCumulativo(p) {
   if (!p) return null;
+  if (!p.fatturato_anno_1) return null;
   const settore = p.settore;
   const targets = p.targets || {};
   const dims = p.dims || {};
