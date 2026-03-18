@@ -4394,60 +4394,60 @@ const DIMS = [
 
 const DIM_DESC = {
   vendite:[
-    `Solo il titolare vende — nessun altro in azienda ha un ruolo commerciale attivo, anche minimo`,
-    `Almeno un'altra persona contribuisce alle vendite: commesso, tecnico che vende, socio o dipendente con ruolo commerciale`,
-    `Struttura commerciale definita: responsabile vendite, store manager con obiettivi, agenti con mandato o rete di rivenditori`,
-    `Piu canali attivi con ruoli e obiettivi misurabili per ciascuno: diretto + digital, negozio + e-commerce, agenti + inside sales`,
-    `Struttura matura e scalabile: il titolare e uscito dalla vendita operativa quotidiana, i canali funzionano in autonomia`
+    `Solo il titolare vende -- nessun altro ha un ruolo commerciale attivo. Se lui si ferma, le vendite si fermano`,
+    `Almeno una persona affianca il titolare nelle vendite: un commesso, un tecnico che vende, un socio o un agente plurimandatario (Enasarco). Le trattative pero dipendono ancora dalla relazione personale del titolare`,
+    `Struttura commerciale definita: un responsabile vendite con obiettivi misurabili, agenti monomandatari o una rete di rivenditori con contratti e provvigioni chiari. Il titolare supervisiona ma non vende piu in prima persona`,
+    `Piu canali attivi con KPI per ciascuno: vendita diretta + canale digitale, rete agenti + inside sales, negozio fisico + e-commerce. Ogni canale ha un responsabile e un budget`,
+    `Struttura matura: il titolare e uscito completamente dalla vendita operativa. I canali funzionano in autonomia con forecast, target e revisioni mensili. La crescita non dipende da nessuna singola persona`
   ],
   pipeline:[
-    `Nessuna pipeline -- le trattative vivono nella testa del titolare, zero visibilita su stato e valore`,
-    `Lista clienti su Excel o carta -- si sa chi e cliente ma non dove si trova ogni trattativa`,
-    `CRM presente (anche base) ma usato solo come rubrica -- nessun tracciamento delle fasi`,
-    `CRM usato attivamente per tracciare le trattative -- ma forecast e stage non sono ancora affidabili`,
-    `Pipeline pulita, stage definiti, probabilita di chiusura per fase, forecast mensile accurato e condiviso`
+    `Nessuna pipeline -- le trattative vivono nella testa del titolare. Zero visibilita su quante sono, quanto valgono e dove sono bloccate`,
+    `Lista clienti su Excel o foglio carta -- si sa chi e cliente ma non dove si trova ogni trattativa, da quanto tempo e qual e il valore potenziale`,
+    `CRM base attivo (Pipedrive, HubSpot Free, Zoho CRM o simili) ma usato solo come rubrica -- i contatti ci sono, ma le fasi, le note e i follow-up non vengono tracciati`,
+    `CRM usato attivamente per tracciare ogni trattativa con stage, valore e data chiusura stimata -- ma il forecast mensile e ancora impreciso e i dati non sono sempre aggiornati`,
+    `Pipeline pulita con stage definiti e probabilita di chiusura per fase. Forecast mensile accurato condiviso col team. CRM aggiornato in tempo reale (HubSpot, Salesforce, Pipedrive Advanced)`
   ],
   team:[
-    `Dipendenza totale dal titolare: lui sa tutto, decide tutto, conosce tutti i clienti -- nessuno puo sostituirlo`,
-    `Qualche collaboratore operativo ma zero autonomia decisionale -- il know-how critico resta nel titolare`,
-    `Una o due persone in grado di gestire operativita quotidiana -- ma scelte strategiche e clienti chiave restano al titolare`,
-    `Team con competenze distribuite, capace di operare autonomamente -- il titolare e un punto di riferimento ma non un collo di bottiglia`,
-    `Organizzazione matura e scalabile: il titolare puo assentarsi senza impatto sul business -- sapere e relazioni sono patrimonio aziendale`
+    `Dipendenza totale dal titolare: lui sa tutto, decide tutto, gestisce tutti i clienti. Nessuno puo sostituirlo nemmeno per una settimana`,
+    `Qualche collaboratore operativo ma zero autonomia decisionale -- il know-how critico, i contatti chiave e le decisioni importanti restano tutte nelle mani del titolare`,
+    `Una o due persone gestiscono l'operativita quotidiana in autonomia (ordini, clienti standard, logistica) -- ma le trattative importanti e i clienti strategici restano al titolare`,
+    `Team con ruoli definiti e competenze distribuite: ogni area ha un responsabile. Il titolare interviene sulle eccezioni, non sulla routine. Onboarding strutturato per i nuovi`,
+    `Organizzazione scalabile: il titolare puo assentarsi 2-4 settimane senza impatto sul business. Il know-how e documentato, le relazioni clienti sono patrimonio aziendale, non personale`
   ],
   processi:[
-    `Nessun processo scritto -- ogni trattativa si gestisce a istinto, senza filo conduttore`,
-    `Qualche abitudine consolidata ma nulla di documentato -- il know-how e nella testa di una persona`,
-    `Uno script base o una checklist esiste per qualche fase, ma non e usato sistematicamente`,
-    `Processo di vendita documentato per le fasi principali -- follow-up, offerta, gestione obiezioni`,
-    `Playbook completo: script per ogni fase, obiezioni mappate, onboarding cliente documentato e replicabile`
+    `Nessun processo scritto -- ogni trattativa si gestisce a istinto. Il modo di lavorare cambia da persona a persona e da giorno a giorno`,
+    `Qualche abitudine consolidata ma nulla di scritto -- il know-how e nella testa di una persona. Se quella persona se ne va, si riparte da zero`,
+    `Uno script base o una checklist esiste per qualche fase (es. come fare un preventivo, come rispondere a un lead) ma non e usato sistematicamente. Tenuto su Notion, Google Docs o simili`,
+    `Processo di vendita documentato per le fasi principali: script di qualifica, template offerta, sequenza di follow-up, gestione obiezioni. Usato dal team, non solo dal titolare`,
+    `Playbook commerciale completo: script per ogni fase, obiezioni mappate con risposte, onboarding cliente step-by-step, upsell documentato. Aggiornato regolarmente e replicabile da chiunque`
   ],
   ricavi:[
-    `Fatturato imprevedibile -- ogni mese e una sorpresa, nessuna base ricorrente su cui contare`,
-    `Qualche cliente fisso ma il grosso arriva da opportunita spot -- difficile fare piani a 3 mesi`,
-    `Una stima trimestrale e possibile ma con ampi margini di errore -- mancano dati storici strutturati`,
-    `Forecast abbastanza affidabile a 60-90 giorni basato su pipeline e storico -- qualche contratto ricorrente`,
-    `Revenue ricorrente > 50%, forecast annuale affidabile, budget commerciale costruito su dati reali`
+    `Fatturato imprevedibile -- ogni mese e una sorpresa. Zero contratti ricorrenti, zero abbonamenti, zero ordini programmati`,
+    `Qualche cliente fisso che riordina, ma il grosso del fatturato arriva da opportunita spot. Impossibile fare previsioni attendibili oltre 4-6 settimane`,
+    `Una stima trimestrale e possibile ma con margini di errore alti (+/-30%). Mancano dati storici strutturati e la pipeline non e ancora affidabile come base di forecast`,
+    `Forecast abbastanza affidabile a 60-90 giorni basato su pipeline e storico ordini. Alcuni contratti ricorrenti o ordini programmati coprono il 20-30% del fatturato mensile`,
+    `Revenue ricorrente oltre il 50% del fatturato. Forecast annuale affidabile con scostamento sotto il 15%. Budget commerciale costruito su dati reali e rivisto trimestralmente`
   ],
   marketing:[
-    `Zero marketing -- i clienti arrivano solo se li cerca il titolare o per passaparola casuale`,
-    `Presenza social o sito base, ma nessuna attivita strutturata -- nessun lead generato digitalmente`,
-    `Qualche campagna o contenuto pubblicato, ma senza piano editoriale ne misurazione dei risultati`,
-    `Almeno un canale di lead gen attivo e misurabile (es. LinkedIn, Google Ads, email marketing)`,
-    `Sistema di lead generation multi-canale, con nurturing automatizzato e KPI di conversione monitorati`
+    `Zero marketing attivo -- i clienti arrivano solo se li va a cercare il titolare o per passaparola. Nessuna presenza digitale strutturata`,
+    `Profilo social o sito base esistente, ma nessuna attivita strutturata -- nessun post programmato, nessuna campagna, nessun lead generato digitalmente negli ultimi 90 giorni`,
+    `Qualche contenuto pubblicato sui social o campagna Google/Meta attivata, ma senza piano editoriale, budget definito ne misurazione dei risultati (reach, click, lead generati)`,
+    `Almeno un canale di lead gen attivo e misurabile: LinkedIn Ads, Google Ads, email marketing (Mailchimp, Brevo) o SEO con traffico organico tracciato su Google Analytics`,
+    `Sistema di lead generation multi-canale con nurturing automatizzato (HubSpot, ActiveCampaign), KPI di conversione monitorati settimanalmente e budget allocato per canale con ROI misurato`
   ],
   sitoweb:[
-    `Nessun sito web -- l'azienda non ha presenza online propria`,
-    `Sito presente ma fermo da anni -- informazioni obsolete, non mobile-friendly, nessun aggiornamento`,
-    `Sito aggiornato con info base (chi siamo, contatti, servizi) ma senza SEO ne call-to-action chiare`,
-    `Sito ottimizzato SEO, con pagine prodotto/servizio curate e almeno un punto di conversione attivo`,
-    `Sito professionale con SEO avanzato, blog/contenuti, form di lead gen, analytics e A/B test attivi`
+    `Nessun sito web -- l'azienda non ha presenza online propria. Chi cerca online non trova nulla`,
+    `Sito presente ma fermo da anni -- informazioni obsolete, non mobile-friendly, nessun aggiornamento recente. Probabilmente costruito su piattaforme vecchie (Jimdo, Wix basic, HTML statico)`,
+    `Sito aggiornato con info base (chi siamo, contatti, servizi/prodotti) ma senza SEO, senza call-to-action chiare e senza tracciamento visite. Costruito su WordPress, Wix o Squarespace`,
+    `Sito ottimizzato per SEO locale/settoriale, con pagine prodotto/servizio curate, form di contatto attivo e Google Analytics installato. Almeno 1 conversione misurabile al mese`,
+    `Sito professionale con SEO avanzato, blog con contenuti regolari, form di lead gen, Google Analytics 4 + Search Console, A/B test attivi e velocita di caricamento ottimizzata`
   ],
   ecommerce:[
-    `Zero presenza digitale -- nessun canale online sfruttato per vendere o acquisire clienti`,
-    `Profilo social attivo (Facebook/Instagram/LinkedIn) -- visibilita base, nessuna vendita diretta ne lead strutturato`,
-    `Sito o profilo social con prima attivita di lead gen -- form contatti, DM gestiti, qualche vendita online sporadica`,
-    `Canale digitale strutturato: e-commerce, portale ordini B2B o catalogo online con pagamenti e gestione ordini attiva`,
-    `Digital sales avanzato: automazioni, remarketing, carrello abbandonato, upsell, analytics e ROI misurato per canale`
+    `Zero presenza digitale -- nessun canale online sfruttato per vendere o acquisire clienti. Non si trova nemmeno su Google Maps`,
+    `Profilo social attivo (Facebook/Instagram/LinkedIn) e/o scheda Google My Business verificata -- visibilita base garantita, ma nessuna vendita diretta ne lead strutturato generato online`,
+    `Prima attivita di lead gen digitale: form contatti sul sito con risposta entro 24h, DM gestiti attivamente, qualche vendita online sporadica o WhatsApp Business per ordini rapidi`,
+    `Canale digitale strutturato: e-commerce attivo (Shopify, WooCommerce, Prestashop) o portale ordini B2B con catalogo, prezzi e pagamenti. Ordini online gestiti con processo definito`,
+    `Digital sales avanzato: automazioni di marketing (carrello abbandonato, upsell, email post-acquisto), remarketing attivo su Meta/Google, analytics per canale con ROI misurato mensilmente`
   ],
 };
 
