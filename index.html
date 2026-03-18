@@ -12335,7 +12335,7 @@ function renderListinoTable(macro) {
   if (!data) return;
   // Override nomi dimensioni per settore
   var DIMS_OVERRIDE = {
-    edilizia: [{id:'vendite',label:'Sviluppo clienti'},{id:'pipeline',label:'Pipeline & CRM'},{id:'team',label:'Team & HR'},{id:'processi',label:'Processi'},{id:'ricavi',label:'Ricavi'},{id:'marketing',label:'Marketing'},{id:'sitoweb',label:'Sito Web'},{id:'ecommerce',label:'Cantieri & Preventivazione'}]
+    edilizia: [{id:'vendite',label:'Sviluppo clienti'},{id:'pipeline',label:'Pipeline & preventivi'},{id:'team',label:'Organico tecnico'},{id:'processi',label:'Processi'},{id:'ricavi',label:'Ricavi'},{id:'marketing',label:'Marketing'},{id:'sitoweb',label:'Sito Web'},{id:'ecommerce',label:'Cantieri & Preventivazione'}]
   };
   var DIMS = DIMS_OVERRIDE[macro] || [{id:'vendite',label:'Vendite'},{id:'pipeline',label:'Pipeline & CRM'},{id:'team',label:'Team & HR'},{id:'processi',label:'Processi'},{id:'ricavi',label:'Ricavi'},{id:'marketing',label:'Marketing'},{id:'sitoweb',label:'Sito Web'},{id:'ecommerce',label:'E-commerce'}];
   // Override note per settore
