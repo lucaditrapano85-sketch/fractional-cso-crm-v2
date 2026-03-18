@@ -669,6 +669,20 @@ input[type=range]{flex:1;accent-color:var(--gold)}
     <h2 class="modal-title" id="modal-prospect-title">Nuovo Prospect</h2>
     <div class="form-grid">
       <div class="form-group"><label>Nome azienda *</label><input class="form-input" id="f-nome" placeholder="es. Rossi Srl"></div>
+      <div class="form-group">
+        <label>Forma giuridica</label>
+        <select id="f-forma">
+          <option value="">— seleziona —</option>
+          <option value="srl">Srl</option>
+          <option value="srls">Srls</option>
+          <option value="spa">SpA</option>
+          <option value="sas">SaS</option>
+          <option value="snc">SnC</option>
+          <option value="ditta_individuale">Ditta individuale</option>
+          <option value="cooperativa">Cooperativa</option>
+          <option value="associazione">Associazione</option>
+        </select>
+      </div>
       <div class="form-group"><label>Settore *</label>
         <select class="form-input" id="f-settore">
           <option value="">— Seleziona settore —</option>
