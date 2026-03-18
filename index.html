@@ -7611,7 +7611,7 @@ function _buildCronistoria(p) {
 
 function _buildMegaGrafico(p) {
   const ic = _calcolaImpattoCumulativo(p);
-  if (!ic) return '';
+  if (!ic) return null;
 
   const fmt = _formatEur;
   const hasEbitda = ic.ebitda24min !== null;
