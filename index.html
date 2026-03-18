@@ -7656,7 +7656,19 @@ function _buildMegaGrafico(p) {
         '.') +
     '</div>';
 
-  return '<div id="mega-grafico-container"><div style="margin-top:20px;border:1px solid #C8E6C9;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(46,125,50,.08)">' +
+  // Nota contestuale: collo di bottiglia non commerciale
+  let _bottleneckNote = '';
+  if (!ic.isSuggerito && ic.ebitdaNettoMin24 !== null && ic.ebitdaNettoMin24 < 0 && ic.costoMensileTot > 3000) {
+    const crescitaMedia24 = (ic.pct24[0] + ic.pct24[1]) / 2;
+    if (crescitaMedia24 < 25) {
+      _bottleneckNote = '<div style="background:#f0f4ff;border:1px solid #c7d2fe;border-radius:6px;padding:10px 14px;font-size:11px;color:#3730a3;margin-bottom:12px;line-height:1.5">' +
+        '<strong>&#9888; Nota strategica:</strong> Nonostante l\'investimento commerciale, la crescita proiettata rimane contenuta. ' +
+        'Potrebbe esserci un collo di bottiglia <strong>non commerciale</strong>: margini di prodotto bassi, gamma poco differenziata, dipendenza da pochi fornitori o pricing non ottimizzato. ' +
+        'Valuta il modello di business prima di scalare il commerciale.' +
+        '</div>';
+    }
+  }
+  return _bottleneckNote + '<div id="mega-grafico-container"><div style="margin-top:20px;border:1px solid #C8E6C9;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(46,125,50,.08)">' +
     // Header
     '<div style="background:linear-gradient(135deg,#1B5E20,#2E7D32);color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center">' +
       '<div>' +
