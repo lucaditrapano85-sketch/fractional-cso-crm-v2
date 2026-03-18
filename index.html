@@ -9,6 +9,7 @@
 <style>
 :root {
   if (id === 'listino') { setTimeout(()=>{ const s=document.getElementById('listino-macro-select'); if(s) renderListinoTable(s.value); },50); }
+  if (id === 'prospects') { renderProspectsView(); }
   --bg:#F8F6F1; --bg2:#FFFFFF; --bg3:#F2EFE8; --bg4:#EAE6DD;
   --gold:#9A6E2E; --gold2:#B8842E; --gold-dim:#C9973A;
   --white:#1A1714; --gray:#6B6560; --gray2:#9C9890;
@@ -408,13 +409,16 @@ input[type=range]{flex:1;accent-color:var(--gold)}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
           Listino Servizi
         </div>
+        <div class="nav-item" onclick="showView('prospects')" id="nav-prospects">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          Prospect
+        </div>
     </div>
     <div class="sidebar-prospects">
-      <div class="sidebar-section-label">Prospect</div>
-      <div id="sidebar-list"><div class="loading">Caricamento...</div></div>
+      <div class="sidebar-section-label">PROSPECT</div>
+      <div id="sidebar-list"></div>
+      <button class="btn-new" onclick="document.getElementById('modal-prospect').style.display='flex'">+ Nuovo Prospect</button>
     </div>
-    <button class="btn-new" onclick="openNewProspect()">+ Nuovo Prospect</button>
-  </div>
 
   <div class="main">
     <!-- DASHBOARD -->
@@ -592,8 +596,7 @@ input[type=range]{flex:1;accent-color:var(--gold)}
     </div>
 
     <!-- CALENDARIO -->
-    <div class="v</div>
-iew" id="view-calendario">
+    <div class="view" id="view-calendario">
       <div class="dash-header" style="margin-bottom:20px">
         <div style="display:flex;align-items:center;justify-content:space-between">
           <div><h1>Calendario</h1><p>Follow-up, call e appuntamenti</p></div>
@@ -615,6 +618,17 @@ iew" id="view-calendario">
         </div>
       </div>
     </div>
+
+<div id="view-prospects" class="view">
+  <div class="dash-header" style="display:flex;align-items:center;justify-content:space-between">
+    <div>
+      <h1>Prospect</h1>
+      <p id="prospects-count" style="font-size:14px;color:var(--gray);margin-top:6px"></p>
+    </div>
+    <button class="btn-new" onclick="openNewProspect()" style="width:auto;margin:0;padding:9px 20px">+ Nuovo Prospect</button>
+  </div>
+  <div id="prospects-list-view" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px"></div>
+</div>
 <div id="view-listino" class="view">
   <div class="dash-header">
     <h1>Listino Servizi</h1>
