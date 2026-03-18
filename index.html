@@ -7301,7 +7301,9 @@ function _calcolaImpattoCumulativo(p) {
       prodotto *= (1 - contributoPesato);
     });
     const crescitaDaPiano = Math.min(1 - prodotto, 0.50);
-    return Math.min(floorOrganico + crescitaDaPiano, 0.60);
+    const crescitaTotale = Math.min(floorOrganico + crescitaDaPiano, 0.60);
+    // Garantisce che il piano non peggiori mai la situazione organica
+    return Math.max(crescitaTotale, floorOrganico);
   };
 
   const crescita6  = calcCrescitaComposta(6);
