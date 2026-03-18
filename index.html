@@ -12333,12 +12333,36 @@ function renderListinoTable(macro) {
   if (!c) return;
   var data = getListino()[macro];
   if (!data) return;
-  var DIMS = [{id:'vendite',label:'Vendite'},{id:'pipeline',label:'Pipeline & CRM'},{id:'team',label:'Team & HR'},{id:'processi',label:'Processi'},{id:'ricavi',label:'Ricavi'},{id:'marketing',label:'Marketing'},{id:'sitoweb',label:'Sito Web'},{id:'ecommerce',label:'E-commerce'}];
+  // Override nomi dimensioni per settore
+  var DIMS_OVERRIDE = {
+    edilizia: [{id:'vendite',label:'Sviluppo clienti'},{id:'pipeline',label:'Pipeline & CRM'},{id:'team',label:'Team & HR'},{id:'processi',label:'Processi'},{id:'ricavi',label:'Ricavi'},{id:'marketing',label:'Marketing'},{id:'sitoweb',label:'Sito Web'},{id:'ecommerce',label:'Cantieri & Preventivazione'}]
+  };
+  var DIMS = DIMS_OVERRIDE[macro] || [{id:'vendite',label:'Vendite'},{id:'pipeline',label:'Pipeline & CRM'},{id:'team',label:'Team & HR'},{id:'processi',label:'Processi'},{id:'ricavi',label:'Ricavi'},{id:'marketing',label:'Marketing'},{id:'sitoweb',label:'Sito Web'},{id:'ecommerce',label:'E-commerce'}];
+  // Override note per settore
+  var NOTE_OVERRIDE = {
+    edilizia: {
+      vendite: {'1-2':'Presenza su Google Maps + Habitissimo/Instapro','2-3':'Accordi con geometri e architetti segnalatori','3-4':'Commerciale part-time per gare private e referral','4-5':'Resp. sviluppo clienti + rete segnalatori strutturata'},
+      pipeline: {'1-2':'Agenda cantieri su Excel o Notion','2-3':'Trello/Notion per tracciare preventivi e cantieri','3-4':'CRM base (Zoho, Pipedrive Essentials)','4-5':'CRM avanzato + integrazione gestionale'},
+      team: {'1-2':'Collaboratore esterno a P.IVA (praticante/geometra junior)','2-3':'Geometra o architetto dipendente (RAL 28-32k)','3-4':'Coordinatore cantieri senior (RAL 35-40k)','4-5':'Direttore tecnico/operations (RAL 45-55k)'},
+      ecommerce: {'1-2':'Software preventivi base (PriMus free, Excel strutturato)','2-3':'PriMus o Edilius base + checklist cantiere digitale','3-4':'Gestionale cantieri completo (Edilius, TeamSystem)','4-5':'ERP edile integrato + certificazioni SOA/ISO'}
+    }
+  };
+  var noteData = NOTE_OVERRIDE[macro] || LISTINO_NOTE_DATA;
+  var DIMS_NOTE = NOTE_OVERRIDE[macro] ? {
+    vendite: NOTE_OVERRIDE[macro].vendite || LISTINO_NOTE_DATA.vendite,
+    pipeline: NOTE_OVERRIDE[macro].pipeline || LISTINO_NOTE_DATA.pipeline,
+    team: NOTE_OVERRIDE[macro].team || LISTINO_NOTE_DATA.team,
+    processi: LISTINO_NOTE_DATA.processi,
+    ricavi: LISTINO_NOTE_DATA.ricavi,
+    marketing: LISTINO_NOTE_DATA.marketing,
+    sitoweb: LISTINO_NOTE_DATA.sitoweb,
+    ecommerce: NOTE_OVERRIDE[macro].ecommerce || LISTINO_NOTE_DATA.ecommerce
+  } : LISTINO_NOTE_DATA;
   var rows = '';
   DIMS.forEach(function(dim) {
     ['1-2','2-3','3-4','4-5'].forEach(function(step, si) {
       var v = (data[dim.id] && data[dim.id][step]) ? data[dim.id][step] : {r:0,u:0};
-      var n = (LISTINO_NOTE_DATA[dim.id] && LISTINO_NOTE_DATA[dim.id][step]) ? LISTINO_NOTE_DATA[dim.id][step] : '';
+      var n = (DIMS_NOTE[dim.id] && DIMS_NOTE[dim.id][step]) ? DIMS_NOTE[dim.id][step] : '';
       rows += '<tr>';
       if (si === 0) rows += '<td rowspan="4" style="padding:10px 14px;border-right:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;font-weight:600;vertical-align:middle;color:#111">' + dim.label + '</td>';
       rows += '<td style="padding:8px 14px;font-size:12px;color:#6b7280;border-bottom:1px solid #e5e7eb">' + ['1→2','2→3','3→4','4→5'][si] + '</td>';
