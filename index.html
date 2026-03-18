@@ -7310,14 +7310,20 @@ function _calcolaImpattoCumulativo(p) {
   const crescita12 = calcCrescitaComposta(12);
   const crescita24 = calcCrescitaComposta(24);
 
-  const withRange = (c) => [
-    Math.round(fat * (1 + c * 0.82) / 1000) * 1000,
-    Math.round(fat * (1 + c * 1.18) / 1000) * 1000
-  ];
+  const withRange = (c, orizzonte) => {
+    const anni = (orizzonte || 24) / 12;
+    const floorVal = Math.pow(1 + crescitaOrg, anni) - 1;
+    const minC = Math.max(c * 0.82, floorVal);
+    const maxC = Math.max(c * 1.18, floorVal);
+    return [
+      Math.round(fat * (1 + minC) / 1000) * 1000,
+      Math.round(fat * (1 + maxC) / 1000) * 1000
+    ];
+  };
 
-  const fat6  = withRange(crescita6);
-  const fat12 = withRange(crescita12);
-  const fat24 = withRange(crescita24);
+  const fat6  = withRange(crescita6, 6);
+  const fat12 = withRange(crescita12, 12);
+  const fat24 = withRange(crescita24, 24);
 
   const pct6  = [Math.round(crescita6*82), Math.round(crescita6*118)];
   const pct12 = [Math.round(crescita12*82), Math.round(crescita12*118)];
