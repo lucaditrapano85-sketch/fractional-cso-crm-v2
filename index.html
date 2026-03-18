@@ -7250,6 +7250,15 @@ function _calcolaImpattoCumulativo(p) {
   let crescitaOrg = 0;
   DIMS_IDS.forEach(id => { crescitaOrg += (ORGANICA_CURVA[dims[id]||0]||0) * (pesiOrg[id]||0); });
   crescitaOrg = Math.min(crescitaOrg, 0.08);
+  // Floor organico con target: usa il livello target dove definito
+  let crescitaOrgConTarget = 0;
+  DIMS_IDS.forEach(id => {
+    const livTgt = (targets[id] && targets[id] > (dims[id]||0)) ? targets[id] : (dims[id]||0);
+    crescitaOrgConTarget += (ORGANICA_CURVA[livTgt]||0) * (pesiOrg[id]||0);
+  });
+  crescitaOrgConTarget = Math.min(crescitaOrgConTarget, 0.08);
+  // Usa sempre il floor più alto tra organica attuale e organica con target
+  crescitaOrg = Math.max(crescitaOrg, crescitaOrgConTarget);
   let isSuggerito = false;
   let usaOrganica = false;
   if (attive.length === 0) { isSuggerito = true; usaOrganica = true; }
