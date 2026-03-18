@@ -119,7 +119,8 @@ h1,h2,h3{font-family:'DM Serif Display',serif;font-weight:400}
 .form-group{display:flex;flex-direction:column;gap:5px}
 .form-group.full{grid-column:1/-1}
 .form-group label{font-size:11px;color:var(--gray);letter-spacing:.05em;text-transform:uppercase}
-.form-input{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rs);padding:9px 12px;font-size:13px;color:var(--white);outline:none;transition:border-color .15s;width:100%;font-family:'DM Sans',sans-serif}
+.form-input{
+#f-forma{height:44px;box-sizing:border-box}background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rs);padding:9px 12px;font-size:13px;color:var(--white);outline:none;transition:border-color .15s;width:100%;font-family:'DM Sans',sans-serif}
 .form-input:focus{border-color:var(--gold-dim)}
 .form-input option{background:var(--bg2);color:var(--white)}
 .form-textarea{min-height:80px;resize:vertical}
@@ -671,7 +672,7 @@ input[type=range]{flex:1;accent-color:var(--gold)}
       <div class="form-group"><label>Nome azienda *</label><input class="form-input" id="f-nome" placeholder="es. Rossi Srl"></div>
       <div class="form-group">
         <label>Forma giuridica</label>
-        <select id="f-forma">
+        <select id="f-forma" style="height:44px;box-sizing:border-box">
           <option value="">— seleziona —</option>
           <option value="srl">Srl</option>
           <option value="srls">Srls</option>
