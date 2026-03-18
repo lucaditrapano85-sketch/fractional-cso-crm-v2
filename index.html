@@ -6692,8 +6692,14 @@ function _getAzionePredefinita(settore, dimId, fromStep, toStep) {
 
 function _getCosto(settore, dimId, fromStep, toStep) {
   const chiave = fromStep + '-' + toStep;
+  // Prima cerca in COSTI_BY_SETTORE (override specifico)
   if (COSTI_BY_SETTORE[settore]?.[dimId]?.[chiave]) {
-    return COSTI_BY_SETTORE[settore][dimId][chiave]; // {r: ricorrente_mensile, u: una_tantum}
+    return COSTI_BY_SETTORE[settore][dimId][chiave];
+  }
+  // Fallback: legge da LISTINO_DEFAULT via MICRO_TO_MACRO
+  const macro = MICRO_TO_MACRO[settore] || settore;
+  if (LISTINO_DEFAULT[macro]?.[dimId]?.[chiave]) {
+    return LISTINO_DEFAULT[macro][dimId][chiave];
   }
   return null;
 }
