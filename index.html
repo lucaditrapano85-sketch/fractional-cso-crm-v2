@@ -5276,6 +5276,7 @@ function openEditProspect() {
 
 async function saveProspect() {
   const nome=document.getElementById('f-nome').value.trim();
+  const forma=document.getElementById('f-forma')?.value||'';
   if(!nome){alert('Inserisci il nome dell\'azienda');return;}
   // Score dims: preserva quelli esistenti (sliders rimossi — usa diagnosi guidata)
   const existingDims = editingId ? (prospects.find(x=>x.id===editingId)?.dims || {}) : {};
