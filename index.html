@@ -12357,9 +12357,9 @@ function renderListinoTable(macro) {
     pipeline: NOTE_OVERRIDE[macro].pipeline || LISTINO_NOTE_DATA.pipeline,
     team: NOTE_OVERRIDE[macro].team || LISTINO_NOTE_DATA.team,
     processi: LISTINO_NOTE_DATA.processi,
-    ricavi: LISTINO_NOTE_DATA.ricavi,
+    ricavi: NOTE_OVERRIDE[macro] && NOTE_OVERRIDE[macro].ricavi ? NOTE_OVERRIDE[macro].ricavi : LISTINO_NOTE_DATA.ricavi,
     marketing: LISTINO_NOTE_DATA.marketing,
-    sitoweb: LISTINO_NOTE_DATA.sitoweb,
+    sitoweb: NOTE_OVERRIDE[macro] && NOTE_OVERRIDE[macro].sitoweb ? NOTE_OVERRIDE[macro].sitoweb : LISTINO_NOTE_DATA.sitoweb,
     ecommerce: NOTE_OVERRIDE[macro].ecommerce || LISTINO_NOTE_DATA.ecommerce
   } : LISTINO_NOTE_DATA;
   var rows = '';
