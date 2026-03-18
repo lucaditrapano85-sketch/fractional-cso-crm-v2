@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
 <style>
 :root {
+  if (id === 'listino') { setTimeout(()=>{ const s=document.getElementById('listino-macro-select'); if(s) renderListinoTable(s.value); },50); }
   --bg:#F8F6F1; --bg2:#FFFFFF; --bg3:#F2EFE8; --bg4:#EAE6DD;
   --gold:#9A6E2E; --gold2:#B8842E; --gold-dim:#C9973A;
   --white:#1A1714; --gray:#6B6560; --gray2:#9C9890;
@@ -591,7 +592,28 @@ input[type=range]{flex:1;accent-color:var(--gold)}
     </div>
 
     <!-- CALENDARIO -->
-    <div class="view" id="view-calendario">
+    <div class="v<div id="view-listino" class="view">
+  <div class="dash-header">
+    <h1>Listino Servizi</h1>
+    <p>Costi di investimento per step e settore — valori mensili ricorrenti e una tantum (al netto IVA)</p>
+  </div>
+  <div style="margin-bottom:20px">
+    <label style="font-size:12px;font-weight:600;color:var(--gray);margin-right:8px">Settore macro:</label>
+    <select id="listino-macro-select" onchange="renderListinoTable(this.value)" style="padding:6px 12px;border:1px solid var(--border);border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:13px;background:var(--bg2)">
+      <option value="manifatturiero">Manifatturiero</option>
+      <option value="commercio">Commercio</option>
+      <option value="servizi">Servizi</option>
+      <option value="edilizia">Edilizia</option>
+      <option value="alimentare">Alimentare</option>
+      <option value="tech">Tech</option>
+    </select>
+  </div>
+  <div id="listino-table-container"></div>
+  <div style="margin-top:16px;font-size:11px;color:var(--gray2);line-height:1.6">
+    <strong>Note:</strong> Valori al netto IVA. R = costo ricorrente mensile · U = costo una tantum (setup/avvio).
+  </div>
+</div>
+iew" id="view-calendario">
       <div class="dash-header" style="margin-bottom:20px">
         <div style="display:flex;align-items:center;justify-content:space-between">
           <div><h1>Calendario</h1><p>Follow-up, call e appuntamenti</p></div>
