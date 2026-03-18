@@ -7280,6 +7280,8 @@ function _calcolaImpattoCumulativo(p) {
       const anni = orizzonte / 12;
       return Math.min(Math.pow(1 + crescitaOrg, anni) - 1, 0.30);
     }
+    const anni = orizzonte / 12;
+    const floorOrganico = Math.pow(1 + crescitaOrg, anni) - 1;
     let prodotto = 1;
     attive.forEach(id => {
       const cur = dims[id] || 0;
@@ -7298,7 +7300,8 @@ function _calcolaImpattoCumulativo(p) {
       const contributoPesato = Math.min(contributoTot * peso * efficienza, 0.95);
       prodotto *= (1 - contributoPesato);
     });
-    return 1 - prodotto;
+    const crescitaDaPiano = Math.min(1 - prodotto, 0.50);
+    return Math.min(floorOrganico + crescitaDaPiano, 0.60);
   };
 
   const crescita6  = calcCrescitaComposta(6);
