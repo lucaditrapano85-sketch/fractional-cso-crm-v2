@@ -2,59 +2,59 @@ var AZIONI_TARGET_BY_SETTORE =
 {
   "manifatturiero_meccanica": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il titolare gestisce tutto: identifica 1-2 tecnici interni che possono affiancarti nelle visite cliente e nei preventivi",
+      "2-3": "Attiva un agente plurimandatario per coprire zone o settori che non riesci a seguire direttamente",
+      "3-4": "Assumi un commerciale interno con portafoglio clienti assegnato, obiettivi mensili e autonomia nelle trattative",
+      "4-5": "Struttura una direzione commerciale con responsabile vendite, agenti di zona e key account per clienti strategici OEM"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Crea un registro offerte su Excel: cliente, lavorazione richiesta, importo, data e stato",
+      "2-3": "Adotta un CRM semplice come Pipedrive per tracciare offerte, follow-up e storico cliente",
+      "3-4": "Definisci tempi di risposta massimi per i preventivi e monitora win/loss rate mensile",
+      "4-5": "CRM integrato con gestione commesse, tempi di produzione, avanzamento lavori e fatturazione attiva"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Forma un operaio senior come riferimento tecnico-commerciale per i clienti abituali quando il titolare non c'è",
+      "2-3": "Assumi un tecnico-venditore o inside sales con conoscenza delle lavorazioni e capacità di fare preventivi",
+      "3-4": "Team commerciale strutturato: senior + junior + back office preventivi con ruoli e obiettivi distinti",
+      "4-5": "Struttura completa con direttore commerciale, team vendite, supporto tecnico dedicato e formazione continua"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Check base obbligatorio: DVR presente, DPI disponibili, estintori a norma. Standardizza i tempi di risposta ai preventivi",
+      "2-3": "Formazione sicurezza obbligatoria per tutti gli operatori, referente sicurezza nominato. Crea un sistema di gestione commesse con priorità e stato avanzamento",
+      "3-4": "Audit sicurezza interni periodici, near-miss tracciati. Processi operativi documentati e controllo qualità attivo — prerequisito per entrare nei vendor list dei clienti medi e grandi",
+      "4-5": "Sistema sicurezza strutturato come KPI aziendale. ERP integrato con produzione, qualità e fatturazione. ISO 9001 — IATF 16949 se servi l'automotive"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Analizza i margini per tipo di lavorazione: identifica quali sono più redditizie e orientati verso quelle",
+      "2-3": "Riduci la dipendenza dal cliente principale — nessun singolo cliente oltre il 40% del fatturato",
+      "3-4": "Attiva contratti di fornitura continuativa con i clienti principali per garantire un volume base di ricavi stabili",
+      "4-5": "Portafoglio clienti diversificato per settore con contratti quadro pluriennali e forecast fatturato affidabile a 12 mesi"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Crea una pagina LinkedIn aziendale con lavorazioni principali, materiali lavorati, tolleranze e certificazioni",
+      "2-3": "Partecipa a una fiera di settore (BI-MU, EMO) e attiva campagne LinkedIn verso buyer e responsabili acquisti industriali",
+      "3-4": "Content marketing tecnico: case history, video lavorazioni, articoli su riviste di settore per costruire autorevolezza",
+      "4-5": "Piano marketing strutturato con fiere internazionali, digital B2B, PR di settore e co-marketing con clienti anchor"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Sito vetrina con lavorazioni, materiali, tolleranze, certificazioni e modulo richiesta preventivo",
+      "2-3": "Sito con galleria lavori realizzati, settori serviti e area download schede tecniche",
+      "3-4": "Sito professionale con SEO industriale, case history clienti e form preventivo strutturato con specifiche tecniche",
+      "4-5": "Portale con configuratore preventivi online, area clienti riservata e catalogo lavorazioni completo"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Parco macchine datato o generico: identifica quale lavorazione perdi più spesso per limiti di attrezzatura",
+      "2-3": "Primo investimento mirato: un centro di lavoro CNC o una macchina specifica per il mercato che vuoi conquistare",
+      "3-4": "Parco macchine aggiornato con capacità multi-asse, attrezzature speciali e accordi di subappalto per lavorazioni complementari",
+      "4-5": "Linea produttiva strutturata con pianificazione capacità, manutenzione programmata e OEE monitorato mensilmente"
 
     }
   },
