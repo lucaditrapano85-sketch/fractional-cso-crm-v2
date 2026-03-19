@@ -118,59 +118,59 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "manifatturiero_packaging": {
     "vendite": {
-      "1-2": "Il titolare gestisce tutto: identifica 2-3 clienti target nel food o cosmetica e prepara un campionario con materiali, formati e finiture disponibili",
-      "2-3": "Attiva un agente di zona specializzato nel packaging o un commerciale interno che visiti i buyer degli uffici acquisti con campioni fisici",
-      "3-4": "Struttura un team commerciale con inside sales per gestione ordini ricorrenti e un commerciale senior per nuovi clienti e gare",
-      "4-5": "Direzione commerciale con KAM per i top 10 clienti, rete agenti su 3+ regioni e partecipazione strutturata a fiere internazionali (Interpack, Drupa)"
+      "1-2": "Il titolare gestisce tutto: individua 2-3 clienti industriali locali (food, cosmetica, e-commerce) a cui proporre campioni e preventivi per piccoli lotti",
+      "2-3": "Attiva 1-2 agenti con esperienza nel settore packaging o nel food/farmaceutico per coprire zone o clienti che non riesci a seguire direttamente",
+      "3-4": "Struttura un team commerciale con inside sales per la gestione ordini ripetuti e un key account per i clienti GDO e industriali strategici",
+      "4-5": "Direzione commerciale completa con key account per cliente, gestione gare annuali strutturata e presidio dei canali GDO, farmaceutico e food"
 
     },
     "pipeline": {
-      "1-2": "Registra su Excel ogni richiesta di campionatura: cliente, formato, materiale, quantità stimata e stato approvazione",
-      "2-3": "Adotta un CRM per tracciare il ciclo campionatura → offerta → approvazione → ordine con tempi per ogni fase",
-      "3-4": "Pipeline con forecast basato su contratti annuali e riordini programmati. Monitora il tasso campionatura→ordine per cliente",
-      "4-5": "CRM integrato con gestione contratti, scadenze rinnovo automatiche e dashboard forecast 12 mesi per cliente e linea prodotto"
+      "1-2": "Crea un registro ordini su Excel: cliente, prodotto, volumi, scadenza e stato. Tieni traccia delle gare annuali in scadenza",
+      "2-3": "Adotta un CRM semplice per tracciare preventivi, campioni inviati, follow-up e rinnovi contratto annuali",
+      "3-4": "Pipeline strutturata con forecast volumi per cliente, gestione gare con anticipo e monitoraggio rinnovi contratti",
+      "4-5": "Sistema integrato ordini-produzione-fatturazione con EDI verso i clienti GDO e dashboard forecast 12 mesi"
 
     },
     "team": {
-      "1-2": "Forma un operatore di prestampa o un grafico interno come interfaccia tecnica col cliente per approvazioni e modifiche",
-      "2-3": "Assumi un tecnico-commerciale che conosca materiali e processi di stampa e sappia fare preventivi autonomamente",
-      "3-4": "Team strutturato: commerciale senior + back office ordini + grafico/prestampista dedicato ai clienti principali",
-      "4-5": "Struttura completa con direttore commerciale, account manager per settore (food, cosmetica, industriale) e ufficio tecnico-grafico"
+      "1-2": "Forma un operaio senior come riferimento tecnico per i clienti — sa rispondere alle domande su materiali, spessori e certificazioni",
+      "2-3": "Assumi un inside sales con conoscenza dei materiali e dei processi di stampa per gestire preventivi e campioni in autonomia",
+      "3-4": "Team strutturato: commerciale senior + grafico/reparto prestampa + back office ordini con ruoli definiti",
+      "4-5": "Struttura completa con direttore commerciale, key account, reparto grafico interno e customer service dedicato"
 
     },
     "processi": {
-      "1-2": "Sicurezza base: DVR aggiornato, DPI per operatori macchine da stampa, aspirazione polveri e solventi a norma. Standardizza i tempi di risposta ai preventivi",
-      "2-3": "Formazione sicurezza specifica per operatori stampa (solventi, taglierine, fustellatrici). Processo di campionatura documentato con checklist qualità",
-      "3-4": "Certificazione ISO 9001 + BRC/IFS Packaging se servi il food. Audit interni periodici, gestione reclami strutturata e KPI qualità (scarti, resi, tempi consegna)",
-      "4-5": "Sistema qualità integrato con tracciabilità lotto completa, controllo statistico di processo (SPC) e certificazioni settoriali (FSC, PEFC per sostenibilità)"
+      "1-2": "Check base sicurezza: DVR aggiornato, DPI per operatori su macchinari di stampa e taglio, formazione obbligatoria. Inizia il percorso FSC se lavori con carta e cartone",
+      "2-3": "Certificazione FSC per carta/cartone. Formazione sicurezza avanzata su macchinari. Se servi il food avvia ISO 22000 — è un requisito dei clienti GDO e industria alimentare",
+      "3-4": "ISO 22000 per imballaggi alimentari, ISO 15378 se servi il farmaceutico. Audit sicurezza interni programmati, near-miss tracciati. Processi di controllo qualità stampa documentati",
+      "4-5": "Sistema qualità e sicurezza integrato: certificazioni multiple mantenute, sustainability report annuale, carbon footprint calcolata, packaging biodegradabile certificato come leva commerciale"
 
     },
     "ricavi": {
-      "1-2": "Analizza i margini per tipo di lavorazione e formato: identifica quali lavori sono redditizi e quali fai sottocosto per riempire la macchina",
-      "2-3": "Introduci MOQ (minimo d'ordine) coerenti coi costi di avviamento macchina. Struttura un listino con sconti volume trasparenti",
-      "3-4": "Contratti annuali con i clienti principali: volumi garantiti, pricing fisso e penali per variazioni oltre il ±20%",
-      "4-5": "Revenue mix bilanciato: 60% contratti annuali ricorrenti + 40% spot a margine più alto. Gestione attiva del pricing sulle materie prime"
+      "1-2": "Analizza i margini per linea prodotto: i lotti piccoli custom hanno margini migliori dei grandi volumi standard — orienta il mix verso quelli",
+      "2-3": "Contratti annuali con i clienti principali per garantire volumi minimi. Attenzione al costo materie prime: carta e plastica oscillano molto",
+      "3-4": "Diversifica su almeno 3 settori clienti (es. food + cosmetica + e-commerce) per ridurre il rischio di concentrazione. Pricing strutturato per volume e personalizzazione",
+      "4-5": "Portfolio clienti bilanciato con contratti pluriennali, clausole di indicizzazione al costo materie prime e revenue ricorrente da clienti con ordini automatici"
 
     },
     "marketing": {
-      "1-2": "Prepara un catalogo campioni fisico con materiali, finiture e formati disponibili — nel packaging si vende toccando, non leggendo",
-      "2-3": "Partecipa a una fiera di settore (Interpack, Ipack-Ima) e crea una pagina LinkedIn con esempi di lavori realizzati per settore",
-      "3-4": "Content marketing settoriale: case history per food, cosmetica, industriale. Campagne LinkedIn verso marketing manager e buyer packaging",
-      "4-5": "Piano marketing strutturato con fiere internazionali, co-marketing con clienti anchor, white paper su materiali sostenibili e innovazione"
+      "1-2": "Crea campionari fisici e digitali con tutti i formati, materiali e opzioni di stampa disponibili — è lo strumento di vendita principale nel packaging",
+      "2-3": "Partecipa a Packaging Première o Ipack-Ima. Attiva LinkedIn con case history visive — il packaging si vende con gli occhi",
+      "3-4": "Content marketing su sostenibilità e innovazione materiali: articoli, video, post LinkedIn verso buyer food e farmaceutico. Certificazioni in evidenza sul sito",
+      "4-5": "Piano marketing strutturato con fiere internazionale (Interpack Düsseldorf), co-marketing con clienti anchor e posizionamento come partner di innovazione packaging"
 
     },
     "sitoweb": {
-      "1-2": "Sito vetrina con catalogo materiali, formati disponibili, certificazioni e modulo richiesta campionatura",
-      "2-3": "Sito con gallery lavori per settore, area download schede tecniche materiali e configuratore formato base",
-      "3-4": "Sito professionale con SEO settoriale, case history per industria e form richiesta campionatura strutturato",
-      "4-5": "Portale B2B con configuratore packaging online, area clienti per gestione ordini ricorrenti e tracking produzione"
+      "1-2": "Sito con catalogo prodotti visivo: foto campioni, materiali disponibili, opzioni di stampa e modulo richiesta campione gratuito",
+      "2-3": "Sito con galleria lavori realizzati per settore, certificazioni in evidenza (FSC, ISO) e configuratore formato base",
+      "3-4": "Sito professionale con case history clienti, sezione sostenibilità con dati concreti e form preventivo strutturato con specifiche tecniche",
+      "4-5": "Portale B2B con area clienti, riordino online, tracking ordini e catalogo personalizzato per cliente"
 
     },
     "ecommerce": {
-      "1-2": "Macchinari datati o generici: identifica il collo di bottiglia produttivo che ti fa perdere più ordini (velocità, formati, colori)",
-      "2-3": "Primo investimento mirato: una macchina da stampa flexo/digitale per formati e tirature che il mercato richiede di più",
-      "3-4": "Parco macchine aggiornato con capacità multi-formato, fustella automatica e controllo qualità in linea (visione artificiale)",
-      "4-5": "Linea produttiva completa: prestampa digitale, stampa flexo/roto ad alta velocità, converting integrato e magazzino automatizzato"
+      "1-2": "Macchinari datati o poco versatili: identifica i formati o le lavorazioni che devi rifiutare più spesso per limiti tecnici",
+      "2-3": "Investi in una macchina da stampa digitale per piccoli lotti personalizzati — ti apre il mercato e-commerce e PMI senza minimi d'ordine alti",
+      "3-4": "Parco macchine versatile: stampa offset + digitale + fustellatura + accoppiamento. Capacità produttiva certificata per food e farmaceutico",
+      "4-5": "Linea produttiva automatizzata con controllo qualità in-process, cambio formato rapido e capacità di gestire lotti da 100 a 1.000.000 pezzi sulla stessa linea"
 
     }
   },
