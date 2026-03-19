@@ -60,59 +60,59 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "manifatturiero_automotive": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Non si vende con un commerciale: entra nelle vendor list dei tier-1 locali. Prepara un dossier aziendale con capacità produttive, certificazioni e referenze clienti",
+      "2-3": "Partecipa alle qualifiche fornitori dei tier-1 della tua zona. Usa un tecnico interno come interfaccia con gli uffici acquisti — la relazione tecnica conta più di quella commerciale",
+      "3-4": "Nomina un key account dedicato ai clienti automotive con conoscenza dei processi APQP/PPAP e capacità di gestire audit clienti",
+      "4-5": "Struttura un ufficio commerciale-tecnico con key account per cliente, gestione RFQ strutturata e partecipazione a gare internazionali"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Traccia su Excel tutte le RFQ ricevute: cliente, componente, volumi stimati, data risposta e stato",
+      "2-3": "Adotta un sistema di gestione offerte con storico RFQ, win/loss rate per cliente e tempi medi di risposta",
+      "3-4": "Pipeline strutturata con forecast volumi per cliente, gestione change requests e monitoraggio cost reduction annua",
+      "4-5": "Sistema integrato RFQ-produzione-fatturazione con EDI verso i clienti principali e dashboard forecast 12 mesi"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Forma un operaio senior come quality champion interno — primo responsabile della conformità sul campo",
+      "2-3": "Assumi un quality engineer dedicato: gestisce le non conformità, gli audit clienti e la documentazione PPAP",
+      "3-4": "Team tecnico-commerciale strutturato: quality manager + process engineer + inside sales per gestione ordini",
+      "4-5": "Struttura completa con direttore tecnico, quality manager, process engineering e customer service dedicato per cliente"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Check base sicurezza obbligatorio: DVR, DPI, formazione operatori. Avvia il percorso IATF 16949 — senza non puoi entrare nella supply chain automotive",
+      "2-3": "Implementa IATF 16949: control plan, FMEA, MSA. Formazione sicurezza avanzata per operatori su macchine a rischio. Referente qualità nominato internamente",
+      "3-4": "Sistema qualità IATF certificato e mantenuto. Audit interni programmati, gestione NC strutturata, KPI qualità monitorati. Zero infortuni come obiettivo aziendale misurabile",
+      "4-5": "Eccellenza operativa: IATF + sistemi lean/Six Sigma, OEE monitorato in tempo reale, audit clienti sempre superati, sistema sicurezza integrato nella cultura aziendale"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Analizza i margini per componente: l'automotive paga puntuale ma negozia duro — identifica i prodotti sotto margine da abbandonare o rinegoziare",
+      "2-3": "Prepara una strategia per la cost reduction annua richiesta dai clienti: efficienza produttiva, riduzione scarti, ottimizzazione acquisti materie prime",
+      "3-4": "Contratti pluriennali con pricing strutturato che include la cost reduction programmata. Diversifica su almeno 3-4 clienti automotive per ridurre il rischio di singola piattaforma",
+      "4-5": "Portfolio bilanciato tra automotive (volumi stabili) e altri settori (margini migliori). Contratti LTA con forecast vincolanti e gestione del rischio commodity"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Aggiorna il sito con capacità produttive dettagliate, certificazioni IATF, attrezzature e settori serviti — i buyer automotive lo verificano prima di qualsiasi contatto",
+      "2-3": "Iscrizione ai portali fornitori dei principali OEM e tier-1 della tua area. Presenza su Automotive Supplier Directory",
+      "3-4": "Partecipazione a fiere di settore (Mecspe, Euromold) con focus su innovazione processo e nuovi materiali. Case history certificati con clienti anchor",
+      "4-5": "Posizionamento come fornitore tecnico di eccellenza: white paper, partecipazione a tavoli di settore ANFIA, co-sviluppo con clienti strategici"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Sito con scheda tecnica dettagliata: lavorazioni, materiali, tolleranze, strumenti di misura, certificazioni e capacità produttiva mensile",
+      "2-3": "Sito aggiornato con IATF 16949 in evidenza, galleria componenti realizzati per settore e modulo RFQ strutturato",
+      "3-4": "Sito professionale con case history automotive, download certificazioni e area fornitori per gestione documentazione",
+      "4-5": "Portale B2B con area clienti dedicata, gestione documenti qualità online e integrazione con sistemi EDI dei clienti principali"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Macchine standard — identifica le tolleranze che non riesci a garantire e che ti escludono dalle RFQ più redditizie",
+      "2-3": "Investi in strumentazione di misura (CMM, rugosimetro) e in almeno un centro di lavoro CNC a 4-5 assi per componenti complessi",
+      "3-4": "Parco macchine automotive-grade: tolleranze micrometriche garantite, capacità di produzione in lotti ripetibili con SPC attivo",
+      "4-5": "Linea produttiva dedicata all'automotive con celle robotizzate, controllo qualità in-process automatizzato e OEE superiore all'85%"
 
     }
   },
