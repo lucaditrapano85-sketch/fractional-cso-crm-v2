@@ -660,6 +660,7 @@ const DIMS = [
 
 function getDimLabel(settore, dimId) {
   const macro = (typeof MICRO_TO_MACRO !== 'undefined' && MICRO_TO_MACRO[settore]) || settore;
+  const prefix = settore ? settore.split('_')[0] : '';
 
   const OVERRIDE = {
     manifatturiero: {
@@ -685,7 +686,7 @@ function getDimLabel(settore, dimId) {
     ecommerce: "E-commerce"
   };
 
-  return OVERRIDE[macro]?.[dimId] || DEFAULT[dimId] || dimId;
+  return OVERRIDE[prefix]?.[dimId] || OVERRIDE[macro]?.[dimId] || DEFAULT[dimId] || dimId;
 }
 
 const DIM_DESC = {
