@@ -234,59 +234,59 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "manifatturiero_elettromeccanica": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il tecnico è il venditore: identifica 3-5 aziende che usano sistemi simili ai tuoi e proponi un incontro tecnico — non commerciale. I buyer comprano competenza, non pezzi",
+      "2-3": "Attiva un tecnico-commerciale interno o un agente con background ingegneristico: sa parlare con i progettisti dei clienti e capisce le specifiche tecniche",
+      "3-4": "Key account tecnici dedicati ai clienti strategici: gestiscono la relazione ingegnere-ingegnere, i progetti di co-sviluppo e le gare tecniche",
+      "4-5": "Struttura commerciale-tecnica completa con application engineer per pre-vendita, key account per clienti e inside sales per ordini ripetuti e ricambi"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Traccia su Excel tutti i progetti in corso: cliente, specifica tecnica, valore stimato, fase e data decisione",
+      "2-3": "CRM con gestione progetti tecnici: dalla specifica al preventivo all'ordine. Tieni traccia anche delle installazioni attive — sono la fonte dei contratti service",
+      "3-4": "Pipeline strutturata con forecast per fase progetto, gestione opportunità di upsell su installazioni esistenti e monitoraggio scadenze contratti manutenzione",
+      "4-5": "CRM integrato con gestione commesse, post vendita e contratti service — visibilità completa dal preventivo al ciclo di vita del prodotto"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il titolare è anche l'ingegnere. Forma un tecnico interno che possa gestire le installazioni e la prima assistenza in autonomia",
+      "2-3": "Assumi un application engineer o un tecnico senior che possa supportare i clienti nelle fasi di integrazione e start-up",
+      "3-4": "Team tecnico strutturato: progettazione + produzione + service con ruoli distinti. Il service non è un costo — è un centro di profitto",
+      "4-5": "Struttura completa con direttore tecnico, team R&D, produzione e service dedicato con SLA definiti per i clienti sotto contratto"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Check sicurezza obbligatorio: DVR, DPI per lavori su impianti elettrici, formazione PES/PAV obbligatoria per chi lavora sotto tensione. Marcatura CE su tutti i prodotti — è un obbligo di legge",
+      "2-3": "Direttiva Macchine e Direttiva Bassa Tensione documentate e applicate su ogni prodotto. Formazione sicurezza avanzata. Fascicolo tecnico completo per ogni prodotto — ti copre legalmente e apre porte commerciali",
+      "3-4": "ISO 9001 per la gestione qualità. Processi di test e collaudo documentati per ogni prodotto. Audit sicurezza interni. Prerequisito per fornire energia, trasporti e industria di processo",
+      "4-5": "Sistema qualità certificato, processi R&D strutturati, ERP integrato con produzione e service. Zero infortuni come KPI. Certificazioni specifiche per settore (ATEX per ambienti esplosivi, IECEx)"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Inizia a offrire assistenza tecnica a pagamento — anche solo 2-3 interventi al mese di post vendita sono fatturato puro ad alto margine",
+      "2-3": "Proponi contratti di manutenzione preventiva annuale ai clienti con installazioni attive: costo fisso per loro, ricavo ricorrente per te",
+      "3-4": "Service contract pluriennali con SLA definiti (tempi di intervento, disponibilità ricambi). Il service vale spesso più della vendita iniziale in termini di margine",
+      "4-5": "Centro di profitto service autonomo: contratti pluriennali, fornitura ricambi proprietari, aggiornamenti firmware e upgrade. Fatturato ricorrente prevedibile e margini superiori al 40%"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Scheda tecnica professionale per ogni prodotto: specifiche, certificazioni, settori applicativi e casi d'uso. È il primo filtro dei progettisti quando cercano componenti",
+      "2-3": "Presenza su SPS Italia o Motek. LinkedIn con contenuti tecnici verso progettisti e responsabili manutenzione — sono loro che decidono il fornitore",
+      "3-4": "Case history tecnici con dati reali: problema del cliente, soluzione adottata, risultati misurati. I progettisti li condividono tra colleghi",
+      "4-5": "Posizionamento come partner tecnologico: white paper, webinar tecnici, partecipazione a tavoli di normazione e co-sviluppo con clienti anchor"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Sito con catalogo prodotti tecnico: specifiche, dimensioni, certificazioni, settori applicativi e download datasheet",
+      "2-3": "Sito con sezione applicazioni per settore, galleria installazioni realizzate e area download documentazione tecnica",
+      "3-4": "Sito professionale con configuratore prodotto, richiesta preventivo strutturata con specifiche tecniche e area clienti per documentazione",
+      "4-5": "Portale tecnico completo: configuratore avanzato, area clienti con storico ordini e interventi, richiesta ricambi online e accesso remoto alla documentazione di installazione"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Valuta il tuo software di progettazione: se usi ancora AutoCAD 2D sei in svantaggio — i clienti avanzati richiedono modelli 3D e simulazioni",
+      "2-3": "Investi in CAD 3D professionale (SolidWorks, Inventor) e in strumentazione di collaudo adeguata — banchi test, oscilloscopi, analizzatori di rete",
+      "3-4": "Laboratorio R&D strutturato con strumentazione di misura certificata, software di simulazione e prototipazione rapida per ridurre i tempi di sviluppo",
+      "4-5": "Centro tecnologico completo con R&D dedicato, laboratorio di certificazione interno, software PLM per gestione ciclo vita prodotto e capacità di sviluppo firmware/software embedded"
 
     }
   },

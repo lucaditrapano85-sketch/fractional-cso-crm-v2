@@ -660,11 +660,16 @@ const DIMS = [
 
 function getDimLabel(settore, dimId) {
   const macro = (typeof MICRO_TO_MACRO !== 'undefined' && MICRO_TO_MACRO[settore]) || settore;
-  const prefix = settore ? settore.split('_')[0] : '';
+  const parts = settore ? settore.split('_') : [];
+  const prefix = parts[0] || '';
+  const suffix = parts.slice(1).join('_') || '';
 
   const OVERRIDE = {
     manifatturiero: {
       ecommerce: "Parco macchine & capacità produttiva"
+    },
+    elettromeccanica: {
+      ecommerce: "Attrezzatura tecnica & R&D"
     },
     edilizia: {
       vendite: "Sviluppo clienti",
@@ -686,7 +691,7 @@ function getDimLabel(settore, dimId) {
     ecommerce: "E-commerce"
   };
 
-  return OVERRIDE[prefix]?.[dimId] || OVERRIDE[macro]?.[dimId] || DEFAULT[dimId] || dimId;
+  return OVERRIDE[suffix]?.[dimId] || OVERRIDE[prefix]?.[dimId] || OVERRIDE[macro]?.[dimId] || DEFAULT[dimId] || dimId;
 }
 
 const DIM_DESC = {
