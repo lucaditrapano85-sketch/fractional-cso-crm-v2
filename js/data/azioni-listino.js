@@ -118,59 +118,59 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "manifatturiero_packaging": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il titolare gestisce tutto: identifica 2-3 clienti target nel food o cosmetica e prepara un campionario con materiali, formati e finiture disponibili",
+      "2-3": "Attiva un agente di zona specializzato nel packaging o un commerciale interno che visiti i buyer degli uffici acquisti con campioni fisici",
+      "3-4": "Struttura un team commerciale con inside sales per gestione ordini ricorrenti e un commerciale senior per nuovi clienti e gare",
+      "4-5": "Direzione commerciale con KAM per i top 10 clienti, rete agenti su 3+ regioni e partecipazione strutturata a fiere internazionali (Interpack, Drupa)"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Registra su Excel ogni richiesta di campionatura: cliente, formato, materiale, quantità stimata e stato approvazione",
+      "2-3": "Adotta un CRM per tracciare il ciclo campionatura → offerta → approvazione → ordine con tempi per ogni fase",
+      "3-4": "Pipeline con forecast basato su contratti annuali e riordini programmati. Monitora il tasso campionatura→ordine per cliente",
+      "4-5": "CRM integrato con gestione contratti, scadenze rinnovo automatiche e dashboard forecast 12 mesi per cliente e linea prodotto"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Forma un operatore di prestampa o un grafico interno come interfaccia tecnica col cliente per approvazioni e modifiche",
+      "2-3": "Assumi un tecnico-commerciale che conosca materiali e processi di stampa e sappia fare preventivi autonomamente",
+      "3-4": "Team strutturato: commerciale senior + back office ordini + grafico/prestampista dedicato ai clienti principali",
+      "4-5": "Struttura completa con direttore commerciale, account manager per settore (food, cosmetica, industriale) e ufficio tecnico-grafico"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Sicurezza base: DVR aggiornato, DPI per operatori macchine da stampa, aspirazione polveri e solventi a norma. Standardizza i tempi di risposta ai preventivi",
+      "2-3": "Formazione sicurezza specifica per operatori stampa (solventi, taglierine, fustellatrici). Processo di campionatura documentato con checklist qualità",
+      "3-4": "Certificazione ISO 9001 + BRC/IFS Packaging se servi il food. Audit interni periodici, gestione reclami strutturata e KPI qualità (scarti, resi, tempi consegna)",
+      "4-5": "Sistema qualità integrato con tracciabilità lotto completa, controllo statistico di processo (SPC) e certificazioni settoriali (FSC, PEFC per sostenibilità)"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Analizza i margini per tipo di lavorazione e formato: identifica quali lavori sono redditizi e quali fai sottocosto per riempire la macchina",
+      "2-3": "Introduci MOQ (minimo d'ordine) coerenti coi costi di avviamento macchina. Struttura un listino con sconti volume trasparenti",
+      "3-4": "Contratti annuali con i clienti principali: volumi garantiti, pricing fisso e penali per variazioni oltre il ±20%",
+      "4-5": "Revenue mix bilanciato: 60% contratti annuali ricorrenti + 40% spot a margine più alto. Gestione attiva del pricing sulle materie prime"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Prepara un catalogo campioni fisico con materiali, finiture e formati disponibili — nel packaging si vende toccando, non leggendo",
+      "2-3": "Partecipa a una fiera di settore (Interpack, Ipack-Ima) e crea una pagina LinkedIn con esempi di lavori realizzati per settore",
+      "3-4": "Content marketing settoriale: case history per food, cosmetica, industriale. Campagne LinkedIn verso marketing manager e buyer packaging",
+      "4-5": "Piano marketing strutturato con fiere internazionali, co-marketing con clienti anchor, white paper su materiali sostenibili e innovazione"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Sito vetrina con catalogo materiali, formati disponibili, certificazioni e modulo richiesta campionatura",
+      "2-3": "Sito con gallery lavori per settore, area download schede tecniche materiali e configuratore formato base",
+      "3-4": "Sito professionale con SEO settoriale, case history per industria e form richiesta campionatura strutturato",
+      "4-5": "Portale B2B con configuratore packaging online, area clienti per gestione ordini ricorrenti e tracking produzione"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Macchinari datati o generici: identifica il collo di bottiglia produttivo che ti fa perdere più ordini (velocità, formati, colori)",
+      "2-3": "Primo investimento mirato: una macchina da stampa flexo/digitale per formati e tirature che il mercato richiede di più",
+      "3-4": "Parco macchine aggiornato con capacità multi-formato, fustella automatica e controllo qualità in linea (visione artificiale)",
+      "4-5": "Linea produttiva completa: prestampa digitale, stampa flexo/roto ad alta velocità, converting integrato e magazzino automatizzato"
 
     }
   },
