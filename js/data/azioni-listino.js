@@ -698,59 +698,59 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "edilizia_serramenti": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Identifica 2-3 rivenditori locali o showroom a cui proporre la tua linea prodotti",
+      "2-3": "Attiva una rete di agenti monomandatari con zona assegnata e listino prezzi definito",
+      "3-4": "Struttura un key account manager dedicato ai clienti costruttori e general contractor",
+      "4-5": "Crea una direzione commerciale con responsabile vendite, agenti e inside sales"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Crea un registro offerte su Excel con cliente, prodotto, importo e stato",
+      "2-3": "Adotta un CRM semplice (Pipedrive o Zoho) per tracciare offerte e follow-up",
+      "3-4": "Implementa un processo di offerta standardizzato con tempi di risposta definiti",
+      "4-5": "CRM avanzato integrato con gestione ordini, produzione e post-vendita"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Forma un collaboratore interno sulle caratteristiche tecniche dei prodotti per supportare le vendite",
+      "2-3": "Assumi un agente o un addetto commerciale interno con obiettivi mensili",
+      "3-4": "Struttura un team vendite con commerciale senior + supporto tecnico + back office",
+      "4-5": "Direzione commerciale completa con responsabile, agenti zonali e customer service dedicato"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Standardizza il processo di preventivazione con listino prezzi aggiornato e tempi di risposta",
+      "2-3": "Crea un manuale operativo per la gestione ordini, consegne e reclami",
+      "3-4": "Implementa un sistema di controllo qualità e gestione resi strutturato",
+      "4-5": "Certificazioni ISO, processi ERP integrati, KPI operativi monitorati mensilmente"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Analizza i margini per linea prodotto e identifica i prodotti più redditizi",
+      "2-3": "Introduci una politica di sconti strutturata per volume e canale distributivo",
+      "3-4": "Attiva contratti quadro con i clienti principali per garantire ricavi ricorrenti",
+      "4-5": "Revenue management con pricing dinamico, contratti pluriennali e gestione portafoglio clienti"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Crea una scheda prodotto professionale con foto, specifiche tecniche e certificazioni",
+      "2-3": "Partecipa a una fiera di settore (Made Expo, Fensterbau) e attiva LinkedIn aziendale",
+      "3-4": "Campagne Google Ads su ricerche locali + catalogo digitale scaricabile",
+      "4-5": "Piano marketing strutturato: fiere, digital, PR di settore e co-marketing con distributori"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Sito vetrina con catalogo prodotti, specifiche tecniche e modulo richiesta preventivo",
+      "2-3": "Sito con area riservata per rivenditori, listino scaricabile e configuratore base",
+      "3-4": "Sito professionale con SEO settoriale, case history installazioni e certificazioni",
+      "4-5": "Portale B2B con ordini online per rivenditori, tracking consegne e supporto tecnico"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Vendi solo diretto: cliente finale chiama, tu preventivi e consegni",
+      "2-3": "Attiva 1-2 rivenditori/showroom in zone limitrofe con accordo commerciale formale",
+      "3-4": "Rete distributiva regionale con 5-10 rivenditori, agente di zona e politica commerciale",
+      "4-5": "Rete nazionale con distributori regionali, agenti multi-zona e contratti OEM con costruttori"
 
     }
   },
