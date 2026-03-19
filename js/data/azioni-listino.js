@@ -176,59 +176,59 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "manifatturiero_cterzi": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Non aspettare che i clienti ti chiamino: mappa 10-15 aziende della tua zona che potrebbero aver bisogno delle tue lavorazioni e contattale con un dossier aziendale (capacità, attrezzature, referenze)",
+      "2-3": "Specializzati su una lavorazione o un materiale specifico — diventa il riferimento nella tua zona per quel processo. È più efficace che essere generici per tutti",
+      "3-4": "Attiva un agente o un procacciatore con contatti nel settore industriale per aprire nuovi clienti in zone o settori che non presidia",
+      "4-5": "Struttura commerciale con key account dedicati ai clienti strategici e pipeline attiva per nuovi clienti in settori diversificati"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Traccia su Excel tutte le richieste ricevute: cliente, lavorazione, quantità, valore e stato. Tieni memoria di chi hai contattato e con quale esito",
+      "2-3": "CRM semplice per gestire le trattative attive, i follow-up sulle offerte inviate e lo storico ordini per cliente",
+      "3-4": "Pipeline strutturata con forecast mensile, tempi medi di preventivazione e win rate per tipo di lavorazione",
+      "4-5": "CRM integrato con produzione: dalla richiesta al preventivo all'ordine alla consegna — tutto tracciato con KPI monitorati"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il titolare fa tutto. Individua almeno un operaio senior che possa gestire i clienti abituali quando sei in produzione",
+      "2-3": "Assumi un back office o una figura amministrativo-commerciale che gestisca preventivi, ordini e comunicazione clienti",
+      "3-4": "Team strutturato: referente commerciale interno + responsabile produzione con autonomia operativa",
+      "4-5": "Struttura completa con responsabile commerciale, responsabile produzione e quality manager — il titolare esce dall'operativo"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Check base sicurezza obbligatorio: DVR, DPI, formazione operatori. Standardizza i tempi di risposta ai preventivi — massimo 48 ore è il minimo per essere competitivi",
+      "2-3": "Sistema di gestione commesse con priorità, stato avanzamento e date di consegna. Formazione sicurezza avanzata. Riduci i ritardi di consegna — è la lamentela numero uno dei clienti verso i terzisti",
+      "3-4": "Controllo qualità documentato su ogni lotto. Audit sicurezza interni. ISO 9001 se vuoi entrare nei vendor list dei clienti strutturati — senza non passi la qualifica",
+      "4-5": "ERP integrato con produzione, qualità e fatturazione. Sistema sicurezza come KPI aziendale. Certificazioni specifiche per settore (IATF per automotive, ISO 13485 per medicale)"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Analizza subito la concentrazione clienti: se un solo cliente vale più del 50% del fatturato sei in zona di rischio esistenziale — inizia oggi a cercarne altri",
+      "2-3": "Obiettivo concreto: nessun cliente oltre il 35% del fatturato. Ogni nuovo cliente acquisito riduce il rischio e aumenta il potere negoziale con i vecchi",
+      "3-4": "Portafoglio con almeno 5-6 clienti attivi in settori diversi. Contratti di fornitura con volumi minimi garantiti per i clienti principali",
+      "4-5": "Diversificazione completa per settore e dimensione cliente. Forecast fatturato affidabile a 12 mesi. Pricing strutturato che include il costo del rischio di concentrazione"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Crea un dossier aziendale PDF con lavorazioni, materiali, attrezzature, tolleranze e referenze — è il tuo biglietto da visita quando butti bussare a nuovi clienti",
+      "2-3": "Profilo LinkedIn aziendale aggiornato con foto del reparto, macchine e lavorazioni. I responsabili acquisti cercano fornitori anche lì",
+      "3-4": "Partecipa a Mecspe o a fiere di settore specifiche per il tuo mercato principale. Raccogli testimonianze scritte dai clienti soddisfatti",
+      "4-5": "Posizionamento come specialista di riferimento per la tua lavorazione: content tecnico, presenza su directory fornitori industriali, co-marketing con clienti anchor"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Sito essenziale ma professionale: lavorazioni, materiali, attrezzature con foto reali, tolleranze garantite e modulo richiesta preventivo",
+      "2-3": "Sito con galleria lavori realizzati, settori serviti, certificazioni e tempi medi di consegna — informazioni che un buyer cerca in 30 secondi",
+      "3-4": "Sito ottimizzato per ricerche locali (es. 'torneria conto terzi Milano') con case history e form preventivo strutturato",
+      "4-5": "Portale con area clienti per tracking ordini, download certificati di conformità e storico forniture"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Mappa le lavorazioni che devi rifiutare più spesso: sono opportunità perse che indicano dove investire",
+      "2-3": "Investi in una macchina o attrezzatura che ti permette di fare lavorazioni complementari a quelle attuali — aumenta il valore per pezzo e riduce i fornitori del cliente",
+      "3-4": "Parco macchine versatile con capacità di fare lavorazioni complete: dalla materia prima al pezzo finito colaudato. Riduci i terzisti dei tuoi clienti",
+      "4-5": "Linea produttiva strutturata con capacità di gestire più lavorazioni in sequenza, controllo qualità integrato e certificazioni che aprono nuovi settori"
 
     }
   },
