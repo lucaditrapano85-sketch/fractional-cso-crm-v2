@@ -582,121 +582,63 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "edilizia_residenziale": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il cantiere aperto è la tua migliore vetrina: metti un cartello professionale con foto, contatti e QR code. Chiedi referenze attive ai clienti soddisfatti — il passaparola è il tuo canale principale",
+      "2-3": "Costruisci una rete di segnalatori: geometri, architetti, studi tecnici della zona. Un accordo di segnalazione formale (anche solo una cena e un ringraziamento) vale più di qualsiasi pubblicità",
+      "3-4": "Attiva un commerciale part-time o un procacciatore per sviluppare i contatti con sviluppatori immobiliari, cooperative e amministratori di condominio",
+      "4-5": "Struttura commerciale con responsabile sviluppo clienti, rete di segnalatori attiva e presenza su portali immobiliari per nuove costruzioni e ristrutturazioni chiavi in mano"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Tieni un registro delle trattative aperte su Excel: cliente, tipo di lavoro, valore stimato, stato e prossimo step. Con cicli di vendita lunghi la memoria non basta",
+      "2-3": "CRM semplice per tracciare ogni contatto: sopralluogo, preventivo, follow-up e stato trattativa. I lavori si perdono spesso per mancanza di follow-up sistematico",
+      "3-4": "Pipeline strutturata con forecast mensile, gestione SAL per cantieri attivi e monitoraggio scadenze preventivi aperti",
+      "4-5": "Sistema integrato trattative-cantieri-fatturazione con gestione SAL automatizzata e forecast trimestrale affidabile"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Collaboratore esterno a P.IVA (geometra junior o praticante) per supporto su sopralluoghi e pratiche amministrative",
+      "2-3": "Geometra o perito dipendente (RAL 28-32k) per gestire pratiche, computi metrici e direzione lavori in autonomia",
+      "3-4": "Coordinatore cantieri senior (RAL 35-40k) con capacità di gestire più cantieri in parallelo e interfacciarsi con i clienti",
+      "4-5": "Struttura operativa completa: direttore tecnico, coordinatore cantieri, geometra e back office amministrativo"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Check sicurezza obbligatorio: DVR cantieri, DPI per tutti gli operatori, PSC per cantieri sopra soglia. Computo metrico su Excel strutturato con voci di costo separate",
+      "2-3": "Software preventivazione base (PriMus free o Edilius): preventivi accurati riducono i cantieri in perdita. Formazione sicurezza avanzata, RSPP nominato",
+      "3-4": "Gestionale cantieri con SAL documentati, controllo costi in tempo reale e scostamenti budget. Coordinatore sicurezza esterno qualificato per cantieri complessi",
+      "4-5": "ERP edile integrato con produzione, subappalti e fatturazione. Sistema sicurezza strutturato come KPI aziendale. SOA se vuoi accedere agli appalti pubblici"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Analizza i margini per tipo di lavoro: nuova costruzione vs ristrutturazione vs manutenzione. Identifica dove guadagni davvero e orienta lo sviluppo clienti verso quei lavori",
+      "2-3": "Struttura gli anticipi e i SAL in modo chiaro nel contratto — il cash flow è il problema numero uno dell'edilizia. Mai iniziare un cantiere senza acconto",
+      "3-4": "Contratti chiari con capitolato dettagliato, SAL concordati e clausole di revisione prezzi per lavori lunghi. Riduci i lavori extra non fatturati",
+      "4-5": "Portfolio lavori diversificato (privati + cooperative + sviluppatori) con contratti strutturati, polizze decennali come leva commerciale e forecast trimestrale"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Profilo Google My Business completo con foto cantieri, recensioni clienti e risposta attiva. È il primo posto dove ti cercano i privati",
+      "2-3": "Sito con galleria before/after, testimonianze clienti e modulo richiesta preventivo. Instagram con aggiornamenti di cantiere — i privati adorano seguire i lavori",
+      "3-4": "Google Ads locali su ricerche come 'costruttori X città' e 'ristrutturazione casa X città'. Case history complete con foto, tempi e budget rispettati",
+      "4-5": "Piano marketing strutturato: Google Ads + social + PR locale + presenza su portali immobiliari come costruttore di riferimento della zona"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Sito base con presentazione aziendale, galleria lavori con foto professionali, referenze e contatti chiari",
+      "2-3": "Sito con galleria before/after per tipo di intervento, testimonianze clienti verificate e modulo richiesta sopralluogo gratuito",
+      "3-4": "Sito professionale con SEO locale, case history dettagliate con tempi e budget e sezione nuovi progetti in corso",
+      "4-5": "Sito avanzato con configuratore preventivo base, area clienti per seguire lo stato del cantiere e blog tecnico su ristrutturazioni e normative"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Nessuna gestione strutturata: preventivi a memoria, fornitori scelti volta per volta, attrezzatura propria minima",
+      "2-3": "Software preventivazione (PriMus o Edilius base) + scadenziario revisioni mezzi + accordi fissi con noleggiatori locali per ponteggi e attrezzatura",
+      "3-4": "Gestionale cantieri completo con controllo costi per commessa, parco mezzi aziendale strutturato (furgoni in NLT, attrezzatura propria per lavorazioni ricorrenti)",
+      "4-5": "ERP edile integrato con gestione subappalti e forniture, parco mezzi pianificato con manutenzione programmata e forecast costi per commessa"
 
     }
   },
   "edilizia_impianti": {
-    "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
-
-    },
-    "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
-
-    },
-    "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
-
-    },
-    "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
-
-    },
-    "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
-
-    },
-    "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
-
-    },
-    "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
-
-    },
-    "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
-
-    }
-  },
-  "edilizia_ristrutturazioni": {
     "vendite": {
       "1-2": "",
       "2-3": "",
@@ -1974,7 +1916,7 @@ var AZIONI_TARGET_BY_SETTORE =
   }
 };
 
-var MICRO_TO_MACRO = {"manifatturiero_meccanica":"manifatturiero","manifatturiero_automotive":"manifatturiero","manifatturiero_packaging":"manifatturiero","manifatturiero_cterzi":"manifatturiero","manifatturiero_elettromeccanica":"manifatturiero","manifatturiero_tessile_tessuti":"manifatturiero","manifatturiero_tessile_capi":"manifatturiero","servizi_it":"servizi","servizi_formazione":"servizi","edilizia_residenziale":"edilizia","edilizia_impianti":"edilizia","edilizia_ristrutturazioni":"edilizia","edilizia_serramenti":"commercio","commercio_distribuzione_industriale":"commercio","commercio_ingrosso_alimentare":"commercio","commercio_materiali_edili":"commercio","commercio_ricambi_auto":"commercio","commercio_abbigliamento_ingrosso":"commercio","commercio_elettronica":"commercio","commercio_chimici":"commercio","commercio_medicale":"commercio","commercio_auto_moto":"commercio","commercio_abbigliamento_dettaglio":"commercio","commercio_orologi_gioielli":"commercio","alimentare_trasformazione":"alimentare","alimentare_vini":"alimentare","alimentare_forno":"alimentare","alimentare_conserve":"alimentare","alimentare_ingredienti":"alimentare","tech_saas":"tech","tech_system_integrator":"tech","tech_digital_agency":"tech","tech_automazione":"tech"};
+var MICRO_TO_MACRO = {"manifatturiero_meccanica":"manifatturiero","manifatturiero_automotive":"manifatturiero","manifatturiero_packaging":"manifatturiero","manifatturiero_cterzi":"manifatturiero","manifatturiero_elettromeccanica":"manifatturiero","manifatturiero_tessile_tessuti":"manifatturiero","manifatturiero_tessile_capi":"manifatturiero","servizi_it":"servizi","servizi_formazione":"servizi","edilizia_residenziale":"edilizia","edilizia_impianti":"edilizia","edilizia_serramenti":"commercio","commercio_distribuzione_industriale":"commercio","commercio_ingrosso_alimentare":"commercio","commercio_materiali_edili":"commercio","commercio_ricambi_auto":"commercio","commercio_abbigliamento_ingrosso":"commercio","commercio_elettronica":"commercio","commercio_chimici":"commercio","commercio_medicale":"commercio","commercio_auto_moto":"commercio","commercio_abbigliamento_dettaglio":"commercio","commercio_orologi_gioielli":"commercio","alimentare_trasformazione":"alimentare","alimentare_vini":"alimentare","alimentare_forno":"alimentare","alimentare_conserve":"alimentare","alimentare_ingredienti":"alimentare","tech_saas":"tech","tech_system_integrator":"tech","tech_digital_agency":"tech","tech_automazione":"tech"};
 var LISTINO_DEFAULT = {"manifatturiero":{"vendite":{"1-2":{"r":250,"u":0},"2-3":{"r":2000,"u":600},"3-4":{"r":3500,"u":1200},"4-5":{"r":6500,"u":2500}},"pipeline":{"1-2":{"r":30,"u":0},"2-3":{"r":100,"u":800},"3-4":{"r":450,"u":3000},"4-5":{"r":900,"u":6000}},"team":{"1-2":{"r":200,"u":0},"2-3":{"r":3000,"u":600},"3-4":{"r":4500,"u":1200},"4-5":{"r":8500,"u":2500}},"processi":{"1-2":{"r":350,"u":0},"2-3":{"r":700,"u":1800},"3-4":{"r":1200,"u":3500},"4-5":{"r":5000,"u":6000}},"ricavi":{"1-2":{"r":150,"u":0},"2-3":{"r":250,"u":500},"3-4":{"r":450,"u":1500},"4-5":{"r":900,"u":3000}},"marketing":{"1-2":{"r":300,"u":0},"2-3":{"r":900,"u":600},"3-4":{"r":2000,"u":1800},"4-5":{"r":3500,"u":3500}},"sitoweb":{"1-2":{"r":80,"u":1500},"2-3":{"r":300,"u":3500},"3-4":{"r":600,"u":6000},"4-5":{"r":1000,"u":10000}},"ecommerce":{"1-2":{"r":0,"u":0},"2-3":{"r":250,"u":4000},"3-4":{"r":800,"u":8000},"4-5":{"r":2000,"u":15000}}},"servizi":{"vendite":{"1-2":{"r":0,"u":0},"2-3":{"r":1500,"u":400},"3-4":{"r":3200,"u":1000},"4-5":{"r":6000,"u":2000}},"pipeline":{"1-2":{"r":35,"u":0},"2-3":{"r":110,"u":900},"3-4":{"r":480,"u":3200},"4-5":{"r":950,"u":6500}},"team":{"1-2":{"r":200,"u":0},"2-3":{"r":3300,"u":600},"3-4":{"r":5000,"u":1200},"4-5":{"r":9500,"u":2500}},"processi":{"1-2":{"r":250,"u":0},"2-3":{"r":550,"u":1200},"3-4":{"r":900,"u":2500},"4-5":{"r":4000,"u":5000}},"ricavi":{"1-2":{"r":100,"u":0},"2-3":{"r":200,"u":300},"3-4":{"r":380,"u":1000},"4-5":{"r":750,"u":2500}},"marketing":{"1-2":{"r":250,"u":0},"2-3":{"r":750,"u":500},"3-4":{"r":1700,"u":1500},"4-5":{"r":3200,"u":3000}},"sitoweb":{"1-2":{"r":80,"u":1500},"2-3":{"r":300,"u":3500},"3-4":{"r":600,"u":6000},"4-5":{"r":1000,"u":10000}},"ecommerce":{"1-2":{"r":0,"u":0},"2-3":{"r":200,"u":2500},"3-4":{"r":600,"u":6000},"4-5":{"r":1800,"u":12000}}},"edilizia":{"vendite":{"1-2":{"r":0,"u":0},"2-3":{"r":0,"u":0},"3-4":{"r":800,"u":200},"4-5":{"r":1500,"u":500}},"pipeline":{"1-2":{"r":15,"u":0},"2-3":{"r":30,"u":0},"3-4":{"r":50,"u":300},"4-5":{"r":150,"u":1000}},"team":{"1-2":{"r":700,"u":0},"2-3":{"r":3200,"u":800},"3-4":{"r":4500,"u":1200},"4-5":{"r":6500,"u":2000}},"processi":{"1-2":{"r":200,"u":0},"2-3":{"r":450,"u":1000},"3-4":{"r":800,"u":2200},"4-5":{"r":3500,"u":4500}},"ricavi":{"1-2":{"r":0,"u":0},"2-3":{"r":350,"u":500},"3-4":{"r":1000,"u":1500},"4-5":{"r":3000,"u":3000}},"marketing":{"1-2":{"r":250,"u":0},"2-3":{"r":700,"u":400},"3-4":{"r":1400,"u":1400},"4-5":{"r":2800,"u":2800}},"sitoweb":{"1-2":{"r":0,"u":800},"2-3":{"r":50,"u":2000},"3-4":{"r":150,"u":3500},"4-5":{"r":300,"u":6000}},"ecommerce":{"1-2":{"r":0,"u":200},"2-3":{"r":50,"u":500},"3-4":{"r":200,"u":2000},"4-5":{"r":500,"u":5000}}},"commercio":{"vendite":{"1-2":{"r":200,"u":0},"2-3":{"r":1700,"u":500},"3-4":{"r":3300,"u":1000},"4-5":{"r":6500,"u":2000}},"pipeline":{"1-2":{"r":30,"u":0},"2-3":{"r":100,"u":800},"3-4":{"r":420,"u":2800},"4-5":{"r":850,"u":5500}},"team":{"1-2":{"r":150,"u":0},"2-3":{"r":2800,"u":500},"3-4":{"r":4300,"u":1000},"4-5":{"r":8000,"u":2000}},"processi":{"1-2":{"r":200,"u":0},"2-3":{"r":500,"u":1000},"3-4":{"r":900,"u":2500},"4-5":{"r":3500,"u":5000}},"ricavi":{"1-2":{"r":100,"u":0},"2-3":{"r":220,"u":400},"3-4":{"r":400,"u":1200},"4-5":{"r":800,"u":2500}},"marketing":{"1-2":{"r":300,"u":0},"2-3":{"r":850,"u":500},"3-4":{"r":1900,"u":1600},"4-5":{"r":3500,"u":3200}},"sitoweb":{"1-2":{"r":80,"u":1500},"2-3":{"r":280,"u":3200},"3-4":{"r":550,"u":5800},"4-5":{"r":950,"u":9500}},"ecommerce":{"1-2":{"r":0,"u":0},"2-3":{"r":50,"u":200},"3-4":{"r":400,"u":5000},"4-5":{"r":1500,"u":15000}}},"alimentare":{"vendite":{"1-2":{"r":300,"u":0},"2-3":{"r":2000,"u":600},"3-4":{"r":3800,"u":1200},"4-5":{"r":7500,"u":2500}},"pipeline":{"1-2":{"r":30,"u":0},"2-3":{"r":100,"u":800},"3-4":{"r":420,"u":2800},"4-5":{"r":850,"u":5500}},"team":{"1-2":{"r":200,"u":0},"2-3":{"r":3000,"u":600},"3-4":{"r":4500,"u":1200},"4-5":{"r":8500,"u":2500}},"processi":{"1-2":{"r":200,"u":0},"2-3":{"r":500,"u":1200},"3-4":{"r":900,"u":2800},"4-5":{"r":3800,"u":5500}},"ricavi":{"1-2":{"r":120,"u":0},"2-3":{"r":250,"u":450},"3-4":{"r":450,"u":1300},"4-5":{"r":900,"u":2800}},"marketing":{"1-2":{"r":400,"u":0},"2-3":{"r":1100,"u":700},"3-4":{"r":2400,"u":2200},"4-5":{"r":4500,"u":4500}},"sitoweb":{"1-2":{"r":100,"u":2000},"2-3":{"r":350,"u":4000},"3-4":{"r":700,"u":7000},"4-5":{"r":1200,"u":12000}},"ecommerce":{"1-2":{"r":0,"u":0},"2-3":{"r":550,"u":7000},"3-4":{"r":1500,"u":14000},"4-5":{"r":3500,"u":25000}}},"tech":{"vendite":{"1-2":{"r":0,"u":0},"2-3":{"r":2200,"u":600},"3-4":{"r":5000,"u":1200},"4-5":{"r":10000,"u":2500}},"pipeline":{"1-2":{"r":50,"u":0},"2-3":{"r":180,"u":1500},"3-4":{"r":700,"u":5000},"4-5":{"r":1400,"u":10000}},"team":{"1-2":{"r":400,"u":0},"2-3":{"r":4200,"u":1000},"3-4":{"r":7000,"u":2000},"4-5":{"r":13000,"u":4000}},"processi":{"1-2":{"r":300,"u":0},"2-3":{"r":700,"u":2000},"3-4":{"r":1400,"u":5000},"4-5":{"r":5500,"u":9000}},"ricavi":{"1-2":{"r":100,"u":0},"2-3":{"r":300,"u":500},"3-4":{"r":600,"u":2000},"4-5":{"r":1200,"u":4000}},"marketing":{"1-2":{"r":400,"u":0},"2-3":{"r":1200,"u":800},"3-4":{"r":2800,"u":3000},"4-5":{"r":6000,"u":6000}},"sitoweb":{"1-2":{"r":150,"u":2500},"2-3":{"r":500,"u":5000},"3-4":{"r":1000,"u":9000},"4-5":{"r":2000,"u":15000}},"ecommerce":{"1-2":{"r":0,"u":0},"2-3":{"r":700,"u":8000},"3-4":{"r":2000,"u":16000},"4-5":{"r":5000,"u":28000}}}};
 var COSTI_BY_SETTORE = {};
 
@@ -2095,7 +2037,6 @@ var FAMIGLIA_SETTORE = {
   edilizia: 'edilizia',
   edilizia_residenziale: 'edilizia',
   edilizia_impianti: 'edilizia',
-  edilizia_ristrutturazioni: 'edilizia',
   edilizia_serramenti: 'distribuzione',
   commercio: 'retail',
   commercio_distribuzione_industriale: 'distribuzione',

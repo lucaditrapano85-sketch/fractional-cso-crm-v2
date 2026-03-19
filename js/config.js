@@ -675,7 +675,9 @@ function getDimLabel(settore, dimId) {
       vendite: "Sviluppo clienti",
       pipeline: "Pipeline & preventivi",
       team: "Organico tecnico",
+      processi: "Capacità tecnica & ufficio tecnico",
       ricavi: "Dotazione cantiere",
+      sitoweb: "Sito Web",
       ecommerce: "Cantieri & Preventivazione"
     }
   };
