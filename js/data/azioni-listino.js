@@ -350,59 +350,59 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "manifatturiero_tessile_capi": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Prepara un campionario capi fotografato professionalmente con schede prodotto, composizioni, taglie disponibili e listino ingrosso — è il tuo strumento di vendita principale",
+      "2-3": "Attiva agenti plurimandatari con portafoglio clienti nel fashion wholesale. Partecipa a fiere di settore (White Milano, Pitti Uomo) per incontrare buyer e brand",
+      "3-4": "Rete agenti strutturata per canale (multimarca, GDO, brand in licenza) con obiettivi stagionali. Presenza a fiere internazionali per aprire mercati esteri",
+      "4-5": "Struttura commerciale con area manager per canale e mercato, showroom dedicato e portale B2B per ordini diretti dai buyer"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Traccia su Excel gli ordini per stagione: cliente, collezione, pezzi, valore e stato consegna. Il sell-through dei clienti è il KPI più importante da monitorare",
+      "2-3": "CRM per gestire i contatti buyer, i campioni inviati e gli ordini stagionali. Tieni traccia del riordino — i clienti che riordinano sono oro",
+      "3-4": "Pipeline strutturata con forecast per stagione e per canale. Gestione anticipi, conferme ordine e pianificazione produzione integrata",
+      "4-5": "Sistema integrato ordini-produzione-logistica con EDI verso i clienti GDO e portale B2B per ordini diretti e tracking consegne"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il titolare gestisce tutto. Forma un collaboratore per la gestione ordini e la comunicazione con i clienti durante le stagioni di punta",
+      "2-3": "Assumi un inside sales con esperienza nel fashion wholesale per gestire gli ordini stagionali e il follow-up buyer in autonomia",
+      "3-4": "Team commerciale con responsabile vendite, agenti e back office ordini. Responsabile produzione con autonomia sulla pianificazione",
+      "4-5": "Struttura completa con direttore commerciale, team vendite per canale, responsabile produzione e logistica e customer service dedicato"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Check sicurezza obbligatorio: DVR, DPI per operatori su macchine da cucire e taglio, formazione obbligatoria. OEKO-TEX sui tessuti utilizzati — sempre più buyer lo richiedono",
+      "2-3": "Controllo qualità capi documentato: misure, finiture, solidità colori, etichettatura CE. Formazione sicurezza avanzata. SA8000 se vuoi lavorare con brand internazionali attenti alla responsabilità sociale",
+      "3-4": "GOTS se usi materiali biologici. Processi di campionatura standardizzati con tempi definiti. Audit sicurezza interni. Tracciabilità filiera documentata per i buyer più esigenti",
+      "4-5": "Sistema qualità completo con certificazioni mantenute, sustainability report annuale, carbon footprint calcolata e politica di produzione responsabile come leva commerciale"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Analizza i margini per capo e per canale: il multimarca paga di meno ma è più stabile, il brand in licenza paga meglio ma richiede investimenti — trovare il mix giusto è la chiave",
+      "2-3": "Contratti stagionali con i clienti principali per garantire volumi minimi. Attenzione ai tempi di pagamento — il tessile è noto per i ritardi",
+      "3-4": "Diversifica su almeno 3 canali (multimarca, GDO, private label) per ridurre la dipendenza dalla stagionalità e dalle tendenze moda",
+      "4-5": "Portfolio bilanciato con contratti pluriennali su linee best seller, sviluppo private label per retailer strutturati e revenue da licenze o co-design con brand"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Lookbook stagionale fotografato professionalmente con stilismo curato — è il tuo strumento di presentazione ai buyer",
+      "2-3": "Presenza professionale a White Milano o Pitti. Instagram e LinkedIn con contenuti visivi della collezione stagionale verso buyer e stampa di settore",
+      "3-4": "Ufficio stampa per visibilità su riviste di settore. Collaborazioni con influencer o stylist per dare visibilità alla collezione. PR verso buyer internazionali",
+      "4-5": "Piano marketing strutturato con fiere internazionali, campagne digitali B2B, showroom a Milano e posizionamento come brand di produzione italiano di qualità"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Sito con lookbook stagionale, composizioni, taglie disponibili e modulo richiesta listino ingrosso",
+      "2-3": "Sito con collezione aggiornata ogni stagione, certificazioni in evidenza e area download listino per buyer registrati",
+      "3-4": "Sito professionale con lookbook interattivo, sezione sostenibilità e form ordine campioni strutturato",
+      "4-5": "Portale B2B con area buyer riservata, ordini online, tracking consegne e catalogo stagionale interattivo"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Valuta le macchine e le lavorazioni disponibili: identifica le tipologie di capi che non riesci a produrre internamente e che devi subappaltare",
+      "2-3": "Investi in macchinari per lavorazioni speciali (maglieria, ricamo, stampa digitale su tessuto) che alzano il valore del capo e aprono segmenti premium",
+      "3-4": "Reparto produzione versatile per lavorare collezioni diverse: pronto, programmato e su misura. Capacità di gestire lotti piccoli per nicchie premium",
+      "4-5": "Struttura produttiva flessibile con linee dedicate per canale, controllo qualità in-process e capacità di sviluppare e produrre internamente dall'ideazione al capo finito"
 
     }
   },
