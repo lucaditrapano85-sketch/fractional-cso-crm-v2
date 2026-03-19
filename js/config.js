@@ -658,6 +658,20 @@ const DIMS = [
   {id:'ecommerce',label:'E-commerce & digital'},
 ];
 
+const DIM_LABEL_OVERRIDE = {
+  manifatturiero: { ecommerce: 'Parco macchine & capacità produttiva' },
+};
+
+function getDimLabel(dimId, settore) {
+  if (settore) {
+    var macro = (typeof MICRO_TO_MACRO !== 'undefined' && MICRO_TO_MACRO[settore]) || settore;
+    var ov = DIM_LABEL_OVERRIDE[macro];
+    if (ov && ov[dimId]) return ov[dimId];
+  }
+  var d = DIMS.find(function(x){ return x.id === dimId; });
+  return d ? d.label : dimId;
+}
+
 const DIM_DESC = {
   vendite:[
     `Solo il titolare vende -- nessun altro ha un ruolo commerciale attivo. Se lui si ferma, le vendite si fermano`,

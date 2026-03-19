@@ -326,7 +326,7 @@ async function renderProspectDetail(id) {
     const tgtDesc=t?DIM_DESC[d.id]?.[t-1]||'':'';
     const tgtStr = t ? `\x3cspan style="font-size:10px;color:var(--gold-dim);margin-left:6px">-> ${t}/5\x3c/span>` : '';
     return `\x3cdiv class="dim-row" style="margin-bottom:10px">
-      \x3cdiv class="dim-label" style="display:flex;align-items:center;margin-bottom:3px">${d.label}${tgtStr}\x3c/div>
+      \x3cdiv class="dim-label" style="display:flex;align-items:center;margin-bottom:3px">${getDimLabel(d.id, p.settore)}${tgtStr}\x3c/div>
       \x3cdiv style="display:flex;align-items:center;gap:8px">
         \x3cdiv class="dim-bar-bg" style="flex:1">\x3cdiv class="dim-bar-fill" style="width:${pct}%;background:${col}">\x3c/div>\x3c/div>
         \x3cdiv class="dim-val" style="color:${col}">${v}/5\x3c/div>
@@ -338,7 +338,7 @@ async function renderProspectDetail(id) {
 
   // Draw radar + target editor
   setTimeout(() => {
-    drawRadar(p.dims || {}, p.targets || {});
+    drawRadar(p.dims || {}, p.targets || {}, p.settore);
     renderTargetEditor(p);
     // Mega-grafico cumulativo sotto la ragnatela
     const megaSection = document.getElementById('mega-grafico-section');
@@ -846,7 +846,7 @@ function _buildReportHTML(p) {
       const scad = scadenze[d.id] || null;
       const impattoRaw = _getImpatto(settore, d.id, cur, cur + 1);
       const impattoCalc = _calcolaImpatto(impattoRaw, p.fatturato, p.fatturato_anno_1, p.ebitda, p.margine_pct, p.utile_netto);
-      return azione ? { dim: d.label, dimId: d.id, cur, tgt, azione, costo, scad, impatto: impattoCalc } : null;
+      return azione ? { dim: getDimLabel(d.id, p.settore), dimId: d.id, cur, tgt, azione, costo, scad, impatto: impattoCalc } : null;
     })
     .filter(Boolean);
 
@@ -888,7 +888,7 @@ function _buildReportHTML(p) {
           const hasTgt = tgt > v;
           return `<div class="rp-dim-row" style="margin-bottom:10px">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
-              <div class="rp-dim-label">${d.label}</div>
+              <div class="rp-dim-label">${getDimLabel(d.id, p.settore)}</div>
               <div style="font-size:11px;font-weight:700;color:${col}">${v > 0 ? v+'/5' : '—'}${hasTgt ? ' <span style="color:#B8842E;font-weight:400">→ '+tgt+'</span>' : ''}</div>
             </div>
             <div class="rp-bar-bg">
@@ -905,7 +905,7 @@ function _buildReportHTML(p) {
           const v = p.dims?.[d.id] || 1;
           const colors = ['#C05040','#C9973A','#8A6AC9'];
           return `<div class="rp-crit" style="border-left-color:${colors[i]};margin-bottom:10px">
-            <div class="rp-crit-title">${d.label} <span style="font-weight:400;color:#999;font-size:11px">livello ${v}/5</span></div>
+            <div class="rp-crit-title">${getDimLabel(d.id, p.settore)} <span style="font-weight:400;color:#999;font-size:11px">livello ${v}/5</span></div>
             <div class="rp-crit-text">${DIM_DESC[d.id]?.[v-1] || ''}</div>
           </div>`;
         }).join('')}
@@ -2068,12 +2068,12 @@ async function saveFinancials() {
 
 // -- RADAR CHART + TARGETS ---------------------------------
 
-function drawRadar(dims_vals, targets_vals) {
+function drawRadar(dims_vals, targets_vals, settore) {
   const svg = document.getElementById('radar-svg');
   if (!svg) return;
   const cx = 180, cy = 180, r = 110;
   const n = DIMS.length;
-  const labels = DIMS.map(d => d.label);
+  const labels = DIMS.map(d => getDimLabel(d.id, settore));
   const angles = DIMS.map((_, i) => (Math.PI * 2 * i / n) - Math.PI / 2);
 
   // Helper: point on circle
@@ -2130,13 +2130,14 @@ function drawRadar(dims_vals, targets_vals) {
     const [lx, ly] = pt(6.5, angles[i]);
     const anchor = lx < cx - 8 ? 'end' : lx > cx + 8 ? 'start' : 'middle';
     let lines;
-    if (d.label.includes(' & ')) {
-      lines = d.label.split(' & ');
-    } else if (d.label.length > 10) {
-      const mid = d.label.lastIndexOf(' ', 12);
-      lines = mid > 0 ? [d.label.slice(0, mid), d.label.slice(mid+1)] : [d.label];
+    const _lbl = getDimLabel(d.id, settore);
+    if (_lbl.includes(' & ')) {
+      lines = _lbl.split(' & ');
+    } else if (_lbl.length > 10) {
+      const mid = _lbl.lastIndexOf(' ', 12);
+      lines = mid > 0 ? [_lbl.slice(0, mid), _lbl.slice(mid+1)] : [_lbl];
     } else {
-      lines = [d.label];
+      lines = [_lbl];
     }
     const lineH = 9;
     const startY = ly - ((lines.length - 1) * lineH / 2);
@@ -3647,7 +3648,7 @@ function renderTargetEditor(p) {
     const tgtDesc = DIM_DESC[d.id]?.[tgt-1] || '--';
     const subObiettiviHtml = _buildSubObiettivi(d.id, cur, tgt, settore, azioniDone, azioniCustom, p);
     return `\x3cdiv style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)">
-      \x3cdiv style="font-size:12px;font-weight:600;color:var(--white);margin-bottom:6px">${d.label}\x3c/div>
+      \x3cdiv style="font-size:12px;font-weight:600;color:var(--white);margin-bottom:6px">${getDimLabel(d.id, settore)}\x3c/div>
       \x3cdiv style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px">
         \x3cdiv style="background:var(--bg3);border-radius:var(--rs);padding:7px 10px">
           \x3cdiv style="font-size:9px;color:var(--gray);letter-spacing:.05em;text-transform:uppercase;margin-bottom:3px">Stato attuale\x3c/div>
@@ -3688,7 +3689,7 @@ function previewTarget() {
     const el = document.getElementById('tgt-' + d.id);
     if (el) preview[d.id] = parseInt(el.value) || 0;
   });
-  drawRadar(p.dims || {}, preview);
+  drawRadar(p.dims || {}, preview, p.settore);
   // Aggiorna mega-grafico e score con i target in anteprima
   const pPreview = {...p, targets: preview};
   const megaSection = document.getElementById('mega-grafico-section');
@@ -3836,7 +3837,7 @@ async function saveTargets() {
   await salvaScoreSnapshot(prospects[i], 'Target aggiornati',
     'Score target: ' + calcScoreTarget(prospects[i]));
   showToast('Obiettivi salvati!');
-  drawRadar(prospects[i].dims || {}, targets);
+  drawRadar(prospects[i].dims || {}, targets, prospects[i].settore);
   renderProspectDetail(currentId);
 }
 
