@@ -658,21 +658,34 @@ const DIMS = [
   {id:'ecommerce',label:'E-commerce & digital'},
 ];
 
-const DIM_LABEL_OVERRIDE = {
-  manifatturiero: { ecommerce: 'Parco macchine & capacità produttiva' },
-  edilizia: { ecommerce: 'Cantieri & Preventivazione', vendite: 'Sviluppo clienti' },
-};
+function getDimLabel(settore, dimId) {
+  const macro = (typeof MICRO_TO_MACRO !== 'undefined' && MICRO_TO_MACRO[settore]) || settore;
 
-function getDimLabel(dimId, settore) {
-  if (settore) {
-    var prefix = settore.indexOf('_') > 0 ? settore.split('_')[0] : settore;
-    var ov = DIM_LABEL_OVERRIDE[prefix];
-    if (ov && ov[dimId]) return ov[dimId];
-    ov = DIM_LABEL_OVERRIDE[settore];
-    if (ov && ov[dimId]) return ov[dimId];
-  }
-  var d = DIMS.find(function(x){ return x.id === dimId; });
-  return d ? d.label : dimId;
+  const OVERRIDE = {
+    manifatturiero: {
+      ecommerce: "Parco macchine & capacità produttiva"
+    },
+    edilizia: {
+      vendite: "Sviluppo clienti",
+      pipeline: "Pipeline & preventivi",
+      team: "Organico tecnico",
+      ricavi: "Dotazione cantiere",
+      ecommerce: "Cantieri & Preventivazione"
+    }
+  };
+
+  const DEFAULT = {
+    vendite: "Vendite",
+    pipeline: "Pipeline & CRM",
+    team: "Team & HR",
+    processi: "Processi",
+    ricavi: "Ricavi",
+    marketing: "Marketing",
+    sitoweb: "Sito Web",
+    ecommerce: "E-commerce"
+  };
+
+  return OVERRIDE[macro]?.[dimId] || DEFAULT[dimId] || dimId;
 }
 
 const DIM_DESC = {
