@@ -660,12 +660,15 @@ const DIMS = [
 
 const DIM_LABEL_OVERRIDE = {
   manifatturiero: { ecommerce: 'Parco macchine & capacità produttiva' },
+  edilizia: { ecommerce: 'Cantieri & Preventivazione', vendite: 'Sviluppo clienti' },
 };
 
 function getDimLabel(dimId, settore) {
   if (settore) {
-    var macro = (typeof MICRO_TO_MACRO !== 'undefined' && MICRO_TO_MACRO[settore]) || settore;
-    var ov = DIM_LABEL_OVERRIDE[macro];
+    var prefix = settore.indexOf('_') > 0 ? settore.split('_')[0] : settore;
+    var ov = DIM_LABEL_OVERRIDE[prefix];
+    if (ov && ov[dimId]) return ov[dimId];
+    ov = DIM_LABEL_OVERRIDE[settore];
     if (ov && ov[dimId]) return ov[dimId];
   }
   var d = DIMS.find(function(x){ return x.id === dimId; });

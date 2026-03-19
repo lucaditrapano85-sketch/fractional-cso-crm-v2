@@ -131,7 +131,7 @@ function renderDiagStep() {
 
   // Header
   document.getElementById('diag-step-label').textContent = 'Step ' + (_diagStep + 1) + ' di ' + totalSteps;
-  document.getElementById('diag-dim-name').textContent = _diagLabels[dimId];
+  document.getElementById('diag-dim-name').textContent = (_diagProspect ? getDimLabel(dimId, _diagProspect.settore) : _diagLabels[dimId]);
   document.getElementById('diag-dim-desc').textContent = _diagDescr[dimId];
 
   // Progress bar
@@ -286,7 +286,7 @@ function mostraRisultatoDiagnosi(dims) {
     var score = dims[dimId] || 0;
     var col = score >= 4 ? '#30D158' : score >= 3 ? '#FF9500' : '#FF3B30';
     return '\x3cdiv class="diag-result-item">' +
-      '\x3cdiv class="diag-result-dim">' + _diagLabels[dimId] + '\x3c/div>' +
+      '\x3cdiv class="diag-result-dim">' + (_diagProspect ? getDimLabel(dimId, _diagProspect.settore) : _diagLabels[dimId]) + '\x3c/div>' +
       '\x3cdiv class="diag-result-score" style="color:' + col + '">' + (score || '--') + '/5\x3c/div>' +
     '\x3c/div>';
   }).join('');
