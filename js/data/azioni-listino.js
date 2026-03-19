@@ -290,7 +290,65 @@ var AZIONI_TARGET_BY_SETTORE =
 
     }
   },
-  "manifatturiero_tessile": {
+  "manifatturiero_tessile_tessuti": {
+    "vendite": {
+      "1-2": "Prepara un campionario fisico professionale con cartella colori stagionale, schede tecniche e listino prezzi al metro — è il tuo strumento di vendita principale",
+      "2-3": "Attiva 1-2 agenti plurimandatari con portafoglio clienti nel fashion e nel tessile. Partecipa a Milano Unica — è dove si fa business in Italia",
+      "3-4": "Rete agenti strutturata per mercato con obiettivi stagionali. Presenza a Première Vision Parigi — accesso ai brand internazionali e agli uffici stile delle maison",
+      "4-5": "Struttura commerciale con area manager per mercato (Italia, Francia, Germania, UK), campionario digitale e B2B portal per ordini diretti dagli uffici stile"
+
+    },
+    "pipeline": {
+      "1-2": "Traccia su Excel le richieste campioni inviate: brand, stagione, articolo, metraggio stimato e stato. Il follow-up sistematico dopo le fiere è fondamentale",
+      "2-3": "CRM semplice per gestire i contatti fiera, i campioni inviati e le conferme ordine per stagione. Tieni traccia dei clienti per stagione precedente",
+      "3-4": "Pipeline strutturata per stagione con forecast metraggio per cliente, gestione sviluppi colore e monitoraggio tempi di approvazione campioni",
+      "4-5": "Sistema integrato campionario-ordini-produzione con portale B2B per ordini diretti e forecast stagionale condiviso con i clienti principali"
+
+    },
+    "team": {
+      "1-2": "Il titolare gestisce tutto. Forma un collaboratore interno sulla presentazione del campionario e sulla gestione delle richieste campioni",
+      "2-3": "Assumi un inside sales o un assistente commerciale con conoscenza del settore tessile per gestire gli ordini e i follow-up stagionali",
+      "3-4": "Team commerciale con responsabile vendite Italia + agenti + back office ordini. Reparto sviluppo colori con colorista dedicato",
+      "4-5": "Struttura completa con direttore commerciale, team vendite per mercato, reparto sviluppo prodotto e customer service dedicato ai brand principali"
+
+    },
+    "processi": {
+      "1-2": "Check sicurezza obbligatorio: DVR, DPI per operatori su telai e macchine tessili, formazione obbligatoria. Inizia il percorso OEKO-TEX Standard 100 — sempre più brand lo richiedono nei capitolati",
+      "2-3": "OEKO-TEX Standard 100 ottenuto. Formazione sicurezza avanzata. Processi di controllo qualità tessuto documentati: titolo, grammatura, solidità colori, restringimento",
+      "3-4": "GOTS se usi fibre biologiche. Processi di sviluppo colore e campionatura standardizzati con tempi definiti. Audit sicurezza interni. Prerequisito per lavorare con brand sostenibili",
+      "4-5": "Sistema qualità completo con certificazioni multiple mantenute, tracciabilità filiera documentata, carbon footprint calcolata e sustainability report annuale per i brand più esigenti"
+
+    },
+    "ricavi": {
+      "1-2": "Analizza i margini per articolo e per stagione: identifica i tessuti a più alto valore aggiunto su cui concentrare lo sviluppo del campionario",
+      "2-3": "Contratti stagionali con i brand principali per garantire volumi minimi. Attenzione al costo materie prime — il cotone e la lana oscillano molto",
+      "3-4": "Diversifica su almeno 3-4 segmenti clienti (lusso, contemporary, sportswear, arredo) per ridurre il rischio della stagionalità e delle tendenze moda",
+      "4-5": "Portfolio bilanciato con contratti pluriennali sui best seller, sviluppo esclusivo per brand anchor e revenue da licenze o co-design"
+
+    },
+    "marketing": {
+      "1-2": "Profilo LinkedIn aziendale con foto del campionario, dettagli tecnici dei tessuti e settori serviti. Schede tecniche scaricabili sul sito",
+      "2-3": "Presenza professionale a Milano Unica e alle fiere regionali. Lookbook stagionale digitale da inviare ai contatti dopo ogni fiera",
+      "3-4": "Content marketing su sostenibilità e innovazione tessile. Presenza su Première Vision con stand professionale. Collaborazioni con fashion school per visibilità",
+      "4-5": "Posizionamento come produttore di eccellenza: editorial in riviste di settore (Vogue Italia, Textile View), partnership con designer emergenti, showroom a Milano o Parigi"
+
+    },
+    "sitoweb": {
+      "1-2": "Sito con catalogo tessuti fotografato professionalmente: composizione, peso, larghezza, disponibilità colori e richiesta campione",
+      "2-3": "Sito con collezione stagionale aggiornata, certificazioni in evidenza e area download schede tecniche",
+      "3-4": "Sito professionale con lookbook digitale, filtro per composizione e destinazione d'uso, e form richiesta campioni strutturato",
+      "4-5": "Portale B2B con area brand riservata, campionario digitale interattivo, ordini online e tracking consegne campioni"
+
+    },
+    "ecommerce": {
+      "1-2": "Valuta il parco telai e macchine: identifica i titoli, le composizioni o le lavorazioni che non riesci a produrre e che ti escludono da certi segmenti di mercato",
+      "2-3": "Investi in attrezzatura per lavorazioni speciali (jacquard, velluto, stampa digitale) che alzano il valore al metro e aprono segmenti premium",
+      "3-4": "Parco macchine versatile per lavorare composizioni diverse: fibre naturali, tecnici, riciclati. Laboratorio colori interno per sviluppi rapidi",
+      "4-5": "Reparto R&D tessile strutturato: sviluppo nuove strutture, laboratorio test prestazionali, collaborazioni con università tessili e capacità di brevettare innovazioni"
+
+    }
+  },
+  "manifatturiero_tessile_capi": {
     "vendite": {
       "1-2": "",
       "2-3": "",
@@ -1916,7 +1974,7 @@ var AZIONI_TARGET_BY_SETTORE =
   }
 };
 
-var MICRO_TO_MACRO = {"manifatturiero_meccanica":"manifatturiero","manifatturiero_automotive":"manifatturiero","manifatturiero_packaging":"manifatturiero","manifatturiero_cterzi":"manifatturiero","manifatturiero_elettromeccanica":"manifatturiero","manifatturiero_tessile":"manifatturiero","servizi_it":"servizi","servizi_formazione":"servizi","edilizia_residenziale":"edilizia","edilizia_impianti":"edilizia","edilizia_ristrutturazioni":"edilizia","edilizia_serramenti":"commercio","commercio_distribuzione_industriale":"commercio","commercio_ingrosso_alimentare":"commercio","commercio_materiali_edili":"commercio","commercio_ricambi_auto":"commercio","commercio_abbigliamento_ingrosso":"commercio","commercio_elettronica":"commercio","commercio_chimici":"commercio","commercio_medicale":"commercio","commercio_auto_moto":"commercio","commercio_abbigliamento_dettaglio":"commercio","commercio_orologi_gioielli":"commercio","alimentare_trasformazione":"alimentare","alimentare_vini":"alimentare","alimentare_forno":"alimentare","alimentare_conserve":"alimentare","alimentare_ingredienti":"alimentare","tech_saas":"tech","tech_system_integrator":"tech","tech_digital_agency":"tech","tech_automazione":"tech"};
+var MICRO_TO_MACRO = {"manifatturiero_meccanica":"manifatturiero","manifatturiero_automotive":"manifatturiero","manifatturiero_packaging":"manifatturiero","manifatturiero_cterzi":"manifatturiero","manifatturiero_elettromeccanica":"manifatturiero","manifatturiero_tessile_tessuti":"manifatturiero","manifatturiero_tessile_capi":"manifatturiero","servizi_it":"servizi","servizi_formazione":"servizi","edilizia_residenziale":"edilizia","edilizia_impianti":"edilizia","edilizia_ristrutturazioni":"edilizia","edilizia_serramenti":"commercio","commercio_distribuzione_industriale":"commercio","commercio_ingrosso_alimentare":"commercio","commercio_materiali_edili":"commercio","commercio_ricambi_auto":"commercio","commercio_abbigliamento_ingrosso":"commercio","commercio_elettronica":"commercio","commercio_chimici":"commercio","commercio_medicale":"commercio","commercio_auto_moto":"commercio","commercio_abbigliamento_dettaglio":"commercio","commercio_orologi_gioielli":"commercio","alimentare_trasformazione":"alimentare","alimentare_vini":"alimentare","alimentare_forno":"alimentare","alimentare_conserve":"alimentare","alimentare_ingredienti":"alimentare","tech_saas":"tech","tech_system_integrator":"tech","tech_digital_agency":"tech","tech_automazione":"tech"};
 var LISTINO_DEFAULT = {"manifatturiero":{"vendite":{"1-2":{"r":250,"u":0},"2-3":{"r":2000,"u":600},"3-4":{"r":3500,"u":1200},"4-5":{"r":6500,"u":2500}},"pipeline":{"1-2":{"r":30,"u":0},"2-3":{"r":100,"u":800},"3-4":{"r":450,"u":3000},"4-5":{"r":900,"u":6000}},"team":{"1-2":{"r":200,"u":0},"2-3":{"r":3000,"u":600},"3-4":{"r":4500,"u":1200},"4-5":{"r":8500,"u":2500}},"processi":{"1-2":{"r":350,"u":0},"2-3":{"r":700,"u":1800},"3-4":{"r":1200,"u":3500},"4-5":{"r":5000,"u":6000}},"ricavi":{"1-2":{"r":150,"u":0},"2-3":{"r":250,"u":500},"3-4":{"r":450,"u":1500},"4-5":{"r":900,"u":3000}},"marketing":{"1-2":{"r":300,"u":0},"2-3":{"r":900,"u":600},"3-4":{"r":2000,"u":1800},"4-5":{"r":3500,"u":3500}},"sitoweb":{"1-2":{"r":80,"u":1500},"2-3":{"r":300,"u":3500},"3-4":{"r":600,"u":6000},"4-5":{"r":1000,"u":10000}},"ecommerce":{"1-2":{"r":0,"u":0},"2-3":{"r":250,"u":4000},"3-4":{"r":800,"u":8000},"4-5":{"r":2000,"u":15000}}},"servizi":{"vendite":{"1-2":{"r":0,"u":0},"2-3":{"r":1500,"u":400},"3-4":{"r":3200,"u":1000},"4-5":{"r":6000,"u":2000}},"pipeline":{"1-2":{"r":35,"u":0},"2-3":{"r":110,"u":900},"3-4":{"r":480,"u":3200},"4-5":{"r":950,"u":6500}},"team":{"1-2":{"r":200,"u":0},"2-3":{"r":3300,"u":600},"3-4":{"r":5000,"u":1200},"4-5":{"r":9500,"u":2500}},"processi":{"1-2":{"r":250,"u":0},"2-3":{"r":550,"u":1200},"3-4":{"r":900,"u":2500},"4-5":{"r":4000,"u":5000}},"ricavi":{"1-2":{"r":100,"u":0},"2-3":{"r":200,"u":300},"3-4":{"r":380,"u":1000},"4-5":{"r":750,"u":2500}},"marketing":{"1-2":{"r":250,"u":0},"2-3":{"r":750,"u":500},"3-4":{"r":1700,"u":1500},"4-5":{"r":3200,"u":3000}},"sitoweb":{"1-2":{"r":80,"u":1500},"2-3":{"r":300,"u":3500},"3-4":{"r":600,"u":6000},"4-5":{"r":1000,"u":10000}},"ecommerce":{"1-2":{"r":0,"u":0},"2-3":{"r":200,"u":2500},"3-4":{"r":600,"u":6000},"4-5":{"r":1800,"u":12000}}},"edilizia":{"vendite":{"1-2":{"r":0,"u":0},"2-3":{"r":0,"u":0},"3-4":{"r":800,"u":200},"4-5":{"r":1500,"u":500}},"pipeline":{"1-2":{"r":15,"u":0},"2-3":{"r":30,"u":0},"3-4":{"r":50,"u":300},"4-5":{"r":150,"u":1000}},"team":{"1-2":{"r":700,"u":0},"2-3":{"r":3200,"u":800},"3-4":{"r":4500,"u":1200},"4-5":{"r":6500,"u":2000}},"processi":{"1-2":{"r":200,"u":0},"2-3":{"r":450,"u":1000},"3-4":{"r":800,"u":2200},"4-5":{"r":3500,"u":4500}},"ricavi":{"1-2":{"r":0,"u":0},"2-3":{"r":350,"u":500},"3-4":{"r":1000,"u":1500},"4-5":{"r":3000,"u":3000}},"marketing":{"1-2":{"r":250,"u":0},"2-3":{"r":700,"u":400},"3-4":{"r":1400,"u":1400},"4-5":{"r":2800,"u":2800}},"sitoweb":{"1-2":{"r":0,"u":800},"2-3":{"r":50,"u":2000},"3-4":{"r":150,"u":3500},"4-5":{"r":300,"u":6000}},"ecommerce":{"1-2":{"r":0,"u":200},"2-3":{"r":50,"u":500},"3-4":{"r":200,"u":2000},"4-5":{"r":500,"u":5000}}},"commercio":{"vendite":{"1-2":{"r":200,"u":0},"2-3":{"r":1700,"u":500},"3-4":{"r":3300,"u":1000},"4-5":{"r":6500,"u":2000}},"pipeline":{"1-2":{"r":30,"u":0},"2-3":{"r":100,"u":800},"3-4":{"r":420,"u":2800},"4-5":{"r":850,"u":5500}},"team":{"1-2":{"r":150,"u":0},"2-3":{"r":2800,"u":500},"3-4":{"r":4300,"u":1000},"4-5":{"r":8000,"u":2000}},"processi":{"1-2":{"r":200,"u":0},"2-3":{"r":500,"u":1000},"3-4":{"r":900,"u":2500},"4-5":{"r":3500,"u":5000}},"ricavi":{"1-2":{"r":100,"u":0},"2-3":{"r":220,"u":400},"3-4":{"r":400,"u":1200},"4-5":{"r":800,"u":2500}},"marketing":{"1-2":{"r":300,"u":0},"2-3":{"r":850,"u":500},"3-4":{"r":1900,"u":1600},"4-5":{"r":3500,"u":3200}},"sitoweb":{"1-2":{"r":80,"u":1500},"2-3":{"r":280,"u":3200},"3-4":{"r":550,"u":5800},"4-5":{"r":950,"u":9500}},"ecommerce":{"1-2":{"r":0,"u":0},"2-3":{"r":50,"u":200},"3-4":{"r":400,"u":5000},"4-5":{"r":1500,"u":15000}}},"alimentare":{"vendite":{"1-2":{"r":300,"u":0},"2-3":{"r":2000,"u":600},"3-4":{"r":3800,"u":1200},"4-5":{"r":7500,"u":2500}},"pipeline":{"1-2":{"r":30,"u":0},"2-3":{"r":100,"u":800},"3-4":{"r":420,"u":2800},"4-5":{"r":850,"u":5500}},"team":{"1-2":{"r":200,"u":0},"2-3":{"r":3000,"u":600},"3-4":{"r":4500,"u":1200},"4-5":{"r":8500,"u":2500}},"processi":{"1-2":{"r":200,"u":0},"2-3":{"r":500,"u":1200},"3-4":{"r":900,"u":2800},"4-5":{"r":3800,"u":5500}},"ricavi":{"1-2":{"r":120,"u":0},"2-3":{"r":250,"u":450},"3-4":{"r":450,"u":1300},"4-5":{"r":900,"u":2800}},"marketing":{"1-2":{"r":400,"u":0},"2-3":{"r":1100,"u":700},"3-4":{"r":2400,"u":2200},"4-5":{"r":4500,"u":4500}},"sitoweb":{"1-2":{"r":100,"u":2000},"2-3":{"r":350,"u":4000},"3-4":{"r":700,"u":7000},"4-5":{"r":1200,"u":12000}},"ecommerce":{"1-2":{"r":0,"u":0},"2-3":{"r":550,"u":7000},"3-4":{"r":1500,"u":14000},"4-5":{"r":3500,"u":25000}}},"tech":{"vendite":{"1-2":{"r":0,"u":0},"2-3":{"r":2200,"u":600},"3-4":{"r":5000,"u":1200},"4-5":{"r":10000,"u":2500}},"pipeline":{"1-2":{"r":50,"u":0},"2-3":{"r":180,"u":1500},"3-4":{"r":700,"u":5000},"4-5":{"r":1400,"u":10000}},"team":{"1-2":{"r":400,"u":0},"2-3":{"r":4200,"u":1000},"3-4":{"r":7000,"u":2000},"4-5":{"r":13000,"u":4000}},"processi":{"1-2":{"r":300,"u":0},"2-3":{"r":700,"u":2000},"3-4":{"r":1400,"u":5000},"4-5":{"r":5500,"u":9000}},"ricavi":{"1-2":{"r":100,"u":0},"2-3":{"r":300,"u":500},"3-4":{"r":600,"u":2000},"4-5":{"r":1200,"u":4000}},"marketing":{"1-2":{"r":400,"u":0},"2-3":{"r":1200,"u":800},"3-4":{"r":2800,"u":3000},"4-5":{"r":6000,"u":6000}},"sitoweb":{"1-2":{"r":150,"u":2500},"2-3":{"r":500,"u":5000},"3-4":{"r":1000,"u":9000},"4-5":{"r":2000,"u":15000}},"ecommerce":{"1-2":{"r":0,"u":0},"2-3":{"r":700,"u":8000},"3-4":{"r":2000,"u":16000},"4-5":{"r":5000,"u":28000}}}};
 var COSTI_BY_SETTORE = {};
 
@@ -2029,7 +2087,8 @@ var FAMIGLIA_SETTORE = {
   manifatturiero_packaging: 'b2b_manifatturiero',
   manifatturiero_cterzi: 'b2b_manifatturiero',
   manifatturiero_elettromeccanica: 'b2b_manifatturiero',
-  manifatturiero_tessile: 'b2b_manifatturiero',
+  manifatturiero_tessile_tessuti: 'b2b_manifatturiero',
+  manifatturiero_tessile_capi: 'b2b_manifatturiero',
   servizi_b2b: 'b2b_servizi',
   servizi_it: 'b2b_servizi',
   servizi_formazione: 'b2b_servizi',
