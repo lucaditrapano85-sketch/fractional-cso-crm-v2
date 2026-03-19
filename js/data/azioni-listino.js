@@ -582,59 +582,59 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "edilizia_impianti": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Chiedi attivamente referenze ai clienti soddisfatti — un idraulico che risolve un'emergenza alle 22 viene raccontato a tutti. Metti un adesivo con il tuo numero su ogni impianto installato",
+      "2-3": "Costruisci accordi con geometri, amministratori di condominio e imprese edili della zona: sono i tuoi segnalatori naturali. Un accordo anche solo informale porta lavoro costante",
+      "3-4": "Attiva un commerciale part-time per sviluppare il segmento condomini e aziende: contratti manutenzione su scala, non solo interventi spot",
+      "4-5": "Struttura commerciale con key account dedicati a condomini, facility manager e aziende. Il passaparola rimane la base ma diventa sistematico e misurabile"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Tieni un registro degli interventi su Excel: cliente, tipo di impianto, data, valore e note. È la base per proporre contratti manutenzione ai clienti abituali",
+      "2-3": "CRM semplice per tracciare clienti attivi, scadenze manutenzione e follow-up preventivi aperti. Le scadenze dei controlli caldaia sono opportunità di contatto automatico",
+      "3-4": "Pipeline strutturata con gestione contratti manutenzione attivi, scadenze revisioni e forecast mensile interventi programmati vs spot",
+      "4-5": "Sistema integrato interventi-contratti-fatturazione con reminder automatici per scadenze manutenzione e dashboard ricavi ricorrenti vs una tantum"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Collaboratore esterno a P.IVA per coprire i picchi di lavoro — un secondo paio di mani nelle emergenze vale oro",
+      "2-3": "Primo dipendente tecnico (RAL 26-30k) con abilitazioni specifiche per espandere le tipologie di impianti gestibili",
+      "3-4": "Team tecnico strutturato con figure specializzate: termoidraulico + elettricista + frigorista. Ognuno copre la sua area con autonomia",
+      "4-5": "Struttura operativa completa con responsabile tecnico, squadre specializzate e reperibilità notturna organizzata per le emergenze"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Abilitazioni base obbligatorie: legge 46/90 per elettricisti, libretto impianto per termoidraulici, DVR aggiornato. Senza non puoi lavorare legalmente",
+      "2-3": "Patentino F-Gas per chi gestisce climatizzatori e pompe di calore — apre un mercato in forte crescita. Formazione sicurezza avanzata per lavori in quota e su impianti elettrici",
+      "3-4": "ISO 9001 se vuoi accedere al facility management strutturato. Sistema di documentazione interventi completo: rapportini digitali, foto before/after, certificati di conformità",
+      "4-5": "Sistema qualità certificato con SOA per appalti pubblici, certificazioni specifiche per settore (ATEX per ambienti esplosivi, medicale per ospedali) e KPI qualità monitorati"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Inizia a proporre contratti manutenzione annuale caldaia ai clienti esistenti — è fatturato garantito, lavoro programmato e fidelizzazione in un colpo solo",
+      "2-3": "Portfolio contratti manutenzione su almeno 30-50 clienti: la base del fatturato diventa prevedibile. Aggiungi manutenzione climatizzatori e impianti elettrici",
+      "3-4": "Contratti pluriennali con condomini e aziende con SLA definiti (tempi di intervento garantiti). Il ricorrente supera il 40% del fatturato totale",
+      "4-5": "Centro di profitto service autonomo: contratti pluriennali con SLA, fornitura ricambi, servizio reperibilità H24 a pagamento e upgrade impianti come leva commerciale"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Google My Business completo con foto lavori, recensioni clienti e risposta attiva. È il primo posto dove ti cercano i privati in emergenza",
+      "2-3": "Sito con servizi chiari, zone coperte e numero di reperibilità in evidenza. Google Ads su ricerche locali tipo 'idraulico emergenza X città' — il ROI è immediato",
+      "3-4": "Campagne Google Ads stagionali (manutenzione caldaie a settembre, climatizzatori a maggio). Raccolta recensioni sistematica dopo ogni intervento",
+      "4-5": "Piano marketing strutturato con Google Ads + social + newsletter ai clienti con contratto per promemoria scadenze e promozioni stagionali"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Sito base con servizi, zona di copertura, numero reperibilità e modulo richiesta intervento — deve caricare in 2 secondi su mobile",
+      "2-3": "Sito con galleria interventi realizzati, certificazioni in evidenza e area preventivo online per i lavori standard",
+      "3-4": "Sito professionale con SEO locale per ogni tipo di impianto, area clienti per segnalare guasti e scaricare rapportini intervento",
+      "4-5": "Portale clienti completo con storico interventi, scadenze manutenzione, richiesta assistenza online e pagamento fatture digitale"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Attrezzatura base propria per i lavori ricorrenti, noleggio spot per attrezzatura speciale. Furgone del titolare con scorta minima di ricambi più usati",
+      "2-3": "Primo furgone aziendale attrezzato in NLT (~350€/mese tutto incluso) con scorta ricambi organizzata. Riduce i tempi di intervento e migliora l'immagine professionale",
+      "3-4": "Parco furgoni per squadra (1 per tecnico) con attrezzatura specifica per tipo di impianto. Magazzino ricambi strutturato con i pezzi più richiesti sempre disponibili",
+      "4-5": "Flotta aziendale gestita con manutenzione programmata, GPS per ottimizzare gli interventi e magazzino ricambi con riordino automatico sui consumi"
 
     }
   },
