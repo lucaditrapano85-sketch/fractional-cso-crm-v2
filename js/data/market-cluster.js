@@ -186,29 +186,6 @@ const MARKET_CLUSTER = {
 
   // =============================== SERVIZI B2B ==============================
 
-  servizi_consulenza: {
-    micro: {
-      chiusura:{ media:22, top:42 }, fatxcomm:{ media:160, top:300 },
-      ciclo:{ media:40, top:18 }, crm:{ media:28, top:65 },
-      churn:{ media:28, top:12 }, lead_gen:{ media:'Referral', top:'Referral + LinkedIn' }
-    },
-    small: {
-      chiusura:{ media:28, top:50 }, fatxcomm:{ media:240, top:440 },
-      ciclo:{ media:30, top:14 }, crm:{ media:38, top:76 },
-      churn:{ media:22, top:9 }, lead_gen:{ media:'Referral + network', top:'Referral + content' }
-    },
-    mid: {
-      chiusura:{ media:34, top:58 }, fatxcomm:{ media:360, top:620 },
-      ciclo:{ media:24, top:10 }, crm:{ media:52, top:86 },
-      churn:{ media:18, top:7 }, lead_gen:{ media:'Referral + speaking', top:'Thought leadership' }
-    },
-    upper: {
-      chiusura:{ media:40, top:65 }, fatxcomm:{ media:520, top:860 },
-      ciclo:{ media:18, top:8 }, crm:{ media:68, top:94 },
-      churn:{ media:14, top:5 }, lead_gen:{ media:'Referral + KOL', top:'KOL + partnership' }
-    }
-  },
-
   servizi_it: {
     micro: {
       chiusura:{ media:16, top:34 }, fatxcomm:{ media:200, top:380 },

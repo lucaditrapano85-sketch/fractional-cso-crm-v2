@@ -121,23 +121,6 @@ const PROFILI_COMMERCIALI = {
 
   // =============================== SERVIZI B2B ==============================
 
-  servizi_consulenza: {
-    tipo_clientela: 'mista',
-    kpi: [
-      { id:'clienti_attivi',       label:'Clienti attivi',              unita:'n.',  soglie:{ verde:[8,30],   giallo:[4,7],   rosso:[0,3]   } },
-      { id:'fatturato_top3_pct',   label:'% fatturato top 3 clienti',   unita:'%',   soglie:{ verde:[0,40],   giallo:[41,60], rosso:[61,100] } },
-      { id:'retainer_pct',         label:'% fatturato da retainer',     unita:'%',   soglie:{ verde:[40,100], giallo:[20,39], rosso:[0,19]  }, note:'< 20% retainer = revenue imprevedibile' },
-      { id:'valore_medio_progetto', label:'Valore medio progetto',      unita:'EUR',   soglie:{ verde:[20000,999999], giallo:[8000,19999], rosso:[0,7999] }, opzionale:true, contesto:'Valore medio di un singolo incarico/progetto' },
-      { id:'tasso_rinnovo_retainer', label:'Tasso rinnovo retainer',    unita:'%',   soglie:{ verde:[75,100], giallo:[55,74], rosso:[0,54]  } },
-      { id:'referral_rate',         label:'% nuovi clienti da referral', unita:'%',  soglie:{ verde:[50,100], giallo:[25,49], rosso:[0,24]  }, note:'< 25% referral = scarsa soddisfazione clienti' },
-      { id:'ciclo_incasso_gg',      label:'DSO (giorni incasso)',       unita:'gg',  soglie:{ verde:[0,30],   giallo:[31,60], rosso:[61,999] } },
-    ],
-    diagnosi_legami: [
-      { condizione: (v) => v.retainer_pct < 20 && v.referral_rate < 25, label:'! Revenue fragile + bassa reputazione', desc:'Poca revenue ricorrente e pochi referral: ogni mese e una caccia al cliente. La soddisfazione dei clienti attivi e probabilmente bassa.', livello:'rosso' },
-      { condizione: (v) => v.fatturato_top3_pct > 60 && v.retainer_pct < 30, label:'! Dipendenza + instabilita', desc:'Alta concentrazione su pochi clienti senza retainer: la perdita di un cliente chiave puo dimezzare il fatturato da un mese all\'altro.', livello:'rosso' },
-    ],
-  },
-
   servizi_it: {
     tipo_clientela: 'mista',
     kpi: [

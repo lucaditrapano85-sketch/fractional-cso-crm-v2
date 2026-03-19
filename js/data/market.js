@@ -92,17 +92,6 @@ const MARKET = {
       {label:'Clienti persi/anno',media:'22%',top:'9%'},
     ]
   },
-  servizi_consulenza: {
-    label:'Consulenza gestionale & strategica', parent:'servizi_b2b',
-    metrics:[
-      {label:'Tasso di chiusura medio',media:'32%',top:'55%'},
-      {label:'Fatturato/commerciale',media:'280k EUR/anno',top:'520k EUR/anno'},
-      {label:'Ciclo vendita medio',media:'30 gg',top:'14 gg'},
-      {label:'Lead gen principale',media:'Referral, network',top:'Referral + thought leadership'},
-      {label:'Uso CRM',media:'42%',top:'82%'},
-      {label:'Clienti persi/anno',media:'20%',top:'8%'},
-    ]
-  },
   servizi_it: {
     label:'Servizi IT & system integrator', parent:'servizi_b2b',
     metrics:[
@@ -668,42 +657,6 @@ const MARKET_DETAIL = {
   // =======================================================
   // SERVIZI B2B
   // =======================================================
-
-  servizi_consulenza: {
-    ciclo_fasi: [
-      { fase: 'Networking / referral', durata: '0-4 sett.', note: 'Il 70% parte da una presentazione personale.' },
-      { fase: 'Incontro esplorativo', durata: '1 sett.', note: 'Capire il problema reale, non quello percepito.' },
-      { fase: 'Proposta progetto', durata: '1-2 sett.', note: 'Scope, deliverable, timing, fee.' },
-      { fase: 'Negoziazione e approvazione', durata: '1-4 sett.', note: 'Spesso serve approvazione del board.' },
-      { fase: 'Kick-off', durata: '1 sett.', note: 'Avvio formale con contratto firmato.' },
-    ],
-    struttura_commerciale: 'I partner/soci sono i primi commerciali. Gli associate non vendono fino a un certo livello. Il business development e relazionale, non strutturato.',
-    obiezioni: [
-      '"Non abbiamo budget ora" -- spesso vero. Proponi un progetto pilota a budget ridotto.',
-      '"Abbiamo gia una consulenza interna" -- differenziati sulla specializzazione.',
-      '"Come misuro il ROI della consulenza?" -- prepara case study con dati concreti.',
-    ],
-    canali: [
-      { nome: 'Referral da clienti esistenti', efficacia: 92 },
-      { nome: 'Network professionale (eventi, associazioni)', efficacia: 80 },
-      { nome: 'LinkedIn thought leadership', efficacia: 62 },
-      { nome: 'Speaking a convegni di settore', efficacia: 58 },
-      { nome: 'Cold outreach', efficacia: 12 },
-    ],
-    stagionalita: 'I budget aziendali si decidono a ottobre-novembre. Picco proposte: settembre-ottobre e gennaio-febbraio. Calo estate e dicembre.',
-    kpi: [
-      { nome: 'Fee giornaliera media', benchmark: '800-2.500 EUR/giorno' },
-      { nome: 'Durata media progetto', benchmark: '3-12 mesi' },
-      { nome: 'Percentuale clienti ricorrenti', benchmark: '45-65%' },
-    ],
-    valore_cliente: '30k-200k EUR/progetto . 50k-400k EUR/anno con retainer',
-    maturita: [
-      'Case study documentati con KPI misurabili per ogni settore',
-      'Programma referral strutturato con incentivi ai clienti',
-      'Thought leadership sistematica (articoli, webinar, podcast)',
-      'Retainer model per clienti ad alto potenziale',
-    ],
-  },
 
   servizi_it: {
     ciclo_fasi: [

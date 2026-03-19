@@ -2213,7 +2213,6 @@ var PESI_BY_SETTORE =
   "manifatturiero_cterzi":           {"vendite":30,"pipeline":13,"team":13,"processi":12,"ricavi":10,"marketing":12,"sitoweb":7,"ecommerce":3},
   "manifatturiero_elettromeccanica": {"vendite":28,"pipeline":12,"team":12,"processi":11,"ricavi":12,"marketing":13,"sitoweb":8,"ecommerce":4},
   "manifatturiero_tessile":          {"vendite":30,"pipeline":10,"team":11,"processi":8, "ricavi":10,"marketing":20,"sitoweb":7,"ecommerce":4},
-  "servizi_consulenza":              {"vendite":25,"pipeline":18,"team":15,"processi":8, "ricavi":12,"marketing":14,"sitoweb":6,"ecommerce":2},
   "servizi_it":                      {"vendite":24,"pipeline":17,"team":15,"processi":9, "ricavi":13,"marketing":13,"sitoweb":7,"ecommerce":2},
   "servizi_formazione":              {"vendite":24,"pipeline":16,"team":14,"processi":9, "ricavi":13,"marketing":14,"sitoweb":6,"ecommerce":4},
   "edilizia_residenziale":           {"vendite":32,"pipeline":14,"team":12,"processi":10,"ricavi":12,"marketing":12,"sitoweb":6,"ecommerce":2},
@@ -2303,16 +2302,6 @@ var PESI_BY_SETTORE =
     "marketing": 20,
     "sitoweb": 7,
     "ecommerce": 4
-  },
-  "servizi_consulenza": {
-    "vendite": 25,
-    "pipeline": 18,
-    "team": 15,
-    "processi": 8,
-    "ricavi": 12,
-    "marketing": 14,
-    "sitoweb": 6,
-    "ecommerce": 2
   },
   "servizi_it": {
     "vendite": 24,
@@ -2689,7 +2678,7 @@ const _MACRO_MAP = {
   manifatturiero_meccanica:'manifatturiero', manifatturiero_automotive:'manifatturiero',
   manifatturiero_packaging:'manifatturiero', manifatturiero_cterzi:'manifatturiero',
   manifatturiero_elettromeccanica:'manifatturiero', manifatturiero_tessile:'manifatturiero',
-  servizi_consulenza:'servizi', servizi_it:'servizi', servizi_formazione:'servizi',
+  servizi_it:'servizi', servizi_formazione:'servizi',
   edilizia_residenziale:'edilizia', edilizia_impianti:'edilizia',
   edilizia_ristrutturazioni:'edilizia', edilizia_serramenti:'edilizia',
   commercio_distribuzione_industriale:'commercio', commercio_ingrosso_alimentare:'commercio',
@@ -2767,7 +2756,6 @@ function _calcolaImpattoCumulativo(p) {
     commercio_dettaglio:{vendite:0.22,pipeline:0.16,team:0.14,processi:0.09,ricavi:0.08,marketing:0.15,sitoweb:0.08,ecommerce:0.08},
     commercio_auto:{vendite:0.30,pipeline:0.22,team:0.16,processi:0.10,ricavi:0.09,marketing:0.08,sitoweb:0.03,ecommerce:0.02},
     servizi:{vendite:0.27,pipeline:0.24,team:0.20,processi:0.12,ricavi:0.09,marketing:0.06,sitoweb:0.01,ecommerce:0.01},
-    servizi_consulenza:{vendite:0.26,pipeline:0.25,team:0.22,processi:0.12,ricavi:0.09,marketing:0.05,sitoweb:0.01,ecommerce:0.00},
     servizi_it:{vendite:0.25,pipeline:0.23,team:0.20,processi:0.12,ricavi:0.09,marketing:0.08,sitoweb:0.02,ecommerce:0.01},
     servizi_logistica:{vendite:0.29,pipeline:0.22,team:0.18,processi:0.14,ricavi:0.09,marketing:0.06,sitoweb:0.01,ecommerce:0.01},
     servizi_formazione:{vendite:0.25,pipeline:0.22,team:0.22,processi:0.10,ricavi:0.09,marketing:0.08,sitoweb:0.03,ecommerce:0.01},
