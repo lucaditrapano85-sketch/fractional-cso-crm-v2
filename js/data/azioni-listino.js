@@ -1510,59 +1510,59 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "alimentare_ingredienti": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il cliente compra l'ingrediente ma in realtà compra una soluzione — il pasticcere vuole un risultato nel piatto, non una polvere in un sacchetto. Visita i clienti con campioni e dimostrazioni pratiche: fai assaggiare il risultato finale",
+      "2-3": "Attiva agenti tecnico-commerciali con background alimentare: devono parlare la stessa lingua del cliente. Un agente che non sa cos'è il Brix o il pH non vende ingredienti professionali",
+      "3-4": "Key account per i clienti industriali: contratti annuali con volumi minimi, prezzi fissi trimestrali e tecnico dedicato. Il cliente industriale vuole certezza di fornitura e qualità costante",
+      "4-5": "Struttura commerciale con agenti per canale (pasticceria, gelateria, industria, horeca), application lab per dimostrazioni e key account per i clienti strutturati"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Traccia i clienti per prodotto acquistato e frequenza: chi usa il tuo ingrediente X probabilmente ha bisogno anche del Y complementare — è cross-selling naturale",
+      "2-3": "CRM per gestire clienti attivi, campioni inviati e sviluppi in corso. Ogni ricetta sviluppata con il cliente è un vincolo alla concorrenza — tracciala come opportunità",
+      "3-4": "Pipeline strutturata con gestione sviluppi prodotto per cliente, forecast annuale per referenza e alert su lotti in scadenza da gestire commercialmente",
+      "4-5": "Sistema integrato clienti-sviluppi-produzione: visibilità completa su quali clienti stanno sviluppando nuovi prodotti con i tuoi ingredienti e quali opportunità sono in pipeline"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il tecnico è il venditore — chi conosce l'ingrediente lo sa vendere meglio di qualsiasi commerciale puro. Forma le figure tecniche sulle basi della comunicazione commerciale",
+      "2-3": "Application specialist dedicato: visita i clienti in laboratorio, sviluppa ricette dimostrative e forma i loro tecnici sull'uso ottimale dei prodotti",
+      "3-4": "Team tecnico-commerciale strutturato: application specialist + agenti commerciali + inside sales per la gestione ordini ricorrenti",
+      "4-5": "Struttura completa con direttore tecnico-commerciale, team application specialist per segmento, agenti di zona e laboratorio R&D dedicato allo sviluppo nuove applicazioni"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Certificazioni base obbligatorie: HACCP, tracciabilità lotti, schede tecniche e schede di sicurezza per ogni prodotto. Il cliente professionale le richiede sempre prima del primo ordine",
+      "2-3": "Certificazione biologica EU se hai materie prime bio — è requisito crescente nell'industria alimentare. Halal e kosher se vuoi accedere a quei mercati. Processo di controllo qualità per lotto documentato",
+      "3-4": "BRC o IFS per i clienti industria strutturata — senza non passi la qualifica fornitore. Processo di gestione non conformità e gestione reclami documentato e rapido",
+      "4-5": "Sistema qualità certificato con audit periodici, tracciabilità completa, certificazioni multiple mantenute e laboratorio analisi interno per garantire costanza qualitativa lotto su lotto"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Analizza i margini per categoria: gli ingredienti funzionali e gli aromi naturali hanno margini molto superiori alle materie prime commodity. Orienta lo sviluppo verso i prodotti ad alto valore aggiunto",
+      "2-3": "Contratti annuali con i clienti principali: volumi minimi garantiti in cambio di prezzi stabili e priorità di fornitura. Riduce la volatilità e aumenta lo switching cost",
+      "3-4": "Servizi tecnici a pagamento: sviluppo ricette personalizzate, formazione tecnica, ottimizzazione processi del cliente. La consulenza vale spesso più dell'ingrediente stesso",
+      "4-5": "Revenue mix strutturato: ingredienti standard (volume) + specialty e funzionali (margine) + servizi consulenza tecnica (margine alto) + sviluppo esclusivo per cliente (lock-in)"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Schede tecniche professionali per ogni prodotto: composizione, dosaggi consigliati, applicazioni, certificazioni e shelf life. Il tecnico del cliente le scarica prima di qualsiasi contatto commerciale",
+      "2-3": "Presenza a fiere di settore (sigep, Host, Cibus, Fi Europe): sono dove si incontrano i buyer e i tecnici dell'industria alimentare. Una demo pratica allo stand vale più di qualsiasi brochure",
+      "3-4": "Workshop tecnici per i clienti: giornate di formazione sulle nuove applicazioni dei tuoi ingredienti. Chi forma il cliente lo fidelizza profondamente",
+      "4-5": "Piano marketing strutturato: fiere internazionali + workshop tecnici + pubblicazioni su riviste di settore + partnership con scuole di cucina e pasticceria per visibilità e credibilità"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Sito con catalogo prodotti tecnico: composizione, dosaggi, applicazioni, certificazioni e download schede tecniche. Il tecnico deve trovare tutto senza chiamare",
+      "2-3": "Sito con area ricette dimostrative per applicazione, sezione novità prodotto e form richiesta campioni con specifica dell'applicazione di interesse",
+      "3-4": "Portale tecnico con area riservata clienti, download documentazione qualità, richiesta sviluppo personalizzato e webinar tecnici on-demand",
+      "4-5": "Piattaforma digitale completa con area clienti dedicata, gestione sviluppi in corso, ordini online con specifiche tecniche e knowledge base ricette per applicazione"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Fornisci solo l'ingrediente senza supporto tecnico — il cliente lo usa male e incolpa il prodotto. Inizia a offrire dosaggi consigliati e ricette base per ogni ingrediente venduto",
+      "2-3": "Application specialist che visita i clienti in laboratorio: sviluppa con loro una ricetta usando il tuo ingrediente. Quella ricetta crea un vincolo fortissimo alla concorrenza",
+      "3-4": "Laboratorio dimostrativo interno dove i clienti vengono a fare prove e sviluppi: chi sviluppa una ricetta nel tuo lab con i tuoi ingredienti difficilmente cambia fornitore",
+      "4-5": "Centro di eccellenza tecnica: laboratorio R&D avanzato, co-sviluppo esclusivo con i clienti strategici, brevetti su nuove applicazioni e consulenza tecnica come business unit autonoma"
 
     }
   },

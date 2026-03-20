@@ -636,6 +636,9 @@ function getDimLabel(settore, dimId) {
     },
     abbigliamento_ingrosso: {
       ecommerce: "Dropshipping & canali digitali"
+    },
+    ingredienti: {
+      ecommerce: "Sviluppo prodotto & consulenza tecnica"
     }
   };
 
