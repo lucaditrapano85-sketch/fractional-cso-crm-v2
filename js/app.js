@@ -962,8 +962,9 @@ function openNewProspect() {
   document.getElementById('modal-prospect').style.display = 'flex';
 }
 
-function openEditProspect() {
-  var p = prospects.find(function(x) { return x.id === currentId; });
+function openEditProspect(id) {
+  id = id || currentId;
+  var p = prospects.find(function(x) { return x.id === id; });
   if (!p) return;
   editingId = p.id;
   document.getElementById('modal-prospect-title').textContent = 'Modifica Prospect';
