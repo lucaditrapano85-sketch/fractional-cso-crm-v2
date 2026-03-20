@@ -651,6 +651,15 @@ function getDimLabel(settore, dimId) {
     },
     digital_agency: {
       ecommerce: "Partnerships & Referral Network"
+    },
+    automazione: {
+      ecommerce: "Partnerships & Ecosistema Vendor"
+    },
+    it: {
+      ecommerce: "Partnerships & Ecosistema Vendor"
+    },
+    formazione: {
+      ecommerce: "Partnerships & Referral Network"
     }
   };
 

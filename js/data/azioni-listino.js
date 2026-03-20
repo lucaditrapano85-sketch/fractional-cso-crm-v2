@@ -408,117 +408,117 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "servizi_it": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Definire ICP per dimensione aziendale e settore: quale tipo di cliente è più profittevole e più facile da servire",
+      "2-3": "Costruire proposta commerciale differenziata per interlocutore: titolare (costi e continuità), responsabile IT (tecnica e SLA)",
+      "3-4": "Strutturare offerta di assessment iniziale gratuito come leva di ingresso: analisi infrastruttura e piano di intervento",
+      "4-5": "Sviluppare canale di referral strutturato con commercialisti, consulenti e software house che servono le stesse PMI"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Tracciare tutte le opportunità in CRM con tipo servizio richiesto, urgenza e budget indicativo",
+      "2-3": "Definire stage chiari: contatto, assessment, offerta, approvazione, attivazione contratto",
+      "3-4": "Monitorare pipeline di rinnovi separatamente da new business per non perdere scadenze contrattuali",
+      "4-5": "Istituire forecast mensile su new business e upsell per pianificare capacità operativa del team tecnico"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Separare il ruolo commerciale (acquisizione e rinnovi) dal ruolo tecnico (delivery e supporto)",
+      "2-3": "Costruire playbook di discovery: domande per identificare rischi IT, esigenze di compliance e infrastruttura attuale",
+      "3-4": "Formare i tecnici senior sulla comunicazione con il cliente non tecnico: tradurre problemi IT in impatto business",
+      "4-5": "Definire percorso di crescita per tecnici junior con certificazioni, affiancamento e gestione autonoma clienti base"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Creare template di contratto managed service con SLA definiti, tempi di risposta e perimetro di copertura",
+      "2-3": "Standardizzare il processo di onboarding nuovo cliente: inventario sistemi, documentazione rete, accessi, backup",
+      "3-4": "Implementare sistema di ticketing per tracciare interventi, tempi di risoluzione e soddisfazione cliente",
+      "4-5": "Definire processo di gestione incidenti critici con escalation chiara, comunicazione cliente e post-mortem documentato"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Mappare tutti i clienti attivi per servizio erogato, prezzo e data scadenza contratto",
+      "2-3": "Costruire offerta di managed service mensile ricorrente da proporre ai clienti ancora a intervento su chiamata",
+      "3-4": "Sviluppare bundle di servizi (sicurezza, backup, monitoring, helpdesk) da proporre come upgrade al contratto base",
+      "4-5": "Introdurre revisione annuale del contratto con proposta di adeguamento basata su crescita infrastruttura cliente"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Produrre contenuti su cybersecurity e continuità operativa: temi ad alto impatto percepito per i titolari di PMI",
+      "2-3": "Costruire presenza LinkedIn con casi concreti: problema IT risolto, tempo di intervento, impatto sul business cliente",
+      "3-4": "Attivare partnership con software house verticali (gestionale, CAD, ERP) per referral reciproci",
+      "4-5": "Presidiare associazioni di categoria locali come occasione di networking e posizionamento come esperto IT di fiducia"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Riscrivere la homepage comunicando cosa proteggi e garantisci, non cosa installi o configuri",
+      "2-3": "Inserire sezione dedicata ai settori serviti con problematiche IT specifiche e soluzioni adottate",
+      "3-4": "Pubblicare testimonianze e casi concreti con focus su continuità operativa e risposta rapida agli incidenti",
+      "4-5": "Aggiungere pagina dedicata alla cybersecurity con checklist scaricabile come lead magnet per i titolari"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Censire i vendor hardware e software con programmi partner attivi (Microsoft, Dell, Sophos, Veeam, ecc.)",
+      "2-3": "Attivare o mantenere le certificazioni partner strategiche per accedere a margini, supporto e lead dal vendor",
+      "3-4": "Costruire accordi di referral con software house verticali che non erogano assistenza infrastrutturale",
+      "4-5": "Sviluppare partnership con MSP complementari per coprire competenze non presidiate internamente (es. cloud, telefonia)"
 
     }
   },
   "servizi_formazione": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Definire ICP per settore e dimensione: quale tipo di azienda compra formazione con continuità e non solo su finanziamento",
+      "2-3": "Costruire proposta commerciale differenziata: HR manager (compliance e sviluppo persone), titolare (ROI e produttività)",
+      "3-4": "Strutturare offerta di analisi dei fabbisogni formativi gratuita come leva di ingresso per clienti aziendali",
+      "4-5": "Sviluppare canale consulenti HR, paghe e sicurezza come referrer sistematici verso nuovi clienti aziendali"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Tracciare tutte le opportunità in CRM: tipo corso, numero partecipanti, modalità (finanziata, a pagamento, obbligatoria)",
+      "2-3": "Separare pipeline corsi obbligatori (sicurezza, HACCP) da formazione discrezionale e manageriale",
+      "3-4": "Monitorare scadenze di rinnovo corsi obbligatori per clienti esistenti come trigger di riacquisto automatico",
+      "4-5": "Istituire forecast trimestrale per pianificare docenti, aule e risorse in base al pipeline attivo"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Separare il ruolo commerciale (acquisizione clienti aziendali) dal ruolo didattico (docenti e coordinamento aula)",
+      "2-3": "Costruire playbook di discovery aziendale: domande per identificare fabbisogni, vincoli budget e uso fondi interprofessionali",
+      "3-4": "Formare i commerciali sulla gestione dei fondi interprofessionali (Fondimpresa, Fondirigenti) come leva di vendita",
+      "4-5": "Definire processo di gestione docenti freelance: briefing, qualità, feedback post-corso e valutazione continuativa"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Standardizzare il catalogo corsi con schede chiare: obiettivi, durata, destinatari, modalità, costo e finanziabilità",
+      "2-3": "Creare template di proposta formativa aziendale con piano didattico, calendario e modalità di rendicontazione",
+      "3-4": "Definire processo di gestione aula: iscrizioni, materiali, registro presenze, questionari di soddisfazione, attestati",
+      "4-5": "Costruire sistema di reportistica per il cliente aziendale: competenze sviluppate, presenze, esiti valutazioni"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Mappare i clienti aziendali attivi per tipologia di corso acquistato e identificare chi ha fabbisogni non ancora coperti",
+      "2-3": "Costruire piano formativo annuale da proporre ai clienti chiave invece di vendere singoli corsi spot",
+      "3-4": "Sviluppare offerta di formazione manageriale e soft skill per affiancare i corsi tecnici obbligatori",
+      "4-5": "Introdurre abbonamento formativo annuale per PMI: numero di giornate incluse a tariffa fissa con pianificazione flessibile"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Produrre contenuti su obblighi formativi di legge per settore: tema ad alto interesse per titolari e HR manager",
+      "2-3": "Costruire presenza LinkedIn con focus su aggiornamenti normativi, novità fondi interprofessionali e casi di successo",
+      "3-4": "Presidiare associazioni di categoria e ordini professionali come canale di visibilità e partnership istituzionale",
+      "4-5": "Costruire newsletter mensile per clienti e prospect con scadenze normative, novità finanziamenti e nuovi corsi"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Organizzare il catalogo corsi per settore e obbligo normativo, non per categoria didattica interna",
+      "2-3": "Inserire sezione dedicata ai fondi interprofessionali con guida pratica all'utilizzo per le PMI",
+      "3-4": "Pubblicare testimonianze aziendali con focus su semplicità di gestione e qualità percepita dai partecipanti",
+      "4-5": "Ottimizzare SEO su keyword normative e locali: 'corso sicurezza sul lavoro [città]', 'formazione HACCP [settore]'"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Mappare consulenti del lavoro, RSPP esterni e consulenti sicurezza come referrer naturali verso corsi obbligatori",
+      "2-3": "Costruire accordi di referral con studi di consulenza HR e paghe che segnalano clienti con scadenze formative",
+      "3-4": "Diventare ente accreditato presso la Regione per accedere a finanziamenti pubblici e bandi formativi",
+      "4-5": "Sviluppare partnership con associazioni di categoria per erogare formazione convenzionata ai loro associati"
 
     }
   },
@@ -1800,59 +1800,59 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "tech_automazione": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Definire ICP tra manifatturiero, alimentare ed edilizia con soglia minima di fatturato e numero dipendenti. Costruire lista prospect per area geografica e settore",
+      "2-3": "Strutturare approccio consultivo: il primo incontro è un audit di processo, non una presentazione prodotto. Formare il team su questa modalità",
+      "3-4": "Costruire business case standard per ogni tipologia di impianto: payback atteso, risparmio manodopera, riduzione scarti",
+      "4-5": "Sviluppare canale agenti specializzati per settore industriale con contratto e piano provvigionale strutturato"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Tracciare ogni opportunità in CRM dalla prima visita: tipo impianto, budget indicato, timeline decisionale",
+      "2-3": "Definire stage specifici per cicli lunghi: interesse, audit completato, offerta tecnica, approvazione budget, ordine",
+      "3-4": "Istituire pipeline review mensile con focus su deal in stallo: identificare il blocco e definire azione sblocco",
+      "4-5": "Monitorare il win rate per tipologia di impianto e settore cliente per concentrare gli sforzi sui segmenti più profittevoli"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Identificare chi nel team ha competenze sia tecniche che relazionali per il ruolo di vendita consultiva",
+      "2-3": "Costruire playbook commerciale con domande di discovery focalizzate su colli di bottiglia produttivi e costi di processo",
+      "3-4": "Strutturare il ruolo di presales tecnico: chi accompagna il commerciale in sopralluogo e redige la specifica tecnica",
+      "4-5": "Definire piano di sviluppo per figure junior: affiancamento senior, certificazioni tecniche, gestione autonoma clienti piccoli"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Creare checklist di audit iniziale: layout impianto, flusso produttivo, colli di bottiglia, KPI attuali del cliente",
+      "2-3": "Standardizzare l'offerta tecnica con sezioni fisse: soluzione proposta, ROI calcolato, tempistiche, garanzie, referenze",
+      "3-4": "Definire processo di gestione varianti in corso d'opera con approvazione scritta del cliente prima di ogni modifica",
+      "4-5": "Costruire contratto di manutenzione standard da proporre a fine installazione con SLA e interventi inclusi"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Mappare il parco installato clienti e classificarlo per anzianità impianto e potenziale di upgrade",
+      "2-3": "Costruire offerta di manutenzione preventiva e predittiva da proporre sistematicamente post-installazione",
+      "3-4": "Sviluppare linea di servizi a valore: formazione operatori, ottimizzazione parametri, retrofit su impianti esistenti",
+      "4-5": "Introdurre modelli contrattuali pay-per-use o performance-based per clienti che non vogliono investimento iniziale alto"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Produrre 2 case study con dati concreti: tempo di payback, percentuale di riduzione scarti o manodopera, settore cliente",
+      "2-3": "Presidiare fiere di settore (Mecspe, SPS, BI-MU) con stand o presenza come visitatori qualificati per networking",
+      "3-4": "Costruire contenuti LinkedIn su efficienza produttiva e automazione per attrarre decision maker industriali",
+      "4-5": "Attivare partnership con associazioni di categoria (Confindustria, CNA) per visibilità e accesso a eventi locali"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Comunicare le specializzazioni per settore industriale invece di proporsi come generalisti dell'automazione",
+      "2-3": "Pubblicare case study con video o foto degli impianti realizzati e risultati misurabili per ogni settore",
+      "3-4": "Creare sezione dedicata al processo di lavoro: audit, progettazione, installazione, collaudo, assistenza",
+      "4-5": "Ottimizzare SEO su keyword specifiche: 'automazione industriale [settore/città]', 'sistema di visione artificiale', 'cobot PMI'"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Censire i vendor di tecnologia (robot, visione artificiale, PLC, convogliatori) con cui costruire partnership formale",
+      "2-3": "Diventare system integrator certificato dei vendor strategici per accedere a lead dal loro canale commerciale",
+      "3-4": "Costruire accordi di co-sell con software house MES/ERP per proporre soluzioni integrate al cliente finale",
+      "4-5": "Sviluppare rete di subfornitori specializzati per ampliare la capacità progettuale senza aumentare organico fisso"
 
     }
   }
