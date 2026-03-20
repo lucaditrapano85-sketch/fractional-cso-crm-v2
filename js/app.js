@@ -956,20 +956,36 @@ function switchModalTab(tabId, btn) {
 function openNewProspect() {
   editingId = null;
   document.getElementById('modal-prospect-title').textContent = 'Nuovo Prospect';
+  var bodyEl = document.getElementById('modal-prospect-body');
+  if (!bodyEl) { console.error('modal-prospect-body NOT FOUND in DOM'); return; }
   try {
-    document.getElementById('modal-prospect-body').innerHTML = _buildProspectModalBody({});
-  } catch(e) { console.error('openNewProspect error:', e); document.getElementById('modal-prospect-body').innerHTML = '<p style="color:red">Errore: '+e.message+'</p>'; }
+    var html = _buildProspectModalBody({});
+    console.log('openNewProspect: HTML generated, length=', html.length);
+    bodyEl.innerHTML = html;
+    console.log('openNewProspect: innerHTML set, childNodes=', bodyEl.childNodes.length);
+  } catch(e) {
+    console.error('openNewProspect error:', e);
+    bodyEl.innerHTML = '<p style="color:red;padding:20px">Errore: '+e.message+'</p>';
+  }
   openModal('modal-prospect');
 }
 
 function openEditProspect() {
   var p = prospects.find(function(x) { return x.id === currentId; });
-  if (!p) return;
+  if (!p) { console.error('openEditProspect: prospect not found, currentId=', currentId); return; }
   editingId = p.id;
   document.getElementById('modal-prospect-title').textContent = 'Modifica Prospect';
+  var bodyEl = document.getElementById('modal-prospect-body');
+  if (!bodyEl) { console.error('modal-prospect-body NOT FOUND in DOM'); return; }
   try {
-    document.getElementById('modal-prospect-body').innerHTML = _buildProspectModalBody(p);
-  } catch(e) { console.error('openEditProspect error:', e); document.getElementById('modal-prospect-body').innerHTML = '<p style="color:red">Errore: '+e.message+'</p>'; }
+    var html = _buildProspectModalBody(p);
+    console.log('openEditProspect: HTML generated, length=', html.length, 'prospect=', p.nome);
+    bodyEl.innerHTML = html;
+    console.log('openEditProspect: innerHTML set, childNodes=', bodyEl.childNodes.length);
+  } catch(e) {
+    console.error('openEditProspect error:', e);
+    bodyEl.innerHTML = '<p style="color:red;padding:20px">Errore: '+e.message+'</p>';
+  }
   openModal('modal-prospect');
 }
 
