@@ -371,4 +371,4 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 .diag-result-dim{font-size:11px;color:var(--gray)}
 .diag-result-score{font-size:14px;font-weight:700}
 
-.tetto-warning{font-size:11px;color:#e67e22;background:#fef9e7;border-left:3px solid #e67e22;padding:4px 8px;margin-top:4px;border-radius:2px}
+.tetto-warning{font-size:12px;font-weight:600;color:#fff;background:#e67e22;border-left:4px solid #b85c0a;padding:8px 12px;margin-top:6px;border-radius:4px;display:flex;align-items:center;gap:6px;box-shadow:0 2px 6px rgba(230,126,34,0.35)}
