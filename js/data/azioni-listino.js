@@ -1278,59 +1278,59 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "alimentare_trasformazione": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Vendi solo ai soliti canali locali — zero sviluppo commerciale. Mappa i negozi specialty food, enoteche e ristoranti della zona che valorizzano i prodotti artigianali e proponi una fornitura di prova con campioni",
+      "2-3": "Attiva un agente o un broker con contatti nella GDO locale e nell'horeca regionale. Parallelamente costruisci il canale diretto: chi visita il tuo stabilimento è il cliente ideale per l'acquisto diretto",
+      "3-4": "Rete commerciale strutturata per canale: GDO locale + specialty food + horeca + export. Il prodotto DOP o IGP si vende all'estero con margini superiori all'Italia",
+      "4-5": "Struttura commerciale completa con agenti per canale, export manager per i mercati esteri prioritari e canale diretto (e-commerce + spaccio aziendale) come centro di profitto autonomo"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Tieni un registro dei clienti attivi: canale, prodotto, volumi e frequenza di riordino. Il cliente che smette di riordinare va contattato subito — spesso è un problema di servizio risolvibile",
+      "2-3": "CRM per gestire clienti B2B e lista clienti diretti. Traccia i campioni inviati, le degustazioni fatte e i follow-up aperti",
+      "3-4": "Pipeline strutturata per canale con forecast mensile, gestione stagionalità produzione e alert su cali di acquisto per cliente",
+      "4-5": "Sistema integrato produzione-ordini-logistica: visibilità completa su stock disponibile, ordini confermati e capacità produttiva residua per prendere decisioni commerciali in tempo reale"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il titolare produce e vende — zero separazione. Anche solo una figura part-time per la gestione ordini e la comunicazione con i clienti libera tempo prezioso per la produzione",
+      "2-3": "Commerciale dedicato con conoscenza del prodotto e del territorio: sa raccontare la storia del salume, del formaggio, della pasta — e quella storia è il 50% della vendita",
+      "3-4": "Team strutturato: produzione + commerciale + logistica. Chi gestisce l'export deve conoscere le normative doganali e i requisiti sanitari dei mercati esteri",
+      "4-5": "Struttura completa con responsabile produzione, direttore commerciale, export manager e responsabile qualità certificazioni"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Stabilimento riconosciuto CE obbligatorio per vendere fuori regione. Bollo sanitario, piano HACCP avanzato, tracciabilità lotti documentata — sono obblighi di legge non negoziabili",
+      "2-3": "Certificazione DOP o IGP se il prodotto ne ha i requisiti — è la leva di valorizzazione più potente del made in Italy alimentare. Processo di controllo qualità documentato per ogni lotto",
+      "3-4": "BRC o IFS per accedere alla GDO strutturata. Certificazione biologica se usi materie prime bio. Processo di gestione fornitori qualificati per garantire la qualità della materia prima",
+      "4-5": "Sistema qualità certificato con audit periodici, tracciabilità completa filiera, certificazioni per export (USDA, halal, kosher se necessario) e carbon footprint come leva sostenibilità"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Analizza i margini per prodotto e per canale: vendere il prosciutto al banco del produttore a 25€/kg è molto più redditizio che venderlo al grossista a 12€/kg. Il canale diretto vale il doppio",
+      "2-3": "Filiera come vantaggio competitivo e leva di prezzo: se allevi i tuoi animali o coltivi le tue materie prime, puoi comunicare e prezzare la tracciabilità completa",
+      "3-4": "Mix canali ottimizzato: GDO (volume, margini bassi) + specialty e horeca (margini medi) + diretto (margini alti) + export premium (margini alti + valorizzazione brand)",
+      "4-5": "Revenue strutturato con contratti annuali GDO, forniture continuative horeca, e-commerce diretto come centro di profitto e export con importatori esclusivi per mercato"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il territorio è il brand — racconta la storia delle materie prime, del processo produttivo, della tradizione. Instagram e Facebook con foto del laboratorio e del prodotto finito",
+      "2-3": "Presenza a fiere di settore (Cibus, Salone del Gusto, TUTTOFOOD) — sono dove si incontrano i buyer della GDO, dell'horeca e dell'export. Un campione al momento giusto vale più di anni di telefonate",
+      "3-4": "PR gastronomica: riviste food, guide, chef ambassador. Un Michelin che usa il tuo prodotto vale più di qualsiasi pubblicità. Collaborazioni con chef per visibilità e credibilità",
+      "4-5": "Piano marketing strutturato: fiere nazionali e internazionali + PR gastronomica + storytelling digitale + presenza su piattaforme food premium (Eataly, Amazon Gourmet)"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Sito con storia dell'azienda e del territorio, catalogo prodotti con foto professionali e contatti diretti. Il buyer straniero cerca il produttore online prima di qualsiasi contatto",
+      "2-3": "E-commerce per vendite dirette ai privati: spedizione in tutta Italia, confezioni regalo e box tematiche. Il prodotto trasformato si spedisce facilmente e ha lunga conservazione",
+      "3-4": "Sito professionale con e-commerce, sezione ricette con i propri prodotti, area stampa con materiali scaricabili e versione multilingua per export",
+      "4-5": "Portale completo con e-commerce multilingua, area B2B per negozi e ristoranti, spaccio aziendale prenotabile online e integrazione con marketplace food premium"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Vendi solo localmente — il tuo prodotto artigianale potrebbe raggiungere tutta Italia e l'estero. Inizia con uno shop online semplice e spedizione con corriere refrigerato",
+      "2-3": "Shop online attivo con box regalo e confezioni natalizie: il salume artigianale o il formaggio DOP sono i regali aziendali perfetti. Margini altissimi e domanda garantita a Natale",
+      "3-4": "Strategia e-commerce strutturata con sito proprio + presenza su Eataly online + Amazon Gourmet. Export diretto verso i mercati dove il made in Italy alimentare ha più valore (USA, Giappone, Germania)",
+      "4-5": "Canale digitale come centro di profitto autonomo: e-commerce proprio + marketplace premium + export diretto online. Il digitale genera il 30-40% del fatturato con i margini più alti di tutti i canali"
 
     }
   },
