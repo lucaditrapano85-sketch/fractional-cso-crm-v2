@@ -639,6 +639,9 @@ function getDimLabel(settore, dimId) {
     },
     ingredienti: {
       ecommerce: "Sviluppo prodotto & consulenza tecnica"
+    },
+    birra: {
+      ecommerce: "Taproom & esperienza"
     }
   };
 

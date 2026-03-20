@@ -1566,6 +1566,64 @@ var AZIONI_TARGET_BY_SETTORE =
 
     }
   },
+  "alimentare_birra": {
+    "vendite": {
+      "1-2": "Vendi solo ai tuoi amici e ai bar del quartiere — zero struttura. Mappa i pub, le enoteche e i ristoranti della zona che valorizzano il craft beer e proponi una fornitura di prova con campioni: la birra si vende facendola assaggiare",
+      "2-3": "Attiva un distributore locale o regionale specializzato in craft beer: conosce i locali giusti e ha già le relazioni. Parallelamente costruisci la community di appassionati — sono i tuoi futuri clienti diretti e ambasciatori",
+      "3-4": "Rete distributiva strutturata per zona con distributori specializzati. Export verso i mercati esteri più attivi sul craft italiano (USA, Giappone, Scandinavia). La taproom come canale di vendita diretto con margini altissimi",
+      "4-5": "Struttura commerciale con responsabile distribuzione B2B, export manager e responsabile taproom ed esperienze. Il brand del birrificio è il vero asset — proteggilo e sviluppalo"
+
+    },
+    "pipeline": {
+      "1-2": "Tieni un registro dei locali serviti: tipo di locale, referenze ordinate e frequenza. Chi non riordina da un mese sta comprando da un altro birrificio",
+      "2-3": "CRM semplice per gestire distributori, clienti horeca diretti e lista appassionati per eventi e degustazioni",
+      "3-4": "Pipeline strutturata per canale: horeca + taproom + eventi + export. Gestione birre stagionali e limited edition con liste d'attesa — la scarsità è una leva di valore nel craft",
+      "4-5": "Sistema integrato produzione-ordini-distribuzione: visibilità completa su stock per referenza, ordini confermati e capacità produttiva residua per gestire le opportunità commerciali"
+
+    },
+    "team": {
+      "1-2": "Il birraio fa tutto. Anche solo una figura part-time per la gestione ordini, le consegne e i social libera tempo prezioso per la produzione",
+      "2-3": "Brand ambassador dedicato: appassionato di birra, sa raccontare il prodotto, gestisce i social e rappresenta il birrificio agli eventi. È il volto del brand fuori dalla produzione",
+      "3-4": "Team strutturato: produzione + commerciale distribuzione + responsabile taproom. Chi lavora in taproom deve saper raccontare ogni birra — è vendita esperienziale",
+      "4-5": "Struttura completa con head brewer, responsabile commerciale, export manager e responsabile hospitality per taproom ed eventi"
+
+    },
+    "processi": {
+      "1-2": "Autorizzazione sanitaria per produzione birra, accisa sull'alcol gestita correttamente, etichette conformi al Reg. UE — sono obblighi fiscali e sanitari non negoziabili",
+      "2-3": "Processo di controllo qualità per ogni lotto: analisi chimiche base (grado alcolico, amaro IBU, colore EBC), gestione temperatura durante fermentazione e stoccaggio",
+      "3-4": "Certificazione biologica se usi ingredienti bio — crescente richiesta nel craft. Processo HACCP documentato per accedere alla GDO. Gestione accise strutturata con software dedicato",
+      "4-5": "Sistema qualità certificato, tracciabilità completa dalla materia prima alla spina, certificazioni per export e laboratorio analisi interno per garantire costanza qualitativa"
+
+    },
+    "ricavi": {
+      "1-2": "Analizza i margini per referenza e per canale: vendere in taproom a 5€ la pinta ha margini enormi rispetto a vendere la bottiglia al distributore a 2€. La taproom è il canale più redditizio",
+      "2-3": "Limited edition e birre stagionali: margini superiori alle referenze fisse e creano urgenza di acquisto. Il cliente che sa che finisce compra subito",
+      "3-4": "Mix canali ottimizzato: distribuzione horeca (volume) + taproom (margine alto) + e-commerce bottiglie (margine medio) + export (prestigio). Nessun canale oltre il 50% del fatturato",
+      "4-5": "Revenue strutturato con contratti distributori, taproom come centro di profitto autonomo, abbonamento beer club per privati e export con importatori esclusivi per mercato"
+
+    },
+    "marketing": {
+      "1-2": "Instagram e Facebook con foto del processo produttivo, nuove uscite e vita del birrificio. La community craft è attivissima sui social — l'autenticità conta più della perfezione",
+      "2-3": "Presenza agli homebrew festival e alle fiere craft (Rimini Beer Attraction, Birreria). Collaborazioni con altri birrifici per brew collabs — amplificano entrambe le audience",
+      "3-4": "Storytelling strutturato: ogni birra ha una storia, un territorio, un'ispirazione. Content marketing su Instagram, YouTube e Untappd — la piattaforma dove vivono gli appassionati di craft",
+      "4-5": "Piano marketing strutturato: eventi + fiere nazionali e internazionali + digital community + PR specializzata + collaborazioni con chef e ristoratori per abbinamenti cibo-birra"
+
+    },
+    "sitoweb": {
+      "1-2": "Sito con storia del birrificio, catalogo birre con schede tecniche (stile, grado alcolico, ingredienti, abbinamenti) e contatti. Il buyer straniero lo visita prima di qualsiasi contatto",
+      "2-3": "E-commerce per vendite dirette: spedizione in tutta Italia, box regalo e abbonamento mensile. La birra artigianale in bottiglia si spedisce facilmente",
+      "3-4": "Sito professionale con e-commerce, prenotazione visite in birrificio, calendario eventi e area stampa con materiali scaricabili",
+      "4-5": "Portale completo con e-commerce multilingua, beer club con abbonamento, prenotazione taproom ed eventi integrata e area importatori per l'export"
+
+    },
+    "ecommerce": {
+      "1-2": "Nessuna taproom o esperienza diretta — vendi solo attraverso distributori. Anche solo aprire il birrificio al pubblico un weekend al mese crea community e fatturato diretto ad altissimo margine",
+      "2-3": "Taproom aperta regolarmente con mescita delle birre di produzione: ogni visita è un'esperienza che crea fan, non solo clienti. Organizza degustazioni guidate a pagamento",
+      "3-4": "Taproom strutturata come locale vero con orari fissi, food pairing, eventi tematici e merchandising. Le visite al birrificio diventano un'attrazione — enoturismo della birra",
+      "4-5": "Esperienza completa: taproom + tour del birrificio + degustazioni private + eventi aziendali + beer club per gli appassionati. L'hospitality genera il 30-40% del fatturato con i margini più alti"
+
+    }
+  },
   "tech_saas": {
     "vendite": {
       "1-2": "",
