@@ -311,6 +311,7 @@ async function init() {
   const {data,error}=await sb.from('prospects').select('*').order('created_at',{ascending:false});
   if(error){showToast('Errore connessione database','error');console.error(error);return;}
   prospects=data||[];
+  window._allProspects = prospects;
   await loadEventi();
   await loadBenchmarkCustom();
   renderSidebar();

@@ -895,11 +895,13 @@ async function saveProspect() {
       if(error) throw error;
       const i=prospects.findIndex(x=>x.id===editingId);
       prospects[i]={...prospects[i],...data};
+      window._allProspects = prospects;
       showToast('Prospect aggiornato');
     } else {
       const {data:row,error}=await sb.from('prospects').insert(data).select().single();
       if(error) throw error;
       prospects.push(row);
+      window._allProspects = prospects;
       showToast('Prospect creato');
     }
     renderSidebar();
@@ -919,6 +921,7 @@ async function deleteProspect() {
   const {error}=await sb.from('prospects').delete().eq('id',currentId);
   if(error){showToast('Errore eliminazione','error');return;}
   prospects=prospects.filter(x=>x.id!==currentId);
+  window._allProspects = prospects;
   showToast('Prospect eliminato');
   renderSidebar();
   showView('dashboard');
