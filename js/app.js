@@ -142,25 +142,7 @@ function openProspect(id) {
 // -- SIDEBAR -----------------------------------------------
 function renderSidebar() {
   const el = document.getElementById('sidebar-list');
-  if(!prospects.length) {
-    el.innerHTML='\x3cdiv style="padding:8px 20px;font-size:12px;color:var(--gray2)">Nessun prospect ancora\x3c/div>';
-    return;
-  }
-  el.innerHTML = prospects.map(p=>{
-    const s=calcScore(p), c=scoreColor(s);
-    const pCol = getProspectColor(p);
-    return `\x3cdiv class="prospect-item" data-id="${p.id}" onclick="openProspect('${p.id}')" style="border-left-color:${pCol}">
-      \x3cdiv class="p-name" style="display:flex;align-items:center;gap:7px">
-        \x3cdiv style="width:8px;height:8px;border-radius:50%;background:${pCol};flex-shrink:0">\x3c/div>
-        ${p.nome}
-      \x3c/div>
-      \x3cdiv class="p-meta">
-        \x3cdiv class="status-dot" style="background:${STATUS_COLORS[p.stato]||'#888'}">\x3c/div>
-        ${STATUS_LABELS[p.stato]||p.stato}
-        \x3cspan style="margin-left:auto;font-size:11px;font-weight:600;color:${c.text}">${s}\x3c/span>
-      \x3c/div>
-    \x3c/div>`;
-  }).join('');
+  el.innerHTML = '';
 }
 
 // -- DASHBOARD ---------------------------------------------
@@ -359,6 +341,7 @@ function renderProspects() {
           '<option value="data"' + (_prospectSort==='data'?' selected':'') + '>Ordina: Data</option>' +
           '<option value="nome"' + (_prospectSort==='nome'?' selected':'') + '>Ordina: Nome</option>' +
         '</select>' +
+        '<button class="btn-prospect-new" onclick="openNewProspect()">+ Nuovo Prospect</button>' +
       '</div>' +
       '<div class="prospects-filters">' + filterBtns + '</div>' +
     '</div>' +
