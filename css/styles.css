@@ -412,4 +412,4 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 
 .btn-prospect-new{background:var(--gold);color:#fff;border:none;border-radius:8px;padding:7px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:opacity .15s;font-family:'DM Sans',sans-serif}
 .btn-prospect-new:hover{opacity:.85}
-.sidebar-prospects .btn-new{display:none!important}
+.sidebar-prospects{display:none!important}
