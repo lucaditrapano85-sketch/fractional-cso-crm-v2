@@ -1336,59 +1336,59 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "commercio_orologi_gioielli": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il cliente compra fiducia prima che un orologio: conosci la storia di ogni pezzo, i movimenti, i materiali, le varianti. Un venditore competente vale più di qualsiasi vetrina",
+      "2-3": "Costruisci relazioni con i collezionisti locali: sono i clienti più fedeli e i migliori passaparola. Un collezionista soddisfatto porta altri collezionisti",
+      "3-4": "Attiva un sistema di segnalatori: gioiellerie complementari, studi notarili, consulenti patrimoniali — chi gestisce patrimoni conosce chi vuole investire in orologi",
+      "4-5": "Struttura commerciale con specialisti per segmento (orologi sportivi, dress watch, gioielli da cerimonia) e programma VIP per i clienti alto spendenti"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Tieni un registro dei clienti con storico acquisti e preferenze: marca, stile, budget. Un cliente che ha comprato un Rolex sport potrebbe volere un dress watch — tu devi saperlo prima che lo cerchi altrove",
+      "2-3": "CRM semplice per gestire i contatti: avvisa i clienti quando arriva un pezzo nel loro stile o budget. Il pre-avviso esclusivo fidelizza più di qualsiasi sconto",
+      "3-4": "Pipeline strutturata con gestione wish list clienti, alert su Chrono24 per pezzi ricercati e forecast acquisti pre-owned basato sulla domanda del database",
+      "4-5": "CRM avanzato integrato con i marketplace: quando arriva su Chrono24 un pezzo cercato da un tuo cliente, lo contatti prima che lo trovi da solo"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il venditore deve sapere tutto: movimenti, referenze, storia dei brand, differenze tra varianti. Investi in formazione tecnica — un venditore ignorante in questo settore è pericoloso",
+      "2-3": "Specializzazione per categoria: chi conosce gli orologi da sport, chi i dress watch, chi i gioielli da cerimonia. La competenza specifica aumenta la fiducia del cliente",
+      "3-4": "Gemmologo o orologiaio certificato in staff: non solo per le riparazioni ma come leva commerciale — l'autenticazione interna è un differenziatore enorme vs la concorrenza",
+      "4-5": "Team strutturato con responsabile vendite, specialisti per categoria, orologiaio/gemmologo interno e responsabile acquisti pre-owned"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Autenticazione documentata per ogni pezzo: cartellino con provenienza, stato, accessori inclusi e garanzia. Un orologio senza documentazione vale il 30% in meno",
+      "2-3": "Processo di valutazione e acquisto pre-owned strutturato: check list tecnica, verifica autenticità, valutazione mercato Chrono24 prima di fare un'offerta",
+      "3-4": "Certificazioni formali: AGS per gioielli, formazione orologiera riconosciuta. Polizza assicurativa adeguata per il valore dello stock — spesso sottovalutata",
+      "4-5": "Sistema qualità completo: certificazioni gemologiche, partnership con centri di assistenza ufficiali, processo di autenticazione certificato e gestione resi strutturata"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Analizza i margini per categoria: il pre-owned ha margini doppi rispetto al nuovo. Ogni orologio nuovo venduto è un'opportunità di acquistare l'usato del cliente",
+      "2-3": "La permuta è la leva di chiusura più potente in questo settore: il cliente vuole il nuovo ma ha già un orologio. Gestisci la permuta come centro di profitto, non come costo",
+      "3-4": "Revenue mix strutturato: nuovo + pre-owned + riparazioni + servicing + gioielli. Il servicing orologi (revisione, cinturini, bracciali) è margine puro e fidelizza",
+      "4-5": "Pre-owned come business unit autonoma con buyer dedicato, rotazione stock monitorata e presenza strutturata su Chrono24 e Catawiki come canali di vendita globali"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Instagram con foto professionali di ogni pezzo: luce giusta, dettagli del quadrante, del movimento se visibile. Gli orologi si vendono con gli occhi — la foto è il 50% della vendita",
+      "2-3": "Presenza attiva su Chrono24 e Catawiki come vetrine globali — non sono concorrenti, sono canali. Un pezzo su Chrono24 viene visto da collezionisti di tutto il mondo",
+      "3-4": "Contenuti tecnici su Instagram e YouTube: storia di un modello, come riconoscere un falso, guida all'acquisto. Posizionati come esperto di riferimento nella tua zona",
+      "4-5": "Piano marketing strutturato: social + marketplace + eventi privati per clienti VIP + collaborazioni con case d'aste per pezzi di valore"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Sito con stock fotografato professionalmente, schede tecniche complete e contatto diretto. Il cliente vuole vedere il pezzo prima di venire in negozio",
+      "2-3": "Sito con filtri per brand, categoria e fascia di prezzo, sezione pre-owned dedicata e form richiesta valutazione del proprio orologio",
+      "3-4": "Sito professionale con certificazioni in evidenza, case history di acquisti notevoli e area clienti per tracciare le proprie acquisizioni",
+      "4-5": "Portale con stock in tempo reale sincronizzato con Chrono24, richiesta valutazione online e area VIP riservata per i clienti alto spendenti"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Vendi solo in negozio — perdi clienti che cercano online. Apri subito un profilo Chrono24 anche con 5-10 pezzi: è la vetrina globale del tuo stock",
+      "2-3": "Chrono24 e Catawiki come canali attivi con stock aggiornato, foto professionali e risposta rapida alle richieste. Usa Chrono24 anche per acquistare pezzi da rivendere",
+      "3-4": "Strategia pre-owned strutturata: acquisto da privati, permute valutate correttamente, rivendita su marketplace e in negozio. Il margine sul pre-owned è il doppio del nuovo",
+      "4-5": "Pre-owned come centro di profitto autonomo: buyer dedicato, presenza certificata su Chrono24 come dealer verificato, partecipazione a Catawiki per pezzi di valore e rete di fornitori privati fidelizzati"
 
     }
   },

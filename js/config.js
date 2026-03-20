@@ -652,6 +652,9 @@ function getDimLabel(settore, dimId) {
     },
     abbigliamento_dettaglio: {
       ecommerce: "Presenza digitale & omnicanalità"
+    },
+    orologi_gioielli: {
+      ecommerce: "Pre-owned & marketplace"
     }
   };
 
