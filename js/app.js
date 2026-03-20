@@ -2225,8 +2225,6 @@ var PESI_BY_SETTORE =
   "commercio_ricambi_auto":          {"vendite":28,"pipeline":12,"team":10,"processi":8, "ricavi":15,"marketing":9, "sitoweb":6,"ecommerce":12},
   "commercio_abbigliamento_ingrosso":{"vendite":28,"pipeline":12,"team":10,"processi":8, "ricavi":14,"marketing":14,"sitoweb":7,"ecommerce":7},
   "commercio_elettronica":           {"vendite":26,"pipeline":13,"team":10,"processi":8, "ricavi":13,"marketing":11,"sitoweb":7,"ecommerce":12},
-  "commercio_chimici":               {"vendite":28,"pipeline":14,"team":10,"processi":10,"ricavi":16,"marketing":10,"sitoweb":6,"ecommerce":6},
-  "commercio_medicale":              {"vendite":35,"pipeline":18,"team":11,"processi":9, "ricavi":12,"marketing":8, "sitoweb":5,"ecommerce":2},
   "commercio_abbigliamento_dettaglio":{"vendite":20,"pipeline":10,"team":10,"processi":8,"ricavi":10,"marketing":18,"sitoweb":6,"ecommerce":18},
   "commercio_orologi_gioielli":      {"vendite":28,"pipeline":16,"team":12,"processi":8, "ricavi":14,"marketing":12,"sitoweb":6,"ecommerce":4},
   "alimentare_trasformazione":       {"vendite":28,"pipeline":10,"team":10,"processi":8, "ricavi":16,"marketing":16,"sitoweb":6,"ecommerce":6},
@@ -2421,26 +2419,6 @@ var PESI_BY_SETTORE =
     "marketing": 11,
     "sitoweb": 7,
     "ecommerce": 12
-  },
-  "commercio_chimici": {
-    "vendite": 28,
-    "pipeline": 14,
-    "team": 10,
-    "processi": 10,
-    "ricavi": 16,
-    "marketing": 10,
-    "sitoweb": 6,
-    "ecommerce": 6
-  },
-  "commercio_medicale": {
-    "vendite": 35,
-    "pipeline": 18,
-    "team": 11,
-    "processi": 9,
-    "ricavi": 12,
-    "marketing": 8,
-    "sitoweb": 5,
-    "ecommerce": 2
   },
   "commercio_abbigliamento_dettaglio": {
     "vendite": 20,
@@ -2648,9 +2626,6 @@ const _DIPENDENZE_OVERRIDE = {
   commercio_abbigliamento_dettaglio: {
     ecommerce: {marketing:0.65, sitoweb:0.25, processi:0.10}
   },
-  commercio_medicale: {
-    vendite: {team:0.40, processi:0.35, pipeline:0.25}
-  },
   manifatturiero_cterzi: {
     pipeline: {processi:0.55, vendite:0.30, team:0.15}
   },
@@ -2673,7 +2648,6 @@ const _MACRO_MAP = {
   commercio_distribuzione_industriale:'commercio', commercio_ingrosso_alimentare:'commercio',
   commercio_materiali_edili:'commercio', commercio_ricambi_auto:'commercio',
   commercio_abbigliamento_ingrosso:'commercio', commercio_elettronica:'commercio',
-  commercio_chimici:'commercio', commercio_medicale:'commercio',
   commercio_auto_moto_nuovo:'commercio', commercio_auto_moto_usato:'commercio', commercio_abbigliamento_dettaglio:'commercio',
   commercio_orologi_gioielli:'commercio',
   alimentare_trasformazione:'alimentare', alimentare_vini:'alimentare',

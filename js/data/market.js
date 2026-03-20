@@ -250,28 +250,6 @@ const MARKET = {
       {label:'Clienti persi/anno',media:'22%',top:'10%'},
     ]
   },
-  commercio_chimici: {
-    label:'Prodotti chimici & pulizia', parent:'commercio',
-    metrics:[
-      {label:'Tasso di chiusura medio',media:'38%',top:'60%'},
-      {label:'Fatturato/commerciale',media:'620k EUR/anno',top:'1M EUR/anno'},
-      {label:'Ciclo vendita medio',media:'12 gg',top:'5 gg'},
-      {label:'Lead gen principale',media:'Agenti, catalogo',top:'Agenti + contratti quadro'},
-      {label:'Uso CRM',media:'36%',top:'74%'},
-      {label:'Clienti persi/anno',media:'14%',top:'5%'},
-    ]
-  },
-  commercio_medicale: {
-    label:'Medicale & farmaceutico', parent:'commercio',
-    metrics:[
-      {label:'Tasso di chiusura medio',media:'22%',top:'40%'},
-      {label:'Fatturato/commerciale',media:'580k EUR/anno',top:'950k EUR/anno'},
-      {label:'Ciclo vendita medio',media:'60 gg',top:'30 gg'},
-      {label:'Lead gen principale',media:'ISF, congressi',top:'ISF + digital'},
-      {label:'Uso CRM',media:'55%',top:'88%'},
-      {label:'Clienti persi/anno',media:'10%',top:'4%'},
-    ]
-  },
   commercio_abbigliamento_dettaglio: {
     label:'Abbigliamento al dettaglio', parent:'commercio',
     metrics:[
@@ -1084,78 +1062,6 @@ const MARKET_DETAIL = {
       'B2B desk dedicato per aziende e pubblica amministrazione',
       'Formazione venditori su ogni nuova gamma di prodotti',
       'E-commerce integrato con stock dello store fisico',
-    ],
-  },
-
-  commercio_chimici: {
-    ciclo_fasi: [
-      { fase: 'Analisi esigenza tecnica', durata: '1-2 sett.', note: 'Il cliente ha un problema specifico. Serve consulenza.' },
-      { fase: 'Schede tecniche + campioni', durata: '1-2 sett.', note: 'Il campione gratuito e lo standard del settore.' },
-      { fase: 'Test interni del cliente', durata: '1-4 sett.', note: 'Il cliente testa in produzione prima di impegnarsi.' },
-      { fase: 'Accordo quadro annuale', durata: '1-2 sett.', note: 'Prezzi fissi o indicizzati alle materie prime.' },
-      { fase: 'Riordini continuativi', durata: 'Mensile', note: 'La continuita del servizio e tutto.' },
-    ],
-    struttura_commerciale: 'Tecnici commerciali (non semplici venditori) + inside sales. Il cliente parla con l\'ufficio tecnico, non con il commerciale puro. La competenza tecnica e obbligatoria.',
-    obiezioni: [
-      '"Ho gia il mio fornitore da 10 anni" -- sicurezza del cambio: proponi test parallelo senza interrompere fornitura.',
-      '"I prezzi variano troppo" -- proponi price cap annuale indicizzato a materie prime.',
-      '"Non ho la scheda di sicurezza in italiano" -- adempimento normativo: risolvilo prima della trattativa.',
-    ],
-    canali: [
-      { nome: 'Tecnici commerciali + campioni gratuiti', efficacia: 88 },
-      { nome: 'Fiere (Achema, Interclean)', efficacia: 72 },
-      { nome: 'Referral da distributori partner', efficacia: 65 },
-      { nome: 'LinkedIn (responsabili produzione/acquisti)', efficacia: 50 },
-      { nome: 'Catalogo tecnico scaricabile', efficacia: 35 },
-    ],
-    stagionalita: 'Relativamente stabile. Pulizia professionale: picco pre-estate (hotel, HO.RE.CA.) e pre-Natale. Chimici industriali: seguono il ciclo produttivo del cliente.',
-    kpi: [
-      { nome: 'Valore medio ordine ricorrente', benchmark: '1.000-10.000 EUR' },
-      { nome: 'Durata contratto quadro medio', benchmark: '12-24 mesi' },
-      { nome: 'Tasso di switch a contratto', benchmark: 'Top performer: 65% dei nuovi clienti in 6 mesi' },
-    ],
-    valore_cliente: '15k-200k EUR/anno per cliente industriale',
-    maturita: [
-      'Tecnico di laboratorio disponibile per supporto clienti',
-      'Accordi di fornitura pluriennali con price review semestrale',
-      'Schede tecniche e di sicurezza sempre aggiornate e accessibili online',
-      'Sistema di monitoraggio consumi per prevenire stockout del cliente',
-    ],
-  },
-
-  commercio_medicale: {
-    ciclo_fasi: [
-      { fase: 'Identificazione decision maker (ISF)', durata: '2-4 sett.', note: 'In ospedale: primario, procurement, direzione sanitaria.' },
-      { fase: 'Presentazione clinica + trial', durata: '2-6 sett.', note: 'Il trial clinico e obbligatorio per dispositivi.' },
-      { fase: 'Gara pubblica (CIG)', durata: '2-6 mesi', note: 'Ospedali pubblici: solo tramite gara. Processo lungo.' },
-      { fase: 'Approvazione budget sanitario', durata: '1-3 mesi', note: 'I budget ospedalieri si approvano annualmente.' },
-      { fase: 'Contratto e fornitura', durata: '1-2 mesi', note: 'Contratti pluriennali con rinnovi.' },
-    ],
-    struttura_commerciale: 'ISF (Informatori Scientifici del Farmaco) + specialist. La vendita e tecnico-scientifica. Il KOL (Key Opinion Leader) influence e fondamentale.',
-    obiezioni: [
-      '"Non possiamo prescindere dalla gara pubblica" -- non e un\'obiezione, e la legge. Prepara la gara.',
-      '"Non abbiamo budget quest\'anno" -- porta dati di farmacoeconomia (cost-effectiveness).',
-      '"Il prodotto non e nel prontuario" -- il percorso di inserimento in prontuario e la vendita vera.',
-    ],
-    canali: [
-      { nome: 'ISF + congressi medici', efficacia: 90 },
-      { nome: 'KOL (Key Opinion Leader)', efficacia: 85 },
-      { nome: 'Gare pubbliche (portali MePA/CONSIP)', efficacia: 78 },
-      { nome: 'Cliniche private (ciclo piu breve)', efficacia: 70 },
-      { nome: 'Digital (per awareness, non per vendita diretta)', efficacia: 30 },
-    ],
-    stagionalita: 'I budget ospedalieri si stanziano a gennaio. Le gare escono con 3-6 mesi di ritardo. Congressi medici: marzo-aprile e ottobre-novembre.',
-    kpi: [
-      { nome: 'Conversion rate trial clinico -> ordine', benchmark: '55-75%' },
-      { nome: 'Durata media contratto ospedaliero', benchmark: '24-48 mesi' },
-      { nome: 'Valore medio contratto ospedale', benchmark: '50k-500k EUR/anno' },
-    ],
-    valore_cliente: '30k-2M EUR/anno per ospedale (dipende da categoria)',
-    maturita: [
-      'Database aggiornato di tutte le gare pubbliche attive (CIG)',
-      'KOL network strutturato con almeno 1 per specializzazione',
-      'Dossier farmacoeconomico per ogni prodotto core',
-      'ISF con quota visita tracciata e CRM aggiornato ogni settimana',
     ],
   },
 

@@ -466,52 +466,6 @@ const MARKET_CLUSTER = {
     }
   },
 
-  commercio_chimici: {
-    micro: {
-      chiusura:{ media:28, top:48 }, fatxcomm:{ media:320, top:560 },
-      ciclo:{ media:18, top:7 }, crm:{ media:20, top:54 },
-      churn:{ media:20, top:8 }, lead_gen:{ media:'Agenti tecnici', top:'Agenti + campioni gratuiti' }
-    },
-    small: {
-      chiusura:{ media:34, top:55 }, fatxcomm:{ media:480, top:800 },
-      ciclo:{ media:14, top:5 }, crm:{ media:30, top:66 },
-      churn:{ media:16, top:6 }, lead_gen:{ media:'Tecnici + contratti quadro', top:'Contratti quadro + lab' }
-    },
-    mid: {
-      chiusura:{ media:40, top:62 }, fatxcomm:{ media:700, top:1150 },
-      ciclo:{ media:10, top:4 }, crm:{ media:42, top:78 },
-      churn:{ media:12, top:5 }, lead_gen:{ media:'KAM + laboratorio', top:'KAM + co-sviluppo' }
-    },
-    upper: {
-      chiusura:{ media:44, top:68 }, fatxcomm:{ media:1000, top:1600 },
-      ciclo:{ media:8,  top:3 }, crm:{ media:58, top:88 },
-      churn:{ media:9,  top:3 }, lead_gen:{ media:'KAM + framework', top:'KAM + supply agreement' }
-    }
-  },
-
-  commercio_medicale: {
-    micro: {
-      chiusura:{ media:14, top:28 }, fatxcomm:{ media:300, top:540 },
-      ciclo:{ media:90, top:45 }, crm:{ media:36, top:68 },
-      churn:{ media:14, top:5 }, lead_gen:{ media:'ISF + congressi', top:'ISF + KOL' }
-    },
-    small: {
-      chiusura:{ media:18, top:35 }, fatxcomm:{ media:460, top:780 },
-      ciclo:{ media:70, top:35 }, crm:{ media:48, top:78 },
-      churn:{ media:12, top:4 }, lead_gen:{ media:'ISF + congressi + gare', top:'ISF + KOL + gare pubbliche' }
-    },
-    mid: {
-      chiusura:{ media:22, top:42 }, fatxcomm:{ media:680, top:1100 },
-      ciclo:{ media:55, top:28 }, crm:{ media:62, top:88 },
-      churn:{ media:9,  top:3 }, lead_gen:{ media:'Gare + KOL + ISF', top:'Gare + KOL + digital HCP' }
-    },
-    upper: {
-      chiusura:{ media:26, top:46 }, fatxcomm:{ media:980, top:1580 },
-      ciclo:{ media:45, top:22 }, crm:{ media:74, top:94 },
-      churn:{ media:7,  top:2 }, lead_gen:{ media:'KAM + gare nazionali', top:'KAM + accords-cadre' }
-    }
-  },
-
   commercio_abbigliamento_dettaglio: {
     micro: {
       chiusura:{ media:42, top:62 }, fatxcomm:{ media:180, top:340 },

@@ -370,37 +370,6 @@ const PROFILI_COMMERCIALI = {
     ],
   },
 
-  commercio_chimici: {
-    tipo_clientela: 'ricorrente',
-    kpi: [
-      { id:'clienti_attivi',       label:'Clienti industriali attivi',  unita:'n.',  soglie:{ verde:[20,9999], giallo:[10,19], rosso:[0,9]  } },
-      { id:'contratti_quadro_pct', label:'% fatturato su contratti quadro', unita:'%', soglie:{ verde:[50,100], giallo:[30,49], rosso:[0,29] }, note:'> 50% contratti quadro = revenue prevedibile' },
-      { id:'valore_medio_ordine',  label:'Valore medio ordine',         unita:'EUR',   soglie:{ verde:[1000,9999999], giallo:[400,999], rosso:[0,399] } },
-      { id:'frequenza_ordini',     label:'Frequenza ordini/mese/cliente', unita:'x', soglie:{ verde:[2,999],   giallo:[1,1.9],  rosso:[0,0.9] } },
-      { id:'churn_annuo_pct',      label:'Churn annuo clienti',         unita:'%',   soglie:{ verde:[0,12],    giallo:[13,20],  rosso:[21,100] } },
-      { id:'dso_gg',               label:'DSO (giorni incasso)',        unita:'gg',  soglie:{ verde:[0,30],    giallo:[31,60],  rosso:[61,999] } },
-    ],
-    diagnosi_legami: [
-      { condizione: (v) => v.contratti_quadro_pct < 30 && v.churn_annuo_pct > 15, label:'! Bassa stabilizzazione contrattuale', desc:'Pochi contratti quadro e alto churn: i clienti provano e abbandonano. Il tecnico commerciale deve portare il cliente a impegnarsi con un contratto.', livello:'giallo' },
-    ],
-  },
-
-  commercio_medicale: {
-    tipo_clientela: 'ricorrente',
-    kpi: [
-      { id:'ospedali_attivi',       label:'Strutture sanitarie attive', unita:'n.',  soglie:{ verde:[15,9999], giallo:[8,14],  rosso:[0,7]   } },
-      { id:'gare_vinte_pct',        label:'Win rate gare pubbliche',    unita:'%',   soglie:{ verde:[30,100],  giallo:[15,29], rosso:[0,14]  } },
-      { id:'valore_medio_contratto', label:'Valore medio contratto ospedale', unita:'EUR', soglie:{ verde:[50000,9999999], giallo:[20000,49999], rosso:[0,19999] } },
-      { id:'durata_contratto_anni', label:'Durata media contratto (anni)', unita:'anni', soglie:{ verde:[3,10], giallo:[1,2],   rosso:[0,0.9] } },
-      { id:'trial_to_order_pct',    label:'Conversion trial->ordine',    unita:'%',   soglie:{ verde:[55,100],  giallo:[35,54], rosso:[0,34]  } },
-      { id:'kol_attivi',            label:'KOL (medici referenti) attivi', unita:'n.', soglie:{ verde:[5,999], giallo:[2,4],   rosso:[0,1]   } },
-    ],
-    diagnosi_legami: [
-      { condizione: (v) => v.gare_vinte_pct < 15 && v.trial_to_order_pct < 40, label:'! Difficolta di penetrazione', desc:'Win rate basso sulle gare + scarsa conversione trial: il prodotto non si posiziona bene o la strategia di accesso al mercato ha lacune.', livello:'rosso' },
-      { condizione: (v) => v.kol_attivi < 2 && v.ospedali_attivi < 10, label:'! Assenza di network medico', desc:'Senza KOL e con poche strutture attive: la crescita e bloccata. I KOL sono il principale canale di sviluppo nel medicale.', livello:'giallo' },
-    ],
-  },
-
   commercio_abbigliamento_dettaglio: {
     tipo_clientela: 'transazionale',
     kpi: [
