@@ -813,7 +813,7 @@ function buildSliders(vals={}) {
 }
 
 function openModal(id){document.getElementById(id).classList.add('open')}
-function closeModal(id){document.getElementById(id).classList.remove('open')}
+function closeModal(id){var el=document.getElementById(id);el.classList.remove('open');el.style.display='';}
 document.querySelectorAll('.modal-overlay').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open')}));
 
 function _buildProspectModalBody(p) {
@@ -957,44 +957,20 @@ function openNewProspect() {
   editingId = null;
   document.getElementById('modal-prospect-title').textContent = 'Nuovo Prospect';
   var bodyEl = document.getElementById('modal-prospect-body');
-  if (!bodyEl) { console.error('modal-prospect-body NOT FOUND in DOM'); return; }
-  try {
-    var html = _buildProspectModalBody({});
-    console.log('openNewProspect: HTML generated, length=', html.length);
-    bodyEl.innerHTML = '';
-    bodyEl.innerHTML = html;
-    // Force first tab visible
-    var firstTab = document.getElementById('mtab-anagrafica');
-    if (firstTab) firstTab.style.display = 'block';
-    console.log('openNewProspect: innerHTML set, childNodes=', bodyEl.childNodes.length);
-  } catch(e) {
-    console.error('openNewProspect error:', e);
-    bodyEl.innerHTML = '<p style="color:red;padding:20px">Errore: '+e.message+'</p>';
-  }
-  openModal('modal-prospect');
+  bodyEl.innerHTML = _buildProspectModalBody({});
+  document.getElementById('modal-prospect').classList.add('open');
+  document.getElementById('modal-prospect').style.display = 'flex';
 }
 
 function openEditProspect() {
   var p = prospects.find(function(x) { return x.id === currentId; });
-  if (!p) { console.error('openEditProspect: prospect not found, currentId=', currentId); return; }
+  if (!p) return;
   editingId = p.id;
   document.getElementById('modal-prospect-title').textContent = 'Modifica Prospect';
   var bodyEl = document.getElementById('modal-prospect-body');
-  if (!bodyEl) { console.error('modal-prospect-body NOT FOUND in DOM'); return; }
-  try {
-    var html = _buildProspectModalBody(p);
-    console.log('openEditProspect: HTML generated, length=', html.length, 'prospect=', p.nome);
-    bodyEl.innerHTML = '';
-    bodyEl.innerHTML = html;
-    // Force first tab visible
-    var firstTab = document.getElementById('mtab-anagrafica');
-    if (firstTab) firstTab.style.display = 'block';
-    console.log('openEditProspect: innerHTML set, childNodes=', bodyEl.childNodes.length);
-  } catch(e) {
-    console.error('openEditProspect error:', e);
-    bodyEl.innerHTML = '<p style="color:red;padding:20px">Errore: '+e.message+'</p>';
-  }
-  openModal('modal-prospect');
+  bodyEl.innerHTML = _buildProspectModalBody(p);
+  document.getElementById('modal-prospect').classList.add('open');
+  document.getElementById('modal-prospect').style.display = 'flex';
 }
 
 async function saveProspect() {
