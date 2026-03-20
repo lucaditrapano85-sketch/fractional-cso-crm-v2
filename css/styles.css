@@ -370,3 +370,5 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 .diag-result-item{background:var(--bg3);border-radius:var(--rs);padding:8px 12px;display:flex;align-items:center;justify-content:space-between}
 .diag-result-dim{font-size:11px;color:var(--gray)}
 .diag-result-score{font-size:14px;font-weight:700}
+
+.tetto-warning{font-size:11px;color:#e67e22;background:#fef9e7;border-left:3px solid #e67e22;padding:4px 8px;margin-top:4px;border-radius:2px}

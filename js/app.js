@@ -2186,11 +2186,16 @@ function _getCostoLabel(settore, dimId, fromStep, toStep) {
 }
 
 function _getImpatto(settore, dimId, fromStep, toStep) {
+  const tetti = TETTO_BY_SETTORE[settore] || {};
+  const tetto = tetti[dimId] || 5;
+
+  // Se il livello target supera il tetto strutturale: nessun impatto
+  if (toStep > tetto) return null;
+
   const chiave = fromStep + '-' + toStep;
-  if (IMPATTO_BY_SETTORE[settore] && IMPATTO_BY_SETTORE[settore][dimId] && IMPATTO_BY_SETTORE[settore][dimId][chiave]) {
-    return IMPATTO_BY_SETTORE[settore][dimId][chiave];
-  }
-  return null;
+  const settoreData = IMPATTO_BY_SETTORE[settore] || IMPATTO_BY_SETTORE['manifatturiero_meccanica'];
+  const dimData = settoreData?.[dimId];
+  return dimData?.[chiave] || null;
 }
 
 function _fasciaFromAnno1(fatturato_anno_1) {
@@ -2672,19 +2677,24 @@ function _getDipendenze(settore, dimId) {
 }
 
 
-function _calcolaPenalita(dimId, livelloTarget, dims, targets, settore) {
-  const dipendenze = _getDipendenze(settore, dimId);
-  let mediaPonderata = 0;
-  let pesotot = 0;
-  Object.entries(dipendenze).forEach(([depId, peso]) => {
-    const livelloDep = Math.max(dims[depId]||0, targets[depId]||0);
-    mediaPonderata += livelloDep * peso;
-    pesotot += peso;
+function _calcolaPenalita(settore, dimId, targets) {
+  const dipendenze = MATRICE_DIPENDENZE[dimId] || [];
+  if (dipendenze.length === 0) return 0;
+
+  const targetDim = targets[dimId] || 1;
+  let gapTotale = 0;
+
+  dipendenze.forEach(dep => {
+    const targetDep = targets[dep] || 1;
+    const gap = Math.max(0, targetDim - targetDep);
+    gapTotale += gap;
   });
-  if (pesotot === 0) return 0;
-  mediaPonderata = mediaPonderata / pesotot;
-  const gap = Math.max(0, livelloTarget - mediaPonderata);
-  return Math.min(0.60, gap * 0.12);
+
+  const gapMedio = gapTotale / dipendenze.length;
+  const gapMax = 4; // gap massimo possibile (da 1 a 5)
+  const penalita = (gapMedio / gapMax) * 0.5; // cap 50%
+
+  return Math.min(penalita, 0.5);
 }
 
 function _calcolaImpattoCumulativo(p) {
@@ -2751,7 +2761,7 @@ function _calcolaImpattoCumulativo(p) {
   if (!usaOrganica) attive.forEach(id => {
     const cur = dims[id] || 0;
     const tgt = targets[id] || 0;
-    penalitaPerDim[id] = _calcolaPenalita(id, tgt, dims, targets, settore);
+    penalitaPerDim[id] = _calcolaPenalita(settore, id, targets);
     for (let step = cur; step < tgt; step++) {
       const c = _getCosto(settore, id, step, step+1);
       if (c) {
@@ -3598,6 +3608,11 @@ function renderTargetEditor(p) {
     const curDesc = DIM_DESC[d.id]?.[cur-1] || '--';
     const tgtDesc = DIM_DESC[d.id]?.[tgt-1] || '--';
     const subObiettiviHtml = _buildSubObiettivi(d.id, cur, tgt, settore, azioniDone, azioniCustom, p);
+    // Warning tetto strutturale
+    const tettoSettore = (TETTO_BY_SETTORE[settore] || {})[d.id] || 5;
+    const warningTetto = tgt > tettoSettore
+      ? `\x3cdiv class="tetto-warning">&#9888;&#65039; Obiettivo oltre il tetto strutturale (max ${tettoSettore}) — questa scelta implica un cambio di modello di business\x3c/div>`
+      : '';
     return `\x3cdiv style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)">
       \x3cdiv style="font-size:12px;font-weight:600;color:var(--white);margin-bottom:6px">${getDimLabel(settore, d.id)}\x3c/div>
       \x3cdiv style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px">
@@ -3616,6 +3631,7 @@ function renderTargetEditor(p) {
               onchange="previewTarget();updateTargetDesc('${d.id}');aggiornaAzioni('${d.id}')" oninput="previewTarget();updateTargetDesc('${d.id}');aggiornaAzioni('${d.id}')">
             \x3cspan style="font-size:10px;color:var(--gray)">/5\x3c/span>
           \x3c/div>
+          ${warningTetto}
           \x3cdiv id="tdesc-${d.id}" style="font-size:10px;color:${tgtCol};line-height:1.4;margin-bottom:6px">${tgtDesc}\x3c/div>
           \x3cdiv style="font-size:9px;color:var(--gray);margin-bottom:3px">Entro il\x3c/div>
           \x3cinput type="date" id="tscad-${d.id}" value="${scad}"

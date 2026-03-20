@@ -765,3 +765,49 @@ function assignNextColor() {
   return PROSPECT_PALETTE[prospects.length % PROSPECT_PALETTE.length];
 }
 const STATUS_LABELS = {nuovo:'Nuovo',contattato:'Contattato',diagnosi:'Diagnosi',proposta:'Proposta',chiuso:'Chiuso'};
+
+const TETTO_BY_SETTORE = {
+  manifatturiero_meccanica:          { ecommerce: 2, sitoweb: 4 },
+  manifatturiero_automotive:         { ecommerce: 2, sitoweb: 4 },
+  manifatturiero_packaging:          { ecommerce: 2, sitoweb: 4 },
+  manifatturiero_cterzi:             { ecommerce: 1, sitoweb: 3 },
+  manifatturiero_elettromeccanica:   { ecommerce: 2, sitoweb: 4 },
+  manifatturiero_tessile_tessuti:    { ecommerce: 2, sitoweb: 4 },
+  manifatturiero_tessile_capi:       { ecommerce: 3, sitoweb: 4 },
+  edilizia_residenziale:             { ecommerce: 2, sitoweb: 4 },
+  edilizia_impianti:                 { ecommerce: 2, sitoweb: 4 },
+  edilizia_serramenti:               { ecommerce: 3, sitoweb: 4 },
+  commercio_distribuzione_industriale: { ecommerce: 2, sitoweb: 4 },
+  commercio_ingrosso_alimentare:     { ecommerce: 2, sitoweb: 3 },
+  commercio_materiali_edili:         { ecommerce: 2, sitoweb: 4 },
+  commercio_ricambi_auto:            { ecommerce: 4, sitoweb: 5 },
+  commercio_abbigliamento_ingrosso:  { ecommerce: 2, sitoweb: 4 },
+  commercio_elettronica:             { ecommerce: 5, sitoweb: 5 },
+  commercio_auto_moto_nuovo:         { ecommerce: 2, sitoweb: 5 },
+  commercio_auto_moto_usato:         { ecommerce: 3, sitoweb: 5 },
+  commercio_abbigliamento_dettaglio: { ecommerce: 4, sitoweb: 5 },
+  commercio_orologi_gioielli:        { ecommerce: 3, sitoweb: 5 },
+  alimentare_trasformazione:         { ecommerce: 2, sitoweb: 4 },
+  alimentare_vini:                   { ecommerce: 3, sitoweb: 5 },
+  alimentare_forno:                  { ecommerce: 2, sitoweb: 4 },
+  alimentare_conserve:               { ecommerce: 3, sitoweb: 4 },
+  alimentare_ingredienti:            { ecommerce: 1, sitoweb: 3 },
+  alimentare_birra:                  { ecommerce: 4, sitoweb: 5 },
+  tech_saas:                         { ecommerce: 5, sitoweb: 5 },
+  tech_system_integrator:            { ecommerce: 2, sitoweb: 4 },
+  tech_digital_agency:               { ecommerce: 2, sitoweb: 4 },
+  tech_automazione:                  { ecommerce: 2, sitoweb: 4 },
+  servizi_it:                        { ecommerce: 2, sitoweb: 4 },
+  servizi_formazione:                { ecommerce: 3, sitoweb: 4 },
+};
+
+const MATRICE_DIPENDENZE = {
+  vendite:   ['pipeline', 'team'],
+  marketing: ['sitoweb'],
+  ecommerce: ['marketing', 'sitoweb'],
+  team:      ['processi'],
+  ricavi:    ['vendite', 'pipeline'],
+  pipeline:  ['vendite'],
+  processi:  ['team'],
+  sitoweb:   ['marketing'],
+};
