@@ -272,17 +272,6 @@ const MARKET = {
       {label:'Clienti persi/anno',media:'10%',top:'4%'},
     ]
   },
-  commercio_auto_moto: {
-    label:'Vendita al dettaglio auto & moto', parent:'commercio',
-    metrics:[
-      {label:'Tasso di chiusura medio',media:'18%',top:'32%'},
-      {label:'Fatturato/commerciale',media:'1.2M EUR/anno',top:'2.4M EUR/anno'},
-      {label:'Ciclo vendita medio',media:'25 gg',top:'10 gg'},
-      {label:'Lead gen principale',media:'Showroom, portali',top:'Google Ads + portali + CRM'},
-      {label:'Uso CRM',media:'45%',top:'85%'},
-      {label:'Clienti persi/anno',media:'35%',top:'18%'},
-    ]
-  },
   commercio_abbigliamento_dettaglio: {
     label:'Abbigliamento al dettaglio', parent:'commercio',
     metrics:[
@@ -1167,42 +1156,6 @@ const MARKET_DETAIL = {
       'KOL network strutturato con almeno 1 per specializzazione',
       'Dossier farmacoeconomico per ogni prodotto core',
       'ISF con quota visita tracciata e CRM aggiornato ogni settimana',
-    ],
-  },
-
-  commercio_auto_moto: {
-    ciclo_fasi: [
-      { fase: 'Lead da portale/sito/showroom', durata: '1-3 gg', note: 'Il cliente fa ricerca online prima di venire.' },
-      { fase: 'Contatto + appuntamento', durata: '1-5 gg', note: 'La velocita di risposta al lead e critica (< 1 ora).' },
-      { fase: 'Visita showroom + prova su strada', durata: '1-2 gg', note: 'Il test drive chiude il 60% dei clienti indecisi.' },
-      { fase: 'Valutazione usato + finanziamento', durata: '1-5 gg', note: 'Il 70% dei clienti usa finanziamento. E un prodotto da vendere.' },
-      { fase: 'Ordine + consegna', durata: '1-12 sett.', note: 'Dipende da disponibilita e configurazione.' },
-    ],
-    struttura_commerciale: 'Venditori showroom + responsabile commerciale + F&I (Finance & Insurance) manager. Il BDC (Business Development Center) gestisce i lead digitali.',
-    obiezioni: [
-      '"Trovo lo stesso online a meno" -- il valore del concessionario e: finanziamento, usato, garanzia, assistenza post-vendita.',
-      '"Devo pensarci" -- il 70% di chi "ci pensa" compra da un competitor entro 2 settimane. Follow-up entro 24h.',
-      '"L\'usato vale poco" -- mostra la stima online (Eurotax) prima della proposta. Trasparenza = fiducia.',
-    ],
-    canali: [
-      { nome: 'Portali (AutoScout24, Autovit, OLX)', efficacia: 88 },
-      { nome: 'Google Ads (marchio + modello)', efficacia: 80 },
-      { nome: 'Showroom + walk-in', efficacia: 72 },
-      { nome: 'Database clienti per sostituzione', efficacia: 68 },
-      { nome: 'Social (Meta Ads, Instagram)', efficacia: 52 },
-    ],
-    stagionalita: 'Picchi: marzo-aprile (targhe nuove) e settembre-ottobre. Calo estivo. Le immatricolazioni di fine anno (novembre-dicembre) spingono i dealer a scontare per raggiungere i target.',
-    kpi: [
-      { nome: 'Lead response time', benchmark: 'Top dealer: < 15 minuti' },
-      { nome: 'Tasso lead -> appuntamento', benchmark: '25-40%' },
-      { nome: 'Penetrazione F&I (finanziamento/assicurazione)', benchmark: 'Top: > 60% delle vendite' },
-    ],
-    valore_cliente: '15k-60k EUR per transazione . 3-5 anni per riacquisto medio',
-    maturita: [
-      'BDC dedicato con SLA di risposta lead < 15 minuti',
-      'CRM con workflow automatizzato per follow-up a 3/7/30 giorni',
-      'F&I manager dedicato con formazione certificata',
-      'Programma di sostituzione proattiva (contatto cliente a 36 mesi)',
     ],
   },
 

@@ -512,29 +512,6 @@ const MARKET_CLUSTER = {
     }
   },
 
-  commercio_auto_moto: {
-    micro: {
-      chiusura:{ media:12, top:24 }, fatxcomm:{ media:640, top:1150 },
-      ciclo:{ media:35, top:14 }, crm:{ media:28, top:62 },
-      churn:{ media:45, top:22 }, lead_gen:{ media:'Showroom + portali', top:'Google Ads + portali' }
-    },
-    small: {
-      chiusura:{ media:16, top:30 }, fatxcomm:{ media:960, top:1720 },
-      ciclo:{ media:26, top:10 }, crm:{ media:40, top:74 },
-      churn:{ media:38, top:19 }, lead_gen:{ media:'Portali + Google', top:'Google + CRM follow-up' }
-    },
-    mid: {
-      chiusura:{ media:20, top:36 }, fatxcomm:{ media:1400, top:2500 },
-      ciclo:{ media:20, top:8 }, crm:{ media:54, top:86 },
-      churn:{ media:32, top:16 }, lead_gen:{ media:'CRM + portali + Google', top:'BDC + Google + remarketing' }
-    },
-    upper: {
-      chiusura:{ media:24, top:42 }, fatxcomm:{ media:2000, top:3600 },
-      ciclo:{ media:16, top:6 }, crm:{ media:66, top:92 },
-      churn:{ media:28, top:13 }, lead_gen:{ media:'BDC + CRM + brand', top:'BDC + VIP program + CRM' }
-    }
-  },
-
   commercio_abbigliamento_dettaglio: {
     micro: {
       chiusura:{ media:42, top:62 }, fatxcomm:{ media:180, top:340 },

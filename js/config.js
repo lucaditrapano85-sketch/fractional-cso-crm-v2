@@ -401,25 +401,6 @@ const PROFILI_COMMERCIALI = {
     ],
   },
 
-  commercio_auto_moto: {
-    tipo_clientela: 'transazionale',
-    kpi: [
-      { id:'lead_mensili',          label:'Lead qualificati/mese',       unita:'n.',  soglie:{ verde:[40,9999], giallo:[15,39], rosso:[0,14]  } },
-      { id:'lead_response_min',     label:'Tempo risposta lead (minuti)', unita:'min', soglie:{ verde:[0,15],   giallo:[16,60], rosso:[61,999] }, note:'> 60 min = il cliente ha gia chiamato un altro concessionario' },
-      { id:'conversion_lead_vendita', label:'Conversion lead->vendita',  unita:'%',   soglie:{ verde:[20,100],  giallo:[10,19], rosso:[0,9]   } },
-      { id:'fi_penetration_pct',    label:'Penetrazione F&I (finanziamenti)', unita:'%', soglie:{ verde:[50,100], giallo:[30,49], rosso:[0,29] }, note:'Il F&I e il 40% del margine dealer' },
-      { id:'sostituzione_attiva_pct', label:'% clienti contattati per sostituzione', unita:'%', soglie:{ verde:[60,100], giallo:[30,59], rosso:[0,29] } },
-      { id:'nps',                   label:'NPS clienti post-consegna',   unita:'',    soglie:{ verde:[50,100],  giallo:[20,49], rosso:[-100,19] } },
-      { id:'prezzo_medio_vendita',  label:'Prezzo medio veicolo venduto', unita:'EUR', soglie:{ verde:[15000,9999999], giallo:[8000,14999], rosso:[0,7999] }, opzionale:true, contesto:'Prezzo medio di vendita -- utile ma spesso non monitorato' },
-      { id:'usato_pct_margine',     label:'% margine da usato su totale', unita:'%', soglie:{ verde:[25,100],  giallo:[12,24], rosso:[0,11]  }, note:'L\'usato e la vera fonte di margine del dealer' },
-    ],
-    diagnosi_legami: [
-      { condizione: (v) => v.lead_response_min > 30 && v.conversion_lead_vendita < 15, label:' Lead non gestiti = soldi persi', desc:'Risposta lenta ai lead e bassa conversione: i clienti arrivano informati e decidono in pochi giorni. Ogni lead non risposto entro 15 minuti ha 70% di probabilita di comprare altrove.', livello:'rosso' },
-      { condizione: (v) => v.fi_penetration_pct < 30 && v.usato_pct_margine < 12, label:' Marginalita compressa su entrambi i fronti', desc:'Senza F&I e senza margine sull\'usato, si vive solo sul margine nuovo (spesso < 2%): il business non e sostenibile.', livello:'rosso' },
-      { condizione: (v) => v.sostituzione_attiva_pct < 30 && v.lead_mensili < 20, label:'! CRM non attivato', desc:'Pochi lead dall\'esterno e nessuna attivita di sostituzione proattiva: il database clienti esistente non viene sfruttato.', livello:'giallo' },
-    ],
-  },
-
   commercio_abbigliamento_dettaglio: {
     tipo_clientela: 'transazionale',
     kpi: [
@@ -662,6 +643,12 @@ function getDimLabel(settore, dimId) {
       ricavi: "Dotazione cantiere",
       sitoweb: "Sito Web",
       ecommerce: "Cantieri & Preventivazione"
+    },
+    auto_moto_nuovo: {
+      ecommerce: "After Sales & Service"
+    },
+    auto_moto_usato: {
+      ecommerce: "Approvvigionamento & parco veicoli"
     }
   };
 
