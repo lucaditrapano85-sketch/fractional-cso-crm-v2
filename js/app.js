@@ -844,7 +844,7 @@ function _buildReportHTML(p) {
       const azione = _getAzionePredefinita(settore, d.id, cur, cur + 1);
       const costo = _getCosto(settore, d.id, cur, cur + 1);
       const scad = scadenze[d.id] || null;
-      const impattoRaw = _getImpatto(settore, d.id, cur, cur + 1);
+      const impattoRaw = _getImpatto(settore, d.id, cur + '-' + (cur + 1));
       const impattoCalc = _calcolaImpatto(impattoRaw, p.fatturato, p.fatturato_anno_1, p.ebitda, p.margine_pct, p.utile_netto);
       return azione ? { dim: getDimLabel(p.settore, d.id), dimId: d.id, cur, tgt, azione, costo, scad, impatto: impattoCalc } : null;
     })
@@ -2185,17 +2185,14 @@ function _getCostoLabel(settore, dimId, fromStep, toStep) {
   return parts.join(' + ');
 }
 
-function _getImpatto(settore, dimId, fromStep, toStep) {
-  const tetti = TETTO_BY_SETTORE[settore] || {};
+function _getImpatto(settore, dimId, stepKey) {
+  const tetti = (typeof TETTO_BY_SETTORE !== 'undefined' ? TETTO_BY_SETTORE[settore] : null) || {};
   const tetto = tetti[dimId] || 5;
-
-  // Se il livello target supera il tetto strutturale: nessun impatto
-  if (toStep > tetto) return null;
-
-  const chiave = fromStep + '-' + toStep;
+  const targetLvl = parseInt((stepKey || '').split('-')[1]) || 5;
+  if (targetLvl > tetto) return null;
   const settoreData = IMPATTO_BY_SETTORE[settore] || IMPATTO_BY_SETTORE['manifatturiero_meccanica'];
   const dimData = settoreData?.[dimId];
-  return dimData?.[chiave] || null;
+  return dimData?.[stepKey] || null;
 }
 
 function _fasciaFromAnno1(fatturato_anno_1) {
@@ -2786,7 +2783,7 @@ function _calcolaImpattoCumulativo(p) {
       const tgt = targets[id] || 0;
       let contributoTot = 0;
       for (let step = cur; step < tgt; step++) {
-        const imp = _getImpatto(settore, id, step, step+1);
+        const imp = _getImpatto(settore, id, step + '-' + (step+1));
         if (imp) {
           const pctArr = orizzonte === 6 ? imp.pct_6m : orizzonte === 12 ? imp.pct_12m : imp.pct_24m;
           const midPct = (pctArr[0] + pctArr[1]) / 2 / 100;
@@ -3299,7 +3296,7 @@ function _buildStepBlock(dimId, fromStep, toStep, settore, azioniDone, azioniCus
   const costo = _getCosto(settore, dimId, fromStep, toStep);
   let html = '\x3cdiv style="background:var(--bg);border-radius:var(--rs);padding:10px 12px;margin-top:6px">';
   // Badge costo e impatto
-  const impatto = _getImpatto(settore, dimId, fromStep, toStep);
+  const impatto = _getImpatto(settore, dimId, fromStep + '-' + toStep);
   let impattoCalc = null;
   try { impattoCalc = p ? _calcolaImpatto(impatto, p.fatturato, p.fatturato_anno_1, p.ebitda, p.margine_pct, p.utile_netto) : null; } catch(e) { impattoCalc = null; }
   if (costo || impatto) {
@@ -3410,7 +3407,7 @@ function _buildSubObiettivi(dimId, cur, tgt, settore, azioniDone, azioniCustom, 
     const pStep = p ? {...p, fatturato_anno_1: fatProgr, ebitda: ebitdaProgr} : p;
 
     // Raccoglie dati per il grafico
-    const impattoStep = _getImpatto(settore, dimId, step, step + 1);
+    const impattoStep = _getImpatto(settore, dimId, step + '-' + (step + 1));
     const costoStep = _getCosto(settore, dimId, step, step + 1);
     let costoMensile = null;
     if (costoStep) {
