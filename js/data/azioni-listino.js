@@ -1394,59 +1394,59 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "alimentare_forno": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il forno vive di clienti abituali che entrano ogni mattina — conosci i loro nomi e le loro abitudini. Inizia a proporre attivamente prodotti nuovi e abbinamenti: chi compra il pane potrebbe comprare anche la focaccia farcita",
+      "2-3": "Apri il canale B2B locale: bar, caffetterie e ristoranti della zona hanno bisogno di prodotti freschi ogni giorno. Una fornitura fissa a 3-4 bar vale più di 50 clienti retail occasionali",
+      "3-4": "Struttura le forniture B2B con listino dedicato, consegna programmata e accordi stagionali. Attiva il catering per eventi locali — matrimoni, comunioni, aziende — con margini molto superiori al retail",
+      "4-5": "Struttura commerciale con responsabile B2B per le forniture horeca, gestione catering eventi e canale online per ordini e consegna a domicilio"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Tieni un registro dei clienti B2B: bar, ristoranti, quantità ordinate e frequenza. Chi non ordina da una settimana sta comprando altrove",
+      "2-3": "CRM semplice per gestire i clienti horeca: storico ordini, prodotti preferiti e scadenze contratti stagionali",
+      "3-4": "Pipeline strutturata con forecast settimanale per cliente B2B, gestione ordini catering e database clienti retail per promozioni e novità",
+      "4-5": "Sistema integrato ordini-produzione: gli ordini B2B del giorno dopo arrivano entro le 18 per pianificare la produzione notturna senza sprechi"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il fornaio fa tutto — produce e vende. Anche solo un aiutante part-time al banco libera tempo prezioso e migliora il servizio al cliente",
+      "2-3": "Fornaio junior o apprendista: il problema del ricambio generazionale va affrontato subito. Cerca nelle scuole alberghiere e offri un percorso di crescita concreto",
+      "3-4": "Team strutturato: produzione (fornai) separata dalla vendita (banco + consegne). Chi vende non produce e viceversa — qualità e servizio migliorano entrambi",
+      "4-5": "Struttura completa con responsabile produzione, responsabile vendite e banco, addetto consegne B2B e figura dedicata al catering eventi"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "HACCP obbligatorio e aggiornato — è la base legale per operare. Tracciabilità delle materie prime documentata. Senza non puoi lavorare",
+      "2-3": "Certificazione per allergeni: etichettatura precisa di tutti i prodotti con i 14 allergeni — obbligo di legge spesso gestito male. Processo di gestione energetica base: il forno è il costo principale",
+      "3-4": "Certificazione biologica se usi farine bio — è una leva commerciale crescente. Processo di ottimizzazione energetica: programmazione cotture per ridurre i consumi nelle ore di punta",
+      "4-5": "Sistema qualità documentato, ottimizzazione energetica avanzata (forno a basso consumo, recupero calore), certificazioni per GDO e catering aziendale strutturato"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Analizza i margini per prodotto: il pane base ha margini bassi, la pasticceria e la gastronomia hanno margini tripli. Ogni ora di forno usata per torte guadagna più del pane bianco",
+      "2-3": "Diversifica l'offerta verso prodotti ad alto margine: pasticceria, gastronomia, prodotti speciali (lievito madre, farine antiche, gluten free). Il cliente paga il premium per la qualità artigianale",
+      "3-4": "Mix di ricavi strutturato: retail + B2B horeca + catering + prodotti speciali. Riduci la dipendenza dal pane commodity che compete con il supermercato",
+      "4-5": "Revenue ottimizzato con contratti B2B annuali, catering come centro di profitto autonomo e prodotti a marchio proprio in GDO locale o online"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Google My Business aggiornato con foto dei prodotti, orari precisi e risposta alle recensioni. Il cliente cerca il forno su Google Maps prima di uscire di casa",
+      "2-3": "Instagram con foto dei prodotti freschi ogni mattina — il pane appena sfornato alle 7 sui social porta clienti. Semplice, autentico, costante",
+      "3-4": "Storytelling del territorio: farine locali, ricette tradizionali, collaborazioni con produttori locali. Il cliente paga di più se conosce la storia dietro il prodotto",
+      "4-5": "Piano marketing strutturato: social + PR locale + presenza a mercati e fiere gastronomiche + collaborazioni con ristoranti per valorizzazione reciproca"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Sito base con prodotti, orari, indirizzo e possibilità di prenotare prodotti da ritirare. Riduce le code e garantisce disponibilità",
+      "2-3": "Sito con catalogo prodotti fotografato, sezione speciali e prenotazioni online per prodotti su ordinazione (torte, catering)",
+      "3-4": "Sito professionale con e-commerce per spedizione prodotti a lunga conservazione (panettoni, biscotti, grissini) e prenotazione catering",
+      "4-5": "Portale completo con ordini online per consegna a domicilio, abbonamento pane settimanale e area B2B per i clienti horeca"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Zero canale online — perdi i clienti che non possono venire di persona. Inizia con un sistema di prenotazione WhatsApp per i prodotti del giorno dopo",
+      "2-3": "Ordini online o via app per ritiro in negozio: riduce gli sprechi perché produci quello che è già venduto. Consegna a domicilio nella zona come servizio premium",
+      "3-4": "E-commerce per prodotti a lunga conservazione (panettoni, colombe, biscotti artigianali): vendita nazionale con margini alti e zero deperibilità",
+      "4-5": "Strategia omnicanale: negozio fisico + consegna a domicilio + e-commerce nazionale per specialty + abbonamento settimanale pane fresco per i clienti fedeli"
 
     }
   },
