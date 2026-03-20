@@ -1626,59 +1626,59 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "tech_saas": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Definire ICP (Ideal Customer Profile) con firmografici e trigger di acquisto. Creare script di discovery call focalizzato su pain e ROI atteso",
+      "2-3": "Costruire sequenze outbound multicanale (email + LinkedIn) per segmento. Implementare framework di qualification (MEDDIC o BANT adattato)",
+      "3-4": "Mappare il buying committee tipico e gestire i multi-stakeholder deal con champion interni e business case strutturato",
+      "4-5": "Sales machine scalabile: ICP validato per verticale, playbook per segmento, processo di qualification automatizzato e forecast predittivo basato su engagement data"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Definire stage gate chiari con criteri di avanzamento oggettivi. Tracciare conversion rate per stage e identificare il collo di bottiglia",
+      "2-3": "Istituire pipeline review settimanale con aging alert sui deal dormienti. Implementare deal scoring basato su engagement e fit",
+      "3-4": "Separare pipeline new business da expansion/upsell. Forecast mensile basato su probabilità per stage con accuracy misurata",
+      "4-5": "Pipeline intelligence: scoring predittivo, alert automatici su deal a rischio, forecast accuracy > 80% e visibilità completa su pipeline coverage ratio"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Costruire playbook commerciale con messaggi per verticale/ICP. Definire ramp plan per nuovi AE con milestone a 30/60/90 giorni",
+      "2-3": "Istituire call review cadence per coaching continuo. Separare ruoli SDR (outbound) e AE (closing) se il volume lo giustifica",
+      "3-4": "Definire OKR commerciali trimestrali con metriche SaaS (ARR, CAC, win rate). Team con SDR + AE + CSM con handoff strutturati",
+      "4-5": "Revenue team completo: SDR team con leader, AE per segmento, CSM per tier di cliente, RevOps per analytics e Sales Enablement per formazione continua"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Standardizzare la demo con struttura discovery → value mapping → next step. Creare template di proposal con ROI calculator integrato",
+      "2-3": "Predisporre contratto subscription standard con clausole rinnovo automatico. Definire processo di handoff sales → customer success post-firma",
+      "3-4": "Documentare obiezioni frequenti e relative risposte nel playbook. Processo di security review e compliance (SOC2, GDPR) strutturato per deal enterprise",
+      "4-5": "Sales operations maturo: contratti modulari per tier, processo di procurement enterprise con legal review, compliance certificata e SLA contrattuali monitorati"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Costruire expansion playbook: upsell per seat/moduli, cross-sell per use case. Istituire QBR trimestrali con i clienti chiave per anticipare il rinnovo",
+      "2-3": "Implementare churn early warning basato su usage data e NPS. Ottimizzare pricing tier per massimizzare ARPU senza aumentare churn",
+      "3-4": "Monitorare Net Revenue Retention come KPI primario di salute commerciale. Target NRR > 110% con espansione sistematica sui clienti esistenti",
+      "4-5": "Revenue engine maturo: NRR > 120%, LTV/CAC > 3x, churn < 1% mensile. Expansion revenue supera il new business come motore di crescita"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Costruire content strategy product-led (tutorial, use case, benchmark di settore). Produrre case study con metriche ROI concrete per verticale target",
+      "2-3": "Attivare SEO su keyword intent alto (alternative, comparazioni, problemi specifici). Strutturare referral program con incentivo per clienti che portano lead",
+      "3-4": "Presidiare community e forum di settore con contributi non promozionali. Campagne paid su LinkedIn e Google Ads con targeting per ICP e job title",
+      "4-5": "Growth marketing strutturato: inbound engine con SEO + content + community, outbound con ABM per enterprise, product-led con viralità integrata nel prodotto"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Ottimizzare homepage con value proposition chiara e CTA verso trial/demo. Creare pricing page trasparente con confronto tier e FAQ sulle obiezioni comuni",
+      "2-3": "Aggiungere social proof visibile: loghi clienti, recensioni G2/Capterra, case study. Costruire landing page dedicate per verticale o use case specifico",
+      "3-4": "Implementare live chat o chatbot per qualificare i visitatori ad alto intento. A/B testing continuo su landing page e CTA per ottimizzare conversion rate",
+      "4-5": "Sito come motore di conversione: personalizzazione per visitor segment, intent-based routing, self-service demo e signup flow ottimizzato con analytics completi"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Ottimizzare il flusso di signup per ridurre attrito e time-to-value. Costruire in-app onboarding guidato con checklist e milestone di attivazione",
+      "2-3": "Definire il gate freemium/trial: cosa è gratuito, cosa converte all'upgrade. Implementare email di nurturing automatiche basate sul comportamento in-app",
+      "3-4": "Misurare e ottimizzare il PQL (Product Qualified Lead) come trigger commerciale. Product analytics per identificare gli utenti pronti all'upgrade",
+      "4-5": "Product-led growth maturo: self-service upgrade, viralità integrata (invite, share), PQL scoring automatico e hand-raise to sales per deal enterprise"
 
     }
   },

@@ -642,6 +642,9 @@ function getDimLabel(settore, dimId) {
     },
     birra: {
       ecommerce: "Taproom & esperienza"
+    },
+    saas: {
+      ecommerce: "Prodotto & Trial Experience"
     }
   };
 
