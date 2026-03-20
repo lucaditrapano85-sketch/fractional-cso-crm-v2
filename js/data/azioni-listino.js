@@ -1452,59 +1452,59 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "alimentare_conserve": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Vendi solo ai mercati locali e agli amici — zero struttura. Mappa negozi alimentari, enoteche e gastronomie della zona e proponi una fornitura di prova con campioni: il prodotto artigianale si vende facendolo assaggiare",
+      "2-3": "Attiva canali B2B locali: negozi specialty food, agriturismi, enoteche. Parallelamente costruisci una lista clienti diretti — chi compra al mercato è il cliente ideale per l'e-commerce",
+      "3-4": "Agente o broker per la GDO locale e i negozi specialty food regionali. Canale turistico strutturato: accordi con agriturismi, B&B e punti vendita turistici per forniture continuative",
+      "4-5": "Struttura commerciale con responsabile B2B per GDO e specialty, canale export per mercati esteri (USA, Germania, Giappone adorano i prodotti italiani artigianali) e e-commerce come canale primario"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Tieni un registro dei clienti B2B: negozio, referente, prodotti ordinati e frequenza. La conserva dura mesi — il riordino non è automatico, va stimolato",
+      "2-3": "CRM semplice per gestire clienti B2B e lista privati. Traccia i campioni inviati e i follow-up aperti. I clienti che hanno assaggiato e non hanno ordinato vanno ricontattati",
+      "3-4": "Pipeline strutturata per canale con forecast stagionale basato sulla produzione disponibile. Gestione liste d'attesa per prodotti limitati — la scarsità è una leva di valore",
+      "4-5": "Sistema integrato produzione-ordini-spedizioni: sai sempre quanti vasetti hai disponibili per ogni referenza e gestisci gli ordini in base allo stock reale"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Produzione familiare — tutto nelle mani del titolare. Anche solo un aiutante stagionale durante il periodo di produzione fa la differenza sulla quantità producibile",
+      "2-3": "Figura dedicata alla gestione ordini, spedizioni e customer service: il cliente online che aspetta il vasetto di pomodoro vuole risposta rapida",
+      "3-4": "Team strutturato: produzione (stagionale con picchi) + commerciale + logistica spedizioni. Chi spedisce deve imballare bene — un vasetto rotto è un cliente perso",
+      "4-5": "Struttura completa con responsabile produzione, commerciale B2B, e-commerce manager e addetto logistica spedizioni con standard packaging definiti"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Autorizzazione sanitaria per la produzione alimentare artigianale (notifica OSA) obbligatoria. HACCP documentato. Etichette conformi con tutti gli allergeni — senza non puoi vendere legalmente",
+      "2-3": "Tracciabilità lotti documentata: ogni vasetto deve avere lotto, data produzione e scadenza. Processo di controllo qualità per ogni lotto prodotto — un difetto su scala fa danni enormi",
+      "3-4": "Certificazione biologica se usi materie prime bio — è la leva principale per e-commerce e export. BRC o IFS per accedere alla GDO strutturata",
+      "4-5": "Sistema qualità certificato con tracciabilità completa, certificazioni per export (USDA Organic, certificazioni halal se serve), carbon footprint e packaging sostenibile come leva commerciale"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Analizza i margini per prodotto: la confettura artigianale a 8€ ha margini molto superiori alla passata a 3€. Orienta la produzione verso i prodotti premium",
+      "2-3": "Il canale diretto (mercati, e-commerce) ha margini doppi rispetto alla GDO. Ogni cliente diretto acquisito vale molto di più di uno scaffale in supermercato",
+      "3-4": "Box regalo e kit tematici: un cesto natalizio con 5 prodotti a 35€ vale più di 5 vasetti venduti singolarmente a 6€ l'uno. Il confezionamento regalo moltiplica il valore percepito",
+      "4-5": "Revenue mix ottimizzato: GDO locale (volume) + specialty e horeca (margine medio) + e-commerce diretto (margine alto) + export (prestigio e valorizzazione) + gift box (margine altissimo)"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il territorio è il tuo brand: racconta la storia delle materie prime, del luogo, della ricetta di famiglia. Instagram con foto dei prodotti e del processo di produzione — l'autenticità vende",
+      "2-3": "Presenza ai mercati contadini e alle fiere enogastronomiche locali: il campione gratuito converte meglio di qualsiasi pubblicità. Raccogli email ad ogni degustazione",
+      "3-4": "Collaborazioni con food blogger e influencer gastronomici: una recensione autentica raggiunge migliaia di clienti ideali. PR verso riviste food e guide gastronomiche",
+      "4-5": "Piano marketing strutturato: social storytelling + fiere nazionali (Salone del Gusto, Cibus) + PR gastronomica + collaborazioni con chef per visibilità e credibilità"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Sito con storia del produttore, catalogo prodotti con foto professionali e contatti. Il vasetto artigianale si vende con la storia — senza storia è solo un vasetto",
+      "2-3": "E-commerce semplice per vendere online: spedizione in tutta Italia, confezioni regalo e abbonamento box mensile. La conserva si spedisce facilmente — è il prodotto ideale per l'online",
+      "3-4": "Sito professionale con e-commerce, sezione ricette con i propri prodotti, area stampa con materiali scaricabili e versione in inglese per i clienti stranieri",
+      "4-5": "Portale completo con e-commerce multilingua, abbonamento box personalizzabile, area B2B per negozi e ristoranti e integrazione con i principali marketplace food (Amazon, Eataly online)"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Vendi solo ai mercati locali — il tuo raggio d'azione è limitato dalla geografia. Un e-commerce semplice ti apre l'Italia intera senza costi fissi aggiuntivi",
+      "2-3": "Shop online attivo con spedizione in 48 ore: box regalo, confezioni natalizie e abbonamento mensile. Il cliente del nord che ha assaggiato al mercato al sud può continuare a comprare da te",
+      "3-4": "Presenza su marketplace food specializzati (Gustoso, La Pignatta, Eataly online) per visibilità e nuovi clienti. Amazon per i prodotti a più alto volume",
+      "4-5": "Strategia e-commerce strutturata: sito proprio + marketplace selezionati + export diretto online verso USA e Germania. Il canale digitale genera il 40-50% del fatturato con i margini più alti"
 
     }
   },
