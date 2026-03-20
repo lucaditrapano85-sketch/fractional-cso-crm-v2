@@ -853,7 +853,8 @@ function _buildProspectModalBody(p) {
   var boolSel = function(id, val) {
     return '<select class="form-input" id="' + id + '"><option value="">--</option><option value="true"' + (val===true?' selected':'') + '>Si</option><option value="false"' + (val===false?' selected':'') + '>No</option></select>';
   };
-  var inp = function(id, val, ph, type) { return '<input class="form-input" id="' + id + '" type="' + (type||'text') + '" placeholder="' + (ph||'') + '" value="' + (val!=null?val:'') + '">'; };
+  var esc = function(s) { return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); };
+  var inp = function(id, val, ph, type) { return '<input class="form-input" id="' + id + '" type="' + (type||'text') + '" placeholder="' + esc(ph||'') + '" value="' + esc(val) + '">'; };
   var fatVal = (_fasciaFromAnno1 ? _fasciaFromAnno1(p.fatturato_anno_1) : null) || p.fatturato || '500k-1M';
 
   return '<div class="modal-tabs">' +
@@ -917,8 +918,8 @@ function _buildProspectModalBody(p) {
   '</div></div>' +
 
   '<div class="mtab-content" id="mtab-note" style="display:none"><div class="form-grid">' +
-    '<div class="form-group form-group-full"><label>Note iniziali / prima call</label><textarea class="form-input" id="f-note" rows="3" placeholder="Impressioni dalla prima call...">' + (p.note||'') + '</textarea></div>' +
-    '<div class="form-group form-group-full"><label>Note strategiche</label><textarea class="form-input" id="f-notestrategiche" rows="3" placeholder="Osservazioni su posizionamento, rischi, opportunita...">' + (p.note_strategiche||'') + '</textarea></div>' +
+    '<div class="form-group form-group-full"><label>Note iniziali / prima call</label><textarea class="form-input" id="f-note" rows="3" placeholder="Impressioni dalla prima call...">' + esc(p.note) + '</textarea></div>' +
+    '<div class="form-group form-group-full"><label>Note strategiche</label><textarea class="form-input" id="f-notestrategiche" rows="3" placeholder="Osservazioni su posizionamento, rischi, opportunita...">' + esc(p.note_strategiche) + '</textarea></div>' +
     '<div class="form-group"><label>Tool CRM</label>' + inp('f-tcrm', p.tool_crm, 'es. HubSpot') + '</div>' +
     '<div class="form-group"><label>Tool ERP</label>' + inp('f-terp', p.tool_erp, 'es. SAP B1') + '</div>' +
     '<div class="form-group"><label>Tool Ecommerce</label>' + inp('f-tecom', p.tool_ecommerce, 'es. Shopify') + '</div>' +
@@ -938,7 +939,9 @@ function switchModalTab(tabId, btn) {
 function openNewProspect() {
   editingId = null;
   document.getElementById('modal-prospect-title').textContent = 'Nuovo Prospect';
-  document.getElementById('modal-prospect-body').innerHTML = _buildProspectModalBody({});
+  try {
+    document.getElementById('modal-prospect-body').innerHTML = _buildProspectModalBody({});
+  } catch(e) { console.error('openNewProspect error:', e); document.getElementById('modal-prospect-body').innerHTML = '<p style="color:red">Errore: '+e.message+'</p>'; }
   openModal('modal-prospect');
 }
 
@@ -947,7 +950,9 @@ function openEditProspect() {
   if (!p) return;
   editingId = p.id;
   document.getElementById('modal-prospect-title').textContent = 'Modifica Prospect';
-  document.getElementById('modal-prospect-body').innerHTML = _buildProspectModalBody(p);
+  try {
+    document.getElementById('modal-prospect-body').innerHTML = _buildProspectModalBody(p);
+  } catch(e) { console.error('openEditProspect error:', e); document.getElementById('modal-prospect-body').innerHTML = '<p style="color:red">Errore: '+e.message+'</p>'; }
   openModal('modal-prospect');
 }
 
