@@ -169,10 +169,15 @@ function renderDashboard() {
   const hot=prospects.filter(p=>calcScore(p)>=70).length;
   const prop=prospects.filter(p=>p.stato==='proposta').length;
   const closed=prospects.filter(p=>p.stato==='chiuso').length;
-  document.getElementById('kpi-total').textContent=total;
-  document.getElementById('kpi-hot').textContent=hot;
-  document.getElementById('kpi-prop').textContent=prop;
-  document.getElementById('kpi-closed').textContent=closed;
+  document.getElementById('kpi-grid').innerHTML = [
+    { label: 'Prospect totali', val: total, cls: '', filter: 'tutti' },
+    { label: 'Score alto (≥70)', val: hot, cls: 'gold', filter: 'score' },
+    { label: 'In proposta', val: prop, cls: '', filter: 'proposta' },
+    { label: 'Chiusi', val: closed, cls: '', filter: 'chiuso' },
+  ].map(k => `<div class="kpi-card ${k.cls}" onclick="showView('prospects');setProspectFilter('${k.filter}')" style="cursor:pointer" title="Clicca per vedere i prospect">
+    <div class="kpi-label">${k.label}</div>
+    <div class="kpi-val">${k.val}</div>
+  </div>`).join('');
 
   const allCols=['nuovo','contattato','diagnosi','proposta','chiuso'];
 
@@ -224,6 +229,140 @@ function renderDashboard() {
       \x3cdiv class="pipe-col-scroll">${cards}\x3c/div>
     \x3c/div>`;
   }).join('');
+}
+
+// -- SEZIONE PROSPECT --------------------------------------
+let _prospectFilter = 'tutti';
+let _prospectSearch = '';
+let _prospectSort = 'score';
+
+function setProspectFilter(filter) {
+  _prospectFilter = filter;
+  renderProspects();
+}
+
+function renderProspectsView() { renderProspects(); }
+
+function renderProspects() {
+  const container = document.getElementById('view-prospects');
+  if (!container) return;
+
+  const STATI = ['nuovo', 'contattato', 'diagnosi', 'proposta', 'chiuso'];
+  const STATI_LABEL = { nuovo: 'Nuovo', contattato: 'Contattato', diagnosi: 'Diagnosi', proposta: 'Proposta', chiuso: 'Chiuso' };
+  const STATI_COLOR = { nuovo: '#6c757d', contattato: '#3498db', diagnosi: '#9b59b6', proposta: '#e67e22', chiuso: '#27ae60' };
+
+  // Filtra prospect
+  let lista = prospects.filter(function(p) {
+    var matchSearch = !_prospectSearch ||
+      (p.nome || '').toLowerCase().includes(_prospectSearch.toLowerCase()) ||
+      (p.referente || '').toLowerCase().includes(_prospectSearch.toLowerCase()) ||
+      (p.settore || '').toLowerCase().includes(_prospectSearch.toLowerCase()) ||
+      (p.sede_legale || '').toLowerCase().includes(_prospectSearch.toLowerCase());
+
+    var matchFilter = _prospectFilter === 'tutti' ? true
+      : _prospectFilter === 'score' ? calcScore(p) >= 70
+      : p.stato === _prospectFilter;
+
+    return matchSearch && matchFilter;
+  });
+
+  // Ordina
+  if (_prospectSort === 'score') lista.sort(function(a,b) { return calcScore(b) - calcScore(a); });
+  else if (_prospectSort === 'fatturato') lista.sort(function(a,b) { return (b.fatturato_anno_1||0) - (a.fatturato_anno_1||0); });
+  else if (_prospectSort === 'data') lista.sort(function(a,b) { return new Date(b.created_at) - new Date(a.created_at); });
+  else if (_prospectSort === 'nome') lista.sort(function(a,b) { return (a.nome||'').localeCompare(b.nome||''); });
+
+  // Macro settore label
+  function macroLabel(settore) {
+    var macro = (settore || '').split('_')[0];
+    var map = { manifatturiero:'Manifatturiero', edilizia:'Edilizia', commercio:'Commercio', alimentare:'Alimentare', tech:'Tech', servizi:'Servizi' };
+    return map[macro] || settore || '\u2014';
+  }
+
+  // Card prospect
+  function prospectCard(p) {
+    var score = calcScore(p);
+    var sColor = score >= 70 ? '#27ae60' : score >= 40 ? '#e67e22' : '#e74c3c';
+    var statoColor = STATI_COLOR[p.stato] || '#6c757d';
+    var fatturato = p.fatturato_anno_1 ? '\u20AC' + (p.fatturato_anno_1/1000).toFixed(0) + 'k' : p.fatturato || '\u2014';
+    return '<div class="prospect-kanban-card" onclick="openProspect(\'' + p.id + '\')" style="cursor:pointer">' +
+      '<div class="pkc-header">' +
+        '<div class="pkc-color" style="background:' + (p.color||statoColor) + '"></div>' +
+        '<div class="pkc-nome">' + (p.nome || '\u2014') + '</div>' +
+      '</div>' +
+      '<div class="pkc-settore">' + macroLabel(p.settore) + '</div>' +
+      '<div class="pkc-score-row">' +
+        '<div class="pkc-score-bar-bg"><div class="pkc-score-bar" style="width:' + score + '%;background:' + sColor + '"></div></div>' +
+        '<span class="pkc-score-val" style="color:' + sColor + '">' + score + '</span>' +
+      '</div>' +
+      '<div class="pkc-footer">' +
+        '<span class="pkc-fatturato">' + fatturato + '</span>' +
+        '<span class="pkc-referente">' + (p.referente || '') + '</span>' +
+      '</div>' +
+    '</div>';
+  }
+
+  // Header stats
+  var statsRow = STATI.map(function(s) {
+    var n = prospects.filter(function(p) { return p.stato === s; }).length;
+    return '<span class="ps-pill" style="border-color:' + STATI_COLOR[s] + ';color:' + STATI_COLOR[s] + '">' + STATI_LABEL[s] + ' <b>' + n + '</b></span>';
+  }).join('');
+
+  // Kanban
+  var kanban;
+  if (_prospectFilter === 'score') {
+    kanban = '<div class="prospect-kanban"><div class="pk-col pk-col-wide">' +
+      '<div class="pk-col-header" style="background:#27ae60">Score Alto (\u226570) \u2014 ' + lista.length + '</div>' +
+      '<div class="pk-col-body pk-col-body-grid">' +
+      (lista.map(prospectCard).join('') || '<div class="pk-empty">Nessun prospect</div>') +
+      '</div></div></div>';
+  } else if (_prospectFilter === 'tutti') {
+    kanban = '<div class="prospect-kanban">' + STATI.map(function(s) {
+      var col = lista.filter(function(p) { return p.stato === s; });
+      return '<div class="pk-col">' +
+        '<div class="pk-col-header" style="background:' + STATI_COLOR[s] + '">' + STATI_LABEL[s] + ' <span class="pk-col-count">' + col.length + '</span></div>' +
+        '<div class="pk-col-body">' +
+        (col.map(prospectCard).join('') || '<div class="pk-empty">\u2014</div>') +
+        '</div></div>';
+    }).join('') + '</div>';
+  } else {
+    kanban = '<div class="prospect-kanban"><div class="pk-col pk-col-wide">' +
+      '<div class="pk-col-header" style="background:' + (STATI_COLOR[_prospectFilter]||'#3498db') + '">' + (STATI_LABEL[_prospectFilter]||_prospectFilter) + ' \u2014 ' + lista.length + '</div>' +
+      '<div class="pk-col-body pk-col-body-grid">' +
+      (lista.map(prospectCard).join('') || '<div class="pk-empty">Nessun prospect</div>') +
+      '</div></div></div>';
+  }
+
+  // Filtri buttons
+  var filterBtns = ['tutti','nuovo','contattato','diagnosi','proposta','chiuso'].map(function(f) {
+    var active = _prospectFilter === f;
+    var style = active ? 'background:' + (STATI_COLOR[f]||'#2c3e50') + ';color:#fff;border-color:' + (STATI_COLOR[f]||'#2c3e50') : '';
+    return '<button class="pf-btn' + (active?' active':'') + '" style="' + style + '" onclick="setProspectFilter(\'' + f + '\')">' +
+      (f === 'tutti' ? 'Tutti' : STATI_LABEL[f]) + '</button>';
+  }).join('');
+  var scoreActive = _prospectFilter === 'score';
+  filterBtns += '<button class="pf-btn' + (scoreActive?' active':'') + '" style="' + (scoreActive?'background:#f39c12;color:#fff;border-color:#f39c12':'') + '" onclick="setProspectFilter(\'score\')">Score alto</button>';
+
+  container.innerHTML =
+    '<div class="prospects-header">' +
+      '<div class="prospects-title">' +
+        '<h2>Prospect</h2>' +
+        '<div class="prospects-stats">' + statsRow + '</div>' +
+      '</div>' +
+      '<div class="prospects-controls">' +
+        '<div class="prospects-search-wrap">' +
+          '<input class="prospects-search" type="text" placeholder="Cerca per nome, referente, settore, sede..." value="' + (_prospectSearch||'') + '" oninput="_prospectSearch=this.value;renderProspects()">' +
+        '</div>' +
+        '<select class="prospects-sort" onchange="_prospectSort=this.value;renderProspects()">' +
+          '<option value="score"' + (_prospectSort==='score'?' selected':'') + '>Ordina: Score</option>' +
+          '<option value="fatturato"' + (_prospectSort==='fatturato'?' selected':'') + '>Ordina: Fatturato</option>' +
+          '<option value="data"' + (_prospectSort==='data'?' selected':'') + '>Ordina: Data</option>' +
+          '<option value="nome"' + (_prospectSort==='nome'?' selected':'') + '>Ordina: Nome</option>' +
+        '</select>' +
+      '</div>' +
+      '<div class="prospects-filters">' + filterBtns + '</div>' +
+    '</div>' +
+    kanban;
 }
 
 // -- PROSPECT DETAIL ---------------------------------------

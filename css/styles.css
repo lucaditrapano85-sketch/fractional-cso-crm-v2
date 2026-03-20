@@ -372,3 +372,40 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 .diag-result-score{font-size:14px;font-weight:700}
 
 .tetto-warning{font-size:12px;font-weight:600;color:#fff;background:#e67e22;border-left:4px solid #b85c0a;padding:8px 12px;margin-top:6px;border-radius:4px;display:flex;align-items:center;gap:6px;box-shadow:0 2px 6px rgba(230,126,34,0.35)}
+
+/* ===== SEZIONE PROSPECT ===== */
+.prospects-header{padding:20px 24px 0;display:flex;flex-direction:column;gap:12px}
+.prospects-title h2{margin:0 0 8px;font-size:22px;font-weight:700;color:var(--white)}
+.prospects-stats{display:flex;gap:8px;flex-wrap:wrap}
+.ps-pill{font-size:12px;border:1.5px solid;border-radius:20px;padding:2px 10px;font-weight:500}
+.prospects-controls{display:flex;gap:10px;align-items:center}
+.prospects-search-wrap{display:flex;align-items:center;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;gap:6px;flex:1}
+.prospects-search{border:none;background:transparent;outline:none;font-size:14px;width:100%;color:var(--white);font-family:'DM Sans',sans-serif}
+.prospects-sort{border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:13px;background:var(--bg2);color:var(--white);cursor:pointer;font-family:'DM Sans',sans-serif}
+.prospects-filters{display:flex;gap:8px;flex-wrap:wrap}
+.pf-btn{border:1.5px solid var(--border);background:transparent;border-radius:20px;padding:5px 14px;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;color:var(--white);font-family:'DM Sans',sans-serif}
+.pf-btn:hover{opacity:.8}
+
+/* Kanban */
+.prospect-kanban{display:flex;gap:12px;padding:16px 24px 24px;overflow-x:auto;align-items:flex-start}
+.pk-col{min-width:200px;flex:1;background:var(--bg2);border-radius:10px;overflow:hidden;border:1px solid var(--border)}
+.pk-col-wide{min-width:100%}
+.pk-col-body-grid{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;padding:10px!important}
+.pk-col-header{padding:10px 14px;font-size:13px;font-weight:700;color:#fff;display:flex;justify-content:space-between;align-items:center}
+.pk-col-count{background:rgba(255,255,255,.3);border-radius:10px;padding:1px 8px;font-size:12px}
+.pk-col-body{padding:8px;display:flex;flex-direction:column;gap:8px;max-height:70vh;overflow-y:auto}
+.pk-empty{text-align:center;color:var(--gray2);font-size:13px;padding:20px 0}
+
+/* Card prospect kanban */
+.prospect-kanban-card{background:var(--bg);border-radius:8px;padding:12px;box-shadow:0 1px 4px rgba(0,0,0,.08);transition:box-shadow .15s,transform .1s;border:1px solid var(--border)}
+.prospect-kanban-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.15);transform:translateY(-2px)}
+.pkc-header{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.pkc-color{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.pkc-nome{font-size:13px;font-weight:600;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pkc-settore{font-size:11px;color:var(--gray);margin-bottom:8px}
+.pkc-score-row{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.pkc-score-bar-bg{flex:1;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden}
+.pkc-score-bar{height:100%;border-radius:3px;transition:width .3s}
+.pkc-score-val{font-size:12px;font-weight:700;min-width:24px;text-align:right}
+.pkc-footer{display:flex;justify-content:space-between;font-size:11px;color:var(--gray)}
+.pkc-fatturato{font-weight:600}
