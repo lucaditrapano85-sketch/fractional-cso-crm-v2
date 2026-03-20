@@ -624,6 +624,9 @@ function getDimLabel(settore, dimId) {
     },
     orologi_gioielli: {
       ecommerce: "Pre-owned & marketplace"
+    },
+    distribuzione_industriale: {
+      ecommerce: "Magazzino & logistica"
     }
   };
 

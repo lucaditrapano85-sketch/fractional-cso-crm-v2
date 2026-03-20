@@ -698,59 +698,59 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "commercio_distribuzione_industriale": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il tuo agente deve conoscere gli impianti del cliente meglio del cliente stesso — visita periodica, check scorte, proposta proattiva prima che si rompa qualcosa. Chi aspetta l'ordine perde terreno ad Amazon Business",
+      "2-3": "Segmenta i clienti per potenziale: il 20% dei clienti fa l'80% del fatturato. Concentra le visite sugli account strategici e attiva visite a cadenza fissa con agenda strutturata",
+      "3-4": "Key account dedicati per i clienti più grandi con accordi di fornitura preferenziale, scorte dedicate e tempi di consegna garantiti. Il cliente grande vuole un interlocutore unico affidabile",
+      "4-5": "Struttura commerciale con area manager, key account e inside sales per la gestione ordini ricorrenti. Integrazione con i sistemi e-procurement dei clienti principali"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Traccia su Excel le visite clienti: data, prodotti discussi, opportunità aperte e follow-up. Senza tracciatura sistematica ogni visita riparte da zero",
+      "2-3": "CRM per gestire il portafoglio clienti: storico acquisti, prodotti non ancora venduti al cliente, scadenze contratti e alert su cali di acquisto",
+      "3-4": "Pipeline strutturata con forecast mensile per agente, wallet share per cliente e opportunità cross-selling identificate sistematicamente",
+      "4-5": "CRM integrato con il gestionale: l'agente vede in tempo reale stock, prezzi, margini e storico cliente prima di ogni visita"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "L'agente plurimandatario non conosce i tuoi prodotti abbastanza — formazione tecnica obbligatoria. Un agente che non sa rispondere alle domande tecniche perde l'ordine",
+      "2-3": "Affianca agli agenti un inside sales tecnico: gestisce i clienti minori, risponde alle richieste urgenti e libera gli agenti per le visite strategiche",
+      "3-4": "Team strutturato: agenti di zona + inside sales + application engineer per supporto tecnico avanzato. La competenza tecnica è il differenziatore vs Amazon Business",
+      "4-5": "Struttura completa con direttore commerciale, key account, rete agenti e ufficio tecnico interno per consulenza e progettazione soluzioni"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Gestione ordini strutturata: tempi di risposta definiti, conferma d'ordine sempre inviata, avviso anticipo in caso di ritardo. L'affidabilità è il tuo asset principale",
+      "2-3": "Processo di gestione urgenze: il fermo macchina non aspetta. Definisci un protocollo per le consegne urgenti con tempi garantiti — è la leva che giustifica il prezzo superiore ad Amazon",
+      "3-4": "Processi certificati ISO 9001, gestione resi strutturata e KPI di servizio monitorati: tasso di consegna puntuale, fill rate, tempi medi di risposta",
+      "4-5": "ERP integrato con fornitori e clienti, gestione multi-magazzino automatizzata e SLA contrattualizzati con penali — entra nei vendor list dei clienti industriali più esigenti"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Analizza i margini per categoria: i consumabili hanno margini alti e rotazione veloce, le macchine hanno margini bassi ma ticket alto. Ottimizza il mix verso le categorie più redditizie",
+      "2-3": "Contratti di fornitura annuali con i clienti principali: volumi minimi garantiti in cambio di prezzi dedicati. Riduce la volatilità del fatturato e aumenta il switching cost",
+      "3-4": "Servizi a valore aggiunto ad alto margine: consegna urgente premium, gestione scorte conto deposito presso il cliente, contratti di manutenzione preventiva",
+      "4-5": "Revenue mix strutturato: prodotti standard + servizi logistici + consulenza tecnica + contratti VMI (vendor managed inventory). Il servizio vale più del prodotto"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Catalogo prodotti digitale aggiornato con prezzi e disponibilità — il cliente vuole trovare il codice da solo senza chiamare. Schede tecniche scaricabili per ogni prodotto",
+      "2-3": "Newsletter tecnica mensile verso i responsabili acquisti e manutenzione: novità prodotto, consigli tecnici, promozioni. Posizionati come partner tecnico, non solo fornitore",
+      "3-4": "Presenza su fiere di settore (SPS, Mecspe) e webinar tecnici su prodotti specifici. I responsabili tecnici comprano da chi dimostra competenza",
+      "4-5": "Piano marketing strutturato: digitale B2B + fiere + content tecnico + co-marketing con i brand distribuiti per campagne di visibilità condivise"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Sito con catalogo prodotti ricercabile per codice o categoria, disponibilità in tempo reale e form ordine rapido",
+      "2-3": "Sito con area riservata clienti: listino dedicato, storico ordini, download documentazione tecnica e fatture",
+      "3-4": "E-commerce B2B con prezzi personalizzati per cliente, ordini ricorrenti salvati e integrazione con i principali sistemi e-procurement (Ariba, Jaggaer)",
+      "4-5": "Portale B2B completo con EDI, gestione scorte conto deposito in tempo reale e dashboard cliente con KPI di fornitura"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Magazzino disorganizzato: rotture di stock frequenti sui prodotti più venduti. Inizia con una scorta minima garantita per i 50 codici a più alta rotazione",
+      "2-3": "Software gestione magazzino con soglie di riordino automatico, codici OEM mappati e giacenze in tempo reale. Elimina le rotture di stock sui best seller",
+      "3-4": "Magazzino strutturato per categoria con rotazione monitorata, scorte dedicate per i clienti chiave e consegna same-day per le urgenze nella zona servita",
+      "4-5": "Logistica avanzata: multi-magazzino con hub regionale, consegna urgente entro 2 ore nella zona, conto deposito presso i clienti strategici e gestione VMI automatizzata"
 
     }
   },
