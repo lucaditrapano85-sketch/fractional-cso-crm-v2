@@ -1278,59 +1278,59 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "commercio_abbigliamento_dettaglio": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il cliente entra, guarda e va via — nessuno lo accoglie o lo coinvolge. Forma il personale su accoglienza attiva: saluto, domanda aperta, proposta di un capo in base a quello che sta guardando",
+      "2-3": "Il commesso diventa consulente di stile: impara a costruire outfit completi, proporre abbinamenti e fare upsell naturale. Un cliente che entra per una maglia deve uscire con un outfit",
+      "3-4": "Sistema di incentivi legato alle vendite individuali: il commesso ha interesse economico nel vendere bene, non solo nel stare al banco. KPI per addetto: scontrino medio e pezzi per transazione",
+      "4-5": "Store manager con P&L del negozio, team formato con ruoli distinti (floor, cassa, vetrina) e processo di vendita codificato e monitorato settimanalmente"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Inizia a raccogliere i contatti dei clienti: nome, email o WhatsApp. Anche solo 10 contatti al giorno costruiscono in un anno un database di migliaia di clienti fidelizzati",
+      "2-3": "WhatsApp Business per i clienti VIP: avvisali dei nuovi arrivi prima che vadano online, riservali capi della loro taglia, falli sentire speciali. È il CRM del retail indipendente",
+      "3-4": "Database clienti segmentato per gusto, taglia e frequenza di acquisto. Newsletter mensile con nuovi arrivi e promozioni esclusive per iscritti",
+      "4-5": "CRM retail strutturato con storico acquisti, preferenze e trigger automatici: compleanno, anniversario primo acquisto, avviso rientro taglia esaurita"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il turnover è alto perché non si investe nelle persone — interrompi il circolo vizioso. Anche solo una formazione mensile di 2 ore su tecniche di vendita e prodotto aumenta motivazione e risultati",
+      "2-3": "Sistema di incentivi chiaro e trasparente: commissione sulle vendite personali o bonus mensile su obiettivo negozio. Il commesso bravo deve guadagnare di più di quello mediocre",
+      "3-4": "Percorso di crescita definito: commesso → senior → responsabile di reparto → store manager. Chi vede un futuro nel negozio non se ne va",
+      "4-5": "Team stabile con store manager autonomo, formazione continua su prodotto e vendita, cultura del negozio come brand e sistema di welfare che riduce il turnover"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Gestione base: apertura e chiusura cassa strutturata, inventario mensile, resa merce invenduta nei tempi — errori qui costano margine",
+      "2-3": "Processo di acquisto merce strutturato: budget per categoria, OTB (open to buy) monitorato, analisi sell-through per brand prima del riordino",
+      "3-4": "Visual merchandising come processo: rotazione vetrina settimanale, layout negozio ottimizzato per percorso cliente, segnaletica prezzi sempre aggiornata",
+      "4-5": "Gestione retail professionale: OTB per stagione, analisi ABC per brand e categoria, markdown automatico su invenduto, KPI giornalieri monitorati"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Analizza i margini per brand e categoria: non tutti i capi guadagnano uguale. Identifica i brand a più alto margine e aumenta il loro peso nell'assortimento",
+      "2-3": "Riduci i saldi di fine stagione lavorando meglio sull'acquisto: compra meno quantità ma più mirata. Ogni capo invenduto è margine perso",
+      "3-4": "Scontrino medio come KPI primario: punta ad aumentarlo con outfit completi, accessori abbinati e proposte di stile. Raddoppiare lo scontrino medio vale più che raddoppiare i clienti",
+      "4-5": "Revenue mix ottimizzato: full price vs saldo vs outlet. Obiettivo: almeno il 70% delle vendite a prezzo pieno. Programma fidelizzazione che sposta gli acquisti fuori dal periodo saldi"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Instagram con foto professionali dei nuovi arrivi, outfit del giorno e vita del negozio. Non serve un fotografo — serve costanza e autenticità",
+      "2-3": "Collaborazioni con micro-influencer locali (1.000-10.000 follower): costano poco e portano clienti reali della zona. Un evento in negozio con 3-4 influencer locali vale più di qualsiasi pubblicità",
+      "3-4": "Piano editoriale social con contenuti misti: prodotto, styling, dietro le quinte, clienti soddisfatti. Email marketing mensile al database con anteprime e offerte esclusive",
+      "4-5": "Marketing strutturato: social manager dedicato, collaborazioni stabili con influencer, campagne Meta Ads geolocalizzate e programma referral clienti soddisfatti"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Profilo Instagram curato è più importante del sito per il retail fashion. Se non hai tempo per entrambi, concentrati su Instagram",
+      "2-3": "Sito o landing page semplice con orari, indirizzo, link Instagram e form iscrizione newsletter. Google My Business aggiornato con foto del negozio",
+      "3-4": "Sito con lookbook stagionale, sezione nuovi arrivi aggiornata e possibilità di prenotare un appuntamento di styling personale",
+      "4-5": "Presenza digitale completa: sito con e-commerce base per i clienti fuori zona, Instagram shop attivo e integrazione WhatsApp Business per ordini e prenotazioni"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Zero presenza digitale oltre il negozio fisico — ogni giorno perdi clienti che ti cercano online e non ti trovano. Apri subito Instagram e Google My Business",
+      "2-3": "WhatsApp Business come canale di vendita per i clienti VIP: foto dei nuovi arrivi, prenotazione capi, acquisto e ritiro in negozio. Costa zero e fidelizza moltissimo",
+      "3-4": "Instagram shop attivo con tag prodotti nelle foto, link diretto all'acquisto o alla prenotazione. Marketplace selettivi (Depop per vintage, Vinted per outlet) per smaltire invenduto",
+      "4-5": "Omnicanalità strutturata: negozio fisico + e-commerce + Instagram shop + WhatsApp Business. Il cliente compra dove vuole, tu sei presente ovunque con la stessa esperienza"
 
     }
   },

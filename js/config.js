@@ -649,6 +649,9 @@ function getDimLabel(settore, dimId) {
     },
     auto_moto_usato: {
       ecommerce: "Approvvigionamento & parco veicoli"
+    },
+    abbigliamento_dettaglio: {
+      ecommerce: "Presenza digitale & omnicanalità"
     }
   };
 
