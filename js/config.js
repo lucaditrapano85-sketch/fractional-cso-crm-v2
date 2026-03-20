@@ -627,6 +627,9 @@ function getDimLabel(settore, dimId) {
     },
     distribuzione_industriale: {
       ecommerce: "Magazzino & logistica"
+    },
+    ingrosso_alimentare: {
+      ecommerce: "Logistica & catena del freddo"
     }
   };
 

@@ -756,59 +756,59 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "commercio_ingrosso_alimentare": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il ristoratore fedele ordina ogni giorno — costruisci quella fedeltà con visite periodiche, assortimento affidabile e un numero diretto sempre raggiungibile. Chi risponde alle 7 di mattina vince",
+      "2-3": "Segmenta i clienti HoReCa per potenziale: ristoranti stellati vs pizzerie vs mense hanno esigenze completamente diverse. Assegna agenti specializzati per tipo di cliente",
+      "3-4": "Key account per i clienti strutturati (catene, gruppi ristorazione, mense aziendali): contratti di fornitura con assortimento dedicato, prezzi fissi e consegne programmate",
+      "4-5": "Struttura commerciale con area manager HoReCa, key account per gruppi e catene, inside sales per la gestione ordini quotidiani e specialista retail alimentare indipendente"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Traccia i clienti per frequenza di ordine: chi non ordina da 2 settimane sta comprando altrove. Il calo silenzioso è il segnale più pericoloso",
+      "2-3": "CRM per monitorare wallet share per cliente: quanto compra da te vs quanto potrebbe comprare. Ogni categoria non ancora venduta al cliente è un'opportunità",
+      "3-4": "Pipeline strutturata con forecast settimanale per agente, gestione nuovi clienti HoReCa e alert automatici su cali di acquisto superiori al 20%",
+      "4-5": "Sistema integrato ordini-magazzino-consegne con portale ordini online per i clienti e dashboard real-time su fatturato per zona e per agente"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "L'agente deve conoscere i prodotti che vende — formazione su stagionalità, provenienza, conservazione e abbinamenti. Un agente che sa consigliare lo chef fidelizza per anni",
+      "2-3": "Specializzazione per canale: chi segue HoReCa premium conosce i prodotti di qualità, chi segue la ristorazione veloce conosce i volumi e i prezzi",
+      "3-4": "Team strutturato: agenti di zona + inside sales per ordini quotidiani + specialista prodotti freschi. I freschi richiedono gestione separata per urgenza e deperibilità",
+      "4-5": "Struttura completa con direttore commerciale, team agenti per zona e canale, customer service dedicato e specialista category per i prodotti a più alto margine"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Gestione scadenze obbligatoria: nessun prodotto fuori temperatura o vicino alla scadenza deve uscire dal magazzino. Un reclamo sulla qualità distrugge anni di fiducia",
+      "2-3": "Processo FIFO (first in first out) rigido per tutti i prodotti. Certificazione HACCP aggiornata, tracciabilità documentata per ogni lotto — è un obbligo di legge e una leva commerciale",
+      "3-4": "Sistema qualità documentato con controlli in accettazione, gestione non conformità e audit periodici sui fornitori. I clienti strutturati (catene, mense) lo richiedono nei capitolati",
+      "4-5": "ERP integrato con gestione lotti, tracciabilità completa farm-to-fork, certificazioni multiple mantenute (BRC, IFS) e KPI qualità monitorati in tempo reale"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Analizza i margini per categoria: freschi e specialty hanno margini alti, commodity (pasta, olio) sono quasi a zero. Orienta il mix verso i prodotti a valore aggiunto",
+      "2-3": "Gestione credito strutturata: il settore HoReCa è noto per i ritardi di pagamento. Definisci condizioni chiare, monitora i DSO per cliente e agisci subito sui ritardatari",
+      "3-4": "Contratti annuali con i clienti principali: assortimento minimo garantito, prezzi stabili trimestrali e pagamenti a 30 giorni. Riduce la volatilità e migliora il cash flow",
+      "4-5": "Revenue mix ottimizzato: commodity + specialty + private label + servizi logistici premium. Il margine medio ponderato come KPI principale, non solo il fatturato"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Catalogo stagionale con i prodotti di punta, schede tecniche e suggerimenti di utilizzo per lo chef. Distribuito fisicamente durante le visite — lo chef lo consulta quando crea il menu",
+      "2-3": "Newsletter mensile con novità di stagione, ricette con i tuoi prodotti e promozioni. I cuochi adorano l'ispirazione — posizionati come partner creativo, non solo fornitore",
+      "3-4": "Presenza a fiere di settore (Host Milano, Sigep) e degustazioni prodotti presso i clienti chiave. Il campione gratuito che diventa ordine fisso vale più di qualsiasi pubblicità",
+      "4-5": "Piano marketing strutturato: fiere + content food + co-marketing con i produttori distribuiti per campagne di visibilità e degustazioni eventi"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Catalogo prodotti digitale con foto, schede tecniche, unità di misura e disponibilità. Il ristoratore vuole ordinare velocemente senza chiamare",
+      "2-3": "Portale ordini online semplice: il cliente accede, vede il suo listino personalizzato e ordina in 2 minuti. Riduce le chiamate e gli errori di ordine",
+      "3-4": "Portale B2B con storico ordini, fatture scaricabili, gestione resi online e catalogo stagionale aggiornato con disponibilità in tempo reale",
+      "4-5": "Piattaforma digitale completa con app mobile per ordinare da smartphone (lo chef ordina dal telefono in cucina), integrazione con i gestionali dei clienti principali e EDI"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Consegne in ritardo o con prodotti sbagliati — ogni errore logistico è un cliente perso. Inizia con un processo di picking controllato e un sistema di verifica prima della consegna",
+      "2-3": "Mezzi frigoriferi dedicati con temperatura monitorata e documentata. Giri di consegna ottimizzati per zona — la puntualità è il tuo KPI più importante agli occhi del cliente",
+      "3-4": "Logistica strutturata: celle frigorifere multi-temperatura, giri di consegna pianificati con finestre orarie garantite ai clienti e tracciabilità consegne in tempo reale",
+      "4-5": "Piattaforma logistica avanzata: consegna same-day per urgenze, tracking in tempo reale per il cliente, ottimizzazione automatica dei giri e gestione multi-magazzino per coprire più zone"
 
     }
   },
