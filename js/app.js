@@ -961,7 +961,11 @@ function openNewProspect() {
   try {
     var html = _buildProspectModalBody({});
     console.log('openNewProspect: HTML generated, length=', html.length);
+    bodyEl.innerHTML = '';
     bodyEl.innerHTML = html;
+    // Force first tab visible
+    var firstTab = document.getElementById('mtab-anagrafica');
+    if (firstTab) firstTab.style.display = 'block';
     console.log('openNewProspect: innerHTML set, childNodes=', bodyEl.childNodes.length);
   } catch(e) {
     console.error('openNewProspect error:', e);
@@ -980,7 +984,11 @@ function openEditProspect() {
   try {
     var html = _buildProspectModalBody(p);
     console.log('openEditProspect: HTML generated, length=', html.length, 'prospect=', p.nome);
+    bodyEl.innerHTML = '';
     bodyEl.innerHTML = html;
+    // Force first tab visible
+    var firstTab = document.getElementById('mtab-anagrafica');
+    if (firstTab) firstTab.style.display = 'block';
     console.log('openEditProspect: innerHTML set, childNodes=', bodyEl.childNodes.length);
   } catch(e) {
     console.error('openEditProspect error:', e);
