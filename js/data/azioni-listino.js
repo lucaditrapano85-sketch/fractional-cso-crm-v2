@@ -1684,59 +1684,59 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "tech_system_integrator": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Mappare gli stakeholder decisionali (IT manager, CFO, titolare) per ogni opportunità. Definire ICP per verticale di specializzazione (manifattura, retail, servizi)",
+      "2-3": "Entrare nel processo d'acquisto prima della RFP per orientare i criteri di selezione. Strutturare il processo di discovery per qualificare budget e urgenza prima di investire in offerta",
+      "3-4": "Costruire messaggi di valore differenziati per interlocutore tecnico vs economico. Gestire i multi-stakeholder deal con champion interni e business case strutturato",
+      "4-5": "Vendita consultiva matura: pre-sales dedicato per verticale, processo di qualification strutturato, deal strategy per ogni opportunità enterprise e forecast predittivo"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Tracciare tutte le opportunità in CRM fin dal primo contatto, non dalla RFP. Definire stage early (awareness, interest, scoping) oltre ai classici offerta/negoziazione",
+      "2-3": "Istituire pipeline review mensile con il titolare per prioritizzare le opportunità attive. Monitorare il ciclo di vendita medio per stage e identificare dove si perde tempo",
+      "3-4": "Separare pipeline new business da rinnovi e upsell su clienti esistenti. Forecast trimestrale con pipeline coverage ratio monitorato",
+      "4-5": "Pipeline intelligence: deal scoring automatico, aging alert, forecast accuracy > 75% e visibilità completa su weighted pipeline per quarter"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Strutturare il ruolo di presales: chi fa il discovery tecnico e scrive le specifiche. Affiancare il titolare nella vendita per trasferire il know-how commerciale al team",
+      "2-3": "Costruire un playbook di vendita consultiva adatto a cicli lunghi e interlocutori tecnici. Formare il team tecnico sulle basi della comunicazione di valore al cliente",
+      "3-4": "Definire chi gestisce la relazione post-vendita per favorire upsell e referral. Team con account manager + presales + delivery separati con handoff strutturati",
+      "4-5": "Struttura completa: account executive per segmento, presales architect, delivery manager e customer success per i clienti sotto contratto ricorrente"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Creare template di offerta standard con sezioni fisse: scopo, esclusi, tempi, costi, garanzie. Definire processo di scoping con checklist dei requisiti minimi prima di fare un'offerta",
+      "2-3": "Predisporre contratto framework con clausole su varianti, tempi e responsabilità. Standardizzare il processo di kickoff progetto per allineare aspettative post-firma",
+      "3-4": "Documentare i casi di out-of-scope più frequenti per prevenire dispute con i clienti. Processo di change management strutturato con pricing per le varianti",
+      "4-5": "Delivery excellence: NPS progetto misurato, processo di lesson learned documentato, framework proprietario per assessment e proposal che accelera il ciclo di vendita"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Costruire offerta di manutenzione/supporto da proporre sistematicamente a fine progetto. Definire tier di contratto ricorrente (base, standard, premium) con SLA differenziati",
+      "2-3": "Mappare i clienti attivi per identificare opportunità di upsell su moduli o integrazioni aggiuntive. Monitorare il margine per progetto e identificare le tipologie di lavoro più profittevoli",
+      "3-4": "Introdurre pricing a valore su progetti strategici invece del solo time & material. Target: almeno 30% del fatturato da contratti ricorrenti",
+      "4-5": "Revenue mix maturo: progetti (40%) + managed services ricorrenti (40%) + consulenza strategica (20%). Il ricorrente garantisce la base, i progetti generano la crescita"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Produrre case study tecnici con problema, soluzione e risultato misurabile per verticale. Costruire thought leadership su LinkedIn con contenuti tecnici firmati dai senior",
+      "2-3": "Attivare co-marketing con i vendor partner (Microsoft, SAP, HubSpot) per visibilità. Presidiare eventi e fiere di settore verticale come occasione di networking qualificato",
+      "3-4": "Strutturare un programma di referral formale con i clienti soddisfatti. Webinar tecnici su temi verticali per posizionamento come esperti di dominio",
+      "4-5": "Marketing strutturato: thought leadership + co-marketing vendor + eventi verticali + content tecnico + referral program. Il brand personale dei senior è il primo asset commerciale"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Comunicare le specializzazioni verticali invece di proporsi come generalisti. Pubblicare case study con risultati concreti per ogni area di competenza",
+      "2-3": "Elencare certificazioni vendor e partnership ufficiali come prova di credibilità. Creare pagine dedicate per tecnologia o soluzione (es. 'Implementazione SAP B1')",
+      "3-4": "Inserire CTA orientate alla consulenza iniziale gratuita, non al contatto generico. A/B testing su landing page per verticale per ottimizzare la conversione",
+      "4-5": "Sito come motore di lead generation: pagine verticali ottimizzate per SEO, assessment tool online, area clienti con documentazione e blog tecnico come hub di contenuti"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Censire e mantenere attive le certificazioni dei vendor strategici (gold, silver). Registrare le opportunità nei portali deal registration dei vendor per proteggere i deal",
+      "2-3": "Sfruttare i programmi di lead generation dei vendor (referral, marketplace, co-sell). Partecipare agli eventi partner dei vendor per visibilità e relazioni con i loro sales",
+      "3-4": "Valutare l'aggiunta di una specializzazione verticale per differenziarsi dagli altri partner. Costruire IP proprietaria (framework, acceleratori) per ridurre la dipendenza dal solo time & material",
+      "4-5": "Ecosistema vendor maturo: top-tier partnership con almeno 2 vendor, deal registration sistematica, co-sell attivo con i sales dei vendor e IP proprietaria come differenziatore competitivo"
 
     }
   },

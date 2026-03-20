@@ -645,6 +645,9 @@ function getDimLabel(settore, dimId) {
     },
     saas: {
       ecommerce: "Prodotto & Trial Experience"
+    },
+    system_integrator: {
+      ecommerce: "Partnerships & Ecosistema Vendor"
     }
   };
 
