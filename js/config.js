@@ -648,6 +648,9 @@ function getDimLabel(settore, dimId) {
     },
     system_integrator: {
       ecommerce: "Partnerships & Ecosistema Vendor"
+    },
+    digital_agency: {
+      ecommerce: "Partnerships & Referral Network"
     }
   };
 

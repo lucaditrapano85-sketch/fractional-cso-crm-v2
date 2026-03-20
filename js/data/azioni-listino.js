@@ -1742,59 +1742,59 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "tech_digital_agency": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Definire ICP per verticale di specializzazione (es. ecommerce, hospitality, professioni). Costruire lista prospect qualificata per settore target",
+      "2-3": "Avviare outbound su LinkedIn con messaggi personalizzati per verticale. Costruire sequenza di followup a 3 tocchi",
+      "3-4": "Strutturare proposta commerciale con obiettivi misurabili, KPI attesi e timeline. Eliminare offerte generiche",
+      "4-5": "Implementare processo di referral strutturato con incentivo per clienti che segnalano nuovi contatti"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Inserire tutte le opportunità in CRM con stage e data di prossimo followup. Abbandonare Excel e gestione a memoria",
+      "2-3": "Definire stage chiari: contatto, brief ricevuto, proposta inviata, negoziazione, chiuso. Assegnare probabilità per stage",
+      "3-4": "Istituire pipeline review settimanale per identificare deal dormienti e opportunità da riattivare",
+      "4-5": "Monitorare conversion rate per stage e tempo medio di chiusura per ottimizzare il processo"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Separare il ruolo di account (relazione e upsell) dal ruolo di delivery (esecuzione). Anche con le stesse persone, ruoli distinti",
+      "2-3": "Costruire playbook di onboarding clienti: cosa succede nei primi 30 giorni dopo la firma",
+      "3-4": "Definire processo di escalation interno per problemi cliente prima che diventino churn",
+      "4-5": "Formare gli account sulla vendita consultiva: come identificare bisogni latenti e proporre servizi aggiuntivi"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Creare template di brief standard da far compilare al cliente prima di ogni progetto o campagna",
+      "2-3": "Definire workflow di approvazione contenuti con tempi massimi di risposta del cliente e conseguenze del ritardo",
+      "3-4": "Automatizzare il report mensile clienti con dati da Google Analytics, Ads e social in un formato standard",
+      "4-5": "Inserire nel contratto clausole esplicite su scope, revisioni incluse e gestione delle richieste extra"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Mappare tutti i clienti attivi con servizio, prezzo attuale e data ultimo rinnovo. Identificare chi è sottoprezzato",
+      "2-3": "Introdurre revisione annuale dei retainer con proposta di adeguamento basata su risultati ottenuti",
+      "3-4": "Costruire menu di servizi aggiuntivi da proporre ai clienti esistenti (es. email marketing, SEO locale, video)",
+      "4-5": "Definire pricing a valore per progetti strategici: smettere di vendere ore, vendere risultati"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Produrre 2 case study con risultati misurabili (ROAS, traffico, lead generati) per verticale target",
+      "2-3": "Attivare LinkedIn company page con contenuti settimanali: risultati clienti, metodologia, dietro le quinte",
+      "3-4": "Scegliere un posizionamento verticale chiaro e comunicarlo su tutti i canali. Smettere di dire 'facciamo tutto'",
+      "4-5": "Costruire una newsletter mensile per prospect e clienti con insight di settore e casi concreti"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Riscrivere la homepage con posizionamento chiaro: per chi lavori, cosa ottengono, perché sceglierti",
+      "2-3": "Costruire pagine di servizio con risultati concreti, non solo descrizioni. Aggiungere loghi clienti e testimonianze",
+      "3-4": "Creare landing page dedicate per verticale target con case study e CTA verso consulenza gratuita",
+      "4-5": "Ottimizzare SEO su keyword intent commerciale: 'agenzia Google Ads [settore]', 'agenzia SEO [città/verticale]'"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Mappare consulenti, commercialisti e agenzie complementari (PR, eventi, stampa) come potenziali referrer",
+      "2-3": "Costruire accordi di referral reciproco con 2-3 agenzie non concorrenti che servono lo stesso target",
+      "3-4": "Diventare partner certificato Google, Meta o HubSpot per accedere a lead dal programma partner",
+      "4-5": "Strutturare co-marketing con partner: webinar congiunti, articoli condivisi, offerte bundle per clienti comuni"
 
     }
   },
