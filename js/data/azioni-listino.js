@@ -1336,59 +1336,59 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "alimentare_vini": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il titolare porta qualche bottiglia ai ristoratori amici — zero struttura commerciale. Mappa i ristoranti, enoteche e wine bar della tua zona e inizia a visitarli con un listino professionale e campioni",
+      "2-3": "Attiva 1-2 agenti plurimandatari con portafoglio clienti horeca nella tua regione. Parallelamente inizia a costruire una lista di privati appassionati — sono i futuri clienti diretti",
+      "3-4": "Rete agenti strutturata per zona con obiettivi mensili. Export manager per almeno 1-2 mercati esteri prioritari (Germania, Svizzera, USA, UK). I privati fidelizzati ricevono anteprime e riservazioni",
+      "4-5": "Struttura commerciale completa: agenti per canale (horeca, GDO, export), wine club per i privati con abbonamento e enoturismo come canale di acquisizione e fidelizzazione"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Tieni un registro dei clienti horeca attivi: ristorante, referente, bottiglie ordinate per referenza e frequenza. Senza tracciatura non sai chi sta smettendo di comprare",
+      "2-3": "CRM semplice per gestire agenti, clienti horeca e lista privati. Traccia le degustazioni fatte, i feedback ricevuti e i follow-up aperti",
+      "3-4": "Pipeline strutturata per canale: horeca + privati + export + enoturismo. Forecast trimestrale per referenza con gestione vendemmia e stock disponibile",
+      "4-5": "Sistema integrato con gestione ordini, stock cantina e CRM: il commerciale sa sempre quali referenze sono disponibili e quante bottiglie restano prima di fare proposte ai clienti"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "L'enologo è anche il venditore — ma non può fare tutto. Identifica una figura anche part-time che gestisca gli ordini, le spedizioni e i contatti con i clienti abituali",
+      "2-3": "Primo commerciale dedicato con passione per il vino e capacità relazionale: gestisce gli agenti, visita i clienti chiave e costruisce la lista privati",
+      "3-4": "Team strutturato: responsabile commerciale + agenti + addetto export. Chi fa enoturismo deve avere competenze di ospitalità oltre che di vendita",
+      "4-5": "Struttura completa con direttore commerciale, team vendite per canale, export manager e responsabile enoturismo con obiettivi autonomi"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Documentazione base obbligatoria: etichette conformi al Regolamento UE 2021/2117, schede tecniche per ogni referenza, registro di cantina aggiornato. Senza non puoi vendere legalmente",
+      "2-3": "Certificazione biologica o biodinamica se le pratiche lo consentono — è una leva commerciale crescente sia nell'horeca che nei privati. Fascicolo tecnico completo per ogni referenza",
+      "3-4": "SQNPI o certificazione di sostenibilità viticola. Processi di gestione ordini e spedizioni documentati. Prerequisito per GDO e export strutturato",
+      "4-5": "Sistema qualità certificato, tracciabilità completa dalla vigna alla bottiglia, certificazioni per i mercati export (biologico EU, USDA Organic per USA) e carbon footprint calcolata"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Analizza i margini per referenza e per canale: vendere all'horeca a 5€ la bottiglia o al privato a 15€ sono due modelli diversi. Capire dove guadagni davvero orienta tutta la strategia",
+      "2-3": "Riduci la dipendenza da 1-2 grossisti che ti comprano tutto a prezzo basso — ti tolgono margine e potere negoziale. Ogni cliente diretto acquisito aumenta la redditività media",
+      "3-4": "Mix di canali ottimizzato: horeca (volume), privati (margine), export (prestigio e valorizzazione), enoturismo (margine altissimo + fidelizzazione). Nessun canale oltre il 50% del fatturato",
+      "4-5": "Revenue strutturato con contratti annuali horeca, wine club con abbonamento mensile, export con importatori esclusivi e enoturismo come centro di profitto autonomo"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Presenza sulle guide vini (Gambero Rosso, Veronelli, Slow Food) — una citazione positiva vale più di qualsiasi pubblicità. Manda campioni ai giornalisti di settore",
+      "2-3": "Instagram con storytelling della cantina: vendemmia, vita in vigna, degustazioni. Il vino si vende con le emozioni — mostra il territorio e le persone prima del prodotto",
+      "3-4": "Presenza a Vinitaly e a fiere internazionali selezionate (ProWein, Vinexpo). Collaborazioni con sommelier e wine influencer per raggiungere i privati appassionati",
+      "4-5": "Piano marketing strutturato: fiere + digital storytelling + PR enogastronomica + enoturismo come strumento di marketing esperienziale. La cantina visitabile è il miglior venditore"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Sito con storia della cantina, referenze con schede tecniche e foto professionali, contatti e form richiesta listino. Il buyer straniero lo visita prima di qualsiasi contatto",
+      "2-3": "Sito con sezione enoturismo (visite e degustazioni prenotabili online), blog sulla vita in cantina e area riservata per i clienti horeca con listino e documenti",
+      "3-4": "Sito professionale con e-commerce per privati, prenotazione visite online, versione in almeno 2 lingue per l'export e area press con materiali scaricabili",
+      "4-5": "Portale completo con e-commerce multilingua, wine club con abbonamento, prenotazione enoturismo integrata e area importatori con documenti doganali e certificazioni"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Zero vendite dirette — tutto passa da grossisti e agenti che prendono il margine. Inizia raccogliendo email di privati interessati durante le degustazioni e le visite in cantina",
+      "2-3": "Shop online semplice per vendere direttamente ai privati: spedizione in tutta Italia, confezioni regalo, abbonamento mensile base. Ogni bottiglia venduta diretto vale 3 volte quella venduta al grossista",
+      "3-4": "E-commerce strutturato con wine club, abbonamenti stagionali e spedizioni internazionali. Presenza su marketplace di vino (Tannico, Vinomofo) per visibilità e nuovi clienti",
+      "4-5": "Strategia direct-to-consumer completa: e-commerce proprio + marketplace selezionati + wine club con 500+ iscritti + enoturismo integrato. Il canale diretto vale il 30-40% del fatturato con margini doppi rispetto all'horeca"
 
     }
   },
