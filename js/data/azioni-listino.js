@@ -814,59 +814,59 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "commercio_materiali_edili": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il muratore fedele compra ogni mattina — conosci i suoi cantieri attivi, anticipa i suoi fabbisogni e chiamalo prima che vada dalla concorrenza. Il banco deve essere un punto di riferimento, non solo un negozio",
+      "2-3": "Segmenta i clienti: imprese edili strutturate (volume, pagamenti a 60gg), artigiani (frequenza alta, ticket medio), privati (margine alto, occasionale). Strategie diverse per ognuno",
+      "3-4": "Key account per le imprese edili più grandi: preventivi cantiere, forniture programmate, consegne dedicate. Un accordo di fornitura con un'impresa media vale anni di fatturato stabile",
+      "4-5": "Struttura commerciale con agenti per zona, key account per imprese strutturate e inside sales per la gestione ordini quotidiani e i clienti retail"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Traccia i cantieri attivi dei tuoi clienti principali: quando finisce un cantiere, ne inizia un altro — tu devi saperlo prima di loro",
+      "2-3": "CRM per monitorare i clienti attivi, i cantieri in corso e le gare di appalto pubblicate nella tua zona. Un cantiere nuovo è un'opportunità da cogliere subito",
+      "3-4": "Pipeline strutturata con forecast mensile per cliente, gestione preventivi cantiere e alert su cali di acquisto",
+      "4-5": "Sistema integrato ordini-magazzino-consegne con portale ordini online per i clienti abituali e dashboard real-time su fatturato e margine per categoria"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il banco deve essere presidiato da persone competenti: chi non sa consigliare il prodotto giusto per l'applicazione perde la vendita e la fiducia del cliente",
+      "2-3": "Formazione tecnica continua su nuovi prodotti e normative (cappotto termico, impermeabilizzazioni, sistemi a secco). Il cliente si fida di chi sa più di lui",
+      "3-4": "Team strutturato: banco clienti + commerciale imprese + magazzinieri formati sulla movimentazione sicura dei materiali pesanti",
+      "4-5": "Struttura completa con responsabile commerciale, team banco, agenti di zona e specialista per le forniture a imprese strutturate e appalti pubblici"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Sicurezza base obbligatoria: DVR per magazzino materiali edili, DPI per movimentazione manuale carichi pesanti, formazione addetti. Schede di sicurezza disponibili per tutti i prodotti chimici venduti",
+      "2-3": "Patentino mulettista per chi usa carrelli elevatori — obbligo di legge spesso ignorato. Gestione ordini strutturata con conferma sempre inviata e tempi di consegna definiti. Informazione al cliente sui DPI da usare durante la posa di prodotti chimici",
+      "3-4": "Audit sicurezza interni periodici, gestione non conformità documentata. Processo di carico/scarico sicuro con attrezzatura adeguata. ISO 9001 per accedere alle forniture di imprese strutturate e appalti pubblici",
+      "4-5": "Sistema sicurezza integrato come KPI aziendale, zero infortuni obiettivo misurabile. ERP con gestione lotti, tracciabilità prodotti e KPI operativi monitorati mensilmente"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Analizza i margini per categoria: i prodotti di finitura (pavimenti, rivestimenti, pitture) hanno margini doppi rispetto ai materiali strutturali (cemento, mattoni). Orienta il mix",
+      "2-3": "Gestione credito strutturata: le imprese edili pagano tardi — definisci fidi massimi, monitora i DSO e agisci subito sui ritardatari. Il credito incontrollato è il rischio principale",
+      "3-4": "Servizi a valore aggiunto: consegna in cantiere programmata, piccolo taglio materiali, consulenza tecnica per posa — differenziano da Leroy Merlin e giustificano il prezzo",
+      "4-5": "Revenue mix ottimizzato: materiali strutturali + finitura + servizi logistici + consulenza tecnica. Margine medio ponderato come KPI principale con obiettivi trimestrali per categoria"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Profilo Google My Business completo con orari, foto del punto vendita e risposta attiva alle recensioni. Il privato che ristruttura ti cerca online prima di venire",
+      "2-3": "Presenza sui portali locali per artigiani ed imprese edili. Newsletter tecnica mensile verso i clienti B2B con novità prodotto, promozioni e aggiornamenti normativi",
+      "3-4": "Eventi in punto vendita: presentazioni di nuovi sistemi costruttivi con i produttori, formazione tecnica gratuita per artigiani. Chi forma il cliente lo fidelizza",
+      "4-5": "Piano marketing strutturato: digitale + eventi + co-marketing con i brand distribuiti + presenza a fiere locali di settore edilizio"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Sito con catalogo prodotti per categoria, disponibilità indicativa e form richiesta preventivo per forniture cantiere",
+      "2-3": "Sito con area riservata clienti abituali: listino dedicato, storico ordini e richiesta consegna cantiere online",
+      "3-4": "Sito professionale con schede tecniche scaricabili, calcolatore quantità materiali per tipo di intervento e portale ordini B2B",
+      "4-5": "Portale completo con e-commerce B2B, calcolo automatico fabbisogni per cantiere, tracking consegne e area tecnica con normative e dettagli costruttivi"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Consegne in ritardo o materiali sbagliati bloccano un cantiere — ogni errore logistico distrugge la fiducia. Inizia con un processo di preparazione ordini controllato prima della consegna",
+      "2-3": "Mezzo aziendale dedicato alle consegne cantiere con sponda idraulica: la consegna al piano o vicino al punto di utilizzo vale un sovrapprezzo che il cliente accetta volentieri",
+      "3-4": "Logistica strutturata: giri di consegna pianificati con finestre orarie, tracciabilità consegne e gestione urgenze cantiere con risposta garantita entro 2 ore",
+      "4-5": "Flotta mezzi dedicata con gru di carico per materiali pesanti, consegna same-day nella zona servita e sistema di tracciamento consegne in tempo reale per il cliente"
 
     }
   },

@@ -630,6 +630,9 @@ function getDimLabel(settore, dimId) {
     },
     ingrosso_alimentare: {
       ecommerce: "Logistica & catena del freddo"
+    },
+    materiali_edili: {
+      ecommerce: "Logistica & consegna cantiere"
     }
   };
 
