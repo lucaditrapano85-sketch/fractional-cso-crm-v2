@@ -1220,59 +1220,59 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "commercio_auto_moto_usato": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "La vendita dell'usato inizia dall'accoglienza e dalla fiducia: il cliente cerca il giusto rapporto qualità-prezzo e un venditore onesto. Sii trasparente sulla storia del veicolo — nascondere difetti costa caro in reputazione",
+      "2-3": "Struttura il processo di vendita: scheda cliente, domande di discovery sulle esigenze, proposta mirata da stock e gestione della permuta come leva di chiusura",
+      "3-4": "Team vendite formato sulla gestione dell'obiezione prezzo tipica dell'usato: spiega il valore aggiunto (garanzia, revisione, storico) rispetto al privato o al concorrente",
+      "4-5": "Struttura commerciale con venditori specializzati per segmento (city car, SUV, premium), gestione lead multicanale e follow-up sistematico su ogni contatto"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Traccia su Excel ogni contatto: fonte (marketplace, walk-in, passaparola), veicolo richiesto, budget e stato. I lead dell'usato si bruciano in 24-48 ore se non rispondi",
+      "2-3": "CRM per gestire i lead dai marketplace (AutoScout, Mobile.de, Subito) con risposta entro 2 ore — chi risponde prima vende. Traccia anche le permute valutate non chiuse",
+      "3-4": "Pipeline strutturata con forecast settimanale, gestione lead per fonte e per venditore, tempi medi di vendita per segmento di veicolo",
+      "4-5": "CRM integrato con i marketplace per gestione lead automatica, dashboard rotazione stock e alert su veicoli fermi da oltre 30 giorni"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il titolare fa tutto. Forma un collaboratore sulla valutazione permute base e sulla presentazione dei veicoli — la qualità dell'annuncio dipende da chi lo crea",
+      "2-3": "Primo venditore dedicato con conoscenza tecnica dei veicoli e capacità di valutare le permute in modo autonomo",
+      "3-4": "Team strutturato: venditore + responsabile acquisti + preparatore veicoli. Chi compra e chi vende devono essere figure distinte",
+      "4-5": "Struttura completa con responsabile commerciale, team vendite, buyer dedicato agli acquisti e officina preparazione interna"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Check base: contratto di vendita standard completo, garanzia minima per legge (12 mesi), documentazione veicolo in ordine prima di ogni vendita",
+      "2-3": "Processo di preparazione standardizzato per ogni veicolo: revisione meccanica, carrozzeria, pulizia, foto professionali e scheda tecnica completa prima della messa in vendita",
+      "3-4": "Valutazione permute con sistema strutturato (Eurotax, valutazione stato reale), gestione rientri da leasing e aste documentata, checklist consegna veicolo",
+      "4-5": "Processi certificati: certificazione qualità veicoli usati (es. programmi casa madre), garanzie estese come leva commerciale, gestione reclami strutturata e KPI qualità monitorati"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Analizza i margini per segmento: city car, berlina, SUV, premium hanno margini molto diversi. Identifica dove guadagni davvero e orienta gli acquisti verso quei veicoli",
+      "2-3": "Finanziamenti e garanzie estese sono il vero margine aggiuntivo — proponi sistematicamente a ogni cliente. La penetrazione finanziamenti sull'usato è spesso più alta che sul nuovo",
+      "3-4": "Ottimizza la rotazione stock: un veicolo fermo 60+ giorni perde valore ogni giorno. Target di rotazione media 30-45 giorni con pricing dinamico",
+      "4-5": "Centro di profitto strutturato: margine veicolo + finanziamento + garanzia + accessori + service post vendita. Forecast mensile affidabile basato su stock e pipeline"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Annunci professionali su AutoScout24 e Subito con foto di qualità (minimo 20 foto per veicolo), descrizione dettagliata e prezzo competitivo aggiornato settimanalmente",
+      "2-3": "Presenza su almeno 3 marketplace con annunci ottimizzati. Google My Business con recensioni attive. Il passaparola si alimenta con professionalità e trasparenza costanti",
+      "3-4": "Piano marketing digitale: remarketing su chi ha visitato gli annunci, campagne social con stock in evidenza, email marketing al database clienti per nuovi arrivi",
+      "4-5": "Marketing strutturato con budget dedicato, SEO locale per 'auto usate X città', campagne automatizzate per stock e programma referral clienti soddisfatti"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Sito con stock aggiornato, foto professionali, filtri per marca/modello/prezzo e form contatto rapido. Deve funzionare perfettamente su mobile",
+      "2-3": "Sito con schede veicolo complete (storia, km certificati, optional, garanzia), chat online per risposta rapida e integrazione con i marketplace",
+      "3-4": "Sito professionale con valutazione permuta online, richiesta finanziamento e recensioni clienti verificate in evidenza",
+      "4-5": "Portale con stock in tempo reale, configuratore finanziamento online, prenotazione visita e area clienti per storico acquisti e interventi"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Ti affidi solo alle permute per rifornire lo stock — sei in balia dei prezzi e delle condizioni che ti porta il cliente. Inizia a esplorare le aste online (BCA, Autorola)",
+      "2-3": "Diversifica le fonti di approvvigionamento: aste online + permute + acquisto da privati. Le aste ti danno accesso a flotte aziendali e rientri leasing a prezzi competitivi",
+      "3-4": "Buyer dedicato agli acquisti con accesso a più canali: aste fisiche e online, accordi con noleggiatori per rientri fleet, acquisto diretto da aziende. Chi compra meglio guadagna prima di vendere",
+      "4-5": "Strategia acquisti strutturata con KPI dedicati: costo medio acquisto per segmento, margine medio per fonte, rotazione per canale. Partnership strategiche con noleggiatori e società leasing per flusso costante di veicoli"
 
     }
   },
