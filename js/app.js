@@ -816,86 +816,235 @@ function openModal(id){document.getElementById(id).classList.add('open')}
 function closeModal(id){document.getElementById(id).classList.remove('open')}
 document.querySelectorAll('.modal-overlay').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open')}));
 
+function _buildProspectModalBody(p) {
+  var kpi = p.kpi_commerciali || {};
+  var sel = function(id, val, opts) {
+    return '<select class="form-input" id="' + id + '">' +
+      opts.map(function(o) {
+        var v = typeof o === 'string' ? o : o.v;
+        var l = typeof o === 'string' ? o : o.l;
+        return '<option value="' + v + '"' + (val === v ? ' selected' : '') + '>' + l + '</option>';
+      }).join('') + '</select>';
+  };
+  var settoreOpts = [
+    {v:'',l:'-- Seleziona settore --'},
+    {v:'manifatturiero_meccanica',l:'Meccanica di precisione'},{v:'manifatturiero_automotive',l:'Automotive supply chain'},
+    {v:'manifatturiero_packaging',l:'Packaging & converting'},{v:'manifatturiero_cterzi',l:'Lavorazioni conto terzi'},
+    {v:'manifatturiero_elettromeccanica',l:'Elettromeccanica'},{v:'manifatturiero_tessile_tessuti',l:'Tessile (tessuti)'},
+    {v:'manifatturiero_tessile_capi',l:'Tessile (capi)'},
+    {v:'servizi_it',l:'Servizi IT'},{v:'servizi_formazione',l:'Formazione aziendale'},
+    {v:'edilizia_residenziale',l:'Edilizia residenziale'},{v:'edilizia_impianti',l:'Impiantistica'},
+    {v:'edilizia_serramenti',l:'Serramenti & facciate'},
+    {v:'commercio_distribuzione_industriale',l:'Distribuzione industriale'},{v:'commercio_ingrosso_alimentare',l:'Ingrosso alimentare'},
+    {v:'commercio_materiali_edili',l:'Materiali edili'},{v:'commercio_ricambi_auto',l:'Ricambi auto'},
+    {v:'commercio_abbigliamento_ingrosso',l:'Abbigliamento ingrosso'},{v:'commercio_elettronica',l:'Elettronica'},
+    {v:'commercio_auto_moto_nuovo',l:'Auto & moto (nuovo)'},{v:'commercio_auto_moto_usato',l:'Auto & moto (usato)'},
+    {v:'commercio_abbigliamento_dettaglio',l:'Abbigliamento dettaglio'},{v:'commercio_orologi_gioielli',l:'Orologi & gioielli'},
+    {v:'alimentare_trasformazione',l:'Trasformazione agroalimentare'},{v:'alimentare_vini',l:'Vini & spirits'},
+    {v:'alimentare_forno',l:'Prodotti da forno'},{v:'alimentare_conserve',l:'Conserve & surgelati'},
+    {v:'alimentare_ingredienti',l:'Ingredienti B2B'},{v:'alimentare_birra',l:'Birra artigianale'},
+    {v:'tech_saas',l:'SaaS B2B'},{v:'tech_system_integrator',l:'System integrator'},
+    {v:'tech_digital_agency',l:'Digital agency'},{v:'tech_automazione',l:'Automazione industriale'},
+  ];
+  var formaOpts = [{v:'',l:'--'},{v:'srl',l:'Srl'},{v:'srls',l:'Srls'},{v:'spa',l:'SpA'},{v:'sas',l:'SaS'},{v:'snc',l:'SnC'},{v:'ditta_individuale',l:'Ditta individuale'},{v:'cooperativa',l:'Cooperativa'}];
+  var dipOpts = [{v:'1-10',l:'1-10'},{v:'10-30',l:'10-30'},{v:'30-80',l:'30-80'}];
+  var statoOpts = [{v:'nuovo',l:'Nuovo'},{v:'contattato',l:'Contattato'},{v:'diagnosi',l:'Diagnosi'},{v:'proposta',l:'Proposta'},{v:'chiuso',l:'Chiuso'}];
+  var fatOpts = [{v:'<100k',l:'sotto 100k'},{v:'100k-250k',l:'100k-250k'},{v:'250k-500k',l:'250k-500k'},{v:'500k-1M',l:'500k-1M'},{v:'1M-2M',l:'1M-2M'},{v:'2M-5M',l:'2M-5M'},{v:'5M-20M',l:'5M-20M'}];
+  var boolSel = function(id, val) {
+    return '<select class="form-input" id="' + id + '"><option value="">--</option><option value="true"' + (val===true?' selected':'') + '>Si</option><option value="false"' + (val===false?' selected':'') + '>No</option></select>';
+  };
+  var inp = function(id, val, ph, type) { return '<input class="form-input" id="' + id + '" type="' + (type||'text') + '" placeholder="' + (ph||'') + '" value="' + (val!=null?val:'') + '">'; };
+  var fatVal = (_fasciaFromAnno1 ? _fasciaFromAnno1(p.fatturato_anno_1) : null) || p.fatturato || '500k-1M';
+
+  return '<div class="modal-tabs">' +
+    '<button class="mtab active" onclick="switchModalTab(\'anagrafica\',this)">Anagrafica</button>' +
+    '<button class="mtab" onclick="switchModalTab(\'financials\',this)">Financials</button>' +
+    '<button class="mtab" onclick="switchModalTab(\'kpi\',this)">KPI Commerciali</button>' +
+    '<button class="mtab" onclick="switchModalTab(\'note\',this)">Note & Tools</button>' +
+  '</div>' +
+
+  '<div class="mtab-content" id="mtab-anagrafica"><div class="form-grid">' +
+    '<div class="form-group"><label>Nome azienda *</label>' + inp('f-nome', p.nome, 'es. Rossi Srl') + '</div>' +
+    '<div class="form-group"><label>Forma giuridica</label>' + sel('f-forma', p.forma_giuridica, formaOpts) + '</div>' +
+    '<div class="form-group"><label>Settore *</label>' + sel('f-settore', p.settore, settoreOpts) + '</div>' +
+    '<div class="form-group"><label>Dipendenti</label>' + sel('f-dip', p.dipendenti||'10-30', dipOpts) + '</div>' +
+    '<div class="form-group"><label>Stato trattativa</label>' + sel('f-stato', p.stato||'nuovo', statoOpts) + '</div>' +
+    '<div class="form-group"><label>Referente</label>' + inp('f-referente', p.referente, 'Nome cognome') + '</div>' +
+    '<div class="form-group"><label>Ruolo</label>' + inp('f-ruolo', p.ruolo, 'es. Titolare, CFO') + '</div>' +
+    '<div class="form-group"><label>Email</label>' + inp('f-email', p.email, 'email@azienda.it') + '</div>' +
+    '<div class="form-group"><label>Telefono</label>' + inp('f-tel', p.telefono, '+39 ...') + '</div>' +
+    '<div class="form-group"><label>Sede legale</label>' + inp('f-sede', p.sede_legale, 'es. Milano, MI') + '</div>' +
+    '<div class="form-group"><label>Anno fondazione</label>' + inp('f-anno', p.anno_fondazione, 'es. 2005') + '</div>' +
+    '<div class="form-group"><label>Codice ATECO</label>' + inp('f-ateco', p.codice_ateco, 'es. 28.41') + '</div>' +
+    '<div class="form-group"><label>Sito web</label>' + inp('f-sito', p.sito_web, 'https://...') + '</div>' +
+    '<div class="form-group"><label>Soci / Struttura</label>' + inp('f-soci', p.soci_struttura, 'es. Familiare, 2 soci') + '</div>' +
+    '<div class="form-group"><label>Dipendenti diretti</label>' + inp('f-dipdiretti', p.dipendenti_diretti, 'es. 12', 'number') + '</div>' +
+    '<div class="form-group"><label>Collaboratori</label>' + inp('f-collab', p.collaboratori, 'es. 3', 'number') + '</div>' +
+    '<div class="form-group form-group-full"><label>Certificazioni</label>' + inp('f-cert', p.certificazioni, 'es. ISO 9001, SOA') + '</div>' +
+  '</div></div>' +
+
+  '<div class="mtab-content" id="mtab-financials" style="display:none"><div class="form-grid">' +
+    '<div class="form-group"><label>Fatturato (fascia)</label>' + sel('f-fat', fatVal, fatOpts) + '</div>' +
+    '<div class="form-group"><label>Fatturato anno corrente</label>' + inp('f-fat1', p.fatturato_anno_1, 'es. 850000', 'number') + '</div>' +
+    '<div class="form-group"><label>EBITDA</label>' + inp('f-ebitda', p.ebitda, 'es. 120000', 'number') + '</div>' +
+    '<div class="form-group"><label>Margine %</label>' + inp('f-margine', p.margine_pct, 'es. 14', 'number') + '</div>' +
+    '<div class="form-group"><label>Utile netto</label>' + inp('f-utile', p.utile_netto, 'es. 65000', 'number') + '</div>' +
+    '<div class="form-group"><label>Costi fissi mensili</label>' + inp('f-costifissi', p.costi_fissi_mensili, 'es. 35000', 'number') + '</div>' +
+    '<div class="form-group"><label>Export attivo</label>' + boolSel('f-export', p.export_attivo) + '</div>' +
+    '<div class="form-group"><label>Export %</label>' + inp('f-exportpct', p.export_pct, 'es. 30', 'number') + '</div>' +
+    '<div class="form-group"><label>Immobili proprieta</label>' + boolSel('f-immobili', p.immobili_proprieta) + '</div>' +
+    '<div class="form-group"><label>Valore immobili</label>' + inp('f-immovalor', p.immobili_valore, 'es. 500000', 'number') + '</div>' +
+    '<div class="form-group"><label>Banche</label>' + inp('f-banche', p.banche_riferimento, 'es. Intesa, UniCredit') + '</div>' +
+    '<div class="form-group"><label>Leasing rata mensile</label>' + inp('f-leasing', p.leasing_rata_mensile, 'es. 2500', 'number') + '</div>' +
+    '<div class="form-group form-group-full"><label>Note leasing</label>' + inp('f-leasingnote', p.leasing_note, 'es. Macchinario CNC, scade 2026') + '</div>' +
+  '</div></div>' +
+
+  '<div class="mtab-content" id="mtab-kpi" style="display:none">' +
+    '<p class="mtab-desc">KPI commerciali attuali. Verranno confrontati con i benchmark di settore.</p>' +
+    '<div class="form-grid">' +
+    '<div class="form-group"><label>Conversione lead %</label>' + inp('kpi-conv', kpi.tasso_conversione_pct, 'es. 18', 'number') + '</div>' +
+    '<div class="form-group"><label>Ciclo vendita (gg)</label>' + inp('kpi-ciclo', kpi.ciclo_vendita_gg, 'es. 45', 'number') + '</div>' +
+    '<div class="form-group"><label>Ticket medio</label>' + inp('kpi-ticket', kpi.valore_medio_ordine, 'es. 12000', 'number') + '</div>' +
+    '<div class="form-group"><label>Concentraz. top 3 %</label>' + inp('kpi-conc', kpi.concentrazione_top3_pct, 'es. 45', 'number') + '</div>' +
+    '<div class="form-group"><label>Riacquisto %</label>' + inp('kpi-riacq', kpi.tasso_riacquisto_pct, 'es. 60', 'number') + '</div>' +
+    '<div class="form-group"><label>Nuovi clienti/anno</label>' + inp('kpi-nuovi', kpi.nuovi_clienti_anno, 'es. 15', 'number') + '</div>' +
+    '<div class="form-group"><label>Clienti attivi</label>' + inp('kpi-attivi', kpi.clienti_attivi, 'es. 80', 'number') + '</div>' +
+    '<div class="form-group"><label>% da referral</label>' + inp('kpi-referral', kpi.fatturato_referral_pct, 'es. 40', 'number') + '</div>' +
+    '<div class="form-group"><label>CAC</label>' + inp('kpi-cac', kpi.cac, 'es. 800', 'number') + '</div>' +
+    '<div class="form-group"><label>DSO (gg incasso)</label>' + inp('kpi-dso', kpi.dso_gg, 'es. 60', 'number') + '</div>' +
+    '<div class="form-group"><label>MRR/ARR</label>' + inp('kpi-mrr', kpi.mrr, 'es. 5000', 'number') + '</div>' +
+    '<div class="form-group"><label>Fatturato top cliente</label>' + inp('kpi-fattop', p.fatturato_top, 'es. 200000', 'number') + '</div>' +
+  '</div></div>' +
+
+  '<div class="mtab-content" id="mtab-note" style="display:none"><div class="form-grid">' +
+    '<div class="form-group form-group-full"><label>Note iniziali / prima call</label><textarea class="form-input" id="f-note" rows="3" placeholder="Impressioni dalla prima call...">' + (p.note||'') + '</textarea></div>' +
+    '<div class="form-group form-group-full"><label>Note strategiche</label><textarea class="form-input" id="f-notestrategiche" rows="3" placeholder="Osservazioni su posizionamento, rischi, opportunita...">' + (p.note_strategiche||'') + '</textarea></div>' +
+    '<div class="form-group"><label>Tool CRM</label>' + inp('f-tcrm', p.tool_crm, 'es. HubSpot') + '</div>' +
+    '<div class="form-group"><label>Tool ERP</label>' + inp('f-terp', p.tool_erp, 'es. SAP B1') + '</div>' +
+    '<div class="form-group"><label>Tool Ecommerce</label>' + inp('f-tecom', p.tool_ecommerce, 'es. Shopify') + '</div>' +
+    '<div class="form-group"><label>Tool Marketing</label>' + inp('f-tmkt', p.tool_marketing, 'es. Mailchimp') + '</div>' +
+    '<div class="form-group form-group-full"><label>Altri tool</label>' + inp('f-taltri', p.tool_altri, 'es. Notion, Slack') + '</div>' +
+  '</div></div>';
+}
+
+function switchModalTab(tabId, btn) {
+  document.querySelectorAll('.mtab-content').forEach(function(t) { t.style.display = 'none'; });
+  document.querySelectorAll('.mtab').forEach(function(b) { b.classList.remove('active'); });
+  var el = document.getElementById('mtab-' + tabId);
+  if (el) el.style.display = 'block';
+  if (btn) btn.classList.add('active');
+}
+
 function openNewProspect() {
-  editingId=null;
-  document.getElementById('modal-prospect-title').textContent='Nuovo Prospect';
-  ['nome','referente','email','tel'].forEach(f=>document.getElementById('f-'+f).value='');
-  document.getElementById('f-note').value='';
-  document.getElementById('f-settore').value='';
-  document.getElementById('f-dip').value='10-30';
-  document.getElementById('f-stato').value='nuovo';
-  document.getElementById('f-fat').value='500k-1M';
-  buildSliders();
+  editingId = null;
+  document.getElementById('modal-prospect-title').textContent = 'Nuovo Prospect';
+  document.getElementById('modal-prospect-body').innerHTML = _buildProspectModalBody({});
   openModal('modal-prospect');
 }
 
 function openEditProspect() {
-  const p=prospects.find(x=>x.id===currentId);
-  if(!p) return;
-  editingId=p.id;
-  document.getElementById('modal-prospect-title').textContent='Modifica Prospect';
-  document.getElementById('f-nome').value=p.nome||'';
-  document.getElementById('f-settore').value=p.settore||'';
-  document.getElementById('f-dip').value=p.dipendenti||'10-30';
-  document.getElementById('f-stato').value=p.stato||'nuovo';
-  document.getElementById('f-referente').value=p.referente||'';
-  document.getElementById('f-email').value=p.email||'';
-  document.getElementById('f-tel').value=p.telefono||'';
-  const _fatMap={'<500k':'250k-500k','1-5M':'1M-2M','5-20M':'5M-20M'};
-  const _fat=p.fatturato||'500k-1M';
-  // Usa fatturato_anno_1 se disponibile per determinare la fascia corretta
-  const _fatEffettivo = _fasciaFromAnno1(p.fatturato_anno_1) || _fatMap[_fat] || _fat;
-  document.getElementById('f-fat').value=_fatEffettivo;
-  document.getElementById('f-note').value=p.note||'';
-  buildSliders(p.dims||{});
+  var p = prospects.find(function(x) { return x.id === currentId; });
+  if (!p) return;
+  editingId = p.id;
+  document.getElementById('modal-prospect-title').textContent = 'Modifica Prospect';
+  document.getElementById('modal-prospect-body').innerHTML = _buildProspectModalBody(p);
   openModal('modal-prospect');
 }
 
 async function saveProspect() {
-  const nome=document.getElementById('f-nome').value.trim();
-  const forma=document.getElementById('f-forma')?.value||'';
-  if(!nome){alert('Inserisci il nome dell\'azienda');return;}
-  // Score dims: preserva quelli esistenti (sliders rimossi — usa diagnosi guidata)
-  const existingDims = editingId ? (prospects.find(x=>x.id===editingId)?.dims || {}) : {};
-  const data={
-    nome,
-    settore:document.getElementById('f-settore').value,
-    dipendenti:document.getElementById('f-dip').value,
-    stato:document.getElementById('f-stato').value,
-    referente:document.getElementById('f-referente').value,
-    email:document.getElementById('f-email').value,
-    telefono:document.getElementById('f-tel').value,
-    fatturato:document.getElementById('f-fat').value,
-    note:document.getElementById('f-note').value,
-    dims: existingDims,
-    color: editingId ? (prospects.find(x=>x.id===editingId)?.color || assignNextColor()) : assignNextColor(),
+  var nome = (document.getElementById('f-nome')?.value || '').trim();
+  if (!nome) { alert('Inserisci il nome dell\'azienda'); return; }
+
+  var _val = function(id) { return document.getElementById(id)?.value || ''; };
+  var _num = function(id) { var v = parseFloat(document.getElementById(id)?.value); return isNaN(v) ? null : v; };
+  var _bool = function(id) { var v = _val(id); return v === 'true' ? true : v === 'false' ? false : null; };
+
+  var existingDims = editingId ? (prospects.find(function(x){return x.id===editingId;})?.dims || {}) : {};
+
+  var kpi_commerciali = {
+    tasso_conversione_pct: _num('kpi-conv'),
+    ciclo_vendita_gg: _num('kpi-ciclo'),
+    valore_medio_ordine: _num('kpi-ticket'),
+    concentrazione_top3_pct: _num('kpi-conc'),
+    tasso_riacquisto_pct: _num('kpi-riacq'),
+    nuovi_clienti_anno: _num('kpi-nuovi'),
+    clienti_attivi: _num('kpi-attivi'),
+    fatturato_referral_pct: _num('kpi-referral'),
+    cac: _num('kpi-cac'),
+    dso_gg: _num('kpi-dso'),
+    mrr: _num('kpi-mrr'),
   };
-  const btn=document.getElementById('btn-save-prospect');
-  btn.textContent='Salvataggio...'; btn.disabled=true;
+
+  var data = {
+    nome: nome,
+    forma_giuridica: _val('f-forma'),
+    settore: _val('f-settore'),
+    dipendenti: _val('f-dip'),
+    stato: _val('f-stato'),
+    referente: _val('f-referente'),
+    ruolo: _val('f-ruolo'),
+    email: _val('f-email'),
+    telefono: _val('f-tel'),
+    sede_legale: _val('f-sede'),
+    anno_fondazione: _val('f-anno'),
+    codice_ateco: _val('f-ateco'),
+    sito_web: _val('f-sito'),
+    soci_struttura: _val('f-soci'),
+    dipendenti_diretti: _num('f-dipdiretti'),
+    collaboratori: _num('f-collab'),
+    certificazioni: _val('f-cert'),
+    fatturato: _val('f-fat'),
+    fatturato_anno_1: _num('f-fat1'),
+    ebitda: _num('f-ebitda'),
+    margine_pct: _num('f-margine'),
+    utile_netto: _num('f-utile'),
+    costi_fissi_mensili: _num('f-costifissi'),
+    export_attivo: _bool('f-export'),
+    export_pct: _num('f-exportpct'),
+    immobili_proprieta: _bool('f-immobili'),
+    immobili_valore: _num('f-immovalor'),
+    banche_riferimento: _val('f-banche'),
+    leasing_rata_mensile: _num('f-leasing'),
+    leasing_note: _val('f-leasingnote'),
+    note: _val('f-note'),
+    note_strategiche: _val('f-notestrategiche'),
+    tool_crm: _val('f-tcrm'),
+    tool_erp: _val('f-terp'),
+    tool_ecommerce: _val('f-tecom'),
+    tool_marketing: _val('f-tmkt'),
+    tool_altri: _val('f-taltri'),
+    fatturato_top: _num('kpi-fattop'),
+    kpi_commerciali: kpi_commerciali,
+    dims: existingDims,
+    color: editingId ? (prospects.find(function(x){return x.id===editingId;})?.color || assignNextColor()) : assignNextColor(),
+  };
+
+  var btn = document.getElementById('btn-save-prospect');
+  btn.textContent = 'Salvataggio...'; btn.disabled = true;
   try {
-    if(editingId) {
-      const {error}=await sb.from('prospects').update(data).eq('id',editingId);
-      if(error) throw error;
-      const i=prospects.findIndex(x=>x.id===editingId);
-      prospects[i]={...prospects[i],...data};
+    if (editingId) {
+      var res = await sb.from('prospects').update(data).eq('id', editingId);
+      if (res.error) throw res.error;
+      var i = prospects.findIndex(function(x){return x.id===editingId;});
+      prospects[i] = {...prospects[i], ...data};
       window._allProspects = prospects;
       showToast('Prospect aggiornato');
     } else {
-      const {data:row,error}=await sb.from('prospects').insert(data).select().single();
-      if(error) throw error;
-      prospects.push(row);
+      var res2 = await sb.from('prospects').insert(data).select().single();
+      if (res2.error) throw res2.error;
+      prospects.push(res2.data);
       window._allProspects = prospects;
       showToast('Prospect creato');
     }
     renderSidebar();
     closeModal('modal-prospect');
-    if(editingId) renderProspectDetail(editingId);
+    if (editingId) renderProspectDetail(editingId);
     else openProspect(prospects[prospects.length-1].id);
     renderDashboard();
   } catch(e) {
-    showToast('Errore: '+e.message,'error');
+    showToast('Errore: ' + e.message, 'error');
   } finally {
-    btn.textContent='Salva'; btn.disabled=false;
+    btn.textContent = 'Salva'; btn.disabled = false;
   }
 }
 
