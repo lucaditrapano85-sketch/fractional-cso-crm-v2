@@ -872,59 +872,59 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "commercio_ricambi_auto": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il tuo vantaggio vs Amazon è la consulenza immediata: il cliente non sa cosa gli serve, tu sì. Forma tutto il personale a fare almeno 3 domande prima di cercare il pezzo — marca, modello, anno, problema",
+      "2-3": "Costruisci relazioni con le officine di quartiere: conto aperto, consegna rapida, ricambi riservati. Un'officina cliente vale 10 privati e torna ogni settimana",
+      "3-4": "Commerciale dedicato alle officine B2B: visite periodiche, listino dedicato, servizio consegna entro 2 ore. Le officine comprano da chi è affidabile, non da chi costa meno",
+      "4-5": "Struttura commerciale con key account per officine e carrozzerie, programma fidelizzazione clienti professionali e accordi con reti di assistenza per forniture continuative"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Traccia i clienti abituali: chi compra cosa, con quale frequenza. È la base per proporre ricambi in modo proattivo prima che il cliente li cerchi altrove",
+      "2-3": "CRM semplice per gestire i clienti B2B (officine, carrozzerie): storico acquisti, preferenze, scadenze revisioni veicoli in flotta. Il follow-up proattivo fidelizza",
+      "3-4": "Pipeline B2B strutturata con forecast mensile per cliente officina, gestione ordini ricorrenti e alert su clienti che non comprano da 30+ giorni",
+      "4-5": "Sistema integrato con software gestionale officine (es. Autosoft, Datasystem) per ordini automatici ricambi e fatturazione EDI con i clienti principali"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il banco deve essere presidiato da persone competenti — un addetto che non conosce i ricambi fa più danni che benefici. Formazione tecnica base obbligatoria per tutti",
+      "2-3": "Specialista B2B dedicato alle officine: conosce le esigenze dei meccanici, gestisce i conti aperti e fa le consegne rapide",
+      "3-4": "Team strutturato: banco clienti retail + commerciale officine + magazziniere. Ruoli distinti con obiettivi separati",
+      "4-5": "Struttura completa con responsabile commerciale, team banco, commerciale B2B dedicato e responsabile magazzino con gestione automatica delle scorte"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Gestione magazzino minima: codifica i ricambi più venduti, tieni una scorta minima garantita per i pezzi più richiesti. Zero rotture di stock sui best seller",
+      "2-3": "Software gestione magazzino (anche base) con codici OEM, giacenze in tempo reale e riordino automatico sotto scorta minima. Riduce gli ordini urgenti costosi",
+      "3-4": "Processi di ricezione merce, controllo qualità ricambi e gestione resi strutturati. Certificazione per ricambi originali vs aftermarket ben documentata",
+      "4-5": "ERP integrato con fornitori per ordini automatici, gestione multi-magazzino e KPI rotazione stock per categoria. Zero ricambi fermi da oltre 90 giorni"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Analizza i margini per categoria: oli e lubrificanti hanno margini alti, ricambi comuni sono commodity. Sposta il mix verso accessori e ricambi premium",
+      "2-3": "Servizi aggiuntivi ad alto margine: montaggio in loco per ricambi semplici, noleggio attrezzi, gonfiagggio azoto, pulizia iniettori — differenziano dal puro rivenditore",
+      "3-4": "Contratti di fornitura con officine per ricambi standard ricorrenti (filtri, pastiglie, cinghie). Fatturato prevedibile e margini stabili",
+      "4-5": "Centro di profitto strutturato: retail + B2B officine + servizi + marketplace online. Margine medio monitorato per canale con obiettivi trimestrali"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Google My Business completo con orari, foto del negozio e risposta attiva alle recensioni. Il cliente cerca 'ricambi auto X città' su Google prima di uscire di casa",
+      "2-3": "Volantinaggio nelle officine della zona con listino prezzi B2B e contatto diretto. Social media con contenuti tecnici utili — consigli manutenzione, novità prodotto",
+      "3-4": "Google Ads locali su ricerche specifiche (es. 'pastiglie freno X marca'), campagne email al database officine per promozioni stagionali (catene neve, gomme estive)",
+      "4-5": "Piano marketing strutturato: digitale + B2B + programma fedeltà per officine con punti e premi. Sponsorizzazione eventi motoristici locali per visibilità"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Sito base con catalogo ricambi principali, orari, zona di consegna e contatto rapido. Deve funzionare perfettamente su mobile — il meccanico cerca da smartphone in officina",
+      "2-3": "Sito con ricerca per targa o codice OEM, disponibilità in tempo reale e prenotazione ritiro in negozio",
+      "3-4": "Sito professionale con area riservata officine (listino dedicato, ordini online, storico acquisti) e integrazione con i principali cataloghi ricambi (TecDoc)",
+      "4-5": "E-commerce completo con spedizione nazionale, area B2B officine, integrazione TecDoc per ricerca per targa e gestione resi online"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Zero presenza online — perdi clienti ogni giorno a favore di Amazon e Autodoc. Inizia con un profilo eBay Motors per i ricambi più venduti",
+      "2-3": "Presenza attiva su eBay Motors e Subito con i ricambi a più alta rotazione. Spedizione in 24h come leva competitiva vs i privati",
+      "3-4": "Marketplace strutturato: eBay Motors + proprio e-commerce per ricambi standard. Gestione automatica stock online sincronizzata con il magazzino fisico",
+      "4-5": "Strategia omnicanale completa: negozio fisico + e-commerce + marketplace + consegna B2B officine. Il canale online genera il 20-30% del fatturato con margini superiori al banco"
 
     }
   },
