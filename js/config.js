@@ -633,6 +633,9 @@ function getDimLabel(settore, dimId) {
     },
     materiali_edili: {
       ecommerce: "Logistica & consegna cantiere"
+    },
+    abbigliamento_ingrosso: {
+      ecommerce: "Dropshipping & canali digitali"
     }
   };
 

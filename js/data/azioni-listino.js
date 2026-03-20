@@ -930,59 +930,59 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "commercio_abbigliamento_ingrosso": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il negoziante compra da chi lo aiuta a vendere — non solo da chi ha il prezzo più basso. Visita i tuoi clienti in negozio, capisce cosa vende e cosa resta in magazzino, e seleziona i pezzi giusti per loro",
+      "2-3": "Posizionati sulla qualità e sull'esclusività: proponi brand o linee che i negozi cinesi non hanno. Il negoziante che vuole distinguersi ha bisogno di te, non di chi vende a prezzi impossibili",
+      "3-4": "Agente specializzato per tipo di cliente: boutique premium, negozi di quartiere e mercati hanno logiche completamente diverse. Chi capisce il cliente vende di più",
+      "4-5": "Struttura commerciale con agenti di zona, showroom stagionale e programma di supporto al cliente per aiutarlo a vendere — non solo a comprare"
 
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Traccia gli ordini per stagione per cliente: chi ha comprato bene la stagione scorsa va visitato prima degli altri per la nuova collezione",
+      "2-3": "CRM per gestire il portafoglio clienti con storico acquisti, sell-through per categoria e alert su clienti che non riordinano",
+      "3-4": "Pipeline strutturata con forecast stagionale per agente, gestione campionario e monitoraggio riordini durante la stagione",
+      "4-5": "Sistema integrato ordini-magazzino con portale B2B per ordini online e dashboard real-time su sell-through per collezione e per cliente"
 
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Il venditore deve avere gusto e conoscere le tendenze — non si vende abbigliamento come si vende cemento. Seleziona persone con sensibilità per il prodotto",
+      "2-3": "Formazione su trend stagionali, abbinamenti e visual merchandising: il bravo agente aiuta il negoziante ad allestire il negozio, non solo a fare l'ordine",
+      "3-4": "Team con agenti commerciali + stylist/visual merchandiser che supporta i clienti nell'allestimento e nella vendita assistita",
+      "4-5": "Struttura completa con direttore commerciale, agenti di zona, supporto visual merchandising e customer service dedicato ai clienti e-commerce"
 
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Gestione campionario strutturata: ogni capo ha scheda con composizione, taglie disponibili, prezzi e tempi di consegna. Senza queste info il negoziante non ordina con sicurezza",
+      "2-3": "Processo di acquisto merce con OTB (open to buy) per stagione, analisi sell-through della stagione precedente prima di fare i nuovi ordini e gestione resi invenduto strutturata",
+      "3-4": "Processo di qualità documentato: controllo capi in arrivo, gestione non conformità con i fornitori, certificazioni tessili (OEKO-TEX) come leva commerciale verso i clienti più attenti",
+      "4-5": "Sistema gestionale completo con OTB automatico, analisi ABC per brand e categoria, markdown programmato sull'invenduto e KPI rotazione stock monitorati per stagione"
 
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Analizza i margini per brand e categoria: non tutti i capi rendono uguale. Identifica le linee a più alto margine e aumenta il loro peso nell'assortimento",
+      "2-3": "Riduci l'invenduto lavorando meglio sull'acquisto: meno quantità ma più mirata. Ogni capo invenduto a fine stagione è margine perso — il saldo a -50% distrugge la redditività",
+      "3-4": "Servizi aggiuntivi a margine: dropshipping per i clienti e-commerce, visual merchandising a pagamento, gestione social per i clienti più piccoli che non sanno farlo",
+      "4-5": "Revenue mix ottimizzato: vendita diretta + dropshipping + servizi marketing + private label. Il dropshipping in particolare ha margini bassi ma zero rischio di invenduto"
 
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Lookbook stagionale professionale con foto curate — è lo strumento che il negoziante usa per scegliere i pezzi e che poi usa per vendere ai suoi clienti",
+      "2-3": "Showroom stagionale o partecipazione a fiere di settore (White Milano, Moda Prima): il negoziante vuole toccare i capi prima di ordinare",
+      "3-4": "Content marketing su tendenze e abbinamenti: aiuta i tuoi clienti negozianti a vendere di più con consigli pratici su come allestire e comunicare la collezione",
+      "4-5": "Piano marketing strutturato: showroom + fiere + newsletter + supporto social ai clienti. Posizionati come partner di business del negoziante, non solo fornitore"
 
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Catalogo digitale stagionale con foto professionali, taglie disponibili, prezzi ingrosso e modulo richiesta campionario",
+      "2-3": "Portale B2B con area riservata per i clienti: catalogo con prezzi dedicati, disponibilità in tempo reale e ordini online",
+      "3-4": "Portale B2B completo con storico ordini, gestione resi, catalogo dropshipping per i clienti e-commerce e area download materiali marketing",
+      "4-5": "Piattaforma digitale completa con portale B2B, integrazione dropshipping automatica con i principali e-commerce dei clienti e dashboard sell-through condivisa"
 
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
+      "1-2": "Zero servizi digitali — perdi i clienti e-commerce che cercano un fornitore con dropshipping. Inizia a capire quanti dei tuoi clienti vendono anche online",
+      "2-3": "Attiva il dropshipping per i clienti e-commerce: loro vendono online, tu spedisci direttamente al cliente finale. Zero rischio invenduto per te, servizio ad alto valore per loro",
+      "3-4": "Servizio dropshipping strutturato con feed prodotti automatico, foto e descrizioni ottimizzate per e-commerce e gestione resi integrata",
+      "4-5": "Piattaforma dropshipping professionale con API per integrazione automatica con Shopify, WooCommerce e marketplace. Il canale digitale genera il 30-40% del fatturato senza rischio stock"
 
     }
   },
