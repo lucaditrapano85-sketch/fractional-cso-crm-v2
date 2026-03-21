@@ -182,6 +182,41 @@ async function saveSessione() {
   showToast('Sessione registrata con successo');
 }
 
+function glosCerca(valore) {
+  var q = valore.toLowerCase().trim();
+  var body = document.getElementById('glos-body');
+  if (!body) return;
+  if (q.length > 0 && q.length < 3) return;
+  if (!q) {
+    renderGlossario();
+    var si = document.getElementById('glos-search-input');
+    if (si) si.value = valore;
+    return;
+  }
+  var termini = window._glosTermini || [];
+  var filtrati = termini.filter(function(t) {
+    return t.termine.toLowerCase().includes(q) ||
+      t.def.toLowerCase().includes(q) ||
+      (t.esempio || '').toLowerCase().includes(q) ||
+      (t.categoria || '').toLowerCase().includes(q);
+  });
+  if (!filtrati.length) {
+    body.innerHTML = '<div class="glos-empty">Nessun termine trovato per "' + valore + '"</div>';
+    return;
+  }
+  body.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:10px;padding:0">' +
+    filtrati.map(function(t) {
+      return '<div class="glos-card">' +
+        '<div class="glos-card-top">' +
+          '<div class="glos-termine">' + t.termine + '</div>' +
+          '<div class="glos-cat-badge">' + (t.categoria || '') + '</div>' +
+        '</div>' +
+        '<div class="glos-def">' + t.def + '</div>' +
+        (t.esempio ? '<div class="glos-esempio"><span class="glos-es-label">Esempio</span>' + t.esempio + '</div>' : '') +
+      '</div>';
+    }).join('') + '</div>';
+}
+
 function renderGlossario() {
   var container = document.getElementById('view-glossario');
   if (!container) return;
@@ -267,38 +302,15 @@ function renderGlossario() {
   });
   window._glosTermini = tuttiTermini;
 
-  window._glosRenderRisultati = function(lista) {
-    return lista.map(function(t) {
-      return '<div class="glos-card">' +
-        '<div class="glos-card-top">' +
-          '<div class="glos-termine">' + t.termine + '</div>' +
-          '<div class="glos-cat-badge">' + t.categoria + '</div>' +
-        '</div>' +
-        '<div class="glos-def">' + t.def + '</div>' +
-        (t.esempio ? '<div class="glos-esempio"><span class="glos-es-label">Esempio</span>' + t.esempio + '</div>' : '') +
-      '</div>';
-    }).join('');
-  };
-
   container.innerHTML =
     '<div class="glos-header">' +
       '<div class="glos-title">Glossario & Logiche del modello</div>' +
       '<div class="glos-subtitle">Definizioni complete dei termini e delle logiche implementate nel CRM \u2014 progettato per essere condiviso con clienti e investitori</div>' +
       '<div class="glos-search-wrap">' +
-        '<input class="glos-search" id="glos-search-input" type="text" placeholder="Cerca un termine, definizione o categoria... (min. 3 caratteri)" oninput="' +
-          'var q=this.value.toLowerCase().trim();' +
-          'var body=document.getElementById(\'glos-body\');' +
-          'if(q.length>0&&q.length<3)return;' +
-          'if(!q){body.innerHTML=window._glosBodyOriginal;return;}' +
-          'var filtrati=window._glosTermini.filter(function(t){return t.termine.toLowerCase().includes(q)||t.def.toLowerCase().includes(q)||(t.esempio||String()).toLowerCase().includes(q)||t.categoria.toLowerCase().includes(q);});' +
-          'if(!filtrati.length){body.innerHTML=\'<div class=glos-empty>Nessun termine trovato per \\\"\'+this.value+\'\\\"</div>\';return;}' +
-          'body.innerHTML=\'<div class=glos-termini style=padding:0>\'+window._glosRenderRisultati(filtrati)+\'</div>\';' +
-        '">' +
+        '<input class="glos-search" id="glos-search-input" type="text" placeholder="Cerca un termine, definizione o categoria... (min. 3 caratteri)" oninput="glosCerca(this.value)">' +
       '</div>' +
     '</div>' +
     '<div class="glos-body" id="glos-body">' + html + '</div>';
-
-  window._glosBodyOriginal = document.getElementById('glos-body').innerHTML;
 }
 
 function genField(label,val) {
