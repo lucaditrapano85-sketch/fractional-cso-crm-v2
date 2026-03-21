@@ -583,4 +583,12 @@ label{color:var(--gray2)}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
 ::-webkit-scrollbar-thumb:hover{background:var(--gray2)}
 .sidebar-logo::before{content:'';display:block;width:3px;height:28px;background:var(--gold);border-radius:2px;position:absolute;left:16px;top:16px}
-.sidebar-logo{position:relative;padding-left:28px!important}
+.sidebar-logo{position:relative;padding-left:28px!important}.tl-sess-evento{color:#F0F4F8!important}
+.tl-sess-meta{color:#8AA4BF!important}
+.tl-sess-nota{color:#8AA4BF!important}
+.tl-chip-eq{color:#8AA4BF!important;background:#162540!important;border-color:#243650!important}
+.tl-chip-up{color:#1CB889!important;background:rgba(28,184,137,0.15)!important;border-color:rgba(28,184,137,0.3)!important}
+.tl-chip-down{color:#E05555!important;background:rgba(224,85,85,0.1)!important;border-color:rgba(224,85,85,0.2)!important}
+.tl-sess-card{background:#111F35!important;border-color:#1C2D42!important}
+.tl-sess-dot{background:#243650!important}
+.tl-sess-dot-active{background:#4E9FE6!important}
