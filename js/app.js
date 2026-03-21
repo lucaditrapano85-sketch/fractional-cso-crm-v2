@@ -106,6 +106,82 @@ function showToast(msg, type='success') {
   setTimeout(()=>t.classList.remove('show'), 3000);
 }
 
+// -- SESSIONE MODAL ------------------------------------------
+function openSessioneModal() {
+  var p = prospects.find(function(x) { return x.id === currentId; });
+  if (!p) return;
+
+  var _DIMS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+  var _DIM_LABELS = {
+    vendite:'Vendite', pipeline:'Pipeline', team:'Team', processi:'Processi',
+    ricavi:'Ricavi', marketing:'Marketing', sitoweb:'Sito Web',
+    ecommerce: (typeof getDimLabel === 'function') ? getDimLabel(p.settore, 'ecommerce') : 'Ecommerce'
+  };
+
+  var oggi = new Date().toISOString().split('T')[0];
+  var slidersHtml = _DIMS.map(function(d) {
+    var val = p.dims?.[d] || 1;
+    return '<div class="sess-dim-row">' +
+      '<div class="sess-dim-header">' +
+        '<label class="sess-dim-label">' + _DIM_LABELS[d] + '</label>' +
+        '<span class="sess-dim-val" id="sess-val-' + d + '">' + val + '</span>' +
+      '</div>' +
+      '<input type="range" class="sess-slider" id="sess-' + d + '" min="1" max="5" step="1" value="' + val + '"' +
+        ' oninput="document.getElementById(\'sess-val-' + d + '\').textContent=this.value">' +
+      '<div class="sess-slider-marks"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>' +
+    '</div>';
+  }).join('');
+
+  document.getElementById('modal-sessione-body').innerHTML =
+    '<div class="sess-date-row">' +
+      '<label>Data sessione</label>' +
+      '<input class="form-input" id="sess-data" type="date" value="' + oggi + '">' +
+    '</div>' +
+    '<div class="sess-note-row">' +
+      '<label>Note sessione</label>' +
+      '<textarea class="form-input" id="sess-note" rows="2" placeholder="Cosa è stato affrontato in questa sessione..."></textarea>' +
+    '</div>' +
+    '<div class="sess-dims-title">Aggiorna i valori reali raggiunti</div>' +
+    '<div class="sess-dims-grid">' + slidersHtml + '</div>';
+
+  document.getElementById('modal-sessione-title').textContent = 'Registra sessione \u2014 ' + p.nome;
+  document.getElementById('modal-sessione').style.display = 'flex';
+}
+
+async function saveSessione() {
+  var p = prospects.find(function(x) { return x.id === currentId; });
+  if (!p) return;
+
+  var _DIMS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+  var newDims = {};
+  _DIMS.forEach(function(d) {
+    var el = document.getElementById('sess-' + d);
+    if (el) newDims[d] = parseInt(el.value);
+  });
+
+  var nota = (document.getElementById('sess-note')?.value || '');
+  var data = (document.getElementById('sess-data')?.value || new Date().toISOString().split('T')[0]);
+
+  p.dims = newDims;
+  await sb.from('prospects').update({ dims: newDims }).eq('id', p.id);
+
+  var snapshot = {
+    data: new Date(data).toISOString(),
+    score: calcScore(p),
+    score_base: calcScore(p),
+    dims: Object.assign({}, newDims),
+    targets: Object.assign({}, p.targets || {}),
+    evento: 'Sessione registrata',
+    nota: nota,
+  };
+  p.score_history = (p.score_history || []).concat([snapshot]);
+  await sb.from('prospects').update({ score_history: p.score_history }).eq('id', p.id);
+
+  document.getElementById('modal-sessione').style.display = 'none';
+  renderProspectDetail(p.id);
+  showToast('Sessione registrata con successo');
+}
+
 function genField(label,val) {
   if(!val) return '';
   return `\x3cdiv style="margin-bottom:10px">

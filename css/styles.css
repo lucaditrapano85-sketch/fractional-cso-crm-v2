@@ -454,3 +454,15 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 .bench-row-low{background:rgba(192,80,64,.05)}
 .bench-empty-td{text-align:center;padding:30px;color:var(--gray2)}
 .bench-actions{padding:12px 0 0}
+
+/* Sessione modal */
+.sess-date-row,.sess-note-row{display:flex;flex-direction:column;gap:4px;margin-bottom:14px}
+.sess-date-row label,.sess-note-row label{font-size:12px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.5px}
+.sess-dims-title{font-size:13px;font-weight:700;color:var(--white);margin-bottom:12px;padding-top:8px;border-top:1px solid var(--border)}
+.sess-dims-grid{display:flex;flex-direction:column;gap:14px}
+.sess-dim-row{background:var(--bg3);border-radius:8px;padding:10px 12px;border:1px solid var(--border)}
+.sess-dim-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.sess-dim-label{font-size:13px;font-weight:600;color:var(--white)}
+.sess-dim-val{font-size:16px;font-weight:700;color:var(--gold);min-width:20px;text-align:right}
+.sess-slider{width:100%;accent-color:var(--gold);cursor:pointer}
+.sess-slider-marks{display:flex;justify-content:space-between;font-size:10px;color:var(--gray2);padding:0 2px;margin-top:2px}
