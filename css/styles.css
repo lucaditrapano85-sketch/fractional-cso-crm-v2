@@ -422,3 +422,35 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 .btn-prospect-new{background:var(--gold);color:#fff;border:none;border-radius:8px;padding:7px 16px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:opacity .15s;font-family:'DM Sans',sans-serif}
 .btn-prospect-new:hover{opacity:.85}
 .sidebar-prospects{display:none!important}
+
+/* Benchmark KPI table */
+.bench-summary-bar{display:flex;gap:10px;flex-wrap:wrap;padding:10px 16px;background:var(--bg3);border-radius:8px;margin-bottom:12px}
+.bench-sum-item{font-size:12px;font-weight:600;padding:2px 10px;border-radius:20px}
+.bench-sum-top{background:#1a3a2a;color:#4A9A6A}
+.bench-sum-ok{background:#2A2010;color:#C9973A}
+.bench-sum-low{background:#2a1a1a;color:#C05040}
+.bench-sum-nd{background:var(--bg4);color:var(--gray);font-weight:400}
+.bench-sum-warn{font-size:12px;color:#C9973A;font-weight:500}
+.bench-table{width:100%;border-collapse:collapse;font-size:13px}
+.bench-table th{padding:8px 12px;text-align:left;font-size:12px;font-weight:600;color:var(--gray);border-bottom:2px solid var(--border)}
+.bench-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+.bench-td-label{max-width:220px}
+.bench-kpi-name{font-weight:600;font-size:13px;color:var(--white)}
+.bench-kpi-fonte{font-size:10px;color:var(--gray2);margin-top:2px}
+.bench-td-num{text-align:right;color:var(--gray);font-size:13px}
+.bench-td-top{color:#4A9A6A!important;font-weight:600}
+.bench-td-client{text-align:right;min-width:140px}
+.bench-client-val-inline{font-weight:700;font-size:13px;margin-right:6px}
+.bench-val-top{color:#4A9A6A}
+.bench-val-ok{color:#C9973A}
+.bench-val-low{color:#C05040}
+.bench-badge{font-size:11px;font-weight:600;padding:2px 7px;border-radius:20px}
+.bench-top{background:#1a3a2a;color:#4A9A6A}
+.bench-ok{background:#2A2010;color:#C9973A}
+.bench-low{background:#2a1a1a;color:#C05040}
+.bench-nd{background:var(--bg4);color:var(--gray2)}
+.bench-row-top{background:rgba(74,154,106,.05)}
+.bench-row-ok{background:rgba(201,151,58,.05)}
+.bench-row-low{background:rgba(192,80,64,.05)}
+.bench-empty-td{text-align:center;padding:30px;color:var(--gray2)}
+.bench-actions{padding:12px 0 0}

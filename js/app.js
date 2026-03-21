@@ -482,199 +482,108 @@ async function renderProspectDetail(id) {
     \x3c/div>
     ${p.note?`\x3cdiv class="divider">\x3c/div>\x3cdiv style="font-size:12px;color:var(--gray);line-height:1.6">${p.note}\x3c/div>`:''}`;
 
-  const bench=MARKET[p.settore];
-  // Map prospect real data to benchmark metrics
-  // -- Calcola medie dei MIEI prospect per fascia dipendenti --
-  function getFascia(dip) {
-    if (!dip) return null;
-    const d = String(dip).toLowerCase();
-    if (d.includes('1-10') || d.includes('1-10') || d === '1' || d === '5' || d === '10') return '1-10';
-    if (d.includes('10-30') || d.includes('10-30') || d === '15' || d === '20' || d === '25' || d === '30') return '10-30';
-    if (d.includes('30-80') || d.includes('30-80') || d === '40' || d === '50' || d === '60' || d === '80') return '30-80';
-    const n = parseInt(d);
-    if (!isNaN(n)) {
-      if (n <= 10) return '1-10';
-      if (n <= 30) return '10-30';
-      if (n <= 80) return '30-80';
-    }
-    return null;
-  }
+  // ── BENCHMARK KPI DINAMICO ──────────────────────────────────────
+  const bench = (typeof BENCHMARK_KPI !== 'undefined' && BENCHMARK_KPI[p.settore]) ? BENCHMARK_KPI[p.settore] : null;
+  const kpi = p.kpi_commerciali || {};
 
-  // -- Benchmark: Media mercato / Best mercato / Cliente ------------------
-  // Usa MARKET_CLUSTER se disponibile per quel sottomercato ? fascia fatturato
-  // Fallback su MARKET generico se cluster non disponibile
-
-  const fasciaId = getFasciaId(p.fatturato_anno_1);
-  const clusterKey = p.settore; // es. 'manifatturiero_meccanica'
-  const clusterFascia = MARKET_CLUSTER[clusterKey]?.[fasciaId];
-  const fasciaLabel = fasciaId ? FASCE.find(f => f.id === fasciaId)?.label : null;
-
-  // Build cluster-aware metrics: usa cluster se disponibile, altrimenti MARKET generico
-  function getClusterMetrics() {
-    if (!bench) return [];
-    if (!clusterFascia) return bench.metrics.map(m => ({ label:m.label, media:m.media, top:m.top }));
-
-    const c = clusterFascia;
-    return bench.metrics.map(m => {
-      const l = m.label.toLowerCase();
-      let media = m.media, top = m.top;
-
-      if (l.includes('chiusura'))          { media = c.chiusura.media + '%';  top = c.chiusura.top + '%'; }
-      else if (l.includes('fatturato') && l.includes('commerciale'))
-                                            { media = c.fatxcomm.media + 'k EUR'; top = c.fatxcomm.top + 'k EUR'; }
-      else if (l.includes('ciclo'))         { media = c.ciclo.media + ' gg';   top = c.ciclo.top + ' gg'; }
-      else if (l.includes('uso crm') || (l.includes('crm') && !l.includes('commerciale')))
-                                            { media = c.crm.media + '%';       top = c.crm.top + '%'; }
-      else if (l.includes('clienti persi') || l.includes('churn'))
-                                            { media = c.churn.media + '%';     top = c.churn.top + '%'; }
-      else if (l.includes('lead gen'))      { media = c.lead_gen.media;        top = c.lead_gen.top; }
-
-      return { label:m.label, media, top };
-    });
-  }
-
-  const clusterMetrics = getClusterMetrics();
-
-  // Dati reali del cliente
-  function getClienteVal(label, p) {
-    const l = label.toLowerCase();
-    if (l.includes('chiusura'))     return null; // non misurabile da bilancio
-    if (l.includes('ciclo'))        return null;
-    if (l.includes('lead gen'))     return null;
-    if (l.includes('uso crm') || (l.includes('crm') && !l.includes('commerciale'))) return null;
-    if (l.includes('fatturato') && l.includes('commerciale')) {
-      if (p.fatturato_anno_1 && p.dipendenti_diretti)
-        return Math.round(p.fatturato_anno_1 / p.dipendenti_diretti / 1000) + 'k EUR';
-      return null;
-    }
-    if (l.includes('fatturato')) {
-      if (!p.fatturato_anno_1) return null;
-      const v = p.fatturato_anno_1;
-      return v >= 1000000 ? (v/1000000).toFixed(1)+'M EUR' : Math.round(v/1000)+'k EUR';
-    }
-    if (l.includes('clienti persi') || l.includes('churn'))
-      return p.tasso_riacquisto_pct != null ? (100 - p.tasso_riacquisto_pct).toFixed(0) + '%' : null;
-    if (l.includes('ebitda'))
-      return p.ebitda && p.fatturato_anno_1 ? (p.ebitda/p.fatturato_anno_1*100).toFixed(1)+'%' : null;
-    if (l.includes('margine'))
-      return p.margine_pct ? p.margine_pct + '%' : null;
-    return null;
-  }
-
-  // Confronto visivo: verde se cliente batte la media, rosso se sotto
-  function compareColor(clienteStr, mediaStr, isChurn=false) {
-    const parseNum = s => parseFloat(String(s).replace(/[^0-9.-]/g,''));
-    const c = parseNum(clienteStr), m = parseNum(mediaStr);
-    if (isNaN(c) || isNaN(m)) return 'var(--gold)';
-    const better = isChurn ? c < m : c > m;
-    return better ? 'var(--green)' : 'var(--red)';
-  }
-
-  const clusterBadge = clusterFascia
-    ? '\x3cspan style="display:inline-flex;align-items:center;gap:4px;background:var(--amber-bg);border:1px solid var(--gold-dim);border-radius:12px;padding:2px 8px;font-size:10px;color:var(--gold);font-weight:500;white-space:nowrap">! ' + fasciaLabel + '\x3c/span>'
-    : '\x3cspan style="font-size:10px;color:var(--gray2)">Inserisci fatturato per benchmark calibrati\x3c/span>';
-
-  // Dati benchmark cliente salvati (manuale o auto)
-  const benchCliente = p.dims_benchmark || {};
-
-  // Determina se un valore ? automatico o manuale
-  function getClienteValFull(label, p, benchCliente) {
-    const auto = getClienteVal(label, p);
-    if (auto) return { val: auto, source: 'auto' };
-    // Cerca nel campo manuale ? chiave = label normalizzata
-    const key = label.toLowerCase().replace(/[^a-z0-9]/g, '_');
-    if (benchCliente[key] !== undefined && benchCliente[key] !== '') {
-      return { val: benchCliente[key], source: 'manuale' };
-    }
-    return { val: null, source: null };
-  }
-
-  // Mappa label ? tipo input per inserimento manuale
-  function getBenchInputType(label) {
-    const l = label.toLowerCase();
-    if (l.includes('lead gen') || l.includes('canale')) return 'text';
-    return 'number';
-  }
-
-  function getBenchUnit(label) {
-    const l = label.toLowerCase();
-    if (l.includes('%') || l.includes('chiusura') || l.includes('crm') || l.includes('churn') || l.includes('persi')) return '%';
-    if (l.includes('gg') || l.includes('ciclo') || l.includes('giorn')) return 'gg';
-    if (l.includes('EUR') || l.includes('fatturato') || l.includes('commerciale')) return 'EUR';
-    return '';
-  }
-
-  // Build benchmark row - display only, editing via modal
-  function benchRow(label, media, top, autoVal, key, inputType, unit, isChurn) {
-    var savedVal = benchCliente[key] !== undefined && benchCliente[key] !== '' ? benchCliente[key] : '';
-    var currentVal = savedVal || autoVal || '';
-    var isAuto = !savedVal && autoVal;
-    var numVal = parseFloat(String(currentVal).replace(/[^0-9.-]/g,''));
-    var numMedia = parseFloat(String(media).replace(/[^0-9.-]/g,''));
-    var valColor = 'var(--gold)';
-    if (currentVal && !isNaN(numVal) && !isNaN(numMedia)) {
-      valColor = (isChurn ? numVal < numMedia : numVal > numMedia) ? 'var(--green)' : 'var(--red)';
-    }
-    var autoTag = isAuto ? '\x3cspan style="font-size:9px;color:var(--gray2);margin-left:3px">A\x3c/span>' : '';
-    var unitSpan = unit ? '\x3cspan style="font-size:9px;font-weight:400;margin-left:2px;color:var(--gray2)">' + unit + '\x3c/span>' : '';
-    var valCell = currentVal
-      ? '\x3cspan style="color:' + valColor + ';font-weight:600">' + currentVal + unitSpan + '\x3c/span>' + autoTag
-      : '\x3cspan style="color:var(--gray2)">--\x3c/span>';
-    return '\x3ctr>' +
-      '\x3ctd style="font-size:11px;color:var(--white);word-break:break-word;line-height:1.35" title="' + (BENCH_TOOLTIP[label] || '') + '">' + label + '\x3c/td>' +
-      '\x3ctd class="col-media">' + media + '\x3c/td>' +
-      '\x3ctd class="col-best">' + top + '\x3c/td>' +
-      '\x3ctd class="col-lui">' + valCell + '\x3c/td>' +
-    '\x3c/tr>';
-  }
-  // Tooltip descriptions for benchmark metrics
-  var BENCH_TOOLTIP = {
-    'Tasso di chiusura medio': 'Percentuale di trattative avviate che si chiudono con una vendita',
-    'Fatturato/commerciale': 'Fatturato medio generato per ogni figura commerciale attiva (agente, sales, ecc.)',
-    'Ciclo vendita medio': 'Giorni medi dal primo contatto alla firma/acquisto',
-    'Lead gen principale': 'Canale di acquisizione clienti piu efficace nel settore',
-    'Uso CRM': 'Percentuale di aziende del settore che usano un CRM in modo attivo',
-    'Clienti persi/anno': 'Percentuale di clienti attivi che non rinnovano o smettono di acquistare in un anno',
+  const KPI_LABELS = {
+    tasso_conversione_pct:   'Tasso di conversione lead\u2192cliente',
+    ciclo_vendita_gg:        'Ciclo di vendita medio',
+    valore_medio_ordine:     'Valore medio ordine/contratto',
+    concentrazione_top3_pct: 'Concentrazione top 3 clienti',
+    tasso_riacquisto_pct:    'Tasso di riacquisto',
+    nuovi_clienti_anno:      'Nuovi clienti / anno',
+    clienti_attivi:          'Clienti attivi totali',
+    fatturato_referral_pct:  '% fatturato da referral',
+    cac:                     'CAC \u2014 Costo acquisizione cliente',
+    dso_gg:                  'DSO \u2014 Giorni medi incasso',
+    mrr:                     'MRR / ARR',
   };
 
-  // Map cluster metrics to rows with auto-values
-  function buildBenchRows() {
-    return clusterMetrics.map(m => {
-      const { val: autoVal } = getClienteValFull(m.label, p, {});
-      const key = m.label.toLowerCase().replace(/[^a-z0-9]/g, '_');
-      const inputType = getBenchInputType(m.label);
-      const unit = getBenchUnit(m.label);
-      const isChurn = m.label.toLowerCase().includes('persi') || m.label.toLowerCase().includes('churn');
-      return benchRow(m.label, m.media, m.top, autoVal, key, inputType, unit, isChurn);
-    }).join('');
+  function _getKpiStatus(val, b) {
+    if (val === null || val === undefined || val === '') return null;
+    var v = parseFloat(val);
+    if (isNaN(v) || !b) return null;
+    if (b.verso === 'alto') {
+      if (v >= b.alto)  return 'top';
+      if (v >= b.medio) return 'ok';
+      return 'low';
+    } else {
+      if (v <= b.alto)  return 'top';
+      if (v <= b.medio) return 'ok';
+      return 'low';
+    }
   }
 
-  const nomeCliente = p.nome ? p.nome.split(' ').slice(0,2).join(' ') : 'Cliente';
+  function _kpiStatusBadge(s) {
+    if (s === 'top') return '\x3cspan class="bench-badge bench-top">\u25B2 Top\x3c/span>';
+    if (s === 'ok')  return '\x3cspan class="bench-badge bench-ok">\u25CF Ok\x3c/span>';
+    if (s === 'low') return '\x3cspan class="bench-badge bench-low">\u25BC Sotto\x3c/span>';
+    return '\x3cspan class="bench-badge bench-nd">\u2014\x3c/span>';
+  }
 
-  document.getElementById('det-benchmark').innerHTML = bench
-    ? ('\x3cdiv style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:10px;flex-wrap:wrap">' +
-        '\x3cdiv style="font-size:11px;color:var(--gray)">' + bench.label + '\x3c/div>' +
-        clusterBadge +
-       '\x3c/div>' +
+  var benchRowsHtml = '';
+  var totKpi = 0, inseriti = 0, topCount = 0, okCount = 0, lowCount = 0;
+
+  if (bench) {
+    Object.keys(KPI_LABELS).forEach(function(key) {
+      var b = bench[key];
+      if (!b || (b.medio === 0 && b.alto === 0)) return;
+      totKpi++;
+      var val = kpi[key];
+      var hasVal = val !== null && val !== undefined && val !== '';
+      if (hasVal) inseriti++;
+      var status = _getKpiStatus(val, b);
+      if (status === 'top') topCount++;
+      if (status === 'ok')  okCount++;
+      if (status === 'low') lowCount++;
+      var displayVal = hasVal ? parseFloat(val).toLocaleString('it-IT') + ' ' + b.unita : '\u2014';
+      var rowClass = status ? 'bench-row-' + status : '';
+      benchRowsHtml +=
+        '\x3ctr class="' + rowClass + '">' +
+          '\x3ctd class="bench-td-label">' +
+            '\x3cdiv class="bench-kpi-name">' + KPI_LABELS[key] + '\x3c/div>' +
+            '\x3cdiv class="bench-kpi-fonte">' + b.fonte + '\x3c/div>' +
+          '\x3c/td>' +
+          '\x3ctd class="bench-td-num">' + b.medio.toLocaleString('it-IT') + ' ' + b.unita + '\x3c/td>' +
+          '\x3ctd class="bench-td-num bench-td-top">' + b.alto.toLocaleString('it-IT') + ' ' + b.unita + '\x3c/td>' +
+          '\x3ctd class="bench-td-client">' +
+            '\x3cspan class="bench-client-val-inline ' + (status ? 'bench-val-' + status : '') + '">' + displayVal + '\x3c/span>' +
+            _kpiStatusBadge(status) +
+          '\x3c/td>' +
+        '\x3c/tr>';
+    });
+  } else {
+    benchRowsHtml = '\x3ctr>\x3ctd colspan="4" class="bench-empty-td">Nessun benchmark disponibile per questo settore.\x3c/td>\x3c/tr>';
+  }
+
+  var summaryHtml = bench ?
+    '\x3cdiv class="bench-summary-bar">' +
+      '\x3cspan class="bench-sum-item bench-sum-top">\u25B2 Top: ' + topCount + '\x3c/span>' +
+      '\x3cspan class="bench-sum-item bench-sum-ok">\u25CF In linea: ' + okCount + '\x3c/span>' +
+      '\x3cspan class="bench-sum-item bench-sum-low">\u25BC Sotto: ' + lowCount + '\x3c/span>' +
+      '\x3cspan class="bench-sum-item bench-sum-nd">' + inseriti + '/' + totKpi + ' KPI inseriti\x3c/span>' +
+      (inseriti < totKpi ? '\x3cspan class="bench-sum-warn">' + (totKpi - inseriti) + ' KPI mancanti\x3c/span>' : '') +
+    '\x3c/div>' : '';
+
+  var benchContainer = document.getElementById('det-benchmark');
+  if (benchContainer) {
+    benchContainer.innerHTML =
+      summaryHtml +
       '\x3ctable class="bench-table">' +
         '\x3cthead>\x3ctr>' +
-          '\x3cth style="text-align:left;color:var(--gray2)">Metrica\x3c/th>' +
-          '\x3cth class="col-media">Media\x3c/th>' +
-          '\x3cth class="col-best">Best\x3c/th>' +
-          '\x3cth class="col-lui">' + (p.nome ? p.nome.split(' ')[0] : 'Cliente') + '\x3c/th>' +
+          '\x3cth>Metrica\x3c/th>' +
+          '\x3cth>Media settore\x3c/th>' +
+          '\x3cth>Top performer\x3c/th>' +
+          '\x3cth>' + (p.nome || 'Cliente') + '\x3c/th>' +
         '\x3c/tr>\x3c/thead>' +
-        '\x3ctbody>' + buildBenchRows() + '\x3c/tbody>' +
+        '\x3ctbody>' + benchRowsHtml + '\x3c/tbody>' +
       '\x3c/table>' +
-      '\x3cdiv style="font-size:10px;color:var(--gray2);margin-top:8px;line-height:1.6">' +
-        (clusterFascia
-          ? 'Benchmark calibrati su ' + fasciaLabel + ' . ' + (bench.label||'').split('/')[0].trim()
-          : 'Inserisci il fatturato per attivare i benchmark per fascia') +
-        '\x3cbr>\x3cspan style="color:var(--green)">verde\x3c/span> = sopra media &nbsp; \x3cspan style="color:var(--red)">rosso\x3c/span> = sotto &nbsp; \x3cspan style="color:var(--gray2)">A\x3c/span> = calcolato da bilancio' +
-      '\x3c/div>' +
-      '\x3cdiv style="margin-top:12px;text-align:right">' +
-        '\x3cbutton onclick="openBenchModal()" class="fin-edit-btn">Inserisci / modifica dati cliente\x3c/button>' +
-      '\x3c/div>')
-    : '\x3cdiv style="color:var(--gray);font-size:13px">Seleziona un settore per vedere i benchmark\x3c/div>';
+      '\x3cdiv class="bench-actions">' +
+        '\x3cbutton class="btn btn-secondary" onclick="openEditProspect(\'' + p.id + '\');setTimeout(function(){switchModalTab(\'kpi\',document.querySelector(\'.mtab:nth-child(3)\'))},300)">Inserisci / aggiorna KPI cliente\x3c/button>' +
+      '\x3c/div>';
+  }
+  // ── FINE BENCHMARK KPI ───────────────────────────────────────────
 
   // Render financial sections
   renderFinancials(p);
