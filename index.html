@@ -196,11 +196,13 @@
       <script>
       (function() {
         function alignTargetHeight() {
-          const tlCard = document.getElementById('grafico-timeline-card');
           const targetCard = document.querySelector('#radar-target-row > .radar-card:last-child');
-          if (!tlCard || !targetCard) return;
-          targetCard.style.height = 'auto';
-          targetCard.style.minHeight = tlCard.offsetHeight + 'px';
+          if (targetCard) {
+            targetCard.style.height = 'auto';
+            targetCard.style.minHeight = '0';
+            targetCard.style.overflowY = 'auto';
+            targetCard.style.maxHeight = '85vh';
+          }
         }
         // Esegui dopo il render del mega-grafico
         const obs = new MutationObserver(alignTargetHeight);
