@@ -3267,11 +3267,11 @@ function _calcolaImpattoCumulativo(p) {
 
 
 function _buildGraficoTimeline(p) {
-  const DIMS_IDS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
-  const DIM_LABELS_TL = {
+  const DIMS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+  const DIM_LABELS_MAP = {
     vendite:'Vendite', pipeline:'Pipeline', team:'Team',
     processi:'Processi', ricavi:'Ricavi', marketing:'Marketing',
-    sitoweb:'Sito Web', ecommerce: (typeof getDimLabel === 'function') ? getDimLabel(p.settore,'ecommerce') : 'Ecommerce'
+    sitoweb:'Sito Web', ecommerce: typeof getDimLabel === 'function' ? getDimLabel(p.settore,'ecommerce') : 'Ecommerce'
   };
 
   const history = (p.score_history||[]).filter(s => s.score > 0).sort((a,b)=>new Date(a.data)-new Date(b.data));
@@ -3285,207 +3285,198 @@ function _buildGraficoTimeline(p) {
   const gap = scoreTarget - scoreAttuale;
   const sessioni = history.length;
 
-  const chartId = 'tl-chart-' + p.id;
-  const dimChartId = 'dim-chart-' + p.id;
+  // Calcola fatturato proiettato 12m da _calcolaImpattoCumulativo se disponibile
+  let fat12m = null, fat12pct = null, breakeven = null, roi24 = null;
+  try {
+    const ic = _calcolaImpattoCumulativo(p);
+    if (ic) {
+      fat12m = ic.fat12 ? Math.round((ic.fat12[0] + ic.fat12[1]) / 2) : null;
+      fat12pct = ic.pct12 ? Math.round((ic.pct12[0] + ic.pct12[1]) / 2) : null;
+      breakeven = ic.sostenibilita ? ic.sostenibilita.breakeven : null;
+      roi24 = (ic.roiMin !== null && ic.roiMax !== null) ? ((ic.roiMin + ic.roiMax) / 2).toFixed(1) : null;
+    }
+  } catch(e) {}
 
+  const fat12Str = fat12m ? (fat12m >= 1000000 ? (fat12m/1000000).toFixed(1)+'M\u20AC' : Math.round(fat12m/1000)+'k\u20AC') : '\u2014';
+  const fat12PctStr = fat12pct ? '+'+fat12pct+'%' : '';
+  const breakevenStr = breakeven ? breakeven+'m' : '\u2014';
+  const roiStr = roi24 ? roi24+'x' : '\u2014';
+
+  // Metric cards
   const metriche =
     '<div class="tl-metrics">' +
-      '<div class="tl-metric"><div class="tl-metric-label">Score attuale</div><div class="tl-metric-val">' + scoreAttuale + '</div></div>' +
-      '<div class="tl-metric"><div class="tl-metric-label">Score target</div><div class="tl-metric-val tl-blue">' + scoreTarget + '</div></div>' +
-      '<div class="tl-metric"><div class="tl-metric-label">Gap da colmare</div><div class="tl-metric-val tl-orange">' + (gap>0?'+'+gap:gap) + '</div></div>' +
-      '<div class="tl-metric"><div class="tl-metric-label">Sessioni registrate</div><div class="tl-metric-val">' + sessioni + '</div></div>' +
+      '<div class="tl-metric">' +
+        '<div class="tl-metric-label">Score attuale</div>' +
+        '<div class="tl-metric-val">' + scoreAttuale + '</div>' +
+        '<div class="tl-metric-sub">su 100</div>' +
+      '</div>' +
+      '<div class="tl-metric">' +
+        '<div class="tl-metric-label">Score target</div>' +
+        '<div class="tl-metric-val tl-blue">' + scoreTarget + '</div>' +
+        '<div class="tl-metric-sub">gap ' + (gap>0?'+'+gap:gap) + '</div>' +
+      '</div>' +
+      '<div class="tl-metric">' +
+        '<div class="tl-metric-label">Fatturato 12m</div>' +
+        '<div class="tl-metric-val tl-green">' + fat12Str + '</div>' +
+        '<div class="tl-metric-sub">' + fat12PctStr + '</div>' +
+      '</div>' +
+      '<div class="tl-metric">' +
+        '<div class="tl-metric-label">Breakeven piano</div>' +
+        '<div class="tl-metric-val tl-orange">' + breakevenStr + '</div>' +
+        '<div class="tl-metric-sub">ROI 24m: ' + roiStr + '</div>' +
+      '</div>' +
     '</div>';
 
   if (history.length < 1) {
     return metriche + '<div class="tl-empty">Registra la prima sessione per visualizzare la progressione nel tempo.</div>';
   }
 
-  // ── GRAFICO 1: Score timeline ──
+  const chartId = 'tl-chart-' + p.id;
+
+  // Dati grafico score + fatturato
   const oggi = new Date();
   const labels = [];
-  const dataReale = [];
-  const dataProiezione = [];
-  const dataTeorica = [];
+  const dataScore = [];
+  const dataScoreProj = [];
+  const dataFat = p.fatturato_anno_1 ? [] : null;
+  const dataFatProj = fat12m && p.fatturato_anno_1 ? [] : null;
 
   history.forEach(function(s) {
     const label = new Date(s.data).toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit'});
     labels.push(label);
-    dataReale.push(s.score);
-    dataProiezione.push(null);
-    dataTeorica.push(null);
+    dataScore.push(s.score);
+    dataScoreProj.push(null);
+    if (dataFat) dataFat.push(Math.round(p.fatturato_anno_1/1000));
+    if (dataFatProj) dataFatProj.push(null);
   });
 
   const ultimaData = new Date(history[history.length-1].data);
   if (oggi > ultimaData) {
     labels.push('Oggi');
-    dataReale.push(scoreAttuale);
-    dataProiezione.push(scoreAttuale);
-    dataTeorica.push(null);
+    dataScore.push(scoreAttuale);
+    dataScoreProj.push(scoreAttuale);
+    if (dataFat) dataFat.push(Math.round(p.fatturato_anno_1/1000));
+    if (dataFatProj) dataFatProj.push(Math.round(p.fatturato_anno_1/1000));
   } else {
-    dataProiezione[dataProiezione.length-1] = scoreAttuale;
+    dataScoreProj[dataScoreProj.length-1] = scoreAttuale;
+    if (dataFatProj) dataFatProj[dataFatProj.length-1] = Math.round(p.fatturato_anno_1/1000);
   }
 
   [3,6,12].forEach(function(m) {
-    const progresso = Math.min(scoreTarget, Math.round(scoreAttuale + (scoreTarget-scoreAttuale)*(m/12)));
+    const scoreP = Math.min(scoreTarget, Math.round(scoreAttuale + (scoreTarget-scoreAttuale)*(m/12)));
+    const fatP = fat12m ? Math.round(p.fatturato_anno_1/1000 + (fat12m/1000 - p.fatturato_anno_1/1000)*(m/12)) : null;
     labels.push('+'+m+'m');
-    dataReale.push(null);
-    dataProiezione.push(progresso);
-    dataTeorica.push(null);
+    dataScore.push(null);
+    dataScoreProj.push(scoreP);
+    if (dataFat) dataFat.push(null);
+    if (dataFatProj) dataFatProj.push(fatP);
   });
 
-  dataTeorica[0] = history[0].score;
-  dataTeorica[dataTeorica.length-1] = scoreTarget;
+  const oggiIdx = labels.indexOf('Oggi');
 
-  const oggiIndex = labels.indexOf('Oggi');
+  // Timeline sessioni HTML
+  const sessioniHtml = history.length ? history.slice().reverse().map(function(s,i) {
+    const data = new Date(s.data).toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit',year:'numeric'});
+    const isLast = i === 0;
+    const dimChips = s.dims && Object.keys(s.dims).length ? DIMS.map(function(d) {
+      const val = s.dims[d];
+      if (!val) return '';
+      const prev = history[history.length-1-i-1] ? history[history.length-1-i-1].dims?.[d] : undefined;
+      const delta = prev !== undefined ? val - prev : 0;
+      const color = delta > 0 ? 'tl-chip-up' : delta < 0 ? 'tl-chip-down' : 'tl-chip-eq';
+      const arrow = delta > 0 ? ' \u2191' : delta < 0 ? ' \u2193' : '';
+      return '<span class="tl-chip ' + color + '">' + DIM_LABELS_MAP[d] + ' ' + val + '/5' + arrow + '</span>';
+    }).filter(Boolean).join('') : '';
+    return '<div class="tl-sess-item">' +
+      '<div class="tl-sess-dot ' + (isLast?'tl-sess-dot-active':'') + '"></div>' +
+      '<div class="tl-sess-card">' +
+        '<div class="tl-sess-header">' +
+          '<span class="tl-sess-evento">' + (s.evento||'Sessione') + '</span>' +
+          '<span class="tl-sess-meta">' + data + ' \u00B7 score ' + s.score + '</span>' +
+        '</div>' +
+        (s.nota ? '<div class="tl-sess-nota">"' + s.nota + '"</div>' : '') +
+        (dimChips ? '<div class="tl-sess-chips">' + dimChips + '</div>' : '') +
+      '</div>' +
+    '</div>';
+  }).join('') : '<div class="tl-empty">Nessuna sessione ancora.</div>';
 
-  // ── GRAFICO 2: Radar dimensioni attuale vs target ──
-  const dimLabels = DIMS_IDS.map(function(d) { return DIM_LABELS_TL[d]; });
-  const dimAttuali = DIMS_IDS.map(function(d) { return dimsAttuali[d]||1; });
-  const dimTarget = DIMS_IDS.map(function(d) { return targets[d]||1; });
-
-  // ── GRAFICO 3: Variazione dims per sessione ──
-  const hasDimHistory = history.length >= 2 &&
-    history[history.length-1].dims && Object.keys(history[history.length-1].dims).length > 0 &&
-    history[history.length-2].dims && Object.keys(history[history.length-2].dims).length > 0;
-
-  const dimDelta = DIMS_IDS.map(function(d) {
-    if (!hasDimHistory) return 0;
-    const prev = history[history.length-2].dims[d]||0;
-    const curr = history[history.length-1].dims[d]||0;
-    return curr - prev;
-  });
+  // Barre dimensioni attuale vs target
+  const dimBarre = DIMS.map(function(d) {
+    const att = dimsAttuali[d]||1;
+    const tgt = targets[d]||att;
+    const attPct = Math.round((att/5)*100);
+    const tgtPct = Math.round((tgt/5)*100);
+    const deltaStr = tgt > att ? '\u2192'+tgt : tgt < att ? '\u2192'+tgt : '='+tgt;
+    const deltaColor = tgt > att ? 'tl-blue' : tgt < att ? 'tl-red' : 'tl-muted';
+    return '<div class="tl-dim-row">' +
+      '<div class="tl-dim-label">' + DIM_LABELS_MAP[d] + '</div>' +
+      '<div class="tl-dim-bar-wrap">' +
+        '<div class="tl-dim-bar-bg">' +
+          '<div class="tl-dim-bar-att" style="width:' + attPct + '%"></div>' +
+          '<div class="tl-dim-bar-tgt" style="width:' + tgtPct + '%"></div>' +
+        '</div>' +
+        '<span class="tl-dim-val">' + att + '/5</span>' +
+        '<span class="tl-dim-delta ' + deltaColor + '">' + deltaStr + '</span>' +
+      '</div>' +
+    '</div>';
+  }).join('');
 
   setTimeout(function() {
     if (typeof Chart === 'undefined') return;
+    const c = document.getElementById(chartId);
+    if (!c) return;
+    if (c._chart) c._chart.destroy();
 
-    // Chart 1 — Score Timeline
-    const c1 = document.getElementById(chartId);
-    if (c1) {
-      if (c1._chart) c1._chart.destroy();
-      const oggiPlugin = {
-        id:'oggiLine',
-        afterDraw: function(chart) {
-          if (oggiIndex<0) return;
-          const ctx = chart.ctx, chartArea = chart.chartArea, scales = chart.scales;
-          const x = scales.x.getPixelForValue(oggiIndex);
-          ctx.save();
-          ctx.beginPath(); ctx.moveTo(x,chartArea.top); ctx.lineTo(x,chartArea.bottom);
-          ctx.strokeStyle='#e67e22'; ctx.lineWidth=1.5; ctx.setLineDash([4,3]); ctx.stroke();
-          ctx.fillStyle='#e67e22'; ctx.font='10px sans-serif';
-          ctx.fillText('Oggi',x+4,chartArea.top+12);
-          ctx.restore();
-        }
-      };
-      c1._chart = new Chart(c1, {
-        type:'line', plugins:[oggiPlugin],
-        data:{labels:labels, datasets:[
-          {label:'Score reale', data:dataReale, borderColor:'#2c3e50', backgroundColor:'#2c3e50',
-           borderWidth:2.5, pointRadius:5, pointBackgroundColor:'#2c3e50',
-           pointBorderColor:'#fff', pointBorderWidth:2, spanGaps:false, tension:0.3},
-          {label:'Proiezione futura', data:dataProiezione, borderColor:'#3498db',
-           backgroundColor:'rgba(52,152,219,0.07)', borderWidth:2, borderDash:[6,3],
-           pointRadius:3, pointBackgroundColor:'#3498db', spanGaps:false, tension:0.3, fill:'origin'},
-          {label:'Traiettoria teorica', data:dataTeorica, borderColor:'#ddd',
-           backgroundColor:'transparent', borderWidth:1.5, borderDash:[5,4],
-           pointRadius:0, spanGaps:true, tension:0}
-        ]},
-        options:{responsive:true, maintainAspectRatio:false,
-          plugins:{legend:{display:false}, tooltip:{callbacks:{label:function(ctx){return ctx.raw!==null?'Score: '+ctx.raw:null;}}}},
-          scales:{
-            x:{grid:{color:'rgba(0,0,0,0.04)'}, ticks:{font:{size:11},color:'#888',autoSkip:false,maxRotation:0}},
-            y:{min:0,max:100, grid:{color:'rgba(0,0,0,0.05)'}, ticks:{font:{size:11},color:'#888'}}
-          }
-        }
-      });
+    const oggiPlugin = {id:'oggiTL',afterDraw:function(ch){
+      if (oggiIdx<0) return;
+      const ctx=ch.ctx,chartArea=ch.chartArea,scales=ch.scales;
+      const x=scales.x.getPixelForValue(oggiIdx);
+      ctx.save();ctx.beginPath();ctx.moveTo(x,chartArea.top);ctx.lineTo(x,chartArea.bottom);
+      ctx.strokeStyle='#e67e22';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.stroke();
+      ctx.fillStyle='#e67e22';ctx.font='10px sans-serif';
+      ctx.fillText('Oggi',x+4,chartArea.top+12);ctx.restore();
+    }};
+
+    const datasets = [
+      {label:'Score reale',data:dataScore,borderColor:'#2c3e50',backgroundColor:'#2c3e50',borderWidth:2.5,pointRadius:dataScore.map(function(v){return v!==null?5:0;}),pointBackgroundColor:'#2c3e50',pointBorderColor:'#fff',pointBorderWidth:2,spanGaps:false,tension:0.3,yAxisID:'y'},
+      {label:'Proiezione score',data:dataScoreProj,borderColor:'#185FA5',backgroundColor:'rgba(24,95,165,0.06)',borderWidth:2,borderDash:[6,3],pointRadius:3,spanGaps:false,tension:0.3,fill:'origin',yAxisID:'y'},
+    ];
+
+    if (dataFat && p.fatturato_anno_1) {
+      datasets.push({label:'Fatturato',data:dataFat,borderColor:'#3B6D11',backgroundColor:'rgba(99,153,34,0.07)',borderWidth:0,pointRadius:0,spanGaps:true,tension:0.4,fill:true,yAxisID:'y2'});
+      if (dataFatProj) datasets.push({label:'Fatturato proiettato',data:dataFatProj,borderColor:'#639922',backgroundColor:'transparent',borderWidth:1.5,borderDash:[5,3],pointRadius:0,spanGaps:true,tension:0.4,yAxisID:'y2'});
     }
 
-    // Chart 2 — Radar
-    const c2 = document.getElementById(dimChartId);
-    if (c2) {
-      if (c2._chart) c2._chart.destroy();
-      c2._chart = new Chart(c2, {
-        type:'radar',
-        data:{labels:dimLabels, datasets:[
-          {label:'Attuale', data:dimAttuali,
-           borderColor:'#2c3e50', backgroundColor:'rgba(44,62,80,0.15)',
-           borderWidth:2, pointBackgroundColor:'#2c3e50', pointRadius:3},
-          {label:'Target', data:dimTarget,
-           borderColor:'#3498db', backgroundColor:'rgba(52,152,219,0.1)',
-           borderWidth:2, borderDash:[5,3], pointBackgroundColor:'#3498db', pointRadius:3}
-        ]},
-        options:{responsive:true, maintainAspectRatio:false,
-          plugins:{legend:{display:false}},
-          scales:{r:{min:0,max:5,ticks:{stepSize:1,font:{size:9},color:'#aaa'},
-            pointLabels:{font:{size:10},color:'#666'},
-            grid:{color:'rgba(0,0,0,0.08)'}, angleLines:{color:'rgba(0,0,0,0.08)'}
-          }}
-        }
-      });
+    const scales = {
+      x:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:11},color:'#888',autoSkip:false,maxRotation:0}},
+      y:{min:0,max:100,position:'left',grid:{color:'rgba(0,0,0,0.05)'},ticks:{font:{size:11},color:'#888'},title:{display:true,text:'Score',font:{size:10},color:'#aaa'}},
+    };
+    if (dataFat && p.fatturato_anno_1) {
+      const fatBase = Math.round(p.fatturato_anno_1/1000);
+      scales.y2 = {min:Math.round(fatBase*0.9),max:fat12m?Math.round(fat12m/1000*1.1):Math.round(fatBase*1.3),position:'right',grid:{display:false},ticks:{font:{size:11},color:'#639922',callback:function(v){return v+'k\u20AC';}},title:{display:true,text:'Fatturato',font:{size:10},color:'#639922'}};
     }
 
-    // Chart 3 — Delta dims bar
-    const c3 = document.getElementById(dimChartId+'-delta');
-    if (c3 && hasDimHistory) {
-      if (c3._chart) c3._chart.destroy();
-      c3._chart = new Chart(c3, {
-        type:'bar',
-        data:{labels:DIMS_IDS.map(function(d){return DIM_LABELS_TL[d];}), datasets:[
-          {label:'Variazione', data:dimDelta,
-           backgroundColor:dimDelta.map(function(v){return v>0?'rgba(46,204,113,0.7)':v<0?'rgba(231,76,60,0.7)':'rgba(200,200,200,0.4)';}),
-           borderColor:dimDelta.map(function(v){return v>0?'#27ae60':v<0?'#e74c3c':'#ccc';}),
-           borderWidth:1, borderRadius:4}
-        ]},
-        options:{responsive:true, maintainAspectRatio:false,
-          plugins:{legend:{display:false}, tooltip:{callbacks:{label:function(ctx){return (ctx.raw>0?'+':'')+ctx.raw+' livelli';}}}},
-          scales:{
-            x:{grid:{display:false}, ticks:{font:{size:10},color:'#888'}},
-            y:{min:-2,max:2, ticks:{stepSize:1,font:{size:10},color:'#888'},
-               grid:{color:'rgba(0,0,0,0.05)'},
-               title:{display:true,text:'\u0394 livelli',font:{size:10},color:'#aaa'}}
-          }
-        }
-      });
-    }
-  }, 150);
+    c._chart = new Chart(c,{type:'line',plugins:[oggiPlugin],data:{labels:labels,datasets:datasets},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false}},scales:scales}});
+  },150);
 
-  const legenda =
-    '<div class="tl-legenda">' +
-      '<span class="tl-leg"><span class="tl-leg-line" style="background:#2c3e50"></span>Score reale</span>' +
-      '<span class="tl-leg"><span class="tl-leg-line" style="border-top:2px dashed #3498db;background:transparent"></span>Proiezione futura</span>' +
-      '<span class="tl-leg"><span class="tl-leg-line" style="border-top:2px dashed #ddd;background:transparent"></span>Traiettoria teorica</span>' +
-    '</div>';
-
-  const radarLegenda =
-    '<div class="tl-legenda" style="margin-top:6px">' +
-      '<span class="tl-leg"><span class="tl-leg-line" style="background:#2c3e50"></span>Attuale</span>' +
-      '<span class="tl-leg"><span class="tl-leg-line" style="border-top:2px dashed #3498db;background:transparent"></span>Target</span>' +
-    '</div>';
-
-  const deltaSection = hasDimHistory
-    ? '<div class="tl-section-title">Variazione dimensioni \u2014 ultima sessione</div>' +
-      '<div style="position:relative;width:100%;height:120px;">' +
-        '<canvas id="' + dimChartId + '-delta"></canvas>' +
-      '</div>'
-    : '<div class="tl-empty" style="font-size:12px;padding:12px 0">Registra una seconda sessione per vedere la variazione delle dimensioni.</div>';
+  const fatLegend = p.fatturato_anno_1
+    ? '<span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:rgba(99,153,34,0.2);border:1px solid #639922;display:inline-block;border-radius:2px"></span>Fatturato (dx)</span>'
+    : '';
 
   return metriche +
-    '<div class="tl-charts-grid">' +
-      '<div class="tl-chart-main">' +
-        '<div class="tl-section-title">Progressione score nel tempo</div>' +
-        '<div style="position:relative;width:100%;height:200px;">' +
-          '<canvas id="' + chartId + '"></canvas>' +
-        '</div>' +
-        legenda +
-      '</div>' +
-      '<div class="tl-chart-side">' +
-        '<div class="tl-section-title">Dimensioni attuale vs target</div>' +
-        '<div style="position:relative;width:100%;height:200px;">' +
-          '<canvas id="' + dimChartId + '"></canvas>' +
-        '</div>' +
-        radarLegenda +
-      '</div>' +
+    '<div class="tl-section-title" style="margin-top:16px">Progressione score e fatturato nel tempo</div>' +
+    '<div style="display:flex;gap:12px;margin-bottom:6px;font-size:11px;color:#888;flex-wrap:wrap">' +
+      '<span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:3px;background:#2c3e50;display:inline-block;border-radius:2px"></span>Score reale</span>' +
+      '<span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:2px;border-top:2px dashed #185FA5;display:inline-block"></span>Proiezione score</span>' +
+      fatLegend +
     '</div>' +
-    deltaSection;
+    '<div style="position:relative;width:100%;height:220px;margin-bottom:20px">' +
+      '<canvas id="' + chartId + '"></canvas>' +
+    '</div>' +
+    '<div class="tl-section-title">Sessioni registrate</div>' +
+    '<div class="tl-sessioni">' + sessioniHtml + '</div>' +
+    '<div class="tl-section-title" style="margin-top:16px">Dimensioni \u2014 attuale vs target</div>' +
+    '<div class="tl-dims">' + dimBarre + '</div>';
 }
 
 function _buildCronistoria(p) {
