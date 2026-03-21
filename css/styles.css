@@ -607,3 +607,10 @@ label{color:var(--gray2)}
 .glos-def{font-size:12px;color:var(--text-muted);line-height:1.6;margin-bottom:8px}
 .glos-esempio{font-size:11px;color:var(--text-muted);background:var(--bg3);border-radius:6px;padding:7px 9px;line-height:1.5;border-left:2px solid var(--gold)}
 .glos-es-label{font-size:9px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.8px;margin-right:6px}
+.glos-search-wrap{margin:14px 0 8px}
+.glos-search{width:100%;padding:10px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:13px;outline:none;transition:border-color .15s;font-family:'DM Sans',sans-serif}
+.glos-search:focus{border-color:var(--blue)}
+.glos-search::placeholder{color:var(--gray2)}
+.glos-empty{padding:40px;text-align:center;color:var(--gray);font-size:14px}
+.glos-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px}
+.glos-cat-badge{font-size:10px;color:var(--blue);background:var(--blue-bg);border-radius:4px;padding:2px 7px;white-space:nowrap;flex-shrink:0}
