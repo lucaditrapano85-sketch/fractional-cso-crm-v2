@@ -1,11 +1,28 @@
 :root {
-  --bg:#F8F6F1; --bg2:#FFFFFF; --bg3:#F2EFE8; --bg4:#EAE6DD;
-  --gold:#9A6E2E; --gold2:#B8842E; --gold-dim:#C9973A;
-  --white:#1A1714; --gray:#6B6560; --gray2:#9C9890;
-  --border:#E0DAD0; --border2:#D0C9BE;
-  --green:#2D7A52; --green-bg:#E8F5EE;
-  --amber-bg:#FDF6EC; --red:#B03A2A; --red-bg:#FAECEA;
-  --blue:#2A5A8A; --r:10px; --rs:6px;
+  --bg:        #070D18;
+  --bg2:       #0D1826;
+  --bg3:       #111F35;
+  --bg4:       #162540;
+  --border:    #1C2D42;
+  --border2:   #243650;
+  --white:     #F0F4F8;
+  --gray:      #8AA4BF;
+  --gray2:     #4A6180;
+  --gold:      #C8A84B;
+  --gold2:     #A8882B;
+  --gold-dim:  rgba(200,168,75,0.12);
+  --green:     #1CB889;
+  --green-bg:  rgba(28,184,137,0.1);
+  --amber-bg:  rgba(200,168,75,0.1);
+  --red:       #E05555;
+  --red-bg:    rgba(224,85,85,0.1);
+  --blue:      #4E9FE6;
+  --blue-bg:   rgba(78,159,230,0.12);
+  --r:         10px;
+  --rs:        6px;
+  --text:      #F0F4F8;
+  --text-muted:#8AA4BF;
+  --accent:    #4E9FE6;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--white);min-height:100vh;-webkit-font-smoothing:antialiased}
@@ -520,3 +537,50 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 .tl-proj-cost{color:var(--gray)}
 .tl-proj-footer{display:flex;justify-content:space-between;font-size:11px;color:var(--gray);padding:4px 8px 0}
 .tl-proj-footer b{color:var(--white)}
+
+/* ── DARK PREMIUM OVERRIDES ─────────────────────────── */
+body{background:var(--bg);color:var(--text)}
+.sidebar{background:#060E1A;border-right:1px solid var(--border)}
+.sidebar-logo .wordmark{color:var(--text)}
+.sidebar-logo .sub{color:var(--gray2)}
+.nav-item{color:var(--gray2);border-radius:7px}
+.nav-item:hover{background:var(--bg3);color:var(--text)}
+.nav-item.active{background:var(--blue-bg);color:var(--blue);border-left:2px solid var(--blue)}
+.main,.view{background:var(--bg)}
+.card,.radar-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r)}
+.card-title{color:var(--gray2);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px}
+.det-header{background:var(--bg2);border-bottom:1px solid var(--border)}
+.kpi-grid{background:#060E1A;border-bottom:1px solid var(--border)}
+.kpi-card{background:transparent;border-right:1px solid var(--border)}
+.kpi-val{color:var(--text);font-size:26px;font-weight:600;letter-spacing:-.5px}
+.kpi-label{color:var(--gray2);font-size:9px;text-transform:uppercase;letter-spacing:1px}
+.fin-tabs{background:var(--bg2);border-bottom:1px solid var(--border)}
+.fin-tab{color:var(--gray2)}
+.fin-tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.form-input{background:var(--bg3);border:1px solid var(--border2);color:var(--text);border-radius:var(--rs)}
+.form-input:focus{border-color:var(--blue);outline:none}
+label{color:var(--gray2)}
+.btn{background:transparent;border:1px solid var(--border2);color:var(--text);border-radius:var(--rs)}
+.btn:hover{background:var(--bg3)}
+.btn-primary,#btn-save-prospect{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
+.modal-overlay{background:rgba(7,13,24,0.85)}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r)}
+.modal-title{color:var(--text)}
+.modal-footer{border-top:1px solid var(--border)}
+.target-input{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);color:var(--text)}
+#radar-score-box{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r)}
+.prospect-kanban-card{background:var(--bg2);border:1px solid var(--border)}
+.prospect-kanban-card:hover{border-color:var(--border2);box-shadow:0 4px 12px rgba(0,0,0,0.3)}
+.bench-table th{color:var(--gray2);border-bottom-color:var(--border)}
+.bench-table td{border-bottom-color:var(--border)}
+.tl-metric{background:var(--bg3)}
+.tl-sess-card{background:var(--bg3);border-color:var(--border)}
+.tl-dim-bar-bg{background:var(--bg3)}
+.tl-proj-table th{border-bottom-color:var(--border)}
+.tl-proj-row:hover{background:var(--bg3)}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--gray2)}
+.sidebar-logo::before{content:'';display:block;width:3px;height:28px;background:var(--gold);border-radius:2px;position:absolute;left:16px;top:16px}
+.sidebar-logo{position:relative;padding-left:28px!important}
