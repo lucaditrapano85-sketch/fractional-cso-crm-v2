@@ -3443,7 +3443,7 @@ function _buildGraficoTimeline(p) {
     ];
 
     if (dataFat && p.fatturato_anno_1) {
-      datasets.push({label:'Fatturato',data:dataFat,borderColor:'#3B6D11',backgroundColor:'rgba(99,153,34,0.07)',borderWidth:0,pointRadius:0,spanGaps:true,tension:0.4,fill:true,yAxisID:'y2'});
+      datasets.push({label:'Fatturato',data:dataFat,borderColor:'#3B6D11',backgroundColor:'rgba(99,153,34,0.18)',borderWidth:0,pointRadius:0,spanGaps:true,tension:0.4,fill:true,yAxisID:'y2'});
       if (dataFatProj) datasets.push({label:'Fatturato proiettato',data:dataFatProj,borderColor:'#639922',backgroundColor:'transparent',borderWidth:1.5,borderDash:[5,3],pointRadius:0,spanGaps:true,tension:0.4,yAxisID:'y2'});
     }
 
