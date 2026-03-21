@@ -135,7 +135,7 @@
       </div>
 
       <!-- RADAR + TARGET -->
-      <div id="radar-target-row" style="margin-bottom:20px;display:flex;gap:24px;align-items:flex-start" id="radar-flex-row">
+      <div id="radar-target-row" style="display:flex;gap:20px;align-items:stretch;margin-bottom:20px">
         <!-- Colonna sinistra: due blocchi uno sopra l altro -->
         <div style="flex:1;display:flex;flex-direction:column;gap:20px">
           <!-- Blocco 1: grafico proiezione barre (nascosto) -->
@@ -183,7 +183,7 @@
           </div>
         </div>
         <!-- Colonna destra: target editor sticky -->
-        <div class="radar-card" style="width:380px;flex-shrink:0;display:flex;flex-direction:column">
+        <div class="radar-card" style="width:380px;flex-shrink:0;overflow-y:auto;max-height:85vh">
           <div class="card-title" style="margin-bottom:4px">Obiettivi per dimensione</div>
           <div style="font-size:11px;color:var(--gray);margin-bottom:14px">Target personalizzati - si aggiorna in tempo reale</div>
           <div id="target-editor-content" style="overflow-y:auto;padding-right:4px;flex:1"></div>
