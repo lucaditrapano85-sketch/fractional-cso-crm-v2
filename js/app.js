@@ -190,7 +190,25 @@ function glosCerca(valore) {
   if (q.length > 0 && q.length < 3) return;
 
   if (!q) {
-    renderGlossario();
+    const bodyR = document.getElementById('glos-body');
+    if (bodyR && window._glosGlossario) {
+      const htmlR = window._glosGlossario.map(cat => `
+        <div class="glos-categoria">
+          <div class="glos-cat-title">${cat.categoria}</div>
+          <div class="glos-termini">
+            ${cat.termini.map(t => `
+              <div class="glos-card">
+                <div class="glos-card-top">
+                  <div class="glos-termine">${t.termine}</div>
+                  <div class="glos-cat-badge">${cat.categoria}</div>
+                </div>
+                <div class="glos-def">${t.def}</div>
+                ${t.esempio ? `<div class="glos-esempio"><span class="glos-es-label">Esempio</span>${t.esempio}</div>` : ''}
+              </div>`).join('')}
+          </div>
+        </div>`).join('');
+      bodyR.innerHTML = htmlR;
+    }
     return;
   }
 
@@ -303,6 +321,7 @@ function renderGlossario() {
     cat.termini.forEach(function(t) { tuttiTermini.push({ termine: t.termine, def: t.def, esempio: t.esempio, categoria: cat.categoria }); });
   });
   window._glosTermini = tuttiTermini;
+  window._glosGlossario = GLOSSARIO;
 
   container.innerHTML =
     '<div class="glos-header">' +
