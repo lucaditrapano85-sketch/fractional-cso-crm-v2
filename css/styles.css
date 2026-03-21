@@ -508,3 +508,15 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 .tl-dim-bar-tgt{position:absolute;left:0;top:0;height:100%;border:2px solid #185FA5;border-radius:4px;background:transparent;z-index:1;box-sizing:border-box}
 .tl-dim-val{font-size:12px;font-weight:500;color:var(--white);min-width:28px}
 .tl-dim-delta{font-size:11px;min-width:24px}
+
+/* Proiezione table */
+.tl-proj-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:6px}
+.tl-proj-th{font-size:11px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.4px;padding:6px 8px;border-bottom:1px solid var(--border);text-align:left}
+.tl-proj-row:hover{background:var(--bg3)}
+.tl-proj-td{padding:8px;border-bottom:1px solid var(--border)}
+.tl-proj-label{font-weight:600;color:var(--white)}
+.tl-proj-fat{color:#3B6D11;font-weight:500}
+.tl-proj-pct{color:#3B6D11}
+.tl-proj-cost{color:var(--gray)}
+.tl-proj-footer{display:flex;justify-content:space-between;font-size:11px;color:var(--gray);padding:4px 8px 0}
+.tl-proj-footer b{color:var(--white)}

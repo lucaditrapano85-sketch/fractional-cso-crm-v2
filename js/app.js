@@ -3463,6 +3463,53 @@ function _buildGraficoTimeline(p) {
     ? '<span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:rgba(99,153,34,0.2);border:1px solid #639922;display:inline-block;border-radius:2px"></span>Fatturato (dx)</span>'
     : '';
 
+  // Proiezione crescita e investimento
+  var proiezioneHtml = '';
+  try {
+    var ic2 = _calcolaImpattoCumulativo(p);
+    if (ic2 && ic2.fat6) {
+      var projRows = [
+        { label:'6 mesi',  fat: ic2.fat6,  pct: ic2.pct6  },
+        { label:'12 mesi', fat: ic2.fat12, pct: ic2.pct12 },
+        { label:'24 mesi', fat: ic2.fat24, pct: ic2.pct24 },
+        { label:'36 mesi', fat: ic2.fat36, pct: ic2.pct36 },
+      ].filter(function(r) { return r.fat && r.fat[0]; });
+
+      var fmtF = function(v) { return v >= 1000000 ? (v/1000000).toFixed(1)+'M\u20AC' : Math.round(v/1000)+'k\u20AC'; };
+      var fmtR = function(arr) { return arr ? fmtF(arr[0])+'\u2013'+fmtF(arr[1]) : '\u2014'; };
+      var fmtP = function(arr) { return arr ? '+'+arr[0]+'\u2013'+arr[1]+'%' : '\u2014'; };
+
+      var costoMensile = ic2.costoMensileTot ? '\u2248'+fmtF(ic2.costoMensileTot)+'/mese' : '\u2014';
+      var totale24 = ic2.costoTot24 ? '\u2248 '+fmtF(ic2.costoTot24)+' totali 24m' : '';
+      var roi24str2 = (ic2.roiMin !== null && ic2.roiMax !== null) ? ((ic2.roiMin + ic2.roiMax) / 2).toFixed(1)+'x' : '\u2014';
+
+      var tableRows = projRows.map(function(r) {
+        return '<tr class="tl-proj-row">' +
+          '<td class="tl-proj-td tl-proj-label">' + r.label + '</td>' +
+          '<td class="tl-proj-td tl-proj-fat">' + fmtR(r.fat) + '</td>' +
+          '<td class="tl-proj-td tl-proj-pct">' + fmtP(r.pct) + '</td>' +
+          '<td class="tl-proj-td tl-proj-cost">' + costoMensile + '</td>' +
+        '</tr>';
+      }).join('');
+
+      proiezioneHtml =
+        '<div class="tl-section-title" style="margin-top:16px">Proiezione crescita e investimento</div>' +
+        '<table class="tl-proj-table">' +
+          '<thead><tr>' +
+            '<th class="tl-proj-th">Orizzonte</th>' +
+            '<th class="tl-proj-th">Fatturato</th>' +
+            '<th class="tl-proj-th">Crescita</th>' +
+            '<th class="tl-proj-th">Investimento</th>' +
+          '</tr></thead>' +
+          '<tbody>' + tableRows + '</tbody>' +
+        '</table>' +
+        '<div class="tl-proj-footer">' +
+          '<span>' + totale24 + '</span>' +
+          '<span>ROI stimato 24m: <b>' + roi24str2 + '</b></span>' +
+        '</div>';
+    }
+  } catch(e) {}
+
   return metriche +
     '<div class="tl-section-title" style="margin-top:16px">Progressione score e fatturato nel tempo</div>' +
     '<div style="display:flex;gap:12px;margin-bottom:6px;font-size:11px;color:#888;flex-wrap:wrap">' +
@@ -3476,7 +3523,8 @@ function _buildGraficoTimeline(p) {
     '<div class="tl-section-title">Sessioni registrate</div>' +
     '<div class="tl-sessioni">' + sessioniHtml + '</div>' +
     '<div class="tl-section-title" style="margin-top:16px">Dimensioni \u2014 attuale vs target</div>' +
-    '<div class="tl-dims">' + dimBarre + '</div>';
+    '<div class="tl-dims">' + dimBarre + '</div>' +
+    proiezioneHtml;
 }
 
 function _buildCronistoria(p) {
