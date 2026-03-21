@@ -182,6 +182,78 @@ async function saveSessione() {
   showToast('Sessione registrata con successo');
 }
 
+function renderGlossario() {
+  var container = document.getElementById('view-glossario');
+  if (!container) return;
+
+  var GLOSSARIO = [
+    {
+      categoria: 'Score & Dimensioni',
+      termini: [
+        { termine: 'Score commerciale', def: 'Punteggio da 0 a 100 che misura la maturita commerciale complessiva dell\'azienda. E la media pesata dei livelli raggiunti nelle 8 dimensioni.', esempio: 'Un\'azienda con score 45 ha ancora ampi margini di miglioramento su vendite, pipeline e marketing.' },
+        { termine: 'Dimensione', def: 'Uno degli 8 pilastri della struttura commerciale: Vendite, Pipeline, Team, Processi, Ricavi, Marketing, Sito Web e la dimensione specifica del settore.', esempio: 'La dimensione Pipeline misura quanto l\'azienda gestisce e traccia le opportunita commerciali.' },
+        { termine: 'Livello (1-5)', def: 'Scala di maturita di ogni dimensione. 1 = assente o molto rudimentale, 5 = struttura eccellente e scalabile.', esempio: 'Pipeline a livello 2 significa che esiste qualcosa di base ma non strutturato.' },
+        { termine: 'Target / Obiettivo', def: 'Il livello che si vuole raggiungere in ogni dimensione entro un certo periodo. Definisce il piano di lavoro del mandato.', esempio: 'Portare le Vendite da 2 a 4 significa strutturare una rete commerciale con KPI misurabili.' },
+        { termine: 'Gap', def: 'La differenza tra il livello attuale e il target. Indica quanto lavoro rimane da fare su quella dimensione.', esempio: 'Gap di +2 su Pipeline significa due step di miglioramento da completare.' },
+      ]
+    },
+    {
+      categoria: 'KPI Commerciali',
+      termini: [
+        { termine: 'Tasso di conversione', def: 'Percentuale di contatti o lead che diventano clienti paganti. Misura l\'efficacia del processo commerciale.', esempio: 'Un tasso del 20% significa che su 10 contatti qualificati, 2 diventano clienti.' },
+        { termine: 'Ciclo di vendita', def: 'Numero medio di giorni che passa dal primo contatto alla firma del contratto. Un ciclo breve indica un processo efficiente.', esempio: 'Ciclo di 45 giorni per una PMI manifatturiera e nella media di settore.' },
+        { termine: 'Valore medio ordine', def: 'Importo medio di ogni contratto o ordine. Aumentarlo e spesso piu efficiente che aumentare il numero di clienti.', esempio: 'Passare da 5.000 a 8.000 di ticket medio con lo stesso numero di clienti aumenta il fatturato del 60%.' },
+        { termine: 'Concentrazione top 3 clienti', def: 'Percentuale di fatturato generata dai 3 clienti principali. Sopra il 50% indica un rischio elevato di dipendenza.', esempio: 'Se il 70% del fatturato viene da 3 clienti, la perdita di uno crea un problema serio.' },
+        { termine: 'Tasso di riacquisto', def: 'Percentuale di clienti che tornano ad acquistare. Un tasso alto indica soddisfazione e fidelizzazione.', esempio: 'Un tasso dell\'80% significa che 8 clienti su 10 tornano -- meno sforzo per mantenere il fatturato.' },
+        { termine: 'CAC', def: 'Costo di Acquisizione Cliente. Quanto spende l\'azienda in media per acquisire un nuovo cliente, includendo marketing, commerciale e tempo.', esempio: 'CAC di 500 con ticket medio di 5.000 e sostenibile. CAC di 3.000 con lo stesso ticket e un problema.' },
+        { termine: 'DSO', def: 'Days Sales Outstanding -- giorni medi che passano dalla fattura all\'incasso. Misura la salute finanziaria del ciclo commerciale.', esempio: 'DSO di 90 giorni significa che i soldi restano fermi quasi 3 mesi prima di entrare in cassa.' },
+        { termine: 'MRR / ARR', def: 'Monthly Recurring Revenue / Annual Recurring Revenue. Fatturato ricorrente mensile o annuale da abbonamenti o contratti continuativi.', esempio: 'Un MRR di 10.000 garantisce stabilita e prevedibilita del fatturato.' },
+        { termine: 'Fatturato da referral', def: 'Percentuale di fatturato che arriva da clienti segnalati da altri clienti o partner. Indica la forza del passaparola.', esempio: 'Il 50% da referral significa che meta dei nuovi clienti arriva senza spese di marketing.' },
+      ]
+    },
+    {
+      categoria: 'Proiezione & Piano',
+      termini: [
+        { termine: 'Proiezione fatturato', def: 'Stima del fatturato raggiungibile a 6, 12 e 24 mesi se si realizzano gli obiettivi del piano commerciale. E un range min-max, non una garanzia.', esempio: '493k-513k a 12 mesi significa che con il piano attuale il fatturato cresce in quella forchetta.' },
+        { termine: 'Investimento mensile', def: 'Costo mensile complessivo del piano di intervento, includendo consulenza, strumenti e attivita da attivare.', esempio: '3.600/mese comprende la fee del Fractional CSO e gli strumenti da implementare.' },
+        { termine: 'ROI', def: 'Return on Investment -- rapporto tra il guadagno generato e l\'investimento sostenuto. Un ROI di 1x significa che l\'investimento si ripaga esattamente.', esempio: 'ROI 0.8x a 24 mesi significa che ogni euro investito genera 0,80 di margine aggiuntivo.' },
+        { termine: 'Breakeven del piano', def: 'Il mese in cui il fatturato aggiuntivo generato copre l\'investimento totale sostenuto fino a quel momento.', esempio: 'Breakeven a 18 mesi significa che dall\'anno e mezzo in poi il piano e in utile.' },
+        { termine: 'Diminishing returns', def: 'Principio per cui ogni miglioramento successivo costa piu del precedente. Passare da 1 a 2 e facile; da 4 a 5 richiede molto piu sforzo.', esempio: 'I primi step portano crescita rapida; gli ultimi step richiedono investimenti piu alti per guadagni minori.' },
+      ]
+    },
+    {
+      categoria: 'Benchmark di Settore',
+      termini: [
+        { termine: 'Benchmark', def: 'Valore di riferimento del settore per un KPI. Permette di confrontare le performance dell\'azienda con quelle del mercato.', esempio: 'Il benchmark di conversione per i serramenti e 10-42%. Essere al 25% significa essere nella media.' },
+        { termine: 'Top performer', def: 'Il valore raggiunto dalle aziende migliori del settore su quel KPI. E il riferimento per l\'eccellenza, non la media.', esempio: 'Il top performer di tasso riacquisto nei serramenti e al 65%. E l\'obiettivo ambizioso di lungo periodo.' },
+        { termine: 'Media settore', def: 'Il valore medio delle aziende del settore su quel KPI. Essere sotto la media indica un gap competitivo da colmare prioritariamente.', esempio: 'La media DSO nell\'edilizia e 35 giorni. Essere a 90 giorni e un problema di liquidita urgente.' },
+        { termine: 'Gap vs benchmark', def: 'La distanza tra il KPI attuale dell\'azienda e il valore medio di settore. Indica su quali aree intervenire prima.', esempio: 'CAC di 2.000 contro benchmark di 220 suggerisce un processo di acquisizione clienti molto inefficiente.' },
+      ]
+    },
+  ];
+
+  var html = GLOSSARIO.map(function(cat) {
+    return '<div class="glos-categoria">' +
+      '<div class="glos-cat-title">' + cat.categoria + '</div>' +
+      '<div class="glos-termini">' +
+      (cat.termini || []).map(function(t) {
+        return '<div class="glos-card">' +
+          '<div class="glos-termine">' + t.termine + '</div>' +
+          '<div class="glos-def">' + t.def + '</div>' +
+          (t.esempio ? '<div class="glos-esempio"><span class="glos-es-label">Esempio</span> ' + t.esempio + '</div>' : '') +
+        '</div>';
+      }).join('') +
+      '</div></div>';
+  }).join('');
+
+  container.innerHTML =
+    '<div class="glos-header">' +
+      '<div class="glos-title">Glossario commerciale</div>' +
+      '<div class="glos-subtitle">Definizioni dei termini usati nel CRM \u2014 pensato per essere condiviso con i clienti durante le sessioni</div>' +
+    '</div>' +
+    '<div class="glos-body">' + html + '</div>';
+}
+
 function genField(label,val) {
   if(!val) return '';
   return `\x3cdiv style="margin-bottom:10px">
@@ -204,6 +276,7 @@ function showView(name) {
   if(name==='calendario') renderCalendario();
   if(name==='listino') { setTimeout(()=>{ const s=document.getElementById('listino-macro-select'); if(s) renderListinoTable(s.value); },50); }
   if(name==='prospects') { renderProspectsView(); }
+  if(name==='glossario') renderGlossario();
 }
 
 function openProspect(id) {

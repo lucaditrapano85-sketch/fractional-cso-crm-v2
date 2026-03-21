@@ -593,3 +593,17 @@ label{color:var(--gray2)}
 .tl-sess-dot{background:#243650!important}
 .tl-sess-dot-active{background:#4E9FE6!important}
 
+
+/* ===== GLOSSARIO ===== */
+.glos-header{padding:28px 32px 20px;border-bottom:1px solid var(--border)}
+.glos-title{font-size:20px;font-weight:600;color:var(--text);margin-bottom:6px}
+.glos-subtitle{font-size:13px;color:var(--text-muted);line-height:1.5}
+.glos-body{padding:24px 32px;display:flex;flex-direction:column;gap:32px}
+.glos-cat-title{font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.glos-termini{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.glos-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;transition:border-color .15s}
+.glos-card:hover{border-color:var(--border2)}
+.glos-termine{font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px}
+.glos-def{font-size:12px;color:var(--text-muted);line-height:1.6;margin-bottom:8px}
+.glos-esempio{font-size:11px;color:var(--text-muted);background:var(--bg3);border-radius:6px;padding:7px 9px;line-height:1.5;border-left:2px solid var(--gold)}
+.glos-es-label{font-size:9px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.8px;margin-right:6px}
