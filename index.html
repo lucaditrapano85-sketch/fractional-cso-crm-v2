@@ -138,8 +138,8 @@
       <div id="radar-target-row" style="margin-bottom:20px;display:flex;gap:24px;align-items:flex-start" id="radar-flex-row">
         <!-- Colonna sinistra: due blocchi uno sopra l altro -->
         <div style="flex:1;display:flex;flex-direction:column;gap:20px">
-          <!-- Blocco 1: grafico proiezione barre -->
-          <div class="radar-card">
+          <!-- Blocco 1: grafico proiezione barre (nascosto) -->
+          <div class="radar-card" style="display:none">
             <div id="mega-grafico-section"></div>
           </div>
           <!-- Blocco timeline progressione -->
@@ -147,8 +147,8 @@
             <div class="card-title">Progressione nel tempo</div>
             <div id="grafico-timeline-container"></div>
           </div>
-          <!-- Blocco 2: radar + score live -->
-          <div class="radar-card">
+          <!-- Blocco 2: radar + score live (nascosto) -->
+          <div class="radar-card" style="display:none">
             <div class="card-title" style="margin-bottom:16px;display:flex;align-items:flex-start;justify-content:space-between">
               Diagramma a ragnatela
               <div id="radar-score-box" style="background:var(--bg3);border-radius:14px;padding:14px 18px;border:1px solid var(--border);min-width:160px">

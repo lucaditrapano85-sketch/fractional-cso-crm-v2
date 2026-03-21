@@ -4165,6 +4165,9 @@ function previewTarget() {
   const pPreview = {...p, targets: preview};
   const megaSection = document.getElementById('mega-grafico-section');
   if (megaSection) megaSection.innerHTML = _buildMegaGrafico(pPreview);
+  // Aggiorna grafico timeline con target in anteprima
+  const tlContainer = document.getElementById('grafico-timeline-container');
+  if (tlContainer) tlContainer.innerHTML = _buildGraficoTimeline(pPreview);
   // Aggiorna score box con score target in anteprima
   const sPreview = calcScoreTarget(pPreview);
   const sLivePreview = calcScoreLive(pPreview);
@@ -4309,6 +4312,9 @@ async function saveTargets() {
     'Score target: ' + calcScoreTarget(prospects[i]));
   showToast('Obiettivi salvati!');
   drawRadar(prospects[i].dims || {}, targets, prospects[i].settore);
+  // Aggiorna grafico timeline dopo salvataggio target
+  var tlC = document.getElementById('grafico-timeline-container');
+  if (tlC) tlC.innerHTML = _buildGraficoTimeline(prospects[i]);
   renderProspectDetail(currentId);
 }
 
