@@ -592,3 +592,11 @@ label{color:var(--gray2)}
 .tl-sess-card{background:#111F35!important;border-color:#1C2D42!important}
 .tl-sess-dot{background:#243650!important}
 .tl-sess-dot-active{background:#4E9FE6!important}
+
+/* Allineamento colonne grafico + target */
+#radar-target-row{align-items:flex-start!important}
+#radar-target-row>.radar-card:last-child{position:sticky;top:0;max-height:85vh;overflow-y:auto}
+/* Scrollbar sottile */
+#radar-target-row ::-webkit-scrollbar,#grafico-timeline-container ::-webkit-scrollbar{width:3px!important}
+#radar-target-row ::-webkit-scrollbar-thumb,#grafico-timeline-container ::-webkit-scrollbar-thumb{background:#243650!important;border-radius:2px!important}
+#radar-target-row ::-webkit-scrollbar-track,#grafico-timeline-container ::-webkit-scrollbar-track{background:transparent!important}
