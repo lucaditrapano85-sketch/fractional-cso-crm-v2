@@ -541,6 +541,9 @@ async function renderProspectDetail(id) {
     // Mega-grafico cumulativo sotto la ragnatela
     const megaSection = document.getElementById('mega-grafico-section');
     if (megaSection) { const _mg = _buildMegaGrafico(p); if (_mg !== null) megaSection.innerHTML = _mg; }
+    // Grafico timeline progressione
+    const tlContainer = document.getElementById('grafico-timeline-container');
+    if (tlContainer) tlContainer.innerHTML = _buildGraficoTimeline(p);
     // Salva snapshot iniziale se non ha ancora storia
     if (!p.score_history || p.score_history.length === 0) {
       salvaScoreSnapshot(p, 'Prima valutazione');
@@ -3262,6 +3265,182 @@ function _calcolaImpattoCumulativo(p) {
   };
 }
 
+
+function _buildGraficoTimeline(p) {
+  var history = (p.score_history || []).filter(function(s) { return s.score > 0; });
+  var scoreTarget = p.targets
+    ? Math.round((Object.values(p.targets).reduce(function(a,b) { return a + parseInt(b); }, 0) / (Object.keys(p.targets).length * 5)) * 100)
+    : 70;
+  var scoreAttuale = history.length ? history[history.length-1].score : 0;
+  var gap = scoreTarget - scoreAttuale;
+  var sessioni = history.length;
+
+  var metriche =
+    '<div class="tl-metrics">' +
+      '<div class="tl-metric"><div class="tl-metric-label">Score attuale</div><div class="tl-metric-val">' + scoreAttuale + '</div></div>' +
+      '<div class="tl-metric"><div class="tl-metric-label">Score target</div><div class="tl-metric-val tl-blue">' + scoreTarget + '</div></div>' +
+      '<div class="tl-metric"><div class="tl-metric-label">Gap da colmare</div><div class="tl-metric-val tl-orange">' + (gap > 0 ? '+'+gap : gap) + '</div></div>' +
+      '<div class="tl-metric"><div class="tl-metric-label">Sessioni registrate</div><div class="tl-metric-val">' + sessioni + '</div></div>' +
+    '</div>';
+
+  if (history.length < 1) {
+    return metriche + '<div class="tl-empty">Registra la prima sessione per visualizzare la progressione nel tempo.</div>';
+  }
+
+  var sorted = history.slice().sort(function(a,b) { return new Date(a.data) - new Date(b.data); });
+
+  var labels = [];
+  var dataReale = [];
+  var dataProiezione = [];
+  var dataTeorica = [];
+
+  var oggi = new Date();
+
+  sorted.forEach(function(s) {
+    var label = new Date(s.data).toLocaleDateString('it-IT', { day:'2-digit', month:'2-digit' });
+    labels.push(label);
+    dataReale.push(s.score);
+    dataProiezione.push(null);
+    dataTeorica.push(null);
+  });
+
+  var ultimaData = new Date(sorted[sorted.length-1].data);
+  if (oggi > ultimaData) {
+    labels.push('Oggi');
+    dataReale.push(scoreAttuale);
+    dataProiezione.push(scoreAttuale);
+    dataTeorica.push(null);
+  } else {
+    dataProiezione[dataProiezione.length-1] = scoreAttuale;
+  }
+
+  [3, 6, 12].forEach(function(m) {
+    var d = new Date(oggi);
+    d.setMonth(d.getMonth() + m);
+    var label = '+' + m + 'm';
+    var progresso = Math.min(scoreTarget, scoreAttuale + Math.round((scoreTarget - scoreAttuale) * (m/12)));
+    labels.push(label);
+    dataReale.push(null);
+    dataProiezione.push(progresso);
+    dataTeorica.push(null);
+  });
+
+  dataTeorica[0] = sorted[0].score;
+  dataTeorica[dataTeorica.length-1] = scoreTarget;
+
+  var chartId = 'tl-chart-' + p.id;
+
+  setTimeout(function() {
+    var canvas = document.getElementById(chartId);
+    if (!canvas || typeof Chart === 'undefined') return;
+    if (canvas._chartInstance) canvas._chartInstance.destroy();
+
+    var oggiIndex = labels.indexOf('Oggi');
+    var oggiPlugin = {
+      id: 'oggiLine',
+      afterDraw: function(chart) {
+        if (oggiIndex < 0) return;
+        var ctx = chart.ctx, chartArea = chart.chartArea, scales = chart.scales;
+        var x = scales.x.getPixelForValue(oggiIndex);
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(x, chartArea.top);
+        ctx.lineTo(x, chartArea.bottom);
+        ctx.strokeStyle = '#e67e22';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([4,3]);
+        ctx.stroke();
+        ctx.fillStyle = '#e67e22';
+        ctx.font = '10px sans-serif';
+        ctx.fillText('Oggi', x+4, chartArea.top+12);
+        ctx.restore();
+      }
+    };
+
+    canvas._chartInstance = new Chart(canvas, {
+      type: 'line',
+      plugins: [oggiPlugin],
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Score reale',
+            data: dataReale,
+            borderColor: '#C9973A',
+            backgroundColor: '#C9973A',
+            borderWidth: 2.5,
+            pointRadius: 5,
+            pointBackgroundColor: '#C9973A',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2,
+            spanGaps: false,
+            tension: 0.3,
+          },
+          {
+            label: 'Proiezione futura',
+            data: dataProiezione,
+            borderColor: '#4A7AB5',
+            backgroundColor: 'rgba(74,122,181,0.07)',
+            borderWidth: 2,
+            borderDash: [6,3],
+            pointRadius: 3,
+            pointBackgroundColor: '#4A7AB5',
+            spanGaps: false,
+            tension: 0.3,
+            fill: 'origin',
+          },
+          {
+            label: 'Traiettoria teorica',
+            data: dataTeorica,
+            borderColor: 'rgba(255,255,255,0.2)',
+            backgroundColor: 'transparent',
+            borderWidth: 1.5,
+            borderDash: [5,4],
+            pointRadius: 0,
+            spanGaps: true,
+            tension: 0,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function(ctx) { return ctx.raw !== null ? 'Score: ' + ctx.raw : null; }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { color: 'rgba(255,255,255,0.05)' },
+            ticks: { font: { size: 11 }, color: 'var(--gray)', autoSkip: false, maxRotation: 0 }
+          },
+          y: {
+            min: 0, max: 100,
+            grid: { color: 'rgba(255,255,255,0.08)' },
+            ticks: { font: { size: 11 }, color: 'var(--gray)' }
+          }
+        }
+      }
+    });
+  }, 100);
+
+  var legenda =
+    '<div class="tl-legenda">' +
+      '<span class="tl-leg"><span class="tl-leg-line" style="background:#C9973A;height:2.5px"></span>Score reale</span>' +
+      '<span class="tl-leg"><span class="tl-leg-line" style="border-top:2px dashed #4A7AB5;background:transparent"></span>Proiezione futura</span>' +
+      '<span class="tl-leg"><span class="tl-leg-line" style="border-top:2px dashed rgba(255,255,255,0.2);background:transparent"></span>Traiettoria teorica</span>' +
+    '</div>';
+
+  return metriche +
+    '<div style="position:relative;width:100%;height:220px;margin-top:12px;">' +
+      '<canvas id="' + chartId + '"></canvas>' +
+    '</div>' +
+    legenda;
+}
 
 function _buildCronistoria(p) {
   const history = p.score_history || [];

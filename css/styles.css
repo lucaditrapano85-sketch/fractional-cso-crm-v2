@@ -466,3 +466,15 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 .sess-dim-val{font-size:16px;font-weight:700;color:var(--gold);min-width:20px;text-align:right}
 .sess-slider{width:100%;accent-color:var(--gold);cursor:pointer}
 .sess-slider-marks{display:flex;justify-content:space-between;font-size:10px;color:var(--gray2);padding:0 2px;margin-top:2px}
+
+/* Timeline chart */
+.tl-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.tl-metric{background:var(--bg3);border-radius:8px;padding:10px 12px;border:1px solid var(--border)}
+.tl-metric-label{font-size:11px;color:var(--gray);margin-bottom:4px}
+.tl-metric-val{font-size:20px;font-weight:500;font-family:'DM Serif Display',serif;color:var(--white)}
+.tl-blue{color:#4A7AB5!important}
+.tl-orange{color:#C9973A!important}
+.tl-empty{padding:24px;text-align:center;font-size:13px;color:var(--gray2)}
+.tl-legenda{display:flex;gap:16px;flex-wrap:wrap;padding:8px 0 0;font-size:11px;color:var(--gray)}
+.tl-leg{display:flex;align-items:center;gap:6px}
+.tl-leg-line{display:inline-block;width:24px;height:2px}
