@@ -183,38 +183,40 @@ async function saveSessione() {
 }
 
 function glosCerca(valore) {
-  var q = valore.toLowerCase().trim();
-  var body = document.getElementById('glos-body');
+  const q = valore.toLowerCase().trim();
+  const body = document.getElementById('glos-body');
   if (!body) return;
+
   if (q.length > 0 && q.length < 3) return;
+
   if (!q) {
     renderGlossario();
-    var si = document.getElementById('glos-search-input');
-    if (si) si.value = valore;
     return;
   }
-  var termini = window._glosTermini || [];
-  var filtrati = termini.filter(function(t) {
-    return t.termine.toLowerCase().includes(q) ||
-      t.def.toLowerCase().includes(q) ||
-      (t.esempio || '').toLowerCase().includes(q) ||
-      (t.categoria || '').toLowerCase().includes(q);
-  });
+
+  const termini = window._glosTermini || [];
+  const filtrati = termini.filter(t =>
+    t.termine.toLowerCase().includes(q) ||
+    t.def.toLowerCase().includes(q) ||
+    (t.esempio || '').toLowerCase().includes(q) ||
+    (t.categoria || t.cat || '').toLowerCase().includes(q)
+  );
+
   if (!filtrati.length) {
     body.innerHTML = '<div class="glos-empty">Nessun termine trovato per "' + valore + '"</div>';
     return;
   }
+
   body.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:10px;padding:0">' +
-    filtrati.map(function(t) {
-      return '<div class="glos-card">' +
-        '<div class="glos-card-top">' +
-          '<div class="glos-termine">' + t.termine + '</div>' +
-          '<div class="glos-cat-badge">' + (t.categoria || '') + '</div>' +
-        '</div>' +
-        '<div class="glos-def">' + t.def + '</div>' +
-        (t.esempio ? '<div class="glos-esempio"><span class="glos-es-label">Esempio</span>' + t.esempio + '</div>' : '') +
-      '</div>';
-    }).join('') + '</div>';
+    filtrati.map(t => `
+      <div class="glos-card">
+        <div class="glos-card-top">
+          <div class="glos-termine">${t.termine}</div>
+          <div class="glos-cat-badge">${t.categoria || t.cat || ''}</div>
+        </div>
+        <div class="glos-def">${t.def}</div>
+        ${t.esempio ? `<div class="glos-esempio"><span class="glos-es-label">Esempio</span>${t.esempio}</div>` : ''}
+      </div>`).join('') + '</div>';
 }
 
 function renderGlossario() {
