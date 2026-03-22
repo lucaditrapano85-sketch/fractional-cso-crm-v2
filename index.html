@@ -119,16 +119,16 @@
       <!-- SCHEDA FINANZIARIA -->
       <div class="fin-card" id="fin-card">
         <div class="fin-tabs">
-          <div class="fin-tab active" onclick="switchFinTab('financials')">Dati Finanziari</div>
-          <div class="fin-tab" onclick="switchFinTab('struttura')">Struttura Aziendale</div>
+          <div class="fin-tab active" onclick="switchFinTab('struttura')">Struttura Aziendale</div>
+          <div class="fin-tab" onclick="switchFinTab('financials')">Dati Finanziari</div>
           <div class="fin-tab" onclick="switchFinTab('commerciale')">Dati Commerciali</div>
           <div class="fin-tab" onclick="switchFinTab('strategico')">Strategico</div>
           <div class="fin-tab" onclick="switchFinTab('kpi')">KPI Commerciali</div>
         </div>
-        <div class="fin-pane active" id="fin-pane-financials">
+        <div class="fin-pane" id="fin-pane-financials">
           <div id="fin-financials-content"></div>
         </div>
-        <div class="fin-pane" id="fin-pane-struttura">
+        <div class="fin-pane active" id="fin-pane-struttura">
           <div id="fin-struttura-content"></div>
         </div>
         <div class="fin-pane" id="fin-pane-commerciale">

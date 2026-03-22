@@ -2181,7 +2181,7 @@ let currentFinTab = 'financials';
 function switchFinTab(tab) {
   currentFinTab = tab;
   document.querySelectorAll('.fin-tab').forEach((t,i) => {
-    const tabs = ['financials','struttura','commerciale','strategico','kpi'];
+    const tabs = ['struttura','financials','commerciale','strategico','kpi'];
     t.classList.toggle('active', tabs[i] === tab);
   });
   document.querySelectorAll('.fin-pane').forEach(p => p.classList.remove('active'));
