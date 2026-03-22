@@ -5231,6 +5231,17 @@ function aggiornaCalcolatrice() {
   var cogs = cogsVal > 0 ? cogsVal : (cogsPct > 0 ? fatturato * cogsPct / 100 : 0);
   var costiFissiAnnui = costiFissiMensili * 12;
   var margineLordo = fatturato - cogs;
+
+  // Sincronizza % ↔ EUR in tempo reale nei placeholder
+  var cdvPctEl = document.getElementById('calc-cdv-pct');
+  var cdvEurEl = document.getElementById('calc-cdv-eur');
+  if (cdvEurEl && cdvEurEl.value && (!cdvPctEl || !cdvPctEl.value) && fatturato > 0) {
+    var pctCalc = Math.round((cogsVal / fatturato) * 1000) / 10;
+    if (cdvPctEl) { cdvPctEl.style.color = 'var(--gray)'; cdvPctEl.placeholder = pctCalc + '%'; }
+  } else if (cdvPctEl && cdvPctEl.value && (!cdvEurEl || !cdvEurEl.value) && fatturato > 0) {
+    var eurCalc = Math.round(fatturato * cogsPct / 100);
+    if (cdvEurEl) { cdvEurEl.style.color = 'var(--gray)'; cdvEurEl.placeholder = eurCalc.toLocaleString('it-IT') + '\u20AC'; }
+  }
   var ebitda = margineLordo - costiFissiAnnui - costiStrutturali;
   var ebit = ebitda - ammortamenti;
 
