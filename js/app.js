@@ -2237,10 +2237,7 @@ function renderFinancials(p) {
     extraSection +
     '<div class="fin-section-label" style="margin-top:' + (hasFinData||hasExtra?'20px':'0') + '">Calcolatrice P&L</div>' +
     '<div id="calcolatrice-container">' + buildCalcolatricePL() + '</div>' +
-    '<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">' +
-      '<button class="fin-edit-btn" onclick="openFinModal(\'extra\')">Modifica patrimonio & finanziamenti</button>' +
-      '<button class="fin-edit-btn" onclick="openFinModal(\'financials_manual\')">Modifica dati manualmente</button>' +
-    '</div>';
+    '<div style="margin-top:10px"><button class="fin-edit-btn" onclick="openFinModal(\'extra\')">Modifica patrimonio & finanziamenti</button></div>';
 }
 
 function renderStruttura(p) {
