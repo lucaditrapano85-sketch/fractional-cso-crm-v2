@@ -201,7 +201,9 @@ function renderListinoServizi(macro) {
     var azioniDim = (typeof AZIONI_TARGET_BY_SETTORE !== 'undefined' && AZIONI_TARGET_BY_SETTORE[microKey]) ? AZIONI_TARGET_BY_SETTORE[microKey][dim] : null;
     var stepRows = steps.map(function(s) {
       var d = dimData[s] || {};
-      var stepDesc = azioniDim && azioniDim[s] ? azioniDim[s].split('.')[0].slice(0, 90) : STEP_DESC[s];
+      var rawDesc = (azioniDim && azioniDim[s]) ? azioniDim[s] : '';
+      var firstSentence = rawDesc.split('.')[0].trim();
+      var stepDesc = firstSentence.length > 10 ? firstSentence + '.' : STEP_DESC[s];
       return '<div class="ls-step-row">' +
         '<div class="ls-step-left">' +
           '<div class="ls-step-badge">Step ' + s + '</div>' +
