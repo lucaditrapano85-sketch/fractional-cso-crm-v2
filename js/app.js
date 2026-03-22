@@ -2370,6 +2370,8 @@ function renderStrategico(p) {
 }
 
 function renderKpiTab(p) {
+  var container = document.getElementById('fin-kpi-content');
+  if (!container) return;
   var kpi = p.kpi_commerciali || {};
   var KPI_LIST = [
     { id: 'tasso_conversione_pct', label: 'Tasso conversione lead\u2192cliente', unita: '%' },
@@ -2395,7 +2397,7 @@ function renderKpiTab(p) {
       '</div>' +
     '</div>';
   }).join('');
-  document.getElementById('fin-kpi-content').innerHTML =
+  container.innerHTML =
     '<div style="padding:16px 20px">' +
       '<div class="fin-section-label">KPI Commerciali</div>' +
       '<p style="font-size:12px;color:var(--gray);margin-bottom:16px">Inserisci i valori reali del cliente. Vengono usati per il confronto con i benchmark di settore.</p>' +
