@@ -5021,6 +5021,13 @@ function buildCalcolatricePL() {
   const p = prospects.find(x => x.id === currentId) || {};
   const dc = p.dati_calcolatrice || {};
   const fv = (field) => dc[field] !== undefined && dc[field] !== null ? dc[field] : (p[field] || '');
+  const FORMA_TO_REGIME = {'Srl':'srl','Spa':'srl','Srl semplificata':'srl','srl':'srl','spa':'srl','srls':'srl','Snc':'snc_sas','Sas':'snc_sas','snc':'snc_sas','sas':'snc_sas','Ditta individuale':'ditta','ditta_individuale':'ditta','Libero professionista':'ditta'};
+  const formaGiuridica = p.forma_giuridica || '';
+  const regimeFiscale = FORMA_TO_REGIME[formaGiuridica] || dc.forma || 'srl';
+  const regimeLabel = regimeFiscale === 'srl' ? 'IRES 24% + IRAP 3.9%' : regimeFiscale === 'snc_sas' ? 'IRPEF + IRAP 3.9%' : 'IRPEF + INPS ~24%';
+  const formaHtml = formaGiuridica && FORMA_TO_REGIME[formaGiuridica]
+    ? '\x3cdiv class="pl-row pl-row-input">\x3cdiv class="pl-label">Regime fiscale\x3c/div>\x3cdiv class="pl-input-wrap">\x3cdiv class="calc-regime-badge">' + formaGiuridica + ' \u2014 ' + regimeLabel + '\x3c/div>\x3cinput type="hidden" id="calc-forma" value="' + regimeFiscale + '">\x3c/div>\x3c/div>'
+    : '\x3cdiv class="pl-row pl-row-input">\x3cdiv class="pl-label">Regime fiscale\x3c/div>\x3cdiv class="pl-input-wrap">\x3cdiv class="calc-regime-warning">\u26A0 Imposta la forma giuridica nella tab Struttura Aziendale per calcolare le imposte\x3c/div>\x3cinput type="hidden" id="calc-forma" value="' + regimeFiscale + '">\x3c/div>\x3c/div>';
   return `
   \x3cdiv style="margin-top:20px;border-top:2px solid var(--gold-dim);padding-top:16px">
     \x3cdiv style="font-size:11px;font-weight:600;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px">
@@ -5129,17 +5136,8 @@ function buildCalcolatricePL() {
       \x3c/div>
     \x3c/div>
 
-    \x3c!-- RIGA 5: Forma societaria + imposte --\x3e
-    \x3cdiv class="pl-row pl-row-input">
-      \x3cdiv class="pl-label">Forma societaria \x3cspan class="tt-wrap">\x3cspan class="tt-icon">?\x3c/span>\x3cspan class="tt-bubble">Determina il regime fiscale: IRES+IRAP per societa di capitali, IRPEF progressiva per persone fisiche e societa di persone.\x3c/span>\x3c/span>\x3c/div>
-      \x3cdiv class="pl-input-wrap">
-        \x3cselect class="form-input pl-input" id="calc-forma" onchange="aggiornaCalcolatrice()" style="width:100%">
-          \x3coption value="srl" ${(dc.forma||'srl')==='srl'?'selected':''}>Srl / Spa (IRES 24% + IRAP 3.9%)\x3c/option>
-          \x3coption value="snc_sas" ${dc.forma==='snc_sas'?'selected':''}>SNC / SAS (IRPEF + IRAP 3.9%)\x3c/option>
-          \x3coption value="ditta" ${dc.forma==='ditta'?'selected':''}>Ditta individuale (IRPEF + INPS ~24%)\x3c/option>
-        \x3c/select>
-      \x3c/div>
-    \x3c/div>
+    \x3c!-- RIGA 5: Regime fiscale (read-only da forma giuridica) --\x3e
+    ${formaHtml}
     \x3cdiv class="pl-row pl-row-input">
       \x3cdiv class="pl-label">Reddito titolare / soci (lordo annuo) \x3cspan class="tt-wrap">\x3cspan class="tt-icon">?\x3c/span>\x3cspan class="tt-bubble">Per Srl: compenso amministratore soggetto a INPS gestione separata (~26%). Per ditte individuali: base per calcolo INPS gestione commercianti (~24%).\x3c/span>\x3c/span>\x3c/div>
       \x3cdiv class="pl-input-wrap">
