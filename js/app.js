@@ -5175,12 +5175,7 @@ function buildCalcolatricePL() {
       \x3cdiv style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px" id="pl-margini-grid">\x3c/div>
     \x3c/div>
 
-    \x3cbutton type="button" onclick="salvaDaCalcolatrice()" style="
-      background:var(--blue,#4E9FE6);color:#fff;border:none;border-radius:var(--rs);
-      padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;
-      font-family:'DM Sans',sans-serif;width:100%;margin-top:16px">
-      Salva dati finanziari
-    \x3c/button>
+    \x3cbutton class="btn btn-primary" style="width:100%;height:40px;margin-top:16px;font-size:13px" onclick="salvaDaCalcolatrice()">Salva dati finanziari\x3c/button>
   \x3c/div>`;
 }
 

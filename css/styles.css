@@ -1,10 +1,10 @@
 :root {
-  --bg:        #070D18;
-  --bg2:       #0D1826;
-  --bg3:       #111F35;
-  --bg4:       #162540;
-  --border:    #1C2D42;
-  --border2:   #243650;
+  --bg:        #0D1B2A;
+  --bg2:       #142236;
+  --bg3:       #1A2D47;
+  --bg4:       #1F3555;
+  --border:    #243D5C;
+  --border2:   #2E4F72;
   --white:     #F0F4F8;
   --gray:      #8AA4BF;
   --gray2:     #4A6180;
@@ -85,9 +85,9 @@ h1,h2,h3{font-family:'DM Serif Display',serif;font-weight:400}
 .det-meta{display:none}
 .tag{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500}
 .btn-group{display:flex;gap:8px}
-.btn{padding:8px 16px;border-radius:var(--rs);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;border:1px solid;transition:all .15s}
-.btn-primary{background:var(--gold);color:#FFFFFF;border-color:var(--gold)}
-.btn-primary:hover{background:var(--gold2)}
+.btn{height:32px;font-size:12px;padding:0 14px;border-radius:6px;white-space:nowrap;cursor:pointer;border:1px solid var(--border2);background:transparent;color:var(--text);transition:background .15s,border-color .15s;font-family:'DM Sans',sans-serif;font-weight:500}
+.btn-primary{background:var(--blue);color:var(--bg);border-color:var(--blue);font-weight:600}
+.btn-primary:hover{opacity:.88}
 .btn-secondary{background:transparent;color:var(--gray);border-color:var(--border2)}
 .btn-secondary:hover{color:var(--white);border-color:var(--gray2)}
 .btn-danger{background:transparent;color:var(--red);border-color:var(--red)}
