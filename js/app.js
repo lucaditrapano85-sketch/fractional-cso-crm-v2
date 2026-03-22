@@ -5188,7 +5188,7 @@ function calcolaAmmDaCategorie() {
   if (ammField) { ammField.value = tot; aggiornaCalcolatrice(); }
 }
 
-function _calcolaIRPEF(reddito) {
+function calcolaIRPEF(reddito) {
   if (reddito <= 0) return 0;
   var imposta = 0;
   if (reddito > 50000) imposta += (reddito - 50000) * 0.43;
@@ -5229,12 +5229,12 @@ function aggiornaCalcolatrice() {
     imposteDetail = 'IRAP ' + fmt(irap) + ' + IRES ' + fmt(ires) + (inps > 0 ? ' + INPS amm. ' + fmt(inps) : '');
   } else if (forma === 'snc_sas') {
     irap = Math.max(0, ebitda * 0.039);
-    irpef = _calcolaIRPEF(Math.max(0, ebit - irap));
+    irpef = calcolaIRPEF(Math.max(0, ebit - irap));
     inps = Math.max(4200, redditoTitolare * 0.24);
     imposteTot = irap + irpef + inps;
     imposteDetail = 'IRAP ' + fmt(irap) + ' + IRPEF ' + fmt(irpef) + ' + INPS ' + fmt(inps);
   } else {
-    irpef = _calcolaIRPEF(Math.max(0, ebit));
+    irpef = calcolaIRPEF(Math.max(0, ebit));
     inps = Math.max(4200, redditoTitolare * 0.24);
     imposteTot = irpef + inps;
     imposteDetail = 'IRPEF ' + fmt(irpef) + ' + INPS ' + fmt(inps);
@@ -5309,8 +5309,8 @@ async function salvaDaCalcolatrice() {
   const ebit = ebitda !== null && ammortamenti ? ebitda - ammortamenti : ebitda;
   var irap2=0,ires2=0,irpef2=0,inps2=0;
   if(forma==='srl'){irap2=Math.max(0,ebitda*0.039);ires2=Math.max(0,(ebit-irap2)*0.24);inps2=redditoTitolare*0.26;}
-  else if(forma==='snc_sas'){irap2=Math.max(0,ebitda*0.039);irpef2=_calcolaIRPEF(Math.max(0,ebit-irap2));inps2=Math.max(4200,redditoTitolare*0.24);}
-  else{irpef2=_calcolaIRPEF(Math.max(0,ebit));inps2=Math.max(4200,redditoTitolare*0.24);}
+  else if(forma==='snc_sas'){irap2=Math.max(0,ebitda*0.039);irpef2=calcolaIRPEF(Math.max(0,ebit-irap2));inps2=Math.max(4200,redditoTitolare*0.24);}
+  else{irpef2=calcolaIRPEF(Math.max(0,ebit));inps2=Math.max(4200,redditoTitolare*0.24);}
   var imposte = irap2+ires2+irpef2+inps2;
   const utile = ebit !== null ? ebit - imposte : null;
   const marginePct = fatturato && utile ? (utile / fatturato * 100) : null;
