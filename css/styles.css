@@ -629,3 +629,11 @@ label{color:var(--gray2)}
 .prev-dim-check{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--gray);cursor:pointer;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:5px 10px}
 .prev-dim-check input{cursor:pointer;accent-color:var(--blue)}
 .prev-form{padding:4px 0}
+
+/* KPI edit tab */
+.kpi-edit-grid{display:flex;flex-direction:column;gap:10px}
+.kpi-edit-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.kpi-edit-label{font-size:12px;color:var(--gray);flex:1}
+.kpi-edit-input-wrap{display:flex;align-items:center;gap:6px}
+.kpi-edit-input{width:110px;text-align:right}
+.kpi-edit-unit{font-size:11px;color:var(--gray2);min-width:20px}

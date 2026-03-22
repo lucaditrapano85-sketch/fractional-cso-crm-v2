@@ -988,6 +988,7 @@ async function renderProspectDetail(id) {
   renderStruttura(p);
   renderCommercialeData(p);
   renderStrategico(p);
+  renderKpiTab(p);
 
   // Load calls
   const {data:calls_raw,error}=await sb.from('calls').select('*').eq('prospect_id',id);
@@ -2063,7 +2064,7 @@ let currentFinTab = 'financials';
 function switchFinTab(tab) {
   currentFinTab = tab;
   document.querySelectorAll('.fin-tab').forEach((t,i) => {
-    const tabs = ['financials','struttura','commerciale','strategico'];
+    const tabs = ['financials','struttura','commerciale','strategico','kpi'];
     t.classList.toggle('active', tabs[i] === tab);
   });
   document.querySelectorAll('.fin-pane').forEach(p => p.classList.remove('active'));
@@ -2362,6 +2363,59 @@ function renderStrategico(p) {
     \x3cdiv class="fin-section-label">Note strategiche\x3c/div>
     \x3cdiv style="font-size:13px;color:var(--gray);line-height:1.6;background:var(--bg3);border-radius:var(--rs);padding:12px 14px">${p.note_strategiche}\x3c/div>` : ''}
     \x3cdiv style="text-align:right">\x3cbutton class="fin-edit-btn" onclick="openFinModal('strategico')">Modifica\x3c/button>\x3c/div>`;
+}
+
+function renderKpiTab(p) {
+  var kpi = p.kpi_commerciali || {};
+  var KPI_LIST = [
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione lead\u2192cliente', unita: '%' },
+    { id: 'ciclo_vendita_gg', label: 'Ciclo di vendita medio', unita: 'gg' },
+    { id: 'valore_medio_ordine', label: 'Valore medio ordine/contratto', unita: '\u20AC' },
+    { id: 'concentrazione_top3_pct', label: 'Concentrazione top 3 clienti', unita: '%' },
+    { id: 'tasso_riacquisto_pct', label: 'Tasso di riacquisto', unita: '%' },
+    { id: 'nuovi_clienti_anno', label: 'Nuovi clienti / anno', unita: 'n' },
+    { id: 'clienti_attivi', label: 'Clienti attivi totali', unita: 'n' },
+    { id: 'fatturato_referral_pct', label: '% fatturato da referral', unita: '%' },
+    { id: 'cac', label: 'CAC \u2014 Costo acquisizione cliente', unita: '\u20AC' },
+    { id: 'dso_gg', label: 'DSO \u2014 Giorni medi incasso', unita: 'gg' },
+    { id: 'mrr', label: 'MRR / ARR', unita: '\u20AC' },
+  ];
+  var rows = KPI_LIST.map(function(k) {
+    var val = kpi[k.id];
+    var hasVal = val !== null && val !== undefined && val !== '';
+    return '<div class="kpi-edit-row">' +
+      '<label class="kpi-edit-label">' + k.label + '</label>' +
+      '<div class="kpi-edit-input-wrap">' +
+        '<input class="form-input kpi-edit-input" type="number" step="0.1" id="kpiedit-' + k.id + '" value="' + (hasVal ? val : '') + '" placeholder="\u2014">' +
+        '<span class="kpi-edit-unit">' + k.unita + '</span>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+  document.getElementById('fin-kpi-content').innerHTML =
+    '<div style="padding:16px 20px">' +
+      '<div class="fin-section-label">KPI Commerciali</div>' +
+      '<p style="font-size:12px;color:var(--gray);margin-bottom:16px">Inserisci i valori reali del cliente. Vengono usati per il confronto con i benchmark di settore.</p>' +
+      '<div class="kpi-edit-grid">' + rows + '</div>' +
+      '<button class="btn btn-primary" style="margin-top:16px" onclick="saveKpiTab()">Salva KPI</button>' +
+    '</div>';
+}
+
+async function saveKpiTab() {
+  var p = prospects.find(function(x) { return x.id === currentId; });
+  if (!p) return;
+  var KPI_IDS = ['tasso_conversione_pct','ciclo_vendita_gg','valore_medio_ordine',
+    'concentrazione_top3_pct','tasso_riacquisto_pct','nuovi_clienti_anno',
+    'clienti_attivi','fatturato_referral_pct','cac','dso_gg','mrr'];
+  var kpi_commerciali = {};
+  KPI_IDS.forEach(function(id) {
+    var val = parseFloat(document.getElementById('kpiedit-'+id)?.value);
+    kpi_commerciali[id] = isNaN(val) ? null : val;
+  });
+  p.kpi_commerciali = kpi_commerciali;
+  var res = await sb.from('prospects').update({ kpi_commerciali: kpi_commerciali }).eq('id', p.id);
+  if (res.error) { showToast('Errore: ' + res.error.message, 'error'); return; }
+  showToast('KPI salvati');
+  renderProspectDetail(p.id);
 }
 
 const FIN_FORMS = {
