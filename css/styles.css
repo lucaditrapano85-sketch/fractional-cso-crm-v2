@@ -684,3 +684,11 @@ label{color:var(--gray2)}
 .sess-riepilogo{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:rgba(28,184,137,0.1);border:1px solid rgba(28,184,137,0.3);border-radius:8px;padding:10px 12px;font-size:12px}
 .sess-riepilogo-label{font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-right:4px}
 .sess-riepilogo-item{background:rgba(28,184,137,0.15);color:var(--green);border-radius:4px;padding:2px 8px;font-size:11px;font-weight:600}
+.fin-kpi-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:4px}
+.fin-kpi-card{background:var(--bg3);border-radius:8px;padding:12px 14px;border:1px solid var(--border)}
+.fin-empty{font-size:13px;color:var(--gray);padding:12px 0;margin-bottom:8px}
+.fin-rows{display:flex;flex-direction:column;gap:2px}
+.fin-row{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-bottom:1px solid var(--border)}
+.fin-row:last-child{border-bottom:none}
+.fin-label{font-size:12px;color:var(--gray)}
+.fin-val{font-size:13px;color:var(--white);font-weight:500;text-align:right}

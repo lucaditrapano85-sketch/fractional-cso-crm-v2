@@ -2207,56 +2207,37 @@ function fmtBool(val) {
 }
 
 function renderFinancials(p) {
-  const hasData = p.fatturato_anno_1 || p.utile_netto || p.ebitda || p.costi_fissi_mensili;
+  var el = document.getElementById('fin-financials-content');
+  if (!el) return;
+  var hasFinData = p.fatturato_anno_1 || p.utile_netto || p.margine_pct;
+  var fmtF = function(v, suf) { return (v != null && v !== '') ? Number(v).toLocaleString('it-IT') + (suf||'') : '\u2014'; };
+  var fmtBoolF = function(v) { return v === true ? 'Si' : v === false ? 'No' : '\u2014'; };
 
-  if (!hasData) {
-    document.getElementById('fin-financials-content').innerHTML = `
-      \x3cdiv class="no-data-msg">Nessun dato finanziario inserito
-        \x3cspan>Clicca "Modifica" per aggiungere fatturato, utile e struttura dei costi\x3c/span>
-      \x3c/div>
-      \x3cdiv style="text-align:center">\x3cbutton class="fin-edit-btn" onclick="openFinModal('financials')">+ Aggiungi dati finanziari\x3c/button>\x3c/div>`;
-    return;
-  }
+  var kpiCards = hasFinData ?
+    '<div class="fin-kpi-row">' +
+      '<div class="fin-kpi-card"><div class="fin-kpi-label">Fatturato anno</div><div class="fin-kpi-val">' + fmtF(p.fatturato_anno_1,'\u20AC') + '</div></div>' +
+      '<div class="fin-kpi-card"><div class="fin-kpi-label">Utile netto</div><div class="fin-kpi-val">' + fmtF(p.utile_netto,'\u20AC') + '</div>' + (p.margine_pct ? '<div class="fin-kpi-sub">Margine ' + p.margine_pct + '%</div>' : '') + '</div>' +
+      '<div class="fin-kpi-card"><div class="fin-kpi-label">Costi fissi mensili</div><div class="fin-kpi-val">' + fmtF(p.costi_fissi_mensili,'\u20AC') + '</div>' + (p.costi_fissi_mensili ? '<div class="fin-kpi-sub">' + fmtF(p.costi_fissi_mensili*12,'\u20AC') + '/anno</div>' : '') + '</div>' +
+    '</div>' : '';
 
-  // Trend fatturato
-  let trend = '';
-  if (p.fatturato_anno_1 && p.fatturato_anno_2) {
-    const diff = ((p.fatturato_anno_1 - p.fatturato_anno_2) / p.fatturato_anno_2 * 100).toFixed(1);
-    trend = diff > 0
-      ? `\x3cspan class="trend-up">▲ ${diff}% vs anno prec.\x3c/span>`
-      : `\x3cspan class="trend-down">▼ ${Math.abs(diff)}% vs anno prec.\x3c/span>`;
-  }
+  var hasExtra = p.immobili_proprieta != null || p.leasing_rata_mensile || p.banche_riferimento;
+  var extraSection = hasExtra ?
+    '<div class="fin-section-label" style="margin-top:16px">Patrimonio & Finanziamenti</div>' +
+    '<div class="fin-rows">' +
+      (p.immobili_proprieta != null ? '<div class="fin-row"><span class="fin-label">Immobili di proprieta</span><span class="fin-val">' + fmtBoolF(p.immobili_proprieta) + (p.immobili_valore ? ' \u00B7 ' + fmtF(p.immobili_valore,'\u20AC') : '') + '</span></div>' : '') +
+      (p.leasing_rata_mensile ? '<div class="fin-row"><span class="fin-label">Leasing rata mensile</span><span class="fin-val">' + fmtF(p.leasing_rata_mensile,'\u20AC/mese') + (p.leasing_note ? ' \u2014 ' + p.leasing_note : '') + '</span></div>' : '') +
+      (p.banche_riferimento ? '<div class="fin-row"><span class="fin-label">Banche di riferimento</span><span class="fin-val">' + p.banche_riferimento + '</span></div>' : '') +
+    '</div>' : '';
 
-  const margPct = p.margine_pct ? p.margine_pct + '%' : (p.fatturato_anno_1 && p.utile_netto ? (p.utile_netto/p.fatturato_anno_1*100).toFixed(1)+'%' : '--');
+  var emptyState = !hasFinData ? '<div class="fin-empty">Nessun dato finanziario. Usa la calcolatrice qui sotto per inserire i dati.</div>' : '';
 
-  document.getElementById('fin-financials-content').innerHTML = `
-    \x3cdiv class="fin-grid">
-      \x3cdiv class="fin-kpi">
-        \x3cdiv class="fin-kpi-label">Fatturato ${p.fatturato_anno_1_label || 'ultimo anno'}\x3c/div>
-        \x3cdiv class="fin-kpi-val gold">${fmt(p.fatturato_anno_1,'EUR')}\x3c/div>
-        \x3cdiv class="fin-kpi-sub">${trend || (p.fatturato_anno_2 ? 'Anno prec.: ' + fmt(p.fatturato_anno_2,'EUR') : '')}\x3c/div>
-      \x3c/div>
-      \x3cdiv class="fin-kpi">
-        \x3cdiv class="fin-kpi-label">Utile netto\x3c/div>
-        \x3cdiv class="fin-kpi-val ${p.utile_netto > 0 ? 'positive' : p.utile_netto < 0 ? 'negative' : ''}">${fmt(p.utile_netto,'EUR')}\x3c/div>
-        \x3cdiv class="fin-kpi-sub">Margine: ${margPct}\x3c/div>
-      \x3c/div>
-      \x3cdiv class="fin-kpi">
-        \x3cdiv class="fin-kpi-label">EBITDA\x3c/div>
-        \x3cdiv class="fin-kpi-val ${p.ebitda > 0 ? 'positive' : ''}">${fmt(p.ebitda,'EUR')}\x3c/div>
-        \x3cdiv class="fin-kpi-sub">${p.ebitda && p.fatturato_anno_1 ? 'EBITDA margin: '+(p.ebitda/p.fatturato_anno_1*100).toFixed(1)+'%' : ''}\x3c/div>
-      \x3c/div>
-    \x3c/div>
-    \x3cdiv class="fin-section-label">Struttura dei costi\x3c/div>
-    \x3cdiv class="fin-field-row">\x3cdiv class="fin-field-label">Costi fissi mensili\x3c/div>\x3cdiv class="fin-field-val">${fmt(p.costi_fissi_mensili,'EUR')}\x3c/div>\x3c/div>
-    \x3cdiv class="fin-field-row">\x3cdiv class="fin-field-label">Costi fissi annuali (stima)\x3c/div>\x3cdiv class="fin-field-val">${p.costi_fissi_mensili ? fmt(p.costi_fissi_mensili*12,'EUR') : '--'}\x3c/div>\x3c/div>
-    \x3cdiv class="fin-field-row">\x3cdiv class="fin-field-label">Margine % dichiarato\x3c/div>\x3cdiv class="fin-field-val">${p.margine_pct ? p.margine_pct+'%' : '--'}\x3c/div>\x3c/div>
-    \x3cdiv class="fin-section-label">Immobili & Finanziamenti\x3c/div>
-    \x3cdiv class="fin-field-row">\x3cdiv class="fin-field-label">Immobili di proprieta\x3c/div>\x3cdiv class="fin-field-val">${fmtBool(p.immobili_proprieta)}${p.immobili_valore ? ' . ' + fmt(p.immobili_valore,'EUR') : ''}\x3c/div>\x3c/div>
-    \x3cdiv class="fin-field-row">\x3cdiv class="fin-field-label">Leasing/finanziamenti -- rata mensile totale\x3c/div>\x3cdiv class="fin-field-val">${fmt(p.leasing_rata_mensile,'EUR')}\x3c/div>\x3c/div>
-    ${p.leasing_note ? `\x3cdiv class="fin-field-row">\x3cdiv class="fin-field-label">Note leasing\x3c/div>\x3cdiv class="fin-field-val" style="font-size:12px;color:var(--gray)">${p.leasing_note}\x3c/div>\x3c/div>` : ''}
-    \x3cdiv class="fin-field-row">\x3cdiv class="fin-field-label">Banche di riferimento\x3c/div>\x3cdiv class="fin-field-val">${p.banche_riferimento || '--'}\x3c/div>\x3c/div>
-    \x3cdiv style="text-align:right">\x3cbutton class="fin-edit-btn" onclick="openFinModal('financials')">Modifica\x3c/button>\x3c/div>`;
+  el.innerHTML =
+    emptyState +
+    kpiCards +
+    extraSection +
+    '<div class="fin-section-label" style="margin-top:' + (hasFinData||hasExtra?'20px':'0') + '">Calcolatrice P&L</div>' +
+    '<div id="calcolatrice-container">' + buildCalcolatricePL() + '</div>' +
+    (hasExtra || hasFinData ? '<div style="margin-top:16px"><button class="fin-edit-btn" onclick="openFinModal(\'extra\')">Modifica patrimonio & finanziamenti</button></div>' : '');
 }
 
 function renderStruttura(p) {
@@ -2559,21 +2540,8 @@ async function saveKpiTab() {
 const FIN_FORMS = {
   financials: {
     title: 'Dati Finanziari',
-    fields: [
-      { id:'fatturato_anno_1', label:'Fatturato anno corrente', fmt:'euro' },
-      { id:'fatturato_anno_1_label', label:'Anno di riferimento', fmt:'anno' },
-      { id:'fatturato_anno_2', label:'Fatturato anno precedente', fmt:'euro' },
-      { id:'fatturato_anno_2_label', label:'Anno precedente', fmt:'anno', readonly:true },
-      { id:'costi_fissi_mensili', label:'Costi fissi mensili', fmt:'euro' },
-      { id:'immobili_valore', label:'Valore immobili di proprieta', fmt:'euro' },
-      { id:'leasing_rata_mensile', label:'Rata mensile totale leasing/finanz.', fmt:'euro' },
-      { id:'leasing_note', label:'Note leasing/finanziamenti', fmt:'text', placeholder:'es. Auto aziendale + macchinario' },
-      { id:'banche_riferimento', label:'Banche di riferimento', fmt:'text', placeholder:'es. Intesa, UniCredit' },
-      { id:'utile_netto', label:'Utile netto', fmt:'euro' },
-      { id:'ebitda', label:'EBITDA (calcolato)', fmt:'euro', readonly: true },
-      { id:'margine_pct', label:'Margine % dichiarato', fmt:'pct' },
-    ],
-    bools: [{ id:'immobili_proprieta', label:'Immobili di proprieta' }],
+    fields: [],
+    bools: [],
     extra: 'calcolatrice'
   },
   struttura: {
@@ -2633,7 +2601,18 @@ const FIN_FORMS = {
     ],
     bools: [{ id:'export_attivo', label:'Export attivo',
       tt:`Attiva se la societa esporta fuori dall'Italia.` }]
-  }
+  },
+  extra: {
+    title: 'Patrimonio & Finanziamenti',
+    fields: [
+      { id:'immobili_valore', label:'Valore immobili di proprieta', fmt:'euro' },
+      { id:'leasing_rata_mensile', label:'Rata mensile totale leasing/finanz.', fmt:'euro' },
+      { id:'leasing_note', label:'Note leasing/finanziamenti', fmt:'text', placeholder:'es. Auto aziendale + macchinario' },
+      { id:'banche_riferimento', label:'Banche di riferimento', fmt:'text', placeholder:'es. Intesa, UniCredit' },
+    ],
+    bools: [{ id:'immobili_proprieta', label:'Immobili di proprieta' }],
+    extra: null
+  },
 };
 
 function renderCronistoria(p) {
