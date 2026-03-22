@@ -2237,7 +2237,10 @@ function renderFinancials(p) {
     extraSection +
     '<div class="fin-section-label" style="margin-top:' + (hasFinData||hasExtra?'20px':'0') + '">Calcolatrice P&L</div>' +
     '<div id="calcolatrice-container">' + buildCalcolatricePL() + '</div>' +
-    (hasExtra || hasFinData ? '<div style="margin-top:16px"><button class="fin-edit-btn" onclick="openFinModal(\'extra\')">Modifica patrimonio & finanziamenti</button></div>' : '');
+    '<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">' +
+      '<button class="fin-edit-btn" onclick="openFinModal(\'extra\')">Modifica patrimonio & finanziamenti</button>' +
+      '<button class="fin-edit-btn" onclick="openFinModal(\'financials_manual\')">Modifica dati manualmente</button>' +
+    '</div>';
 }
 
 function renderStruttura(p) {
@@ -2611,6 +2614,17 @@ const FIN_FORMS = {
       { id:'banche_riferimento', label:'Banche di riferimento', fmt:'text', placeholder:'es. Intesa, UniCredit' },
     ],
     bools: [{ id:'immobili_proprieta', label:'Immobili di proprieta' }],
+    extra: null
+  },
+  financials_manual: {
+    title: 'Dati Finanziari (manuale)',
+    fields: [
+      { id:'fatturato_anno_1', label:'Fatturato anno corrente', fmt:'euro' },
+      { id:'utile_netto', label:'Utile netto', fmt:'euro' },
+      { id:'margine_pct', label:'Margine %', fmt:'pct' },
+      { id:'costi_fissi_mensili', label:'Costi fissi mensili', fmt:'euro' },
+    ],
+    bools: [],
     extra: null
   },
 };
