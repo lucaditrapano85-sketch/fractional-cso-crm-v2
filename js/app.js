@@ -2069,6 +2069,10 @@ function switchFinTab(tab) {
   });
   document.querySelectorAll('.fin-pane').forEach(p => p.classList.remove('active'));
   document.getElementById('fin-pane-'+tab).classList.add('active');
+  if (tab === 'kpi') {
+    var p = prospects.find(function(x) { return x.id === currentId; });
+    if (p) renderKpiTab(p);
+  }
 }
 
 function fmt(val, prefix='', suffix='') {
