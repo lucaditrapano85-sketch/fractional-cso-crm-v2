@@ -5158,10 +5158,10 @@ function buildCalcolatricePL() {
     \x3c/div>
 
     \x3cbutton type="button" onclick="salvaDaCalcolatrice()" style="
-      background:var(--gold);color:#fff;border:none;border-radius:var(--rs);
+      background:var(--blue,#4E9FE6);color:#fff;border:none;border-radius:var(--rs);
       padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;
       font-family:'DM Sans',sans-serif;width:100%;margin-top:16px">
-      v Salva tutti i valori calcolati
+      Salva dati finanziari
     \x3c/button>
   \x3c/div>`;
 }
@@ -5291,7 +5291,7 @@ function aggiornaCalcolatrice() {
   }
 }
 
-function salvaDaCalcolatrice() {
+async function salvaDaCalcolatrice() {
   const v = id => parseFloat(document.getElementById(id)?.value) || null;
   const cogsPct = v('pl-cogs-pct');
   const cogsVal = v('pl-cogs-val');
@@ -5337,12 +5337,22 @@ function salvaDaCalcolatrice() {
   const leasingAmm = parseFloat(document.getElementById('amm-leasing')?.value) || null;
   if (leasingAmm) setField('leasing_rata_mensile', leasingAmm);
 
-  // Show confirmation
-  const btn = document.querySelector('[onclick="salvaDaCalcolatrice()"]');
-  if (btn) {
-    btn.textContent = 'v Valori copiati nei campi -- ora premi Salva';
-    btn.style.background = 'var(--green)';
+  // Salva direttamente su Supabase
+  var p = prospects.find(function(x) { return x.id === currentId; });
+  if (p) {
+    var updates = {};
+    if (fatturato) updates.fatturato_anno_1 = Math.round(fatturato);
+    if (costiFissi) updates.costi_fissi_mensili = Math.round(costiFissi);
+    if (ebitda) updates.ebitda = Math.round(ebitda);
+    if (utile) updates.utile_netto = Math.round(utile);
+    if (marginePct) updates.margine_pct = parseFloat(marginePct.toFixed(1));
+    if (Object.keys(updates).length) {
+      Object.assign(p, updates);
+      await sb.from('prospects').update(updates).eq('id', p.id);
+    }
   }
+  showToast('Dati finanziari salvati');
+  if (p) renderFinancials(p);
 }
 
 
