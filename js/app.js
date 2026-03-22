@@ -196,11 +196,17 @@ function renderListinoServizi(macro) {
   var cards = DIMS.map(function(dim) {
     var dimData = listinoMacro[dim] || {};
     var steps = ['1-2','2-3','3-4','4-5'];
+    var microKeys = typeof AZIONI_TARGET_BY_SETTORE !== 'undefined' ? Object.keys(AZIONI_TARGET_BY_SETTORE).filter(function(k) { return k.startsWith(macro + '_'); }) : [];
+    var microKey = microKeys[0] || (typeof AZIONI_TARGET_BY_SETTORE !== 'undefined' ? Object.keys(AZIONI_TARGET_BY_SETTORE)[0] : '');
+    var azioniDim = (typeof AZIONI_TARGET_BY_SETTORE !== 'undefined' && AZIONI_TARGET_BY_SETTORE[microKey]) ? AZIONI_TARGET_BY_SETTORE[microKey][dim] : null;
     var stepRows = steps.map(function(s) {
       var d = dimData[s] || {};
+      var stepDesc = azioniDim && azioniDim[s] ? azioniDim[s].split('.')[0].slice(0, 90) : STEP_DESC[s];
       return '<div class="ls-step-row">' +
-        '<div class="ls-step-badge">Step ' + s + '</div>' +
-        '<div class="ls-step-label">' + STEP_DESC[s] + '</div>' +
+        '<div class="ls-step-left">' +
+          '<div class="ls-step-badge">Step ' + s + '</div>' +
+          '<div class="ls-step-desc">' + stepDesc + '</div>' +
+        '</div>' +
         '<div class="ls-step-costs">' +
           '<span class="ls-cost-item"><span class="ls-cost-label">Mensile</span><span class="ls-cost-val ' + (d.r ? '' : 'ls-cost-zero') + '">' + (d.r ? fmtV(d.r) : '\u2014') + '</span></span>' +
           '<span class="ls-cost-sep">+</span>' +
@@ -213,14 +219,7 @@ function renderListinoServizi(macro) {
       '<div class="ls-card-desc">' + DIM_DESC[dim] + '</div>' +
       '<div class="ls-steps">' + stepRows + '</div></div>';
   }).join('');
-  var totR = DIMS.reduce(function(acc, dim) { var d = listinoMacro[dim] || {}; return acc + ['1-2','2-3','3-4','4-5'].reduce(function(a, s) { return a + ((d[s] || {}).r || 0); }, 0); }, 0);
-  var totU = DIMS.reduce(function(acc, dim) { var d = listinoMacro[dim] || {}; return acc + ['1-2','2-3','3-4','4-5'].reduce(function(a, s) { return a + ((d[s] || {}).u || 0); }, 0); }, 0);
   container.innerHTML =
-    '<div class="ls-summary">' +
-      '<div class="ls-summary-item"><div class="ls-summary-label">Piano completo 1\u21925 (mensile cumulativo)</div><div class="ls-summary-val">' + fmtV(totR) + '</div></div>' +
-      '<div class="ls-summary-item"><div class="ls-summary-label">Setup totale (una tantum)</div><div class="ls-summary-val">' + fmtV(totU) + '</div></div>' +
-      '<div class="ls-summary-item"><div class="ls-summary-label">Dimensioni incluse</div><div class="ls-summary-val">' + DIMS.length + '</div></div>' +
-    '</div>' +
     '<div class="ls-grid">' + cards + '</div>' +
     '<div class="ls-footer">Valori al netto IVA \u00B7 R = costo ricorrente mensile \u00B7 U = costo una tantum \u00B7 I prezzi variano in base alla complessita del cliente</div>';
 }
