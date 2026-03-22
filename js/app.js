@@ -1283,6 +1283,16 @@ function openEditProspect(id) {
   document.getElementById('modal-prospect').style.display = 'flex';
 }
 
+function _parseNum(val) {
+  var n = parseFloat(val);
+  return isNaN(n) ? null : n;
+}
+function _parseBool(val) {
+  if (val === 'true') return true;
+  if (val === 'false') return false;
+  return null;
+}
+
 async function saveProspect() {
   var nome = (document.getElementById('f-nome')?.value || '').trim();
   if (!nome) { alert('Inserisci il nome dell\'azienda'); return; }
