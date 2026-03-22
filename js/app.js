@@ -116,7 +116,7 @@ function openSessioneModal() {
   var dimsHtml = DIMS_S.map(function(d) {
     var livelloAttuale = p.dims?.[d] || 1;
     var targetDim = p.targets?.[d] || livelloAttuale;
-    var giaAlTarget = livelloAttuale >= targetDim;
+    var giaAlTarget = p.targets?.[d] && livelloAttuale >= targetDim;
     var opzioni = '';
     for (var i = livelloAttuale + 1; i <= 5; i++) opzioni += '<option value="'+i+'">'+i+'</option>';
     return '<div class="sess-upgrade-row'+(giaAlTarget?' sess-upgrade-disabled':'')+'" id="sess-row-'+d+'">' +
