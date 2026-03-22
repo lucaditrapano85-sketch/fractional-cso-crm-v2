@@ -637,3 +637,31 @@ label{color:var(--gray2)}
 .kpi-edit-input-wrap{display:flex;align-items:center;gap:6px}
 .kpi-edit-input{width:110px;text-align:right}
 .kpi-edit-unit{font-size:11px;color:var(--gray2);min-width:20px}
+
+/* ===== LISTINO SERVIZI ===== */
+.ls-macro-tabs{display:flex;gap:6px;flex-wrap:wrap;padding:14px 0 0}
+.ls-macro-btn{padding:7px 16px;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--gray);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+.ls-macro-btn:hover{background:var(--bg3);color:var(--white)}
+.ls-macro-btn.active{background:var(--blue-bg);color:var(--blue);border-color:rgba(78,159,230,0.3);font-weight:600}
+.ls-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:24px}
+.ls-summary-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.ls-summary-label{font-size:11px;color:var(--gray);margin-bottom:6px}
+.ls-summary-val{font-size:20px;font-weight:600;color:var(--gold)}
+.ls-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;margin-bottom:24px}
+.ls-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px 18px;transition:border-color .15s}
+.ls-card:hover{border-color:var(--border2)}
+.ls-card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.ls-card-title{font-size:13px;font-weight:600;color:var(--white)}
+.ls-card-badge{font-size:11px;color:var(--green);background:var(--green-bg);border-radius:4px;padding:2px 8px;font-weight:500}
+.ls-card-desc{font-size:11px;color:var(--gray);margin-bottom:12px;line-height:1.5}
+.ls-steps{display:flex;flex-direction:column;gap:6px}
+.ls-step-row{display:flex;align-items:center;gap:8px;padding:6px 8px;background:var(--bg3);border-radius:6px}
+.ls-step-badge{font-size:10px;font-weight:700;color:var(--gold);background:rgba(200,168,75,0.1);border-radius:4px;padding:2px 6px;white-space:nowrap;flex-shrink:0}
+.ls-step-label{font-size:11px;color:var(--gray);flex:1}
+.ls-step-costs{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.ls-cost-item{display:flex;flex-direction:column;align-items:flex-end}
+.ls-cost-label{font-size:9px;color:var(--gray2);text-transform:uppercase;letter-spacing:.5px}
+.ls-cost-val{font-size:12px;font-weight:600;color:var(--white)}
+.ls-cost-zero{color:var(--gray2)!important;font-weight:400}
+.ls-cost-sep{font-size:10px;color:var(--gray2);margin-top:10px}
+.ls-footer{font-size:11px;color:var(--gray2);padding-top:8px;border-top:1px solid var(--border)}

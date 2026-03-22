@@ -183,6 +183,54 @@ async function saveSessione() {
   await aggiornaStatoAutomatico(p.id, 'diagnosi');
 }
 
+function renderListinoServizi(macro) {
+  macro = macro || 'manifatturiero';
+  var container = document.getElementById('listino-table-container');
+  if (!container) return;
+  var DIMS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+  var DIM_LABELS = {vendite:'Sviluppo commerciale',pipeline:'Pipeline & CRM',team:'Team commerciale',processi:'Processi & Compliance',ricavi:'Ricavi & Margini',marketing:'Marketing & Domanda',sitoweb:'Sito Web & Presenza',ecommerce:'Canale digitale / Specifico settore'};
+  var DIM_DESC = {vendite:'Struttura della rete vendita, metodi di acquisizione e gestione dei clienti.',pipeline:'Implementazione CRM, tracciamento opportunita e gestione del funnel commerciale.',team:'Organizzazione, formazione e incentivazione del team commerciale.',processi:'Standardizzazione dei processi di vendita, offerte, contratti e compliance.',ricavi:'Ottimizzazione dei margini, pricing, upsell e gestione dei ricavi ricorrenti.',marketing:'Strategia di marketing, generazione domanda e posizionamento di mercato.',sitoweb:'Ottimizzazione della presenza web, SEO, contenuti e lead generation digitale.',ecommerce:'Canale e-commerce, vendita digitale o dimensione specifica del settore.'};
+  var STEP_DESC = {'1-2':'Base','2-3':'Strutturato','3-4':'Ottimizzato','4-5':'Eccellente'};
+  var listinoMacro = (typeof LISTINO_DEFAULT !== 'undefined' ? LISTINO_DEFAULT[macro] : null) || {};
+  var fmtV = function(v) { return v ? v.toLocaleString('it-IT') + '\u20AC' : '\u2014'; };
+  var cards = DIMS.map(function(dim) {
+    var dimData = listinoMacro[dim] || {};
+    var steps = ['1-2','2-3','3-4','4-5'];
+    var stepRows = steps.map(function(s) {
+      var d = dimData[s] || {};
+      return '<div class="ls-step-row">' +
+        '<div class="ls-step-badge">Step ' + s + '</div>' +
+        '<div class="ls-step-label">' + STEP_DESC[s] + '</div>' +
+        '<div class="ls-step-costs">' +
+          '<span class="ls-cost-item"><span class="ls-cost-label">Mensile</span><span class="ls-cost-val ' + (d.r ? '' : 'ls-cost-zero') + '">' + (d.r ? fmtV(d.r) : '\u2014') + '</span></span>' +
+          '<span class="ls-cost-sep">+</span>' +
+          '<span class="ls-cost-item"><span class="ls-cost-label">Una tantum</span><span class="ls-cost-val ' + (d.u ? '' : 'ls-cost-zero') + '">' + (d.u ? fmtV(d.u) : '\u2014') + '</span></span>' +
+        '</div></div>';
+    }).join('');
+    var primo = dimData['1-2'] || {};
+    return '<div class="ls-card">' +
+      '<div class="ls-card-header"><div class="ls-card-title">' + DIM_LABELS[dim] + '</div><div class="ls-card-badge">' + (primo.r ? 'da ' + fmtV(primo.r) + '/mese' : '\u2014') + '</div></div>' +
+      '<div class="ls-card-desc">' + DIM_DESC[dim] + '</div>' +
+      '<div class="ls-steps">' + stepRows + '</div></div>';
+  }).join('');
+  var totR = DIMS.reduce(function(acc, dim) { var d = listinoMacro[dim] || {}; return acc + ['1-2','2-3','3-4','4-5'].reduce(function(a, s) { return a + ((d[s] || {}).r || 0); }, 0); }, 0);
+  var totU = DIMS.reduce(function(acc, dim) { var d = listinoMacro[dim] || {}; return acc + ['1-2','2-3','3-4','4-5'].reduce(function(a, s) { return a + ((d[s] || {}).u || 0); }, 0); }, 0);
+  container.innerHTML =
+    '<div class="ls-summary">' +
+      '<div class="ls-summary-item"><div class="ls-summary-label">Piano completo 1\u21925 (mensile cumulativo)</div><div class="ls-summary-val">' + fmtV(totR) + '</div></div>' +
+      '<div class="ls-summary-item"><div class="ls-summary-label">Setup totale (una tantum)</div><div class="ls-summary-val">' + fmtV(totU) + '</div></div>' +
+      '<div class="ls-summary-item"><div class="ls-summary-label">Dimensioni incluse</div><div class="ls-summary-val">' + DIMS.length + '</div></div>' +
+    '</div>' +
+    '<div class="ls-grid">' + cards + '</div>' +
+    '<div class="ls-footer">Valori al netto IVA \u00B7 R = costo ricorrente mensile \u00B7 U = costo una tantum \u00B7 I prezzi variano in base alla complessita del cliente</div>';
+}
+
+function lsMacroSwitch(macro, btn) {
+  document.querySelectorAll('.ls-macro-btn').forEach(function(b) { b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  renderListinoServizi(macro);
+}
+
 function glosCerca(valore) {
   const q = valore.toLowerCase().trim();
   const body = document.getElementById('glos-body');
@@ -520,7 +568,7 @@ function showView(name) {
   if(name==='dashboard') renderDashboard();
   if(name==='market') renderMarket();
   if(name==='calendario') renderCalendario();
-  if(name==='listino') { setTimeout(()=>{ const s=document.getElementById('listino-macro-select'); if(s) renderListinoTable(s.value); },50); }
+  if(name==='listino') { renderListinoServizi('manifatturiero'); }
   if(name==='prospects') { renderProspectsView(); }
   if(name==='glossario') renderGlossario();
 }
