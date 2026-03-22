@@ -224,6 +224,10 @@
         <div class="card-title flex-row">Call & Note <span class="ml-auto" style="font-size:11px;color:var(--gray)" id="call-count"></span></div>
         <div id="call-log"></div>
       </div>
+      <div class="card" id="preventivi-card">
+        <div class="card-title">Preventivi</div>
+        <div id="preventivi-container"></div>
+      </div>
     </div>
 
     <!-- MARKET -->
@@ -458,6 +462,16 @@
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="document.getElementById('modal-sessione').style.display='none'">Annulla</button>
       <button class="btn btn-primary" onclick="saveSessione()">Salva sessione</button>
+    </div>
+  </div>
+</div>
+<div id="modal-preventivo" class="modal-overlay" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal" style="max-width:560px;max-height:88vh;overflow-y:auto">
+    <h2 class="modal-title" id="modal-preventivo-title">Nuovo Preventivo</h2>
+    <div id="modal-preventivo-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="document.getElementById('modal-preventivo').style.display='none'">Annulla</button>
+      <button class="btn btn-primary" onclick="savePreventivo()">Salva preventivo</button>
     </div>
   </div>
 </div>

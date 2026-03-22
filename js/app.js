@@ -180,6 +180,7 @@ async function saveSessione() {
   document.getElementById('modal-sessione').style.display = 'none';
   renderProspectDetail(p.id);
   showToast('Sessione registrata con successo');
+  await aggiornaStatoAutomatico(p.id, 'diagnosi');
 }
 
 function glosCerca(valore) {
@@ -332,6 +333,171 @@ function renderGlossario() {
       '</div>' +
     '</div>' +
     '<div class="glos-body" id="glos-body">' + html + '</div>';
+}
+
+// ── STEP STATUS AUTOMATICO ─────────────────────────────
+async function aggiornaStatoAutomatico(prospectId, nuovoStato) {
+  var p = prospects.find(function(x) { return x.id === prospectId; });
+  if (!p) return;
+  var ordine = ['nuovo', 'contattato', 'diagnosi', 'proposta', 'chiuso'];
+  var idxAttuale = ordine.indexOf(p.stato);
+  var idxNuovo = ordine.indexOf(nuovoStato);
+  if (idxNuovo <= idxAttuale) return;
+  p.stato = nuovoStato;
+  await sb.from('prospects').update({ stato: nuovoStato }).eq('id', prospectId);
+  showToast('Stato aggiornato: ' + nuovoStato.charAt(0).toUpperCase() + nuovoStato.slice(1));
+  renderSidebar();
+}
+
+// ── PREVENTIVI ─────────────────────────────────────────
+var _preventiviList = [];
+
+async function loadPreventivi(prospectId) {
+  var res = await sb.from('preventivi').select('*').eq('prospect_id', prospectId).order('created_at', { ascending: false });
+  _preventiviList = res.data || [];
+  return _preventiviList;
+}
+
+async function openPreventivoModal(existingId) {
+  var p = prospects.find(function(x) { return x.id === currentId; });
+  if (!p) return;
+  var prev = existingId ? _preventiviList.find(function(x) { return x.id === existingId; }) : null;
+  var ic = null;
+  try { ic = _calcolaImpattoCumulativo(p); } catch(e) {}
+  var feeMensile = ic ? (ic.costoMensileTot || 0) : 0;
+  var unatantum = ic ? (ic.costoUnaTantumTot || 0) : 0;
+  var dati = prev ? (prev.dati || {}) : {};
+  var DIMS_IDS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+  var DIM_LBL = {vendite:'Vendite',pipeline:'Pipeline',team:'Team',processi:'Processi',ricavi:'Ricavi',marketing:'Marketing',sitoweb:'Sito Web',ecommerce:(typeof getDimLabel==='function'?getDimLabel(p.settore,'ecommerce'):'Ecommerce')};
+  var dimsAttive = DIMS_IDS.filter(function(d) { return p.targets && p.targets[d] && p.targets[d] > (p.dims?.[d]||1); });
+  var modal = document.getElementById('modal-preventivo');
+  var body = document.getElementById('modal-preventivo-body');
+  if (!modal || !body) return;
+  document.getElementById('modal-preventivo-title').textContent = prev ? 'Modifica Preventivo' : 'Nuovo Preventivo';
+  var oggi = new Date().toISOString().split('T')[0];
+  var fatObj12 = (ic && ic.fat12) ? Math.round((ic.fat12[0]+ic.fat12[1])/2) : '';
+  body.innerHTML =
+    '<div class="prev-form">' +
+      '<div class="prev-section-title">Dati cliente</div>' +
+      '<div class="form-grid">' +
+        '<div class="form-group form-group-full"><label>Azienda</label><input class="form-input" id="prev-azienda" value="' + (p.nome||'') + '" readonly></div>' +
+        '<div class="form-group"><label>Referente</label><input class="form-input" id="prev-referente" value="' + (dati.referente||p.referente||'') + '"></div>' +
+        '<div class="form-group"><label>Data preventivo</label><input class="form-input" type="date" id="prev-data" value="' + (dati.data||oggi) + '"></div>' +
+        '<div class="form-group"><label>Validita (giorni)</label><input class="form-input" type="number" id="prev-validita" value="' + (dati.validita||30) + '"></div>' +
+        '<div class="form-group"><label>Durata mandato</label><select class="form-input" id="prev-durata">' +
+          ['6 mesi','12 mesi','24 mesi'].map(function(v) { return '<option value="'+v+'"'+((dati.durata||'12 mesi')===v?' selected':'')+'>'+v+'</option>'; }).join('') +
+        '</select></div>' +
+      '</div>' +
+      '<div class="prev-section-title" style="margin-top:16px">Scope del mandato</div>' +
+      '<div class="prev-dims-check">' +
+        DIMS_IDS.map(function(d) {
+          var checked = dati.scope ? dati.scope.indexOf(d) >= 0 : dimsAttive.indexOf(d) >= 0;
+          return '<label class="prev-dim-check"><input type="checkbox" value="'+d+'"'+(checked?' checked':'')+'>'+DIM_LBL[d]+'</label>';
+        }).join('') +
+      '</div>' +
+      '<div class="prev-section-title" style="margin-top:16px">Investimento</div>' +
+      '<div class="form-grid">' +
+        '<div class="form-group"><label>Fee mensile</label><input class="form-input" type="number" id="prev-fee" value="' + (dati.fee_mensile||feeMensile) + '"></div>' +
+        '<div class="form-group"><label>Una tantum</label><input class="form-input" type="number" id="prev-unatantum" value="' + (dati.una_tantum||unatantum) + '"></div>' +
+        '<div class="form-group"><label>Fatturato attuale</label><input class="form-input" type="number" id="prev-fatattuale" value="' + (dati.fat_attuale||p.fatturato_anno_1||'') + '"></div>' +
+        '<div class="form-group"><label>Fatturato obiettivo 12m</label><input class="form-input" type="number" id="prev-fatobj" value="' + (dati.fat_obiettivo||fatObj12) + '"></div>' +
+      '</div>' +
+      '<div class="prev-section-title" style="margin-top:16px">Note e condizioni</div>' +
+      '<textarea class="form-input" id="prev-note" rows="3" placeholder="Note aggiuntive, condizioni particolari...">' + (dati.note||'') + '</textarea>' +
+    '</div>';
+  modal.style.display = 'flex';
+  modal._editingId = existingId || null;
+}
+
+async function savePreventivo() {
+  var p = prospects.find(function(x) { return x.id === currentId; });
+  if (!p) return;
+  var scope = [];
+  document.querySelectorAll('#modal-preventivo-body input[type=checkbox]:checked').forEach(function(cb) { scope.push(cb.value); });
+  var dati = {
+    data: document.getElementById('prev-data')?.value,
+    validita: parseInt(document.getElementById('prev-validita')?.value)||30,
+    durata: document.getElementById('prev-durata')?.value,
+    fee_mensile: parseFloat(document.getElementById('prev-fee')?.value)||0,
+    una_tantum: parseFloat(document.getElementById('prev-unatantum')?.value)||0,
+    fat_attuale: parseFloat(document.getElementById('prev-fatattuale')?.value)||0,
+    fat_obiettivo: parseFloat(document.getElementById('prev-fatobj')?.value)||0,
+    note: document.getElementById('prev-note')?.value||'',
+    referente: document.getElementById('prev-referente')?.value||'',
+    scope: scope,
+  };
+  var modal = document.getElementById('modal-preventivo');
+  var editingId = modal ? modal._editingId : null;
+  if (editingId) {
+    await sb.from('preventivi').update({ dati: dati, stato: 'bozza' }).eq('id', editingId);
+  } else {
+    await sb.from('preventivi').insert({ prospect_id: p.id, tipo: 'preventivo', stato: 'bozza', dati: dati });
+    await aggiornaStatoAutomatico(p.id, 'proposta');
+  }
+  modal.style.display = 'none';
+  await loadPreventivi(p.id);
+  renderPreventivi(p);
+  showToast('Preventivo salvato');
+}
+
+async function aggiornaStatoPreventivo(id, nuovoStato) {
+  await sb.from('preventivi').update({ stato: nuovoStato }).eq('id', id);
+  var prev = _preventiviList.find(function(x) { return x.id === id; });
+  if (prev) prev.stato = nuovoStato;
+  if (nuovoStato === 'accettato') {
+    var p = prospects.find(function(x) { return x.id === currentId; });
+    if (p) await aggiornaStatoAutomatico(p.id, 'chiuso');
+  }
+  var p2 = prospects.find(function(x) { return x.id === currentId; });
+  if (p2) renderPreventivi(p2);
+  showToast('Stato preventivo: ' + nuovoStato);
+}
+
+function renderPreventivi(p) {
+  var container = document.getElementById('preventivi-container');
+  if (!container) return;
+  var STATO_COLOR = {bozza:'#4A6180',inviato:'#4E9FE6',accettato:'#1CB889',rifiutato:'#E05555'};
+  var STATO_LABEL = {bozza:'Bozza',inviato:'Inviato',accettato:'Accettato',rifiutato:'Rifiutato'};
+  if (!_preventiviList.length) {
+    container.innerHTML = '<div class="prev-empty">Nessun preventivo ancora. <button class="btn btn-primary" style="margin-left:12px" onclick="openPreventivoModal()">+ Nuovo preventivo</button></div>';
+    return;
+  }
+  container.innerHTML =
+    '<div class="prev-list-header"><button class="btn btn-primary" onclick="openPreventivoModal()">+ Nuovo preventivo</button></div>' +
+    _preventiviList.map(function(pv) {
+      var d = pv.dati || {};
+      return '<div class="prev-card">' +
+        '<div class="prev-card-header">' +
+          '<div>' +
+            '<div class="prev-card-title">Preventivo del ' + (d.data ? new Date(d.data).toLocaleDateString('it-IT') : '\u2014') + '</div>' +
+            '<div class="prev-card-sub">Durata: ' + (d.durata||'\u2014') + ' \u00B7 Fee: ' + (d.fee_mensile ? d.fee_mensile.toLocaleString('it-IT') : '\u2014') + '\u20AC/mese \u00B7 Una tantum: ' + (d.una_tantum ? d.una_tantum.toLocaleString('it-IT') : '\u2014') + '\u20AC</div>' +
+          '</div>' +
+          '<span class="prev-stato-badge" style="background:' + (STATO_COLOR[pv.stato]||'#4A6180') + '20;color:' + (STATO_COLOR[pv.stato]||'#4A6180') + ';border:1px solid ' + (STATO_COLOR[pv.stato]||'#4A6180') + '40">' + (STATO_LABEL[pv.stato]||pv.stato) + '</span>' +
+        '</div>' +
+        '<div class="prev-card-actions">' +
+          '<button class="btn" onclick="openPreventivoModal(\'' + pv.id + '\')">Modifica</button>' +
+          '<button class="btn" onclick="stampaPrev(\'' + pv.id + '\')">Scarica PDF</button>' +
+          (pv.stato === 'bozza' ? '<button class="btn" onclick="aggiornaStatoPreventivo(\'' + pv.id + '\',\'inviato\')">Segna inviato</button>' : '') +
+          (pv.stato === 'inviato' ? '<button class="btn" style="color:var(--green)" onclick="aggiornaStatoPreventivo(\'' + pv.id + '\',\'accettato\')">Accettato</button><button class="btn" style="color:var(--red)" onclick="aggiornaStatoPreventivo(\'' + pv.id + '\',\'rifiutato\')">Rifiutato</button>' : '') +
+        '</div>' +
+      '</div>';
+    }).join('');
+}
+
+function stampaPrev(id) {
+  var pv = _preventiviList.find(function(x) { return x.id === id; });
+  var p = prospects.find(function(x) { return x.id === currentId; });
+  if (!pv || !p) return;
+  var d = pv.dati || {};
+  var DIMS_LABELS = {vendite:'Vendite',pipeline:'Pipeline',team:'Team',processi:'Processi',ricavi:'Ricavi',marketing:'Marketing',sitoweb:'Sito Web',ecommerce:'Ecommerce'};
+  var totMensile = d.fee_mensile || 0;
+  var durMesi = parseInt(d.durata) || 12;
+  var totale = Math.round(totMensile * durMesi + (d.una_tantum||0));
+  var scadenza = new Date(d.data);
+  scadenza.setDate(scadenza.getDate() + (d.validita||30));
+  var win = window.open('', '_blank');
+  win.document.write('<!DOCTYPE html><html lang="it"><head><meta charset="UTF-8"><title>Preventivo - ' + p.nome + '</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,Helvetica Neue,Arial,sans-serif;color:#1a2a3a;background:#fff}.page{max-width:800px;margin:0 auto;padding:48px 56px}.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:48px;padding-bottom:24px;border-bottom:2px solid #0C2340}.logo{font-size:18px;font-weight:700;color:#0C2340}.logo-sub{font-size:10px;color:#8AA4BF;letter-spacing:1px;text-transform:uppercase;margin-top:2px}.doc-info{text-align:right}.doc-tipo{font-size:22px;font-weight:700;color:#0C2340}.doc-data{font-size:12px;color:#4A6180;margin-top:4px}.section{margin-bottom:32px}.section-title{font-size:10px;font-weight:700;color:#C8A84B;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid #E8EFF7}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px}.field-label{font-size:11px;color:#4A6180;margin-bottom:3px}.field-val{font-size:14px;color:#0C2340;font-weight:500}.inv-table{width:100%;border-collapse:collapse}.inv-table th{font-size:11px;font-weight:600;color:#4A6180;text-align:left;padding:8px 12px;background:#F7FAFC;border-bottom:1px solid #E0DAD0}.inv-table td{padding:10px 12px;border-bottom:1px solid #F0F4F8;font-size:13px}.inv-table tr.total td{font-weight:700;font-size:15px;color:#0C2340;border-top:2px solid #0C2340;border-bottom:none;padding-top:14px}.scope-tags{display:flex;flex-wrap:wrap;gap:6px}.scope-tag{background:#E8EFF7;color:#0C2340;font-size:11px;font-weight:500;padding:4px 10px;border-radius:4px}.note-box{background:#F7FAFC;border-left:3px solid #C8A84B;padding:12px 16px;font-size:13px;color:#4A6180;line-height:1.6}.footer{margin-top:48px;padding-top:20px;border-top:1px solid #E0DAD0;display:flex;justify-content:space-between;font-size:11px;color:#8AA4BF}.validity{background:#FDF6E3;border:1px solid #D4A017;border-radius:6px;padding:10px 14px;font-size:12px;color:#B8860B;margin-top:16px}@media print{body{padding:0}.page{padding:32px 40px}}</style></head><body><div class="page"><div class="header"><div><div class="logo">Fractional CSO</div><div class="logo-sub">Consulenza Commerciale</div></div><div class="doc-info"><div class="doc-tipo">Preventivo</div><div class="doc-data">N. ' + (Math.floor(Math.random()*9000)+1000) + ' &middot; ' + (d.data ? new Date(d.data).toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'}) : '\u2014') + '</div></div></div><div class="section"><div class="section-title">Dati cliente</div><div class="two-col"><div><div class="field-label">Azienda</div><div class="field-val">' + (p.nome||'\u2014') + '</div></div><div><div class="field-label">Referente</div><div class="field-val">' + (d.referente||p.referente||'\u2014') + '</div></div><div><div class="field-label">Settore</div><div class="field-val">' + (p.settore||'\u2014') + '</div></div><div><div class="field-label">Fatturato attuale</div><div class="field-val">' + (d.fat_attuale ? d.fat_attuale.toLocaleString('it-IT')+'\u20AC' : '\u2014') + '</div></div></div></div><div class="section"><div class="section-title">Scope del mandato</div><div class="scope-tags">' + (d.scope||[]).map(function(s){return '<span class="scope-tag">'+(DIMS_LABELS[s]||s)+'</span>';}).join('') + '</div><div style="margin-top:10px"><div class="field-label">Durata mandato</div><div class="field-val">' + (d.durata||'\u2014') + '</div></div>' + (d.fat_obiettivo ? '<div style="margin-top:10px"><div class="field-label">Fatturato obiettivo 12 mesi</div><div class="field-val" style="color:#1CB889">' + d.fat_obiettivo.toLocaleString('it-IT') + '\u20AC</div></div>' : '') + '</div><div class="section"><div class="section-title">Piano di investimento</div><table class="inv-table"><thead><tr><th>Voce</th><th>Importo</th><th>Note</th></tr></thead><tbody><tr><td>Fee mensile consulenza</td><td>' + totMensile.toLocaleString('it-IT') + '\u20AC/mese</td><td>Per ' + (d.durata||'\u2014') + '</td></tr>' + (d.una_tantum ? '<tr><td>Setup iniziale (una tantum)</td><td>' + d.una_tantum.toLocaleString('it-IT') + '\u20AC</td><td>Da corrispondere all\'avvio</td></tr>' : '') + '<tr><td>Totale fee per durata mandato</td><td>' + (totMensile*durMesi).toLocaleString('it-IT') + '\u20AC</td><td>Escluso setup</td></tr><tr class="total"><td>Investimento totale</td><td colspan="2">' + totale.toLocaleString('it-IT') + '\u20AC</td></tr></tbody></table></div>' + (d.note ? '<div class="section"><div class="section-title">Note e condizioni</div><div class="note-box">' + d.note + '</div></div>' : '') + '<div class="validity">Preventivo valido fino al ' + scadenza.toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'}) + ' &middot; Prezzi IVA esclusa</div><div class="footer"><span>Fractional CSO \u2014 Consulenza Commerciale per PMI</span><span>Documento generato il ' + new Date().toLocaleDateString('it-IT') + '</span></div></div><script>window.onload=function(){window.print();}<\/script></body></html>');
+  win.document.close();
 }
 
 function genField(label,val) {
@@ -843,6 +1009,8 @@ async function renderProspectDetail(id) {
       \x3c/div>`;
     }).join('');
   }
+  await loadPreventivi(id);
+  renderPreventivi(p);
 }
 
 // -- MARKET ------------------------------------------------
@@ -1241,6 +1409,7 @@ async function saveCall() {
   });
   if(error){showToast('Errore salvataggio call','error');return;}
   showToast('Call registrata');
+  if (currentId) await aggiornaStatoAutomatico(currentId, 'contattato');
   closeModal('modal-call');
   renderProspectDetail(currentId);
 }
