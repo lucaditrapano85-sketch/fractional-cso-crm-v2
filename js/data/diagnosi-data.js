@@ -692,6 +692,104 @@ var DIAGNOSI_DOMANDE = {
       { id:'e4', testo:'Usi product analytics (Mixpanel, Amplitude, ecc.)?', tipo:'yn', peso:3 },
     ],
   },
+  automotive: {
+    vendite: [
+      { id:'v1', peso:5, tipo:'mc', testo:'Come e organizzata la forza vendita?', opzioni:[
+        { label:'Solo il titolare vende', score:0 },
+        { label:'Titolare + un venditore part-time o occasionale', score:1 },
+        { label:'Uno o piu venditori fissi senza obiettivi definiti', score:2 },
+        { label:'Venditori con obiettivi mensili in unita e fatturato', score:3 },
+        { label:'Team strutturato con responsabile vendite e KPI misurati', score:4 },
+      ]},
+      { id:'v2', peso:3, tipo:'yn', testo:'Tracci il tasso di conversione da visita o contatto a contratto?' },
+      { id:'v3', peso:3, tipo:'yn', testo:'Hai un processo strutturato per la gestione della permuta?' },
+      { id:'v4', peso:2, tipo:'yn', testo:'I venditori fanno follow-up sistematico dopo ogni visita o test drive?' },
+    ],
+    pipeline: [
+      { id:'p1', peso:5, tipo:'mc', testo:'Come gestisci i contatti dei potenziali acquirenti?', opzioni:[
+        { label:'Nessun sistema, tutto a memoria o su carta', score:0 },
+        { label:'Fogli Excel o agenda', score:1 },
+        { label:'DMS base o gestionale con anagrafica clienti', score:2 },
+        { label:'CRM o DMS con storico trattative e follow-up', score:3 },
+        { label:'CRM integrato con marketing, stock e previsioni', score:4 },
+      ]},
+      { id:'p2', peso:3, tipo:'yn', testo:'Sai quante trattative hai aperte in questo momento?' },
+      { id:'p3', peso:3, tipo:'yn', testo:'Fai follow-up sistematico dopo ogni visita o contatto?' },
+      { id:'p4', peso:2, tipo:'yn', testo:'Conosci il tempo medio che passa dal primo contatto alla firma?' },
+    ],
+    team: [
+      { id:'t1', peso:5, tipo:'mc', testo:'Come e strutturato il personale commerciale?', opzioni:[
+        { label:'Solo il titolare', score:0 },
+        { label:'Titolare + personale senza ruoli definiti', score:1 },
+        { label:'Ruoli definiti ma senza formazione commerciale', score:2 },
+        { label:'Team con ruoli chiari e obiettivi individuali', score:3 },
+        { label:'Team strutturato con formazione continua e incentivi', score:4 },
+      ]},
+      { id:'t2', peso:3, tipo:'yn', testo:'Il personale di vendita fa formazione commerciale almeno una volta all\'anno?' },
+      { id:'t3', peso:3, tipo:'yn', testo:'Hai un sistema di incentivi legato ai risultati di vendita?' },
+      { id:'t4', peso:2, tipo:'yn', testo:'La concessionaria funziona correttamente anche quando il titolare non e presente?' },
+    ],
+    processi: [
+      { id:'pr1', peso:5, tipo:'mc', testo:'Come e strutturato il processo dalla trattativa alla consegna?', opzioni:[
+        { label:'Nessun processo definito, si improvvisa', score:0 },
+        { label:'Processo informale, dipende dal venditore', score:1 },
+        { label:'Check-list base per la consegna', score:2 },
+        { label:'Processo definito con passaggi documentati', score:3 },
+        { label:'Processo ottimizzato con tempi misurati e NPS post-consegna', score:4 },
+      ]},
+      { id:'pr2', peso:3, tipo:'yn', testo:'Hai un processo strutturato per la gestione dei finanziamenti e delle pratiche?' },
+      { id:'pr3', peso:3, tipo:'yn', testo:'Utilizzi contratti standardizzati per l\'acquisto e la permuta?' },
+      { id:'pr4', peso:2, tipo:'yn', testo:'Misuri la soddisfazione del cliente dopo la consegna?' },
+    ],
+    ricavi: [
+      { id:'r1', peso:5, tipo:'mc', testo:'Quanto e prevedibile il tuo fatturato mensile?', opzioni:[
+        { label:'Impossibile prevederlo', score:0 },
+        { label:'Ho un\'idea approssimativa', score:1 },
+        { label:'Prevedo con +/-30% di precisione', score:2 },
+        { label:'Prevedo con +/-15% grazie allo storico', score:3 },
+        { label:'Forecast mensile preciso con pipeline e probabilita di chiusura', score:4 },
+      ]},
+      { id:'r2', peso:3, tipo:'yn', testo:'Conosci il margine medio per tipologia di veicolo (nuovo, usato, km0)?' },
+      { id:'r3', peso:3, tipo:'yn', testo:'Tracci i ricavi da servizi aggiuntivi (finanziamento, assicurazione, accessori, post-vendita)?' },
+      { id:'r4', peso:2, tipo:'yn', testo:'Conosci il costo medio di ripristino e preparazione per ogni veicolo usato?' },
+    ],
+    marketing: [
+      { id:'m1', peso:5, tipo:'mc', testo:'Come generi nuovi contatti e visite in concessionaria?', opzioni:[
+        { label:'Solo passaparola', score:0 },
+        { label:'Passaparola + portali annunci (AutoScout, Subito)', score:1 },
+        { label:'Portali + social media gestiti occasionalmente', score:2 },
+        { label:'Strategia digitale attiva con budget dedicato', score:3 },
+        { label:'Marketing integrato con tracking delle fonti di contatto', score:4 },
+      ]},
+      { id:'m2', peso:3, tipo:'yn', testo:'Sai quale canale genera piu contatti qualificati?' },
+      { id:'m3', peso:3, tipo:'yn', testo:'Gestisci attivamente le recensioni online (Google, Facebook)?' },
+      { id:'m4', peso:2, tipo:'yn', testo:'Fai campagne di re-marketing verso i clienti che hanno gia acquistato?' },
+    ],
+    sitoweb: [
+      { id:'s1', peso:5, tipo:'mc', testo:'Qual e il ruolo del sito web nella tua attivita commerciale?', opzioni:[
+        { label:'Non ho un sito web', score:0 },
+        { label:'Ho un sito vetrina non aggiornato', score:1 },
+        { label:'Sito con stock aggiornato ma senza lead generation', score:2 },
+        { label:'Sito con stock, form di contatto e richieste di preventivo', score:3 },
+        { label:'Sito integrato con DMS, chat live e campagne tracciabili', score:4 },
+      ]},
+      { id:'s2', peso:3, tipo:'yn', testo:'Il tuo stock e aggiornato in tempo reale sul sito?' },
+      { id:'s3', peso:3, tipo:'yn', testo:'Tracci le visite al sito e le richieste di informazioni che arrivano online?' },
+      { id:'s4', peso:2, tipo:'yn', testo:'Sei presente sui principali portali di annunci auto con foto professionali?' },
+    ],
+    ecommerce: [
+      { id:'e1', peso:5, tipo:'mc', testo:'Come gestisci il post-vendita e i servizi dopo la consegna?', opzioni:[
+        { label:'Nessun servizio post-vendita strutturato', score:0 },
+        { label:'Officina/carrozzeria esterna senza accordi', score:1 },
+        { label:'Accordi con officina convenzionata', score:2 },
+        { label:'Post-vendita strutturato con tagliandi e garanzie gestite internamente', score:3 },
+        { label:'Post-vendita come centro di ricavo con upsell e fidelizzazione attiva', score:4 },
+      ]},
+      { id:'e2', peso:3, tipo:'yn', testo:'Il post-vendita (tagliandi, revisioni, garanzie) genera ricavi tracciati?' },
+      { id:'e3', peso:3, tipo:'yn', testo:'Contatti attivamente i clienti per il rinnovo o la permuta prima della scadenza naturale?' },
+      { id:'e4', peso:2, tipo:'yn', testo:'Proponi sistematicamente prodotti aggiuntivi (assicurazioni, accessori, finanziamenti) ad ogni vendita?' },
+    ],
+  },
 };
 
 // Funzione di calcolo score da risposte
