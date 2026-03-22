@@ -411,74 +411,109 @@ async function openPreventivoModal(existingId) {
   var p = prospects.find(function(x) { return x.id === currentId; });
   if (!p) return;
   var prev = existingId ? _preventiviList.find(function(x) { return x.id === existingId; }) : null;
-  var ic = null;
-  try { ic = _calcolaImpattoCumulativo(p); } catch(e) {}
-  var feeMensile = ic ? (ic.costoMensileTot || 0) : 0;
-  var unatantum = ic ? (ic.costoUnaTantumTot || 0) : 0;
-  var dati = prev ? (prev.dati || {}) : {};
-  var DIMS_IDS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
-  var DIM_LBL = {vendite:'Vendite',pipeline:'Pipeline',team:'Team',processi:'Processi',ricavi:'Ricavi',marketing:'Marketing',sitoweb:'Sito Web',ecommerce:(typeof getDimLabel==='function'?getDimLabel(p.settore,'ecommerce'):'Ecommerce')};
-  var dimsAttive = DIMS_IDS.filter(function(d) { return p.targets && p.targets[d] && p.targets[d] > (p.dims?.[d]||1); });
+  var d = prev ? (prev.dati || {}) : {};
   var modal = document.getElementById('modal-preventivo');
   var body = document.getElementById('modal-preventivo-body');
   if (!modal || !body) return;
   document.getElementById('modal-preventivo-title').textContent = prev ? 'Modifica Preventivo' : 'Nuovo Preventivo';
   var oggi = new Date().toISOString().split('T')[0];
-  var fatObj12 = (ic && ic.fat12) ? Math.round((ic.fat12[0]+ic.fat12[1])/2) : '';
   body.innerHTML =
     '<div class="prev-form">' +
-      '<div class="prev-section-title">Dati cliente</div>' +
+      '<div class="prev-section-title">Il tuo profilo</div>' +
+      '<div class="form-grid">' +
+        '<div class="form-group form-group-full"><label>Nome consulente</label><input class="form-input" id="prev-consulente" placeholder="Il tuo nome e cognome" value="' + (d.consulente||'') + '"></div>' +
+        '<div class="form-group"><label>Email consulente</label><input class="form-input" id="prev-email-cons" placeholder="tua@email.it" value="' + (d.email_consulente||'') + '"></div>' +
+        '<div class="form-group"><label>Telefono consulente</label><input class="form-input" id="prev-tel-cons" placeholder="+39 ..." value="' + (d.tel_consulente||'') + '"></div>' +
+      '</div>' +
+      '<div class="prev-section-title" style="margin-top:16px">Dati cliente</div>' +
       '<div class="form-grid">' +
         '<div class="form-group form-group-full"><label>Azienda</label><input class="form-input" id="prev-azienda" value="' + (p.nome||'') + '" readonly></div>' +
-        '<div class="form-group"><label>Referente</label><input class="form-input" id="prev-referente" value="' + (dati.referente||p.referente||'') + '"></div>' +
-        '<div class="form-group"><label>Data preventivo</label><input class="form-input" type="date" id="prev-data" value="' + (dati.data||oggi) + '"></div>' +
-        '<div class="form-group"><label>Validita (giorni)</label><input class="form-input" type="number" id="prev-validita" value="' + (dati.validita||30) + '"></div>' +
-        '<div class="form-group"><label>Durata mandato</label><select class="form-input" id="prev-durata">' +
-          ['6 mesi','12 mesi','24 mesi'].map(function(v) { return '<option value="'+v+'"'+((dati.durata||'12 mesi')===v?' selected':'')+'>'+v+'</option>'; }).join('') +
-        '</select></div>' +
+        '<div class="form-group"><label>Referente</label><input class="form-input" id="prev-referente" value="' + (d.referente||p.referente||'') + '"></div>' +
+        '<div class="form-group"><label>Email cliente</label><input class="form-input" id="prev-email-cliente" value="' + (d.email_cliente||p.email||'') + '"></div>' +
+        '<div class="form-group"><label>Telefono cliente</label><input class="form-input" id="prev-tel-cliente" value="' + (d.tel_cliente||p.telefono||'') + '"></div>' +
+        '<div class="form-group"><label>Indirizzo cliente</label><input class="form-input" id="prev-indirizzo" placeholder="Via, Citta" value="' + (d.indirizzo||p.sede_legale||'') + '"></div>' +
       '</div>' +
-      '<div class="prev-section-title" style="margin-top:16px">Scope del mandato</div>' +
-      '<div class="prev-dims-check">' +
-        DIMS_IDS.map(function(d) {
-          var checked = dati.scope ? dati.scope.indexOf(d) >= 0 : dimsAttive.indexOf(d) >= 0;
-          return '<label class="prev-dim-check"><input type="checkbox" value="'+d+'"'+(checked?' checked':'')+'>'+DIM_LBL[d]+'</label>';
-        }).join('') +
-      '</div>' +
-      '<div class="prev-section-title" style="margin-top:16px">Investimento</div>' +
+      '<div class="prev-section-title" style="margin-top:16px">Pacchetto & Prezzo</div>' +
       '<div class="form-grid">' +
-        '<div class="form-group"><label>Fee mensile</label><input class="form-input" type="number" id="prev-fee" value="' + (dati.fee_mensile||feeMensile) + '"></div>' +
-        '<div class="form-group"><label>Una tantum</label><input class="form-input" type="number" id="prev-unatantum" value="' + (dati.una_tantum||unatantum) + '"></div>' +
-        '<div class="form-group"><label>Fatturato attuale</label><input class="form-input" type="number" id="prev-fatattuale" value="' + (dati.fat_attuale||p.fatturato_anno_1||'') + '"></div>' +
-        '<div class="form-group"><label>Fatturato obiettivo 12m</label><input class="form-input" type="number" id="prev-fatobj" value="' + (dati.fat_obiettivo||fatObj12) + '"></div>' +
+        '<div class="form-group form-group-full"><label>Pacchetto</label><select class="form-input" id="prev-pacchetto">' +
+          '<option value="diagnosi"' + ((d.pacchetto||'diagnosi')==='diagnosi'?' selected':'') + '>Diagnosi Commerciale \u2014 una tantum</option>' +
+          '<option value="advisory"' + (d.pacchetto==='advisory'?' selected':'') + '>Advisory \u2014 fee mensile</option>' +
+          '<option value="fractional"' + (d.pacchetto==='fractional'?' selected':'') + '>Fractional CSO \u2014 fee mensile</option>' +
+        '</select></div>' +
+        '<div class="form-group"><label>Prezzo \u20AC</label><input class="form-input" type="number" id="prev-prezzo" placeholder="es. 2500" value="' + (d.prezzo||'') + '" oninput="prevCalcolaTotale()"></div>' +
+        '<div class="form-group" id="prev-durata-wrap"><label>Durata (mesi)</label><input class="form-input" type="number" id="prev-durata-mesi" placeholder="es. 12" min="1" value="' + (d.durata_mesi||'') + '" oninput="prevCalcolaTotale()"></div>' +
+        '<div class="form-group"><label>Una tantum \u20AC (opzionale)</label><input class="form-input" type="number" id="prev-unatantum" placeholder="es. 500" value="' + (d.una_tantum||0) + '" oninput="prevCalcolaTotale()"></div>' +
+        '<div class="form-group"><label>Validita preventivo (giorni)</label><input class="form-input" type="number" id="prev-validita" value="' + (d.validita||30) + '"></div>' +
       '</div>' +
-      '<div class="prev-section-title" style="margin-top:16px">Note e condizioni</div>' +
-      '<textarea class="form-input" id="prev-note" rows="3" placeholder="Note aggiuntive, condizioni particolari...">' + (dati.note||'') + '</textarea>' +
+      '<div class="prev-totale-box" id="prev-totale-box">' +
+        '<div class="prev-totale-row"><span>Fee mensile</span><span id="pt-mensile">\u2014</span></div>' +
+        '<div class="prev-totale-row"><span>Una tantum</span><span id="pt-unatantum">\u2014</span></div>' +
+        '<div class="prev-totale-row prev-totale-finale"><span>Totale contratto</span><span id="pt-totale">\u2014</span></div>' +
+      '</div>' +
+      '<div class="prev-section-title" style="margin-top:16px">Data preventivo</div>' +
+      '<div class="form-grid"><div class="form-group"><label>Data</label><input class="form-input" type="date" id="prev-data" value="' + (d.data||oggi) + '"></div></div>' +
+      '<div class="prev-section-title" style="margin-top:16px">Note</div>' +
+      '<textarea class="form-input" id="prev-note" rows="3" placeholder="Note aggiuntive o condizioni particolari...">' + (d.note||'') + '</textarea>' +
     '</div>';
+  document.getElementById('prev-pacchetto').addEventListener('change', function() {
+    document.getElementById('prev-durata-wrap').style.display = this.value === 'diagnosi' ? 'none' : '';
+    prevCalcolaTotale();
+  });
+  document.getElementById('prev-durata-wrap').style.display = (d.pacchetto||'diagnosi') === 'diagnosi' ? 'none' : '';
+  prevCalcolaTotale();
   modal.style.display = 'flex';
   modal._editingId = existingId || null;
+}
+
+function prevCalcolaTotale() {
+  var pacchetto = document.getElementById('prev-pacchetto')?.value;
+  var prezzo = parseFloat(document.getElementById('prev-prezzo')?.value) || 0;
+  var durata = parseInt(document.getElementById('prev-durata-mesi')?.value) || 0;
+  var unatantum = parseFloat(document.getElementById('prev-unatantum')?.value) || 0;
+  var fmt = function(v) { return v > 0 ? v.toLocaleString('it-IT') + '\u20AC' : '\u2014'; };
+  var elM = document.getElementById('pt-mensile');
+  var elU = document.getElementById('pt-unatantum');
+  var elT = document.getElementById('pt-totale');
+  if (pacchetto === 'diagnosi') {
+    if (elM) elM.textContent = '\u2014';
+    if (elU) elU.textContent = fmt(prezzo);
+    if (elT) elT.textContent = fmt(prezzo + unatantum);
+  } else {
+    if (elM) elM.textContent = fmt(prezzo) + '/mese';
+    if (elU) elU.textContent = unatantum > 0 ? fmt(unatantum) : '\u2014';
+    if (elT) elT.textContent = (prezzo * durata + unatantum) > 0 ? fmt(prezzo * durata + unatantum) : '\u2014';
+  }
 }
 
 async function savePreventivo() {
   var p = prospects.find(function(x) { return x.id === currentId; });
   if (!p) return;
-  var scope = [];
-  document.querySelectorAll('#modal-preventivo-body input[type=checkbox]:checked').forEach(function(cb) { scope.push(cb.value); });
+  var pacchetto = document.getElementById('prev-pacchetto')?.value;
+  var prezzo = parseFloat(document.getElementById('prev-prezzo')?.value) || 0;
+  var durata_mesi = parseInt(document.getElementById('prev-durata-mesi')?.value) || 0;
+  var una_tantum = parseFloat(document.getElementById('prev-unatantum')?.value) || 0;
+  var totale = pacchetto === 'diagnosi' ? prezzo + una_tantum : prezzo * durata_mesi + una_tantum;
   var dati = {
+    consulente: (document.getElementById('prev-consulente')?.value||'').trim(),
+    email_consulente: (document.getElementById('prev-email-cons')?.value||'').trim(),
+    tel_consulente: (document.getElementById('prev-tel-cons')?.value||'').trim(),
+    referente: (document.getElementById('prev-referente')?.value||'').trim(),
+    email_cliente: (document.getElementById('prev-email-cliente')?.value||'').trim(),
+    tel_cliente: (document.getElementById('prev-tel-cliente')?.value||'').trim(),
+    indirizzo: (document.getElementById('prev-indirizzo')?.value||'').trim(),
+    pacchetto: pacchetto,
+    prezzo: prezzo,
+    durata_mesi: durata_mesi,
+    una_tantum: una_tantum,
+    totale: totale,
     data: document.getElementById('prev-data')?.value,
-    validita: parseInt(document.getElementById('prev-validita')?.value)||30,
-    durata: document.getElementById('prev-durata')?.value,
-    fee_mensile: parseFloat(document.getElementById('prev-fee')?.value)||0,
-    una_tantum: parseFloat(document.getElementById('prev-unatantum')?.value)||0,
-    fat_attuale: parseFloat(document.getElementById('prev-fatattuale')?.value)||0,
-    fat_obiettivo: parseFloat(document.getElementById('prev-fatobj')?.value)||0,
-    note: document.getElementById('prev-note')?.value||'',
-    referente: document.getElementById('prev-referente')?.value||'',
-    scope: scope,
+    validita: parseInt(document.getElementById('prev-validita')?.value) || 30,
+    note: (document.getElementById('prev-note')?.value||'').trim(),
   };
   var modal = document.getElementById('modal-preventivo');
   var editingId = modal ? modal._editingId : null;
   if (editingId) {
-    await sb.from('preventivi').update({ dati: dati, stato: 'bozza' }).eq('id', editingId);
+    await sb.from('preventivi').update({ dati: dati }).eq('id', editingId);
   } else {
     await sb.from('preventivi').insert({ prospect_id: p.id, tipo: 'preventivo', stato: 'bozza', dati: dati });
     await aggiornaStatoAutomatico(p.id, 'proposta');
@@ -538,14 +573,21 @@ function stampaPrev(id) {
   var p = prospects.find(function(x) { return x.id === currentId; });
   if (!pv || !p) return;
   var d = pv.dati || {};
-  var DIMS_LABELS = {vendite:'Vendite',pipeline:'Pipeline',team:'Team',processi:'Processi',ricavi:'Ricavi',marketing:'Marketing',sitoweb:'Sito Web',ecommerce:'Ecommerce'};
-  var totMensile = d.fee_mensile || 0;
-  var durMesi = parseInt(d.durata) || 12;
-  var totale = Math.round(totMensile * durMesi + (d.una_tantum||0));
-  var scadenza = new Date(d.data);
-  scadenza.setDate(scadenza.getDate() + (d.validita||30));
+  var PACCHETTI = {
+    diagnosi: { nome:'Diagnosi Commerciale', tipo:'Una tantum', desc:'Analisi approfondita della struttura commerciale dell\'azienda su 8 dimensioni chiave. Include: diagnosi completa con benchmark di settore, identificazione delle priorita di intervento, piano d\'azione dettagliato con step operativi per ogni dimensione, presentazione dei risultati al titolare e al management.' },
+    advisory: { nome:'Advisory', tipo:'Fee mensile', desc:'Affiancamento continuativo come consulente commerciale esterno. Include: sessioni periodiche di lavoro con il cliente, definizione e monitoraggio del piano di crescita commerciale, supporto decisionale su tutte le dimensioni del piano, aggiornamento mensile dello score e della progressione.' },
+    fractional: { nome:'Fractional CSO', tipo:'Fee mensile', desc:'Direzione commerciale esterna a tutti gli effetti. Include tutto il pacchetto Advisory piu: presenza operativa nelle call con fornitori, agenzie e collaboratori, gestione delle trattative commerciali per conto del cliente, supervisione dell\'esecuzione del piano.' }
+  };
+  var pkt = PACCHETTI[d.pacchetto || 'diagnosi'];
+  var isDiagnosi = d.pacchetto === 'diagnosi';
+  var fmt = function(v) { return v ? v.toLocaleString('it-IT') + '\u20AC' : '\u2014'; };
+  var fmtDate = function(s) { return s ? new Date(s).toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'}) : '\u2014'; };
+  var scadenza = new Date(d.data || new Date());
+  scadenza.setDate(scadenza.getDate() + (d.validita || 30));
+  var numRef = 'FCSO-' + new Date(d.data||new Date()).getFullYear() + '-' + (Math.floor(Math.random()*9000)+1000);
+  var totaleContratto = isDiagnosi ? (d.prezzo||0) + (d.una_tantum||0) : (d.prezzo||0) * (d.durata_mesi||0) + (d.una_tantum||0);
   var win = window.open('', '_blank');
-  win.document.write('<!DOCTYPE html><html lang="it"><head><meta charset="UTF-8"><title>Preventivo - ' + p.nome + '</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,Helvetica Neue,Arial,sans-serif;color:#1a2a3a;background:#fff}.page{max-width:800px;margin:0 auto;padding:48px 56px}.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:48px;padding-bottom:24px;border-bottom:2px solid #0C2340}.logo{font-size:18px;font-weight:700;color:#0C2340}.logo-sub{font-size:10px;color:#8AA4BF;letter-spacing:1px;text-transform:uppercase;margin-top:2px}.doc-info{text-align:right}.doc-tipo{font-size:22px;font-weight:700;color:#0C2340}.doc-data{font-size:12px;color:#4A6180;margin-top:4px}.section{margin-bottom:32px}.section-title{font-size:10px;font-weight:700;color:#C8A84B;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid #E8EFF7}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px}.field-label{font-size:11px;color:#4A6180;margin-bottom:3px}.field-val{font-size:14px;color:#0C2340;font-weight:500}.inv-table{width:100%;border-collapse:collapse}.inv-table th{font-size:11px;font-weight:600;color:#4A6180;text-align:left;padding:8px 12px;background:#F7FAFC;border-bottom:1px solid #E0DAD0}.inv-table td{padding:10px 12px;border-bottom:1px solid #F0F4F8;font-size:13px}.inv-table tr.total td{font-weight:700;font-size:15px;color:#0C2340;border-top:2px solid #0C2340;border-bottom:none;padding-top:14px}.scope-tags{display:flex;flex-wrap:wrap;gap:6px}.scope-tag{background:#E8EFF7;color:#0C2340;font-size:11px;font-weight:500;padding:4px 10px;border-radius:4px}.note-box{background:#F7FAFC;border-left:3px solid #C8A84B;padding:12px 16px;font-size:13px;color:#4A6180;line-height:1.6}.footer{margin-top:48px;padding-top:20px;border-top:1px solid #E0DAD0;display:flex;justify-content:space-between;font-size:11px;color:#8AA4BF}.validity{background:#FDF6E3;border:1px solid #D4A017;border-radius:6px;padding:10px 14px;font-size:12px;color:#B8860B;margin-top:16px}@media print{body{padding:0}.page{padding:32px 40px}}</style></head><body><div class="page"><div class="header"><div><div class="logo">Fractional CSO</div><div class="logo-sub">Consulenza Commerciale</div></div><div class="doc-info"><div class="doc-tipo">Preventivo</div><div class="doc-data">N. ' + (Math.floor(Math.random()*9000)+1000) + ' &middot; ' + (d.data ? new Date(d.data).toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'}) : '\u2014') + '</div></div></div><div class="section"><div class="section-title">Dati cliente</div><div class="two-col"><div><div class="field-label">Azienda</div><div class="field-val">' + (p.nome||'\u2014') + '</div></div><div><div class="field-label">Referente</div><div class="field-val">' + (d.referente||p.referente||'\u2014') + '</div></div><div><div class="field-label">Settore</div><div class="field-val">' + (p.settore||'\u2014') + '</div></div><div><div class="field-label">Fatturato attuale</div><div class="field-val">' + (d.fat_attuale ? d.fat_attuale.toLocaleString('it-IT')+'\u20AC' : '\u2014') + '</div></div></div></div><div class="section"><div class="section-title">Scope del mandato</div><div class="scope-tags">' + (d.scope||[]).map(function(s){return '<span class="scope-tag">'+(DIMS_LABELS[s]||s)+'</span>';}).join('') + '</div><div style="margin-top:10px"><div class="field-label">Durata mandato</div><div class="field-val">' + (d.durata||'\u2014') + '</div></div>' + (d.fat_obiettivo ? '<div style="margin-top:10px"><div class="field-label">Fatturato obiettivo 12 mesi</div><div class="field-val" style="color:#1CB889">' + d.fat_obiettivo.toLocaleString('it-IT') + '\u20AC</div></div>' : '') + '</div><div class="section"><div class="section-title">Piano di investimento</div><table class="inv-table"><thead><tr><th>Voce</th><th>Importo</th><th>Note</th></tr></thead><tbody><tr><td>Fee mensile consulenza</td><td>' + totMensile.toLocaleString('it-IT') + '\u20AC/mese</td><td>Per ' + (d.durata||'\u2014') + '</td></tr>' + (d.una_tantum ? '<tr><td>Setup iniziale (una tantum)</td><td>' + d.una_tantum.toLocaleString('it-IT') + '\u20AC</td><td>Da corrispondere all\'avvio</td></tr>' : '') + '<tr><td>Totale fee per durata mandato</td><td>' + (totMensile*durMesi).toLocaleString('it-IT') + '\u20AC</td><td>Escluso setup</td></tr><tr class="total"><td>Investimento totale</td><td colspan="2">' + totale.toLocaleString('it-IT') + '\u20AC</td></tr></tbody></table></div>' + (d.note ? '<div class="section"><div class="section-title">Note e condizioni</div><div class="note-box">' + d.note + '</div></div>' : '') + '<div class="validity">Preventivo valido fino al ' + scadenza.toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'}) + ' &middot; Prezzi IVA esclusa</div><div class="footer"><span>Fractional CSO \u2014 Consulenza Commerciale per PMI</span><span>Documento generato il ' + new Date().toLocaleDateString('it-IT') + '</span></div></div><script>window.onload=function(){window.print();}<\/script></body></html>');
+  win.document.write('<!DOCTYPE html><html lang="it"><head><meta charset="UTF-8"><title>Preventivo - ' + (p.nome||'') + '</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Helvetica Neue,Arial,sans-serif;color:#1a2a3a;background:#fff}.page{max-width:800px;margin:0 auto;padding:48px 56px}.header{margin-bottom:40px}.logo-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px}.logo{display:flex;align-items:center;gap:10px}.logo-bar{width:4px;height:32px;background:#C8A84B;border-radius:2px}.logo-text{font-size:20px;font-weight:700;color:#0C2340;letter-spacing:-.3px}.logo-sub{font-size:10px;color:#8AA4BF;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px}.ref-info{text-align:right;font-size:11px;color:#4A6180;line-height:1.8}.ref-num{font-size:13px;font-weight:700;color:#0C2340}.hero{background:#0C2340;border-radius:8px;padding:24px 28px;margin-bottom:32px;display:flex;justify-content:space-between;align-items:flex-start}.hero-company{font-size:22px;font-weight:700;color:#fff;margin-bottom:4px}.hero-address{font-size:12px;color:#8AA4BF;line-height:1.6}.hero-right{text-align:right;font-size:11px;color:#8AA4BF;line-height:1.8}.hero-contact{font-weight:600;color:#C8A84B}.section{margin-bottom:28px}.section-title{font-size:10px;font-weight:700;color:#C8A84B;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #E8EFF7}.svc-table{width:100%;border-collapse:collapse}.svc-table th{font-size:11px;font-weight:600;color:#4A6180;text-align:left;padding:10px 12px;background:#F7FAFC;border-bottom:2px solid #0C2340}.svc-table th:last-child{text-align:right}.svc-table td{padding:14px 12px;vertical-align:top;border-bottom:1px solid #F0F4F8;font-size:13px}.svc-table td:last-child{text-align:right;white-space:nowrap;font-weight:600;color:#0C2340}.svc-name{font-weight:700;color:#0C2340;font-size:14px;margin-bottom:6px}.svc-desc{font-size:12px;color:#4A6180;line-height:1.6}.svc-badge{display:inline-block;background:#E8EFF7;color:#0C2340;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;margin-bottom:8px}.totali{margin-top:4px}.tot-row{display:flex;justify-content:flex-end;gap:32px;padding:8px 12px;font-size:13px;color:#4A6180}.tot-row.finale{border-top:2px solid #0C2340;margin-top:4px;padding-top:12px;font-weight:700;font-size:16px;color:#0C2340}.tot-val{min-width:100px;text-align:right}.cond-text{font-size:12px;color:#4A6180;line-height:1.7}.cond-text p{margin-bottom:10px}.cond-text strong{color:#0C2340}.firma-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:8px}.firma-box{border:1px solid #D0DCE8;border-radius:8px;padding:20px 16px}.firma-label{font-size:10px;font-weight:700;color:#4A6180;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}.firma-line{border-bottom:1px solid #0C2340;height:40px;margin-bottom:8px}.firma-sub{font-size:10px;color:#8AA4BF}.validity{background:#FDF6E3;border:1px solid #D4A017;border-radius:6px;padding:10px 14px;font-size:11px;color:#B8860B;margin-top:16px}.footer{margin-top:40px;padding-top:16px;border-top:1px solid #E0DAD0;display:flex;justify-content:space-between;font-size:10px;color:#8AA4BF}@media print{body{padding:0}.page{padding:32px 40px}}</style></head><body><div class="page"><div class="header"><div class="logo-row"><div class="logo"><div class="logo-bar"></div><div><div class="logo-text">Fractional CSO</div><div class="logo-sub">Consulenza Commerciale</div></div></div><div class="ref-info"><div class="ref-num">' + numRef + '</div><div>Data: ' + fmtDate(d.data) + '</div><div>Scadenza: ' + fmtDate(scadenza.toISOString().split('T')[0]) + '</div><div>Creato da: ' + (d.consulente||'\u2014') + '</div>' + (d.email_consulente?'<div>'+d.email_consulente+'</div>':'') + (d.tel_consulente?'<div>'+d.tel_consulente+'</div>':'') + '</div></div></div><div class="hero"><div class="hero-left"><div class="hero-company">' + (p.nome||'\u2014') + '</div><div class="hero-address">' + (d.indirizzo?d.indirizzo+'<br>':'') + (d.referente||'') + '</div></div><div class="hero-right">' + (d.email_cliente?'<div class="hero-contact">'+d.email_cliente+'</div>':'') + (d.tel_cliente?'<div>'+d.tel_cliente+'</div>':'') + '</div></div><div class="section"><div class="section-title">Servizi</div><table class="svc-table"><thead><tr><th>Descrizione</th><th>Quantita</th><th>Prezzo unitario</th><th>Totale</th></tr></thead><tbody><tr><td><div class="svc-badge">' + pkt.tipo + '</div><div class="svc-name">' + pkt.nome + '</div><div class="svc-desc">' + pkt.desc + '</div></td><td style="white-space:nowrap;color:#4A6180">' + (isDiagnosi?'1':(d.durata_mesi||'\u2014')+' mesi') + '</td><td style="white-space:nowrap;color:#4A6180">' + (isDiagnosi?fmt(d.prezzo):fmt(d.prezzo)+'/mese') + '</td><td>' + (isDiagnosi?fmt(d.prezzo):fmt((d.prezzo||0)*(d.durata_mesi||0))) + (!isDiagnosi?'<div style="font-size:10px;color:#8AA4BF;font-weight:400">per '+(d.durata_mesi||'\u2014')+' mesi</div>':'') + '</td></tr>' + (d.una_tantum>0?'<tr><td><div class="svc-badge">Una tantum</div><div class="svc-name">Setup e onboarding iniziale</div><div class="svc-desc">Attivita di avvio del mandato: configurazione strumenti, prima diagnosi completa e kick-off operativo.</div></td><td style="color:#4A6180">1</td><td style="color:#4A6180">'+fmt(d.una_tantum)+'</td><td>'+fmt(d.una_tantum)+'</td></tr>':'') + '</tbody></table><div class="totali">' + (!isDiagnosi?'<div class="tot-row"><span class="tot-label">Subtotale mensile</span><span class="tot-val">'+fmt(d.prezzo)+'</span></div>':'') + (d.una_tantum>0?'<div class="tot-row"><span class="tot-label">Subtotale una tantum</span><span class="tot-val">'+fmt(d.una_tantum)+'</span></div>':'') + '<div class="tot-row finale"><span class="tot-label">Totale contratto</span><span class="tot-val">' + fmt(totaleContratto) + '</span></div></div></div><div class="section"><div class="section-title">Termini e condizioni</div><div class="cond-text"><p><strong>1. Inizio del mandato.</strong> Il presente accordo entra in vigore dalla data di firma di entrambe le parti. Le attivita operative iniziano entro 7 giorni lavorativi dalla firma.</p><p><strong>2. Pagamento.</strong> La fee mensile e dovuta anticipatamente all\'inizio di ogni mese di mandato. La quota una tantum, se prevista, e dovuta all\'atto della firma. Il pagamento avviene tramite bonifico bancario entro 15 giorni dalla fattura.</p><p><strong>3. Durata e rinnovo.</strong> ' + (isDiagnosi?'Il presente incarico e una prestazione una tantum senza impegni continuativi.':'Il mandato ha durata di '+(d.durata_mesi||'\u2014')+' mesi dalla data di inizio. Al termine, si rinnova automaticamente salvo disdetta scritta con preavviso di 30 giorni.') + '</p><p><strong>4. Riservatezza.</strong> Il consulente si impegna a mantenere riservate tutte le informazioni aziendali acquisite durante il mandato, anche successivamente alla sua conclusione.</p><p><strong>5. Proprieta intellettuale.</strong> I piani commerciali, le analisi e i documenti prodotti durante il mandato sono di proprieta del cliente al completamento del pagamento.</p></div></div><div class="section"><div class="section-title">Accettazione e firma</div><div class="firma-grid"><div class="firma-box"><div class="firma-label">Il consulente</div><div class="firma-line"></div><div class="firma-sub">' + (d.consulente||'\u2014') + ' \u00B7 Data ___________</div></div><div class="firma-box"><div class="firma-label">Il cliente</div><div class="firma-line"></div><div class="firma-sub">' + (d.referente||p.nome||'\u2014') + ' \u00B7 Data ___________</div></div></div></div><div class="validity">Preventivo valido fino al ' + fmtDate(scadenza.toISOString().split('T')[0]) + ' \u00B7 Prezzi IVA esclusa \u00B7 Rif. ' + numRef + '</div><div class="footer"><span>Fractional CSO \u2014 Consulenza Commerciale per PMI Italiane</span><span>Documento generato il ' + new Date().toLocaleDateString('it-IT') + '</span></div></div><script>window.onload=function(){window.print();}<\/script></body></html>');
   win.document.close();
 }
 

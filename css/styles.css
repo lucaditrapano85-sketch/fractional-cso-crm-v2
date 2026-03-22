@@ -666,3 +666,6 @@ label{color:var(--gray2)}
 .ls-cost-zero{color:var(--gray2)!important;font-weight:400}
 .ls-cost-sep{font-size:10px;color:var(--gray2);margin-top:10px}
 .ls-footer{font-size:11px;color:var(--gray2);padding-top:8px;border-top:1px solid var(--border)}
+.prev-totale-box{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:14px 16px;margin-top:16px}
+.prev-totale-row{display:flex;justify-content:space-between;font-size:13px;color:var(--gray);padding:4px 0}
+.prev-totale-finale{font-size:15px;font-weight:700;color:var(--white)!important;border-top:1px solid var(--border2);margin-top:6px;padding-top:10px!important}
