@@ -1061,7 +1061,6 @@ const BENCHMARK_KPI = {
     valore_medio_ordine:     { basso:6000, medio:12000, alto:22000, unita:'€', verso:'alto', fonte:'Stime settoriali usato auto' },
     tasso_riacquisto_pct:    { basso:10, medio:22, alto:38, unita:'%',  verso:'alto',  fonte:'Stime settoriali usato auto' },
     nuovi_clienti_anno:      { basso:30, medio:80, alto:200, unita:'n', verso:'alto',  fonte:'Stime settoriali usato auto' },
-    clienti_attivi:          { basso:80, medio:220, alto:500, unita:'n',verso:'alto',  fonte:'Stime settoriali usato auto' },
     cac:                     { basso:800, medio:350, alto:120, unita:'€', verso:'basso', fonte:'Stime settoriali usato auto' },
     contratti_anno:          { basso:80, medio:200, alto:500, unita:'n', verso:'alto',  fonte:'Esperienza settoriale automotive' },
     rotazione_veicoli_gg:    { basso:60, medio:30, alto:12, unita:'gg', verso:'basso', fonte:'Esperienza settoriale automotive' },

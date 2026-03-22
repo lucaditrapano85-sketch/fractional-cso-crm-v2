@@ -2499,7 +2499,6 @@ function renderKpiTab(p) {
       { id: 'valore_medio_ordine', label: 'Valore medio veicolo venduto', unita: '\u20AC' },
       { id: 'tasso_riacquisto_pct', label: 'Tasso di riacquisto', unita: '%' },
       { id: 'nuovi_clienti_anno', label: 'Nuovi clienti / anno', unita: 'n' },
-      { id: 'clienti_attivi', label: 'Clienti attivi totali', unita: 'n' },
       { id: 'cac', label: 'CAC \u2014 Costo acquisizione cliente', unita: '\u20AC' },
       { id: 'contratti_anno', label: 'Contratti vendita / anno', unita: 'n' },
       { id: 'rotazione_veicoli_gg', label: 'Rotazione media veicoli', unita: 'gg' },
@@ -2538,7 +2537,7 @@ async function saveKpiTab() {
   if (HAS_ARR) KPI_IDS.push('arr');
   if (settore === 'commercio_auto_moto_usato') {
     KPI_IDS = ['tasso_conversione_pct','ciclo_vendita_gg','valore_medio_ordine',
-      'tasso_riacquisto_pct','nuovi_clienti_anno','clienti_attivi','cac',
+      'tasso_riacquisto_pct','nuovi_clienti_anno','cac',
       'contratti_anno','rotazione_veicoli_gg','costo_ripristino_medio'];
   }
   var kpi_commerciali = {};
