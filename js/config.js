@@ -1057,16 +1057,15 @@ const BENCHMARK_KPI = {
 
   commercio_auto_moto_usato: {
     tasso_conversione_pct:   { basso:20, medio:38, alto:60, unita:'%',  verso:'alto',  fonte:'Stime settoriali usato auto' },
-    ciclo_vendita_gg:        { basso:20, medio:8,  alto:2,  unita:'gg', verso:'basso', fonte:'Stime settoriali' },
-    valore_medio_ordine:     { basso:6000, medio:12000, alto:22000, unita:'€', verso:'alto', fonte:'Stime settoriali' },
-    concentrazione_top3_pct: { basso:25, medio:15, alto:6,  unita:'%',  verso:'basso', fonte:'Stime settoriali' },
-    tasso_riacquisto_pct:    { basso:18, medio:35, alto:58, unita:'%',  verso:'alto',  fonte:'Stime settoriali' },
-    nuovi_clienti_anno:      { basso:30, medio:80, alto:200, unita:'n', verso:'alto',  fonte:'Stime settoriali' },
-    clienti_attivi:          { basso:80, medio:220, alto:600, unita:'n',verso:'alto',  fonte:'Stime settoriali' },
-    fatturato_referral_pct:  { basso:20, medio:42, alto:65, unita:'%',  verso:'alto',  fonte:'Stime settoriali' },
-    cac:                     { basso:400, medio:150, alto:40, unita:'€', verso:'basso', fonte:'Stime settoriali' },
-    dso_gg:                  { basso:5,  medio:2,  alto:1,  unita:'gg', verso:'basso', fonte:'Stime settoriali' },
-    mrr:                     { basso:0, medio:0, alto:0, unita:'€', verso:'alto', fonte:'Non applicabile' },
+    ciclo_vendita_gg:        { basso:20, medio:8,  alto:2,  unita:'gg', verso:'basso', fonte:'Stime settoriali usato auto' },
+    valore_medio_ordine:     { basso:6000, medio:12000, alto:22000, unita:'€', verso:'alto', fonte:'Stime settoriali usato auto' },
+    tasso_riacquisto_pct:    { basso:10, medio:22, alto:38, unita:'%',  verso:'alto',  fonte:'Stime settoriali usato auto' },
+    nuovi_clienti_anno:      { basso:30, medio:80, alto:200, unita:'n', verso:'alto',  fonte:'Stime settoriali usato auto' },
+    clienti_attivi:          { basso:80, medio:220, alto:500, unita:'n',verso:'alto',  fonte:'Stime settoriali usato auto' },
+    cac:                     { basso:800, medio:350, alto:120, unita:'€', verso:'basso', fonte:'Stime settoriali usato auto' },
+    contratti_anno:          { basso:80, medio:200, alto:500, unita:'n', verso:'alto',  fonte:'Esperienza settoriale automotive' },
+    rotazione_veicoli_gg:    { basso:60, medio:30, alto:12, unita:'gg', verso:'basso', fonte:'Esperienza settoriale automotive' },
+    costo_ripristino_medio:  { basso:2500, medio:1200, alto:600, unita:'€', verso:'basso', fonte:'Esperienza settoriale automotive' },
   },
 
   commercio_abbigliamento_dettaglio: {

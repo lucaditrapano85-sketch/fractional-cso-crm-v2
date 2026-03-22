@@ -2492,6 +2492,20 @@ function renderKpiTab(p) {
     ? KPI_BASE.filter(function(k) { return ['ciclo_vendita_gg','concentrazione_top3_pct'].indexOf(k.id) < 0; })
     : KPI_BASE.slice();
   if (HAS_ARR) KPI_LIST.push(KPI_ARR);
+  if (settore === 'commercio_auto_moto_usato') {
+    KPI_LIST = [
+      { id: 'tasso_conversione_pct', label: 'Tasso conversione lead\u2192contratto', unita: '%' },
+      { id: 'ciclo_vendita_gg', label: 'Ciclo di vendita medio', unita: 'gg' },
+      { id: 'valore_medio_ordine', label: 'Valore medio veicolo venduto', unita: '\u20AC' },
+      { id: 'tasso_riacquisto_pct', label: 'Tasso di riacquisto', unita: '%' },
+      { id: 'nuovi_clienti_anno', label: 'Nuovi clienti / anno', unita: 'n' },
+      { id: 'clienti_attivi', label: 'Clienti attivi totali', unita: 'n' },
+      { id: 'cac', label: 'CAC \u2014 Costo acquisizione cliente', unita: '\u20AC' },
+      { id: 'contratti_anno', label: 'Contratti vendita / anno', unita: 'n' },
+      { id: 'rotazione_veicoli_gg', label: 'Rotazione media veicoli', unita: 'gg' },
+      { id: 'costo_ripristino_medio', label: 'Costo medio ripristino veicolo', unita: '\u20AC' },
+    ];
+  }
   var rows = KPI_LIST.map(function(k) {
     var val = kpi[k.id];
     var hasVal = val !== null && val !== undefined && val !== '';
@@ -2522,6 +2536,11 @@ async function saveKpiTab() {
     'nuovi_clienti_anno','clienti_attivi','fatturato_referral_pct','cac','dso_gg'];
   if (!IS_RETAIL) KPI_IDS.splice(1, 0, 'ciclo_vendita_gg', 'concentrazione_top3_pct');
   if (HAS_ARR) KPI_IDS.push('arr');
+  if (settore === 'commercio_auto_moto_usato') {
+    KPI_IDS = ['tasso_conversione_pct','ciclo_vendita_gg','valore_medio_ordine',
+      'tasso_riacquisto_pct','nuovi_clienti_anno','clienti_attivi','cac',
+      'contratti_anno','rotazione_veicoli_gg','costo_ripristino_medio'];
+  }
   var kpi_commerciali = {};
   KPI_IDS.forEach(function(id) {
     var el = document.getElementById('kpiedit-'+id);
