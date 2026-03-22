@@ -1187,7 +1187,6 @@ function _buildProspectModalBody(p) {
           ${['Srl','Spa','Sas','Snc','Ditta individuale','Cooperativa','Altro'].map(f=>`<option value="${f}" ${p.forma_giuridica===f?'selected':''}>${f}</option>`).join('')}
         </select></div>
         <div class="form-group"><label>Settore *</label>${selectSettore}</div>
-        <div class="form-group"><label>Dipendenti</label>${selectDip}</div>
         <div class="form-group"><label>Referente</label><input class="form-input" id="f-referente" placeholder="Nome cognome" value="${_esc(p.referente)}"></div>
         <div class="form-group"><label>Ruolo interlocutore</label><input class="form-input" id="f-ruolo" placeholder="es. Titolare, CFO, Resp. Commerciale" value="${_esc(p.ruolo)}"></div>
         <div class="form-group"><label>Email</label><input class="form-input" id="f-email" placeholder="email@azienda.it" value="${_esc(p.email)}"></div>
@@ -1206,9 +1205,7 @@ function _buildProspectModalBody(p) {
 
     <div class="mtab-content" id="mtab-financials" style="display:none">
       <div class="form-grid">
-        <div class="form-group"><label>Fatturato stimato (fascia)</label>${selectFat}</div>
         <div class="form-group"><label>Fatturato anno corrente EUR</label><input class="form-input" id="f-fat1" type="number" placeholder="es. 850000" value="${p.fatturato_anno_1||''}"></div>
-        <div class="form-group"><label>EBITDA EUR</label><input class="form-input" id="f-ebitda" type="number" placeholder="es. 120000" value="${p.ebitda||''}"></div>
         <div class="form-group"><label>Margine %</label><input class="form-input" id="f-margine" type="number" placeholder="es. 14" value="${p.margine_pct||''}"></div>
         <div class="form-group"><label>Utile netto EUR</label><input class="form-input" id="f-utile" type="number" placeholder="es. 65000" value="${p.utile_netto||''}"></div>
         <div class="form-group"><label>Costi fissi mensili EUR</label><input class="form-input" id="f-costifissi" type="number" placeholder="es. 35000" value="${p.costi_fissi_mensili||''}"></div>
@@ -1320,8 +1317,6 @@ async function saveProspect() {
     nome: nome,
     forma_giuridica: _val('f-forma'),
     settore: _val('f-settore'),
-    dipendenti: _val('f-dip'),
-    stato: _val('f-stato'),
     referente: _val('f-referente'),
     ruolo: _val('f-ruolo'),
     email: _val('f-email'),
@@ -1334,9 +1329,7 @@ async function saveProspect() {
     dipendenti_diretti: _num('f-dipdiretti'),
     collaboratori: _num('f-collab'),
     certificazioni: _val('f-cert'),
-    fatturato: _val('f-fat'),
     fatturato_anno_1: _num('f-fat1'),
-    ebitda: _num('f-ebitda'),
     margine_pct: _num('f-margine'),
     utile_netto: _num('f-utile'),
     costi_fissi_mensili: _num('f-costifissi'),
