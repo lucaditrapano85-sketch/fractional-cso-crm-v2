@@ -5109,18 +5109,36 @@ function buildCalcolatricePL() {
       \x3c/div>
     \x3c/div>
 
-    \x3c!-- RIGA 5: Imposte --\x3e
+    \x3c!-- RIGA 5: Forma societaria + imposte --\x3e
     \x3cdiv class="pl-row pl-row-input">
-      \x3cdiv class="pl-label">
-        Aliquota fiscale stimata \x3cspan class="tt-wrap">\x3cspan class="tt-icon">?\x3c/span>\x3cspan class="tt-bubble">La % di tasse sul reddito. Srl: IRES 24% + IRAP ~3.9% = ~28%. Ditte individuali: IRPEF progressiva 23-43%. Forfettario: 15% (o 5% startup).\x3c/span>\x3c/span>
-        \x3cdiv class="pl-sublabel">IRES 24% + IRAP ~3.9% = 28% default PMI\x3c/div>
-      \x3c/div>
+      \x3cdiv class="pl-label">Forma societaria \x3cspan class="tt-wrap">\x3cspan class="tt-icon">?\x3c/span>\x3cspan class="tt-bubble">Determina il regime fiscale: IRES+IRAP per societa di capitali, IRPEF progressiva per persone fisiche e societa di persone.\x3c/span>\x3c/span>\x3c/div>
       \x3cdiv class="pl-input-wrap">
-        \x3cdiv style="display:flex;align-items:center;gap:8px">
-          \x3cinput class="form-input pl-input" type="number" id="pl-aliquota" title="L'aliquota fiscale totale stimata (IRES 24% + IRAP ~3.9% = ~28% per le Srl). Modifica se conosci l'aliquota effettiva." placeholder="28" min="0" max="60"
-            value="28" oninput="aggiornaCalcolatrice()" style="width:80px">
-          \x3cspan style="color:var(--gray);font-size:12px">%\x3c/span>
-        \x3c/div>
+        \x3cselect class="form-input pl-input" id="pl-forma" onchange="aggiornaCalcolatrice()" style="width:100%">
+          \x3coption value="srl">Srl / Spa (IRES 24% + IRAP 3.9%)\x3c/option>
+          \x3coption value="snc_sas">SNC / SAS (IRPEF + IRAP 3.9%)\x3c/option>
+          \x3coption value="ditta">Ditta individuale (IRPEF + INPS ~24%)\x3c/option>
+        \x3c/select>
+      \x3c/div>
+    \x3c/div>
+    \x3cdiv class="pl-row pl-row-input">
+      \x3cdiv class="pl-label">Reddito titolare / soci (lordo annuo) \x3cspan class="tt-wrap">\x3cspan class="tt-icon">?\x3c/span>\x3cspan class="tt-bubble">Per Srl: compenso amministratore soggetto a INPS gestione separata (~26%). Per ditte individuali: base per calcolo INPS gestione commercianti (~24%).\x3c/span>\x3c/span>\x3c/div>
+      \x3cdiv class="pl-input-wrap">
+        \x3cinput class="form-input pl-input" type="number" id="pl-reddito-titolare" placeholder="es. 60000" oninput="aggiornaCalcolatrice()">
+      \x3c/div>
+    \x3c/div>
+    \x3cdiv class="pl-row pl-row-input">
+      \x3cdiv class="pl-label">Costi strutturali fissi annui \x3cspan class="tt-wrap">\x3cspan class="tt-icon">?\x3c/span>\x3cspan class="tt-bubble">Commercialista, CCIAA, revisore legale, assicurazioni obbligatorie.\x3c/span>\x3c/span>\x3c/div>
+      \x3cdiv class="pl-input-wrap">
+        \x3cinput class="form-input pl-input" type="number" id="pl-costi-strutturali" placeholder="es. 5000" oninput="aggiornaCalcolatrice()">
+      \x3c/div>
+    \x3c/div>
+
+    \x3c!-- RISULTATO: Imposte --\x3e
+    \x3cdiv class="pl-row pl-row-result" id="plr-imposte" style="border-left-color:var(--red)">
+      \x3cdiv class="pl-label" style="color:var(--red)">\u2212 Imposte & contributi\x3c/div>
+      \x3cdiv style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
+        \x3cdiv class="pl-result-val" id="plv-imposte" style="color:var(--red)">--\x3c/div>
+        \x3cdiv class="pl-result-pct" id="plp-imposte-detail" style="font-size:10px;color:var(--gray)"></div>
       \x3c/div>
     \x3c/div>
 
@@ -5170,87 +5188,105 @@ function calcolaAmmDaCategorie() {
   if (ammField) { ammField.value = tot; aggiornaCalcolatrice(); }
 }
 
+function _calcolaIRPEF(reddito) {
+  if (reddito <= 0) return 0;
+  var imposta = 0;
+  if (reddito > 50000) imposta += (reddito - 50000) * 0.43;
+  if (reddito > 28000) imposta += (Math.min(reddito, 50000) - 28000) * 0.35;
+  if (reddito > 15000) imposta += (Math.min(reddito, 28000) - 15000) * 0.25;
+  imposta += Math.min(reddito, 15000) * 0.23;
+  return imposta;
+}
+
 function aggiornaCalcolatrice() {
-  const v = id => parseFloat(document.getElementById(id)?.value) || 0;
-  const fmt = n => n.toLocaleString('it-IT', {style:'currency', currency:'EUR', maximumFractionDigits:0});
-  const pct = (n, base) => base ? (n/base*100).toFixed(1)+'%' : '';
-  const col = n => n > 0 ? 'var(--green)' : n < 0 ? 'var(--red)' : 'var(--gray)';
+  var vv = function(id) { return parseFloat(document.getElementById(id)?.value) || 0; };
+  var fmt = function(n) { return Math.round(n).toLocaleString('it-IT') + '\u20AC'; };
+  var pct = function(n, base) { return base ? (n/base*100).toFixed(1)+'%' : ''; };
+  var col = function(n) { return n > 0 ? 'var(--green)' : n < 0 ? 'var(--red)' : 'var(--gray)'; };
 
-  const fatturato  = v('pl-fatturato');
-  const cogsPct    = v('pl-cogs-pct');
-  const cogsVal    = v('pl-cogs-val');
-  const costiFissiMensili = v('pl-costi-fissi');
-  const ammortamenti = v('pl-ammortamenti');
-  const aliquota   = v('pl-aliquota') / 100 || 0.28;
+  var fatturato = vv('pl-fatturato');
+  var cogsPct = vv('pl-cogs-pct');
+  var cogsVal = vv('pl-cogs-val');
+  var costiFissiMensili = vv('pl-costi-fissi');
+  var ammortamenti = vv('pl-ammortamenti');
+  var redditoTitolare = vv('pl-reddito-titolare');
+  var costiStrutturali = vv('pl-costi-strutturali');
+  var forma = document.getElementById('pl-forma')?.value || 'srl';
 
-  // Costo del venduto: preferisci valore ?, altrimenti % su fatturato
-  const cogs = cogsVal > 0 ? cogsVal : (cogsPct > 0 ? fatturato * cogsPct / 100 : 0);
-  const costiFissiAnnui = costiFissiMensili * 12;
+  var cogs = cogsVal > 0 ? cogsVal : (cogsPct > 0 ? fatturato * cogsPct / 100 : 0);
+  var costiFissiAnnui = costiFissiMensili * 12;
+  var margineLordo = fatturato - cogs;
+  var ebitda = margineLordo - costiFissiAnnui - costiStrutturali;
+  var ebit = ebitda - ammortamenti;
 
-  const margineLordo = fatturato - cogs;
-  const ebitda = margineLordo - costiFissiAnnui;
-  const ebit = ebitda - ammortamenti;
-  const imposte = ebit > 0 ? ebit * aliquota : 0;
-  const utile = ebit - imposte;
+  // Calcolo fiscale per forma societaria
+  var irap = 0, ires = 0, irpef = 0, inps = 0, imposteTot = 0, imposteDetail = '';
+  if (forma === 'srl') {
+    irap = Math.max(0, ebitda * 0.039);
+    ires = Math.max(0, (ebit - irap) * 0.24);
+    inps = redditoTitolare * 0.26;
+    imposteTot = irap + ires + inps;
+    imposteDetail = 'IRAP ' + fmt(irap) + ' + IRES ' + fmt(ires) + (inps > 0 ? ' + INPS amm. ' + fmt(inps) : '');
+  } else if (forma === 'snc_sas') {
+    irap = Math.max(0, ebitda * 0.039);
+    irpef = _calcolaIRPEF(Math.max(0, ebit - irap));
+    inps = Math.max(4200, redditoTitolare * 0.24);
+    imposteTot = irap + irpef + inps;
+    imposteDetail = 'IRAP ' + fmt(irap) + ' + IRPEF ' + fmt(irpef) + ' + INPS ' + fmt(inps);
+  } else {
+    irpef = _calcolaIRPEF(Math.max(0, ebit));
+    inps = Math.max(4200, redditoTitolare * 0.24);
+    imposteTot = irpef + inps;
+    imposteDetail = 'IRPEF ' + fmt(irpef) + ' + INPS ' + fmt(inps);
+  }
+  var utile = ebit - imposteTot;
 
-  // Update previews
-  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
-  const setCol = (id, n) => { const el = document.getElementById(id); if (el) el.style.color = col(n); };
+  var set = function(id, val) { var el = document.getElementById(id); if (el) el.textContent = val; };
+  var setCol = function(id, n) { var el = document.getElementById(id); if (el) el.style.color = col(n); };
+  var setBorder = function(id, n) { var el = document.getElementById(id); if (el) el.style.borderLeftColor = col(n); };
 
   if (fatturato) set('plp-fatturato', fmt(fatturato));
-  if (cogs)      { set('plp-cogs', fmt(cogs)); }
-  if (costiFissiMensili) set('plp-costi-fissi', `${fmt(costiFissiMensili)}/mese . ${fmt(costiFissiAnnui)} annui`);
+  if (cogs) set('plp-cogs', fmt(cogs));
+  if (costiFissiMensili) set('plp-costi-fissi', fmt(costiFissiMensili) + '/mese \u00B7 ' + fmt(costiFissiAnnui) + ' annui');
   if (ammortamenti) set('plp-ammortamenti', fmt(ammortamenti));
 
   if (fatturato) {
-    // Margine lordo
-    set('plv-margine-lordo', fmt(margineLordo));
-    set('plp-margine-lordo', pct(margineLordo, fatturato));
-    setCol('plv-margine-lordo', margineLordo);
-    document.getElementById('plr-margine-lordo').style.borderLeftColor = col(margineLordo);
+    set('plv-margine-lordo', fmt(margineLordo)); set('plp-margine-lordo', pct(margineLordo, fatturato));
+    setCol('plv-margine-lordo', margineLordo); setBorder('plr-margine-lordo', margineLordo);
 
-    // EBITDA
-    set('plv-ebitda', fmt(ebitda));
-    set('plp-ebitda-pct', pct(ebitda, fatturato));
-    setCol('plv-ebitda', ebitda);
-    document.getElementById('plr-ebitda').style.borderLeftColor = col(ebitda);
-    // Aggiorna il campo EBITDA readonly nel form
-    const ebitdaDisplay = document.getElementById('fin-ebitda-display');
-    const ebitdaHidden  = document.getElementById('fin-ebitda');
-    if (ebitdaDisplay && ebitda) {
-      ebitdaDisplay.textContent = fmt(ebitda);
-      ebitdaDisplay.style.color = ebitda > 0 ? 'var(--green)' : 'var(--red)';
-    }
+    set('plv-ebitda', fmt(ebitda)); set('plp-ebitda-pct', pct(ebitda, fatturato));
+    setCol('plv-ebitda', ebitda); setBorder('plr-ebitda', ebitda);
+
+    var ebitdaDisplay = document.getElementById('fin-ebitda-display');
+    var ebitdaHidden = document.getElementById('fin-ebitda');
+    if (ebitdaDisplay && ebitda) { ebitdaDisplay.textContent = fmt(ebitda); ebitdaDisplay.style.color = ebitda > 0 ? 'var(--green)' : 'var(--red)'; }
     if (ebitdaHidden && ebitda) ebitdaHidden.value = Math.round(ebitda);
 
-    // EBIT
-    set('plv-ebit', fmt(ebit));
-    set('plp-ebit-pct', pct(ebit, fatturato));
-    setCol('plv-ebit', ebit);
-    document.getElementById('plr-ebit').style.borderLeftColor = col(ebit);
+    set('plv-ebit', fmt(ebit)); set('plp-ebit-pct', pct(ebit, fatturato));
+    setCol('plv-ebit', ebit); setBorder('plr-ebit', ebit);
 
-    // Utile netto
-    set('plv-utile', fmt(utile));
-    set('plp-utile-pct', pct(utile, fatturato));
-    setCol('plv-utile', utile);
-    document.getElementById('plr-utile').style.borderLeftColor = col(utile);
+    set('plv-imposte', '\u2212' + fmt(imposteTot));
+    set('plp-imposte-detail', imposteDetail);
 
-    // Riepilogo margini
-    const riepilogo = document.getElementById('pl-margini-riepilogo');
-    const grid = document.getElementById('pl-margini-grid');
+    set('plv-utile', fmt(utile)); set('plp-utile-pct', pct(utile, fatturato));
+    setCol('plv-utile', utile); setBorder('plr-utile', utile);
+
+    var riepilogo = document.getElementById('pl-margini-riepilogo');
+    var grid = document.getElementById('pl-margini-grid');
     if (riepilogo && grid) {
       riepilogo.style.display = 'block';
-      const margini = [
+      var margini = [
         { label:'Margine lordo', val: pct(margineLordo, fatturato), n: margineLordo },
         { label:'EBITDA margin', val: pct(ebitda, fatturato), n: ebitda },
-        { label:'EBIT margin',   val: pct(ebit, fatturato), n: ebit },
+        { label:'EBIT margin', val: pct(ebit, fatturato), n: ebit },
         { label:'Utile netto %', val: pct(utile, fatturato), n: utile },
       ];
-      grid.innerHTML = margini.map(m => `
-        \x3cdiv style="text-align:center;background:var(--bg2);border-radius:4px;padding:8px 4px;border:1px solid var(--border)">
-          \x3cdiv style="font-size:9px;color:var(--gray);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px">${m.label}\x3c/div>
-          \x3cdiv style="font-size:16px;font-family:'DM Serif Display',serif;color:${col(m.n)}">${m.val || '--'}\x3c/div>
-        \x3c/div>`).join('');
+      grid.innerHTML = margini.map(function(m) {
+        return '\x3cdiv style="text-align:center;background:var(--bg2);border-radius:4px;padding:8px 4px;border:1px solid var(--border)">' +
+          '\x3cdiv style="font-size:9px;color:var(--gray);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px">' + m.label + '\x3c/div>' +
+          '\x3cdiv style="font-size:16px;font-family:\'DM Serif Display\',serif;color:' + col(m.n) + '">' + (m.val || '--') + '\x3c/div>' +
+        '\x3c/div>';
+      }).join('');
     }
   }
 }
@@ -5263,13 +5299,19 @@ function salvaDaCalcolatrice() {
   const cogs = cogsVal || (cogsPct && fatturato ? fatturato * cogsPct / 100 : null);
   const costiFissi = v('pl-costi-fissi');
   const ammortamenti = v('pl-ammortamenti');
-  const aliquota = (v('pl-aliquota') || 28) / 100;
+  var forma = document.getElementById('pl-forma')?.value || 'srl';
+  var redditoTitolare = v('pl-reddito-titolare') || 0;
+  var costiStrutturali = v('pl-costi-strutturali') || 0;
 
   const margineLordo = fatturato && cogs ? fatturato - cogs : null;
   const costiFissiAnnui = costiFissi ? costiFissi * 12 : 0;
-  const ebitda = margineLordo !== null ? margineLordo - costiFissiAnnui : null;
+  var ebitda = margineLordo !== null ? margineLordo - costiFissiAnnui - costiStrutturali : null;
   const ebit = ebitda !== null && ammortamenti ? ebitda - ammortamenti : ebitda;
-  const imposte = ebit > 0 ? ebit * aliquota : 0;
+  var irap2=0,ires2=0,irpef2=0,inps2=0;
+  if(forma==='srl'){irap2=Math.max(0,ebitda*0.039);ires2=Math.max(0,(ebit-irap2)*0.24);inps2=redditoTitolare*0.26;}
+  else if(forma==='snc_sas'){irap2=Math.max(0,ebitda*0.039);irpef2=_calcolaIRPEF(Math.max(0,ebit-irap2));inps2=Math.max(4200,redditoTitolare*0.24);}
+  else{irpef2=_calcolaIRPEF(Math.max(0,ebit));inps2=Math.max(4200,redditoTitolare*0.24);}
+  var imposte = irap2+ires2+irpef2+inps2;
   const utile = ebit !== null ? ebit - imposte : null;
   const marginePct = fatturato && utile ? (utile / fatturato * 100) : null;
 
