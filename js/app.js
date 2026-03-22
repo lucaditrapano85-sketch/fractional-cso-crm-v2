@@ -537,6 +537,15 @@ async function aggiornaStatoPreventivo(id, nuovoStato) {
   showToast('Stato preventivo: ' + nuovoStato);
 }
 
+async function eliminaPreventivo(id) {
+  if (!confirm('Sei sicuro di voler eliminare questo preventivo?')) return;
+  await sb.from('preventivi').delete().eq('id', id);
+  _preventiviList = _preventiviList.filter(function(x) { return x.id !== id; });
+  var p = prospects.find(function(x) { return x.id === currentId; });
+  if (p) renderPreventivi(p);
+  showToast('Preventivo eliminato');
+}
+
 function renderPreventivi(p) {
   var container = document.getElementById('preventivi-container');
   if (!container) return;
@@ -563,6 +572,7 @@ function renderPreventivi(p) {
           '<button class="btn" onclick="stampaPrev(\'' + pv.id + '\')">Scarica PDF</button>' +
           (pv.stato === 'bozza' ? '<button class="btn" onclick="aggiornaStatoPreventivo(\'' + pv.id + '\',\'inviato\')">Segna inviato</button>' : '') +
           (pv.stato === 'inviato' ? '<button class="btn" style="color:var(--green)" onclick="aggiornaStatoPreventivo(\'' + pv.id + '\',\'accettato\')">Accettato</button><button class="btn" style="color:var(--red)" onclick="aggiornaStatoPreventivo(\'' + pv.id + '\',\'rifiutato\')">Rifiutato</button>' : '') +
+          '<button class="btn" style="color:var(--red)" onclick="eliminaPreventivo(\'' + pv.id + '\')">Elimina</button>' +
         '</div>' +
       '</div>';
     }).join('');
