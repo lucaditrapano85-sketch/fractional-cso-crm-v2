@@ -5046,11 +5046,11 @@ function buildCalcolatricePL() {
       \x3cdiv class="pl-input-wrap">
         \x3cdiv style="display:flex;gap:8px;align-items:center">
           \x3cinput class="form-input pl-input" type="number" id="calc-cdv-pct" title="Il costo diretto per produrre o acquistare cio che vendi: materie prime, acquisti di merce, costo di produzione. NON include affitti o stipendi fissi." placeholder="%" min="0" max="100" step="0.1"
-            value="${dc.cdv_pct || ''}" oninput="aggiornaCalcolatrice()" style="width:70px">
+            value="${dc.cdv_pct || ''}" oninput="document.getElementById('calc-cdv-eur').value='';aggiornaCalcolatrice()" style="width:70px">
           \x3cspan style="color:var(--gray);font-size:12px">%\x3c/span>
           \x3cspan style="color:var(--gray2);font-size:11px">oppure\x3c/span>
           \x3cinput class="form-input pl-input" type="number" id="calc-cdv-eur" placeholder="EUR" min="0"
-            value="${dc.cdv_eur || ''}" oninput="aggiornaCalcolatrice()" style="flex:1">
+            value="${dc.cdv_eur || ''}" oninput="document.getElementById('calc-cdv-pct').value='';aggiornaCalcolatrice()" style="flex:1">
         \x3c/div>
         \x3cdiv class="pl-preview" id="calc-preview-cdv">\x3c/div>
       \x3c/div>
