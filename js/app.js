@@ -2370,7 +2370,9 @@ function renderKpiTab(p) {
   var container = document.getElementById('fin-kpi-content');
   if (!container) return;
   var kpi = p.kpi_commerciali || {};
-  var KPI_LIST = [
+  var settore = p.settore || '';
+
+  var KPI_BASE = [
     { id: 'tasso_conversione_pct', label: 'Tasso conversione lead\u2192cliente', unita: '%' },
     { id: 'ciclo_vendita_gg', label: 'Ciclo di vendita medio', unita: 'gg' },
     { id: 'valore_medio_ordine', label: 'Valore medio ordine/contratto', unita: '\u20AC' },
@@ -2381,8 +2383,14 @@ function renderKpiTab(p) {
     { id: 'fatturato_referral_pct', label: '% fatturato da referral', unita: '%' },
     { id: 'cac', label: 'CAC \u2014 Costo acquisizione cliente', unita: '\u20AC' },
     { id: 'dso_gg', label: 'DSO \u2014 Giorni medi incasso', unita: 'gg' },
-    { id: 'arr', label: 'ARR \u2014 Fatturato ricorrente annuale', unita: '\u20AC' },
   ];
+  var KPI_ARR = { id: 'arr', label: 'ARR \u2014 Fatturato ricorrente annuale', unita: '\u20AC' };
+  var IS_RETAIL = ['commercio_ricambi_auto','commercio_elettronica','commercio_abbigliamento_dettaglio','commercio_orologi_gioielli','alimentare_forno'].indexOf(settore) >= 0;
+  var HAS_ARR = ['edilizia_impianti','commercio_auto_moto_nuovo','commercio_auto_moto_usato','alimentare_vini','alimentare_birra','tech_saas','tech_system_integrator','tech_digital_agency','tech_automazione','servizi_it','servizi_formazione'].indexOf(settore) >= 0;
+  var KPI_LIST = IS_RETAIL
+    ? KPI_BASE.filter(function(k) { return ['ciclo_vendita_gg','concentrazione_top3_pct'].indexOf(k.id) < 0; })
+    : KPI_BASE.slice();
+  if (HAS_ARR) KPI_LIST.push(KPI_ARR);
   var rows = KPI_LIST.map(function(k) {
     var val = kpi[k.id];
     var hasVal = val !== null && val !== undefined && val !== '';
@@ -2406,13 +2414,20 @@ function renderKpiTab(p) {
 async function saveKpiTab() {
   var p = prospects.find(function(x) { return x.id === currentId; });
   if (!p) return;
-  var KPI_IDS = ['tasso_conversione_pct','ciclo_vendita_gg','valore_medio_ordine',
-    'concentrazione_top3_pct','tasso_riacquisto_pct','nuovi_clienti_anno',
-    'clienti_attivi','fatturato_referral_pct','cac','dso_gg','arr'];
+  var settore = p.settore || '';
+  var IS_RETAIL = ['commercio_ricambi_auto','commercio_elettronica','commercio_abbigliamento_dettaglio','commercio_orologi_gioielli','alimentare_forno'].indexOf(settore) >= 0;
+  var HAS_ARR = ['edilizia_impianti','commercio_auto_moto_nuovo','commercio_auto_moto_usato','alimentare_vini','alimentare_birra','tech_saas','tech_system_integrator','tech_digital_agency','tech_automazione','servizi_it','servizi_formazione'].indexOf(settore) >= 0;
+  var KPI_IDS = ['tasso_conversione_pct','valore_medio_ordine','tasso_riacquisto_pct',
+    'nuovi_clienti_anno','clienti_attivi','fatturato_referral_pct','cac','dso_gg'];
+  if (!IS_RETAIL) KPI_IDS.splice(1, 0, 'ciclo_vendita_gg', 'concentrazione_top3_pct');
+  if (HAS_ARR) KPI_IDS.push('arr');
   var kpi_commerciali = {};
   KPI_IDS.forEach(function(id) {
-    var val = parseFloat(document.getElementById('kpiedit-'+id)?.value);
-    kpi_commerciali[id] = isNaN(val) ? null : val;
+    var el = document.getElementById('kpiedit-'+id);
+    if (el) {
+      var val = parseFloat(el.value);
+      kpi_commerciali[id] = isNaN(val) ? null : val;
+    }
   });
   p.kpi_commerciali = kpi_commerciali;
   var res = await sb.from('prospects').update({ kpi_commerciali: kpi_commerciali }).eq('id', p.id);
