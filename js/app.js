@@ -2238,7 +2238,7 @@ function renderFinancials(p) {
     '<div class="fin-section-label" style="margin-top:' + (hasFinData||hasExtra?'20px':'0') + '">Calcolatrice P&L</div>' +
     '<div id="calcolatrice-container">' + buildCalcolatricePL() + '</div>' +
     '<div style="margin-top:10px"><button class="fin-edit-btn" onclick="openFinModal(\'extra\')">Modifica patrimonio & finanziamenti</button></div>';
-  setTimeout(aggiornaCalcolatrice, 50);
+  setTimeout(function() { if (typeof aggiornaCalcolatrice === 'function') aggiornaCalcolatrice(); }, 80);
 }
 
 function renderStruttura(p) {
@@ -5019,7 +5019,8 @@ function buildFinField(f, val) {
 
 function buildCalcolatricePL() {
   const p = prospects.find(x => x.id === currentId) || {};
-  const fv = (field) => p[field] || '';
+  const dc = p.dati_calcolatrice || {};
+  const fv = (field) => dc[field] !== undefined && dc[field] !== null ? dc[field] : (p[field] || '');
   return `
   \x3cdiv style="margin-top:20px;border-top:2px solid var(--gold-dim);padding-top:16px">
     \x3cdiv style="font-size:11px;font-weight:600;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px">
@@ -5031,7 +5032,7 @@ function buildCalcolatricePL() {
       \x3cdiv class="pl-label">Fatturato annuo \x3cspan class="tt-wrap">\x3cspan class="tt-icon">?\x3c/span>\x3cspan class="tt-bubble">Il totale dei ricavi dell'anno. Base di tutto il conto economico.\x3c/span>\x3c/span>\x3c/div>
       \x3cdiv class="pl-input-wrap">
         \x3cinput class="form-input pl-input" type="number" id="calc-fatturato" title="Il totale dei ricavi annui. Base di tutto il conto economico." placeholder="es. 3000000"
-          value="${fv('fatturato_anno_1')}" oninput="aggiornaCalcolatrice()">
+          value="${dc.fatturato || p.fatturato_anno_1 || ''}" oninput="aggiornaCalcolatrice()">
         \x3cdiv class="pl-preview" id="calc-preview-fatturato">\x3c/div>
       \x3c/div>
     \x3c/div>
@@ -5045,11 +5046,11 @@ function buildCalcolatricePL() {
       \x3cdiv class="pl-input-wrap">
         \x3cdiv style="display:flex;gap:8px;align-items:center">
           \x3cinput class="form-input pl-input" type="number" id="calc-cdv-pct" title="Il costo diretto per produrre o acquistare cio che vendi: materie prime, acquisti di merce, costo di produzione. NON include affitti o stipendi fissi." placeholder="%" min="0" max="100" step="0.1"
-            value="${fv('cogs_pct') || ''}" oninput="aggiornaCalcolatrice()" style="width:70px">
+            value="${dc.cdv_pct || ''}" oninput="aggiornaCalcolatrice()" style="width:70px">
           \x3cspan style="color:var(--gray);font-size:12px">%\x3c/span>
           \x3cspan style="color:var(--gray2);font-size:11px">oppure\x3c/span>
           \x3cinput class="form-input pl-input" type="number" id="calc-cdv-eur" placeholder="EUR" min="0"
-            value="${fv('cogs_val') || ''}" oninput="aggiornaCalcolatrice()" style="flex:1">
+            value="${dc.cdv_eur || ''}" oninput="aggiornaCalcolatrice()" style="flex:1">
         \x3c/div>
         \x3cdiv class="pl-preview" id="calc-preview-cdv">\x3c/div>
       \x3c/div>
@@ -5072,7 +5073,7 @@ function buildCalcolatricePL() {
       \x3c/div>
       \x3cdiv class="pl-input-wrap">
         \x3cinput class="form-input pl-input" type="number" id="calc-costi-fissi" title="Tutti i costi mensili che paghi indipendentemente da quanto vendi: affitto, stipendi fissi, utenze, software, commercialista ecc." placeholder="es. 85000"
-          value="${fv('costi_fissi_mensili')}" oninput="aggiornaCalcolatrice()">
+          value="${dc.costi_fissi || p.costi_fissi_mensili || ''}" oninput="aggiornaCalcolatrice()">
         \x3cdiv class="pl-preview" id="calc-preview-costi">\x3c/div>
       \x3c/div>
     \x3c/div>
@@ -5094,7 +5095,7 @@ function buildCalcolatricePL() {
       \x3c/div>
       \x3cdiv class="pl-input-wrap">
         \x3cinput class="form-input pl-input" type="number" id="calc-ammortamenti" title="La quota annuale di "usura" di beni durevoli (macchinari, auto, software). Clicca il titolo per calcolarlo categoria per categoria." placeholder="es. 150000"
-          value="${fv('ammortamenti_annui') || ''}" oninput="aggiornaCalcolatrice()">
+          value="${dc.ammortamenti || ''}" oninput="aggiornaCalcolatrice()">
         \x3cdiv class="pl-preview" id="calc-preview-amm">\x3c/div>
       \x3c/div>
     \x3c/div>
@@ -5133,22 +5134,22 @@ function buildCalcolatricePL() {
       \x3cdiv class="pl-label">Forma societaria \x3cspan class="tt-wrap">\x3cspan class="tt-icon">?\x3c/span>\x3cspan class="tt-bubble">Determina il regime fiscale: IRES+IRAP per societa di capitali, IRPEF progressiva per persone fisiche e societa di persone.\x3c/span>\x3c/span>\x3c/div>
       \x3cdiv class="pl-input-wrap">
         \x3cselect class="form-input pl-input" id="calc-forma" onchange="aggiornaCalcolatrice()" style="width:100%">
-          \x3coption value="srl">Srl / Spa (IRES 24% + IRAP 3.9%)\x3c/option>
-          \x3coption value="snc_sas">SNC / SAS (IRPEF + IRAP 3.9%)\x3c/option>
-          \x3coption value="ditta">Ditta individuale (IRPEF + INPS ~24%)\x3c/option>
+          \x3coption value="srl" ${(dc.forma||'srl')==='srl'?'selected':''}>Srl / Spa (IRES 24% + IRAP 3.9%)\x3c/option>
+          \x3coption value="snc_sas" ${dc.forma==='snc_sas'?'selected':''}>SNC / SAS (IRPEF + IRAP 3.9%)\x3c/option>
+          \x3coption value="ditta" ${dc.forma==='ditta'?'selected':''}>Ditta individuale (IRPEF + INPS ~24%)\x3c/option>
         \x3c/select>
       \x3c/div>
     \x3c/div>
     \x3cdiv class="pl-row pl-row-input">
       \x3cdiv class="pl-label">Reddito titolare / soci (lordo annuo) \x3cspan class="tt-wrap">\x3cspan class="tt-icon">?\x3c/span>\x3cspan class="tt-bubble">Per Srl: compenso amministratore soggetto a INPS gestione separata (~26%). Per ditte individuali: base per calcolo INPS gestione commercianti (~24%).\x3c/span>\x3c/span>\x3c/div>
       \x3cdiv class="pl-input-wrap">
-        \x3cinput class="form-input pl-input" type="number" id="calc-reddito-titolare" placeholder="es. 60000" oninput="aggiornaCalcolatrice()">
+        \x3cinput class="form-input pl-input" type="number" id="calc-reddito-titolare" placeholder="es. 60000" value="${dc.reddito_titolare || ''}" oninput="aggiornaCalcolatrice()">
       \x3c/div>
     \x3c/div>
     \x3cdiv class="pl-row pl-row-input">
       \x3cdiv class="pl-label">Costi strutturali fissi annui \x3cspan class="tt-wrap">\x3cspan class="tt-icon">?\x3c/span>\x3cspan class="tt-bubble">Commercialista, CCIAA, revisore legale, assicurazioni obbligatorie.\x3c/span>\x3c/span>\x3c/div>
       \x3cdiv class="pl-input-wrap">
-        \x3cinput class="form-input pl-input" type="number" id="calc-costi-strutturali" placeholder="es. 5000" oninput="aggiornaCalcolatrice()">
+        \x3cinput class="form-input pl-input" type="number" id="calc-costi-strutturali" placeholder="es. 5000" value="${dc.costi_strutturali || ''}" oninput="aggiornaCalcolatrice()">
       \x3c/div>
     \x3c/div>
 
@@ -5306,67 +5307,57 @@ function aggiornaCalcolatrice() {
 }
 
 async function salvaDaCalcolatrice() {
-  const v = id => parseFloat(document.getElementById(id)?.value) || null;
-  const cogsPct = v('calc-cdv-pct');
-  const cogsVal = v('calc-cdv-eur');
-  const fatturato = v('calc-fatturato');
-  const cogs = cogsVal || (cogsPct && fatturato ? fatturato * cogsPct / 100 : null);
-  const costiFissi = v('calc-costi-fissi');
-  const ammortamenti = v('calc-ammortamenti');
-  var forma = document.getElementById('calc-forma')?.value || 'srl';
-  var redditoTitolare = v('calc-reddito-titolare') || 0;
-  var costiStrutturali = v('calc-costi-strutturali') || 0;
-
-  const margineLordo = fatturato && cogs ? fatturato - cogs : null;
-  const costiFissiAnnui = costiFissi ? costiFissi * 12 : 0;
-  var ebitda = margineLordo !== null ? margineLordo - costiFissiAnnui - costiStrutturali : null;
-  const ebit = ebitda !== null && ammortamenti ? ebitda - ammortamenti : ebitda;
-  var irap2=0,ires2=0,irpef2=0,inps2=0;
-  if(forma==='srl'){irap2=Math.max(0,ebitda*0.039);ires2=Math.max(0,(ebit-irap2)*0.24);inps2=redditoTitolare*0.26;}
-  else if(forma==='snc_sas'){irap2=Math.max(0,ebitda*0.039);irpef2=calcolaIRPEF(Math.max(0,ebit-irap2));inps2=Math.max(4200,redditoTitolare*0.24);}
-  else{irpef2=calcolaIRPEF(Math.max(0,ebit));inps2=Math.max(4200,redditoTitolare*0.24);}
-  var imposte = irap2+ires2+irpef2+inps2;
-  const utile = ebit !== null ? ebit - imposte : null;
-  const marginePct = fatturato && utile ? (utile / fatturato * 100) : null;
-
-  // Push values into the form fields
-  const setField = (id, val) => {
-    const el = document.getElementById('fin-' + id);
-    if (el && val !== null) {
-      el.value = Math.round(val);
-      const fp = document.getElementById('fp-' + id);
-      if (fp) fp.textContent = Math.round(val).toLocaleString('it-IT',{style:'currency',currency:'EUR',maximumFractionDigits:0});
-    }
-  };
-
-  if (fatturato) setField('fatturato_anno_1', fatturato);
-  if (costiFissi) setField('costi_fissi_mensili', costiFissi);
-  if (ebitda) setField('ebitda', ebitda);
-  if (utile) setField('utile_netto', utile);
-  if (marginePct) {
-    const el = document.getElementById('fin-margine_pct');
-    if (el) el.value = marginePct.toFixed(1);
-  }
-  // Save leasing from amm panel if set
-  const leasingAmm = parseFloat(document.getElementById('amm-leasing')?.value) || null;
-  if (leasingAmm) setField('leasing_rata_mensile', leasingAmm);
-
-  // Salva direttamente su Supabase
   var p = prospects.find(function(x) { return x.id === currentId; });
-  if (p) {
-    var updates = {};
-    if (fatturato) updates.fatturato_anno_1 = Math.round(fatturato);
-    if (costiFissi) updates.costi_fissi_mensili = Math.round(costiFissi);
-    if (ebitda) updates.ebitda = Math.round(ebitda);
-    if (utile) updates.utile_netto = Math.round(utile);
-    if (marginePct) updates.margine_pct = parseFloat(marginePct.toFixed(1));
-    if (Object.keys(updates).length) {
-      Object.assign(p, updates);
-      await sb.from('prospects').update(updates).eq('id', p.id);
-    }
+  if (!p) return;
+  var vn = function(id) { return parseFloat(document.getElementById(id)?.value) || null; };
+  var vs = function(id) { return document.getElementById(id)?.value || null; };
+  var fatturato = vn('calc-fatturato');
+  var cdvPct = vn('calc-cdv-pct');
+  var cdvEur = vn('calc-cdv-eur');
+  var costiFissi = vn('calc-costi-fissi');
+  var ammortamenti = vn('calc-ammortamenti');
+  var forma = vs('calc-forma') || 'srl';
+  var redditoTitolare = vn('calc-reddito-titolare') || 0;
+  var costiStrutturali = vn('calc-costi-strutturali') || 0;
+  var cogs = cdvEur || (cdvPct && fatturato ? fatturato * cdvPct / 100 : 0);
+  var margineLordo = fatturato ? fatturato - cogs : null;
+  var costiFissiAnnui = costiFissi ? costiFissi * 12 : 0;
+  var ebitda = margineLordo !== null ? margineLordo - costiFissiAnnui - costiStrutturali : null;
+  var ebit = ebitda !== null ? ebitda - (ammortamenti || 0) : null;
+  var irap = 0, ires = 0, irpef = 0, inps = 0;
+  if (forma === 'srl') {
+    irap = Math.max(0, (ebitda || 0) * 0.039);
+    ires = Math.max(0, ((ebit || 0) - irap) * 0.24);
+    inps = redditoTitolare * 0.26;
+  } else if (forma === 'snc_sas') {
+    irap = Math.max(0, (ebitda || 0) * 0.039);
+    irpef = calcolaIRPEF(Math.max(0, (ebit || 0) - irap));
+    inps = Math.max(4200, redditoTitolare * 0.24);
+  } else {
+    irpef = calcolaIRPEF(Math.max(0, ebit || 0));
+    inps = Math.max(4200, redditoTitolare * 0.24);
   }
+  var imposteTot = irap + ires + irpef + inps;
+  var utile = ebit !== null ? ebit - imposteTot : null;
+  var marginePct = fatturato && utile ? Math.round(utile / fatturato * 1000) / 10 : null;
+  var dati_calcolatrice = {
+    fatturato: fatturato, cdv_pct: cdvPct, cdv_eur: cdvEur,
+    costi_fissi: costiFissi, ammortamenti: ammortamenti,
+    forma: forma, reddito_titolare: redditoTitolare,
+    costi_strutturali: costiStrutturali,
+  };
+  var updates = {
+    fatturato_anno_1: fatturato,
+    costi_fissi_mensili: costiFissi,
+    utile_netto: utile ? Math.round(utile) : null,
+    margine_pct: marginePct,
+    dati_calcolatrice: dati_calcolatrice,
+  };
+  Object.assign(p, updates);
+  var res = await sb.from('prospects').update(updates).eq('id', p.id);
+  if (res.error) { showToast('Errore: ' + res.error.message, 'error'); return; }
   showToast('Dati finanziari salvati');
-  if (p) renderFinancials(p);
+  renderFinancials(p);
 }
 
 
