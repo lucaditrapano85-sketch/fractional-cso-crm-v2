@@ -1188,7 +1188,6 @@ function _buildProspectModalBody(p) {
         </select></div>
         <div class="form-group"><label>Settore *</label>${selectSettore}</div>
         <div class="form-group"><label>Dipendenti</label>${selectDip}</div>
-        <div class="form-group"><label>Stato trattativa</label>${selectStato}</div>
         <div class="form-group"><label>Referente</label><input class="form-input" id="f-referente" placeholder="Nome cognome" value="${_esc(p.referente)}"></div>
         <div class="form-group"><label>Ruolo interlocutore</label><input class="form-input" id="f-ruolo" placeholder="es. Titolare, CFO, Resp. Commerciale" value="${_esc(p.ruolo)}"></div>
         <div class="form-group"><label>Email</label><input class="form-input" id="f-email" placeholder="email@azienda.it" value="${_esc(p.email)}"></div>
