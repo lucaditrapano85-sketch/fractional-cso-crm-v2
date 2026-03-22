@@ -93,29 +93,6 @@
           <button class="btn btn-danger" onclick="deleteProspect()">Elimina</button>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
-        <div class="card">
-          <div class="card-title" style="display:flex;align-items:center;justify-content:space-between">
-            Score complessivo
-            <div style="display:flex;gap:6px">
-              <button onclick="apriDiagnosi()" style="background:var(--amber-bg);border:1px solid var(--gold-dim);color:var(--gold);border-radius:6px;padding:3px 10px;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit">&#9673; Diagnosi</button>
-              <button onclick="openSessioneModal()" style="background:var(--green-bg);border:1px solid var(--green);color:var(--green);border-radius:6px;padding:3px 10px;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit">&#128203; Sessione</button>
-              <button onclick="resetDiagnosi()" style="background:var(--bg3);border:1px solid var(--border2);color:var(--gray);border-radius:6px;padding:3px 10px;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit">&#8635; Reset</button>
-            </div>
-          </div>
-          <div class="score-big" id="det-score">—</div>
-          <div class="score-verdict" id="det-verdict"></div>
-          <div class="score-desc" id="det-verdesc"></div>
-          <div class="divider"></div>
-          <div id="det-dims"></div>
-        </div>
-        <div class="card">
-          <div class="card-title">Benchmark di settore</div>
-          <div id="det-benchmark"></div>
-        </div>
-      </div>
-      <div id="det-info-content" style="display:none"></div>
-
       <!-- SCHEDA FINANZIARIA -->
       <div class="fin-card" id="fin-card">
         <div class="fin-tabs">
@@ -141,6 +118,29 @@
           <div id="fin-kpi-content"></div>
         </div>
       </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+        <div class="card">
+          <div class="card-title" style="display:flex;align-items:center;justify-content:space-between">
+            Score complessivo
+            <div style="display:flex;gap:6px">
+              <button onclick="apriDiagnosi()" style="background:var(--amber-bg);border:1px solid var(--gold-dim);color:var(--gold);border-radius:6px;padding:3px 10px;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit">&#9673; Diagnosi</button>
+              <button onclick="openSessioneModal()" style="background:var(--green-bg);border:1px solid var(--green);color:var(--green);border-radius:6px;padding:3px 10px;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit">&#128203; Sessione</button>
+              <button onclick="resetDiagnosi()" style="background:var(--bg3);border:1px solid var(--border2);color:var(--gray);border-radius:6px;padding:3px 10px;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit">&#8635; Reset</button>
+            </div>
+          </div>
+          <div class="score-big" id="det-score">—</div>
+          <div class="score-verdict" id="det-verdict"></div>
+          <div class="score-desc" id="det-verdesc"></div>
+          <div class="divider"></div>
+          <div id="det-dims"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Benchmark di settore</div>
+          <div id="det-benchmark"></div>
+        </div>
+      </div>
+      <div id="det-info-content" style="display:none"></div>
 
       <!-- RADAR + TARGET -->
       <div id="radar-target-row" style="display:flex;gap:20px;align-items:flex-start;margin-bottom:20px;">
