@@ -2384,7 +2384,8 @@ function renderKpiTab(p) {
     { id: 'fatturato_referral_pct', label: '% fatturato da referral', unita: '%' },
     { id: 'cac', label: 'CAC \u2014 Costo acquisizione cliente', unita: '\u20AC' },
     { id: 'dso_gg', label: 'DSO \u2014 Giorni medi incasso', unita: 'gg' },
-    { id: 'mrr', label: 'MRR / ARR', unita: '\u20AC' },
+    { id: 'mrr', label: 'MRR \u2014 Fatturato ricorrente mensile', unita: '\u20AC' },
+    { id: 'arr', label: 'ARR \u2014 Fatturato ricorrente annuale', unita: '\u20AC' },
   ];
   var rows = KPI_LIST.map(function(k) {
     var val = kpi[k.id];
@@ -2411,7 +2412,7 @@ async function saveKpiTab() {
   if (!p) return;
   var KPI_IDS = ['tasso_conversione_pct','ciclo_vendita_gg','valore_medio_ordine',
     'concentrazione_top3_pct','tasso_riacquisto_pct','nuovi_clienti_anno',
-    'clienti_attivi','fatturato_referral_pct','cac','dso_gg','mrr'];
+    'clienti_attivi','fatturato_referral_pct','cac','dso_gg','mrr','arr'];
   var kpi_commerciali = {};
   KPI_IDS.forEach(function(id) {
     var val = parseFloat(document.getElementById('kpiedit-'+id)?.value);
