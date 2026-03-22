@@ -110,77 +110,95 @@ function showToast(msg, type='success') {
 function openSessioneModal() {
   var p = prospects.find(function(x) { return x.id === currentId; });
   if (!p) return;
-
-  var _DIMS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
-  var _DIM_LABELS = {
-    vendite:'Vendite', pipeline:'Pipeline', team:'Team', processi:'Processi',
-    ricavi:'Ricavi', marketing:'Marketing', sitoweb:'Sito Web',
-    ecommerce: (typeof getDimLabel === 'function') ? getDimLabel(p.settore, 'ecommerce') : 'Ecommerce'
-  };
-
+  var DIMS_S = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+  var DIM_LABELS_S = {vendite:'Sviluppo clienti',pipeline:'Pipeline & CRM',team:'Team commerciale',processi:'Processi & Compliance',ricavi:'Ricavi & Margini',marketing:'Marketing & Domanda',sitoweb:'Sito Web & Presenza',ecommerce:(typeof getDimLabel==='function'?getDimLabel(p.settore,'ecommerce'):'Ecommerce')};
   var oggi = new Date().toISOString().split('T')[0];
-  var slidersHtml = _DIMS.map(function(d) {
-    var val = p.dims?.[d] || 1;
-    return '<div class="sess-dim-row">' +
-      '<div class="sess-dim-header">' +
-        '<label class="sess-dim-label">' + _DIM_LABELS[d] + '</label>' +
-        '<span class="sess-dim-val" id="sess-val-' + d + '">' + val + '</span>' +
-      '</div>' +
-      '<input type="range" class="sess-slider" id="sess-' + d + '" min="1" max="5" step="1" value="' + val + '"' +
-        ' oninput="document.getElementById(\'sess-val-' + d + '\').textContent=this.value">' +
-      '<div class="sess-slider-marks"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>' +
+  var dimsHtml = DIMS_S.map(function(d) {
+    var livelloAttuale = p.dims?.[d] || 1;
+    var targetDim = p.targets?.[d] || livelloAttuale;
+    var giaAlTarget = livelloAttuale >= targetDim;
+    var opzioni = '';
+    for (var i = livelloAttuale + 1; i <= 5; i++) opzioni += '<option value="'+i+'">'+i+'</option>';
+    return '<div class="sess-upgrade-row'+(giaAlTarget?' sess-upgrade-disabled':'')+'" id="sess-row-'+d+'">' +
+      '<div class="sess-upgrade-check"><input type="checkbox" id="sess-chk-'+d+'"'+(giaAlTarget?' disabled':'')+' onchange="sessToggleUpgrade(\''+d+'\',this.checked)"></div>' +
+      '<div class="sess-upgrade-info"><div class="sess-upgrade-label">'+DIM_LABELS_S[d]+'</div><div class="sess-upgrade-current">Livello attuale: <strong>'+livelloAttuale+'/5</strong>'+(giaAlTarget?' \u00B7 gia al target':' \u00B7 target: '+targetDim+'/5')+'</div></div>' +
+      '<div class="sess-upgrade-select" id="sess-sel-wrap-'+d+'" style="display:none"><span class="sess-upgrade-arrow">'+livelloAttuale+' \u2192</span><select class="form-input sess-upgrade-input" id="sess-sel-'+d+'" onchange="sessAggiornaRiepilogo()">'+opzioni+'</select></div>' +
     '</div>';
   }).join('');
-
   document.getElementById('modal-sessione-body').innerHTML =
-    '<div class="sess-date-row">' +
-      '<label>Data sessione</label>' +
-      '<input class="form-input" id="sess-data" type="date" value="' + oggi + '">' +
-    '</div>' +
-    '<div class="sess-note-row">' +
-      '<label>Note sessione</label>' +
-      '<textarea class="form-input" id="sess-note" rows="2" placeholder="Cosa è stato affrontato in questa sessione..."></textarea>' +
-    '</div>' +
-    '<div class="sess-dims-title">Aggiorna i valori reali raggiunti</div>' +
-    '<div class="sess-dims-grid">' + slidersHtml + '</div>';
-
+    '<div class="sess-date-row"><label>Data sessione</label><input class="form-input" id="sess-data" type="date" value="'+oggi+'"></div>' +
+    '<div class="sess-note-row"><label>Note sessione</label><textarea class="form-input" id="sess-note" rows="2" placeholder="Cosa e stato affrontato in questa sessione..."></textarea></div>' +
+    '<div class="sess-upgrade-title">Upgrade reali raggiunti in questa sessione</div>' +
+    '<div class="sess-upgrade-hint">Segna solo le dimensioni dove il cliente ha implementato concretamente qualcosa \u2014 non dove vuole arrivare.</div>' +
+    '<div class="sess-upgrade-list">'+dimsHtml+'</div>' +
+    '<div class="sess-riepilogo" id="sess-riepilogo" style="display:none"></div>';
   document.getElementById('modal-sessione-title').textContent = 'Registra sessione \u2014 ' + p.nome;
   document.getElementById('modal-sessione').style.display = 'flex';
+}
+
+function sessToggleUpgrade(dim, checked) {
+  var wrap = document.getElementById('sess-sel-wrap-' + dim);
+  if (wrap) wrap.style.display = checked ? 'flex' : 'none';
+  sessAggiornaRiepilogo();
+}
+
+function sessAggiornaRiepilogo() {
+  var DIMS_S = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+  var DIM_LABELS_S = {vendite:'Sviluppo clienti',pipeline:'Pipeline & CRM',team:'Team commerciale',processi:'Processi',ricavi:'Ricavi',marketing:'Marketing',sitoweb:'Sito Web',ecommerce:'Ecommerce'};
+  var p = prospects.find(function(x) { return x.id === currentId; });
+  var upgrades = DIMS_S.filter(function(d) { return document.getElementById('sess-chk-'+d)?.checked; });
+  var riepilogo = document.getElementById('sess-riepilogo');
+  if (!riepilogo) return;
+  if (!upgrades.length) { riepilogo.style.display = 'none'; return; }
+  var testi = upgrades.map(function(d) {
+    var attuale = p?.dims?.[d] || 1;
+    var nuovo = document.getElementById('sess-sel-'+d)?.value;
+    return '<span class="sess-riepilogo-item">'+DIM_LABELS_S[d]+': '+attuale+' \u2192 '+nuovo+'</span>';
+  }).join('');
+  riepilogo.style.display = 'flex';
+  riepilogo.innerHTML = '<span class="sess-riepilogo-label">Upgrade da registrare:</span> ' + testi;
 }
 
 async function saveSessione() {
   var p = prospects.find(function(x) { return x.id === currentId; });
   if (!p) return;
-
-  var _DIMS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
-  var newDims = {};
-  _DIMS.forEach(function(d) {
-    var el = document.getElementById('sess-' + d);
-    if (el) newDims[d] = parseInt(el.value);
+  var DIMS_S = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+  var nota = document.getElementById('sess-note')?.value || '';
+  var data = document.getElementById('sess-data')?.value || new Date().toISOString().split('T')[0];
+  var newDims = Object.assign({}, p.dims || {});
+  var upgradeEseguiti = {};
+  var hasUpgrade = false;
+  DIMS_S.forEach(function(d) {
+    if (document.getElementById('sess-chk-'+d)?.checked) {
+      var nuovoLivello = parseInt(document.getElementById('sess-sel-'+d)?.value);
+      if (nuovoLivello && nuovoLivello > (p.dims?.[d] || 1)) {
+        newDims[d] = nuovoLivello;
+        upgradeEseguiti[d] = { da: p.dims?.[d] || 1, a: nuovoLivello };
+        hasUpgrade = true;
+      }
+    }
   });
-
-  var nota = (document.getElementById('sess-note')?.value || '');
-  var data = (document.getElementById('sess-data')?.value || new Date().toISOString().split('T')[0]);
-
-  p.dims = newDims;
-  await sb.from('prospects').update({ dims: newDims }).eq('id', p.id);
-
+  if (hasUpgrade) {
+    p.dims = newDims;
+    await sb.from('prospects').update({ dims: newDims }).eq('id', p.id);
+  }
+  var scoreVal = calcScore({ dims: newDims });
   var snapshot = {
     data: new Date(data).toISOString(),
-    score: calcScore(p),
-    score_base: calcScore(p),
+    score: scoreVal,
+    score_base: scoreVal,
     dims: Object.assign({}, newDims),
     targets: Object.assign({}, p.targets || {}),
-    evento: 'Sessione registrata',
+    evento: hasUpgrade ? 'Sessione con upgrade' : 'Sessione registrata',
     nota: nota,
+    upgrade: hasUpgrade ? upgradeEseguiti : null,
   };
   p.score_history = (p.score_history || []).concat([snapshot]);
   await sb.from('prospects').update({ score_history: p.score_history }).eq('id', p.id);
-
   document.getElementById('modal-sessione').style.display = 'none';
-  renderProspectDetail(p.id);
-  showToast('Sessione registrata con successo');
   await aggiornaStatoAutomatico(p.id, 'diagnosi');
+  renderProspectDetail(p.id);
+  showToast(hasUpgrade ? 'Sessione e upgrade salvati' : 'Sessione registrata');
 }
 
 function renderListinoServizi(macro) {

@@ -669,3 +669,18 @@ label{color:var(--gray2)}
 .prev-totale-box{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:14px 16px;margin-top:16px}
 .prev-totale-row{display:flex;justify-content:space-between;font-size:13px;color:var(--gray);padding:4px 0}
 .prev-totale-finale{font-size:15px;font-weight:700;color:var(--white)!important;border-top:1px solid var(--border2);margin-top:6px;padding-top:10px!important}
+.sess-upgrade-title{font-size:12px;font-weight:700;color:var(--white);margin:16px 0 4px;padding-top:14px;border-top:1px solid var(--border)}
+.sess-upgrade-hint{font-size:11px;color:var(--gray);margin-bottom:12px;line-height:1.5}
+.sess-upgrade-list{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.sess-upgrade-row{display:flex;align-items:center;gap:10px;background:var(--bg3);border-radius:8px;padding:10px 12px;border:1px solid var(--border)}
+.sess-upgrade-disabled{opacity:.4}
+.sess-upgrade-check input{width:16px;height:16px;accent-color:var(--blue);cursor:pointer;flex-shrink:0}
+.sess-upgrade-info{flex:1}
+.sess-upgrade-label{font-size:13px;font-weight:600;color:var(--white)}
+.sess-upgrade-current{font-size:11px;color:var(--gray);margin-top:2px}
+.sess-upgrade-select{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.sess-upgrade-arrow{font-size:12px;color:var(--gray);white-space:nowrap}
+.sess-upgrade-input{width:70px!important;padding:4px 8px!important;font-size:13px!important}
+.sess-riepilogo{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:rgba(28,184,137,0.1);border:1px solid rgba(28,184,137,0.3);border-radius:8px;padding:10px 12px;font-size:12px}
+.sess-riepilogo-label{font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-right:4px}
+.sess-riepilogo-item{background:rgba(28,184,137,0.15);color:var(--green);border-radius:4px;padding:2px 8px;font-size:11px;font-weight:600}
