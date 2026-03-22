@@ -976,10 +976,7 @@ async function renderProspectDetail(id) {
           '\x3cth>' + (p.nome || 'Cliente') + '\x3c/th>' +
         '\x3c/tr>\x3c/thead>' +
         '\x3ctbody>' + benchRowsHtml + '\x3c/tbody>' +
-      '\x3c/table>' +
-      '\x3cdiv class="bench-actions">' +
-        '\x3cbutton class="btn btn-secondary" onclick="openEditProspect(\'' + p.id + '\');setTimeout(function(){switchModalTab(\'kpi\',document.querySelector(\'.mtab:nth-child(3)\'))},300)">Inserisci / aggiorna KPI cliente\x3c/button>' +
-      '\x3c/div>';
+      '\x3c/table>';
   }
   // ── FINE BENCHMARK KPI ───────────────────────────────────────────
 
@@ -2384,7 +2381,6 @@ function renderKpiTab(p) {
     { id: 'fatturato_referral_pct', label: '% fatturato da referral', unita: '%' },
     { id: 'cac', label: 'CAC \u2014 Costo acquisizione cliente', unita: '\u20AC' },
     { id: 'dso_gg', label: 'DSO \u2014 Giorni medi incasso', unita: 'gg' },
-    { id: 'mrr', label: 'MRR \u2014 Fatturato ricorrente mensile', unita: '\u20AC' },
     { id: 'arr', label: 'ARR \u2014 Fatturato ricorrente annuale', unita: '\u20AC' },
   ];
   var rows = KPI_LIST.map(function(k) {
@@ -2412,7 +2408,7 @@ async function saveKpiTab() {
   if (!p) return;
   var KPI_IDS = ['tasso_conversione_pct','ciclo_vendita_gg','valore_medio_ordine',
     'concentrazione_top3_pct','tasso_riacquisto_pct','nuovi_clienti_anno',
-    'clienti_attivi','fatturato_referral_pct','cac','dso_gg','mrr','arr'];
+    'clienti_attivi','fatturato_referral_pct','cac','dso_gg','arr'];
   var kpi_commerciali = {};
   KPI_IDS.forEach(function(id) {
     var val = parseFloat(document.getElementById('kpiedit-'+id)?.value);
