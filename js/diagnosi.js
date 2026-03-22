@@ -82,7 +82,9 @@ function apriDiagnosi() {
     return;
   }
   _diagProspect = p;
-  _diagFamiglia = FAMIGLIA_SETTORE[p.settore] || 'b2b_manifatturiero';
+  var settoreBase = FAMIGLIA_SETTORE[p.settore] || 'b2b_manifatturiero';
+  var isAutomotive = ['commercio_auto_moto_nuovo','commercio_auto_moto_usato'].indexOf(p.settore) >= 0;
+  _diagFamiglia = isAutomotive ? 'automotive' : settoreBase;
   _diagStep = 0;
   _diagCompletata = false;
   // Ricarica risposte salvate per questo prospect (se esistono)

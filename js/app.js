@@ -959,8 +959,11 @@ async function renderProspectDetail(id) {
     const v=p.dims?.[d.id]||0, pct=(v/5)*100;
     const t=p.targets?.[d.id];
     const col=pct>=60?'#4A9A6A':pct>=35?'#C9973A':'#C05040';
-    const desc=DIM_DESC[d.id]?.[v-1]||'';
-    const tgtDesc=t?DIM_DESC[d.id]?.[t-1]||'':'';
+    const _azDim = (AZIONI_TARGET_BY_SETTORE[p.settore || ''] || {})[d.id] || {};
+    const _curStep = (v > 1) ? ((v-1) + '-' + v) : '1-2';
+    const desc = _azDim[_curStep] || '—';
+    const _tgtStep = t ? ((t > 1) ? ((t-1) + '-' + t) : '1-2') : '';
+    const tgtDesc = t ? (_azDim[_tgtStep] || '—') : '';
     const tgtStr = t ? `\x3cspan style="font-size:10px;color:var(--gold-dim);margin-left:6px">-> ${t}/5\x3c/span>` : '';
     return `\x3cdiv class="dim-row" style="margin-bottom:10px">
       \x3cdiv class="dim-label" style="display:flex;align-items:center;margin-bottom:3px">${getDimLabel(p.settore, d.id)}${tgtStr}\x3c/div>
@@ -976,7 +979,6 @@ async function renderProspectDetail(id) {
   // Draw radar + target editor
   setTimeout(() => {
     drawRadar(p.dims || {}, p.targets || {}, p.settore);
-    renderTargetEditor(p);
     // Mega-grafico cumulativo sotto la ragnatela
     const megaSection = document.getElementById('mega-grafico-section');
     if (megaSection) { const _mg = _buildMegaGrafico(p); if (_mg !== null) megaSection.innerHTML = _mg; }
@@ -988,6 +990,7 @@ async function renderProspectDetail(id) {
       salvaScoreSnapshot(p, 'Prima valutazione');
     }
   }, 50);
+  setTimeout(() => renderTargetEditor(p), 200);
 
   document.getElementById('det-info-content').innerHTML=`
     \x3cdiv style="display:grid;grid-template-columns:1fr 1fr;gap:8px 16px">
@@ -4563,6 +4566,8 @@ async function salvaAzioneCustom(stepKey) {
 }
 
 function renderTargetEditor(p) {
+  const container = document.getElementById('target-editor-content');
+  if (container) container.innerHTML = '';
   const targets = p.targets || {};
   const scadenze = p.target_scadenze || {};
   const settore = p.settore || '';
@@ -4575,8 +4580,13 @@ function renderTargetEditor(p) {
     const scad = scadenze[d.id] || '';
     const curCol = cur >= 4 ? 'var(--green)' : cur >= 3 ? 'var(--gold)' : 'var(--red)';
     const tgtCol = tgt >= 4 ? 'var(--green)' : tgt >= 3 ? 'var(--gold)' : 'var(--red)';
-    const curDesc = DIM_DESC[d.id]?.[cur-1] || '--';
-    const tgtDesc = DIM_DESC[d.id]?.[tgt-1] || '--';
+    const azioniDim = (AZIONI_TARGET_BY_SETTORE[settore] || {})[d.id] || {};
+    const curStepKey = (cur > 1) ? ((cur-1) + '-' + cur) : '1-2';
+    const curDesc = azioniDim[curStepKey] || '—';
+    // Se target uguale al livello attuale, mostra lo step successivo come obiettivo
+    const tgtEffettivo = (tgt <= cur && tgt < 5) ? tgt + 1 : tgt;
+    const tgtStepKey = (tgtEffettivo > 1) ? ((tgtEffettivo-1) + '-' + tgtEffettivo) : '1-2';
+    const tgtDesc = azioniDim[tgtStepKey] || azioniDim[curStepKey] || '—';
     const subObiettiviHtml = _buildSubObiettivi(d.id, cur, tgt, settore, azioniDone, azioniCustom, p);
     // Warning tetto strutturale
     const tettoSettore = (TETTO_BY_SETTORE[settore] || {})[d.id] || 5;
@@ -4661,7 +4671,15 @@ function updateTargetDesc(dimId) {
   const descEl = document.getElementById('tdesc-' + dimId);
   if (!el || !descEl) return;
   const v = parseInt(el.value) || 1;
-  const desc = DIM_DESC[dimId]?.[v-1] || '--';
+  const p = prospects.find(x => x.id === currentId);
+  const settore = p?.settore || '';
+  const azioniDim = (AZIONI_TARGET_BY_SETTORE[settore] || {})[dimId] || {};
+  const cur = p?.dims?.[dimId] || 0;
+  // Se target uguale al livello attuale, mostra lo step successivo come obiettivo
+  const vEffettivo = (v <= cur && v < 5) ? v + 1 : v;
+  const stepKey = (vEffettivo > 1) ? ((vEffettivo-1) + '-' + vEffettivo) : '1-2';
+  const curStepKey = (cur > 1) ? ((cur-1) + '-' + cur) : '1-2';
+  const desc = azioniDim[stepKey] || azioniDim[curStepKey] || '—';
   const col = v >= 4 ? 'var(--green)' : v >= 3 ? 'var(--gold)' : 'var(--red)';
   descEl.textContent = desc;
   descEl.style.color = col;
