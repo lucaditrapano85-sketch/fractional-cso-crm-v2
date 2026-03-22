@@ -2238,6 +2238,7 @@ function renderFinancials(p) {
     '<div class="fin-section-label" style="margin-top:' + (hasFinData||hasExtra?'20px':'0') + '">Calcolatrice P&L</div>' +
     '<div id="calcolatrice-container">' + buildCalcolatricePL() + '</div>' +
     '<div style="margin-top:10px"><button class="fin-edit-btn" onclick="openFinModal(\'extra\')">Modifica patrimonio & finanziamenti</button></div>';
+  setTimeout(aggiornaCalcolatrice, 50);
 }
 
 function renderStruttura(p) {
