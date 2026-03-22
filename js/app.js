@@ -5029,9 +5029,9 @@ function buildCalcolatricePL() {
     \x3cdiv class="pl-row pl-row-input">
       \x3cdiv class="pl-label">Fatturato annuo \x3cspan class="tt-wrap">\x3cspan class="tt-icon">?\x3c/span>\x3cspan class="tt-bubble">Il totale dei ricavi dell'anno. Base di tutto il conto economico.\x3c/span>\x3c/span>\x3c/div>
       \x3cdiv class="pl-input-wrap">
-        \x3cinput class="form-input pl-input" type="number" id="pl-fatturato" title="Il totale dei ricavi annui. Base di tutto il conto economico." placeholder="es. 3000000"
+        \x3cinput class="form-input pl-input" type="number" id="calc-fatturato" title="Il totale dei ricavi annui. Base di tutto il conto economico." placeholder="es. 3000000"
           value="${fv('fatturato_anno_1')}" oninput="aggiornaCalcolatrice()">
-        \x3cdiv class="pl-preview" id="plp-fatturato">\x3c/div>
+        \x3cdiv class="pl-preview" id="calc-preview-fatturato">\x3c/div>
       \x3c/div>
     \x3c/div>
 
@@ -5043,23 +5043,23 @@ function buildCalcolatricePL() {
       \x3c/div>
       \x3cdiv class="pl-input-wrap">
         \x3cdiv style="display:flex;gap:8px;align-items:center">
-          \x3cinput class="form-input pl-input" type="number" id="pl-cogs-pct" title="Il costo diretto per produrre o acquistare cio che vendi: materie prime, acquisti di merce, costo di produzione. NON include affitti o stipendi fissi." placeholder="%" min="0" max="100" step="0.1"
+          \x3cinput class="form-input pl-input" type="number" id="calc-cdv-pct" title="Il costo diretto per produrre o acquistare cio che vendi: materie prime, acquisti di merce, costo di produzione. NON include affitti o stipendi fissi." placeholder="%" min="0" max="100" step="0.1"
             value="${fv('cogs_pct') || ''}" oninput="aggiornaCalcolatrice()" style="width:70px">
           \x3cspan style="color:var(--gray);font-size:12px">%\x3c/span>
           \x3cspan style="color:var(--gray2);font-size:11px">oppure\x3c/span>
-          \x3cinput class="form-input pl-input" type="number" id="pl-cogs-val" placeholder="EUR" min="0"
+          \x3cinput class="form-input pl-input" type="number" id="calc-cdv-eur" placeholder="EUR" min="0"
             value="${fv('cogs_val') || ''}" oninput="aggiornaCalcolatrice()" style="flex:1">
         \x3c/div>
-        \x3cdiv class="pl-preview" id="plp-cogs">\x3c/div>
+        \x3cdiv class="pl-preview" id="calc-preview-cdv">\x3c/div>
       \x3c/div>
     \x3c/div>
 
     \x3c!-- RISULTATO: Margine Lordo --\x3e
-    \x3cdiv class="pl-row pl-row-result" id="plr-margine-lordo">
+    \x3cdiv class="pl-row pl-row-result" id="calc-margine-row">
       \x3cdiv class="pl-label">= Margine Lordo\x3c/div>
       \x3cdiv style="display:flex;gap:16px;align-items:baseline">
-        \x3cdiv class="pl-result-val" id="plv-margine-lordo">--\x3c/div>
-        \x3cdiv class="pl-result-pct" id="plp-margine-lordo">\x3c/div>
+        \x3cdiv class="pl-result-val" id="calc-margine">--\x3c/div>
+        \x3cdiv class="pl-result-pct" id="calc-margine-pct">\x3c/div>
       \x3c/div>
     \x3c/div>
 
@@ -5070,18 +5070,18 @@ function buildCalcolatricePL() {
         \x3cdiv class="pl-sublabel">affitti, utilities, stipendi fissi, servizi\x3c/div>
       \x3c/div>
       \x3cdiv class="pl-input-wrap">
-        \x3cinput class="form-input pl-input" type="number" id="pl-costi-fissi" title="Tutti i costi mensili che paghi indipendentemente da quanto vendi: affitto, stipendi fissi, utenze, software, commercialista ecc." placeholder="es. 85000"
+        \x3cinput class="form-input pl-input" type="number" id="calc-costi-fissi" title="Tutti i costi mensili che paghi indipendentemente da quanto vendi: affitto, stipendi fissi, utenze, software, commercialista ecc." placeholder="es. 85000"
           value="${fv('costi_fissi_mensili')}" oninput="aggiornaCalcolatrice()">
-        \x3cdiv class="pl-preview" id="plp-costi-fissi">\x3c/div>
+        \x3cdiv class="pl-preview" id="calc-preview-costi">\x3c/div>
       \x3c/div>
     \x3c/div>
 
     \x3c!-- RISULTATO: EBITDA --\x3e
-    \x3cdiv class="pl-row pl-row-result" id="plr-ebitda">
+    \x3cdiv class="pl-row pl-row-result" id="calc-ebitda-row">
       \x3cdiv class="pl-label">= EBITDA\x3c/div>
       \x3cdiv style="display:flex;gap:16px;align-items:baseline">
-        \x3cdiv class="pl-result-val" id="plv-ebitda">--\x3c/div>
-        \x3cdiv class="pl-result-pct" id="plp-ebitda-pct">\x3c/div>
+        \x3cdiv class="pl-result-val" id="calc-ebitda">--\x3c/div>
+        \x3cdiv class="pl-result-pct" id="calc-ebitda-pct">\x3c/div>
       \x3c/div>
     \x3c/div>
 
@@ -5092,9 +5092,9 @@ function buildCalcolatricePL() {
         \x3cdiv class="pl-sublabel">clicca per calcolare per categoria v\x3c/div>
       \x3c/div>
       \x3cdiv class="pl-input-wrap">
-        \x3cinput class="form-input pl-input" type="number" id="pl-ammortamenti" title="La quota annuale di "usura" di beni durevoli (macchinari, auto, software). Clicca il titolo per calcolarlo categoria per categoria." placeholder="es. 150000"
+        \x3cinput class="form-input pl-input" type="number" id="calc-ammortamenti" title="La quota annuale di "usura" di beni durevoli (macchinari, auto, software). Clicca il titolo per calcolarlo categoria per categoria." placeholder="es. 150000"
           value="${fv('ammortamenti_annui') || ''}" oninput="aggiornaCalcolatrice()">
-        \x3cdiv class="pl-preview" id="plp-ammortamenti">\x3c/div>
+        \x3cdiv class="pl-preview" id="calc-preview-amm">\x3c/div>
       \x3c/div>
     \x3c/div>
 
@@ -5119,11 +5119,11 @@ function buildCalcolatricePL() {
     \x3c/div>
 
     \x3c!-- RISULTATO: EBIT --\x3e
-    \x3cdiv class="pl-row pl-row-result" id="plr-ebit">
+    \x3cdiv class="pl-row pl-row-result" id="calc-ebit-row">
       \x3cdiv class="pl-label">= EBIT (utile operativo)\x3c/div>
       \x3cdiv style="display:flex;gap:16px;align-items:baseline">
-        \x3cdiv class="pl-result-val" id="plv-ebit">--\x3c/div>
-        \x3cdiv class="pl-result-pct" id="plp-ebit-pct">\x3c/div>
+        \x3cdiv class="pl-result-val" id="calc-ebit">--\x3c/div>
+        \x3cdiv class="pl-result-pct" id="calc-ebit-pct">\x3c/div>
       \x3c/div>
     \x3c/div>
 
@@ -5131,7 +5131,7 @@ function buildCalcolatricePL() {
     \x3cdiv class="pl-row pl-row-input">
       \x3cdiv class="pl-label">Forma societaria \x3cspan class="tt-wrap">\x3cspan class="tt-icon">?\x3c/span>\x3cspan class="tt-bubble">Determina il regime fiscale: IRES+IRAP per societa di capitali, IRPEF progressiva per persone fisiche e societa di persone.\x3c/span>\x3c/span>\x3c/div>
       \x3cdiv class="pl-input-wrap">
-        \x3cselect class="form-input pl-input" id="pl-forma" onchange="aggiornaCalcolatrice()" style="width:100%">
+        \x3cselect class="form-input pl-input" id="calc-forma" onchange="aggiornaCalcolatrice()" style="width:100%">
           \x3coption value="srl">Srl / Spa (IRES 24% + IRAP 3.9%)\x3c/option>
           \x3coption value="snc_sas">SNC / SAS (IRPEF + IRAP 3.9%)\x3c/option>
           \x3coption value="ditta">Ditta individuale (IRPEF + INPS ~24%)\x3c/option>
@@ -5141,41 +5141,41 @@ function buildCalcolatricePL() {
     \x3cdiv class="pl-row pl-row-input">
       \x3cdiv class="pl-label">Reddito titolare / soci (lordo annuo) \x3cspan class="tt-wrap">\x3cspan class="tt-icon">?\x3c/span>\x3cspan class="tt-bubble">Per Srl: compenso amministratore soggetto a INPS gestione separata (~26%). Per ditte individuali: base per calcolo INPS gestione commercianti (~24%).\x3c/span>\x3c/span>\x3c/div>
       \x3cdiv class="pl-input-wrap">
-        \x3cinput class="form-input pl-input" type="number" id="pl-reddito-titolare" placeholder="es. 60000" oninput="aggiornaCalcolatrice()">
+        \x3cinput class="form-input pl-input" type="number" id="calc-reddito-titolare" placeholder="es. 60000" oninput="aggiornaCalcolatrice()">
       \x3c/div>
     \x3c/div>
     \x3cdiv class="pl-row pl-row-input">
       \x3cdiv class="pl-label">Costi strutturali fissi annui \x3cspan class="tt-wrap">\x3cspan class="tt-icon">?\x3c/span>\x3cspan class="tt-bubble">Commercialista, CCIAA, revisore legale, assicurazioni obbligatorie.\x3c/span>\x3c/span>\x3c/div>
       \x3cdiv class="pl-input-wrap">
-        \x3cinput class="form-input pl-input" type="number" id="pl-costi-strutturali" placeholder="es. 5000" oninput="aggiornaCalcolatrice()">
+        \x3cinput class="form-input pl-input" type="number" id="calc-costi-strutturali" placeholder="es. 5000" oninput="aggiornaCalcolatrice()">
       \x3c/div>
     \x3c/div>
 
     \x3c!-- RISULTATO: Imposte --\x3e
-    \x3cdiv class="pl-row pl-row-result" id="plr-imposte" style="border-left-color:var(--red)">
+    \x3cdiv class="pl-row pl-row-result" id="calc-imposte-row" style="border-left-color:var(--red)">
       \x3cdiv class="pl-label" style="color:var(--red)">\u2212 Imposte & contributi\x3c/div>
       \x3cdiv style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
-        \x3cdiv class="pl-result-val" id="plv-imposte" style="color:var(--red)">--\x3c/div>
-        \x3cdiv class="pl-result-pct" id="plp-imposte-detail" style="font-size:10px;color:var(--gray)"></div>
+        \x3cdiv class="pl-result-val" id="calc-imposte" style="color:var(--red)">--\x3c/div>
+        \x3cdiv class="pl-result-pct" id="calc-imposte-detail" style="font-size:10px;color:var(--gray)"></div>
       \x3c/div>
     \x3c/div>
 
     \x3c!-- RISULTATO: Utile Netto --\x3e
-    \x3cdiv class="pl-row pl-row-result pl-row-final" id="plr-utile">
+    \x3cdiv class="pl-row pl-row-result pl-row-final" id="calc-utile-row">
       \x3cdiv class="pl-label" style="font-size:14px;color:var(--white)">= Utile Netto\x3c/div>
       \x3cdiv style="display:flex;gap:16px;align-items:baseline">
-        \x3cdiv class="pl-result-val" id="plv-utile" style="font-size:22px;font-family:'DM Serif Display',serif">--\x3c/div>
-        \x3cdiv class="pl-result-pct" id="plp-utile-pct">\x3c/div>
+        \x3cdiv class="pl-result-val" id="calc-utile" style="font-size:22px;font-family:'DM Serif Display',serif">--\x3c/div>
+        \x3cdiv class="pl-result-pct" id="calc-utile-pct">\x3c/div>
       \x3c/div>
     \x3c/div>
 
     \x3c!-- Riepilogo margini --\x3e
-    \x3cdiv id="pl-margini-riepilogo" style="display:none;margin-top:12px;background:var(--bg3);border-radius:var(--rs);padding:10px 14px">
+    \x3cdiv id="calc-margini-riepilogo" style="display:none;margin-top:12px;background:var(--bg3);border-radius:var(--rs);padding:10px 14px">
       \x3cdiv style="font-size:10px;font-weight:600;color:var(--gray);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Riepilogo margini\x3c/div>
-      \x3cdiv style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px" id="pl-margini-grid">\x3c/div>
+      \x3cdiv style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px" id="calc-margini-grid">\x3c/div>
     \x3c/div>
 
-    \x3cbutton class="btn btn-primary" style="width:100%;height:40px;margin-top:16px;font-size:13px" onclick="salvaDaCalcolatrice()">Salva dati finanziari\x3c/button>
+    \x3cdiv style="display:flex;justify-content:flex-end;margin-top:16px">\x3cbutton class="btn btn-primary" onclick="salvaDaCalcolatrice()">Salva dati finanziari\x3c/button>\x3c/div>
   \x3c/div>`;
 }
 
@@ -5197,7 +5197,7 @@ function calcolaAmmDaCategorie() {
   const el = document.getElementById('amm-totale-detail');
   if (el) el.textContent = `Totale: ${tot.toLocaleString('it-IT')} EUR`;
   // Push to main amm field
-  const ammField = document.getElementById('pl-ammortamenti');
+  const ammField = document.getElementById('calc-ammortamenti');
   if (ammField) { ammField.value = tot; aggiornaCalcolatrice(); }
 }
 
@@ -5217,14 +5217,14 @@ function aggiornaCalcolatrice() {
   var pct = function(n, base) { return base ? (n/base*100).toFixed(1)+'%' : ''; };
   var col = function(n) { return n > 0 ? 'var(--green)' : n < 0 ? 'var(--red)' : 'var(--gray)'; };
 
-  var fatturato = vv('pl-fatturato');
-  var cogsPct = vv('pl-cogs-pct');
-  var cogsVal = vv('pl-cogs-val');
-  var costiFissiMensili = vv('pl-costi-fissi');
-  var ammortamenti = vv('pl-ammortamenti');
-  var redditoTitolare = vv('pl-reddito-titolare');
-  var costiStrutturali = vv('pl-costi-strutturali');
-  var forma = document.getElementById('pl-forma')?.value || 'srl';
+  var fatturato = vv('calc-fatturato');
+  var cogsPct = vv('calc-cdv-pct');
+  var cogsVal = vv('calc-cdv-eur');
+  var costiFissiMensili = vv('calc-costi-fissi');
+  var ammortamenti = vv('calc-ammortamenti');
+  var redditoTitolare = vv('calc-reddito-titolare');
+  var costiStrutturali = vv('calc-costi-strutturali');
+  var forma = document.getElementById('calc-forma')?.value || 'srl';
 
   var cogs = cogsVal > 0 ? cogsVal : (cogsPct > 0 ? fatturato * cogsPct / 100 : 0);
   var costiFissiAnnui = costiFissiMensili * 12;
@@ -5258,34 +5258,34 @@ function aggiornaCalcolatrice() {
   var setCol = function(id, n) { var el = document.getElementById(id); if (el) el.style.color = col(n); };
   var setBorder = function(id, n) { var el = document.getElementById(id); if (el) el.style.borderLeftColor = col(n); };
 
-  if (fatturato) set('plp-fatturato', fmt(fatturato));
-  if (cogs) set('plp-cogs', fmt(cogs));
-  if (costiFissiMensili) set('plp-costi-fissi', fmt(costiFissiMensili) + '/mese \u00B7 ' + fmt(costiFissiAnnui) + ' annui');
-  if (ammortamenti) set('plp-ammortamenti', fmt(ammortamenti));
+  if (fatturato) set('calc-preview-fatturato', fmt(fatturato));
+  if (cogs) set('calc-preview-cdv', fmt(cogs));
+  if (costiFissiMensili) set('calc-preview-costi', fmt(costiFissiMensili) + '/mese \u00B7 ' + fmt(costiFissiAnnui) + ' annui');
+  if (ammortamenti) set('calc-preview-amm', fmt(ammortamenti));
 
   if (fatturato) {
-    set('plv-margine-lordo', fmt(margineLordo)); set('plp-margine-lordo', pct(margineLordo, fatturato));
-    setCol('plv-margine-lordo', margineLordo); setBorder('plr-margine-lordo', margineLordo);
+    set('calc-margine', fmt(margineLordo)); set('calc-margine-pct', pct(margineLordo, fatturato));
+    setCol('calc-margine', margineLordo); setBorder('calc-margine-row', margineLordo);
 
-    set('plv-ebitda', fmt(ebitda)); set('plp-ebitda-pct', pct(ebitda, fatturato));
-    setCol('plv-ebitda', ebitda); setBorder('plr-ebitda', ebitda);
+    set('calc-ebitda', fmt(ebitda)); set('calc-ebitda-pct', pct(ebitda, fatturato));
+    setCol('calc-ebitda', ebitda); setBorder('calc-ebitda-row', ebitda);
 
     var ebitdaDisplay = document.getElementById('fin-ebitda-display');
     var ebitdaHidden = document.getElementById('fin-ebitda');
     if (ebitdaDisplay && ebitda) { ebitdaDisplay.textContent = fmt(ebitda); ebitdaDisplay.style.color = ebitda > 0 ? 'var(--green)' : 'var(--red)'; }
     if (ebitdaHidden && ebitda) ebitdaHidden.value = Math.round(ebitda);
 
-    set('plv-ebit', fmt(ebit)); set('plp-ebit-pct', pct(ebit, fatturato));
-    setCol('plv-ebit', ebit); setBorder('plr-ebit', ebit);
+    set('calc-ebit', fmt(ebit)); set('calc-ebit-pct', pct(ebit, fatturato));
+    setCol('calc-ebit', ebit); setBorder('calc-ebit-row', ebit);
 
-    set('plv-imposte', '\u2212' + fmt(imposteTot));
-    set('plp-imposte-detail', imposteDetail);
+    set('calc-imposte', '\u2212' + fmt(imposteTot));
+    set('calc-imposte-detail', imposteDetail);
 
-    set('plv-utile', fmt(utile)); set('plp-utile-pct', pct(utile, fatturato));
-    setCol('plv-utile', utile); setBorder('plr-utile', utile);
+    set('calc-utile', fmt(utile)); set('calc-utile-pct', pct(utile, fatturato));
+    setCol('calc-utile', utile); setBorder('calc-utile-row', utile);
 
-    var riepilogo = document.getElementById('pl-margini-riepilogo');
-    var grid = document.getElementById('pl-margini-grid');
+    var riepilogo = document.getElementById('calc-margini-riepilogo');
+    var grid = document.getElementById('calc-margini-grid');
     if (riepilogo && grid) {
       riepilogo.style.display = 'block';
       var margini = [
@@ -5306,15 +5306,15 @@ function aggiornaCalcolatrice() {
 
 async function salvaDaCalcolatrice() {
   const v = id => parseFloat(document.getElementById(id)?.value) || null;
-  const cogsPct = v('pl-cogs-pct');
-  const cogsVal = v('pl-cogs-val');
-  const fatturato = v('pl-fatturato');
+  const cogsPct = v('calc-cdv-pct');
+  const cogsVal = v('calc-cdv-eur');
+  const fatturato = v('calc-fatturato');
   const cogs = cogsVal || (cogsPct && fatturato ? fatturato * cogsPct / 100 : null);
-  const costiFissi = v('pl-costi-fissi');
-  const ammortamenti = v('pl-ammortamenti');
-  var forma = document.getElementById('pl-forma')?.value || 'srl';
-  var redditoTitolare = v('pl-reddito-titolare') || 0;
-  var costiStrutturali = v('pl-costi-strutturali') || 0;
+  const costiFissi = v('calc-costi-fissi');
+  const ammortamenti = v('calc-ammortamenti');
+  var forma = document.getElementById('calc-forma')?.value || 'srl';
+  var redditoTitolare = v('calc-reddito-titolare') || 0;
+  var costiStrutturali = v('calc-costi-strutturali') || 0;
 
   const margineLordo = fatturato && cogs ? fatturato - cogs : null;
   const costiFissiAnnui = costiFissi ? costiFissi * 12 : 0;
