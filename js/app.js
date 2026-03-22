@@ -1125,131 +1125,78 @@ function openModal(id){document.getElementById(id).classList.add('open')}
 function closeModal(id){var el=document.getElementById(id);el.classList.remove('open');el.style.display='';}
 document.querySelectorAll('.modal-overlay').forEach(el=>el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('open')}));
 
-function _buildProspectModalBody(p) {
-  p = p || {};
-  const kpi = p.kpi_commerciali || {};
-
-  const _opt = (v, sel) => `<option value="${v}" ${sel===v?'selected':''}>${v}</option>`;
+function _buildSettoreSelectHTML(settore) {
   const _optVL = (v, l, sel) => `<option value="${v}" ${sel===v?'selected':''}>${l}</option>`;
-
-  const selectSettore = `<select class="form-input" id="f-settore">
+  return `<select class="form-input" id="f-settore">
     <option value="">-- Seleziona settore --</option>
     <optgroup label="Manifatturiero">
-      ${[['manifatturiero_meccanica','Meccanica di precisione'],['manifatturiero_automotive','Automotive supply chain'],['manifatturiero_packaging','Packaging & converting'],['manifatturiero_cterzi','Lavorazioni conto terzi'],['manifatturiero_elettromeccanica','Elettromeccanica'],['manifatturiero_tessile_tessuti','Tessile (tessuti)'],['manifatturiero_tessile_capi','Tessile (capi)']].map(x=>_optVL(x[0],x[1],p.settore)).join('')}
+      ${[['manifatturiero_meccanica','Meccanica di precisione'],['manifatturiero_automotive','Automotive supply chain'],['manifatturiero_packaging','Packaging & converting'],['manifatturiero_cterzi','Lavorazioni conto terzi'],['manifatturiero_elettromeccanica','Elettromeccanica'],['manifatturiero_tessile_tessuti','Tessile (tessuti)'],['manifatturiero_tessile_capi','Tessile (capi)']].map(x=>_optVL(x[0],x[1],settore)).join('')}
     </optgroup>
     <optgroup label="Servizi B2B">
-      ${[['servizi_it','Servizi IT & system integrator'],['servizi_formazione','Formazione aziendale']].map(x=>_optVL(x[0],x[1],p.settore)).join('')}
+      ${[['servizi_it','Servizi IT & system integrator'],['servizi_formazione','Formazione aziendale']].map(x=>_optVL(x[0],x[1],settore)).join('')}
     </optgroup>
     <optgroup label="Edilizia / Impianti">
-      ${[['edilizia_residenziale','Costruzioni residenziali'],['edilizia_impianti','Impiantistica'],['edilizia_serramenti','Serramenti & facciate']].map(x=>_optVL(x[0],x[1],p.settore)).join('')}
+      ${[['edilizia_residenziale','Costruzioni residenziali'],['edilizia_impianti','Impiantistica'],['edilizia_serramenti','Serramenti & facciate']].map(x=>_optVL(x[0],x[1],settore)).join('')}
     </optgroup>
     <optgroup label="Commercio / Distribuzione">
-      ${[['commercio_distribuzione_industriale','Distribuzione industriale'],['commercio_ingrosso_alimentare','Ingrosso alimentare'],['commercio_materiali_edili','Materiali edili & ferramenta'],['commercio_ricambi_auto','Ricambi auto & veicoli'],['commercio_abbigliamento_ingrosso','Abbigliamento ingrosso'],['commercio_elettronica','Elettronica & elettrodomestici'],['commercio_auto_moto_nuovo','Auto & moto (nuovo)'],['commercio_auto_moto_usato','Auto & moto (usato)'],['commercio_abbigliamento_dettaglio','Abbigliamento al dettaglio'],['commercio_orologi_gioielli','Orologi & gioielli']].map(x=>_optVL(x[0],x[1],p.settore)).join('')}
+      ${[['commercio_distribuzione_industriale','Distribuzione industriale'],['commercio_ingrosso_alimentare','Ingrosso alimentare'],['commercio_materiali_edili','Materiali edili & ferramenta'],['commercio_ricambi_auto','Ricambi auto & veicoli'],['commercio_abbigliamento_ingrosso','Abbigliamento ingrosso'],['commercio_elettronica','Elettronica & elettrodomestici'],['commercio_auto_moto_nuovo','Auto & moto (nuovo)'],['commercio_auto_moto_usato','Auto & moto (usato)'],['commercio_abbigliamento_dettaglio','Abbigliamento al dettaglio'],['commercio_orologi_gioielli','Orologi & gioielli']].map(x=>_optVL(x[0],x[1],settore)).join('')}
     </optgroup>
     <optgroup label="Alimentare / Food">
-      ${[['alimentare_trasformazione','Trasformazione agroalimentare'],['alimentare_vini','Vini & spirits'],['alimentare_forno','Prodotti da forno & pasticceria'],['alimentare_conserve','Conserve & surgelati'],['alimentare_ingredienti','Ingredienti B2B'],['alimentare_birra','Birra artigianale']].map(x=>_optVL(x[0],x[1],p.settore)).join('')}
+      ${[['alimentare_trasformazione','Trasformazione agroalimentare'],['alimentare_vini','Vini & spirits'],['alimentare_forno','Prodotti da forno & pasticceria'],['alimentare_conserve','Conserve & surgelati'],['alimentare_ingredienti','Ingredienti B2B'],['alimentare_birra','Birra artigianale']].map(x=>_optVL(x[0],x[1],settore)).join('')}
     </optgroup>
     <optgroup label="Tech / Software">
-      ${[['tech_saas','SaaS B2B'],['tech_system_integrator','System integrator'],['tech_digital_agency','Digital agency & e-commerce'],['tech_automazione','Automazione industriale']].map(x=>_optVL(x[0],x[1],p.settore)).join('')}
+      ${[['tech_saas','SaaS B2B'],['tech_system_integrator','System integrator'],['tech_digital_agency','Digital agency & e-commerce'],['tech_automazione','Automazione industriale']].map(x=>_optVL(x[0],x[1],settore)).join('')}
     </optgroup>
   </select>`;
-
-  const selectDip = `<select class="form-input" id="f-dip">
-    <option value="">--</option>
-    ${['1-5','6-15','16-30','31-50','51-100','100+'].map(v=>_opt(v,p.dipendenti)).join('')}
-  </select>`;
-
-  const selectStato = `<select class="form-input" id="f-stato">
-    ${[['nuovo','Nuovo'],['contattato','Contattato'],['diagnosi','Diagnosi'],['proposta','Proposta'],['chiuso','Chiuso']].map(x=>_optVL(x[0],x[1],p.stato||'nuovo')).join('')}
-  </select>`;
-
-  const selectFat = `<select class="form-input" id="f-fat">
-    <option value="">--</option>
-    ${['<100k','100k-250k','250k-500k','500k-1M','1M-3M','3M-10M','>10M'].map(v=>_opt(v,p.fatturato)).join('')}
-  </select>`;
-
-  const _esc = (s) => String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
-  const _boolSel = (id, val) => `<select class="form-input" id="${id}"><option value="">--</option><option value="true" ${val===true?'selected':''}>Si</option><option value="false" ${val===false?'selected':''}>No</option></select>`;
-
-  return `
-    <div class="modal-tabs">
-      <button class="mtab active" onclick="switchModalTab('anagrafica',this)">Anagrafica</button>
-      <button class="mtab" onclick="switchModalTab('financials',this)">Financials</button>
-      <button class="mtab" onclick="switchModalTab('kpi',this)">KPI Commerciali</button>
-      <button class="mtab" onclick="switchModalTab('note',this)">Note & Tools</button>
-    </div>
-
-    <div class="mtab-content" id="mtab-anagrafica">
-      <div class="form-grid">
-        <div class="form-group"><label>Nome azienda *</label><input class="form-input" id="f-nome" placeholder="es. Rossi Srl" value="${_esc(p.nome)}"></div>
-        <div class="form-group"><label>Forma giuridica</label><select class="form-input" id="f-forma">
-          <option value="">--</option>
-          ${['Srl','Spa','Sas','Snc','Ditta individuale','Cooperativa','Altro'].map(f=>`<option value="${f}" ${p.forma_giuridica===f?'selected':''}>${f}</option>`).join('')}
-        </select></div>
-        <div class="form-group"><label>Settore *</label>${selectSettore}</div>
-        <div class="form-group"><label>Referente</label><input class="form-input" id="f-referente" placeholder="Nome cognome" value="${_esc(p.referente)}"></div>
-        <div class="form-group"><label>Ruolo interlocutore</label><input class="form-input" id="f-ruolo" placeholder="es. Titolare, CFO, Resp. Commerciale" value="${_esc(p.ruolo)}"></div>
-        <div class="form-group"><label>Email</label><input class="form-input" id="f-email" placeholder="email@azienda.it" value="${_esc(p.email)}"></div>
-        <div class="form-group"><label>Telefono</label><input class="form-input" id="f-tel" placeholder="+39 ..." value="${_esc(p.telefono)}"></div>
-        <div class="form-group"><label>Sede legale</label><input class="form-input" id="f-sede" placeholder="es. Milano, MI" value="${_esc(p.sede_legale)}"></div>
-        <div class="form-group"><label>Anno fondazione</label><input class="form-input" id="f-anno" placeholder="es. 2005" value="${_esc(p.anno_fondazione)}"></div>
-        <div class="form-group"><label>Codice ATECO</label><input class="form-input" id="f-ateco" placeholder="es. 28.41" value="${_esc(p.codice_ateco)}"></div>
-        <div class="form-group"><label>Sito web</label><input class="form-input" id="f-sito" placeholder="https://..." value="${_esc(p.sito_web)}"></div>
-        <div class="form-group"><label>Soci / Struttura proprieta</label><input class="form-input" id="f-soci" placeholder="es. Familiare, 2 soci paritetici" value="${_esc(p.soci_struttura)}"></div>
-        <div class="form-group"><label>Dipendenti diretti</label><input class="form-input" id="f-dipdiretti" type="number" placeholder="es. 12" value="${p.dipendenti_diretti||''}"></div>
-        <div class="form-group"><label>Collaboratori</label><input class="form-input" id="f-collab" type="number" placeholder="es. 3" value="${p.collaboratori||''}"></div>
-        <div class="form-group"><label>Certificazioni</label><input class="form-input" id="f-cert" placeholder="es. ISO 9001, SOA" value="${_esc(p.certificazioni)}"></div>
-        <div class="form-group form-group-full"><label>Note iniziali</label><textarea class="form-input" id="f-note" rows="3" placeholder="Impressioni dalla prima call...">${_esc(p.note)}</textarea></div>
-      </div>
-    </div>
-
-    <div class="mtab-content" id="mtab-financials" style="display:none">
-      <div class="form-grid">
-        <div class="form-group"><label>Fatturato anno corrente EUR</label><input class="form-input" id="f-fat1" type="number" placeholder="es. 850000" value="${p.fatturato_anno_1||''}"></div>
-        <div class="form-group"><label>Margine %</label><input class="form-input" id="f-margine" type="number" placeholder="es. 14" value="${p.margine_pct||''}"></div>
-        <div class="form-group"><label>Utile netto EUR</label><input class="form-input" id="f-utile" type="number" placeholder="es. 65000" value="${p.utile_netto||''}"></div>
-        <div class="form-group"><label>Costi fissi mensili EUR</label><input class="form-input" id="f-costifissi" type="number" placeholder="es. 35000" value="${p.costi_fissi_mensili||''}"></div>
-        <div class="form-group"><label>Export attivo</label>${_boolSel('f-export', p.export_attivo)}</div>
-        <div class="form-group"><label>Export % su fatturato</label><input class="form-input" id="f-exportpct" type="number" placeholder="es. 30" value="${p.export_pct||''}"></div>
-        <div class="form-group"><label>Immobili di proprieta</label>${_boolSel('f-immobili', p.immobili_proprieta)}</div>
-        <div class="form-group"><label>Valore immobili EUR</label><input class="form-input" id="f-immovalor" type="number" placeholder="es. 500000" value="${p.immobili_valore||''}"></div>
-        <div class="form-group"><label>Banche di riferimento</label><input class="form-input" id="f-banche" placeholder="es. Intesa, UniCredit" value="${_esc(p.banche_riferimento)}"></div>
-        <div class="form-group"><label>Leasing rata mensile EUR</label><input class="form-input" id="f-leasing" type="number" placeholder="es. 2500" value="${p.leasing_rata_mensile||''}"></div>
-        <div class="form-group form-group-full"><label>Note leasing</label><input class="form-input" id="f-leasingnote" placeholder="es. Macchinario CNC, scade 2026" value="${_esc(p.leasing_note)}"></div>
-      </div>
-    </div>
-
-    <div class="mtab-content" id="mtab-kpi" style="display:none">
-      <p class="mtab-desc">Inserisci i KPI commerciali attuali del cliente. Verranno confrontati con i benchmark di settore nella scheda prospect.</p>
-      <div class="form-grid">
-        <div class="form-group"><label>Tasso conversione lead-cliente %</label><input class="form-input" id="kpi-conv" type="number" step="0.1" placeholder="es. 18" value="${kpi.tasso_conversione_pct||''}"></div>
-        <div class="form-group"><label>Ciclo di vendita medio (giorni)</label><input class="form-input" id="kpi-ciclo" type="number" placeholder="es. 45" value="${kpi.ciclo_vendita_gg||''}"></div>
-        <div class="form-group"><label>Valore medio ordine/contratto EUR</label><input class="form-input" id="kpi-ticket" type="number" placeholder="es. 12000" value="${kpi.valore_medio_ordine||''}"></div>
-        <div class="form-group"><label>Concentrazione top 3 clienti %</label><input class="form-input" id="kpi-conc" type="number" step="0.1" placeholder="es. 45" value="${kpi.concentrazione_top3_pct||''}"></div>
-        <div class="form-group"><label>Tasso di riacquisto %</label><input class="form-input" id="kpi-riacq" type="number" step="0.1" placeholder="es. 60" value="${kpi.tasso_riacquisto_pct||''}"></div>
-        <div class="form-group"><label>Nuovi clienti / anno</label><input class="form-input" id="kpi-nuovi" type="number" placeholder="es. 15" value="${kpi.nuovi_clienti_anno||''}"></div>
-        <div class="form-group"><label>Clienti attivi totali</label><input class="form-input" id="kpi-attivi" type="number" placeholder="es. 80" value="${kpi.clienti_attivi||''}"></div>
-        <div class="form-group"><label>% fatturato da referral</label><input class="form-input" id="kpi-referral" type="number" step="0.1" placeholder="es. 40" value="${kpi.fatturato_referral_pct||''}"></div>
-        <div class="form-group"><label>CAC - Costo acquisizione cliente EUR</label><input class="form-input" id="kpi-cac" type="number" placeholder="es. 800" value="${kpi.cac||''}"></div>
-        <div class="form-group"><label>DSO - Giorni medi incasso</label><input class="form-input" id="kpi-dso" type="number" placeholder="es. 60" value="${kpi.dso_gg||''}"></div>
-        <div class="form-group"><label>MRR/ARR EUR (solo abbonamenti)</label><input class="form-input" id="kpi-mrr" type="number" placeholder="es. 5000" value="${kpi.mrr||''}"></div>
-        <div class="form-group"><label>Fatturato top cliente EUR</label><input class="form-input" id="kpi-fattop" type="number" placeholder="es. 200000" value="${p.fatturato_top||''}"></div>
-      </div>
-    </div>
-
-    <div class="mtab-content" id="mtab-note" style="display:none">
-      <div class="form-grid">
-        <div class="form-group form-group-full"><label>Note strategiche</label><textarea class="form-input" id="f-notestrategiche" rows="4" placeholder="Osservazioni su posizionamento, rischi, opportunita...">${_esc(p.note_strategiche)}</textarea></div>
-        <div class="form-group"><label>Tool CRM</label><input class="form-input" id="f-tcrm" placeholder="es. HubSpot, Salesforce, nessuno" value="${_esc(p.tool_crm)}"></div>
-        <div class="form-group"><label>Tool ERP / Gestionale</label><input class="form-input" id="f-terp" placeholder="es. SAP B1, Zucchetti, nessuno" value="${_esc(p.tool_erp)}"></div>
-        <div class="form-group"><label>Tool Ecommerce</label><input class="form-input" id="f-tecom" placeholder="es. Shopify, WooCommerce, nessuno" value="${_esc(p.tool_ecommerce)}"></div>
-        <div class="form-group"><label>Tool Marketing</label><input class="form-input" id="f-tmkt" placeholder="es. Mailchimp, ActiveCampaign, nessuno" value="${_esc(p.tool_marketing)}"></div>
-        <div class="form-group form-group-full"><label>Altri tool</label><input class="form-input" id="f-taltri" placeholder="es. Notion, Slack, Monday..." value="${_esc(p.tool_altri)}"></div>
-      </div>
-    </div>
-  `;
 }
 
+function _buildProspectModalBody(p) {
+  p = p || {};
+  const _esc = (s) => String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+
+  return `
+    <div class="form-grid">
+      <div class="form-group form-group-full">
+        <label>Nome azienda *</label>
+        <input class="form-input" id="f-nome" placeholder="es. Rossi Srl" value="${_esc(p.nome)}">
+      </div>
+      <div class="form-group">
+        <label>Settore *</label>
+        ${_buildSettoreSelectHTML(p.settore)}
+      </div>
+      <div class="form-group">
+        <label>Forma giuridica</label>
+        <select class="form-input" id="f-forma">
+          <option value="">—</option>
+          ${['Srl','Spa','Sas','Snc','Ditta individuale','Cooperativa','Altro'].map(f=>`<option value="${f}" ${p.forma_giuridica===f?'selected':''}>${f}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Referente</label>
+        <input class="form-input" id="f-referente" placeholder="Nome cognome" value="${_esc(p.referente)}">
+      </div>
+      <div class="form-group">
+        <label>Ruolo interlocutore</label>
+        <input class="form-input" id="f-ruolo" placeholder="es. Titolare, CFO" value="${_esc(p.ruolo)}">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input class="form-input" id="f-email" placeholder="email@azienda.it" value="${_esc(p.email)}">
+      </div>
+      <div class="form-group">
+        <label>Telefono</label>
+        <input class="form-input" id="f-tel" placeholder="+39 ..." value="${_esc(p.telefono)}">
+      </div>
+      <div class="form-group">
+        <label>Sede legale</label>
+        <input class="form-input" id="f-sede" placeholder="es. Milano, MI" value="${_esc(p.sede_legale)}">
+      </div>
+      <div class="form-group form-group-full">
+        <label>Note iniziali</label>
+        <textarea class="form-input" id="f-note" rows="3" placeholder="Impressioni dalla prima call...">${_esc(p.note)}</textarea>
+      </div>
+    </div>`;
+}
 function switchModalTab(tabId, btn) {
   document.querySelectorAll('.mtab-content').forEach(function(t) { t.style.display = 'none'; });
   document.querySelectorAll('.mtab').forEach(function(b) { b.classList.remove('active'); });
@@ -1293,63 +1240,18 @@ async function saveProspect() {
   var nome = (document.getElementById('f-nome')?.value || '').trim();
   if (!nome) { alert('Inserisci il nome dell\'azienda'); return; }
 
-  var _val = function(id) { return document.getElementById(id)?.value || ''; };
-  var _num = function(id) { var v = parseFloat(document.getElementById(id)?.value); return isNaN(v) ? null : v; };
-  var _bool = function(id) { var v = _val(id); return v === 'true' ? true : v === 'false' ? false : null; };
-
-  var existingDims = editingId ? (prospects.find(function(x){return x.id===editingId;})?.dims || {}) : {};
-
-  var kpi_commerciali = {
-    tasso_conversione_pct: _num('kpi-conv'),
-    ciclo_vendita_gg: _num('kpi-ciclo'),
-    valore_medio_ordine: _num('kpi-ticket'),
-    concentrazione_top3_pct: _num('kpi-conc'),
-    tasso_riacquisto_pct: _num('kpi-riacq'),
-    nuovi_clienti_anno: _num('kpi-nuovi'),
-    clienti_attivi: _num('kpi-attivi'),
-    fatturato_referral_pct: _num('kpi-referral'),
-    cac: _num('kpi-cac'),
-    dso_gg: _num('kpi-dso'),
-    mrr: _num('kpi-mrr'),
-  };
+  var _val = function(id) { return (document.getElementById(id)?.value || '').trim(); };
 
   var data = {
     nome: nome,
-    forma_giuridica: _val('f-forma'),
     settore: _val('f-settore'),
+    forma_giuridica: _val('f-forma'),
     referente: _val('f-referente'),
     ruolo: _val('f-ruolo'),
     email: _val('f-email'),
     telefono: _val('f-tel'),
     sede_legale: _val('f-sede'),
-    anno_fondazione: _val('f-anno'),
-    codice_ateco: _val('f-ateco'),
-    sito_web: _val('f-sito'),
-    soci_struttura: _val('f-soci'),
-    dipendenti_diretti: _num('f-dipdiretti'),
-    collaboratori: _num('f-collab'),
-    certificazioni: _val('f-cert'),
-    fatturato_anno_1: _num('f-fat1'),
-    margine_pct: _num('f-margine'),
-    utile_netto: _num('f-utile'),
-    costi_fissi_mensili: _num('f-costifissi'),
-    export_attivo: _bool('f-export'),
-    export_pct: _num('f-exportpct'),
-    immobili_proprieta: _bool('f-immobili'),
-    immobili_valore: _num('f-immovalor'),
-    banche_riferimento: _val('f-banche'),
-    leasing_rata_mensile: _num('f-leasing'),
-    leasing_note: _val('f-leasingnote'),
     note: _val('f-note'),
-    note_strategiche: _val('f-notestrategiche'),
-    tool_crm: _val('f-tcrm'),
-    tool_erp: _val('f-terp'),
-    tool_ecommerce: _val('f-tecom'),
-    tool_marketing: _val('f-tmkt'),
-    tool_altri: _val('f-taltri'),
-    fatturato_top: _num('kpi-fattop'),
-    kpi_commerciali: kpi_commerciali,
-    dims: existingDims,
     color: editingId ? (prospects.find(function(x){return x.id===editingId;})?.color || assignNextColor()) : assignNextColor(),
   };
 
