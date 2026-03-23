@@ -2924,41 +2924,6 @@ function _fasciaFromAnno1(fatturato_anno_1) {
 
 var PESI_BY_SETTORE = 
 {
-  "manifatturiero_meccanica":        {"vendite":28,"pipeline":12,"team":12,"processi":10,"ricavi":10,"marketing":14,"sitoweb":8,"ecommerce":6},
-  "manifatturiero_automotive":       {"vendite":30,"pipeline":14,"team":12,"processi":11,"ricavi":11,"marketing":12,"sitoweb":6,"ecommerce":4},
-  "manifatturiero_packaging":        {"vendite":26,"pipeline":11,"team":11,"processi":10,"ricavi":10,"marketing":16,"sitoweb":9,"ecommerce":7},
-  "manifatturiero_cterzi":           {"vendite":30,"pipeline":13,"team":13,"processi":12,"ricavi":10,"marketing":12,"sitoweb":7,"ecommerce":3},
-  "manifatturiero_elettromeccanica": {"vendite":28,"pipeline":12,"team":12,"processi":11,"ricavi":12,"marketing":13,"sitoweb":8,"ecommerce":4},
-  "manifatturiero_tessile":          {"vendite":30,"pipeline":10,"team":11,"processi":8, "ricavi":10,"marketing":20,"sitoweb":7,"ecommerce":4},
-  "servizi_it":                      {"vendite":24,"pipeline":17,"team":15,"processi":9, "ricavi":13,"marketing":13,"sitoweb":7,"ecommerce":2},
-  "servizi_formazione":              {"vendite":24,"pipeline":16,"team":14,"processi":9, "ricavi":13,"marketing":14,"sitoweb":6,"ecommerce":4},
-  "edilizia_residenziale":           {"vendite":32,"pipeline":14,"team":12,"processi":10,"ricavi":12,"marketing":12,"sitoweb":6,"ecommerce":2},
-  "edilizia_impianti":               {"vendite":30,"pipeline":14,"team":12,"processi":10,"ricavi":14,"marketing":12,"sitoweb":6,"ecommerce":2},
-  "edilizia_ristrutturazioni":       {"vendite":32,"pipeline":13,"team":12,"processi":10,"ricavi":11,"marketing":13,"sitoweb":6,"ecommerce":3},
-  "edilizia_serramenti":             {"vendite":26,"pipeline":13,"team":11,"processi":9, "ricavi":11,"marketing":12,"sitoweb":10,"ecommerce":8},
-  "commercio_distribuzione_industriale": {"vendite":30,"pipeline":14,"team":10,"processi":8,"ricavi":14,"marketing":10,"sitoweb":6,"ecommerce":8},
-  "commercio_ingrosso_alimentare":   {"vendite":28,"pipeline":13,"team":10,"processi":8, "ricavi":16,"marketing":10,"sitoweb":5,"ecommerce":10},
-  "commercio_materiali_edili":       {"vendite":30,"pipeline":13,"team":10,"processi":8, "ricavi":14,"marketing":11,"sitoweb":7,"ecommerce":7},
-  "commercio_ricambi_auto":          {"vendite":28,"pipeline":12,"team":10,"processi":8, "ricavi":15,"marketing":9, "sitoweb":6,"ecommerce":12},
-  "commercio_auto_moto_usato":       {"vendite":28,"pipeline":14,"team":12,"processi":9, "ricavi":14,"marketing":10,"sitoweb":7,"ecommerce":6},
-  "commercio_auto_moto_nuovo":       {"vendite":24,"pipeline":14,"team":13,"processi":10,"ricavi":14,"marketing":11,"sitoweb":8,"ecommerce":6},
-  "commercio_abbigliamento_ingrosso":{"vendite":28,"pipeline":12,"team":10,"processi":8, "ricavi":14,"marketing":14,"sitoweb":7,"ecommerce":7},
-  "commercio_elettronica":           {"vendite":26,"pipeline":13,"team":10,"processi":8, "ricavi":13,"marketing":11,"sitoweb":7,"ecommerce":12},
-  "commercio_abbigliamento_dettaglio":{"vendite":20,"pipeline":10,"team":10,"processi":8,"ricavi":10,"marketing":18,"sitoweb":6,"ecommerce":18},
-  "commercio_orologi_gioielli":      {"vendite":28,"pipeline":16,"team":12,"processi":8, "ricavi":14,"marketing":12,"sitoweb":6,"ecommerce":4},
-  "alimentare_trasformazione":       {"vendite":28,"pipeline":10,"team":10,"processi":8, "ricavi":16,"marketing":16,"sitoweb":6,"ecommerce":6},
-  "alimentare_vini":                 {"vendite":24,"pipeline":10,"team":10,"processi":7, "ricavi":14,"marketing":22,"sitoweb":7,"ecommerce":6},
-  "alimentare_forno":                {"vendite":30,"pipeline":10,"team":10,"processi":8, "ricavi":22,"marketing":10,"sitoweb":5,"ecommerce":5},
-  "alimentare_conserve":             {"vendite":28,"pipeline":10,"team":10,"processi":8, "ricavi":16,"marketing":16,"sitoweb":6,"ecommerce":6},
-  "alimentare_ingredienti":          {"vendite":26,"pipeline":11,"team":11,"processi":9, "ricavi":16,"marketing":15,"sitoweb":7,"ecommerce":5},
-  "tech_saas":                       {"vendite":16,"pipeline":18,"team":14,"processi":8, "ricavi":14,"marketing":18,"sitoweb":8,"ecommerce":4},
-  "tech_system_integrator":          {"vendite":24,"pipeline":16,"team":14,"processi":9, "ricavi":14,"marketing":13,"sitoweb":7,"ecommerce":3},
-  "tech_digital_agency":             {"vendite":22,"pipeline":16,"team":14,"processi":8, "ricavi":14,"marketing":16,"sitoweb":8,"ecommerce":2},
-  "tech_automazione":                {"vendite":26,"pipeline":14,"team":14,"processi":10,"ricavi":14,"marketing":13,"sitoweb":7,"ecommerce":2}
-}
-;
-var PESI_BY_SETTORE = 
-{
   "manifatturiero_meccanica": {
     "vendite": 28,
     "pipeline": 12,
