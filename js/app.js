@@ -2940,6 +2940,8 @@ var PESI_BY_SETTORE =
   "commercio_ingrosso_alimentare":   {"vendite":28,"pipeline":13,"team":10,"processi":8, "ricavi":16,"marketing":10,"sitoweb":5,"ecommerce":10},
   "commercio_materiali_edili":       {"vendite":30,"pipeline":13,"team":10,"processi":8, "ricavi":14,"marketing":11,"sitoweb":7,"ecommerce":7},
   "commercio_ricambi_auto":          {"vendite":28,"pipeline":12,"team":10,"processi":8, "ricavi":15,"marketing":9, "sitoweb":6,"ecommerce":12},
+  "commercio_auto_moto_usato":       {"vendite":28,"pipeline":14,"team":12,"processi":9, "ricavi":14,"marketing":10,"sitoweb":7,"ecommerce":6},
+  "commercio_auto_moto_nuovo":       {"vendite":24,"pipeline":14,"team":13,"processi":10,"ricavi":14,"marketing":11,"sitoweb":8,"ecommerce":6},
   "commercio_abbigliamento_ingrosso":{"vendite":28,"pipeline":12,"team":10,"processi":8, "ricavi":14,"marketing":14,"sitoweb":7,"ecommerce":7},
   "commercio_elettronica":           {"vendite":26,"pipeline":13,"team":10,"processi":8, "ricavi":13,"marketing":11,"sitoweb":7,"ecommerce":12},
   "commercio_abbigliamento_dettaglio":{"vendite":20,"pipeline":10,"team":10,"processi":8,"ricavi":10,"marketing":18,"sitoweb":6,"ecommerce":18},
@@ -3116,6 +3118,26 @@ var PESI_BY_SETTORE =
     "marketing": 9,
     "sitoweb": 6,
     "ecommerce": 12
+  },
+  "commercio_auto_moto_usato": {
+    "vendite": 28,
+    "pipeline": 14,
+    "team": 12,
+    "processi": 9,
+    "ricavi": 14,
+    "marketing": 10,
+    "sitoweb": 7,
+    "ecommerce": 6
+  },
+  "commercio_auto_moto_nuovo": {
+    "vendite": 24,
+    "pipeline": 14,
+    "team": 13,
+    "processi": 10,
+    "ricavi": 14,
+    "marketing": 11,
+    "sitoweb": 8,
+    "ecommerce": 6
   },
   "commercio_abbigliamento_ingrosso": {
     "vendite": 28,
@@ -3716,7 +3738,7 @@ function _buildGraficoTimeline(p) {
   const sessioni = history.length;
 
   // Calcola fatturato proiettato 12m da _calcolaImpattoCumulativo se disponibile
-  let fat12m = null, fat12pct = null, breakeven = null, roi24 = null;
+  let fat12m = null, fat12pct = null, breakeven = null, roi24 = null, costoMensile = 0, costoTot6 = null;
   try {
     const ic = _calcolaImpattoCumulativo(p);
     if (ic) {
@@ -3724,6 +3746,8 @@ function _buildGraficoTimeline(p) {
       fat12pct = ic.pct12 ? Math.round((ic.pct12[0] + ic.pct12[1]) / 2) : null;
       breakeven = ic.sostenibilita ? ic.sostenibilita.breakeven : null;
       roi24 = (ic.roiMin !== null && ic.roiMax !== null) ? ((ic.roiMin + ic.roiMax) / 2).toFixed(1) : null;
+      costoMensile = ic.costoMensileTot || 0;
+      costoTot6 = ic.costoTot6 || null;
     }
   } catch(e) {}
 
@@ -3731,6 +3755,8 @@ function _buildGraficoTimeline(p) {
   const fat12PctStr = fat12pct ? '+'+fat12pct+'%' : '';
   const breakevenStr = breakeven ? breakeven+'m' : '\u2014';
   const roiStr = roi24 ? roi24+'x' : '\u2014';
+  const costoLabel = costoMensile > 0 ? costoMensile.toLocaleString('it-IT') + '\u20AC/mese' : '\u2014';
+  const costo6Str = costoTot6 ? Math.round((costoTot6[0]+costoTot6[1])/2).toLocaleString('it-IT')+'\u20AC in 6 mesi' : '';
 
   // Metric cards
   const metriche =
@@ -3754,6 +3780,11 @@ function _buildGraficoTimeline(p) {
         '<div class="tl-metric-label">Breakeven piano</div>' +
         '<div class="tl-metric-val tl-orange">' + breakevenStr + '</div>' +
         '<div class="tl-metric-sub">ROI 24m: ' + roiStr + '</div>' +
+      '</div>' +
+      '<div class="tl-metric">' +
+        '<div class="tl-metric-label">Investimento mensile</div>' +
+        '<div class="tl-metric-val gmc-investimento" style="color:var(--gold,#C8A84B)">' + costoLabel + '</div>' +
+        '<div class="tl-metric-sub">' + costo6Str + '</div>' +
       '</div>' +
     '</div>';
 
@@ -4664,6 +4695,12 @@ function previewTarget() {
   if (barTgtEl)  barTgtEl.style.width = sPreview + '%';
   if (baseValEl) baseValEl.textContent = calcScore(p) + '/100';
   if (rstElP)    rstElP.textContent = sPreview > sLivePreview ? '↑ ' + sPreview + ' con il piano' : '';
+  // Aggiorna costo mensile in tempo reale
+  const ic2 = _calcolaImpattoCumulativo({ ...p, targets: preview });
+  const costoEl = document.querySelector('.gmc-investimento');
+  if (costoEl && ic2?.costoMensileTot) {
+    costoEl.textContent = ic2.costoMensileTot.toLocaleString('it-IT') + '€/mese';
+  }
 }
 
 function updateTargetDesc(dimId) {
