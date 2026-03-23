@@ -3906,7 +3906,7 @@ function _buildGraficoTimeline(p) {
       var fmtR = function(arr) { return arr ? fmtF(arr[0])+'\u2013'+fmtF(arr[1]) : '\u2014'; };
       var fmtP = function(arr) { return arr ? '+'+arr[0]+'\u2013'+arr[1]+'%' : '\u2014'; };
 
-      var costoMensile = ic2.costoMensileTot ? '\u2248'+fmtF(ic2.costoMensileTot)+'/mese' : '\u2014';
+      var costoMensileStr = ic2.costoMensileTot ? '\u2248'+fmtF(ic2.costoMensileTot)+'/mese' : '\u2014';
       var totale24 = ic2.costoTot24 ? '\u2248 '+fmtF(ic2.costoTot24)+' totali 24m' : '';
       var roi24str2 = (ic2.roiMin !== null && ic2.roiMax !== null) ? ((ic2.roiMin + ic2.roiMax) / 2).toFixed(1)+'x' : '\u2014';
 
@@ -3915,7 +3915,7 @@ function _buildGraficoTimeline(p) {
           '<td class="tl-proj-td tl-proj-label">' + r.label + '</td>' +
           '<td class="tl-proj-td tl-proj-fat">' + fmtR(r.fat) + '</td>' +
           '<td class="tl-proj-td tl-proj-pct">' + fmtP(r.pct) + '</td>' +
-          '<td class="tl-proj-td tl-proj-cost">' + costoMensile + '</td>' +
+          '<td class="tl-proj-td tl-proj-cost">' + costoMensileStr + '</td>' +
         '</tr>';
       }).join('');
 
