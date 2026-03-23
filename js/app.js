@@ -3235,6 +3235,7 @@ var PESI_BY_SETTORE =
     "ecommerce": 2
   }
 };
+window.PESI_BY_SETTORE = PESI_BY_SETTORE;
 
 // ─── MODELLO CRESCITA COMPOSTA CON DIMINISHING RETURNS + PENALITÀ SBILANCIAMENTO ─
 // Formula base: crescita_totale = 1 - ∏(1 - contributo_i × peso_i/100 × efficienza_i)
