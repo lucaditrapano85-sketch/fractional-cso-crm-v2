@@ -3428,10 +3428,10 @@ const UNITA_PER_STEP_AUTOMOTIVE = {
       '4-5': { contatti_mese: 12, conv_pct: 0.35 },
     },
     ecommerce: {
-      '1-2': { margine_extra_pct: 0.05 },
-      '2-3': { margine_extra_pct: 0.08 },
-      '3-4': { margine_extra_pct: 0.06 },
-      '4-5': { margine_extra_pct: 0.04 },
+      '1-2': { margine_extra_pct: 0.05, unita_piccolo: 0.5,  unita_grande: 4  },
+      '2-3': { margine_extra_pct: 0.08, unita_piccolo: 1.0,  unita_grande: 8  },
+      '3-4': { margine_extra_pct: 0.06, unita_piccolo: 1.5,  unita_grande: 12 },
+      '4-5': { margine_extra_pct: 0.04, unita_piccolo: 2.0,  unita_grande: 17 },
     },
     processi: {
       '1-2': { efficienza_pct: 0.05 },
@@ -3543,8 +3543,26 @@ function _calcolaImpattoUnitario(settore, dimId, stepKey, p) {
     return calcPct(dati.moltiplicatore * 0.7);
   }
   if (dati.margine_extra_pct) {
-    // Ecommerce/approvvigionamento: miglioramento margine
-    return calcPct(dati.margine_extra_pct);
+    // Approvvigionamento auto usato — basato su fatturato
+    const fatCliente = p?.fatturato_anno_1 || 0;
+    const vmoCliente = p?.kpi_commerciali?.valore_medio_ordine || 10000;
+
+    // Dealer piccolo (<2M€): +1-2 acquisti/mese in più = migliore selezione stock
+    // Dealer medio/grande (>2M€): +8-17 auto/mese in più
+    let unitaAggiuntiveMese;
+    if (fatCliente < 2000000) {
+      // Scala per step: 1→2: +0.5/mese, 2→3: +1/mese, 3→4: +1.5/mese, 4→5: +2/mese
+      const scalaStep = { '1-2': 0.5, '2-3': 1.0, '3-4': 1.5, '4-5': 2.0 };
+      unitaAggiuntiveMese = scalaStep[stepKey] || dati.margine_extra_pct;
+      const fatAggiuntivo = unitaAggiuntiveMese * 12 * vmoCliente;
+      return calcPct(fatAggiuntivo / fat);
+    } else {
+      // Dealer grande: scala proporzionale
+      const scalaStep = { '1-2': 4, '2-3': 8, '3-4': 12, '4-5': 17 };
+      unitaAggiuntiveMese = scalaStep[stepKey] || 4;
+      const fatAggiuntivo = unitaAggiuntiveMese * 12 * vmoCliente;
+      return calcPct(fatAggiuntivo / fat);
+    }
   }
   if (dati.upsell_pct || dati.efficienza_pct) {
     return calcPct(dati.upsell_pct || dati.efficienza_pct);
