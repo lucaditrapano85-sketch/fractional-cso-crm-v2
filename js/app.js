@@ -3400,6 +3400,157 @@ function _calcolaPenalita(settore, dimId, targets) {
   return Math.min(penalita, 0.5);
 }
 
+// ── IMPATTO UNITARIO AUTOMOTIVE ──────────────────────────────────────
+const UNITA_PER_STEP_AUTOMOTIVE = {
+  commercio_auto_moto_usato: {
+    vendite: {
+      '1-2': { unita_mese: 1.0,  tipo: 'auto' },
+      '2-3': { unita_mese: 2.5,  tipo: 'auto' },
+      '3-4': { unita_mese: 4.0,  tipo: 'auto' },
+      '4-5': { unita_mese: 6.0,  tipo: 'auto' },
+    },
+    pipeline: {
+      '1-2': { recupero_pct: 0.15 },
+      '2-3': { recupero_pct: 0.30 },
+      '3-4': { recupero_pct: 0.15 },
+      '4-5': { recupero_pct: 0.10 },
+    },
+    team: {
+      '1-2': { moltiplicatore: 0.10 },
+      '2-3': { moltiplicatore: 0.20 },
+      '3-4': { moltiplicatore: 0.15 },
+      '4-5': { moltiplicatore: 0.10 },
+    },
+    marketing: {
+      '1-2': { contatti_mese: 2,  conv_pct: 0.20 },
+      '2-3': { contatti_mese: 5,  conv_pct: 0.25 },
+      '3-4': { contatti_mese: 8,  conv_pct: 0.30 },
+      '4-5': { contatti_mese: 12, conv_pct: 0.35 },
+    },
+    ecommerce: {
+      '1-2': { margine_extra_pct: 0.05 },
+      '2-3': { margine_extra_pct: 0.08 },
+      '3-4': { margine_extra_pct: 0.06 },
+      '4-5': { margine_extra_pct: 0.04 },
+    },
+    processi: {
+      '1-2': { efficienza_pct: 0.05 },
+      '2-3': { efficienza_pct: 0.08 },
+      '3-4': { efficienza_pct: 0.06 },
+      '4-5': { efficienza_pct: 0.04 },
+    },
+    ricavi: {
+      '1-2': { upsell_pct: 0.04 },
+      '2-3': { upsell_pct: 0.07 },
+      '3-4': { upsell_pct: 0.05 },
+      '4-5': { upsell_pct: 0.04 },
+    },
+    sitoweb: {
+      '1-2': { contatti_mese: 1,  conv_pct: 0.15 },
+      '2-3': { contatti_mese: 3,  conv_pct: 0.20 },
+      '3-4': { contatti_mese: 5,  conv_pct: 0.25 },
+      '4-5': { contatti_mese: 7,  conv_pct: 0.30 },
+    },
+  },
+  commercio_auto_moto_nuovo: {
+    vendite: {
+      '1-2': { unita_mese: 0.5,  tipo: 'auto' },
+      '2-3': { unita_mese: 1.5,  tipo: 'auto' },
+      '3-4': { unita_mese: 2.5,  tipo: 'auto' },
+      '4-5': { unita_mese: 3.5,  tipo: 'auto' },
+    },
+    pipeline: {
+      '1-2': { recupero_pct: 0.10 },
+      '2-3': { recupero_pct: 0.20 },
+      '3-4': { recupero_pct: 0.15 },
+      '4-5': { recupero_pct: 0.10 },
+    },
+    team: {
+      '1-2': { moltiplicatore: 0.08 },
+      '2-3': { moltiplicatore: 0.15 },
+      '3-4': { moltiplicatore: 0.12 },
+      '4-5': { moltiplicatore: 0.08 },
+    },
+    marketing: {
+      '1-2': { contatti_mese: 3,  conv_pct: 0.15 },
+      '2-3': { contatti_mese: 6,  conv_pct: 0.20 },
+      '3-4': { contatti_mese: 10, conv_pct: 0.25 },
+      '4-5': { contatti_mese: 15, conv_pct: 0.30 },
+    },
+    ecommerce: {
+      '1-2': { margine_extra_pct: 0.03 },
+      '2-3': { margine_extra_pct: 0.05 },
+      '3-4': { margine_extra_pct: 0.04 },
+      '4-5': { margine_extra_pct: 0.03 },
+    },
+    processi: {
+      '1-2': { efficienza_pct: 0.04 },
+      '2-3': { efficienza_pct: 0.07 },
+      '3-4': { efficienza_pct: 0.05 },
+      '4-5': { efficienza_pct: 0.03 },
+    },
+    ricavi: {
+      '1-2': { upsell_pct: 0.05 },
+      '2-3': { upsell_pct: 0.08 },
+      '3-4': { upsell_pct: 0.06 },
+      '4-5': { upsell_pct: 0.04 },
+    },
+    sitoweb: {
+      '1-2': { contatti_mese: 2,  conv_pct: 0.10 },
+      '2-3': { contatti_mese: 5,  conv_pct: 0.15 },
+      '3-4': { contatti_mese: 8,  conv_pct: 0.20 },
+      '4-5': { contatti_mese: 12, conv_pct: 0.25 },
+    },
+  },
+};
+
+function _calcolaImpattoUnitario(settore, dimId, stepKey, p) {
+  const dati = UNITA_PER_STEP_AUTOMOTIVE?.[settore]?.[dimId]?.[stepKey];
+  if (!dati) return null;
+
+  const fat = p?.fatturato_anno_1 || 1;
+  const vmo = p?.kpi_commerciali?.valore_medio_ordine || null;
+  const tconv = (p?.kpi_commerciali?.tasso_conversione_pct || 25) / 100;
+
+  // Curva di ramp-up: a 6m il 40%, a 12m il 75%, a 24m il 100%
+  const ramp = { 6: 0.40, 12: 0.75, 24: 1.00 };
+
+  const calcPct = (fattoreAnnuo) => ({
+    pct_6m:  [Math.round(fattoreAnnuo * ramp[6]  * 0.85 * 1000) / 10, Math.round(fattoreAnnuo * ramp[6]  * 1.15 * 1000) / 10],
+    pct_12m: [Math.round(fattoreAnnuo * ramp[12] * 0.85 * 1000) / 10, Math.round(fattoreAnnuo * ramp[12] * 1.15 * 1000) / 10],
+    pct_24m: [Math.round(fattoreAnnuo * ramp[24] * 0.85 * 1000) / 10, Math.round(fattoreAnnuo * ramp[24] * 1.15 * 1000) / 10],
+  });
+
+  if (dati.unita_mese && vmo) {
+    // Vendite: unità aggiuntive × valore medio ordine
+    const fatAggiuntivo = dati.unita_mese * 12 * vmo;
+    return calcPct(fatAggiuntivo / fat);
+  }
+  if (dati.recupero_pct) {
+    // Pipeline: recupero lead persi × tasso conversione × vmo
+    const leadRecuperati = fat / (vmo || 10000) * dati.recupero_pct;
+    const fatRec = leadRecuperati * (vmo || 10000) * tconv;
+    return calcPct(fatRec / fat);
+  }
+  if (dati.contatti_mese) {
+    // Marketing/Sitoweb: contatti aggiuntivi × conversione × vmo
+    const fatAggiuntivo = dati.contatti_mese * 12 * (dati.conv_pct || tconv) * (vmo || 10000);
+    return calcPct(fatAggiuntivo / fat);
+  }
+  if (dati.moltiplicatore) {
+    // Team: moltiplicatore sul fatturato vendite esistente
+    return calcPct(dati.moltiplicatore * 0.7);
+  }
+  if (dati.margine_extra_pct) {
+    // Ecommerce/approvvigionamento: miglioramento margine
+    return calcPct(dati.margine_extra_pct);
+  }
+  if (dati.upsell_pct || dati.efficienza_pct) {
+    return calcPct(dati.upsell_pct || dati.efficienza_pct);
+  }
+  return null;
+}
+
 function _calcolaImpattoCumulativo(p) {
   if (!p) return null;
   if (!p.fatturato_anno_1) return null;
@@ -3491,7 +3642,8 @@ function _calcolaImpattoCumulativo(p) {
       const tgt = targets[id] || 0;
       let contributoTot = 0;
       for (let step = cur; step < tgt; step++) {
-        const imp = _getImpatto(settore, id, step + '-' + (step+1));
+        const stepKey = step + '-' + (step+1);
+        const imp = _calcolaImpattoUnitario(settore, id, stepKey, p) || _getImpatto(settore, id, stepKey);
         if (imp) {
           const pctArr = orizzonte === 6 ? imp.pct_6m : orizzonte === 12 ? imp.pct_12m : imp.pct_24m;
           const midPct = (pctArr[0] + pctArr[1]) / 2 / 100;
