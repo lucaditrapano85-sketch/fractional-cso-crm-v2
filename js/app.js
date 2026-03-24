@@ -3543,26 +3543,50 @@ function _calcolaImpattoUnitario(settore, dimId, stepKey, p) {
     return calcPct(dati.moltiplicatore * 0.7);
   }
   if (dati.margine_extra_pct) {
-    // Approvvigionamento auto usato — basato su fatturato
     const fatCliente = p?.fatturato_anno_1 || 0;
     const vmoCliente = p?.kpi_commerciali?.valore_medio_ordine || 10000;
+    const margineVeicolo = 0.22; // 22% medio tra 20-25%
 
-    // Dealer piccolo (<2M€): +1-2 acquisti/mese in più = migliore selezione stock
-    // Dealer medio/grande (>2M€): +8-17 auto/mese in più
-    let unitaAggiuntiveMese;
-    if (fatCliente < 2000000) {
-      // Scala per step: 1→2: +0.5/mese, 2→3: +1/mese, 3→4: +1.5/mese, 4→5: +2/mese
-      const scalaStep = { '1-2': 0.5, '2-3': 1.0, '3-4': 1.5, '4-5': 2.0 };
-      unitaAggiuntiveMese = scalaStep[stepKey] || dati.margine_extra_pct;
-      const fatAggiuntivo = unitaAggiuntiveMese * 12 * vmoCliente;
-      return calcPct(fatAggiuntivo / fat);
-    } else {
-      // Dealer grande: scala proporzionale
-      const scalaStep = { '1-2': 4, '2-3': 8, '3-4': 12, '4-5': 17 };
-      unitaAggiuntiveMese = scalaStep[stepKey] || 4;
-      const fatAggiuntivo = unitaAggiuntiveMese * 12 * vmoCliente;
-      return calcPct(fatAggiuntivo / fat);
-    }
+    // Forbice veicoli aggiuntivi per mese per dealer piccolo (<2M€)
+    const forbicePiccolo = {
+      '1-2': [0.5, 1.0],
+      '2-3': [1.0, 2.0],
+      '3-4': [2.0, 4.0],
+      '4-5': [4.0, 6.0],
+    };
+    // Forbice per dealer grande (>2M€)
+    const forbiceGrande = {
+      '1-2': [2,  5 ],
+      '2-3': [5,  10],
+      '3-4': [10, 20],
+      '4-5': [20, 35],
+    };
+
+    const forbice = fatCliente < 2000000 ? forbicePiccolo : forbiceGrande;
+    const [minAuto, maxAuto] = forbice[stepKey] || [0.5, 1.0];
+
+    // Fatturato aggiuntivo = veicoli × VMO (prezzo vendita)
+    // Margine netto = veicoli × VMO × margine
+    // Usiamo il margine come impatto reale sul fatturato netto
+    const fatAggMin = minAuto * 12 * vmoCliente * margineVeicolo;
+    const fatAggMax = maxAuto * 12 * vmoCliente * margineVeicolo;
+
+    // Curva ramp-up
+    const ramp = { 6: 0.40, 12: 0.75, 24: 1.00 };
+    return {
+      pct_6m:  [
+        Math.round(fatAggMin * ramp[6]  / fat * 1000) / 10,
+        Math.round(fatAggMax * ramp[6]  / fat * 1000) / 10
+      ],
+      pct_12m: [
+        Math.round(fatAggMin * ramp[12] / fat * 1000) / 10,
+        Math.round(fatAggMax * ramp[12] / fat * 1000) / 10
+      ],
+      pct_24m: [
+        Math.round(fatAggMin * ramp[24] / fat * 1000) / 10,
+        Math.round(fatAggMax * ramp[24] / fat * 1000) / 10
+      ],
+    };
   }
   if (dati.upsell_pct || dati.efficienza_pct) {
     return calcPct(dati.upsell_pct || dati.efficienza_pct);
