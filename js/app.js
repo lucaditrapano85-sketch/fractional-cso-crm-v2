@@ -3378,7 +3378,10 @@ function _getDipendenze(settore, dimId) {
 
 
 function _calcolaPenalita(settore, dimId, targets) {
-  const dipendenze = MATRICE_DIPENDENZE[dimId] || [];
+  const matrice = (MATRICE_DIPENDENZE_BY_SETTORE && MATRICE_DIPENDENZE_BY_SETTORE[settore])
+    ? MATRICE_DIPENDENZE_BY_SETTORE[settore]
+    : MATRICE_DIPENDENZE;
+  const dipendenze = matrice[dimId] || [];
   if (dipendenze.length === 0) return 0;
 
   const targetDim = targets[dimId] || 1;
@@ -3428,6 +3431,8 @@ function _calcolaImpattoCumulativo(p) {
     commercio_ingrosso:{vendite:0.30,pipeline:0.22,team:0.16,processi:0.11,ricavi:0.10,marketing:0.08,sitoweb:0.02,ecommerce:0.01},
     commercio_dettaglio:{vendite:0.22,pipeline:0.16,team:0.14,processi:0.09,ricavi:0.08,marketing:0.15,sitoweb:0.08,ecommerce:0.08},
     commercio_auto:{vendite:0.30,pipeline:0.22,team:0.16,processi:0.10,ricavi:0.09,marketing:0.08,sitoweb:0.03,ecommerce:0.02},
+    commercio_auto_moto_usato:{vendite:0.32,pipeline:0.18,team:0.14,processi:0.08,ricavi:0.10,marketing:0.08,sitoweb:0.04,ecommerce:0.06},
+    commercio_auto_moto_nuovo:{vendite:0.28,pipeline:0.18,team:0.15,processi:0.09,ricavi:0.10,marketing:0.10,sitoweb:0.06,ecommerce:0.04},
     servizi:{vendite:0.27,pipeline:0.24,team:0.20,processi:0.12,ricavi:0.09,marketing:0.06,sitoweb:0.01,ecommerce:0.01},
     servizi_it:{vendite:0.25,pipeline:0.23,team:0.20,processi:0.12,ricavi:0.09,marketing:0.08,sitoweb:0.02,ecommerce:0.01},
     servizi_logistica:{vendite:0.29,pipeline:0.22,team:0.18,processi:0.14,ricavi:0.09,marketing:0.06,sitoweb:0.01,ecommerce:0.01},

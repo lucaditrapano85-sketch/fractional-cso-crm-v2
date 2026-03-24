@@ -812,6 +812,30 @@ const MATRICE_DIPENDENZE = {
   sitoweb:   ['marketing'],
 };
 
+const MATRICE_DIPENDENZE_BY_SETTORE = {
+  commercio_auto_moto_usato: {
+    vendite:   ['pipeline', 'team', 'ecommerce'],
+    pipeline:  ['vendite', 'sitoweb'],
+    team:      ['processi'],
+    processi:  ['team'],
+    ricavi:    ['vendite', 'pipeline', 'ecommerce'],
+    marketing: ['sitoweb', 'ecommerce'],
+    sitoweb:   ['marketing', 'ecommerce'],
+    ecommerce: ['ricavi'],
+  },
+  commercio_auto_moto_nuovo: {
+    vendite:   ['pipeline', 'team'],
+    pipeline:  ['vendite', 'sitoweb'],
+    team:      ['processi'],
+    processi:  ['team'],
+    ricavi:    ['vendite', 'pipeline'],
+    marketing: ['sitoweb'],
+    sitoweb:   ['marketing'],
+    ecommerce: ['marketing', 'sitoweb'],
+  },
+};
+window.MATRICE_DIPENDENZE_BY_SETTORE = MATRICE_DIPENDENZE_BY_SETTORE;
+
 const BENCHMARK_KPI = {
 
   // ─── MANIFATTURIERO ───────────────────────────────────────────────
