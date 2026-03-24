@@ -222,6 +222,13 @@ function renderListinoServizi(macro) {
       var rawDesc = (azioniDim && azioniDim[s]) ? azioniDim[s] : '';
       var firstSentence = rawDesc.split('.')[0].trim();
       var stepDesc = firstSentence.length > 10 ? firstSentence + '.' : STEP_DESC[s];
+      // Per automotive usa dettagli specifici
+      var p = typeof prospects !== 'undefined' && typeof currentId !== 'undefined' ? prospects.find(function(x){return x.id===currentId}) : null;
+      var isAutomotive = ['commercio_auto_moto_usato','commercio_auto_moto_nuovo'].indexOf(p && p.settore ? p.settore : '') >= 0;
+      if (isAutomotive && typeof getStepDetail === 'function') {
+        var detail = getStepDetail(p.settore, dim, s);
+        if (detail) stepDesc = detail.chi + ' \u2014 ' + detail.cosa;
+      }
       return '<div class="ls-step-row">' +
         '<div class="ls-step-left">' +
           '<div class="ls-step-badge">Step ' + s + '</div>' +
@@ -3721,6 +3728,115 @@ function _calcolaImpattoUnitario(settore, dimId, stepKey, p) {
 }
 window._calcolaImpattoUnitario = _calcolaImpattoUnitario;
 
+const STEP_DETAIL_BY_SETTORE = {
+  commercio_auto_moto_usato: {
+    vendite: {
+      '1-2': { chi:'Titolare + supporto interno', cosa:'Identificare 1-2 tecnici interni che affiancano nelle visite e nei preventivi', costo_mensile:300, costo_setup:0, tempo_mesi:1 },
+      '2-3': { chi:'Venditore junior', cosa:'Assunzione venditore junior con esperienza usato — gestisce trattative e permute in autonomia', costo_mensile:2500, costo_setup:500, tempo_mesi:3 },
+      '3-4': { chi:'Commerciale senior', cosa:'Commerciale interno con portafoglio clienti assegnato, obiettivi mensili e autonomia nelle trattative', costo_mensile:3500, costo_setup:1000, tempo_mesi:2 },
+      '4-5': { chi:'Responsabile vendite + rete', cosa:'Direzione commerciale con responsabile vendite, agenti di zona e key account per clienti fleet', costo_mensile:5000, costo_setup:2000, tempo_mesi:6 },
+    },
+    pipeline: {
+      '1-2': { chi:'Titolare', cosa:'Excel o Google Sheet per tracciare lead e follow-up', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '2-3': { chi:'CRM base', cosa:'CRM dedicato automotive (es. DealerSocket, Autoclix) con lead dai marketplace', costo_mensile:400, costo_setup:800, tempo_mesi:1 },
+      '3-4': { chi:'CRM avanzato', cosa:'CRM integrato con sito, marketplace e WhatsApp — automazione follow-up e reportistica', costo_mensile:800, costo_setup:1500, tempo_mesi:2 },
+      '4-5': { chi:'DMS completo', cosa:'Dealer Management System integrato con contabilità, stock e CRM — gestione completa del dealer', costo_mensile:1500, costo_setup:3000, tempo_mesi:3 },
+    },
+    team: {
+      '1-2': { chi:'Collaboratore interno', cosa:'Formare un collaboratore esistente sulla gestione clienti e le pratiche base', costo_mensile:200, costo_setup:0, tempo_mesi:2 },
+      '2-3': { chi:'Personale dedicato', cosa:'Almeno una persona dedicata esclusivamente alla vendita con obiettivi misurabili', costo_mensile:2000, costo_setup:500, tempo_mesi:3 },
+      '3-4': { chi:'Team strutturato', cosa:'Team con ruoli definiti: venditore, addetto permute, back office commerciale', costo_mensile:3000, costo_setup:1000, tempo_mesi:3 },
+      '4-5': { chi:'Manager + team', cosa:'Responsabile commerciale che coordina il team, gestisce gli obiettivi e i KPI', costo_mensile:4500, costo_setup:2000, tempo_mesi:6 },
+    },
+    processi: {
+      '1-2': { chi:'Titolare', cosa:'Check-list base per la valutazione permute e la consegna veicoli', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '2-3': { chi:'Consulente + strumenti', cosa:'Processo strutturato con contratti standard, valutazione permute con Eurotax e CRM', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
+      '3-4': { chi:'Software gestionale', cosa:'Gestionale per pratiche auto, finanziamenti e garanzie — riduce errori e tempi', costo_mensile:600, costo_setup:1000, tempo_mesi:2 },
+      '4-5': { chi:'DMS + automazione', cosa:'Processi completamente automatizzati con DMS — firma digitale, pratiche online, NPS automatico', costo_mensile:1000, costo_setup:2000, tempo_mesi:3 },
+    },
+    ricavi: {
+      '1-2': { chi:'Titolare', cosa:'Pricing assertivo su stock — smettere di svendere per paura, usare valori di mercato reali', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '2-3': { chi:'Strumenti pricing', cosa:'Abbonamento a tool di pricing (EurotaxGlass, DAT) per valutazione obiettiva dello stock', costo_mensile:300, costo_setup:0, tempo_mesi:1 },
+      '3-4': { chi:'Prodotti finanziari', cosa:'Accordi con finanziarie per proposta sistematica — ogni vendita include proposta finanziamento', costo_mensile:600, costo_setup:1000, tempo_mesi:2 },
+      '4-5': { chi:'Revenue management', cosa:'Ottimizzazione margini per segmento, fleet pricing, gestione garanzie estese come centro ricavo', costo_mensile:1200, costo_setup:2000, tempo_mesi:3 },
+    },
+    marketing: {
+      '1-2': { chi:'Titolare', cosa:'Presenza attiva su AutoScout24 e Subito con foto professionali — minimo 8 foto per veicolo', costo_mensile:200, costo_setup:300, tempo_mesi:1 },
+      '2-3': { chi:'Social media + portali', cosa:'Almeno 3 marketplace attivi + pagina Facebook/Instagram con post settimanali sullo stock', costo_mensile:600, costo_setup:1000, tempo_mesi:2 },
+      '3-4': { chi:'Agenzia/freelance digital', cosa:'Strategia digitale con Google Ads, remarketing e gestione attiva recensioni', costo_mensile:1200, costo_setup:2000, tempo_mesi:2 },
+      '4-5': { chi:'Marketing manager', cosa:'Responsabile marketing dedicato o agenzia strutturata — brand awareness locale e campagne integrate', costo_mensile:2500, costo_setup:4000, tempo_mesi:3 },
+    },
+    sitoweb: {
+      '1-2': { chi:'Web agency', cosa:'Sito base con stock aggiornato, contatti e richiesta informazioni', costo_mensile:100, costo_setup:500, tempo_mesi:1 },
+      '2-3': { chi:'Sito professionale', cosa:'Sito con stock in tempo reale, form di contatto, richiesta valutazione permuta online', costo_mensile:300, costo_setup:2000, tempo_mesi:2 },
+      '3-4': { chi:'Sito avanzato', cosa:'Sito con chat live, prenotazione test drive, finanziamento online e tracciamento lead', costo_mensile:600, costo_setup:4000, tempo_mesi:2 },
+      '4-5': { chi:'Sito integrato con DMS', cosa:'Sito completamente integrato con DMS — stock aggiornato in tempo reale, CRM automatico', costo_mensile:1000, costo_setup:6000, tempo_mesi:3 },
+    },
+    ecommerce: {
+      '1-2': { chi:'Titolare', cosa:'Iscrizione aste online base (BCA, Autorola) — primi acquisti fuori dalla rete permute', costo_mensile:300, costo_setup:0, tempo_mesi:1 },
+      '2-3': { chi:'Buyer part-time', cosa:'Diversificazione fonti: aste online attive + accordi con privati + acquisto da aziende', costo_mensile:800, costo_setup:500, tempo_mesi:2 },
+      '3-4': { chi:'Buyer dedicato', cosa:'Buyer full-time con accesso a aste fisiche, fleet aziendali e rientri leasing', costo_mensile:2800, costo_setup:1000, tempo_mesi:3 },
+      '4-5': { chi:'Strategia acquisti strutturata', cosa:'Team acquisti con KPI dedicati, partnership con noleggiatori e società leasing per flusso costante', costo_mensile:4500, costo_setup:2000, tempo_mesi:4 },
+    },
+  },
+  commercio_auto_moto_nuovo: {
+    vendite: {
+      '1-2': { chi:'Titolare + receptionist', cosa:'Il titolare struttura le visite — accoglienza standard, brochure aggiornate, follow-up post visita', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
+      '2-3': { chi:'Venditore junior', cosa:'Venditore con esperienza brand — gestisce trattative, finanziamenti e consegne', costo_mensile:2500, costo_setup:500, tempo_mesi:3 },
+      '3-4': { chi:'Senior dealer', cosa:'Senior con portafoglio clienti, obiettivi mensili e gestione autonoma delle trattative fleet', costo_mensile:3500, costo_setup:1000, tempo_mesi:2 },
+      '4-5': { chi:'Team vendite strutturato', cosa:'Team con responsabile, venditori per segmento (privati, fleet, km0) e KPI misurati', costo_mensile:5000, costo_setup:2000, tempo_mesi:6 },
+    },
+    pipeline: {
+      '1-2': { chi:'CRM base', cosa:'CRM per tracciare lead da sito e showroom — follow-up sistematico post visita', costo_mensile:300, costo_setup:500, tempo_mesi:1 },
+      '2-3': { chi:'CRM avanzato', cosa:'CRM integrato con DMS casa madre — tracciamento configuratori, test drive e pipeline', costo_mensile:600, costo_setup:1000, tempo_mesi:2 },
+      '3-4': { chi:'Marketing automation', cosa:'Lead nurturing automatico — email, SMS e remarketing per chi ha visitato ma non ha comprato', costo_mensile:1000, costo_setup:2000, tempo_mesi:2 },
+      '4-5': { chi:'DMS completo', cosa:'DMS integrato con casa madre — forecast, allocazioni e gestione ordini ottimizzata', costo_mensile:1500, costo_setup:3000, tempo_mesi:3 },
+    },
+    team: {
+      '1-2': { chi:'Formazione interna', cosa:'Formazione base su processo vendita e gestione obiezioni — almeno 1 giornata/anno', costo_mensile:100, costo_setup:500, tempo_mesi:1 },
+      '2-3': { chi:'Venditore dedicato', cosa:'Persona dedicata esclusivamente alla vendita con obiettivi mensili e incentivi', costo_mensile:2000, costo_setup:500, tempo_mesi:2 },
+      '3-4': { chi:'Team strutturato', cosa:'Ruoli definiti: venditori, fleet manager, addetto post-vendita commerciale', costo_mensile:3000, costo_setup:1000, tempo_mesi:3 },
+      '4-5': { chi:'Sales manager', cosa:'Responsabile commerciale che gestisce team, obiettivi, formazione e incentivi', costo_mensile:4000, costo_setup:2000, tempo_mesi:4 },
+    },
+    processi: {
+      '1-2': { chi:'Titolare', cosa:'Processo standard di consegna e follow-up post vendita — NPS base', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '2-3': { chi:'Consulente + DMS', cosa:'Processi di vendita documentati — dalla lead alla consegna, con tempi definiti per ogni fase', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
+      '3-4': { chi:'DMS + automazione', cosa:'Pratiche digitali, firma elettronica, gestione garanzie e richiami automatizzata', costo_mensile:600, costo_setup:1500, tempo_mesi:2 },
+      '4-5': { chi:'DMS integrato casa madre', cosa:'Integrazione completa con sistemi casa madre — ordini, allocazioni, garanzie e assistenza', costo_mensile:1000, costo_setup:2000, tempo_mesi:3 },
+    },
+    ricavi: {
+      '1-2': { chi:'Titolare', cosa:'Proposta sistematica di finanziamento e garanzia estesa su ogni vendita', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '2-3': { chi:'Accordo finanziaria', cosa:'Partnership strutturata con finanziaria — obiettivi di penetrazione finanziaria mensili', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
+      '3-4': { chi:'F&I manager', cosa:'Finance & Insurance manager dedicato — massimizza ricavi da servizi accessori per ogni vendita', costo_mensile:800, costo_setup:500, tempo_mesi:2 },
+      '4-5': { chi:'Revenue management', cosa:'Ottimizzazione mix km0/nuovo/usato, gestione allocazioni e pricing dinamico per segmento', costo_mensile:1200, costo_setup:1000, tempo_mesi:3 },
+    },
+    marketing: {
+      '1-2': { chi:'Titolare', cosa:'Google My Business ottimizzato + presenza sui portali con foto professionali', costo_mensile:200, costo_setup:300, tempo_mesi:1 },
+      '2-3': { chi:'Social + portali', cosa:'Strategia social attiva + campagne Google Ads locali per test drive e configuratori', costo_mensile:800, costo_setup:1000, tempo_mesi:2 },
+      '3-4': { chi:'Agenzia digital', cosa:'Campagne integrate — Google, Meta, remarketing + gestione attiva recensioni e reputation', costo_mensile:1500, costo_setup:2000, tempo_mesi:2 },
+      '4-5': { chi:'Marketing strutturato', cosa:'Brand building locale, eventi, partnership con aziende per fleet e campagne stagionali', costo_mensile:3000, costo_setup:5000, tempo_mesi:3 },
+    },
+    sitoweb: {
+      '1-2': { chi:'Web agency', cosa:'Sito con configuratore, stock km0 e form richiesta test drive', costo_mensile:150, costo_setup:1000, tempo_mesi:1 },
+      '2-3': { chi:'Sito avanzato', cosa:'Sito con chat, prenotazione test drive, finanziamento online e integrazione DMS', costo_mensile:400, costo_setup:3000, tempo_mesi:2 },
+      '3-4': { chi:'Sito integrato', cosa:'Integrazione con casa madre — stock aggiornato, configuratore ufficiale e lead automatici al CRM', costo_mensile:700, costo_setup:5000, tempo_mesi:2 },
+      '4-5': { chi:'Esperienza digitale completa', cosa:'Sito con tour virtuale showroom, acquisto online, firma digitale e consegna a domicilio', costo_mensile:1200, costo_setup:8000, tempo_mesi:4 },
+    },
+    ecommerce: {
+      '1-2': { chi:'Titolare', cosa:'Post-vendita base — tagliandi e revisioni gestite internamente o con officina convenzionata', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '2-3': { chi:'Accordo officina', cosa:'Accordo strutturato con officina autorizzata — garanzie gestite, recall automatici, NPS', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
+      '3-4': { chi:'Post-vendita strutturato', cosa:'Officina interna o partner dedicato — post-vendita come centro di ricavo con upsell attivo', costo_mensile:800, costo_setup:1500, tempo_mesi:3 },
+      '4-5': { chi:'After sales manager', cosa:'Responsabile after sales — fidelizzazione, contratti di manutenzione e gestione flotte', costo_mensile:2000, costo_setup:3000, tempo_mesi:4 },
+    },
+  },
+};
+window.STEP_DETAIL_BY_SETTORE = STEP_DETAIL_BY_SETTORE;
+
+function getStepDetail(settore, dimId, stepKey) {
+  return STEP_DETAIL_BY_SETTORE?.[settore]?.[dimId]?.[stepKey] || null;
+}
+window.getStepDetail = getStepDetail;
+
 function _calcolaImpattoCumulativo(p) {
   if (!p) return null;
   if (!p.fatturato_anno_1) return null;
@@ -4911,6 +5027,16 @@ function renderTargetEditor(p) {
     const tgtEffettivo = (tgt <= cur && tgt < 5) ? tgt + 1 : tgt;
     const tgtStepKey = (tgtEffettivo > 1) ? ((tgtEffettivo-1) + '-' + tgtEffettivo) : '1-2';
     const tgtDesc = azioniDim[tgtStepKey] || azioniDim[curStepKey] || '—';
+    const detail = getStepDetail(settore, d.id, tgtStepKey);
+    const detailHtml = detail ? `
+      <div class="step-detail-box">
+        <div class="step-detail-chi"><span class="step-detail-label">Chi/Cosa</span>${detail.chi} — ${detail.cosa}</div>
+        <div class="step-detail-costi">
+          <span class="step-detail-costo">${detail.costo_mensile > 0 ? '\u2248 '+detail.costo_mensile.toLocaleString('it-IT')+'\u20AC/mese' : 'Nessun costo aggiuntivo'}</span>
+          ${detail.costo_setup > 0 ? `<span class="step-detail-setup">+ ${detail.costo_setup.toLocaleString('it-IT')}\u20AC setup</span>` : ''}
+          <span class="step-detail-tempo">Operativo in ~${detail.tempo_mesi} ${detail.tempo_mesi === 1 ? 'mese' : 'mesi'}</span>
+        </div>
+      </div>` : '';
     const subObiettiviHtml = _buildSubObiettivi(d.id, cur, tgt, settore, azioniDone, azioniCustom, p);
     // Warning tetto strutturale
     const tettoSettore = (TETTO_BY_SETTORE[settore] || {})[d.id] || 5;
@@ -4937,6 +5063,7 @@ function renderTargetEditor(p) {
           \x3c/div>
           ${warningTetto}
           \x3cdiv id="tdesc-${d.id}" style="font-size:10px;color:${tgtCol};line-height:1.4;margin-bottom:6px">${tgtDesc}\x3c/div>
+          ${detailHtml}
           \x3cdiv style="font-size:9px;color:var(--gray);margin-bottom:3px">Entro il\x3c/div>
           \x3cinput type="date" id="tscad-${d.id}" value="${scad}"
             onchange="aggiornaSemaforo('${d.id}')"
