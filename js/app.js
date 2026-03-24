@@ -3505,91 +3505,219 @@ const UNITA_PER_STEP_AUTOMOTIVE = {
 };
 window.UNITA_PER_STEP_AUTOMOTIVE = UNITA_PER_STEP_AUTOMOTIVE;
 
-function _calcolaImpattoUnitario(settore, dimId, stepKey, p) {
-  const dati = UNITA_PER_STEP_AUTOMOTIVE?.[settore]?.[dimId]?.[stepKey];
-  if (!dati) return null;
+const UNITA_PER_STEP_BY_SETTORE = {
+  // ── MANIFATTURIERO ──────────────────────────────────────
+  _manifatturiero: {
+    vendite:   { '1-2':{tipo:'ordini',val:0.5}, '2-3':{tipo:'ordini',val:1.5}, '3-4':{tipo:'ordini',val:2.5}, '4-5':{tipo:'ordini',val:3.5} },
+    pipeline:  { '1-2':{tipo:'recupero',val:0.10}, '2-3':{tipo:'recupero',val:0.20}, '3-4':{tipo:'recupero',val:0.15}, '4-5':{tipo:'recupero',val:0.10} },
+    marketing: { '1-2':{tipo:'contatti',val:1,conv:0.20}, '2-3':{tipo:'contatti',val:2,conv:0.22}, '3-4':{tipo:'contatti',val:4,conv:0.25}, '4-5':{tipo:'contatti',val:6,conv:0.28} },
+    ricavi:    { '1-2':{tipo:'vmo_pct',val:0.03}, '2-3':{tipo:'vmo_pct',val:0.05}, '3-4':{tipo:'vmo_pct',val:0.04}, '4-5':{tipo:'vmo_pct',val:0.03} },
+    team:      { '1-2':{tipo:'molt',val:0.08}, '2-3':{tipo:'molt',val:0.15}, '3-4':{tipo:'molt',val:0.12}, '4-5':{tipo:'molt',val:0.08} },
+    processi:  { '1-2':{tipo:'molt',val:0.06}, '2-3':{tipo:'molt',val:0.10}, '3-4':{tipo:'molt',val:0.08}, '4-5':{tipo:'molt',val:0.05} },
+    sitoweb:   { '1-2':{tipo:'contatti',val:0.5,conv:0.15}, '2-3':{tipo:'contatti',val:1.5,conv:0.18}, '3-4':{tipo:'contatti',val:3,conv:0.20}, '4-5':{tipo:'contatti',val:5,conv:0.22} },
+    ecommerce: { '1-2':{tipo:'contatti',val:0.5,conv:0.10}, '2-3':{tipo:'contatti',val:1,conv:0.12}, '3-4':{tipo:'contatti',val:2,conv:0.15}, '4-5':{tipo:'contatti',val:3,conv:0.18} },
+  },
+  // ── EDILIZIA ────────────────────────────────────────────
+  _edilizia: {
+    vendite:   { '1-2':{tipo:'ordini',val:0.5}, '2-3':{tipo:'ordini',val:1.5}, '3-4':{tipo:'ordini',val:2.0}, '4-5':{tipo:'ordini',val:3.0} },
+    pipeline:  { '1-2':{tipo:'recupero',val:0.12}, '2-3':{tipo:'recupero',val:0.25}, '3-4':{tipo:'recupero',val:0.15}, '4-5':{tipo:'recupero',val:0.10} },
+    marketing: { '1-2':{tipo:'contatti',val:1,conv:0.25}, '2-3':{tipo:'contatti',val:3,conv:0.28}, '3-4':{tipo:'contatti',val:5,conv:0.30}, '4-5':{tipo:'contatti',val:8,conv:0.32} },
+    ricavi:    { '1-2':{tipo:'vmo_pct',val:0.04}, '2-3':{tipo:'vmo_pct',val:0.06}, '3-4':{tipo:'vmo_pct',val:0.05}, '4-5':{tipo:'vmo_pct',val:0.04} },
+    team:      { '1-2':{tipo:'molt',val:0.08}, '2-3':{tipo:'molt',val:0.15}, '3-4':{tipo:'molt',val:0.12}, '4-5':{tipo:'molt',val:0.08} },
+    processi:  { '1-2':{tipo:'molt',val:0.06}, '2-3':{tipo:'molt',val:0.10}, '3-4':{tipo:'molt',val:0.08}, '4-5':{tipo:'molt',val:0.05} },
+    sitoweb:   { '1-2':{tipo:'contatti',val:1,conv:0.20}, '2-3':{tipo:'contatti',val:3,conv:0.22}, '3-4':{tipo:'contatti',val:5,conv:0.25}, '4-5':{tipo:'contatti',val:8,conv:0.28} },
+    ecommerce: { '1-2':{tipo:'contatti',val:0.5,conv:0.15}, '2-3':{tipo:'contatti',val:1,conv:0.18}, '3-4':{tipo:'contatti',val:2,conv:0.20}, '4-5':{tipo:'contatti',val:3,conv:0.22} },
+  },
+  // ── COMMERCIO B2B ───────────────────────────────────────
+  _distribuzione: {
+    vendite:   { '1-2':{tipo:'ordini',val:2}, '2-3':{tipo:'ordini',val:5}, '3-4':{tipo:'ordini',val:8}, '4-5':{tipo:'ordini',val:12} },
+    pipeline:  { '1-2':{tipo:'recupero',val:0.10}, '2-3':{tipo:'recupero',val:0.20}, '3-4':{tipo:'recupero',val:0.15}, '4-5':{tipo:'recupero',val:0.10} },
+    marketing: { '1-2':{tipo:'contatti',val:2,conv:0.20}, '2-3':{tipo:'contatti',val:5,conv:0.22}, '3-4':{tipo:'contatti',val:8,conv:0.25}, '4-5':{tipo:'contatti',val:12,conv:0.28} },
+    ricavi:    { '1-2':{tipo:'vmo_pct',val:0.03}, '2-3':{tipo:'vmo_pct',val:0.05}, '3-4':{tipo:'vmo_pct',val:0.04}, '4-5':{tipo:'vmo_pct',val:0.03} },
+    team:      { '1-2':{tipo:'molt',val:0.08}, '2-3':{tipo:'molt',val:0.15}, '3-4':{tipo:'molt',val:0.12}, '4-5':{tipo:'molt',val:0.08} },
+    processi:  { '1-2':{tipo:'molt',val:0.06}, '2-3':{tipo:'molt',val:0.10}, '3-4':{tipo:'molt',val:0.08}, '4-5':{tipo:'molt',val:0.05} },
+    sitoweb:   { '1-2':{tipo:'contatti',val:1,conv:0.15}, '2-3':{tipo:'contatti',val:2,conv:0.18}, '3-4':{tipo:'contatti',val:4,conv:0.20}, '4-5':{tipo:'contatti',val:6,conv:0.22} },
+    ecommerce: { '1-2':{tipo:'ordini',val:1}, '2-3':{tipo:'ordini',val:3}, '3-4':{tipo:'ordini',val:5}, '4-5':{tipo:'ordini',val:8} },
+  },
+  // ── COMMERCIO B2C RETAIL ────────────────────────────────
+  _retail: {
+    vendite:   { '1-2':{tipo:'pct_fat',val:0.05}, '2-3':{tipo:'pct_fat',val:0.10}, '3-4':{tipo:'pct_fat',val:0.08}, '4-5':{tipo:'pct_fat',val:0.06} },
+    pipeline:  { '1-2':{tipo:'recupero',val:0.08}, '2-3':{tipo:'recupero',val:0.15}, '3-4':{tipo:'recupero',val:0.10}, '4-5':{tipo:'recupero',val:0.08} },
+    marketing: { '1-2':{tipo:'pct_fat',val:0.03}, '2-3':{tipo:'pct_fat',val:0.06}, '3-4':{tipo:'pct_fat',val:0.08}, '4-5':{tipo:'pct_fat',val:0.10} },
+    ricavi:    { '1-2':{tipo:'vmo_pct',val:0.04}, '2-3':{tipo:'vmo_pct',val:0.06}, '3-4':{tipo:'vmo_pct',val:0.05}, '4-5':{tipo:'vmo_pct',val:0.04} },
+    team:      { '1-2':{tipo:'molt',val:0.08}, '2-3':{tipo:'molt',val:0.12}, '3-4':{tipo:'molt',val:0.10}, '4-5':{tipo:'molt',val:0.07} },
+    processi:  { '1-2':{tipo:'molt',val:0.05}, '2-3':{tipo:'molt',val:0.08}, '3-4':{tipo:'molt',val:0.07}, '4-5':{tipo:'molt',val:0.05} },
+    sitoweb:   { '1-2':{tipo:'pct_fat',val:0.02}, '2-3':{tipo:'pct_fat',val:0.04}, '3-4':{tipo:'pct_fat',val:0.06}, '4-5':{tipo:'pct_fat',val:0.08} },
+    ecommerce: { '1-2':{tipo:'pct_fat',val:0.03}, '2-3':{tipo:'pct_fat',val:0.06}, '3-4':{tipo:'pct_fat',val:0.08}, '4-5':{tipo:'pct_fat',val:0.10} },
+  },
+  // ── ALIMENTARE ──────────────────────────────────────────
+  _food: {
+    vendite:   { '1-2':{tipo:'ordini',val:2}, '2-3':{tipo:'ordini',val:4}, '3-4':{tipo:'ordini',val:6}, '4-5':{tipo:'ordini',val:8} },
+    pipeline:  { '1-2':{tipo:'recupero',val:0.10}, '2-3':{tipo:'recupero',val:0.20}, '3-4':{tipo:'recupero',val:0.15}, '4-5':{tipo:'recupero',val:0.10} },
+    marketing: { '1-2':{tipo:'contatti',val:2,conv:0.25}, '2-3':{tipo:'contatti',val:5,conv:0.28}, '3-4':{tipo:'contatti',val:8,conv:0.30}, '4-5':{tipo:'contatti',val:12,conv:0.32} },
+    ricavi:    { '1-2':{tipo:'vmo_pct',val:0.03}, '2-3':{tipo:'vmo_pct',val:0.05}, '3-4':{tipo:'vmo_pct',val:0.04}, '4-5':{tipo:'vmo_pct',val:0.03} },
+    team:      { '1-2':{tipo:'molt',val:0.07}, '2-3':{tipo:'molt',val:0.13}, '3-4':{tipo:'molt',val:0.10}, '4-5':{tipo:'molt',val:0.07} },
+    processi:  { '1-2':{tipo:'molt',val:0.05}, '2-3':{tipo:'molt',val:0.09}, '3-4':{tipo:'molt',val:0.07}, '4-5':{tipo:'molt',val:0.05} },
+    sitoweb:   { '1-2':{tipo:'contatti',val:1,conv:0.20}, '2-3':{tipo:'contatti',val:2,conv:0.22}, '3-4':{tipo:'contatti',val:4,conv:0.25}, '4-5':{tipo:'contatti',val:6,conv:0.28} },
+    ecommerce: { '1-2':{tipo:'ordini',val:1}, '2-3':{tipo:'ordini',val:3}, '3-4':{tipo:'ordini',val:5}, '4-5':{tipo:'ordini',val:8} },
+  },
+  // ── TECH ────────────────────────────────────────────────
+  _tech: {
+    vendite:   { '1-2':{tipo:'ordini',val:0.5}, '2-3':{tipo:'ordini',val:1.5}, '3-4':{tipo:'ordini',val:2.5}, '4-5':{tipo:'ordini',val:3.5} },
+    pipeline:  { '1-2':{tipo:'recupero',val:0.15}, '2-3':{tipo:'recupero',val:0.30}, '3-4':{tipo:'recupero',val:0.20}, '4-5':{tipo:'recupero',val:0.15} },
+    marketing: { '1-2':{tipo:'contatti',val:3,conv:0.15}, '2-3':{tipo:'contatti',val:8,conv:0.18}, '3-4':{tipo:'contatti',val:15,conv:0.20}, '4-5':{tipo:'contatti',val:25,conv:0.22} },
+    ricavi:    { '1-2':{tipo:'vmo_pct',val:0.05}, '2-3':{tipo:'vmo_pct',val:0.08}, '3-4':{tipo:'vmo_pct',val:0.06}, '4-5':{tipo:'vmo_pct',val:0.04} },
+    team:      { '1-2':{tipo:'molt',val:0.08}, '2-3':{tipo:'molt',val:0.15}, '3-4':{tipo:'molt',val:0.12}, '4-5':{tipo:'molt',val:0.08} },
+    processi:  { '1-2':{tipo:'molt',val:0.07}, '2-3':{tipo:'molt',val:0.12}, '3-4':{tipo:'molt',val:0.09}, '4-5':{tipo:'molt',val:0.06} },
+    sitoweb:   { '1-2':{tipo:'contatti',val:2,conv:0.12}, '2-3':{tipo:'contatti',val:5,conv:0.15}, '3-4':{tipo:'contatti',val:10,conv:0.18}, '4-5':{tipo:'contatti',val:18,conv:0.20} },
+    ecommerce: { '1-2':{tipo:'pct_fat',val:0.05}, '2-3':{tipo:'pct_fat',val:0.10}, '3-4':{tipo:'pct_fat',val:0.12}, '4-5':{tipo:'pct_fat',val:0.15} },
+  },
+  // ── SERVIZI B2B ─────────────────────────────────────────
+  _servizi: {
+    vendite:   { '1-2':{tipo:'ordini',val:0.5}, '2-3':{tipo:'ordini',val:1.5}, '3-4':{tipo:'ordini',val:2.0}, '4-5':{tipo:'ordini',val:3.0} },
+    pipeline:  { '1-2':{tipo:'recupero',val:0.15}, '2-3':{tipo:'recupero',val:0.25}, '3-4':{tipo:'recupero',val:0.18}, '4-5':{tipo:'recupero',val:0.12} },
+    marketing: { '1-2':{tipo:'contatti',val:2,conv:0.20}, '2-3':{tipo:'contatti',val:5,conv:0.22}, '3-4':{tipo:'contatti',val:8,conv:0.25}, '4-5':{tipo:'contatti',val:12,conv:0.28} },
+    ricavi:    { '1-2':{tipo:'vmo_pct',val:0.04}, '2-3':{tipo:'vmo_pct',val:0.07}, '3-4':{tipo:'vmo_pct',val:0.05}, '4-5':{tipo:'vmo_pct',val:0.04} },
+    team:      { '1-2':{tipo:'molt',val:0.08}, '2-3':{tipo:'molt',val:0.15}, '3-4':{tipo:'molt',val:0.12}, '4-5':{tipo:'molt',val:0.08} },
+    processi:  { '1-2':{tipo:'molt',val:0.07}, '2-3':{tipo:'molt',val:0.11}, '3-4':{tipo:'molt',val:0.09}, '4-5':{tipo:'molt',val:0.06} },
+    sitoweb:   { '1-2':{tipo:'contatti',val:1,conv:0.18}, '2-3':{tipo:'contatti',val:3,conv:0.20}, '3-4':{tipo:'contatti',val:5,conv:0.22}, '4-5':{tipo:'contatti',val:8,conv:0.25} },
+    ecommerce: { '1-2':{tipo:'pct_fat',val:0.03}, '2-3':{tipo:'pct_fat',val:0.06}, '3-4':{tipo:'pct_fat',val:0.08}, '4-5':{tipo:'pct_fat',val:0.10} },
+  },
+  // ── AUTOMOTIVE (già esistente, mantieni) ────────────────
+  commercio_auto_moto_usato: null, // usa UNITA_PER_STEP_AUTOMOTIVE
+  commercio_auto_moto_nuovo: null,
+};
+window.UNITA_PER_STEP_BY_SETTORE = UNITA_PER_STEP_BY_SETTORE;
 
+const SETTORE_TO_UNITA_KEY = {
+  manifatturiero_meccanica:          '_manifatturiero',
+  manifatturiero_automotive:         '_manifatturiero',
+  manifatturiero_packaging:          '_manifatturiero',
+  manifatturiero_cterzi:             '_manifatturiero',
+  manifatturiero_elettromeccanica:   '_manifatturiero',
+  manifatturiero_tessile_tessuti:    '_manifatturiero',
+  manifatturiero_tessile_capi:       '_manifatturiero',
+  edilizia_residenziale:             '_edilizia',
+  edilizia_impianti:                 '_edilizia',
+  edilizia_serramenti:               '_edilizia',
+  commercio_distribuzione_industriale: '_distribuzione',
+  commercio_ingrosso_alimentare:     '_distribuzione',
+  commercio_materiali_edili:         '_distribuzione',
+  commercio_abbigliamento_ingrosso:  '_distribuzione',
+  commercio_ricambi_auto:            '_distribuzione',
+  commercio:                         '_retail',
+  commercio_elettronica:             '_retail',
+  commercio_abbigliamento_dettaglio: '_retail',
+  commercio_orologi_gioielli:        '_retail',
+  commercio_auto_moto_usato:         'commercio_auto_moto_usato',
+  commercio_auto_moto_nuovo:         'commercio_auto_moto_nuovo',
+  alimentare_trasformazione:         '_food',
+  alimentare_vini:                   '_food',
+  alimentare_forno:                  '_food',
+  alimentare_conserve:               '_food',
+  alimentare_ingredienti:            '_food',
+  alimentare_birra:                  '_food',
+  tech_saas:                         '_tech',
+  tech_system_integrator:            '_tech',
+  tech_digital_agency:               '_tech',
+  tech_automazione:                  '_tech',
+  servizi_b2b:                       '_servizi',
+  servizi_it:                        '_servizi',
+  servizi_formazione:                '_servizi',
+};
+window.SETTORE_TO_UNITA_KEY = SETTORE_TO_UNITA_KEY;
+
+function _calcolaImpattoUnitario(settore, dimId, stepKey, p) {
   const fat = p?.fatturato_anno_1 || 1;
   const vmo = p?.kpi_commerciali?.valore_medio_ordine || null;
   const tconv = (p?.kpi_commerciali?.tasso_conversione_pct || 25) / 100;
 
-  // Curva di ramp-up: a 6m il 40%, a 12m il 75%, a 24m il 100%
+  // Curva ramp-up
   const ramp = { 6: 0.40, 12: 0.75, 24: 1.00 };
-
-  const calcPct = (fattoreAnnuo) => ({
-    pct_6m:  [Math.round(fattoreAnnuo * ramp[6]  * 0.85 * 1000) / 10, Math.round(fattoreAnnuo * ramp[6]  * 1.15 * 1000) / 10],
-    pct_12m: [Math.round(fattoreAnnuo * ramp[12] * 0.85 * 1000) / 10, Math.round(fattoreAnnuo * ramp[12] * 1.15 * 1000) / 10],
-    pct_24m: [Math.round(fattoreAnnuo * ramp[24] * 0.85 * 1000) / 10, Math.round(fattoreAnnuo * ramp[24] * 1.15 * 1000) / 10],
-  });
-
-  if (dati.unita_mese && vmo) {
-    // Vendite: unità aggiuntive × valore medio ordine
-    const fatAggiuntivo = dati.unita_mese * 12 * vmo;
-    return calcPct(fatAggiuntivo / fat);
-  }
-  if (dati.recupero_pct) {
-    // Pipeline: recupero lead persi × tasso conversione × vmo
-    const leadRecuperati = fat / (vmo || 10000) * dati.recupero_pct;
-    const fatRec = leadRecuperati * (vmo || 10000) * tconv;
-    return calcPct(fatRec / fat);
-  }
-  if (dati.contatti_mese) {
-    // Marketing/Sitoweb: contatti aggiuntivi × conversione × vmo
-    const fatAggiuntivo = dati.contatti_mese * 12 * (dati.conv_pct || tconv) * (vmo || 10000);
-    return calcPct(fatAggiuntivo / fat);
-  }
-  if (dati.moltiplicatore) {
-    // Team: moltiplicatore sul fatturato vendite esistente
-    return calcPct(dati.moltiplicatore * 0.7);
-  }
-  if (dati.margine_extra_pct) {
-    const fatCliente = p?.fatturato_anno_1 || 0;
-    const vmoCliente = p?.kpi_commerciali?.valore_medio_ordine || 10000;
-
-    // Forbice veicoli aggiuntivi per mese per dealer piccolo (<2M€)
-    const forbicePiccolo = {
-      '1-2': [0.5, 1.0],
-      '2-3': [1.0, 2.0],
-      '3-4': [2.0, 4.0],
-      '4-5': [4.0, 6.0],
-    };
-    // Forbice per dealer grande (>2M€)
-    const forbiceGrande = {
-      '1-2': [2,  5 ],
-      '2-3': [5,  10],
-      '3-4': [10, 20],
-      '4-5': [20, 35],
-    };
-
-    const forbice = fatCliente < 2000000 ? forbicePiccolo : forbiceGrande;
-    const [minAuto, maxAuto] = forbice[stepKey] || [0.5, 1.0];
-
-    // Fatturato aggiuntivo = veicoli × VMO (fatturato lordo, non solo margine)
-    // Il margine è già catturato dall'EBITDA, non dal fatturato
-    const fatAggMin = minAuto * 12 * vmoCliente;
-    const fatAggMax = maxAuto * 12 * vmoCliente;
-
-    // Curva ramp-up
-    const ramp = { 6: 0.40, 12: 0.75, 24: 1.00 };
+  const calcPct = (fattoreAnnuo, minMolt, maxMolt) => {
+    minMolt = minMolt || 0.85;
+    maxMolt = maxMolt || 1.15;
     return {
-      pct_6m:  [
-        Math.round(fatAggMin * ramp[6]  / fat * 1000) / 10,
-        Math.round(fatAggMax * ramp[6]  / fat * 1000) / 10
-      ],
-      pct_12m: [
-        Math.round(fatAggMin * ramp[12] / fat * 1000) / 10,
-        Math.round(fatAggMax * ramp[12] / fat * 1000) / 10
-      ],
-      pct_24m: [
-        Math.round(fatAggMin * ramp[24] / fat * 1000) / 10,
-        Math.round(fatAggMax * ramp[24] / fat * 1000) / 10
-      ],
+      pct_6m:  [Math.round(fattoreAnnuo*ramp[6] *minMolt*1000)/10, Math.round(fattoreAnnuo*ramp[6] *maxMolt*1000)/10],
+      pct_12m: [Math.round(fattoreAnnuo*ramp[12]*minMolt*1000)/10, Math.round(fattoreAnnuo*ramp[12]*maxMolt*1000)/10],
+      pct_24m: [Math.round(fattoreAnnuo*ramp[24]*minMolt*1000)/10, Math.round(fattoreAnnuo*ramp[24]*maxMolt*1000)/10],
     };
+  };
+
+  // Determina la chiave dati
+  const unitaKey = SETTORE_TO_UNITA_KEY?.[settore];
+  let dati = null;
+
+  if (unitaKey === 'commercio_auto_moto_usato' || unitaKey === 'commercio_auto_moto_nuovo') {
+    // Usa UNITA_PER_STEP_AUTOMOTIVE esistente
+    dati = UNITA_PER_STEP_AUTOMOTIVE?.[settore]?.[dimId]?.[stepKey];
+    if (!dati) return null;
+
+    if (dati.unita_mese && vmo) {
+      return calcPct(dati.unita_mese * 12 * vmo / fat);
+    }
+    if (dati.recupero_pct) {
+      const fatRec = fat * dati.recupero_pct * tconv;
+      return calcPct(fatRec / fat);
+    }
+    if (dati.contatti_mese) {
+      return calcPct(dati.contatti_mese * 12 * (dati.conv_pct || tconv) * (vmo || 10000) / fat);
+    }
+    if (dati.moltiplicatore) return calcPct(dati.moltiplicatore * 0.7);
+    if (dati.margine_extra_pct) {
+      const fatCliente = p?.fatturato_anno_1 || 0;
+      const vmoCliente = vmo || 10000;
+      const forbicePiccolo = {'1-2':[0.5,1.0],'2-3':[1.0,2.0],'3-4':[2.0,4.0],'4-5':[4.0,6.0]};
+      const forbiceGrande  = {'1-2':[2,5],'2-3':[5,10],'3-4':[10,20],'4-5':[20,35]};
+      const forbice = fatCliente < 2000000 ? forbicePiccolo : forbiceGrande;
+      const [minA, maxA] = forbice[stepKey] || [0.5,1.0];
+      return {
+        pct_6m:  [Math.round(minA*12*vmoCliente*ramp[6] /fat*1000)/10, Math.round(maxA*12*vmoCliente*ramp[6] /fat*1000)/10],
+        pct_12m: [Math.round(minA*12*vmoCliente*ramp[12]/fat*1000)/10, Math.round(maxA*12*vmoCliente*ramp[12]/fat*1000)/10],
+        pct_24m: [Math.round(minA*12*vmoCliente*ramp[24]/fat*1000)/10, Math.round(maxA*12*vmoCliente*ramp[24]/fat*1000)/10],
+      };
+    }
+    return null;
   }
-  if (dati.upsell_pct || dati.efficienza_pct) {
-    return calcPct(dati.upsell_pct || dati.efficienza_pct);
+
+  // Settori generici
+  if (!unitaKey) return null;
+  const tabella = UNITA_PER_STEP_BY_SETTORE?.[unitaKey];
+  if (!tabella) return null;
+  dati = tabella?.[dimId]?.[stepKey];
+  if (!dati) return null;
+
+  const vmoEff = vmo || 1000; // fallback VMO generico
+
+  switch (dati.tipo) {
+    case 'ordini':
+      // transazioni aggiuntive × VMO
+      return calcPct(dati.val * 12 * vmoEff / fat);
+
+    case 'recupero':
+      // % transazioni recuperate × VMO
+      return calcPct(fat * dati.val * tconv / fat);
+
+    case 'contatti':
+      // contatti aggiuntivi × conversione × VMO
+      return calcPct(dati.val * 12 * (dati.conv || tconv) * vmoEff / fat);
+
+    case 'pct_fat':
+      // percentuale diretta del fatturato
+      return calcPct(dati.val);
+
+    case 'vmo_pct':
+      // aumento del valore medio ordine × transazioni attuali
+      var transAnnue = fat / (vmoEff || 1);
+      return calcPct(dati.val * transAnnue * vmoEff / fat);
+
+    case 'molt':
+      // moltiplicatore sull'efficacia esistente
+      return calcPct(dati.val * 0.7);
+
+    default:
+      return null;
   }
-  return null;
 }
 window._calcolaImpattoUnitario = _calcolaImpattoUnitario;
 
