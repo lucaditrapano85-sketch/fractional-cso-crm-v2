@@ -3545,7 +3545,6 @@ function _calcolaImpattoUnitario(settore, dimId, stepKey, p) {
   if (dati.margine_extra_pct) {
     const fatCliente = p?.fatturato_anno_1 || 0;
     const vmoCliente = p?.kpi_commerciali?.valore_medio_ordine || 10000;
-    const margineVeicolo = 0.22; // 22% medio tra 20-25%
 
     // Forbice veicoli aggiuntivi per mese per dealer piccolo (<2M€)
     const forbicePiccolo = {
@@ -3565,11 +3564,10 @@ function _calcolaImpattoUnitario(settore, dimId, stepKey, p) {
     const forbice = fatCliente < 2000000 ? forbicePiccolo : forbiceGrande;
     const [minAuto, maxAuto] = forbice[stepKey] || [0.5, 1.0];
 
-    // Fatturato aggiuntivo = veicoli × VMO (prezzo vendita)
-    // Margine netto = veicoli × VMO × margine
-    // Usiamo il margine come impatto reale sul fatturato netto
-    const fatAggMin = minAuto * 12 * vmoCliente * margineVeicolo;
-    const fatAggMax = maxAuto * 12 * vmoCliente * margineVeicolo;
+    // Fatturato aggiuntivo = veicoli × VMO (fatturato lordo, non solo margine)
+    // Il margine è già catturato dall'EBITDA, non dal fatturato
+    const fatAggMin = minAuto * 12 * vmoCliente;
+    const fatAggMax = maxAuto * 12 * vmoCliente;
 
     // Curva ramp-up
     const ramp = { 6: 0.40, 12: 0.75, 24: 1.00 };
