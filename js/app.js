@@ -3503,6 +3503,7 @@ const UNITA_PER_STEP_AUTOMOTIVE = {
     },
   },
 };
+window.UNITA_PER_STEP_AUTOMOTIVE = UNITA_PER_STEP_AUTOMOTIVE;
 
 function _calcolaImpattoUnitario(settore, dimId, stepKey, p) {
   const dati = UNITA_PER_STEP_AUTOMOTIVE?.[settore]?.[dimId]?.[stepKey];
@@ -3550,6 +3551,7 @@ function _calcolaImpattoUnitario(settore, dimId, stepKey, p) {
   }
   return null;
 }
+window._calcolaImpattoUnitario = _calcolaImpattoUnitario;
 
 function _calcolaImpattoCumulativo(p) {
   if (!p) return null;
