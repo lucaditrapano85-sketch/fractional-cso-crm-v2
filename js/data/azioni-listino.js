@@ -352,118 +352,102 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "servizi_it": {
     "vendite": {
-      "1-2": "Definire ICP per dimensione aziendale e settore: quale tipo di cliente è più profittevole e più facile da servire",
-      "2-3": "Costruire proposta commerciale differenziata per interlocutore: titolare (costi e continuità), responsabile IT (tecnica e SLA)",
-      "3-4": "Strutturare offerta di assessment iniziale gratuito come leva di ingresso: analisi infrastruttura e piano di intervento",
-      "4-5": "Sviluppare canale di referral strutturato con commercialisti, consulenti e software house che servono le stesse PMI"
-
+      "1-2": "Mappa le PMI della zona con infrastruttura IT datata — chi ha server fisici e Windows 7 è il tuo cliente ideale. Visita diretta, nessun costo.",
+      "2-3": "Assumi un account manager (~2.000-3.000€/mese) con esperienza IT SMB che gestisce le trattative e sviluppa il portafoglio.",
+      "3-4": "Affianca all'account un tecnico-commerciale (~2.500-3.500€/mese) per le gare più complesse e i clienti strutturati.",
+      "4-5": "Struttura commerciale: sales manager + account per verticale + business developer per i nuovi mercati."
     },
     "pipeline": {
-      "1-2": "Tracciare tutte le opportunità in CRM con tipo servizio richiesto, urgenza e budget indicativo",
-      "2-3": "Definire stage chiari: contatto, assessment, offerta, approvazione, attivazione contratto",
-      "3-4": "Monitorare pipeline di rinnovi separatamente da new business per non perdere scadenze contrattuali",
-      "4-5": "Istituire forecast mensile su new business e upsell per pianificare capacità operativa del team tecnico"
-
+      "1-2": "Traccia ogni trattativa su Excel: cliente, necessità, valore, stato — nel IT SMB il ciclo è 2-8 settimane.",
+      "2-3": "CRM con gestione trattative e scadenze contratti esistenti — i contratti in scadenza sono il miglior momento per rinegoziare.",
+      "3-4": "Monitoraggio proattivo dei clienti: chi ha problemi ricorrenti sta cercando un nuovo fornitore.",
+      "4-5": "CRM integrato con ticketing e fatturazione — visione completa dal contratto al supporto."
     },
     "team": {
-      "1-2": "Separare il ruolo commerciale (acquisizione e rinnovi) dal ruolo tecnico (delivery e supporto)",
-      "2-3": "Costruire playbook di discovery: domande per identificare rischi IT, esigenze di compliance e infrastruttura attuale",
-      "3-4": "Formare i tecnici senior sulla comunicazione con il cliente non tecnico: tradurre problemi IT in impatto business",
-      "4-5": "Definire percorso di crescita per tecnici junior con certificazioni, affiancamento e gestione autonoma clienti base"
-
+      "1-2": "Forma i tecnici sulla comunicazione con il cliente non tecnico — spiegare il valore in modo comprensibile è fondamentale.",
+      "2-3": "Struttura incentivi per chi porta referenze da clienti soddisfatti — il passaparola IT SMB vale oro.",
+      "3-4": "Assumi un service manager (~2.500-3.500€/mese) che garantisce la qualità del servizio e gestisce la soddisfazione cliente.",
+      "4-5": "Team strutturato: account manager + service manager + tecnici specializzati (cloud, security, networking)."
     },
     "processi": {
-      "1-2": "Creare template di contratto managed service con SLA definiti, tempi di risposta e perimetro di copertura",
-      "2-3": "Standardizzare il processo di onboarding nuovo cliente: inventario sistemi, documentazione rete, accessi, backup",
-      "3-4": "Implementare sistema di ticketing per tracciare interventi, tempi di risoluzione e soddisfazione cliente",
-      "4-5": "Definire processo di gestione incidenti critici con escalation chiara, comunicazione cliente e post-mortem documentato"
-
+      "1-2": "Standardizza i contratti di servizio: SLA chiari, tempi di risposta garantiti, escalation procedure.",
+      "2-3": "Sistema di ticketing (Freshdesk, Zendesk, ~50-150€/mese) per la gestione delle richieste e misurazione dei SLA.",
+      "3-4": "Processo di monitoraggio proattivo: avvisare il cliente prima che si accorga del problema — differenziazione fondamentale.",
+      "4-5": "Certificazioni (ISO 27001, SOC 2) — prerequisito per clienti enterprise e PA."
     },
     "ricavi": {
-      "1-2": "Mappare tutti i clienti attivi per servizio erogato, prezzo e data scadenza contratto",
-      "2-3": "Costruire offerta di managed service mensile ricorrente da proporre ai clienti ancora a intervento su chiamata",
-      "3-4": "Sviluppare bundle di servizi (sicurezza, backup, monitoring, helpdesk) da proporre come upgrade al contratto base",
-      "4-5": "Introdurre revisione annuale del contratto con proposta di adeguamento basata su crescita infrastruttura cliente"
-
+      "1-2": "Passa da interventi a chiamata a contratti di manutenzione mensili — stabilizza il fatturato e migliora i margini.",
+      "2-3": "Upsell cloud: sposta i clienti da server fisici a Microsoft 365/Azure — margini migliori e recurring revenue.",
+      "3-4": "Sviluppa la divisione cybersecurity — il mercato cresce del 15-20% all'anno e i margini sono elevati.",
+      "4-5": "Managed Security Services Provider (MSSP) — ricavo ricorrente mensile con margini >50%."
     },
     "marketing": {
-      "1-2": "Produrre contenuti su cybersecurity e continuità operativa: temi ad alto impatto percepito per i titolari di PMI",
-      "2-3": "Costruire presenza LinkedIn con casi concreti: problema IT risolto, tempo di intervento, impatto sul business cliente",
-      "3-4": "Attivare partnership con software house verticali (gestionale, CAD, ERP) per referral reciproci",
-      "4-5": "Presidiare associazioni di categoria locali come occasione di networking e posizionamento come esperto IT di fiducia"
-
+      "1-2": "Google My Business ottimizzato + referenze sui portali locali — le PMI cercano il fornitore IT locale.",
+      "2-3": "Partnership Microsoft, Cisco, VMware — directory ufficiali e lead da vendor qualificati.",
+      "3-4": "Content marketing su cybersecurity e cloud per PMI — il tema crea urgenza e qualifica i lead.",
+      "4-5": "Account based marketing sulle 100 PMI target della zona — approccio personalizzato per settore."
     },
     "sitoweb": {
-      "1-2": "Riscrivere la homepage comunicando cosa proteggi e garantisci, non cosa installi o configuri",
-      "2-3": "Inserire sezione dedicata ai settori serviti con problematiche IT specifiche e soluzioni adottate",
-      "3-4": "Pubblicare testimonianze e casi concreti con focus su continuità operativa e risposta rapida agli incidenti",
-      "4-5": "Aggiungere pagina dedicata alla cybersecurity con checklist scaricabile come lead magnet per i titolari"
-
+      "1-2": "Sito con servizi, certificazioni e case study PMI — il cliente vuole vedere chi assomiglia a lui.",
+      "2-3": "SEO su parole chiave assistenza IT + zona + settore — traffico locale qualificato.",
+      "3-4": "Blog su cybersecurity e digital transformation per PMI — lead generation organica.",
+      "4-5": "Assessment tool online: 'Quanto è sicura la tua infrastruttura IT?' — lead generation con alto valore percepito."
     },
     "ecommerce": {
-      "1-2": "Censire i vendor hardware e software con programmi partner attivi (Microsoft, Dell, Sophos, Veeam, ecc.)",
-      "2-3": "Attivare o mantenere le certificazioni partner strategiche per accedere a margini, supporto e lead dal vendor",
-      "3-4": "Costruire accordi di referral con software house verticali che non erogano assistenza infrastrutturale",
-      "4-5": "Sviluppare partnership con MSP complementari per coprire competenze non presidiate internamente (es. cloud, telefonia)"
-
+      "1-2": "Portale self-service per richieste di supporto e ticketing — riduce i costi di gestione.",
+      "2-3": "Marketplace Microsoft (CSP) per rivendere licenze Microsoft 365 — margini ricorrenti garantiti.",
+      "3-4": "Piattaforma managed services con monitoring automatico — scalabilità senza aumentare il personale.",
+      "4-5": "Ecosistema digitale: servizi + cloud + security + compliance — cliente lock-in su più livelli."
     }
   },
   "servizi_formazione": {
     "vendite": {
-      "1-2": "Definire ICP per settore e dimensione: quale tipo di azienda compra formazione con continuità e non solo su finanziamento",
-      "2-3": "Costruire proposta commerciale differenziata: HR manager (compliance e sviluppo persone), titolare (ROI e produttività)",
-      "3-4": "Strutturare offerta di analisi dei fabbisogni formativi gratuita come leva di ingresso per clienti aziendali",
-      "4-5": "Sviluppare canale consulenti HR, paghe e sicurezza come referrer sistematici verso nuovi clienti aziendali"
-
+      "1-2": "Contatta HR manager e responsabili formazione delle aziende della zona con una proposta di corso pilota gratuito o scontato — nessun costo, apertura relazione.",
+      "2-3": "Assumi un account manager (~2.000-3.000€/mese) con esperienza B2B formazione che gestisce le trattative e i budget formazione aziendali.",
+      "3-4": "Sviluppa accordi con fondi interprofessionali (Fondimpresa, Fondirigenti) — il cliente finanziato è molto più facile da chiudere.",
+      "4-5": "Struttura commerciale: sales manager + account per verticale + partnerships con università e enti certificatori."
     },
     "pipeline": {
-      "1-2": "Tracciare tutte le opportunità in CRM: tipo corso, numero partecipanti, modalità (finanziata, a pagamento, obbligatoria)",
-      "2-3": "Separare pipeline corsi obbligatori (sicurezza, HACCP) da formazione discrezionale e manageriale",
-      "3-4": "Monitorare scadenze di rinnovo corsi obbligatori per clienti esistenti come trigger di riacquisto automatico",
-      "4-5": "Istituire forecast trimestrale per pianificare docenti, aule e risorse in base al pipeline attivo"
-
+      "1-2": "Traccia ogni contatto aziendale su Excel: azienda, referente HR, budget formativo, esigenze — il budget formazione si decide a ottobre per l'anno seguente.",
+      "2-3": "CRM con gestione trattative e scadenze piani formativi (~30-80€/mese) — nel B2B formazione i tempi sono lunghi.",
+      "3-4": "Calendario commerciale allineato alle scadenze dei fondi interprofessionali — anticipa le finestre di finanziamento.",
+      "4-5": "CRM integrato con gestione corsi, presenze e certificazioni — visione completa dal contratto alla certificazione."
     },
     "team": {
-      "1-2": "Separare il ruolo commerciale (acquisizione clienti aziendali) dal ruolo didattico (docenti e coordinamento aula)",
-      "2-3": "Costruire playbook di discovery aziendale: domande per identificare fabbisogni, vincoli budget e uso fondi interprofessionali",
-      "3-4": "Formare i commerciali sulla gestione dei fondi interprofessionali (Fondimpresa, Fondirigenti) come leva di vendita",
-      "4-5": "Definire processo di gestione docenti freelance: briefing, qualità, feedback post-corso e valutazione continuativa"
-
+      "1-2": "Forma i docenti sulla vendita consultiva — chi eroga la formazione incontra il cliente e può identificare nuove esigenze.",
+      "2-3": "Piano incentivi per chi porta nuovi corsi aziendali — i docenti con rete di contatti sono risorse commerciali preziose.",
+      "3-4": "Assumi un responsabile sviluppo corsi (~2.000-3.000€/mese) che crea nuovi programmi su misura per le esigenze del mercato.",
+      "4-5": "Team strutturato: sales + sviluppo programmi + coordinamento docenti + customer success post-formazione."
     },
     "processi": {
-      "1-2": "Standardizzare il catalogo corsi con schede chiare: obiettivi, durata, destinatari, modalità, costo e finanziabilità",
-      "2-3": "Creare template di proposta formativa aziendale con piano didattico, calendario e modalità di rendicontazione",
-      "3-4": "Definire processo di gestione aula: iscrizioni, materiali, registro presenze, questionari di soddisfazione, attestati",
-      "4-5": "Costruire sistema di reportistica per il cliente aziendale: competenze sviluppate, presenze, esiti valutazioni"
-
+      "1-2": "Standardizza i materiali didattici e i test di apprendimento — la qualità percepita si misura anche dai materiali.",
+      "2-3": "Accreditamento come ente formativo (SOA, accreditamenti regionali, ~1.000-5.000€) — prerequisito per i fondi interprofessionali.",
+      "3-4": "Processo di follow-up post-formazione: verifica apprendimento, NPS, proposta corso successivo.",
+      "4-5": "Certificazioni ISO 29990 o UNI EN ISO 21001 — posizionamento premium e accesso a gare PA."
     },
     "ricavi": {
-      "1-2": "Mappare i clienti aziendali attivi per tipologia di corso acquistato e identificare chi ha fabbisogni non ancora coperti",
-      "2-3": "Costruire piano formativo annuale da proporre ai clienti chiave invece di vendere singoli corsi spot",
-      "3-4": "Sviluppare offerta di formazione manageriale e soft skill per affiancare i corsi tecnici obbligatori",
-      "4-5": "Introdurre abbonamento formativo annuale per PMI: numero di giornate incluse a tariffa fissa con pianificazione flessibile"
-
+      "1-2": "Proponi piani formativi annuali invece di corsi singoli — fatturato prevedibile e relazione continuativa.",
+      "2-3": "Sviluppa corsi certificati riconosciuti (PMP, SHRM, certificazioni specifiche) — il cliente paga la credenziale.",
+      "3-4": "Formazione finanziata via fondi interprofessionali — il cliente non paga, le barriere all'acquisto crollano.",
+      "4-5": "Piattaforma e-learning proprietaria — scalabilità senza costi variabili, margini >60%."
     },
     "marketing": {
-      "1-2": "Produrre contenuti su obblighi formativi di legge per settore: tema ad alto interesse per titolari e HR manager",
-      "2-3": "Costruire presenza LinkedIn con focus su aggiornamenti normativi, novità fondi interprofessionali e casi di successo",
-      "3-4": "Presidiare associazioni di categoria e ordini professionali come canale di visibilità e partnership istituzionale",
-      "4-5": "Costruire newsletter mensile per clienti e prospect con scadenze normative, novità finanziamenti e nuovi corsi"
-
+      "1-2": "LinkedIn con contenuti su trend formativi e case study di clienti — la formazione B2B si vende con la credibilità.",
+      "2-3": "Partecipa a Forum HR, HR Innovation Summit (~1.000-3.000€) — contatti diretti con HR manager e L&D director.",
+      "3-4": "Content marketing: white paper su ROI della formazione, guide pratiche per HR — lead generation B2B.",
+      "4-5": "Thought leadership: speaker a conferenze, pubblicazioni su riviste HR, partnership con università."
     },
     "sitoweb": {
-      "1-2": "Organizzare il catalogo corsi per settore e obbligo normativo, non per categoria didattica interna",
-      "2-3": "Inserire sezione dedicata ai fondi interprofessionali con guida pratica all'utilizzo per le PMI",
-      "3-4": "Pubblicare testimonianze aziendali con focus su semplicità di gestione e qualità percepita dai partecipanti",
-      "4-5": "Ottimizzare SEO su keyword normative e locali: 'corso sicurezza sul lavoro [città]', 'formazione HACCP [settore]'"
-
+      "1-2": "Sito con catalogo corsi, docenti e testimonianze aziendali — ~800-2.000€.",
+      "2-3": "Piattaforma LMS integrata per corsi blended e e-learning (~200-500€/mese).",
+      "3-4": "SEO su parole chiave formazione + tema + settore — traffico B2B qualificato.",
+      "4-5": "Piattaforma formazione completa: LMS + gestione presenze + certificazioni + reportistica HR."
     },
     "ecommerce": {
-      "1-2": "Mappare consulenti del lavoro, RSPP esterni e consulenti sicurezza come referrer naturali verso corsi obbligatori",
-      "2-3": "Costruire accordi di referral con studi di consulenza HR e paghe che segnalano clienti con scadenze formative",
-      "3-4": "Diventare ente accreditato presso la Regione per accedere a finanziamenti pubblici e bandi formativi",
-      "4-5": "Sviluppare partnership con associazioni di categoria per erogare formazione convenzionata ai loro associati"
-
+      "1-2": "Corsi online su Udemy o Teachable — visibilità immediata con investimento minimo.",
+      "2-3": "Piattaforma e-learning proprietaria con abbonamento mensile per accesso a tutti i corsi.",
+      "3-4": "Corporate learning platform in white label per grandi aziende — recurring revenue e lock-in.",
+      "4-5": "Ecosistema formazione: e-learning + live + coaching + certificazioni — offerta completa per ogni esigenza."
     }
   },
   "edilizia_residenziale": {
@@ -1118,582 +1102,502 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "alimentare_trasformazione": {
     "vendite": {
-      "1-2": "Vendi solo ai soliti canali locali — zero sviluppo commerciale. Mappa i negozi specialty food, enoteche e ristoranti della zona che valorizzano i prodotti artigianali e proponi una fornitura di prova con campioni",
-      "2-3": "Attiva un agente o un broker con contatti nella GDO locale e nell'horeca regionale. Parallelamente costruisci il canale diretto: chi visita il tuo stabilimento è il cliente ideale per l'acquisto diretto",
-      "3-4": "Rete commerciale strutturata per canale: GDO locale + specialty food + horeca + export. Il prodotto DOP o IGP si vende all'estero con margini superiori all'Italia",
-      "4-5": "Struttura commerciale completa con agenti per canale, export manager per i mercati esteri prioritari e canale diretto (e-commerce + spaccio aziendale) come centro di profitto autonomo"
-
+      "1-2": "Mappa i negozi specialty food, enoteche e ristoranti della zona e proponi una fornitura di prova con campioni — nessun costo, operativo subito.",
+      "2-3": "Attiva un agente o broker con contatti nella GDO locale e nell'horeca regionale (~provvigione 5-8%) — operativo in 2-4 settimane.",
+      "3-4": "Assumi un export manager o un commerciale strutturato (~2.500-3.500€/mese) per sviluppare GDO, specialty food e i primi mercati export.",
+      "4-5": "Struttura commerciale per canale: KAM GDO + agenti horeca + export manager + canale diretto (e-commerce + spaccio) — struttura da produttore medio."
     },
     "pipeline": {
-      "1-2": "Tieni un registro dei clienti attivi: canale, prodotto, volumi e frequenza di riordino. Il cliente che smette di riordinare va contattato subito — spesso è un problema di servizio risolvibile",
-      "2-3": "CRM per gestire clienti B2B e lista clienti diretti. Traccia i campioni inviati, le degustazioni fatte e i follow-up aperti",
-      "3-4": "Pipeline strutturata per canale con forecast mensile, gestione stagionalità produzione e alert su cali di acquisto per cliente",
-      "4-5": "Sistema integrato produzione-ordini-logistica: visibilità completa su stock disponibile, ordini confermati e capacità produttiva residua per prendere decisioni commerciali in tempo reale"
-
+      "1-2": "Traccia i contatti con distributori e buyer su Excel — monitora chi ha ricevuto campioni e chi non ha ancora riordinato.",
+      "2-3": "CRM base per gestire agenti, distributori e follow-up riordini (~30-80€/mese) — nel food B2B il riordine è tutto.",
+      "3-4": "Analisi sell-out per punto vendita e per canale — capire dove il prodotto ruota di più è fondamentale per allocare le risorse commerciali.",
+      "4-5": "CRM integrato con gestione ordini, previsioni e pianificazione produzione — coordinamento completo tra commerciale e produzione."
     },
     "team": {
-      "1-2": "Il titolare produce e vende — zero separazione. Anche solo una figura part-time per la gestione ordini e la comunicazione con i clienti libera tempo prezioso per la produzione",
-      "2-3": "Commerciale dedicato con conoscenza del prodotto e del territorio: sa raccontare la storia del salume, del formaggio, della pasta — e quella storia è il 50% della vendita",
-      "3-4": "Team strutturato: produzione + commerciale + logistica. Chi gestisce l'export deve conoscere le normative doganali e i requisiti sanitari dei mercati esteri",
-      "4-5": "Struttura completa con responsabile produzione, direttore commerciale, export manager e responsabile qualità certificazioni"
-
+      "1-2": "Forma chi gestisce i contatti commerciali sulla narrazione del prodotto: origini, processo, certificazioni — il food artigianale si vende con le storie.",
+      "2-3": "Struttura un piano provvigionale chiaro per gli agenti con bonus sul new business e sui riordini sopra soglia.",
+      "3-4": "Affianca un inside sales (~1.500-2.000€/mese) per gestire gli ordini ripetitivi e liberare il commerciale per lo sviluppo.",
+      "4-5": "Team strutturato: direttore commerciale + KAM + agenti di zona + export specialist — struttura da produttore 2M€+."
     },
     "processi": {
-      "1-2": "Stabilimento riconosciuto CE obbligatorio per vendere fuori regione. Bollo sanitario, piano HACCP avanzato, tracciabilità lotti documentata — sono obblighi di legge non negoziabili",
-      "2-3": "Certificazione DOP o IGP se il prodotto ne ha i requisiti — è la leva di valorizzazione più potente del made in Italy alimentare. Processo di controllo qualità documentato per ogni lotto",
-      "3-4": "BRC o IFS per accedere alla GDO strutturata. Certificazione biologica se usi materie prime bio. Processo di gestione fornitori qualificati per garantire la qualità della materia prima",
-      "4-5": "Sistema qualità certificato con audit periodici, tracciabilità completa filiera, certificazioni per export (USDA, halal, kosher se necessario) e carbon footprint come leva sostenibilità"
-
+      "1-2": "Standardizza le schede prodotto con valori nutrizionali, allergeni, shelf life e condizioni di conservazione — obbligatorio per la GDO.",
+      "2-3": "Ottieni le certificazioni richieste dai tuoi canali target: BRC, IFS, Bio, DOP/IGP (~3.000-15.000€) — aprono mercati altrimenti inaccessibili.",
+      "3-4": "ERP food-grade per gestione lotti, tracciabilità e scadenze (~300-700€/mese) — obbligatorio con 10+ referenze e 20+ clienti.",
+      "4-5": "Sistema integrato: ERP + WMS + EDI con GDO — standard richiesto dai buyer della grande distribuzione strutturata."
     },
     "ricavi": {
-      "1-2": "Analizza i margini per prodotto e per canale: vendere il prosciutto al banco del produttore a 25€/kg è molto più redditizio che venderlo al grossista a 12€/kg. Il canale diretto vale il doppio",
-      "2-3": "Filiera come vantaggio competitivo e leva di prezzo: se allevi i tuoi animali o coltivi le tue materie prime, puoi comunicare e prezzare la tracciabilità completa",
-      "3-4": "Mix canali ottimizzato: GDO (volume, margini bassi) + specialty e horeca (margini medi) + diretto (margini alti) + export premium (margini alti + valorizzazione brand)",
-      "4-5": "Revenue strutturato con contratti annuali GDO, forniture continuative horeca, e-commerce diretto come centro di profitto e export con importatori esclusivi per mercato"
-
+      "1-2": "Rivedi il pricing per canale — GDO, specialty food e horeca hanno margini diversi: non applicare lo stesso listino a tutti.",
+      "2-3": "Sviluppa referenze premium o limited edition con margini superiori — il consumatore paga la specialità e l'esclusività.",
+      "3-4": "Private label per GDO o catene horeca — volumi garantiti con margini ridotti ma prevedibilità di fatturato.",
+      "4-5": "Export con margini superiori all'Italia — Germania, USA e mercati asiatici pagano il made in Italy fino al 40% in più."
     },
     "marketing": {
-      "1-2": "Il territorio è il brand — racconta la storia delle materie prime, del processo produttivo, della tradizione. Instagram e Facebook con foto del laboratorio e del prodotto finito",
-      "2-3": "Presenza a fiere di settore (Cibus, Salone del Gusto, TUTTOFOOD) — sono dove si incontrano i buyer della GDO, dell'horeca e dell'export. Un campione al momento giusto vale più di anni di telefonate",
-      "3-4": "PR gastronomica: riviste food, guide, chef ambassador. Un Michelin che usa il tuo prodotto vale più di qualsiasi pubblicità. Collaborazioni con chef per visibilità e credibilità",
-      "4-5": "Piano marketing strutturato: fiere nazionali e internazionali + PR gastronomica + storytelling digitale + presenza su piattaforme food premium (Eataly, Amazon Gourmet)"
-
+      "1-2": "Racconta la storia delle materie prime e del processo produttivo sui social — il food artigianale vive di autenticità (~200-400€/mese gestione).",
+      "2-3": "Partecipa a Cibus, SIAL, Fancy Food (~3.000-10.000€) — fiere dove incontri buyer GDO, distributori e importatori internazionali.",
+      "3-4": "PR food: invio campioni a food blogger, giornalisti e influencer del settore (~500-1.500€/mese) — il passaparola nel food funziona ancora.",
+      "4-5": "Strategia brand building: concorsi di settore, certificazioni di qualità, presenza su guide specializzate — posizionamento premium."
     },
     "sitoweb": {
-      "1-2": "Sito con storia dell'azienda e del territorio, catalogo prodotti con foto professionali e contatti diretti. Il buyer straniero cerca il produttore online prima di qualsiasi contatto",
-      "2-3": "E-commerce per vendite dirette ai privati: spedizione in tutta Italia, confezioni regalo e box tematiche. Il prodotto trasformato si spedisce facilmente e ha lunga conservazione",
-      "3-4": "Sito professionale con e-commerce, sezione ricette con i propri prodotti, area stampa con materiali scaricabili e versione multilingua per export",
-      "4-5": "Portale completo con e-commerce multilingua, area B2B per negozi e ristoranti, spaccio aziendale prenotabile online e integrazione con marketplace food premium"
-
+      "1-2": "Sito con storia dell'azienda, prodotti, certificazioni e contatti — ~800-2.000€.",
+      "2-3": "E-commerce B2C per vendita diretta al consumatore finale — margini più alti rispetto alla distribuzione (~2.000-5.000€).",
+      "3-4": "Area riservata per distributori e buyer con listini, schede tecniche e modulo ordini.",
+      "4-5": "Piattaforma integrata B2B + B2C con gestione ordini, tracciabilità lotti e area press."
     },
     "ecommerce": {
-      "1-2": "Vendi solo localmente — il tuo prodotto artigianale potrebbe raggiungere tutta Italia e l'estero. Inizia con uno shop online semplice e spedizione con corriere refrigerato",
-      "2-3": "Shop online attivo con box regalo e confezioni natalizie: il salume artigianale o il formaggio DOP sono i regali aziendali perfetti. Margini altissimi e domanda garantita a Natale",
-      "3-4": "Strategia e-commerce strutturata con sito proprio + presenza su Eataly online + Amazon Gourmet. Export diretto verso i mercati dove il made in Italy alimentare ha più valore (USA, Giappone, Germania)",
-      "4-5": "Canale digitale come centro di profitto autonomo: e-commerce proprio + marketplace premium + export diretto online. Il digitale genera il 30-40% del fatturato con i margini più alti di tutti i canali"
-
+      "1-2": "Attiva uno spaccio aziendale fisico o online — il consumatore che visita il produttore compra di più e con margini elevati.",
+      "2-3": "Presenza su marketplace food (Eataly Online, Gustoh, Amazon Fresh) — visibilità immediata con consumatori qualificati.",
+      "3-4": "E-commerce proprietario con spedizione in tutta Italia — indipendenza dai marketplace e margini completi.",
+      "4-5": "Export online: Amazon EU, marketplace internazionali e sito multilingua — canale export a basso costo fisso."
     }
   },
   "alimentare_vini": {
     "vendite": {
-      "1-2": "Il titolare porta qualche bottiglia ai ristoratori amici — zero struttura commerciale. Mappa i ristoranti, enoteche e wine bar della tua zona e inizia a visitarli con un listino professionale e campioni",
-      "2-3": "Attiva 1-2 agenti plurimandatari con portafoglio clienti horeca nella tua regione. Parallelamente inizia a costruire una lista di privati appassionati — sono i futuri clienti diretti",
-      "3-4": "Rete agenti strutturata per zona con obiettivi mensili. Export manager per almeno 1-2 mercati esteri prioritari (Germania, Svizzera, USA, UK). I privati fidelizzati ricevono anteprime e riservazioni",
-      "4-5": "Struttura commerciale completa: agenti per canale (horeca, GDO, export), wine club per i privati con abbonamento e enoturismo come canale di acquisizione e fidelizzazione"
-
+      "1-2": "Visita enoteche, ristoranti e wine bar della zona con campioni — il sommelier che assaggia il tuo vino è il tuo miglior commerciale. Nessun costo.",
+      "2-3": "Attiva un agente con portafoglio horeca e enoteche (~provvigione 10-15% sul fatturato generato) — operativo in 2-4 settimane.",
+      "3-4": "Assumi un export manager o agente internazionale (~2.000-3.000€/mese) — Germania, Svizzera, USA e UK sono i mercati prioritari per i vini italiani.",
+      "4-5": "Struttura commerciale per canale: agenti horeca + export manager + enoteca aziendale + wine club online — diversificazione completa."
     },
     "pipeline": {
-      "1-2": "Tieni un registro dei clienti horeca attivi: ristorante, referente, bottiglie ordinate per referenza e frequenza. Senza tracciatura non sai chi sta smettendo di comprare",
-      "2-3": "CRM semplice per gestire agenti, clienti horeca e lista privati. Traccia le degustazioni fatte, i feedback ricevuti e i follow-up aperti",
-      "3-4": "Pipeline strutturata per canale: horeca + privati + export + enoturismo. Forecast trimestrale per referenza con gestione vendemmia e stock disponibile",
-      "4-5": "Sistema integrato con gestione ordini, stock cantina e CRM: il commerciale sa sempre quali referenze sono disponibili e quante bottiglie restano prima di fare proposte ai clienti"
-
+      "1-2": "Traccia ogni contatto con ristoratori e enotecari: chi ha assaggiato, chi ha ordinato, chi va ricontattato — Excel base.",
+      "2-3": "CRM per gestire agenti, distributori e clienti diretti con promemoria per riordini stagionali (~30-60€/mese).",
+      "3-4": "Gestione wine club e abbonamenti: il cliente ricorrente vale 5-10 volte un cliente occasionale.",
+      "4-5": "CRM integrato con gestione vendemmie, disponibilità per annata e prevendita futuri lanci."
     },
     "team": {
-      "1-2": "L'enologo è anche il venditore — ma non può fare tutto. Identifica una figura anche part-time che gestisca gli ordini, le spedizioni e i contatti con i clienti abituali",
-      "2-3": "Primo commerciale dedicato con passione per il vino e capacità relazionale: gestisce gli agenti, visita i clienti chiave e costruisce la lista privati",
-      "3-4": "Team strutturato: responsabile commerciale + agenti + addetto export. Chi fa enoturismo deve avere competenze di ospitalità oltre che di vendita",
-      "4-5": "Struttura completa con direttore commerciale, team vendite per canale, export manager e responsabile enoturismo con obiettivi autonomi"
-
+      "1-2": "Forma chi incontra i clienti sulla presentazione del vino: terroir, vitigno, vinificazione, abbinamenti — il racconto è il prodotto.",
+      "2-3": "Affianca all'enologo un agente o export manager dedicato — le competenze tecniche da sole non vendono.",
+      "3-4": "Assumi un responsabile commerciale (~2.500-3.500€/mese) che coordina gli agenti e sviluppa i mercati esteri.",
+      "4-5": "Team completo: direttore commerciale + export + agenti nazionali + responsabile enoturismo e hospitality."
     },
     "processi": {
-      "1-2": "Documentazione base obbligatoria: etichette conformi al Regolamento UE 2021/2117, schede tecniche per ogni referenza, registro di cantina aggiornato. Senza non puoi vendere legalmente",
-      "2-3": "Certificazione biologica o biodinamica se le pratiche lo consentono — è una leva commerciale crescente sia nell'horeca che nei privati. Fascicolo tecnico completo per ogni referenza",
-      "3-4": "SQNPI o certificazione di sostenibilità viticola. Processi di gestione ordini e spedizioni documentati. Prerequisito per GDO e export strutturato",
-      "4-5": "Sistema qualità certificato, tracciabilità completa dalla vigna alla bottiglia, certificazioni per i mercati export (biologico EU, USDA Organic per USA) e carbon footprint calcolata"
-
+      "1-2": "Standardizza le schede tecniche per ogni etichetta: vitigno, annata, vinificazione, abbinamenti, premi — indispensabile per sommelier e buyer.",
+      "2-3": "Certificazioni bio, biodinamico o sostenibile (~2.000-8.000€) — sempre più richieste dalla GDO e dall'export.",
+      "3-4": "Sistema di gestione annate e disponibilità — il buyer vuole sapere subito quante bottiglie hai disponibili.",
+      "4-5": "ERP cantina integrato con CRM e e-commerce — dalla vendemmia alla bottiglia consegnata in un unico sistema."
     },
     "ricavi": {
-      "1-2": "Analizza i margini per referenza e per canale: vendere all'horeca a 5€ la bottiglia o al privato a 15€ sono due modelli diversi. Capire dove guadagni davvero orienta tutta la strategia",
-      "2-3": "Riduci la dipendenza da 1-2 grossisti che ti comprano tutto a prezzo basso — ti tolgono margine e potere negoziale. Ogni cliente diretto acquisito aumenta la redditività media",
-      "3-4": "Mix di canali ottimizzato: horeca (volume), privati (margine), export (prestigio e valorizzazione), enoturismo (margine altissimo + fidelizzazione). Nessun canale oltre il 50% del fatturato",
-      "4-5": "Revenue strutturato con contratti annuali horeca, wine club con abbonamento mensile, export con importatori esclusivi e enoturismo come centro di profitto autonomo"
-
+      "1-2": "Rivedi il pricing per canale: horeca ha margini diversi dall'enoteca, e l'export diverso dall'Italia — listini separati.",
+      "2-3": "Lancia una linea premium o una cuvée speciale con margini superiori — il consumatore paga la storia e la rarità.",
+      "3-4": "Wine club in abbonamento (6 o 12 bottiglie al mese) — ricavo ricorrente prevedibile con margini >40%.",
+      "4-5": "Enoturismo strutturato: visite in cantina, degustazioni, wine experience — margini altissimi e brand building."
     },
     "marketing": {
-      "1-2": "Presenza sulle guide vini (Gambero Rosso, Veronelli, Slow Food) — una citazione positiva vale più di qualsiasi pubblicità. Manda campioni ai giornalisti di settore",
-      "2-3": "Instagram con storytelling della cantina: vendemmia, vita in vigna, degustazioni. Il vino si vende con le emozioni — mostra il territorio e le persone prima del prodotto",
-      "3-4": "Presenza a Vinitaly e a fiere internazionali selezionate (ProWein, Vinexpo). Collaborazioni con sommelier e wine influencer per raggiungere i privati appassionati",
-      "4-5": "Piano marketing strutturato: fiere + digital storytelling + PR enogastronomica + enoturismo come strumento di marketing esperienziale. La cantina visitabile è il miglior venditore"
-
+      "1-2": "Instagram con foto professionali dei vigneti e delle bottiglie + storytelling dell'annata — gratuito, costruisce il brand.",
+      "2-3": "Partecipa a Vinitaly, ProWein o Vinexpo (~3.000-10.000€) — le fiere sono il canale principale per il vino italiano nel mondo.",
+      "3-4": "PR wine: invio bottiglie a guide (Gambero Rosso, Veronelli) e wine blogger internazionali (~500-2.000€/anno).",
+      "4-5": "Strategia brand building: premi internazionali, menzioni guide, presenza su Wine Spectator e Decanter."
     },
     "sitoweb": {
-      "1-2": "Sito con storia della cantina, referenze con schede tecniche e foto professionali, contatti e form richiesta listino. Il buyer straniero lo visita prima di qualsiasi contatto",
-      "2-3": "Sito con sezione enoturismo (visite e degustazioni prenotabili online), blog sulla vita in cantina e area riservata per i clienti horeca con listino e documenti",
-      "3-4": "Sito professionale con e-commerce per privati, prenotazione visite online, versione in almeno 2 lingue per l'export e area press con materiali scaricabili",
-      "4-5": "Portale completo con e-commerce multilingua, wine club con abbonamento, prenotazione enoturismo integrata e area importatori con documenti doganali e certificazioni"
-
+      "1-2": "Sito con storia, vigneti, etichette e contatti — nel vino l'immagine è tutto.",
+      "2-3": "E-commerce diretto con spedizione in Italia e export — margini pieni rispetto alla distribuzione.",
+      "3-4": "Sito multilingua con area wine club, prenotazione degustazioni e schede tecniche per buyer.",
+      "4-5": "Piattaforma integrata: e-commerce + wine club + enoturismo + area stampa e premi."
     },
     "ecommerce": {
-      "1-2": "Zero vendite dirette — tutto passa da grossisti e agenti che prendono il margine. Inizia raccogliendo email di privati interessati durante le degustazioni e le visite in cantina",
-      "2-3": "Shop online semplice per vendere direttamente ai privati: spedizione in tutta Italia, confezioni regalo, abbonamento mensile base. Ogni bottiglia venduta diretto vale 3 volte quella venduta al grossista",
-      "3-4": "E-commerce strutturato con wine club, abbonamenti stagionali e spedizioni internazionali. Presenza su marketplace di vino (Tannico, Vinomofo) per visibilità e nuovi clienti",
-      "4-5": "Strategia direct-to-consumer completa: e-commerce proprio + marketplace selezionati + wine club con 500+ iscritti + enoturismo integrato. Il canale diretto vale il 30-40% del fatturato con margini doppi rispetto all'horeca"
-
+      "1-2": "Vinosofia, Tannico, Callmewine — marketplace vino per visibilità immediata con margini ridotti ma zero investimento.",
+      "2-3": "E-commerce proprietario con SEO su varietale + zona + annata — traffico organico qualificato a lungo termine.",
+      "3-4": "Export online: Amazon EU, Wine.com USA, Vivino — canali internazionali con investimento contenuto.",
+      "4-5": "Strategia multicanale: marketplace + sito proprietario + export diretto — massima copertura del mercato."
     }
   },
   "alimentare_forno": {
     "vendite": {
-      "1-2": "Il forno vive di clienti abituali che entrano ogni mattina — conosci i loro nomi e le loro abitudini. Inizia a proporre attivamente prodotti nuovi e abbinamenti: chi compra il pane potrebbe comprare anche la focaccia farcita",
-      "2-3": "Apri il canale B2B locale: bar, caffetterie e ristoranti della zona hanno bisogno di prodotti freschi ogni giorno. Una fornitura fissa a 3-4 bar vale più di 50 clienti retail occasionali",
-      "3-4": "Struttura le forniture B2B con listino dedicato, consegna programmata e accordi stagionali. Attiva il catering per eventi locali — matrimoni, comunioni, aziende — con margini molto superiori al retail",
-      "4-5": "Struttura commerciale con responsabile B2B per le forniture horeca, gestione catering eventi e canale online per ordini e consegna a domicilio"
-
+      "1-2": "Parla con i clienti abituali del punto vendita e chiedi attivamente referenze e segnalazioni — il passaparola nel forno artigianale vale il 60% del nuovo business.",
+      "2-3": "Sviluppa canali B2B: ristoranti, bar, mense, catering locali che acquistano pane e dolci ogni giorno (~accordo di fornitura, visita diretta).",
+      "3-4": "Assumi un responsabile vendite B2B part-time (~1.000-1.500€/mese) per presidiare i clienti HORECA e sviluppare nuovi accordi.",
+      "4-5": "Struttura multi-canale: punto vendita + B2B horeca + catering eventi + e-commerce prodotti dolciari — diversificazione completa."
     },
     "pipeline": {
-      "1-2": "Tieni un registro dei clienti B2B: bar, ristoranti, quantità ordinate e frequenza. Chi non ordina da una settimana sta comprando altrove",
-      "2-3": "CRM semplice per gestire i clienti horeca: storico ordini, prodotti preferiti e scadenze contratti stagionali",
-      "3-4": "Pipeline strutturata con forecast settimanale per cliente B2B, gestione ordini catering e database clienti retail per promozioni e novità",
-      "4-5": "Sistema integrato ordini-produzione: gli ordini B2B del giorno dopo arrivano entro le 18 per pianificare la produzione notturna senza sprechi"
-
+      "1-2": "Traccia i clienti B2B (ristoranti, bar, mense) su Excel — chi compra quanto, con quale frequenza, chi non ha riordinato.",
+      "2-3": "Sistema di ordini ricorrenti per i clienti B2B: ordine fisso settimanale con possibilità di variazione il giorno prima.",
+      "3-4": "CRM base per gestire clienti B2B, accordi di fornitura e follow-up (~30-60€/mese).",
+      "4-5": "App ordini per i clienti B2B — ordinano dal telefono la sera per la mattina successiva, senza telefonate."
     },
     "team": {
-      "1-2": "Il fornaio fa tutto — produce e vende. Anche solo un aiutante part-time al banco libera tempo prezioso e migliora il servizio al cliente",
-      "2-3": "Fornaio junior o apprendista: il problema del ricambio generazionale va affrontato subito. Cerca nelle scuole alberghiere e offri un percorso di crescita concreto",
-      "3-4": "Team strutturato: produzione (fornai) separata dalla vendita (banco + consegne). Chi vende non produce e viceversa — qualità e servizio migliorano entrambi",
-      "4-5": "Struttura completa con responsabile produzione, responsabile vendite e banco, addetto consegne B2B e figura dedicata al catering eventi"
-
+      "1-2": "Forma il personale del banco sulla vendita attiva: proposta di abbinamento, prodotto del giorno, cross-selling — scontrino medio +20-30%.",
+      "2-3": "Struttura incentivi per chi sviluppa nuovi clienti B2B e per chi aumenta lo scontrino medio nel punto vendita.",
+      "3-4": "Assumi un addetto vendite B2B (~1.200-1.800€/mese) dedicato al canale HORECA e agli eventi catering.",
+      "4-5": "Team strutturato: responsabile punto vendita + addetto B2B + responsabile produzione + addetto e-commerce."
     },
     "processi": {
-      "1-2": "HACCP obbligatorio e aggiornato — è la base legale per operare. Tracciabilità delle materie prime documentata. Senza non puoi lavorare",
-      "2-3": "Certificazione per allergeni: etichettatura precisa di tutti i prodotti con i 14 allergeni — obbligo di legge spesso gestito male. Processo di gestione energetica base: il forno è il costo principale",
-      "3-4": "Certificazione biologica se usi farine bio — è una leva commerciale crescente. Processo di ottimizzazione energetica: programmazione cotture per ridurre i consumi nelle ore di punta",
-      "4-5": "Sistema qualità documentato, ottimizzazione energetica avanzata (forno a basso consumo, recupero calore), certificazioni per GDO e catering aziendale strutturato"
-
+      "1-2": "Standardizza le schede allergeni per ogni prodotto — obbligatorio per legge, fondamentale per il canale B2B e la GDO.",
+      "2-3": "Processo di gestione degli ordini B2B: conferma, produzione, confezionamento e consegna con tempi garantiti.",
+      "3-4": "Sistema HACCP documentato e aggiornato (~500-1.500€/anno consulente) — prerequisito per catering, mense e GDO.",
+      "4-5": "Certificazioni specifiche per i canali target: Bio, senza glutine, prodotto artigianale — aprono mercati premium."
     },
     "ricavi": {
-      "1-2": "Analizza i margini per prodotto: il pane base ha margini bassi, la pasticceria e la gastronomia hanno margini tripli. Ogni ora di forno usata per torte guadagna più del pane bianco",
-      "2-3": "Diversifica l'offerta verso prodotti ad alto margine: pasticceria, gastronomia, prodotti speciali (lievito madre, farine antiche, gluten free). Il cliente paga il premium per la qualità artigianale",
-      "3-4": "Mix di ricavi strutturato: retail + B2B horeca + catering + prodotti speciali. Riduci la dipendenza dal pane commodity che compete con il supermercato",
-      "4-5": "Revenue ottimizzato con contratti B2B annuali, catering come centro di profitto autonomo e prodotti a marchio proprio in GDO locale o online"
-
+      "1-2": "Alza il prezzo dei prodotti di punta del 5-10% — il cliente che sceglie il forno artigianale è disposto a pagare la qualità.",
+      "2-3": "Sviluppa una linea premium: pane di farro, dolci senza glutine, prodotti bio — margini 30-50% superiori al pane standard.",
+      "3-4": "Catering dolciario per eventi e matrimoni — commesse singole ad alto valore con margini elevati.",
+      "4-5": "Franchising o licenza del marchio per altri punti vendita — royalty ricorrente senza investimento in produzione."
     },
     "marketing": {
-      "1-2": "Google My Business aggiornato con foto dei prodotti, orari precisi e risposta alle recensioni. Il cliente cerca il forno su Google Maps prima di uscire di casa",
-      "2-3": "Instagram con foto dei prodotti freschi ogni mattina — il pane appena sfornato alle 7 sui social porta clienti. Semplice, autentico, costante",
-      "3-4": "Storytelling del territorio: farine locali, ricette tradizionali, collaborazioni con produttori locali. Il cliente paga di più se conosce la storia dietro il prodotto",
-      "4-5": "Piano marketing strutturato: social + PR locale + presenza a mercati e fiere gastronomiche + collaborazioni con ristoranti per valorizzazione reciproca"
-
+      "1-2": "Instagram con foto dei prodotti appena sfornati e del processo artigianale — gratuito, genera traffico nel punto vendita.",
+      "2-3": "Collaborazioni con food blogger e influencer locali (~200-500€ per collaborazione) — awareness locale qualificata.",
+      "3-4": "Google My Business ottimizzato + campagne Meta Ads locali (~300-700€/mese) — intercetta chi cerca forno artigianale.",
+      "4-5": "Strategia brand building: concorsi artigiani, presenza su guide food, PR locale — posizionamento premium."
     },
     "sitoweb": {
-      "1-2": "Sito base con prodotti, orari, indirizzo e possibilità di prenotare prodotti da ritirare. Riduce le code e garantisce disponibilità",
-      "2-3": "Sito con catalogo prodotti fotografato, sezione speciali e prenotazioni online per prodotti su ordinazione (torte, catering)",
-      "3-4": "Sito professionale con e-commerce per spedizione prodotti a lunga conservazione (panettoni, biscotti, grissini) e prenotazione catering",
-      "4-5": "Portale completo con ordini online per consegna a domicilio, abbonamento pane settimanale e area B2B per i clienti horeca"
-
+      "1-2": "Profilo Instagram professionale — per il forno artigianale vale più di un sito web.",
+      "2-3": "Sito base con storia, prodotti, orari e possibilità di prenotare torte e dolci personalizzati.",
+      "3-4": "E-commerce per prodotti da regalo e spedizione nazionale — panettoni, dolci natalizi, colombe.",
+      "4-5": "Piattaforma completa con e-commerce, prenotazioni catering e area B2B per i clienti horeca."
     },
     "ecommerce": {
-      "1-2": "Zero canale online — perdi i clienti che non possono venire di persona. Inizia con un sistema di prenotazione WhatsApp per i prodotti del giorno dopo",
-      "2-3": "Ordini online o via app per ritiro in negozio: riduce gli sprechi perché produci quello che è già venduto. Consegna a domicilio nella zona come servizio premium",
-      "3-4": "E-commerce per prodotti a lunga conservazione (panettoni, colombe, biscotti artigianali): vendita nazionale con margini alti e zero deperibilità",
-      "4-5": "Strategia omnicanale: negozio fisico + consegna a domicilio + e-commerce nazionale per specialty + abbonamento settimanale pane fresco per i clienti fedeli"
-
+      "1-2": "Delivery locale tramite piattaforme (Glovo, JustEat) per i prodotti da colazione e pranzo — canale immediato senza investimenti.",
+      "2-3": "E-commerce per prodotti da regalo con spedizione refrigerata — mercato natalizio e pasquale ad alto margine.",
+      "3-4": "App ordini B2B per i clienti horeca — ordini automatici senza telefonate.",
+      "4-5": "Marketplace food artigianale (Eataly Online, Gustoh) + e-commerce proprietario — doppio canale di vendita online."
     }
   },
   "alimentare_conserve": {
     "vendite": {
-      "1-2": "Vendi solo ai mercati locali e agli amici — zero struttura. Mappa negozi alimentari, enoteche e gastronomie della zona e proponi una fornitura di prova con campioni: il prodotto artigianale si vende facendolo assaggiare",
-      "2-3": "Attiva canali B2B locali: negozi specialty food, agriturismi, enoteche. Parallelamente costruisci una lista clienti diretti — chi compra al mercato è il cliente ideale per l'e-commerce",
-      "3-4": "Agente o broker per la GDO locale e i negozi specialty food regionali. Canale turistico strutturato: accordi con agriturismi, B&B e punti vendita turistici per forniture continuative",
-      "4-5": "Struttura commerciale con responsabile B2B per GDO e specialty, canale export per mercati esteri (USA, Germania, Giappone adorano i prodotti italiani artigianali) e e-commerce come canale primario"
-
+      "1-2": "Mappa specialty food, enoteche e deli della zona e proponi una fornitura di prova con campioni — nessun costo, risultati in 2-4 settimane.",
+      "2-3": "Attiva un agente con contatti nella GDO locale e nelle catene specialty food (~provvigione 8-12%) — operativo in 2-4 settimane.",
+      "3-4": "Assumi un commerciale o export manager (~2.500-3.500€/mese) per sviluppare GDO regionale e i primi mercati export.",
+      "4-5": "Struttura commerciale per canale: KAM GDO + agenti specialty + export manager + canale diretto — struttura da produttore strutturato."
     },
     "pipeline": {
-      "1-2": "Tieni un registro dei clienti B2B: negozio, referente, prodotti ordinati e frequenza. La conserva dura mesi — il riordino non è automatico, va stimolato",
-      "2-3": "CRM semplice per gestire clienti B2B e lista privati. Traccia i campioni inviati e i follow-up aperti. I clienti che hanno assaggiato e non hanno ordinato vanno ricontattati",
-      "3-4": "Pipeline strutturata per canale con forecast stagionale basato sulla produzione disponibile. Gestione liste d'attesa per prodotti limitati — la scarsità è una leva di valore",
-      "4-5": "Sistema integrato produzione-ordini-spedizioni: sai sempre quanti vasetti hai disponibili per ogni referenza e gestisci gli ordini in base allo stock reale"
-
+      "1-2": "Traccia ogni cliente e distributore su Excel: volumi, frequenza di riordino, feedback sul prodotto.",
+      "2-3": "CRM base per gestire agenti e distributori con alert per riordini attesi (~30-60€/mese).",
+      "3-4": "Analisi sell-out per punto vendita — capire dove il prodotto ruota meglio orienta le risorse commerciali.",
+      "4-5": "CRM integrato con ERP per previsioni ordini e pianificazione campagne produttive."
     },
     "team": {
-      "1-2": "Produzione familiare — tutto nelle mani del titolare. Anche solo un aiutante stagionale durante il periodo di produzione fa la differenza sulla quantità producibile",
-      "2-3": "Figura dedicata alla gestione ordini, spedizioni e customer service: il cliente online che aspetta il vasetto di pomodoro vuole risposta rapida",
-      "3-4": "Team strutturato: produzione (stagionale con picchi) + commerciale + logistica spedizioni. Chi spedisce deve imballare bene — un vasetto rotto è un cliente perso",
-      "4-5": "Struttura completa con responsabile produzione, commerciale B2B, e-commerce manager e addetto logistica spedizioni con standard packaging definiti"
-
+      "1-2": "Forma chi gestisce i contatti sulla narrazione del prodotto: ricette della nonna, materie prime locali, processo artigianale.",
+      "2-3": "Piano provvigionale chiaro per agenti con bonus su new business e su referenze GDO.",
+      "3-4": "Affianca un inside sales (~1.500-2.000€/mese) per gestire gli ordini ripetitivi.",
+      "4-5": "Team commerciale strutturato con KAM e export specialist."
     },
     "processi": {
-      "1-2": "Autorizzazione sanitaria per la produzione alimentare artigianale (notifica OSA) obbligatoria. HACCP documentato. Etichette conformi con tutti gli allergeni — senza non puoi vendere legalmente",
-      "2-3": "Tracciabilità lotti documentata: ogni vasetto deve avere lotto, data produzione e scadenza. Processo di controllo qualità per ogni lotto prodotto — un difetto su scala fa danni enormi",
-      "3-4": "Certificazione biologica se usi materie prime bio — è la leva principale per e-commerce e export. BRC o IFS per accedere alla GDO strutturata",
-      "4-5": "Sistema qualità certificato con tracciabilità completa, certificazioni per export (USDA Organic, certificazioni halal se serve), carbon footprint e packaging sostenibile come leva commerciale"
-
+      "1-2": "Etichettatura conforme al Reg. UE 1169/2011: allergeni, valori nutrizionali, shelf life — prerequisito per GDO e export.",
+      "2-3": "Certificazione BRC o IFS (~5.000-15.000€) — obbligatoria per la GDO strutturata e per l'export anglosassone.",
+      "3-4": "ERP food-grade per tracciabilità lotti e gestione scadenze (~300-600€/mese).",
+      "4-5": "EDI con GDO e sistema integrato produzione-commerciale-logistica."
     },
     "ricavi": {
-      "1-2": "Analizza i margini per prodotto: la confettura artigianale a 8€ ha margini molto superiori alla passata a 3€. Orienta la produzione verso i prodotti premium",
-      "2-3": "Il canale diretto (mercati, e-commerce) ha margini doppi rispetto alla GDO. Ogni cliente diretto acquisito vale molto di più di uno scaffale in supermercato",
-      "3-4": "Box regalo e kit tematici: un cesto natalizio con 5 prodotti a 35€ vale più di 5 vasetti venduti singolarmente a 6€ l'uno. Il confezionamento regalo moltiplica il valore percepito",
-      "4-5": "Revenue mix ottimizzato: GDO locale (volume) + specialty e horeca (margine medio) + e-commerce diretto (margine alto) + export (prestigio e valorizzazione) + gift box (margine altissimo)"
-
+      "1-2": "Rivedi il pricing — le conserve artigianali di qualità possono spuntare prezzi 3-5x superiori al prodotto industriale.",
+      "2-3": "Linee premium: prodotti DOP, biologici, con packaging regalo — margini 40-60% superiori alla linea base.",
+      "3-4": "Private label per catene specialty o GDO premium — volumi garantiti con margini ridotti ma prevedibili.",
+      "4-5": "Export con prezzi premium — il made in Italy nelle conserve è riconosciuto e pagato in tutto il mondo."
     },
     "marketing": {
-      "1-2": "Il territorio è il tuo brand: racconta la storia delle materie prime, del luogo, della ricetta di famiglia. Instagram con foto dei prodotti e del processo di produzione — l'autenticità vende",
-      "2-3": "Presenza ai mercati contadini e alle fiere enogastronomiche locali: il campione gratuito converte meglio di qualsiasi pubblicità. Raccogli email ad ogni degustazione",
-      "3-4": "Collaborazioni con food blogger e influencer gastronomici: una recensione autentica raggiunge migliaia di clienti ideali. PR verso riviste food e guide gastronomiche",
-      "4-5": "Piano marketing strutturato: social storytelling + fiere nazionali (Salone del Gusto, Cibus) + PR gastronomica + collaborazioni con chef per visibilità e credibilità"
-
+      "1-2": "Instagram e Facebook con foto dei prodotti e delle ricette — contenuto generato dagli stessi consumatori è oro.",
+      "2-3": "Partecipa a Cibus, Tuttofood o Salone del Gusto (~2.000-8.000€) — visibilità con buyer e media del settore.",
+      "3-4": "PR food: invio campioni a food blogger, giornalisti e guide specializzate.",
+      "4-5": "Strategia brand building: premi di settore, presenza su guide gourmet, accordi con chef stellati."
     },
     "sitoweb": {
-      "1-2": "Sito con storia del produttore, catalogo prodotti con foto professionali e contatti. Il vasetto artigianale si vende con la storia — senza storia è solo un vasetto",
-      "2-3": "E-commerce semplice per vendere online: spedizione in tutta Italia, confezioni regalo e abbonamento box mensile. La conserva si spedisce facilmente — è il prodotto ideale per l'online",
-      "3-4": "Sito professionale con e-commerce, sezione ricette con i propri prodotti, area stampa con materiali scaricabili e versione in inglese per i clienti stranieri",
-      "4-5": "Portale completo con e-commerce multilingua, abbonamento box personalizzabile, area B2B per negozi e ristoranti e integrazione con i principali marketplace food (Amazon, Eataly online)"
-
+      "1-2": "Sito con storia, prodotti e contatti — ~800-2.000€.",
+      "2-3": "E-commerce B2C con spedizione in Italia — margini pieni sul consumatore finale.",
+      "3-4": "Area B2B riservata per distributori con listini e modulo ordini.",
+      "4-5": "Piattaforma integrata B2B + B2C + export con gestione lotti e tracciabilità."
     },
     "ecommerce": {
-      "1-2": "Vendi solo ai mercati locali — il tuo raggio d'azione è limitato dalla geografia. Un e-commerce semplice ti apre l'Italia intera senza costi fissi aggiuntivi",
-      "2-3": "Shop online attivo con spedizione in 48 ore: box regalo, confezioni natalizie e abbonamento mensile. Il cliente del nord che ha assaggiato al mercato al sud può continuare a comprare da te",
-      "3-4": "Presenza su marketplace food specializzati (Gustoso, La Pignatta, Eataly online) per visibilità e nuovi clienti. Amazon per i prodotti a più alto volume",
-      "4-5": "Strategia e-commerce strutturata: sito proprio + marketplace selezionati + export diretto online verso USA e Germania. Il canale digitale genera il 40-50% del fatturato con i margini più alti"
-
+      "1-2": "Presenza su Amazon e marketplace food italiani — visibilità immediata con consumatori qualificati.",
+      "2-3": "E-commerce proprietario + box regalo abbonamento mensile — ricavo ricorrente con margini elevati.",
+      "3-4": "Export online: Amazon EU, marketplace internazionali — canale export a basso costo.",
+      "4-5": "Strategia multicanale: marketplace + sito + export diretto — massima copertura."
     }
   },
   "alimentare_ingredienti": {
     "vendite": {
-      "1-2": "Il cliente compra l'ingrediente ma in realtà compra una soluzione — il pasticcere vuole un risultato nel piatto, non una polvere in un sacchetto. Visita i clienti con campioni e dimostrazioni pratiche: fai assaggiare il risultato finale",
-      "2-3": "Attiva agenti tecnico-commerciali con background alimentare: devono parlare la stessa lingua del cliente. Un agente che non sa cos'è il Brix o il pH non vende ingredienti professionali",
-      "3-4": "Key account per i clienti industriali: contratti annuali con volumi minimi, prezzi fissi trimestrali e tecnico dedicato. Il cliente industriale vuole certezza di fornitura e qualità costante",
-      "4-5": "Struttura commerciale con agenti per canale (pasticceria, gelateria, industria, horeca), application lab per dimostrazioni e key account per i clienti strutturati"
-
+      "1-2": "Mappa i laboratori artigianali, pastifici, panifici e ristoranti della zona che potrebbero utilizzare i tuoi ingredienti — visita diretta con campioni.",
+      "2-3": "Attiva agenti con portafoglio industria alimentare e HORECA (~provvigione 4-7%) — operativo in 2-4 settimane.",
+      "3-4": "Assumi un tecnico-commerciale (~2.500-3.500€/mese) con competenza food technology — vende soluzioni, non solo ingredienti.",
+      "4-5": "Struttura commerciale per segmento: industria + artigianato + HORECA + export — con tecnico di supporto applicativo."
     },
     "pipeline": {
-      "1-2": "Traccia i clienti per prodotto acquistato e frequenza: chi usa il tuo ingrediente X probabilmente ha bisogno anche del Y complementare — è cross-selling naturale",
-      "2-3": "CRM per gestire clienti attivi, campioni inviati e sviluppi in corso. Ogni ricetta sviluppata con il cliente è un vincolo alla concorrenza — tracciala come opportunità",
-      "3-4": "Pipeline strutturata con gestione sviluppi prodotto per cliente, forecast annuale per referenza e alert su lotti in scadenza da gestire commercialmente",
-      "4-5": "Sistema integrato clienti-sviluppi-produzione: visibilità completa su quali clienti stanno sviluppando nuovi prodotti con i tuoi ingredienti e quali opportunità sono in pipeline"
-
+      "1-2": "Traccia ogni cliente su Excel: prodotto fornito, volumi mensili, frequenza di riordino.",
+      "2-3": "CRM con gestione riordini e supporto tecnico pre-vendita (~30-80€/mese).",
+      "3-4": "Monitoraggio consumo per cliente — anticipa i riordini e proponi varianti o prodotti complementari.",
+      "4-5": "CRM integrato con ERP per forecast e pianificazione acquisti materie prime."
     },
     "team": {
-      "1-2": "Il tecnico è il venditore — chi conosce l'ingrediente lo sa vendere meglio di qualsiasi commerciale puro. Forma le figure tecniche sulle basi della comunicazione commerciale",
-      "2-3": "Application specialist dedicato: visita i clienti in laboratorio, sviluppa ricette dimostrative e forma i loro tecnici sull'uso ottimale dei prodotti",
-      "3-4": "Team tecnico-commerciale strutturato: application specialist + agenti commerciali + inside sales per la gestione ordini ricorrenti",
-      "4-5": "Struttura completa con direttore tecnico-commerciale, team application specialist per segmento, agenti di zona e laboratorio R&D dedicato allo sviluppo nuove applicazioni"
-
+      "1-2": "Forma chi gestisce i contatti sulle applicazioni tecniche degli ingredienti — il cliente vuole soluzioni, non solo prodotti.",
+      "2-3": "Affianca al commerciale un tecnologo alimentare (~2.000-3.000€/mese) per il supporto applicativo — differenziazione forte.",
+      "3-4": "Laboratorio applicazioni interno per sviluppare ricette e test — strumento di vendita potentissimo.",
+      "4-5": "Team strutturato: direttore commerciale + tecnici applicativi + export specialist + key account industria."
     },
     "processi": {
-      "1-2": "Certificazioni base obbligatorie: HACCP, tracciabilità lotti, schede tecniche e schede di sicurezza per ogni prodotto. Il cliente professionale le richiede sempre prima del primo ordine",
-      "2-3": "Certificazione biologica EU se hai materie prime bio — è requisito crescente nell'industria alimentare. Halal e kosher se vuoi accedere a quei mercati. Processo di controllo qualità per lotto documentato",
-      "3-4": "BRC o IFS per i clienti industria strutturata — senza non passi la qualifica fornitore. Processo di gestione non conformità e gestione reclami documentato e rapido",
-      "4-5": "Sistema qualità certificato con audit periodici, tracciabilità completa, certificazioni multiple mantenute e laboratorio analisi interno per garantire costanza qualitativa lotto su lotto"
-
+      "1-2": "Schede tecniche complete per ogni ingrediente: composizione, dosaggi, applicazioni, allergeni, shelf life.",
+      "2-3": "Certificazioni richieste dall'industria: FSSC 22000, Halal, Kosher (~3.000-15.000€) — aprono mercati industriali e internazionali.",
+      "3-4": "Laboratorio controllo qualità interno — garanzia di costanza del prodotto per i clienti industriali.",
+      "4-5": "Sistema qualità integrato con tracciabilità materie prime e gestione fornitori — standard industria alimentare strutturata."
     },
     "ricavi": {
-      "1-2": "Analizza i margini per categoria: gli ingredienti funzionali e gli aromi naturali hanno margini molto superiori alle materie prime commodity. Orienta lo sviluppo verso i prodotti ad alto valore aggiunto",
-      "2-3": "Contratti annuali con i clienti principali: volumi minimi garantiti in cambio di prezzi stabili e priorità di fornitura. Riduce la volatilità e aumenta lo switching cost",
-      "3-4": "Servizi tecnici a pagamento: sviluppo ricette personalizzate, formazione tecnica, ottimizzazione processi del cliente. La consulenza vale spesso più dell'ingrediente stesso",
-      "4-5": "Revenue mix strutturato: ingredienti standard (volume) + specialty e funzionali (margine) + servizi consulenza tecnica (margine alto) + sviluppo esclusivo per cliente (lock-in)"
-
+      "1-2": "Rivedi il pricing per volume e per applicazione — gli ingredienti per il settore pharma-food hanno margini diversi dal commodity.",
+      "2-3": "Sviluppa blend personalizzati per i clienti principali — esclusività e margini superiori agli ingredienti standard.",
+      "3-4": "Servizi di sviluppo ricette a pagamento — consulenza tecnica che diventa centro di profitto autonomo.",
+      "4-5": "Partnership R&D con clienti industriali per co-sviluppo nuovi ingredienti — lock-in strategico e royalties."
     },
     "marketing": {
-      "1-2": "Schede tecniche professionali per ogni prodotto: composizione, dosaggi consigliati, applicazioni, certificazioni e shelf life. Il tecnico del cliente le scarica prima di qualsiasi contatto commerciale",
-      "2-3": "Presenza a fiere di settore (sigep, Host, Cibus, Fi Europe): sono dove si incontrano i buyer e i tecnici dell'industria alimentare. Una demo pratica allo stand vale più di qualsiasi brochure",
-      "3-4": "Workshop tecnici per i clienti: giornate di formazione sulle nuove applicazioni dei tuoi ingredienti. Chi forma il cliente lo fidelizza profondamente",
-      "4-5": "Piano marketing strutturato: fiere internazionali + workshop tecnici + pubblicazioni su riviste di settore + partnership con scuole di cucina e pasticceria per visibilità e credibilità"
-
+      "1-2": "Partecipa a Fi Europe, HostMilano o Tuttofood (~3.000-8.000€) — fiere B2B dove incontri buyer industriali e artigianali.",
+      "2-3": "White paper tecnici e schede applicative sul sito — content marketing B2B che genera lead qualificati.",
+      "3-4": "Webinar tecnici su applicazioni specifiche — posizionamento come partner tecnico, non solo fornitore.",
+      "4-5": "Presenza riviste di settore (Industrie Alimentari, Food Technology) e collaborazioni con istituti di ricerca."
     },
     "sitoweb": {
-      "1-2": "Sito con catalogo prodotti tecnico: composizione, dosaggi, applicazioni, certificazioni e download schede tecniche. Il tecnico deve trovare tutto senza chiamare",
-      "2-3": "Sito con area ricette dimostrative per applicazione, sezione novità prodotto e form richiesta campioni con specifica dell'applicazione di interesse",
-      "3-4": "Portale tecnico con area riservata clienti, download documentazione qualità, richiesta sviluppo personalizzato e webinar tecnici on-demand",
-      "4-5": "Piattaforma digitale completa con area clienti dedicata, gestione sviluppi in corso, ordini online con specifiche tecniche e knowledge base ricette per applicazione"
-
+      "1-2": "Sito con catalogo ingredienti, schede tecniche scaricabili e form contatto.",
+      "2-3": "Area tecnica riservata con schede applicative, ricette e supporto tecnico online.",
+      "3-4": "Portale B2B per clienti con catalogo, prezzi riservati e modulo ordini.",
+      "4-5": "Piattaforma integrata con configuratore blend, schede tecniche e supporto tecnico live."
     },
     "ecommerce": {
-      "1-2": "Fornisci solo l'ingrediente senza supporto tecnico — il cliente lo usa male e incolpa il prodotto. Inizia a offrire dosaggi consigliati e ricette base per ogni ingrediente venduto",
-      "2-3": "Application specialist che visita i clienti in laboratorio: sviluppa con loro una ricetta usando il tuo ingrediente. Quella ricetta crea un vincolo fortissimo alla concorrenza",
-      "3-4": "Laboratorio dimostrativo interno dove i clienti vengono a fare prove e sviluppi: chi sviluppa una ricetta nel tuo lab con i tuoi ingredienti difficilmente cambia fornitore",
-      "4-5": "Centro di eccellenza tecnica: laboratorio R&D avanzato, co-sviluppo esclusivo con i clienti strategici, brevetti su nuove applicazioni e consulenza tecnica come business unit autonoma"
-
+      "1-2": "Vendita online per artigiani e piccoli laboratori — quantità ridotte con margini superiori all'industria.",
+      "2-3": "Marketplace ingredienti B2B (Europages, Kompass Food) per visibilità internazionale.",
+      "3-4": "E-commerce B2B con ordini minimi e listini personalizzati per categoria cliente.",
+      "4-5": "Integrazione EDI con i sistemi ERP dei clienti industriali principali — riordini automatici."
     }
   },
   "alimentare_birra": {
     "vendite": {
-      "1-2": "Vendi solo ai tuoi amici e ai bar del quartiere — zero struttura. Mappa i pub, le enoteche e i ristoranti della zona che valorizzano il craft beer e proponi una fornitura di prova con campioni: la birra si vende facendola assaggiare",
-      "2-3": "Attiva un distributore locale o regionale specializzato in craft beer: conosce i locali giusti e ha già le relazioni. Parallelamente costruisci la community di appassionati — sono i tuoi futuri clienti diretti e ambasciatori",
-      "3-4": "Rete distributiva strutturata per zona con distributori specializzati. Export verso i mercati esteri più attivi sul craft italiano (USA, Giappone, Scandinavia). La taproom come canale di vendita diretto con margini altissimi",
-      "4-5": "Struttura commerciale con responsabile distribuzione B2B, export manager e responsabile taproom ed esperienze. Il brand del birrificio è il vero asset — proteggilo e sviluppalo"
-
+      "1-2": "Visita bar, pub e ristoranti della zona con campioni in bottiglia — il barman che conosce la tua birra è il tuo miglior commerciale. Nessun costo.",
+      "2-3": "Attiva un agente con portafoglio HORECA e beer specialist (~provvigione 8-12%) — operativo in 2-4 settimane.",
+      "3-4": "Assumi un commerciale HORECA (~2.000-3.000€/mese) per presidiare i locali principali e sviluppare accordi di spina.",
+      "4-5": "Struttura commerciale per canale: HORECA + specialty beer shop + GDO + export — con merchandiser per i locali top."
     },
     "pipeline": {
-      "1-2": "Tieni un registro dei locali serviti: tipo di locale, referenze ordinate e frequenza. Chi non riordina da un mese sta comprando da un altro birrificio",
-      "2-3": "CRM semplice per gestire distributori, clienti horeca diretti e lista appassionati per eventi e degustazioni",
-      "3-4": "Pipeline strutturata per canale: horeca + taproom + eventi + export. Gestione birre stagionali e limited edition con liste d'attesa — la scarsità è una leva di valore nel craft",
-      "4-5": "Sistema integrato produzione-ordini-distribuzione: visibilità completa su stock per referenza, ordini confermati e capacità produttiva residua per gestire le opportunità commerciali"
-
+      "1-2": "Traccia ogni locale cliente: volumi, stili ordinati, frequenza di riordino — la birra artigianale ha cicli stagionali.",
+      "2-3": "CRM base con alert per riordini e per locali inattivi da +30 giorni (~30-60€/mese).",
+      "3-4": "Gestione tap room e accordi di spina esclusivi — il locale che ha la tua spina è un cliente fidelizzato per definizione.",
+      "4-5": "CRM integrato con gestione fusti, rotazione produzione e previsioni per stagione."
     },
     "team": {
-      "1-2": "Il birraio fa tutto. Anche solo una figura part-time per la gestione ordini, le consegne e i social libera tempo prezioso per la produzione",
-      "2-3": "Brand ambassador dedicato: appassionato di birra, sa raccontare il prodotto, gestisce i social e rappresenta il birrificio agli eventi. È il volto del brand fuori dalla produzione",
-      "3-4": "Team strutturato: produzione + commerciale distribuzione + responsabile taproom. Chi lavora in taproom deve saper raccontare ogni birra — è vendita esperienziale",
-      "4-5": "Struttura completa con head brewer, responsabile commerciale, export manager e responsabile hospitality per taproom ed eventi"
-
+      "1-2": "Forma chi gestisce i contatti sugli stili birrari, gli abbinamenti e le caratteristiche organolettiche — il birraio che sa comunicare vende di più.",
+      "2-3": "Piano incentivi per agenti con bonus su accordi di spina e su new business HORECA.",
+      "3-4": "Brand ambassador (~1.000-1.500€/mese part-time) che presidia i locali top e forma il personale di sala.",
+      "4-5": "Team commerciale: responsabile HORECA + export specialist + brand ambassador + responsabile tap room."
     },
     "processi": {
-      "1-2": "Autorizzazione sanitaria per produzione birra, accisa sull'alcol gestita correttamente, etichette conformi al Reg. UE — sono obblighi fiscali e sanitari non negoziabili",
-      "2-3": "Processo di controllo qualità per ogni lotto: analisi chimiche base (grado alcolico, amaro IBU, colore EBC), gestione temperatura durante fermentazione e stoccaggio",
-      "3-4": "Certificazione biologica se usi ingredienti bio — crescente richiesta nel craft. Processo HACCP documentato per accedere alla GDO. Gestione accise strutturata con software dedicato",
-      "4-5": "Sistema qualità certificato, tracciabilità completa dalla materia prima alla spina, certificazioni per export e laboratorio analisi interno per garantire costanza qualitativa"
-
+      "1-2": "Etichettatura conforme a normativa europea con grado alcolico, allergeni e codice lotto.",
+      "2-3": "Certificazione biologica o artigianale riconosciuta (~1.000-5.000€) — differenziazione e accesso a canali premium.",
+      "3-4": "Processo di gestione fusti e vuoti a rendere strutturato — riduce i costi e mantiene la qualità del prodotto.",
+      "4-5": "ERP birreria integrato con CRM e produzione — dalla cotta al fusto consegnato in un unico sistema."
     },
     "ricavi": {
-      "1-2": "Analizza i margini per referenza e per canale: vendere in taproom a 5€ la pinta ha margini enormi rispetto a vendere la bottiglia al distributore a 2€. La taproom è il canale più redditizio",
-      "2-3": "Limited edition e birre stagionali: margini superiori alle referenze fisse e creano urgenza di acquisto. Il cliente che sa che finisce compra subito",
-      "3-4": "Mix canali ottimizzato: distribuzione horeca (volume) + taproom (margine alto) + e-commerce bottiglie (margine medio) + export (prestigio). Nessun canale oltre il 50% del fatturato",
-      "4-5": "Revenue strutturato con contratti distributori, taproom come centro di profitto autonomo, abbonamento beer club per privati e export con importatori esclusivi per mercato"
-
+      "1-2": "Alza il prezzo delle birre premium e speciali — il consumatore di birra artigianale è disposto a pagare la qualità.",
+      "2-3": "Lancia edizioni stagionali e limited edition — create aspettativa e urgenza, margini 40-60% superiori.",
+      "3-4": "Abbonamento beer club o box mensile — ricavo ricorrente prevedibile con margini elevati.",
+      "4-5": "Tap room aziendale con eventi di degustazione e beer experience — margini altissimi e brand building."
     },
     "marketing": {
-      "1-2": "Instagram e Facebook con foto del processo produttivo, nuove uscite e vita del birrificio. La community craft è attivissima sui social — l'autenticità conta più della perfezione",
-      "2-3": "Presenza agli homebrew festival e alle fiere craft (Rimini Beer Attraction, Birreria). Collaborazioni con altri birrifici per brew collabs — amplificano entrambe le audience",
-      "3-4": "Storytelling strutturato: ogni birra ha una storia, un territorio, un'ispirazione. Content marketing su Instagram, YouTube e Untappd — la piattaforma dove vivono gli appassionati di craft",
-      "4-5": "Piano marketing strutturato: eventi + fiere nazionali e internazionali + digital community + PR specializzata + collaborazioni con chef e ristoratori per abbinamenti cibo-birra"
-
+      "1-2": "Instagram con foto della produzione, delle materie prime e dei nuovi lanci — la community della birra artigianale è molto attiva online.",
+      "2-3": "Partecipa a Eurhop, Beer Attraction o festival birra locali (~1.000-5.000€) — visibilità diretta con appassionati e buyer.",
+      "3-4": "Collaborazioni con beer influencer e portali specializzati (Ratebeer, Untappd) — endorsement credibile nella comunità.",
+      "4-5": "Strategia brand building: premi internazionali (World Beer Awards), presenza stampa specializzata, collaborazioni con chef."
     },
     "sitoweb": {
-      "1-2": "Sito con storia del birrificio, catalogo birre con schede tecniche (stile, grado alcolico, ingredienti, abbinamenti) e contatti. Il buyer straniero lo visita prima di qualsiasi contatto",
-      "2-3": "E-commerce per vendite dirette: spedizione in tutta Italia, box regalo e abbonamento mensile. La birra artigianale in bottiglia si spedisce facilmente",
-      "3-4": "Sito professionale con e-commerce, prenotazione visite in birrificio, calendario eventi e area stampa con materiali scaricabili",
-      "4-5": "Portale completo con e-commerce multilingua, beer club con abbonamento, prenotazione taproom ed eventi integrata e area importatori per l'export"
-
+      "1-2": "Sito con storia del birrificio, stili prodotti e dove trovare la birra — ~800-2.000€.",
+      "2-3": "E-commerce con spedizione in Italia e tap room virtuale — vendita diretta al consumatore con margini pieni.",
+      "3-4": "Area HORECA riservata con listini, disponibilità e modulo ordini.",
+      "4-5": "Piattaforma integrata: e-commerce + beer club + HORECA + export — copertura completa."
     },
     "ecommerce": {
-      "1-2": "Nessuna taproom o esperienza diretta — vendi solo attraverso distributori. Anche solo aprire il birrificio al pubblico un weekend al mese crea community e fatturato diretto ad altissimo margine",
-      "2-3": "Taproom aperta regolarmente con mescita delle birre di produzione: ogni visita è un'esperienza che crea fan, non solo clienti. Organizza degustazioni guidate a pagamento",
-      "3-4": "Taproom strutturata come locale vero con orari fissi, food pairing, eventi tematici e merchandising. Le visite al birrificio diventano un'attrazione — enoturismo della birra",
-      "4-5": "Esperienza completa: taproom + tour del birrificio + degustazioni private + eventi aziendali + beer club per gli appassionati. L'hospitality genera il 30-40% del fatturato con i margini più alti"
-
+      "1-2": "Presenza su marketplace birra artigianale (Birra del Borgo Shop, Tannico Birra) — visibilità immediata.",
+      "2-3": "E-commerce proprietario + abbonamento box mensile — community di appassionati fidelizzati.",
+      "3-4": "Export online: Amazon EU, beer marketplace internazionali — canale export a basso costo.",
+      "4-5": "Strategia multicanale: marketplace + sito + export + tap room — massima copertura del mercato."
     }
   },
   "tech_saas": {
     "vendite": {
-      "1-2": "Definire ICP (Ideal Customer Profile) con firmografici e trigger di acquisto. Creare script di discovery call focalizzato su pain e ROI atteso",
-      "2-3": "Costruire sequenze outbound multicanale (email + LinkedIn) per segmento. Implementare framework di qualification (MEDDIC o BANT adattato)",
-      "3-4": "Mappare il buying committee tipico e gestire i multi-stakeholder deal con champion interni e business case strutturato",
-      "4-5": "Sales machine scalabile: ICP validato per verticale, playbook per segmento, processo di qualification automatizzato e forecast predittivo basato su engagement data"
-
+      "1-2": "Struttura il processo inbound: landing page chiara, trial gratuito e onboarding guidato — il prodotto si deve vendere da solo nel primo step. Nessun costo aggiuntivo.",
+      "2-3": "Assumi un Sales Development Representative (SDR, ~2.000-2.800€/mese) per qualificare lead e fissare demo — operativo in 1-2 mesi.",
+      "3-4": "Affianca all'SDR un Account Executive (~3.000-4.500€/mese) che chiude le trattative e gestisce gli account strategici.",
+      "4-5": "Struttura sales completa: SDR + AE + Customer Success Manager + Sales Manager — ciclo completo dall'acquisizione alla retention."
     },
     "pipeline": {
-      "1-2": "Definire stage gate chiari con criteri di avanzamento oggettivi. Tracciare conversion rate per stage e identificare il collo di bottiglia",
-      "2-3": "Istituire pipeline review settimanale con aging alert sui deal dormienti. Implementare deal scoring basato su engagement e fit",
-      "3-4": "Separare pipeline new business da expansion/upsell. Forecast mensile basato su probabilità per stage con accuracy misurata",
-      "4-5": "Pipeline intelligence: scoring predittivo, alert automatici su deal a rischio, forecast accuracy > 80% e visibilità completa su pipeline coverage ratio"
-
+      "1-2": "Traccia ogni trial e demo su Excel: azienda, interlocutore, esigenza, stato — il SaaS si vende in settimane, non mesi.",
+      "2-3": "CRM SaaS-native (HubSpot, Pipedrive, ~50-100€/mese) con pipeline per stage: trial → demo → proposta → chiuso.",
+      "3-4": "Lead scoring automatico basato sull'attività in-app: chi usa il trial intensivamente ha 3x più probabilità di convertire.",
+      "4-5": "Revenue Operations: CRM + analytics + customer success integrati — visibilità completa su acquisition, retention e expansion."
     },
     "team": {
-      "1-2": "Costruire playbook commerciale con messaggi per verticale/ICP. Definire ramp plan per nuovi AE con milestone a 30/60/90 giorni",
-      "2-3": "Istituire call review cadence per coaching continuo. Separare ruoli SDR (outbound) e AE (closing) se il volume lo giustifica",
-      "3-4": "Definire OKR commerciali trimestrali con metriche SaaS (ARR, CAC, win rate). Team con SDR + AE + CSM con handoff strutturati",
-      "4-5": "Revenue team completo: SDR team con leader, AE per segmento, CSM per tier di cliente, RevOps per analytics e Sales Enablement per formazione continua"
-
+      "1-2": "Forma il team tecnico sulle tecniche di demo e sullo storytelling del prodotto — la demo è il momento più critico del ciclo di vendita SaaS.",
+      "2-3": "Piano incentivi per l'SDR basato su SQL (Sales Qualified Lead) generati, non solo su attività.",
+      "3-4": "Assumi un Customer Success Manager (~2.500-3.500€/mese) — riduce il churn e aumenta l'expansion revenue.",
+      "4-5": "Team strutturato con Sales Manager che coordina SDR + AE + CS e monitora MRR, churn e NPS."
     },
     "processi": {
-      "1-2": "Standardizzare la demo con struttura discovery → value mapping → next step. Creare template di proposal con ROI calculator integrato",
-      "2-3": "Predisporre contratto subscription standard con clausole rinnovo automatico. Definire processo di handoff sales → customer success post-firma",
-      "3-4": "Documentare obiezioni frequenti e relative risposte nel playbook. Processo di security review e compliance (SOC2, GDPR) strutturato per deal enterprise",
-      "4-5": "Sales operations maturo: contratti modulari per tier, processo di procurement enterprise con legal review, compliance certificata e SLA contrattuali monitorati"
-
+      "1-2": "Standardizza il processo di onboarding: welcome email, tutorial video, check-in a 7 giorni — riduce il churn nei primi 30 giorni.",
+      "2-3": "Playbook vendita: script demo, gestione obiezioni, proposta standard e follow-up cadenzato.",
+      "3-4": "Processo QBR (Quarterly Business Review) con i clienti principali — fidelizzazione e upsell sistematico.",
+      "4-5": "Processo PLG (Product Led Growth): trial → attivazione → habit → referral — il prodotto diventa il principale canale di acquisizione."
     },
     "ricavi": {
-      "1-2": "Costruire expansion playbook: upsell per seat/moduli, cross-sell per use case. Istituire QBR trimestrali con i clienti chiave per anticipare il rinnovo",
-      "2-3": "Implementare churn early warning basato su usage data e NPS. Ottimizzare pricing tier per massimizzare ARPU senza aumentare churn",
-      "3-4": "Monitorare Net Revenue Retention come KPI primario di salute commerciale. Target NRR > 110% con espansione sistematica sui clienti esistenti",
-      "4-5": "Revenue engine maturo: NRR > 120%, LTV/CAC > 3x, churn < 1% mensile. Expansion revenue supera il new business come motore di crescita"
-
+      "1-2": "Rivedi il pricing: piano mensile vs annuale con sconto 20-30% — l'annuale migliora il cash flow e riduce il churn.",
+      "2-3": "Introduci un piano Enterprise con feature avanzate e SLA garantiti — margini superiori e clienti più fidelizzati.",
+      "3-4": "Upsell sistematico: più utenti, più storage, più integrazioni — l'expansion revenue è il motore della crescita SaaS.",
+      "4-5": "Partner program: rivenditori, integratori, consulenti che portano clienti in cambio di commissioni — crescita scalabile."
     },
     "marketing": {
-      "1-2": "Costruire content strategy product-led (tutorial, use case, benchmark di settore). Produrre case study con metriche ROI concrete per verticale target",
-      "2-3": "Attivare SEO su keyword intent alto (alternative, comparazioni, problemi specifici). Strutturare referral program con incentivo per clienti che portano lead",
-      "3-4": "Presidiare community e forum di settore con contributi non promozionali. Campagne paid su LinkedIn e Google Ads con targeting per ICP e job title",
-      "4-5": "Growth marketing strutturato: inbound engine con SEO + content + community, outbound con ABM per enterprise, product-led con viralità integrata nel prodotto"
-
+      "1-2": "Content marketing: blog tecnico e guide pratiche sul problema che risolvi — SEO a lungo termine con costo marginale.",
+      "2-3": "Campagne LinkedIn Ads su ICP (Ideal Customer Profile) — targeting preciso su ruolo, settore e dimensione azienda (~500-1.500€/mese).",
+      "3-4": "Review su G2, Capterra, Trustpilot — il 70% degli acquirenti SaaS legge le review prima di comprare.",
+      "4-5": "Demand generation strutturata: SEO + paid + content + referral + partner program — flywheel completo."
     },
     "sitoweb": {
-      "1-2": "Ottimizzare homepage con value proposition chiara e CTA verso trial/demo. Creare pricing page trasparente con confronto tier e FAQ sulle obiezioni comuni",
-      "2-3": "Aggiungere social proof visibile: loghi clienti, recensioni G2/Capterra, case study. Costruire landing page dedicate per verticale o use case specifico",
-      "3-4": "Implementare live chat o chatbot per qualificare i visitatori ad alto intento. A/B testing continuo su landing page e CTA per ottimizzare conversion rate",
-      "4-5": "Sito come motore di conversione: personalizzazione per visitor segment, intent-based routing, self-service demo e signup flow ottimizzato con analytics completi"
-
+      "1-2": "Landing page chiara con valore proposto, social proof e CTA per il trial — ottimizza la conversion rate.",
+      "2-3": "Sito con case study, pricing trasparente e comparison con i competitor — riduce il tempo di decisione.",
+      "3-4": "SEO tecnico su parole chiave problema + soluzione + alternativa a [competitor] — traffico qualificato.",
+      "4-5": "Sito ottimizzato per PLG: trial immediato, onboarding in-app, referral program integrato."
     },
     "ecommerce": {
-      "1-2": "Ottimizzare il flusso di signup per ridurre attrito e time-to-value. Costruire in-app onboarding guidato con checklist e milestone di attivazione",
-      "2-3": "Definire il gate freemium/trial: cosa è gratuito, cosa converte all'upgrade. Implementare email di nurturing automatiche basate sul comportamento in-app",
-      "3-4": "Misurare e ottimizzare il PQL (Product Qualified Lead) come trigger commerciale. Product analytics per identificare gli utenti pronti all'upgrade",
-      "4-5": "Product-led growth maturo: self-service upgrade, viralità integrata (invite, share), PQL scoring automatico e hand-raise to sales per deal enterprise"
-
+      "1-2": "Self-service checkout per i piani mensili base — rimuovi l'attrito nell'acquisto per i clienti SMB.",
+      "2-3": "Marketplace SaaS (AppSumo, Product Hunt) per awareness e acquisizione di early adopter.",
+      "3-4": "API e integrazioni con gli ecosistemi principali (Salesforce, HubSpot, Zapier) — distribuzione tramite marketplace.",
+      "4-5": "App store dei principali ecosistemi (Salesforce AppExchange, HubSpot Marketplace) — canale di distribuzione scalabile."
     }
   },
   "tech_system_integrator": {
     "vendite": {
-      "1-2": "Mappare gli stakeholder decisionali (IT manager, CFO, titolare) per ogni opportunità. Definire ICP per verticale di specializzazione (manifattura, retail, servizi)",
-      "2-3": "Entrare nel processo d'acquisto prima della RFP per orientare i criteri di selezione. Strutturare il processo di discovery per qualificare budget e urgenza prima di investire in offerta",
-      "3-4": "Costruire messaggi di valore differenziati per interlocutore tecnico vs economico. Gestire i multi-stakeholder deal con champion interni e business case strutturato",
-      "4-5": "Vendita consultiva matura: pre-sales dedicato per verticale, processo di qualification strutturato, deal strategy per ogni opportunità enterprise e forecast predittivo"
-
+      "1-2": "Mappa le aziende della tua zona con sistemi legacy da aggiornare — il problem-aware buyer è il tuo cliente ideale. Nessun costo.",
+      "2-3": "Assumi un account manager (~2.500-3.500€/mese) con esperienza IT B2B che gestisce le trattative e le gare — operativo in 2-3 mesi.",
+      "3-4": "Affianca all'account manager un pre-sales engineer (~3.000-4.000€/mese) per le gare tecniche complesse.",
+      "4-5": "Struttura commerciale completa: sales director + account manager per verticale + pre-sales + partner manager."
     },
     "pipeline": {
-      "1-2": "Tracciare tutte le opportunità in CRM fin dal primo contatto, non dalla RFP. Definire stage early (awareness, interest, scoping) oltre ai classici offerta/negoziazione",
-      "2-3": "Istituire pipeline review mensile con il titolare per prioritizzare le opportunità attive. Monitorare il ciclo di vendita medio per stage e identificare dove si perde tempo",
-      "3-4": "Separare pipeline new business da rinnovi e upsell su clienti esistenti. Forecast trimestrale con pipeline coverage ratio monitorato",
-      "4-5": "Pipeline intelligence: deal scoring automatico, aging alert, forecast accuracy > 75% e visibilità completa su weighted pipeline per quarter"
-
+      "1-2": "Traccia ogni RFP e trattativa su Excel: cliente, scope, valore, stato, decision maker — ciclo vendita IT è 3-9 mesi.",
+      "2-3": "CRM con gestione gare e follow-up strutturato (~50-100€/mese) — nel system integration non rispondere a una gara è perdere il cliente.",
+      "3-4": "Win/loss analysis su ogni gara persa — capire perché perdi contro i competitor è più utile di qualsiasi campagna.",
+      "4-5": "CRM integrato con project management — dalla gara alla delivery in un unico sistema."
     },
     "team": {
-      "1-2": "Strutturare il ruolo di presales: chi fa il discovery tecnico e scrive le specifiche. Affiancare il titolare nella vendita per trasferire il know-how commerciale al team",
-      "2-3": "Costruire un playbook di vendita consultiva adatto a cicli lunghi e interlocutori tecnici. Formare il team tecnico sulle basi della comunicazione di valore al cliente",
-      "3-4": "Definire chi gestisce la relazione post-vendita per favorire upsell e referral. Team con account manager + presales + delivery separati con handoff strutturati",
-      "4-5": "Struttura completa: account executive per segmento, presales architect, delivery manager e customer success per i clienti sotto contratto ricorrente"
-
+      "1-2": "Certifica i tuoi tecnici sulle principali piattaforme che implementi (Microsoft, SAP, Oracle) — le certificazioni aprono le gare.",
+      "2-3": "Piano incentivi per chi porta nuove opportunità commerciali dai clienti esistenti — l'upsell nel SI vale oro.",
+      "3-4": "Assumi un delivery manager (~3.000-4.500€/mese) che garantisce la qualità dei progetti e genera referenze positive.",
+      "4-5": "Team strutturato: sales + pre-sales + delivery + customer success — ciclo completo dalla vendita al rinnovo."
     },
     "processi": {
-      "1-2": "Creare template di offerta standard con sezioni fisse: scopo, esclusi, tempi, costi, garanzie. Definire processo di scoping con checklist dei requisiti minimi prima di fare un'offerta",
-      "2-3": "Predisporre contratto framework con clausole su varianti, tempi e responsabilità. Standardizzare il processo di kickoff progetto per allineare aspettative post-firma",
-      "3-4": "Documentare i casi di out-of-scope più frequenti per prevenire dispute con i clienti. Processo di change management strutturato con pricing per le varianti",
-      "4-5": "Delivery excellence: NPS progetto misurato, processo di lesson learned documentato, framework proprietario per assessment e proposal che accelera il ciclo di vendita"
-
+      "1-2": "Standardizza le proposte tecniche: executive summary, architettura proposta, timeline, team, referenze — formato professionale.",
+      "2-3": "Processo di delivery strutturato: kick-off, milestone, UAT, go-live, hypercare — riduce i problemi post-implementazione.",
+      "3-4": "ISO 9001 o CMMI (~5.000-15.000€) — certificazioni che aprono le gare con PA e grandi aziende.",
+      "4-5": "PMO interno per la gestione multi-progetto — scalabilità senza perdere controllo sulla qualità."
     },
     "ricavi": {
-      "1-2": "Costruire offerta di manutenzione/supporto da proporre sistematicamente a fine progetto. Definire tier di contratto ricorrente (base, standard, premium) con SLA differenziati",
-      "2-3": "Mappare i clienti attivi per identificare opportunità di upsell su moduli o integrazioni aggiuntive. Monitorare il margine per progetto e identificare le tipologie di lavoro più profittevoli",
-      "3-4": "Introdurre pricing a valore su progetti strategici invece del solo time & material. Target: almeno 30% del fatturato da contratti ricorrenti",
-      "4-5": "Revenue mix maturo: progetti (40%) + managed services ricorrenti (40%) + consulenza strategica (20%). Il ricorrente garantisce la base, i progetti generano la crescita"
-
+      "1-2": "Proponi sempre contratti di manutenzione e supporto post-go-live (~15-20% del valore progetto/anno) — ricavo ricorrente con margini >50%.",
+      "2-3": "Upsell sistematico sui clienti attivi: aggiornamenti, moduli aggiuntivi, formazione — il cliente soddisfatto espande.",
+      "3-4": "Sviluppa IP proprietari (acceleratori, template, connettori) — riducono i costi di delivery e aumentano i margini.",
+      "4-5": "Revenue ricorrente da managed services: gestione infrastruttura, monitoring, supporto 24/7 — prevedibile e scalabile."
     },
     "marketing": {
-      "1-2": "Produrre case study tecnici con problema, soluzione e risultato misurabile per verticale. Costruire thought leadership su LinkedIn con contenuti tecnici firmati dai senior",
-      "2-3": "Attivare co-marketing con i vendor partner (Microsoft, SAP, HubSpot) per visibilità. Presidiare eventi e fiere di settore verticale come occasione di networking qualificato",
-      "3-4": "Strutturare un programma di referral formale con i clienti soddisfatti. Webinar tecnici su temi verticali per posizionamento come esperti di dominio",
-      "4-5": "Marketing strutturato: thought leadership + co-marketing vendor + eventi verticali + content tecnico + referral program. Il brand personale dei senior è il primo asset commerciale"
-
+      "1-2": "Case study dettagliati dei progetti completati — il buyer IT vuole vedere referenze simili alla sua situazione.",
+      "2-3": "Partnership con i vendor (Microsoft Gold, SAP Partner) — visibilità nelle directory ufficiali e lead qualificati.",
+      "3-4": "Webinar tecnici e presenza a conferenze di settore (Forum PA, Smau, ~2.000-6.000€) — thought leadership.",
+      "4-5": "Strategia account based marketing sulle top 50 aziende target — contenuto e approccio personalizzato."
     },
     "sitoweb": {
-      "1-2": "Comunicare le specializzazioni verticali invece di proporsi come generalisti. Pubblicare case study con risultati concreti per ogni area di competenza",
-      "2-3": "Elencare certificazioni vendor e partnership ufficiali come prova di credibilità. Creare pagine dedicate per tecnologia o soluzione (es. 'Implementazione SAP B1')",
-      "3-4": "Inserire CTA orientate alla consulenza iniziale gratuita, non al contatto generico. A/B testing su landing page per verticale per ottimizzare la conversione",
-      "4-5": "Sito come motore di lead generation: pagine verticali ottimizzate per SEO, assessment tool online, area clienti con documentazione e blog tecnico come hub di contenuti"
-
+      "1-2": "Sito con expertise, case study e certificazioni — nel B2B IT il sito è la bigliettina da visita nella fase di valutazione.",
+      "2-3": "Sezione case study verticali per settore (manufacturing, retail, PA) — il buyer vuole vedere chi assomiglia a lui.",
+      "3-4": "SEO B2B su long tail keyword tecniche — chi cerca 'implementazione SAP PMI' è un lead molto qualificato.",
+      "4-5": "Thought leadership hub: blog tecnico, white paper, ricerche di settore — posizionamento da advisor."
     },
     "ecommerce": {
-      "1-2": "Censire e mantenere attive le certificazioni dei vendor strategici (gold, silver). Registrare le opportunità nei portali deal registration dei vendor per proteggere i deal",
-      "2-3": "Sfruttare i programmi di lead generation dei vendor (referral, marketplace, co-sell). Partecipare agli eventi partner dei vendor per visibilità e relazioni con i loro sales",
-      "3-4": "Valutare l'aggiunta di una specializzazione verticale per differenziarsi dagli altri partner. Costruire IP proprietaria (framework, acceleratori) per ridurre la dipendenza dal solo time & material",
-      "4-5": "Ecosistema vendor maturo: top-tier partnership con almeno 2 vendor, deal registration sistematica, co-sell attivo con i sales dei vendor e IP proprietaria come differenziatore competitivo"
-
+      "1-2": "Marketplace Microsoft AppSource o SAP Store per i componenti standardizzati che hai sviluppato.",
+      "2-3": "Piattaforma partner per rivendere soluzioni di vendor tier-1 con margini di rivendita garantiti.",
+      "3-4": "SaaS verticale proprietario basato sulla tua expertise — recurring revenue indipendente dai progetti.",
+      "4-5": "Ecosistema digitale: SaaS + marketplace + managed services — modello ibrido prodotto-servizi."
     }
   },
   "tech_digital_agency": {
     "vendite": {
-      "1-2": "Definire ICP per verticale di specializzazione (es. ecommerce, hospitality, professioni). Costruire lista prospect qualificata per settore target",
-      "2-3": "Avviare outbound su LinkedIn con messaggi personalizzati per verticale. Costruire sequenza di followup a 3 tocchi",
-      "3-4": "Strutturare proposta commerciale con obiettivi misurabili, KPI attesi e timeline. Eliminare offerte generiche",
-      "4-5": "Implementare processo di referral strutturato con incentivo per clienti che segnalano nuovi contatti"
-
+      "1-2": "Chiedi referenze ai clienti soddisfatti e costruisci un portfolio con i risultati ottenuti (KPI reali) — il portfolio vale più di qualsiasi campagna. Nessun costo.",
+      "2-3": "Assumi un account manager (~2.000-3.000€/mese) che gestisce le trattative e sviluppa il portafoglio clienti esistente.",
+      "3-4": "Affianca all'account un business developer (~2.500-3.500€/mese) dedicato all'acquisizione di nuovi clienti e alle gare.",
+      "4-5": "Struttura commerciale: sales director + account manager per verticale + business developer + partnership manager."
     },
     "pipeline": {
-      "1-2": "Inserire tutte le opportunità in CRM con stage e data di prossimo followup. Abbandonare Excel e gestione a memoria",
-      "2-3": "Definire stage chiari: contatto, brief ricevuto, proposta inviata, negoziazione, chiuso. Assegnare probabilità per stage",
-      "3-4": "Istituire pipeline review settimanale per identificare deal dormienti e opportunità da riattivare",
-      "4-5": "Monitorare conversion rate per stage e tempo medio di chiusura per ottimizzare il processo"
-
+      "1-2": "Traccia ogni trattativa su Excel: cliente, servizio, budget, stato — nel digital agency il ciclo è 2-6 settimane.",
+      "2-3": "CRM con gestione proposte e follow-up strutturato (~30-80€/mese) — il cliente che non senti in 48h va dal competitor.",
+      "3-4": "Processo di qualificazione lead strutturato (BANT: Budget, Authority, Need, Timeline) — concentrati sui deal fattibili.",
+      "4-5": "CRM integrato con project management e fatturazione — visione completa da trattativa a pagamento."
     },
     "team": {
-      "1-2": "Separare il ruolo di account (relazione e upsell) dal ruolo di delivery (esecuzione). Anche con le stesse persone, ruoli distinti",
-      "2-3": "Costruire playbook di onboarding clienti: cosa succede nei primi 30 giorni dopo la firma",
-      "3-4": "Definire processo di escalation interno per problemi cliente prima che diventino churn",
-      "4-5": "Formare gli account sulla vendita consultiva: come identificare bisogni latenti e proporre servizi aggiuntivi"
-
+      "1-2": "Struttura incentivi per i creativi e i tecnici che portano referenze o nuovi contatti — chi lavora a contatto con i clienti vede le opportunità.",
+      "2-3": "Account manager che fa upselling sistematico sui clienti attivi — propone sempre il servizio complementare.",
+      "3-4": "Assumi un head of strategy (~3.000-4.500€/mese) che guida la crescita dei clienti e aumenta il valore dei contratti.",
+      "4-5": "Team strutturato per servizio: SEO lead, paid lead, social lead, dev lead — expertise verticale per ogni area."
     },
     "processi": {
-      "1-2": "Creare template di brief standard da far compilare al cliente prima di ogni progetto o campagna",
-      "2-3": "Definire workflow di approvazione contenuti con tempi massimi di risposta del cliente e conseguenze del ritardo",
-      "3-4": "Automatizzare il report mensile clienti con dati da Google Analytics, Ads e social in un formato standard",
-      "4-5": "Inserire nel contratto clausole esplicite su scope, revisioni incluse e gestione delle richieste extra"
-
+      "1-2": "Standardizza il processo di onboarding cliente: brief, accessi, kick-off, piano editoriale del primo mese — professionalità percepita.",
+      "2-3": "Report mensile automatizzato per ogni cliente con KPI di business (non solo metriche vanity) — dimostra il valore.",
+      "3-4": "Processo di upsell strutturato: ogni QBR include una proposta di servizio aggiuntivo coerente con gli obiettivi del cliente.",
+      "4-5": "Certificazioni agency: Google Premier, Meta Business Partner, HubSpot Solutions Partner — badge di credibilità."
     },
     "ricavi": {
-      "1-2": "Mappare tutti i clienti attivi con servizio, prezzo attuale e data ultimo rinnovo. Identificare chi è sottoprezzato",
-      "2-3": "Introdurre revisione annuale dei retainer con proposta di adeguamento basata su risultati ottenuti",
-      "3-4": "Costruire menu di servizi aggiuntivi da proporre ai clienti esistenti (es. email marketing, SEO locale, video)",
-      "4-5": "Definire pricing a valore per progetti strategici: smettere di vendere ore, vendere risultati"
-
+      "1-2": "Passa da progetti una tantum a retainer mensili — stabilizza il fatturato e riduci i costi di acquisizione.",
+      "2-3": "Pacchetti servizio predefiniti con prezzi fissi — facilita la vendita e riduce il tempo di negoziazione.",
+      "3-4": "Performance-based pricing su alcuni clienti — allineamento degli interessi e margini superiori se i risultati sono buoni.",
+      "4-5": "Servizi proprietari scalabili: tool, template, framework — margini superiori alla pura erogazione di servizi."
     },
     "marketing": {
-      "1-2": "Produrre 2 case study con risultati misurabili (ROAS, traffico, lead generati) per verticale target",
-      "2-3": "Attivare LinkedIn company page con contenuti settimanali: risultati clienti, metodologia, dietro le quinte",
-      "3-4": "Scegliere un posizionamento verticale chiaro e comunicarlo su tutti i canali. Smettere di dire 'facciamo tutto'",
-      "4-5": "Costruire una newsletter mensile per prospect e clienti con insight di settore e casi concreti"
-
+      "1-2": "Case study con risultati numerici reali — nel digital il cliente vuole vedere i numeri, non le promesse.",
+      "2-3": "Presenza su Clutch, GoodFirms, DesignRush — le directory agency sono fonte primaria di lead qualificati.",
+      "3-4": "Content marketing verticale su un settore specifico — diventa l'agenzia di riferimento per il manifatturiero o per il retail.",
+      "4-5": "Thought leadership: speak a eventi, pubblicazioni su Media Marketing, posizionamento da consulente strategico."
     },
     "sitoweb": {
-      "1-2": "Riscrivere la homepage con posizionamento chiaro: per chi lavori, cosa ottengono, perché sceglierti",
-      "2-3": "Costruire pagine di servizio con risultati concreti, non solo descrizioni. Aggiungere loghi clienti e testimonianze",
-      "3-4": "Creare landing page dedicate per verticale target con case study e CTA verso consulenza gratuita",
-      "4-5": "Ottimizzare SEO su keyword intent commerciale: 'agenzia Google Ads [settore]', 'agenzia SEO [città/verticale]'"
-
+      "1-2": "Portfolio aggiornato con case study e risultati — il sito è il tuo principale strumento di vendita.",
+      "2-3": "SEO su parole chiave settore + servizio + zona — i clienti cercano 'agenzia SEO Milano', non 'agenzia digitale'.",
+      "3-4": "Blog tecnico con guide pratiche — SEO a lungo termine e lead generation organica.",
+      "4-5": "Sito ottimizzato per la conversione con CRO continuativo — il tuo sito è il tuo miglior test di competenza."
     },
     "ecommerce": {
-      "1-2": "Mappare consulenti, commercialisti e agenzie complementari (PR, eventi, stampa) come potenziali referrer",
-      "2-3": "Costruire accordi di referral reciproco con 2-3 agenzie non concorrenti che servono lo stesso target",
-      "3-4": "Diventare partner certificato Google, Meta o HubSpot per accedere a lead dal programma partner",
-      "4-5": "Strutturare co-marketing con partner: webinar congiunti, articoli condivisi, offerte bundle per clienti comuni"
-
+      "1-2": "Marketplace agenzie (Sortlist, Bark) — lead qualificati con investimento minimo.",
+      "2-3": "Prodotti digitali: template, guide, corsi online — ricavo passivo e lead generation.",
+      "3-4": "SaaS tool proprietario basato sulla tua expertise — revenue ricorrente indipendente dai clienti servizio.",
+      "4-5": "Ecosistema: servizi + prodotti + formazione + community — brand moat difficile da replicare."
     }
   },
   "tech_automazione": {
     "vendite": {
-      "1-2": "Definire ICP tra manifatturiero, alimentare ed edilizia con soglia minima di fatturato e numero dipendenti. Costruire lista prospect per area geografica e settore",
-      "2-3": "Strutturare approccio consultivo: il primo incontro è un audit di processo, non una presentazione prodotto. Formare il team su questa modalità",
-      "3-4": "Costruire business case standard per ogni tipologia di impianto: payback atteso, risparmio manodopera, riduzione scarti",
-      "4-5": "Sviluppare canale agenti specializzati per settore industriale con contratto e piano provvigionale strutturato"
-
+      "1-2": "Identifica i processi ripetitivi nei tuoi clienti esistenti che puoi automatizzare — il caso d'uso concreto è il miglior argomento di vendita. Nessun costo.",
+      "2-3": "Assumi un tecnico-commerciale (~2.500-3.500€/mese) con competenza in automazione industriale che gestisce gare e trattative.",
+      "3-4": "Affianca un pre-sales engineer (~3.000-4.500€/mese) che progetta soluzioni su misura e supporta le gare tecniche.",
+      "4-5": "Struttura commerciale: sales manager + account per verticale + pre-sales + partner manager per i vendor."
     },
     "pipeline": {
-      "1-2": "Tracciare ogni opportunità in CRM dalla prima visita: tipo impianto, budget indicato, timeline decisionale",
-      "2-3": "Definire stage specifici per cicli lunghi: interesse, audit completato, offerta tecnica, approvazione budget, ordine",
-      "3-4": "Istituire pipeline review mensile con focus su deal in stallo: identificare il blocco e definire azione sblocco",
-      "4-5": "Monitorare il win rate per tipologia di impianto e settore cliente per concentrare gli sforzi sui segmenti più profittevoli"
-
+      "1-2": "Traccia ogni opportunità su Excel: cliente, processo da automatizzare, valore stimato, stato — ciclo 3-9 mesi.",
+      "2-3": "CRM per gestire le trattative con decision maker multipli — nell'automazione coinvolgi sempre produzione, IT e finance.",
+      "3-4": "Gestione pipeline per fase: awareness → analisi processo → demo → proposta → gara → chiusura.",
+      "4-5": "CRM integrato con project management e delivery — dalla trattativa al go-live in un unico sistema."
     },
     "team": {
-      "1-2": "Identificare chi nel team ha competenze sia tecniche che relazionali per il ruolo di vendita consultiva",
-      "2-3": "Costruire playbook commerciale con domande di discovery focalizzate su colli di bottiglia produttivi e costi di processo",
-      "3-4": "Strutturare il ruolo di presales tecnico: chi accompagna il commerciale in sopralluogo e redige la specifica tecnica",
-      "4-5": "Definire piano di sviluppo per figure junior: affiancamento senior, certificazioni tecniche, gestione autonoma clienti piccoli"
-
+      "1-2": "Certifica i tecnici sui principali vendor di automazione (Siemens, ABB, KUKA, Fanuc) — le certificazioni aprono le gare.",
+      "2-3": "Piano incentivi per chi porta nuove opportunità dai clienti esistenti — i progetti di espansione sono i più facili da chiudere.",
+      "3-4": "Assumi un project manager (~2.800-3.800€/mese) che garantisce la qualità dei progetti e genera referenze.",
+      "4-5": "Team strutturato: commerciale + pre-sales + project manager + customer success per il post-vendita."
     },
     "processi": {
-      "1-2": "Creare checklist di audit iniziale: layout impianto, flusso produttivo, colli di bottiglia, KPI attuali del cliente",
-      "2-3": "Standardizzare l'offerta tecnica con sezioni fisse: soluzione proposta, ROI calcolato, tempistiche, garanzie, referenze",
-      "3-4": "Definire processo di gestione varianti in corso d'opera con approvazione scritta del cliente prima di ogni modifica",
-      "4-5": "Costruire contratto di manutenzione standard da proporre a fine installazione con SLA e interventi inclusi"
-
+      "1-2": "Standardizza le proposte tecniche: ROI analysis, payback period, specifiche tecniche, referenze simili.",
+      "2-3": "Metodologia di analisi del processo da automatizzare (AS-IS → TO-BE) — il cliente paga per la consulenza, non solo per l'hardware.",
+      "3-4": "ISO 9001 + certificazioni di settore (CE, ATEX se necessario) — prerequisito per gare industriali strutturate.",
+      "4-5": "PMO interno per gestione multi-progetto e controllo margini — scalabilità senza perdere redditività."
     },
     "ricavi": {
-      "1-2": "Mappare il parco installato clienti e classificarlo per anzianità impianto e potenziale di upgrade",
-      "2-3": "Costruire offerta di manutenzione preventiva e predittiva da proporre sistematicamente post-installazione",
-      "3-4": "Sviluppare linea di servizi a valore: formazione operatori, ottimizzazione parametri, retrofit su impianti esistenti",
-      "4-5": "Introdurre modelli contrattuali pay-per-use o performance-based per clienti che non vogliono investimento iniziale alto"
-
+      "1-2": "Proponi sempre contratti di manutenzione e spare part management post-installazione — ricavo ricorrente con margini >40%.",
+      "2-3": "Upsell su clienti attivi: espansione del sistema, nuove celle, aggiornamenti software — il cliente soddisfatto espande.",
+      "3-4": "Sviluppa soluzioni standardizzate per processi ricorrenti — riduci i costi di progettazione e aumenta i margini.",
+      "4-5": "Managed services e monitoraggio remoto degli impianti — revenue ricorrente prevedibile e scalabile."
     },
     "marketing": {
-      "1-2": "Produrre 2 case study con dati concreti: tempo di payback, percentuale di riduzione scarti o manodopera, settore cliente",
-      "2-3": "Presidiare fiere di settore (Mecspe, SPS, BI-MU) con stand o presenza come visitatori qualificati per networking",
-      "3-4": "Costruire contenuti LinkedIn su efficienza produttiva e automazione per attrarre decision maker industriali",
-      "4-5": "Attivare partnership con associazioni di categoria (Confindustria, CNA) per visibilità e accesso a eventi locali"
-
+      "1-2": "Case study con ROI misurato — nel manifatturiero il cliente vuole vedere il payback period, non le promesse.",
+      "2-3": "Partnership con vendor (Siemens Solution Partner, ABB Authorized Integrator) — directory ufficiali e lead qualificati.",
+      "3-4": "Presenza a SPS Italia, MECSPE, Industry 4.0 Summit (~3.000-8.000€) — contatti diretti con decision maker.",
+      "4-5": "Thought leadership Industry 4.0: white paper, webinar tecnici, presenza riviste di settore."
     },
     "sitoweb": {
-      "1-2": "Comunicare le specializzazioni per settore industriale invece di proporsi come generalisti dell'automazione",
-      "2-3": "Pubblicare case study con video o foto degli impianti realizzati e risultati misurabili per ogni settore",
-      "3-4": "Creare sezione dedicata al processo di lavoro: audit, progettazione, installazione, collaudo, assistenza",
-      "4-5": "Ottimizzare SEO su keyword specifiche: 'automazione industriale [settore/città]', 'sistema di visione artificiale', 'cobot PMI'"
-
+      "1-2": "Sito con expertise, certificazioni e case study per settore — nel B2B industriale il sito è la bigliettina da visita.",
+      "2-3": "Video demo delle soluzioni realizzate — il cliente vuole vedere l'automazione in funzione prima di acquistare.",
+      "3-4": "SEO su parole chiave automazione + settore + zona — traffico B2B qualificato.",
+      "4-5": "Configuratore ROI online — il cliente calcola il payback della sua automazione: lead generation potentissima."
     },
     "ecommerce": {
-      "1-2": "Censire i vendor di tecnologia (robot, visione artificiale, PLC, convogliatori) con cui costruire partnership formale",
-      "2-3": "Diventare system integrator certificato dei vendor strategici per accedere a lead dal loro canale commerciale",
-      "3-4": "Costruire accordi di co-sell con software house MES/ERP per proporre soluzioni integrate al cliente finale",
-      "4-5": "Sviluppare rete di subfornitori specializzati per ampliare la capacità progettuale senza aumentare organico fisso"
-
+      "1-2": "Marketplace componenti automazione (AutomationDirect, RS Components) per i ricambi standard.",
+      "2-3": "Software di supervisione (SCADA, MES) proprietario in cloud — recurring revenue indipendente dai progetti.",
+      "3-4": "Piattaforma IIoT per monitoring remoto degli impianti installati — lock-in strategico e revenue ricorrente.",
+      "4-5": "Ecosistema digitale: progettazione + software + monitoring + manutenzione — valore totale sul cliente massimizzato."
     }
   }
 };
