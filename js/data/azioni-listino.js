@@ -868,292 +868,252 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "commercio_elettronica": {
     "vendite": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
-
+      "1-2": "Forma il personale sull'accoglienza attiva e sulla consulenza tecnica — il cliente che riceve un consiglio competente compra di più e torna. Nessun costo.",
+      "2-3": "Struttura obiettivi individuali per il personale: scontrino medio, accessori venduti per prodotto principale, tasso di conversione — incentivo mensile (~200-400€ bonus pool).",
+      "3-4": "Assumi un responsabile vendite o store manager (~2.000-3.000€/mese) che coordina il team, monitora i KPI e gestisce i clienti business.",
+      "4-5": "Struttura multi-store o multi-canale: responsabile per punto vendita + coordinatore e-commerce + key account per i clienti business e flotte."
     },
     "pipeline": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
-
+      "1-2": "Traccia le richieste di preventivo B2B su Excel — aziende, scuole e enti che acquistano in quantità sono il tuo canale a margini più alti.",
+      "2-3": "CRM base per gestire i clienti business con follow-up strutturato (~30-60€/mese) — un cliente business vale 10 clienti privati.",
+      "3-4": "Implementa un sistema di fidelizzazione clienti (carta fedeltà, punti, cashback) — aumenta la frequenza di acquisto e il lifetime value.",
+      "4-5": "CRM integrato con e-commerce e POS — visione unica del cliente su tutti i canali."
     },
     "team": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
-
+      "1-2": "Forma il personale sui prodotti e sulle tecniche di cross-selling: cuffiette con smartphone, cover con tablet, cavi con laptop — nessun costo.",
+      "2-3": "Struttura un piano di incentivi legato al cross-selling e alla marginalità — non solo ai volumi.",
+      "3-4": "Affianca un tecnico-riparatore (~1.500-2.000€/mese) — l'assistenza tecnica fidelizza il cliente e genera ricavi aggiuntivi.",
+      "4-5": "Team strutturato: store manager + specialisti per categoria (telefonia, computer, audio/video) + tecnico assistenza."
     },
     "processi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
-
+      "1-2": "Standardizza il processo di accoglienza e vendita: accoglienza, qualificazione bisogno, proposta, gestione obiezione, chiusura — training 1 giornata.",
+      "2-3": "Gestionale POS con controllo stock, riordini automatici e analisi vendite per prodotto (~100-300€/mese) — elimina le rotture di stock sui best seller.",
+      "3-4": "Processo di assistenza tecnica strutturato: accettazione, diagnosi, preventivo, riparazione, collaudo, consegna — genera fiducia e ricavi.",
+      "4-5": "Sistema integrato POS + e-commerce + magazzino + CRM — visione completa su tutti i canali di vendita."
     },
     "ricavi": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
-
+      "1-2": "Proponi sistematicamente la garanzia estesa su ogni prodotto venduto — margini 40-60% superiori al prodotto principale.",
+      "2-3": "Sviluppa la divisione B2B: forniture per aziende, scuole, enti pubblici (~ordinativi 2.000-20.000€) — margini più alti e clienti ricorrenti.",
+      "3-4": "Attiva un servizio di assistenza tecnica e noleggio operativo — ricavo ricorrente mensile prevedibile.",
+      "4-5": "Contratti di fornitura con aziende e PA per aggiornamento parco informatico — volumi garantiti annuali."
     },
     "marketing": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
-
+      "1-2": "Google My Business ottimizzato con orari, prodotti principali e recensioni — genera traffico locale qualificato.",
+      "2-3": "Campagne social (Facebook/Instagram) con promozioni settimanali sui prodotti ad alta rotazione (~300-700€/mese).",
+      "3-4": "Google Shopping e campagne Google Ads per intercettare chi cerca il prodotto online (~500-1.500€/mese).",
+      "4-5": "Strategia omnicanale: social + SEO + Google Ads + newsletter + loyalty program — presidio completo del cliente."
     },
     "sitoweb": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
-
+      "1-2": "Sito base con catalogo prodotti, disponibilità e contatti — ~800-2.000€.",
+      "2-3": "E-commerce base con i prodotti più venduti e pagamento online (~2.000-5.000€ + ~100-200€/mese).",
+      "3-4": "E-commerce avanzato con stock in tempo reale, ritiro in negozio e area clienti.",
+      "4-5": "Piattaforma omnicanale: sito + app + POS integrati — esperienza cliente uniforme su tutti i touchpoint."
     },
     "ecommerce": {
-      "1-2": "",
-      "2-3": "",
-      "3-4": "",
-      "4-5": ""
-
+      "1-2": "Iscriviti a Subito, eBay o Marketplace Facebook per vendere prodotti usati e ricondizionati — canale a margini interessanti.",
+      "2-3": "Apri un negozio su Amazon o eBay per i prodotti a catalogo — visibilità immediata senza investimenti in SEO (~15-20% commissione).",
+      "3-4": "E-commerce proprietario con SEO e Google Shopping — riduce la dipendenza dai marketplace.",
+      "4-5": "Strategia marketplace + sito proprietario + canale B2B — diversificazione completa dei canali di vendita."
     }
   },
   "commercio_auto_moto_nuovo": {
     "vendite": {
-      "1-2": "Il walk-in viene gestito in piedi con 2 domande e un preventivo — il cliente va via. Introduci subito un processo minimo: accogli seduto, fai almeno 5 domande di discovery, proponi sistematicamente il test drive",
-      "2-3": "Codifica il processo di vendita: script di accoglienza, domande di discovery, gestione obiezioni e follow-up entro 48 ore su ogni preventivo aperto. Il venditore deve smettere di improvvisare",
-      "3-4": "Team vendite con KPI individuali misurati settimanalmente: preventivi aperti, test drive effettuati, tasso di chiusura, CSI. Role play mensili e affiancamento per i venditori sotto target",
-      "4-5": "Sales manager dedicato con P&L vendite, processo certificato dalla casa madre, formazione continua e sistema di incentivi legato al CSI oltre che ai volumi"
-
+      "1-2": "Struttura l'accoglienza in showroom: saluto professionale, proposta test drive, brochure aggiornate e follow-up entro 24h dalla visita — training interno, nessun costo.",
+      "2-3": "Assumi un venditore con esperienza brand (~2.500-3.500€/mese) che gestisce trattative, finanziamenti e consegne in autonomia — operativo in 2-3 mesi.",
+      "3-4": "Struttura un team vendite con responsabile (~3.500-4.500€/mese) che gestisce venditori per segmento: privati, flotte aziendali, km0.",
+      "4-5": "Direzione commerciale strutturata: responsabile vendite + venditori per segmento + fleet manager + coordinatore post-vendita."
     },
     "pipeline": {
-      "1-2": "Traccia tutti i preventivi aperti su un registro: cliente, modello, valore, data e stato. Quanti preventivi aperti hai in questo momento? Se non lo sai, stai perdendo soldi",
-      "2-3": "CRM per gestire i lead: walk-in, chiamate, form web, campagne casa madre. Follow-up sistematico a 48h, 1 settimana e 1 mese su ogni preventivo non chiuso",
-      "3-4": "Pipeline strutturata con forecast mensile, gestione lead per fonte e tasso di conversione per venditore. Il CRM deve essere usato — non opzionale",
-      "4-5": "CRM integrato con DMS (Dealer Management System) della casa madre, gestione lead multicanale e dashboard direzionale con KPI vendite in tempo reale"
-
+      "1-2": "Traccia ogni lead e visita su Excel: cliente, modello di interesse, budget, stato trattativa — ciclo vendita nuovo è 15-45 giorni.",
+      "2-3": "CRM automotive (es. DealerSocket, Vistadeal, ~200-400€/mese) per gestire lead da sito, portali e showroom con follow-up strutturato.",
+      "3-4": "Lead nurturing automatico via email/SMS per i clienti che hanno visitato ma non acquistato — recupero trattative fredde.",
+      "4-5": "DMS integrato con casa madre per gestione allocazioni, ordini, configuratori e forecast mensile."
     },
     "team": {
-      "1-2": "Il venditore non è formato — conosce il prodotto ma non sa vendere. Inizia con una formazione base: ascolto attivo, domande aperte, gestione obiezioni sul prezzo",
-      "2-3": "Formazione vendita strutturata per tutto il team: processo, tecniche, prodotto e finanziamenti. Il venditore deve saper proporre il finanziamento come prima opzione, non come ripiego",
-      "3-4": "Team con ruoli distinti: venditore nuovo, venditore usato, responsabile finanziamenti. Ogni figura ha obiettivi e formazione specifica",
-      "4-5": "Struttura commerciale completa: sales manager, team vendite nuovo e usato, specialista F&I (finance & insurance) e back office contratti"
-
+      "1-2": "Formazione prodotto obbligatoria: ogni venditore deve conoscere perfettamente gamma, optional e argomenti di vendita — formazione casa madre.",
+      "2-3": "Piano incentivi strutturato: bonus per unità vendute, penetrazione finanziaria e soddisfazione cliente (NPS).",
+      "3-4": "Affianca un F&I manager (Finance & Insurance, ~2.000-3.000€/mese) — massimizza i ricavi da finanziamento, assicurazione e accessori.",
+      "4-5": "Sales manager che coordina il team, gestisce gli obiettivi mensili e mantiene i rapporti con i fleet clienti."
     },
     "processi": {
-      "1-2": "Processi base: contratto standard completo, gestione permute con valutazione scritta, consegna veicolo con checklist. Riduci i contenziosi post vendita",
-      "2-3": "Standardizza tutto il processo: dalla accettazione del lead alla consegna del veicolo. Tempi definiti per ogni fase, responsabilità chiare, documentazione completa",
-      "3-4": "Processi certificati dalla casa madre, gestione qualità documentata, mystery shopping interno e CSI monitorato mensilmente come KPI primario",
-      "4-5": "DMS integrato con CRM e contabilità, processi ISO-like per consegne e reclami, audit interni trimestrali e benchmark con altri dealer della rete"
-
+      "1-2": "Standardizza il processo dalla visita alla consegna: accoglienza, configurazione, preventivo, finanziamento, ordine, consegna — tempi garantiti.",
+      "2-3": "Implementa il processo di gestione delle permute: valutazione standardizzata con Eurotax + fotografia + decisione entro 24h.",
+      "3-4": "DMS (Dealer Management System, ~500-1.500€/mese) per gestione ordini, stock, pratiche e fatturazione — integrazione con casa madre.",
+      "4-5": "Processo completo digitale: firma contratto digitale, pratiche online, aggiornamento automatico del cliente sullo stato ordine."
     },
     "ricavi": {
-      "1-2": "Il margine sul nuovo è basso — stai lasciando soldi sul tavolo su accessori e finanziamenti. Analizza quanti clienti escono senza un accessorio e senza un finanziamento proposto",
-      "2-3": "Obiettivo: ogni contratto nuovo deve includere almeno un accessorio e una proposta finanziamento. La penetrazione finanziamenti è il KPI più redditizio che puoi misurare",
-      "3-4": "Revenue mix strutturato: nuovo + usato + finanziamenti + accessori + service. Nessuna voce sotto il 15% del totale — la dipendenza dal solo nuovo è il rischio maggiore",
-      "4-5": "Centro di profitto per business unit: vendite nuovo, vendite usato, F&I, service e ricambi — ognuno con P&L autonomo e obiettivi trimestrali"
-
+      "1-2": "Proponi sistematicamente finanziamento, garanzia estesa e accessori su ogni trattativa — upsell immediato con margini elevati.",
+      "2-3": "Sviluppa accordi con finanziarie per obiettivi di penetrazione mensili — bonus sul raggiungimento degli obiettivi.",
+      "3-4": "Fleet management: accordi con aziende per forniture ricorrenti di vetture aziendali — ricavo prevedibile e clienti fidelizzati.",
+      "4-5": "Revenue management completo: mix km0/nuovo/usato ottimizzato + obiettivi di penetrazione finanziaria + after sales strutturato."
     },
     "marketing": {
-      "1-2": "Non affidarti solo alle campagne della casa madre — sono uguali per tutti i dealer. Attiva Google My Business, raccogli recensioni e fai campagne locali su eventi e promozioni proprie",
-      "2-3": "Piano marketing locale: Google Ads geolocalizzati, social media con contenuti propri (non solo materiale casa madre), email marketing al database clienti esistente",
-      "3-4": "Marketing strutturato con budget dedicato, campagne di retention verso clienti in scadenza garanzia e leasing, eventi in concessionaria per test drive e lanci modelli",
-      "4-5": "Marketing manager dedicato o agenzia specializzata automotive, piano annuale con obiettivi lead per fonte, campagne multicanale e marketing automation per il database clienti"
-
+      "1-2": "Google My Business ottimizzato con foto showroom, stock disponibile e recensioni — genera lead locali qualificati.",
+      "2-3": "Campagne Google Ads locali su modelli + zona (~500-1.500€/mese) + presenza portali auto (AutoScout, Motor.it).",
+      "3-4": "Strategia social: Instagram con video test drive e lifestyle del brand + campagne Meta Ads sul target locale.",
+      "4-5": "Marketing integrato: digital + eventi + partnership con aziende per fleet + programma referral strutturato."
     },
     "sitoweb": {
-      "1-2": "Sito aggiornato con stock veicoli, promozioni del mese e form richiesta preventivo o test drive — il minimo per esistere online",
-      "2-3": "Sito con stock usato fotografato professionalmente, recensioni clienti in evidenza e chat online per rispondere ai lead in tempo reale",
-      "3-4": "Sito professionale con configuratore veicoli, richiesta finanziamento online, prenotazione test drive e area clienti per storico interventi",
-      "4-5": "Portale digitale integrato con DMS: stock in tempo reale, preventivo online completo di finanziamento, prenotazione service e area clienti con storico completo"
-
+      "1-2": "Sito con stock disponibile, configuratore e richiesta test drive online — ~1.500-3.000€.",
+      "2-3": "Sito avanzato con chat live, preventivo online e integrazione con il configuratore della casa madre.",
+      "3-4": "Integrazione sito con DMS: stock aggiornato in tempo reale, lead automatici al CRM, tracking campagne.",
+      "4-5": "Esperienza digitale premium: tour virtuale showroom, acquisto online, firma digitale e consegna a domicilio."
     },
     "ecommerce": {
-      "1-2": "Il service è un centro di costo — i clienti vanno all'officina indipendente dopo la garanzia. Inizia a misurare quanti clienti tornano per il primo tagliando",
-      "2-3": "Reminder tagliandi attivi via SMS e telefono, pacchetti manutenzione proposti al momento della vendita, follow-up sistematico dopo ogni intervento service",
-      "3-4": "Service come centro di profitto con KPI dedicati: ore fatturate, ricambi venduti, CSI service, clienti attivi. Service advisor formato sulla vendita attiva di interventi aggiuntivi",
-      "4-5": "After sales come business unit autonoma: service manager con P&L, programma fidelizzazione clienti, acquisizione clienti non acquirenti e contratti di manutenzione pluriennali"
-
+      "1-2": "Presenza attiva su AutoScout24 e Motor.it con schede complete e foto professionali per ogni vettura disponibile.",
+      "2-3": "Attiva la vendita km0 e usati certificati online — canale con margini interessanti e clienti già qualificati.",
+      "3-4": "Piattaforma vendita digitale: prenotazione online, configuratore, preventivo immediato e acquisto con anticipo.",
+      "4-5": "Full digital retail: acquisto 100% online con consegna a domicilio — standard richiesto dai brand premium."
     }
   },
   "commercio_auto_moto_usato": {
     "vendite": {
-      "1-2": "La vendita dell'usato inizia dall'accoglienza e dalla fiducia: il cliente cerca il giusto rapporto qualità-prezzo e un venditore onesto. Sii trasparente sulla storia del veicolo — nascondere difetti costa caro in reputazione",
-      "2-3": "Struttura il processo di vendita: scheda cliente, domande di discovery sulle esigenze, proposta mirata da stock e gestione della permuta come leva di chiusura",
-      "3-4": "Team vendite formato sulla gestione dell'obiezione prezzo tipica dell'usato: spiega il valore aggiunto (garanzia, revisione, storico) rispetto al privato o al concorrente",
-      "4-5": "Struttura commerciale con venditori specializzati per segmento (city car, SUV, premium), gestione lead multicanale e follow-up sistematico su ogni contatto"
-
+      "1-2": "Struttura l'accoglienza: saluto attivo, domande di qualificazione (budget, esigenza, permuta?) e follow-up entro 24h dalla visita — training interno, nessun costo.",
+      "2-3": "Assumi un venditore junior con esperienza usato (~2.500€/mese inclusi oneri) — gestisce trattative e permute in autonomia. Operativo in 2-3 mesi.",
+      "3-4": "Affianca al junior un senior (~3.500€/mese) con portafoglio clienti e capacità di chiusura su trattative complesse e flotte.",
+      "4-5": "Struttura commerciale completa: responsabile vendite (~4.000€/mese) + venditori per segmento + key account per flotte aziendali."
     },
     "pipeline": {
-      "1-2": "Traccia su Excel ogni contatto: fonte (marketplace, walk-in, passaparola), veicolo richiesto, budget e stato. I lead dell'usato si bruciano in 24-48 ore se non rispondi",
-      "2-3": "CRM per gestire i lead dai marketplace (AutoScout, Mobile.de, Subito) con risposta entro 2 ore — chi risponde prima vende. Traccia anche le permute valutate non chiuse",
-      "3-4": "Pipeline strutturata con forecast settimanale, gestione lead per fonte e per venditore, tempi medi di vendita per segmento di veicolo",
-      "4-5": "CRM integrato con i marketplace per gestione lead automatica, dashboard rotazione stock e alert su veicoli fermi da oltre 30 giorni"
-
+      "1-2": "Traccia ogni contatto su Excel: nome, interesse, budget, permuta, stato — nel usato la decisione è rapida, il follow-up deve essere immediato.",
+      "2-3": "CRM automotive (Autoclix, vDynamics, ~150-300€/mese) per gestire lead da marketplace con follow-up automatico entro 2h.",
+      "3-4": "Lead scoring: classifica i lead per urgenza e probabilità di chiusura — concentra il tempo commerciale sui contatti più caldi.",
+      "4-5": "DMS integrato: CRM + stock + finanziamenti + pratiche — visione completa dalla trattativa alla consegna."
     },
     "team": {
-      "1-2": "Il titolare fa tutto. Forma un collaboratore sulla valutazione permute base e sulla presentazione dei veicoli — la qualità dell'annuncio dipende da chi lo crea",
-      "2-3": "Primo venditore dedicato con conoscenza tecnica dei veicoli e capacità di valutare le permute in modo autonomo",
-      "3-4": "Team strutturato: venditore + responsabile acquisti + preparatore veicoli. Chi compra e chi vende devono essere figure distinte",
-      "4-5": "Struttura completa con responsabile commerciale, team vendite, buyer dedicato agli acquisti e officina preparazione interna"
-
+      "1-2": "Forma il personale esistente sulla qualificazione del cliente: domande di discovery, gestione della permuta come leva di chiusura.",
+      "2-3": "Piano incentivi: bonus per unità vendute, bonus extra su permute acquisite al giusto prezzo e su soddisfazione cliente.",
+      "3-4": "Affianca un addetto alle pratiche e ai finanziamenti (~1.500-2.000€/mese) — libera i venditori dalla burocrazia.",
+      "4-5": "Sales manager che coordina il team, monitora KPI settimanali (contatti, trattative, chiusure) e gestisce i fleet client."
     },
     "processi": {
-      "1-2": "Check base: contratto di vendita standard completo, garanzia minima per legge (12 mesi), documentazione veicolo in ordine prima di ogni vendita",
-      "2-3": "Processo di preparazione standardizzato per ogni veicolo: revisione meccanica, carrozzeria, pulizia, foto professionali e scheda tecnica completa prima della messa in vendita",
-      "3-4": "Valutazione permute con sistema strutturato (Eurotax, valutazione stato reale), gestione rientri da leasing e aste documentata, checklist consegna veicolo",
-      "4-5": "Processi certificati: certificazione qualità veicoli usati (es. programmi casa madre), garanzie estese come leva commerciale, gestione reclami strutturata e KPI qualità monitorati"
-
+      "1-2": "Standardizza la valutazione permute: checklist danni, chilometraggio verificato, confronto Eurotax — risposta al cliente entro 2h.",
+      "2-3": "Software gestione pratiche auto (~150-350€/mese): passaggi di proprietà, finanziamenti, garanzie — riduce errori e tempi.",
+      "3-4": "Processo di preparazione veicoli strutturato: check meccanico certificato, detailing, foto professionali standard — ogni auto come nuova.",
+      "4-5": "DMS completo con tracciabilità dalla fonte di acquisto alla vendita finale — KPI per fonte, margine e rotazione."
     },
     "ricavi": {
-      "1-2": "Analizza i margini per segmento: city car, berlina, SUV, premium hanno margini molto diversi. Identifica dove guadagni davvero e orienta gli acquisti verso quei veicoli",
-      "2-3": "Finanziamenti e garanzie estese sono il vero margine aggiuntivo — proponi sistematicamente a ogni cliente. La penetrazione finanziamenti sull'usato è spesso più alta che sul nuovo",
-      "3-4": "Ottimizza la rotazione stock: un veicolo fermo 60+ giorni perde valore ogni giorno. Target di rotazione media 30-45 giorni con pricing dinamico",
-      "4-5": "Centro di profitto strutturato: margine veicolo + finanziamento + garanzia + accessori + service post vendita. Forecast mensile affidabile basato su stock e pipeline"
-
+      "1-2": "Proponi sistematicamente garanzia estesa e finanziamento su ogni trattativa — margini 40-60% superiori alla sola vendita.",
+      "2-3": "Rivedi il pricing con tool professionali (Eurotax, EurotaxGlass) — vendere al prezzo di mercato, non svendere per paura.",
+      "3-4": "Attiva accordi con finanziarie per obiettivi di penetrazione mensili — bonus sul raggiungimento e clienti più fidelizzati.",
+      "4-5": "Revenue management: ottimizzazione margine per fonte di acquisto, segmento di veicolo e canale di vendita."
     },
     "marketing": {
-      "1-2": "Annunci professionali su AutoScout24 e Subito con foto di qualità (minimo 20 foto per veicolo), descrizione dettagliata e prezzo competitivo aggiornato settimanalmente",
-      "2-3": "Presenza su almeno 3 marketplace con annunci ottimizzati. Google My Business con recensioni attive. Il passaparola si alimenta con professionalità e trasparenza costanti",
-      "3-4": "Piano marketing digitale: remarketing su chi ha visitato gli annunci, campagne social con stock in evidenza, email marketing al database clienti per nuovi arrivi",
-      "4-5": "Marketing strutturato con budget dedicato, SEO locale per 'auto usate X città', campagne automatizzate per stock e programma referral clienti soddisfatti"
-
+      "1-2": "Stock completo su AutoScout24 e Subito con 8+ foto professionali per veicolo — il 70% dei clienti parte dalla ricerca online.",
+      "2-3": "Google My Business ottimizzato + recensioni attive + campagne Google Ads locali (~400-1.000€/mese).",
+      "3-4": "Video presentazione veicoli su YouTube e Instagram Reels — il cliente che vede il video prima della visita converte il 40% in più.",
+      "4-5": "Marketing integrato: portali + social + remarketing + programma referral — presidio completo del cliente."
     },
     "sitoweb": {
-      "1-2": "Sito con stock aggiornato, foto professionali, filtri per marca/modello/prezzo e form contatto rapido. Deve funzionare perfettamente su mobile",
-      "2-3": "Sito con schede veicolo complete (storia, km certificati, optional, garanzia), chat online per risposta rapida e integrazione con i marketplace",
-      "3-4": "Sito professionale con valutazione permuta online, richiesta finanziamento e recensioni clienti verificate in evidenza",
-      "4-5": "Portale con stock in tempo reale, configuratore finanziamento online, prenotazione visita e area clienti per storico acquisti e interventi"
-
+      "1-2": "Sito con stock aggiornato, foto e richiesta informazioni online — ~1.000-2.500€.",
+      "2-3": "Sito professionale con valutazione permuta online, richiesta finanziamento e chat live.",
+      "3-4": "Sito integrato con stock in tempo reale, prenotazione visita online e CRM automatico per i lead.",
+      "4-5": "Piattaforma digitale completa: acquisto online con anticipo, firma digitale e consegna a domicilio."
     },
     "ecommerce": {
-      "1-2": "Ti affidi solo alle permute per rifornire lo stock — sei in balia dei prezzi e delle condizioni che ti porta il cliente. Inizia a esplorare le aste online (BCA, Autorola)",
-      "2-3": "Diversifica le fonti di approvvigionamento: aste online + permute + acquisto da privati. Le aste ti danno accesso a flotte aziendali e rientri leasing a prezzi competitivi",
-      "3-4": "Buyer dedicato agli acquisti con accesso a più canali: aste fisiche e online, accordi con noleggiatori per rientri fleet, acquisto diretto da aziende. Chi compra meglio guadagna prima di vendere",
-      "4-5": "Strategia acquisti strutturata con KPI dedicati: costo medio acquisto per segmento, margine medio per fonte, rotazione per canale. Partnership strategiche con noleggiatori e società leasing per flusso costante di veicoli"
-
+      "1-2": "Diversifica le fonti di approvvigionamento: inizia con aste online (BCA, Autorola, ~300€/mese iscrizione) oltre alle permute.",
+      "2-3": "Buyer part-time dedicato alle aste (~800€/mese) che diversifica le fonti — aste online + acquisto da privati + flotte aziendali.",
+      "3-4": "Buyer full-time (~2.800€/mese) con accesso ad aste fisiche, rientri leasing e accordi con noleggiatori — stock più competitivo.",
+      "4-5": "Strategia acquisti strutturata: KPI per fonte (costo medio, margine, rotazione) + partnership con noleggiatori e leasing."
     }
   },
   "commercio_abbigliamento_dettaglio": {
     "vendite": {
-      "1-2": "Il cliente entra, guarda e va via — nessuno lo accoglie o lo coinvolge. Forma il personale su accoglienza attiva: saluto, domanda aperta, proposta di un capo in base a quello che sta guardando",
-      "2-3": "Il commesso diventa consulente di stile: impara a costruire outfit completi, proporre abbinamenti e fare upsell naturale. Un cliente che entra per una maglia deve uscire con un outfit",
-      "3-4": "Sistema di incentivi legato alle vendite individuali: il commesso ha interesse economico nel vendere bene, non solo nel stare al banco. KPI per addetto: scontrino medio e pezzi per transazione",
-      "4-5": "Store manager con P&L del negozio, team formato con ruoli distinti (floor, cassa, vetrina) e processo di vendita codificato e monitorato settimanalmente"
-
+      "1-2": "Forma il personale sull'accoglienza attiva e il coordinamento outfit — il cliente che riceve un consiglio di stile compra 2-3 capi invece di 1. Training interno, nessun costo.",
+      "2-3": "Struttura obiettivi individuali: scontrino medio, nr capi per scontrino, tasso di conversione — incentivo mensile (~200-400€ bonus pool).",
+      "3-4": "Assumi uno store manager (~2.000-3.000€/mese) che coordina il team, gestisce i riordini e sviluppa i clienti VIP.",
+      "4-5": "Struttura multi-store o multi-canale: store manager per punto vendita + e-commerce manager + eventi e collaborazioni."
     },
     "pipeline": {
-      "1-2": "Inizia a raccogliere i contatti dei clienti: nome, email o WhatsApp. Anche solo 10 contatti al giorno costruiscono in un anno un database di migliaia di clienti fidelizzati",
-      "2-3": "WhatsApp Business per i clienti VIP: avvisali dei nuovi arrivi prima che vadano online, riservali capi della loro taglia, falli sentire speciali. È il CRM del retail indipendente",
-      "3-4": "Database clienti segmentato per gusto, taglia e frequenza di acquisto. Newsletter mensile con nuovi arrivi e promozioni esclusive per iscritti",
-      "4-5": "CRM retail strutturato con storico acquisti, preferenze e trigger automatici: compleanno, anniversario primo acquisto, avviso rientro taglia esaurita"
-
+      "1-2": "Crea un registro clienti VIP con nome, gusto, taglie e storico acquisti — il cliente che si sente ricordato torna.",
+      "2-3": "CRM o app fidelizzazione (~30-80€/mese) con storico acquisti, preferenze e alert per nuovi arrivi nel loro stile.",
+      "3-4": "Programma VIP strutturato: accesso anticipato ai nuovi arrivi, eventi privati, styling service dedicato.",
+      "4-5": "CRM integrato con e-commerce e POS — visione unica del cliente su tutti i canali."
     },
     "team": {
-      "1-2": "Il turnover è alto perché non si investe nelle persone — interrompi il circolo vizioso. Anche solo una formazione mensile di 2 ore su tecniche di vendita e prodotto aumenta motivazione e risultati",
-      "2-3": "Sistema di incentivi chiaro e trasparente: commissione sulle vendite personali o bonus mensile su obiettivo negozio. Il commesso bravo deve guadagnare di più di quello mediocre",
-      "3-4": "Percorso di crescita definito: commesso → senior → responsabile di reparto → store manager. Chi vede un futuro nel negozio non se ne va",
-      "4-5": "Team stabile con store manager autonomo, formazione continua su prodotto e vendita, cultura del negozio come brand e sistema di welfare che riduce il turnover"
-
+      "1-2": "Forma il personale su tecniche di upselling e cross-selling nel fashion: proponi sempre una giacca con i pantaloni, una borsa con il vestito.",
+      "2-3": "Struttura incentivi legati allo scontrino medio e al tasso di conversione — non solo alle ore lavorate.",
+      "3-4": "Organizza sessioni di styling interno mensili per mantenere alta la conoscenza del prodotto e la motivazione.",
+      "4-5": "Team strutturato con store manager, visual merchandiser e addetto e-commerce — copertura completa su tutti i canali."
     },
     "processi": {
-      "1-2": "Gestione base: apertura e chiusura cassa strutturata, inventario mensile, resa merce invenduta nei tempi — errori qui costano margine",
-      "2-3": "Processo di acquisto merce strutturato: budget per categoria, OTB (open to buy) monitorato, analisi sell-through per brand prima del riordino",
-      "3-4": "Visual merchandising come processo: rotazione vetrina settimanale, layout negozio ottimizzato per percorso cliente, segnaletica prezzi sempre aggiornata",
-      "4-5": "Gestione retail professionale: OTB per stagione, analisi ABC per brand e categoria, markdown automatico su invenduto, KPI giornalieri monitorati"
-
+      "1-2": "Standardizza il visual merchandising: esposizione per outfit completi, non per singolo capo — aumenta lo scontrino medio.",
+      "2-3": "Gestionale moda con controllo stock per taglia e colore, analisi sell-through e riordini automatici (~100-250€/mese).",
+      "3-4": "Processo di gestione dei resi e degli invenduti: sconti progressivi, outlet, donazioni — evita lo stock morto.",
+      "4-5": "Sistema integrato: POS + e-commerce + gestione acquisti — controllo completo dalla campagna alla vendita."
     },
     "ricavi": {
-      "1-2": "Analizza i margini per brand e categoria: non tutti i capi guadagnano uguale. Identifica i brand a più alto margine e aumenta il loro peso nell'assortimento",
-      "2-3": "Riduci i saldi di fine stagione lavorando meglio sull'acquisto: compra meno quantità ma più mirata. Ogni capo invenduto è margine perso",
-      "3-4": "Scontrino medio come KPI primario: punta ad aumentarlo con outfit completi, accessori abbinati e proposte di stile. Raddoppiare lo scontrino medio vale più che raddoppiare i clienti",
-      "4-5": "Revenue mix ottimizzato: full price vs saldo vs outlet. Obiettivo: almeno il 70% delle vendite a prezzo pieno. Programma fidelizzazione che sposta gli acquisti fuori dal periodo saldi"
-
+      "1-2": "Proponi sempre il coordinato completo: capi abbinati, accessori, calzature — scontrino medio +40-60%.",
+      "2-3": "Attiva un programma fedeltà con punti e premi — aumenta la frequenza di visita e il lifetime value del cliente.",
+      "3-4": "Organizza eventi privati per clienti VIP: nuovi arrivi in anteprima, styling party, capsule collection esclusive.",
+      "4-5": "Personal shopping service e styling consulenza a pagamento — posizionamento premium e ricavo aggiuntivo."
     },
     "marketing": {
-      "1-2": "Instagram con foto professionali dei nuovi arrivi, outfit del giorno e vita del negozio. Non serve un fotografo — serve costanza e autenticità",
-      "2-3": "Collaborazioni con micro-influencer locali (1.000-10.000 follower): costano poco e portano clienti reali della zona. Un evento in negozio con 3-4 influencer locali vale più di qualsiasi pubblicità",
-      "3-4": "Piano editoriale social con contenuti misti: prodotto, styling, dietro le quinte, clienti soddisfatti. Email marketing mensile al database con anteprime e offerte esclusive",
-      "4-5": "Marketing strutturato: social manager dedicato, collaborazioni stabili con influencer, campagne Meta Ads geolocalizzate e programma referral clienti soddisfatti"
-
+      "1-2": "Instagram e Facebook con foto dei nuovi arrivi e outfit del giorno (~300-600€/mese gestione social) — traffico in negozio.",
+      "2-3": "Collaborazioni con influencer locali e micro-influencer (~200-500€ per post) — awareness locale qualificata.",
+      "3-4": "Campagne Meta Ads geolocalizzate per intercettare clienti nella tua zona (~400-1.000€/mese).",
+      "4-5": "Strategia omnicanale: social + newsletter + loyalty app + eventi — presidio completo del cliente."
     },
     "sitoweb": {
-      "1-2": "Profilo Instagram curato è più importante del sito per il retail fashion. Se non hai tempo per entrambi, concentrati su Instagram",
-      "2-3": "Sito o landing page semplice con orari, indirizzo, link Instagram e form iscrizione newsletter. Google My Business aggiornato con foto del negozio",
-      "3-4": "Sito con lookbook stagionale, sezione nuovi arrivi aggiornata e possibilità di prenotare un appuntamento di styling personale",
-      "4-5": "Presenza digitale completa: sito con e-commerce base per i clienti fuori zona, Instagram shop attivo e integrazione WhatsApp Business per ordini e prenotazioni"
-
+      "1-2": "Profilo Instagram curato con foto professionali — per il fashion retail è più importante del sito.",
+      "2-3": "E-commerce base con i pezzi forti della collezione (~2.000-4.000€) — vendita anche fuori orario e zona.",
+      "3-4": "E-commerce completo con tutta la collezione, taglia guide e reso gratuito.",
+      "4-5": "Piattaforma omnicanale con click-and-collect, wishlist e raccomandazioni personalizzate."
     },
     "ecommerce": {
-      "1-2": "Zero presenza digitale oltre il negozio fisico — ogni giorno perdi clienti che ti cercano online e non ti trovano. Apri subito Instagram e Google My Business",
-      "2-3": "WhatsApp Business come canale di vendita per i clienti VIP: foto dei nuovi arrivi, prenotazione capi, acquisto e ritiro in negozio. Costa zero e fidelizza moltissimo",
-      "3-4": "Instagram shop attivo con tag prodotti nelle foto, link diretto all'acquisto o alla prenotazione. Marketplace selettivi (Depop per vintage, Vinted per outlet) per smaltire invenduto",
-      "4-5": "Omnicanalità strutturata: negozio fisico + e-commerce + Instagram shop + WhatsApp Business. Il cliente compra dove vuole, tu sei presente ovunque con la stessa esperienza"
-
+      "1-2": "Vendi su Vinted o Depop i capi di stagione precedente — recupero liquidità e nuovi clienti.",
+      "2-3": "Apertura su Zalando Partner Program o YOOX — visibilità immediata su marketplace fashion.",
+      "3-4": "E-commerce proprietario con SEO fashion e campagne social — riduce la dipendenza dai marketplace.",
+      "4-5": "Strategia multicanale: sito proprietario + marketplace + social commerce — massima copertura."
     }
   },
   "commercio_orologi_gioielli": {
     "vendite": {
-      "1-2": "Il cliente compra fiducia prima che un orologio: conosci la storia di ogni pezzo, i movimenti, i materiali, le varianti. Un venditore competente vale più di qualsiasi vetrina",
-      "2-3": "Costruisci relazioni con i collezionisti locali: sono i clienti più fedeli e i migliori passaparola. Un collezionista soddisfatto porta altri collezionisti",
-      "3-4": "Attiva un sistema di segnalatori: gioiellerie complementari, studi notarili, consulenti patrimoniali — chi gestisce patrimoni conosce chi vuole investire in orologi",
-      "4-5": "Struttura commerciale con specialisti per segmento (orologi sportivi, dress watch, gioielli da cerimonia) e programma VIP per i clienti alto spendenti"
-
+      "1-2": "Forma il personale sulla narrazione del prodotto: storia del brand, materiali, artigianalità — il cliente del lusso compra una storia, non un oggetto. Nessun costo.",
+      "2-3": "Struttura un processo di vendita consulenziale: capire l'occasione (regalo, anniversario, status) e proporre la soluzione giusta — training 1-2 giornate.",
+      "3-4": "Assumi un gioielliere/orologiaio con esperienza commerciale (~2.500-3.500€/mese) che gestisce i clienti VIP e i pezzi importanti.",
+      "4-5": "Struttura commerciale: responsabile vendite VIP + e-commerce manager + key account per aziende (premi, gadget istituzionali)."
     },
     "pipeline": {
-      "1-2": "Tieni un registro dei clienti con storico acquisti e preferenze: marca, stile, budget. Un cliente che ha comprato un Rolex sport potrebbe volere un dress watch — tu devi saperlo prima che lo cerchi altrove",
-      "2-3": "CRM semplice per gestire i contatti: avvisa i clienti quando arriva un pezzo nel loro stile o budget. Il pre-avviso esclusivo fidelizza più di qualsiasi sconto",
-      "3-4": "Pipeline strutturata con gestione wish list clienti, alert su Chrono24 per pezzi ricercati e forecast acquisti pre-owned basato sulla domanda del database",
-      "4-5": "CRM avanzato integrato con i marketplace: quando arriva su Chrono24 un pezzo cercato da un tuo cliente, lo contatti prima che lo trovi da solo"
-
+      "1-2": "Crea un registro clienti VIP con occasioni speciali: compleanni, anniversari, ricorrenze — contattali sempre 30 giorni prima.",
+      "2-3": "CRM con gestione occasioni e reminder automatici (~30-80€/mese) — il cliente ricordato è il cliente fidelizzato.",
+      "3-4": "Programma VIP strutturato: accesso privato a nuovi arrivi, eventi esclusivi, servizio di personalizzazione.",
+      "4-5": "CRM integrato con storico acquisti, preferenze e budget cliente — consulenza personalizzata su ogni visita."
     },
     "team": {
-      "1-2": "Il venditore deve sapere tutto: movimenti, referenze, storia dei brand, differenze tra varianti. Investi in formazione tecnica — un venditore ignorante in questo settore è pericoloso",
-      "2-3": "Specializzazione per categoria: chi conosce gli orologi da sport, chi i dress watch, chi i gioielli da cerimonia. La competenza specifica aumenta la fiducia del cliente",
-      "3-4": "Gemmologo o orologiaio certificato in staff: non solo per le riparazioni ma come leva commerciale — l'autenticazione interna è un differenziatore enorme vs la concorrenza",
-      "4-5": "Team strutturato con responsabile vendite, specialisti per categoria, orologiaio/gemmologo interno e responsabile acquisti pre-owned"
-
+      "1-2": "Forma il personale sulla certificazione dei materiali (oro, argento, pietre preziose) e sull'autenticità dei brand — competenza è sinonimo di fiducia.",
+      "2-3": "Affianca un orologiaio/gioielliere tecnico (~1.800-2.500€/mese) — l'assistenza tecnica fidelizza e genera ricavi aggiuntivi.",
+      "3-4": "Struttura incentivi per il personale legati al valore del venduto e alla soddisfazione cliente — non solo ai volumi.",
+      "4-5": "Team specializzato: vendite VIP + tecnico riparazioni + addetto e-commerce + responsabile acquisti."
     },
     "processi": {
-      "1-2": "Autenticazione documentata per ogni pezzo: cartellino con provenienza, stato, accessori inclusi e garanzia. Un orologio senza documentazione vale il 30% in meno",
-      "2-3": "Processo di valutazione e acquisto pre-owned strutturato: check list tecnica, verifica autenticità, valutazione mercato Chrono24 prima di fare un'offerta",
-      "3-4": "Certificazioni formali: AGS per gioielli, formazione orologiera riconosciuta. Polizza assicurativa adeguata per il valore dello stock — spesso sottovalutata",
-      "4-5": "Sistema qualità completo: certificazioni gemologiche, partnership con centri di assistenza ufficiali, processo di autenticazione certificato e gestione resi strutturata"
-
+      "1-2": "Standardizza il processo di accoglienza VIP: apertura con champagne o caffè, nessuna fretta, massima attenzione — costo minimo, impatto massimo.",
+      "2-3": "Gestionale gioielleria con inventario per pezzo, certificati GIA e garanzie (~200-500€/mese) — tracciabilità obbligatoria.",
+      "3-4": "Processo di acquisto usato e permuta strutturato — molti clienti hanno gioielli da valorizzare, è un canale di acquisizione potente.",
+      "4-5": "Sistema integrato: inventario + CRM + e-commerce + gestione certificazioni — controllo completo sulla merce e sui clienti."
     },
     "ricavi": {
-      "1-2": "Analizza i margini per categoria: il pre-owned ha margini doppi rispetto al nuovo. Ogni orologio nuovo venduto è un'opportunità di acquistare l'usato del cliente",
-      "2-3": "La permuta è la leva di chiusura più potente in questo settore: il cliente vuole il nuovo ma ha già un orologio. Gestisci la permuta come centro di profitto, non come costo",
-      "3-4": "Revenue mix strutturato: nuovo + pre-owned + riparazioni + servicing + gioielli. Il servicing orologi (revisione, cinturini, bracciali) è margine puro e fidelizza",
-      "4-5": "Pre-owned come business unit autonoma con buyer dedicato, rotazione stock monitorata e presenza strutturata su Chrono24 e Catawiki come canali di vendita globali"
-
+      "1-2": "Proponi sistematicamente il servizio di pulizia e controllo gioielli esistenti — contatto con il cliente, cross-selling naturale.",
+      "2-3": "Sviluppa il servizio di personalizzazione: incisioni, modifiche, rimontaggi — margini 60-80% superiori alla vendita standard.",
+      "3-4": "Attiva un servizio di acquisto usato strutturato — il cliente che vende riceve buoni acquisto e torna.",
+      "4-5": "Contratti con aziende per premi e gadget istituzionali — ordini multipli ad alto valore, clienti B2B ricorrenti."
     },
     "marketing": {
-      "1-2": "Instagram con foto professionali di ogni pezzo: luce giusta, dettagli del quadrante, del movimento se visibile. Gli orologi si vendono con gli occhi — la foto è il 50% della vendita",
-      "2-3": "Presenza attiva su Chrono24 e Catawiki come vetrine globali — non sono concorrenti, sono canali. Un pezzo su Chrono24 viene visto da collezionisti di tutto il mondo",
-      "3-4": "Contenuti tecnici su Instagram e YouTube: storia di un modello, come riconoscere un falso, guida all'acquisto. Posizionati come esperto di riferimento nella tua zona",
-      "4-5": "Piano marketing strutturato: social + marketplace + eventi privati per clienti VIP + collaborazioni con case d'aste per pezzi di valore"
-
+      "1-2": "Instagram con foto professionali dei pezzi e storytelling del brand — nel lusso la qualità visiva è tutto.",
+      "2-3": "Collaborazioni con wedding planner e organizzatori eventi per essere consigliati nelle occasioni speciali — referenze B2B.",
+      "3-4": "Campagne Meta Ads su target alto spendente nella tua zona (~400-1.000€/mese) + eventi privati in boutique.",
+      "4-5": "Strategia luxury marketing: eventi esclusivi, PR, presenza su riviste locali e partnership con hotel e ristoranti premium."
     },
     "sitoweb": {
-      "1-2": "Sito con stock fotografato professionalmente, schede tecniche complete e contatto diretto. Il cliente vuole vedere il pezzo prima di venire in negozio",
-      "2-3": "Sito con filtri per brand, categoria e fascia di prezzo, sezione pre-owned dedicata e form richiesta valutazione del proprio orologio",
-      "3-4": "Sito professionale con certificazioni in evidenza, case history di acquisti notevoli e area clienti per tracciare le proprie acquisizioni",
-      "4-5": "Portale con stock in tempo reale sincronizzato con Chrono24, richiesta valutazione online e area VIP riservata per i clienti alto spendenti"
-
+      "1-2": "Sito con gallery pezzi selezionati, brand trattati e contatti — nel lusso il sito deve respirare qualità.",
+      "2-3": "E-commerce per pezzi selezionati con foto professionali e certificati scaricabili (~3.000-8.000€).",
+      "3-4": "Sito con configuratore personalizzazioni e area clienti VIP — esperienza digitale coerente con quella in boutique.",
+      "4-5": "Piattaforma luxury e-commerce con consulenza online, video call con il gioielliere e consegna white glove."
     },
     "ecommerce": {
-      "1-2": "Vendi solo in negozio — perdi clienti che cercano online. Apri subito un profilo Chrono24 anche con 5-10 pezzi: è la vetrina globale del tuo stock",
-      "2-3": "Chrono24 e Catawiki come canali attivi con stock aggiornato, foto professionali e risposta rapida alle richieste. Usa Chrono24 anche per acquistare pezzi da rivendere",
-      "3-4": "Strategia pre-owned strutturata: acquisto da privati, permute valutate correttamente, rivendita su marketplace e in negozio. Il margine sul pre-owned è il doppio del nuovo",
-      "4-5": "Pre-owned come centro di profitto autonomo: buyer dedicato, presenza certificata su Chrono24 come dealer verificato, partecipazione a Catawiki per pezzi di valore e rete di fornitori privati fidelizzati"
-
+      "1-2": "Profilo su Chrono24 per orologi di seconda mano — marketplace verticale con buyer qualificati.",
+      "2-3": "Presenza su Farfetch o Catawiki per orologi e gioielli vintage — visibilità internazionale immediata.",
+      "3-4": "E-commerce proprietario con SEO luxury e campagne Google Shopping.",
+      "4-5": "Strategia multicanale: sito proprietario + marketplace luxury + social commerce — massima copertura del target."
     }
   },
   "alimentare_trasformazione": {
