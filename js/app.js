@@ -5027,16 +5027,6 @@ function renderTargetEditor(p) {
     const tgtEffettivo = (tgt <= cur && tgt < 5) ? tgt + 1 : tgt;
     const tgtStepKey = (tgtEffettivo > 1) ? ((tgtEffettivo-1) + '-' + tgtEffettivo) : '1-2';
     const tgtDesc = azioniDim[tgtStepKey] || azioniDim[curStepKey] || '—';
-    const detail = getStepDetail(settore, d.id, tgtStepKey);
-    const detailHtml = detail ? `
-      <div class="step-detail-box">
-        <div class="step-detail-chi"><span class="step-detail-label">Chi/Cosa</span>${detail.chi} — ${detail.cosa}</div>
-        <div class="step-detail-costi">
-          <span class="step-detail-costo">${detail.costo_mensile > 0 ? '\u2248 '+detail.costo_mensile.toLocaleString('it-IT')+'\u20AC/mese' : 'Nessun costo aggiuntivo'}</span>
-          ${detail.costo_setup > 0 ? `<span class="step-detail-setup">+ ${detail.costo_setup.toLocaleString('it-IT')}\u20AC setup</span>` : ''}
-          <span class="step-detail-tempo">Operativo in ~${detail.tempo_mesi} ${detail.tempo_mesi === 1 ? 'mese' : 'mesi'}</span>
-        </div>
-      </div>` : '';
     const subObiettiviHtml = _buildSubObiettivi(d.id, cur, tgt, settore, azioniDone, azioniCustom, p);
     // Warning tetto strutturale
     const tettoSettore = (TETTO_BY_SETTORE[settore] || {})[d.id] || 5;
@@ -5063,7 +5053,6 @@ function renderTargetEditor(p) {
           \x3c/div>
           ${warningTetto}
           \x3cdiv id="tdesc-${d.id}" style="font-size:10px;color:${tgtCol};line-height:1.4;margin-bottom:6px">${tgtDesc}\x3c/div>
-          ${detailHtml}
           \x3cdiv style="font-size:9px;color:var(--gray);margin-bottom:3px">Entro il\x3c/div>
           \x3cinput type="date" id="tscad-${d.id}" value="${scad}"
             onchange="aggiornaSemaforo('${d.id}')"
