@@ -4128,6 +4128,192 @@ function _calcolaImpattoCumulativo(p) {
 
 
 function _buildGraficoTimeline(p) {
+  if (!p) return '';
+  var fmtF = function(v) { return v >= 1000000 ? (v/1000000).toFixed(1)+'M' : Math.round(v/1000)+'k'; };
+  const settore = p.settore || '';
+  const dims = p.dims || {};
+  const targets = p.targets || {};
+  const fat = p.fatturato_anno_1 || 0;
+  if (!fat) return '<div class="tl-empty">Inserisci il fatturato per vedere le proiezioni.</div>';
+
+  const ic = _calcolaImpattoCumulativo(p);
+  if (!ic) return '<div class="tl-empty">Imposta i target per vedere le proiezioni.</div>';
+
+  const fat12min = ic.fat12 ? ic.fat12[0] : fat;
+  const fat12max = ic.fat12 ? ic.fat12[1] : fat;
+  const fat24min = ic.fat24 ? ic.fat24[0] : fat;
+  const fat24max = ic.fat24 ? ic.fat24[1] : fat;
+  const fat6min  = ic.fat6  ? ic.fat6[0]  : fat;
+  const fat6max  = ic.fat6  ? ic.fat6[1]  : fat;
+  const costoMensile = ic.costoMensileTot || 0;
+  const breakevenStr = ic.sostenibilita?.breakevenStr || '\u2014';
+  const roiMin = ic.roiMin !== null ? ic.roiMin : null;
+  const roiMax = ic.roiMax !== null ? ic.roiMax : null;
+  const roiStr = (roiMin !== null && roiMax !== null) ? roiMin.toFixed(1) + '\u2013' + roiMax.toFixed(1) + 'x' : '\u2014';
+  const costoLabel = costoMensile > 0 ? '\u2248' + fmtF(costoMensile) + '\u20AC/mese' : '\u2014';
+
+  const pct12min = fat ? Math.round((fat12min - fat) / fat * 100) : 0;
+  const pct12max = fat ? Math.round((fat12max - fat) / fat * 100) : 0;
+
+  // Punti grafico linee: oggi, 3m, 6m, 12m, 18m, 24m
+  const pts = {
+    base: [fat, fat, fat, fat, fat, fat],
+    min:  [fat, Math.round(fat+(fat6min-fat)*0.5), fat6min, fat12min, Math.round(fat12min+(fat24min-fat12min)*0.5), fat24min],
+    max:  [fat, Math.round(fat+(fat6max-fat)*0.5), fat6max, fat12max, Math.round(fat12max+(fat24max-fat12max)*0.5), fat24max],
+  };
+
+  // Dimensioni con gap
+  const DIMS_IDS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+  const _getDimLabel = typeof window.getDimLabel === 'function' ? window.getDimLabel : function(s, id){ return id; };
+  const dimsHtml = DIMS_IDS.map(function(d) {
+    const cur = dims[d] || 1;
+    const tgt = targets[d] || cur;
+    const haGap = tgt > cur;
+    const curPct = Math.round((cur - 1) / 4 * 100);
+    const tgtPct = Math.round((tgt - 1) / 4 * 100);
+    const badgeClass = haGap ? 'tl-badge-gap' : 'tl-badge-ok';
+    const badgeText = haGap ? (cur + ' \u2192 ' + tgt) : ('livello ' + cur);
+    return '<div class="tl-dim-row">' +
+      '<div class="tl-dim-header">' +
+        '<span class="tl-dim-name">' + _getDimLabel(settore, d) + '</span>' +
+        '<span class="tl-dim-badge ' + badgeClass + '">' + badgeText + '</span>' +
+      '</div>' +
+      '<div class="tl-bar-track">' +
+        '<div class="tl-bar-cur" style="width:' + curPct + '%"></div>' +
+        (haGap ? '<div class="tl-bar-tgt" style="left:' + tgtPct + '%"></div>' : '') +
+      '</div>' +
+      '<div class="tl-bar-labels"><span>1</span><span>' + (haGap ? 'target ' + tgt : 'attuale') + '</span><span>5</span></div>' +
+    '</div>';
+  }).join('');
+
+  // Azioni prioritarie (prime 3 con gap)
+  const azioniHtml = DIMS_IDS.filter(function(d){ return (targets[d]||0) > (dims[d]||1); })
+    .slice(0, 3)
+    .map(function(d) {
+      const cur = dims[d] || 1;
+      const tgt = targets[d] || cur;
+      const stepKey = cur + '-' + (cur + 1);
+      const desc = (AZIONI_TARGET_BY_SETTORE?.[settore]?.[d]?.[stepKey] || '').split('.')[0];
+      const detail = typeof getStepDetail === 'function' ? getStepDetail(settore, d, stepKey) : null;
+      const costoStr = detail ? (detail.costo_mensile > 0 ? '\u2248' + detail.costo_mensile.toLocaleString('it-IT') + '\u20AC/mese' : 'Nessun costo') + ' \u00B7 Operativo in ~' + detail.tempo_mesi + ' ' + (detail.tempo_mesi === 1 ? 'mese' : 'mesi') : '';
+      const colors = {vendite:'#378ADD',pipeline:'#1CB889',ecommerce:'#BA7517',marketing:'#BA7517',team:'#378ADD',processi:'#888780',ricavi:'#1CB889',sitoweb:'#888780'};
+      const col = colors[d] || '#888780';
+      return '<div class="tl-azione-row">' +
+        '<div class="tl-azione-dot" style="background:' + col + '"></div>' +
+        '<div>' +
+          '<div class="tl-azione-text">' + _getDimLabel(settore, d) + ' ' + stepKey + ' \u2014 ' + (desc || '\u2014') + '</div>' +
+          (costoStr ? '<div class="tl-azione-costo">' + costoStr + '</div>' : '') +
+        '</div>' +
+      '</div>';
+    }).join('') || '<div class="tl-azione-row"><div class="tl-azione-text" style="color:var(--text-muted)">Imposta i target per vedere le azioni prioritarie.</div></div>';
+
+  const chartId = 'tl-line-chart-' + p.id;
+
+  const html = '<div class="tl-wrap">' +
+
+    // 1. CARD METRICHE
+    '<div class="tl-section-label">Quadro economico</div>' +
+    '<div class="tl-metric-cards">' +
+      '<div class="tl-mc"><div class="tl-mc-label">Fatturato attuale</div><div class="tl-mc-val">' + fmtF(fat) + '\u20AC</div><div class="tl-mc-sub">anno corrente</div></div>' +
+      '<div class="tl-mc"><div class="tl-mc-label">Proiezione 12 mesi</div><div class="tl-mc-val tl-green">' + fmtF(fat12min) + '\u2013' + fmtF(fat12max) + '\u20AC</div><div class="tl-mc-sub">+' + pct12min + '\u2013' + pct12max + '%</div></div>' +
+      '<div class="tl-mc"><div class="tl-mc-label">Investimento piano</div><div class="tl-mc-val tl-blue">' + costoLabel + '</div><div class="tl-mc-sub">costi fissi mensili</div></div>' +
+      '<div class="tl-mc"><div class="tl-mc-label">ROI stimato</div><div class="tl-mc-val tl-amber">' + roiStr + '</div><div class="tl-mc-sub">breakeven ' + breakevenStr + '</div></div>' +
+    '</div>' +
+
+    // 2. GRAFICO LINEE
+    '<div class="tl-divider"></div>' +
+    '<div class="tl-section-label">Proiezione fatturato</div>' +
+    '<div class="tl-legend">' +
+      '<span class="tl-leg-item"><span class="tl-leg-dot" style="background:#B4B2A9"></span>Base attuale</span>' +
+      '<span class="tl-leg-item"><span class="tl-leg-dot" style="background:#85B7EB"></span>Scenario minimo</span>' +
+      '<span class="tl-leg-item"><span class="tl-leg-dot" style="background:#1CB889"></span>Scenario massimo</span>' +
+    '</div>' +
+    '<div class="tl-chart-wrap"><canvas id="' + chartId + '"></canvas></div>' +
+
+    // 3. DIMENSIONI
+    '<div class="tl-divider"></div>' +
+    '<div class="tl-section-label">Dimensioni \u2014 livello attuale vs target</div>' +
+    '<div class="tl-dims-grid">' + dimsHtml + '</div>' +
+
+    // 4. AZIONI PRIORITARIE
+    '<div class="tl-divider"></div>' +
+    '<div class="tl-section-label">Prossime azioni</div>' +
+    '<div class="tl-azioni-box">' + azioniHtml + '</div>' +
+
+  '</div>';
+
+  // Inizializza Chart.js dopo il render
+  setTimeout(function() {
+    const canvas = document.getElementById(chartId);
+    if (!canvas || !window.Chart) return;
+    if (canvas._chartInstance) canvas._chartInstance.destroy();
+    canvas._chartInstance = new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels: ['Oggi','3 mesi','6 mesi','12 mesi','18 mesi','24 mesi'],
+        datasets: [
+          {
+            label: 'Base attuale',
+            data: pts.base,
+            borderColor: '#B4B2A9',
+            backgroundColor: 'transparent',
+            borderWidth: 2,
+            borderDash: [5,5],
+            pointRadius: 0,
+            tension: 0,
+          },
+          {
+            label: 'Scenario minimo',
+            data: pts.min,
+            borderColor: '#85B7EB',
+            backgroundColor: 'rgba(133,183,235,0.08)',
+            borderWidth: 2,
+            pointRadius: 3,
+            pointBackgroundColor: '#85B7EB',
+            fill: false,
+            tension: 0.35,
+          },
+          {
+            label: 'Scenario massimo',
+            data: pts.max,
+            borderColor: '#1CB889',
+            backgroundColor: 'rgba(28,184,137,0.08)',
+            borderWidth: 2,
+            pointRadius: 3,
+            pointBackgroundColor: '#1CB889',
+            fill: '-1',
+            tension: 0.35,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function(ctx) { return ctx.dataset.label + ': ' + fmtF(ctx.parsed.y) + '\u20AC'; }
+            }
+          }
+        },
+        scales: {
+          x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+          y: {
+            grid: { color: 'rgba(128,128,128,0.1)' },
+            ticks: { font: { size: 11 }, callback: function(v) { return fmtF(v) + '\u20AC'; } },
+            min: Math.round(fat * 0.8 / 10000) * 10000,
+          }
+        }
+      }
+    });
+  }, 100);
+
+  return html;
+}
+window._buildGraficoTimeline = _buildGraficoTimeline;
+
+function _buildGraficoTimeline_OLD(p) {
   const DIMS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
   const DIM_LABELS_MAP = {
     vendite:'Vendite', pipeline:'Pipeline', team:'Team',
