@@ -3401,10 +3401,13 @@ function _calcolaPenalita(settore, dimId, targets) {
   });
 
   const gapMedio = gapTotale / dipendenze.length;
-  const gapMax = 4; // gap massimo possibile (da 1 a 5)
-  const penalita = (gapMedio / gapMax) * 0.5; // cap 50%
+  const gapMax = 4;
 
-  return Math.min(penalita, 0.5);
+  // Penalità esponenziale — gap piccoli impattano poco, gap grandi impattano molto
+  // Gap di 1 → penalità ~18%, gap di 2 → penalità ~40%, gap di 3 → penalità ~65%, gap di 4 → penalità ~85%
+  const penalita = 1 - Math.pow(1 - (gapMedio / gapMax), 1.5);
+
+  return Math.min(penalita, 0.85);
 }
 
 // ── IMPATTO UNITARIO AUTOMOTIVE ──────────────────────────────────────
