@@ -4678,7 +4678,7 @@ function renderTargetEditor(p) {
     const curDesc = azioniDim[curStepKey] || '—';
     // Se target uguale al livello attuale, mostra lo step successivo come obiettivo
     const tgtEffettivo = (tgt <= cur && tgt < 5) ? tgt + 1 : tgt;
-    const tgtStepKey = (tgtEffettivo > 1) ? ((tgtEffettivo-1) + '-' + tgtEffettivo) : '1-2';
+    const tgtStepKey = cur + '-' + tgtEffettivo;
     const tgtDesc = azioniDim[tgtStepKey] || azioniDim[curStepKey] || '—';
     const subObiettiviHtml = '';
     // Warning tetto strutturale
