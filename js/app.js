@@ -4769,17 +4769,14 @@ function updateTargetDesc(dimId) {
   const el = document.getElementById('tgt-' + dimId);
   const descEl = document.getElementById('tdesc-' + dimId);
   if (!el || !descEl) return;
-  const v = parseInt(el.value) || 1;
+  const tgt = parseInt(el.value) || 1;
   const p = prospects.find(x => x.id === currentId);
   const settore = p?.settore || '';
   const azioniDim = (AZIONI_TARGET_BY_SETTORE[settore] || {})[dimId] || {};
-  const cur = p?.dims?.[dimId] || 0;
-  // Se target uguale al livello attuale, mostra lo step successivo come obiettivo
-  const vEffettivo = (v <= cur && v < 5) ? v + 1 : v;
-  const stepKey = (vEffettivo > 1) ? ((vEffettivo-1) + '-' + vEffettivo) : '1-2';
-  const curStepKey = (cur > 1) ? ((cur-1) + '-' + cur) : '1-2';
-  const desc = azioniDim[stepKey] || azioniDim[curStepKey] || '—';
-  const col = v >= 4 ? 'var(--green)' : v >= 3 ? 'var(--gold)' : 'var(--red)';
+  const tgtLvl = Math.max(tgt, 1);
+  const tgtStepKey = Math.min(tgtLvl, 4) + '-' + Math.min(tgtLvl + 1, 5);
+  const desc = azioniDim[tgtStepKey] || '—';
+  const col = tgt >= 4 ? 'var(--green)' : tgt >= 3 ? 'var(--gold)' : 'var(--red)';
   descEl.textContent = desc;
   descEl.style.color = col;
 }
