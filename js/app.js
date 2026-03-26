@@ -4185,7 +4185,7 @@ function _buildGraficoTimeline(p) {
         '<div class="tl-bar-cur" style="width:' + curPct + '%"></div>' +
         (haGap ? '<div class="tl-bar-tgt" style="left:' + tgtPct + '%"></div>' : '') +
       '</div>' +
-      '<div class="tl-bar-labels"><span>1</span><span>' + (haGap ? 'target ' + tgt : 'attuale') + '</span><span>5</span></div>' +
+      '<div class="tl-bar-labels"><span>1</span><span style="text-align:center">' + (haGap ? 'target ' + tgt : 'livello ' + cur) + '</span><span>5</span></div>' +
     '</div>';
   }).join('');
 
