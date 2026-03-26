@@ -1265,49 +1265,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Mappa i negozi specialty food, enoteche e ristoranti della zona e proponi una fornitura di prova con campioni — nessun costo, operativo subito.",
       "2": "Attiva un agente o broker con contatti nella GDO locale e nell'horeca regionale (~provvigione 5-8%) — operativo in 2-4 settimane.",
       "3": "Assumi un export manager o un commerciale strutturato (~2.500-3.500€/mese) per sviluppare GDO, specialty food e i primi mercati export.",
-      "4": "Struttura commerciale per canale: KAM GDO + agenti horeca + export manager + canale diretto (e-commerce + spaccio) — struttura da produttore medio."
+      "4": "Struttura commerciale per canale: KAM GDO + agenti horeca + export manager + canale diretto (e-commerce + spaccio) — struttura da produttore medio.",
+      "5": "Struttura commerciale per canale consolidata: KAM GDO + agenti horeca + export manager + canale diretto — il titolare gestisce solo le relazioni strategiche con i buyer internazionali."
     },
     "pipeline": {
       "1": "Traccia i contatti con distributori e buyer su Excel — monitora chi ha ricevuto campioni e chi non ha ancora riordinato.",
       "2": "CRM base per gestire agenti, distributori e follow-up riordini (~30-80€/mese) — nel food B2B il riordine è tutto.",
       "3": "Analisi sell-out per punto vendita e per canale — capire dove il prodotto ruota di più è fondamentale per allocare le risorse commerciali.",
-      "4": "CRM integrato con gestione ordini, previsioni e pianificazione produzione — coordinamento completo tra commerciale e produzione."
+      "4": "CRM integrato con gestione ordini, previsioni e pianificazione produzione — coordinamento completo tra commerciale e produzione.",
+      "5": "CRM integrato con ERP per previsioni ordini e pianificazione produzione — coordinamento completo tra commerciale e produzione con zero rotture di stock sui prodotti principali."
     },
     "team": {
       "1": "Forma chi gestisce i contatti commerciali sulla narrazione del prodotto: origini, processo, certificazioni — il food artigianale si vende con le storie.",
       "2": "Struttura un piano provvigionale chiaro per gli agenti con bonus sul new business e sui riordini sopra soglia.",
       "3": "Affianca un inside sales (~1.500-2.000€/mese) per gestire gli ordini ripetitivi e liberare il commerciale per lo sviluppo.",
-      "4": "Team strutturato: direttore commerciale + KAM + agenti di zona + export specialist — struttura da produttore 2M€+."
+      "4": "Team strutturato: direttore commerciale + KAM + agenti di zona + export specialist — struttura da produttore 2M€+.",
+      "5": "Team strutturato: direttore commerciale, KAM, agenti di zona ed export specialist — autonomo nella gestione di tutti i canali senza coinvolgere il titolare nelle operazioni quotidiane."
     },
     "processi": {
       "1": "Standardizza le schede prodotto con valori nutrizionali, allergeni, shelf life e condizioni di conservazione — obbligatorio per la GDO.",
       "2": "Ottieni le certificazioni richieste dai tuoi canali target: BRC, IFS, Bio, DOP/IGP (~3.000-15.000€) — aprono mercati altrimenti inaccessibili.",
       "3": "ERP food-grade per gestione lotti, tracciabilità e scadenze (~300-700€/mese) — obbligatorio con 10+ referenze e 20+ clienti.",
-      "4": "Sistema integrato: ERP + WMS + EDI con GDO — standard richiesto dai buyer della grande distribuzione strutturata."
+      "4": "Sistema integrato: ERP + WMS + EDI con GDO — standard richiesto dai buyer della grande distribuzione strutturata.",
+      "5": "Sistema integrato ERP + WMS + EDI con GDO — standard richiesto dai buyer della grande distribuzione strutturata con tracciabilità completa e certificazioni attive."
     },
     "ricavi": {
       "1": "Rivedi il pricing per canale — GDO, specialty food e horeca hanno margini diversi: non applicare lo stesso listino a tutti.",
       "2": "Sviluppa referenze premium o limited edition con margini superiori — il consumatore paga la specialità e l'esclusività.",
       "3": "Private label per GDO o catene horeca — volumi garantiti con margini ridotti ma prevedibilità di fatturato.",
-      "4": "Export con margini superiori all'Italia — Germania, USA e mercati asiatici pagano il made in Italy fino al 40% in più."
+      "4": "Export con margini superiori all'Italia — Germania, USA e mercati asiatici pagano il made in Italy fino al 40% in più.",
+      "5": "Export consolidato con margini premium e private label per GDO attiva — fatturato ricorrente prevedibile superiore al 60% del totale con mix canali ottimizzato."
     },
     "marketing": {
       "1": "Racconta la storia delle materie prime e del processo produttivo sui social — il food artigianale vive di autenticità (~200-400€/mese gestione).",
       "2": "Partecipa a Cibus, SIAL, Fancy Food (~3.000-10.000€) — fiere dove incontri buyer GDO, distributori e importatori internazionali.",
       "3": "PR food: invio campioni a food blogger, giornalisti e influencer del settore (~500-1.500€/mese) — il passaparola nel food funziona ancora.",
-      "4": "Strategia brand building: concorsi di settore, certificazioni di qualità, presenza su guide specializzate — posizionamento premium."
+      "4": "Strategia brand building: concorsi di settore, certificazioni di qualità, presenza su guide specializzate — posizionamento premium.",
+      "5": "Strategia brand building consolidata: concorsi di settore, certificazioni di qualità, presenza guide specializzate e PR food strutturate — posizionamento premium riconosciuto."
     },
     "sitoweb": {
       "1": "Sito con storia dell'azienda, prodotti, certificazioni e contatti — ~800-2.000€.",
       "2": "E-commerce B2C per vendita diretta al consumatore finale — margini più alti rispetto alla distribuzione (~2.000-5.000€).",
       "3": "Area riservata per distributori e buyer con listini, schede tecniche e modulo ordini.",
-      "4": "Piattaforma integrata B2B + B2C con gestione ordini, tracciabilità lotti e area press."
+      "4": "Piattaforma integrata B2B + B2C con gestione ordini, tracciabilità lotti e area press.",
+      "5": "Piattaforma integrata B2B + B2C + export con gestione lotti, tracciabilità e area press — canale diretto al consumatore che genera margini pieni e riduce dipendenza dalla distribuzione."
     },
     "ecommerce": {
       "1": "Attiva uno spaccio aziendale fisico o online — il consumatore che visita il produttore compra di più e con margini elevati.",
       "2": "Presenza su marketplace food (Eataly Online, Gustoh, Amazon Fresh) — visibilità immediata con consumatori qualificati.",
       "3": "E-commerce proprietario con spedizione in tutta Italia — indipendenza dai marketplace e margini completi.",
-      "4": "Export online: Amazon EU, marketplace internazionali e sito multilingua — canale export a basso costo fisso."
+      "4": "Export online: Amazon EU, marketplace internazionali e sito multilingua — canale export a basso costo fisso.",
+      "5": "Export online consolidato su Amazon EU e marketplace internazionali + e-commerce proprietario — doppio canale che massimizza la copertura con margini ottimizzati per destinazione."
     }
   },
   "alimentare_vini": {
@@ -1315,49 +1323,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Visita enoteche, ristoranti e wine bar della zona con campioni — il sommelier che assaggia il tuo vino è il tuo miglior commerciale. Nessun costo.",
       "2": "Attiva un agente con portafoglio horeca e enoteche (~provvigione 10-15% sul fatturato generato) — operativo in 2-4 settimane.",
       "3": "Assumi un export manager o agente internazionale (~2.000-3.000€/mese) — Germania, Svizzera, USA e UK sono i mercati prioritari per i vini italiani.",
-      "4": "Struttura commerciale per canale: agenti horeca + export manager + enoteca aziendale + wine club online — diversificazione completa."
+      "4": "Struttura commerciale per canale: agenti horeca + export manager + enoteca aziendale + wine club online — diversificazione completa.",
+      "5": "Struttura commerciale per canale consolidata: agenti horeca, export manager attivo su 3+ mercati esteri e wine club online — il titolare gestisce solo le relazioni con i buyer premium."
     },
     "pipeline": {
       "1": "Traccia ogni contatto con ristoratori e enotecari: chi ha assaggiato, chi ha ordinato, chi va ricontattato — Excel base.",
       "2": "CRM per gestire agenti, distributori e clienti diretti con promemoria per riordini stagionali (~30-60€/mese).",
       "3": "Gestione wine club e abbonamenti: il cliente ricorrente vale 5-10 volte un cliente occasionale.",
-      "4": "CRM integrato con gestione vendemmie, disponibilità per annata e prevendita futuri lanci."
+      "4": "CRM integrato con gestione vendemmie, disponibilità per annata e prevendita futuri lanci.",
+      "5": "ERP cantina integrato con CRM e e-commerce — dalla vendemmia alla bottiglia consegnata in un unico sistema, con gestione annate, disponibilità e prevendita futuri lanci."
     },
     "team": {
       "1": "Forma chi incontra i clienti sulla presentazione del vino: terroir, vitigno, vinificazione, abbinamenti — il racconto è il prodotto.",
       "2": "Affianca all'enologo un agente o export manager dedicato — le competenze tecniche da sole non vendono.",
       "3": "Assumi un responsabile commerciale (~2.500-3.500€/mese) che coordina gli agenti e sviluppa i mercati esteri.",
-      "4": "Team completo: direttore commerciale + export + agenti nazionali + responsabile enoturismo e hospitality."
+      "4": "Team completo: direttore commerciale + export + agenti nazionali + responsabile enoturismo e hospitality.",
+      "5": "Team completo e autonomo: direttore commerciale, export specialist, agenti nazionali e responsabile enoturismo — struttura che gestisce tutti i canali senza dipendere dal titolare."
     },
     "processi": {
       "1": "Standardizza le schede tecniche per ogni etichetta: vitigno, annata, vinificazione, abbinamenti, premi — indispensabile per sommelier e buyer.",
       "2": "Certificazioni bio, biodinamico o sostenibile (~2.000-8.000€) — sempre più richieste dalla GDO e dall'export.",
       "3": "Sistema di gestione annate e disponibilità — il buyer vuole sapere subito quante bottiglie hai disponibili.",
-      "4": "ERP cantina integrato con CRM e e-commerce — dalla vendemmia alla bottiglia consegnata in un unico sistema."
+      "4": "ERP cantina integrato con CRM e e-commerce — dalla vendemmia alla bottiglia consegnata in un unico sistema.",
+      "5": "ERP cantina integrato con CRM, e-commerce e logistica — gestione completa dalla vendemmia alla consegna con certificazioni consolidate e tracciabilità per mercati internazionali."
     },
     "ricavi": {
       "1": "Rivedi il pricing per canale: horeca ha margini diversi dall'enoteca, e l'export diverso dall'Italia — listini separati.",
       "2": "Lancia una linea premium o una cuvée speciale con margini superiori — il consumatore paga la storia e la rarità.",
       "3": "Wine club in abbonamento (6 o 12 bottiglie al mese) — ricavo ricorrente prevedibile con margini >40%.",
-      "4": "Enoturismo strutturato: visite in cantina, degustazioni, wine experience — margini altissimi e brand building."
+      "4": "Enoturismo strutturato: visite in cantina, degustazioni, wine experience — margini altissimi e brand building.",
+      "5": "Enoturismo strutturato come centro di profitto autonomo, wine club in abbonamento attivo e export premium consolidato — mix di ricavi con margini elevati e prevedibilità."
     },
     "marketing": {
       "1": "Instagram con foto professionali dei vigneti e delle bottiglie + storytelling dell'annata — gratuito, costruisce il brand.",
       "2": "Partecipa a Vinitaly, ProWein o Vinexpo (~3.000-10.000€) — le fiere sono il canale principale per il vino italiano nel mondo.",
       "3": "PR wine: invio bottiglie a guide (Gambero Rosso, Veronelli) e wine blogger internazionali (~500-2.000€/anno).",
-      "4": "Strategia brand building: premi internazionali, menzioni guide, presenza su Wine Spectator e Decanter."
+      "4": "Strategia brand building: premi internazionali, menzioni guide, presenza su Wine Spectator e Decanter.",
+      "5": "Strategia brand building consolidata: premi internazionali, menzioni guide (Gambero Rosso, Wine Spectator), presenza Decanter — reputazione che genera inbound spontaneo da importatori."
     },
     "sitoweb": {
       "1": "Sito con storia, vigneti, etichette e contatti — nel vino l'immagine è tutto.",
       "2": "E-commerce diretto con spedizione in Italia e export — margini pieni rispetto alla distribuzione.",
       "3": "Sito multilingua con area wine club, prenotazione degustazioni e schede tecniche per buyer.",
-      "4": "Piattaforma integrata: e-commerce + wine club + enoturismo + area stampa e premi."
+      "4": "Piattaforma integrata: e-commerce + wine club + enoturismo + area stampa e premi.",
+      "5": "Piattaforma integrata e-commerce + wine club + enoturismo + area stampa e premi — canale diretto che genera il 30%+ del fatturato con margini pieni."
     },
     "ecommerce": {
       "1": "Vinosofia, Tannico, Callmewine — marketplace vino per visibilità immediata con margini ridotti ma zero investimento.",
       "2": "E-commerce proprietario con SEO su varietale + zona + annata — traffico organico qualificato a lungo termine.",
       "3": "Export online: Amazon EU, Wine.com USA, Vivino — canali internazionali con investimento contenuto.",
-      "4": "Strategia multicanale: marketplace + sito proprietario + export diretto — massima copertura del mercato."
+      "4": "Strategia multicanale: marketplace + sito proprietario + export diretto — massima copertura del mercato.",
+      "5": "Strategia multicanale consolidata: marketplace + sito proprietario + export diretto — massima copertura del mercato con presenza sui principali marketplace internazionali del vino."
     }
   },
   "alimentare_forno": {
@@ -1365,49 +1381,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Parla con i clienti abituali del punto vendita e chiedi attivamente referenze e segnalazioni — il passaparola nel forno artigianale vale il 60% del nuovo business.",
       "2": "Sviluppa canali B2B: ristoranti, bar, mense, catering locali che acquistano pane e dolci ogni giorno (~accordo di fornitura, visita diretta).",
       "3": "Assumi un responsabile vendite B2B part-time (~1.000-1.500€/mese) per presidiare i clienti HORECA e sviluppare nuovi accordi.",
-      "4": "Struttura multi-canale: punto vendita + B2B horeca + catering eventi + e-commerce prodotti dolciari — diversificazione completa."
+      "4": "Struttura multi-canale: punto vendita + B2B horeca + catering eventi + e-commerce prodotti dolciari — diversificazione completa.",
+      "5": "Struttura multi-canale consolidata: punto vendita + B2B horeca strutturato + catering eventi + e-commerce prodotti dolciari — il titolare gestisce solo la produzione e le relazioni chiave."
     },
     "pipeline": {
       "1": "Traccia i clienti B2B (ristoranti, bar, mense) su Excel — chi compra quanto, con quale frequenza, chi non ha riordinato.",
       "2": "Sistema di ordini ricorrenti per i clienti B2B: ordine fisso settimanale con possibilità di variazione il giorno prima.",
       "3": "CRM base per gestire clienti B2B, accordi di fornitura e follow-up (~30-60€/mese).",
-      "4": "App ordini per i clienti B2B — ordinano dal telefono la sera per la mattina successiva, senza telefonate."
+      "4": "App ordini per i clienti B2B — ordinano dal telefono la sera per la mattina successiva, senza telefonate.",
+      "5": "App ordini B2B attiva per i clienti horeca + CRM per la gestione catering — ordini automatici senza telefonate e pipeline eventi pianificata con mesi di anticipo."
     },
     "team": {
       "1": "Forma il personale del banco sulla vendita attiva: proposta di abbinamento, prodotto del giorno, cross-selling — scontrino medio +20-30%.",
       "2": "Struttura incentivi per chi sviluppa nuovi clienti B2B e per chi aumenta lo scontrino medio nel punto vendita.",
       "3": "Assumi un addetto vendite B2B (~1.200-1.800€/mese) dedicato al canale HORECA e agli eventi catering.",
-      "4": "Team strutturato: responsabile punto vendita + addetto B2B + responsabile produzione + addetto e-commerce."
+      "4": "Team strutturato: responsabile punto vendita + addetto B2B + responsabile produzione + addetto e-commerce.",
+      "5": "Team strutturato e autonomo: responsabile punto vendita, addetto B2B, responsabile produzione e addetto e-commerce — ogni canale gestito da una persona dedicata."
     },
     "processi": {
       "1": "Standardizza le schede allergeni per ogni prodotto — obbligatorio per legge, fondamentale per il canale B2B e la GDO.",
       "2": "Processo di gestione degli ordini B2B: conferma, produzione, confezionamento e consegna con tempi garantiti.",
       "3": "Sistema HACCP documentato e aggiornato (~500-1.500€/anno consulente) — prerequisito per catering, mense e GDO.",
-      "4": "Certificazioni specifiche per i canali target: Bio, senza glutine, prodotto artigianale — aprono mercati premium."
+      "4": "Certificazioni specifiche per i canali target: Bio, senza glutine, prodotto artigianale — aprono mercati premium.",
+      "5": "Certificazioni specifiche attive per i canali target (bio, senza glutine, artigianale) con HACCP aggiornato — prerequisito per GDO, mense strutturate e catering premium."
     },
     "ricavi": {
       "1": "Alza il prezzo dei prodotti di punta del 5-10% — il cliente che sceglie il forno artigianale è disposto a pagare la qualità.",
       "2": "Sviluppa una linea premium: pane di farro, dolci senza glutine, prodotti bio — margini 30-50% superiori al pane standard.",
       "3": "Catering dolciario per eventi e matrimoni — commesse singole ad alto valore con margini elevati.",
-      "4": "Franchising o licenza del marchio per altri punti vendita — royalty ricorrente senza investimento in produzione."
+      "4": "Franchising o licenza del marchio per altri punti vendita — royalty ricorrente senza investimento in produzione.",
+      "5": "Catering dolciario per eventi e matrimoni consolidato come centro di profitto + franchising o licenza del marchio avviata — ricavi diversificati con margini elevati su ogni canale."
     },
     "marketing": {
       "1": "Instagram con foto dei prodotti appena sfornati e del processo artigianale — gratuito, genera traffico nel punto vendita.",
       "2": "Collaborazioni con food blogger e influencer locali (~200-500€ per collaborazione) — awareness locale qualificata.",
       "3": "Google My Business ottimizzato + campagne Meta Ads locali (~300-700€/mese) — intercetta chi cerca forno artigianale.",
-      "4": "Strategia brand building: concorsi artigiani, presenza su guide food, PR locale — posizionamento premium."
+      "4": "Strategia brand building: concorsi artigiani, presenza su guide food, PR locale — posizionamento premium.",
+      "5": "Strategia brand building consolidata: concorsi artigiani, presenza guide food, PR locale strutturata — posizionamento premium riconosciuto che genera inbound spontaneo."
     },
     "sitoweb": {
       "1": "Profilo Instagram professionale — per il forno artigianale vale più di un sito web.",
       "2": "Sito base con storia, prodotti, orari e possibilità di prenotare torte e dolci personalizzati.",
       "3": "E-commerce per prodotti da regalo e spedizione nazionale — panettoni, dolci natalizi, colombe.",
-      "4": "Piattaforma completa con e-commerce, prenotazioni catering e area B2B per i clienti horeca."
+      "4": "Piattaforma completa con e-commerce, prenotazioni catering e area B2B per i clienti horeca.",
+      "5": "Piattaforma completa con e-commerce, prenotazioni catering e area B2B per clienti horeca — canale digitale che genera il 20%+ del fatturato con zero costi commerciali aggiuntivi."
     },
     "ecommerce": {
       "1": "Delivery locale tramite piattaforme (Glovo, JustEat) per i prodotti da colazione e pranzo — canale immediato senza investimenti.",
       "2": "E-commerce per prodotti da regalo con spedizione refrigerata — mercato natalizio e pasquale ad alto margine.",
       "3": "App ordini B2B per i clienti horeca — ordini automatici senza telefonate.",
-      "4": "Marketplace food artigianale (Eataly Online, Gustoh) + e-commerce proprietario — doppio canale di vendita online."
+      "4": "Marketplace food artigianale (Eataly Online, Gustoh) + e-commerce proprietario — doppio canale di vendita online.",
+      "5": "Marketplace food artigianale + e-commerce proprietario + delivery locale strutturato — copertura completa omnicanale con presenza nazionale per i prodotti da regalo."
     }
   },
   "alimentare_conserve": {
@@ -1415,49 +1439,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Mappa specialty food, enoteche e deli della zona e proponi una fornitura di prova con campioni — nessun costo, risultati in 2-4 settimane.",
       "2": "Attiva un agente con contatti nella GDO locale e nelle catene specialty food (~provvigione 8-12%) — operativo in 2-4 settimane.",
       "3": "Assumi un commerciale o export manager (~2.500-3.500€/mese) per sviluppare GDO regionale e i primi mercati export.",
-      "4": "Struttura commerciale per canale: KAM GDO + agenti specialty + export manager + canale diretto — struttura da produttore strutturato."
+      "4": "Struttura commerciale per canale: KAM GDO + agenti specialty + export manager + canale diretto — struttura da produttore strutturato.",
+      "5": "Struttura commerciale per canale consolidata: KAM GDO + agenti specialty + export manager + canale diretto — il titolare gestisce solo le relazioni con i buyer internazionali premium."
     },
     "pipeline": {
       "1": "Traccia ogni cliente e distributore su Excel: volumi, frequenza di riordino, feedback sul prodotto.",
       "2": "CRM base per gestire agenti e distributori con alert per riordini attesi (~30-60€/mese).",
       "3": "Analisi sell-out per punto vendita — capire dove il prodotto ruota meglio orienta le risorse commerciali.",
-      "4": "CRM integrato con ERP per previsioni ordini e pianificazione campagne produttive."
+      "4": "CRM integrato con ERP per previsioni ordini e pianificazione campagne produttive.",
+      "5": "CRM integrato con ERP per previsioni ordini e pianificazione campagne produttive — coordinamento completo tra commerciale e produzione con analisi sell-out per punto vendita."
     },
     "team": {
       "1": "Forma chi gestisce i contatti sulla narrazione del prodotto: ricette della nonna, materie prime locali, processo artigianale.",
       "2": "Piano provvigionale chiaro per agenti con bonus su new business e su referenze GDO.",
       "3": "Affianca un inside sales (~1.500-2.000€/mese) per gestire gli ordini ripetitivi.",
-      "4": "Team commerciale strutturato con KAM e export specialist."
+      "4": "Team commerciale strutturato con KAM e export specialist.",
+      "5": "Team commerciale strutturato con KAM ed export specialist — autonomo nella gestione di tutti i canali con performance misurabili e forecast mensile accurato."
     },
     "processi": {
       "1": "Etichettatura conforme al Reg. UE 1169/2011: allergeni, valori nutrizionali, shelf life — prerequisito per GDO e export.",
       "2": "Certificazione BRC o IFS (~5.000-15.000€) — obbligatoria per la GDO strutturata e per l'export anglosassone.",
       "3": "ERP food-grade per tracciabilità lotti e gestione scadenze (~300-600€/mese).",
-      "4": "EDI con GDO e sistema integrato produzione-commerciale-logistica."
+      "4": "EDI con GDO e sistema integrato produzione-commerciale-logistica.",
+      "5": "EDI con GDO e sistema integrato produzione-commerciale-logistica — standard richiesto dai buyer della grande distribuzione con tracciabilità completa e certificazioni attive."
     },
     "ricavi": {
       "1": "Rivedi il pricing — le conserve artigianali di qualità possono spuntare prezzi 3-5x superiori al prodotto industriale.",
       "2": "Linee premium: prodotti DOP, biologici, con packaging regalo — margini 40-60% superiori alla linea base.",
       "3": "Private label per catene specialty o GDO premium — volumi garantiti con margini ridotti ma prevedibili.",
-      "4": "Export con prezzi premium — il made in Italy nelle conserve è riconosciuto e pagato in tutto il mondo."
+      "4": "Export con prezzi premium — il made in Italy nelle conserve è riconosciuto e pagato in tutto il mondo.",
+      "5": "Export con prezzi premium consolidato su 3+ mercati + private label GDO attiva — made in Italy riconosciuto e pagato con margini superiori del 40% rispetto al mercato domestico."
     },
     "marketing": {
       "1": "Instagram e Facebook con foto dei prodotti e delle ricette — contenuto generato dagli stessi consumatori è oro.",
       "2": "Partecipa a Cibus, Tuttofood o Salone del Gusto (~2.000-8.000€) — visibilità con buyer e media del settore.",
       "3": "PR food: invio campioni a food blogger, giornalisti e guide specializzate.",
-      "4": "Strategia brand building: premi di settore, presenza su guide gourmet, accordi con chef stellati."
+      "4": "Strategia brand building: premi di settore, presenza su guide gourmet, accordi con chef stellati.",
+      "5": "Strategia brand building consolidata: premi di settore, presenza guide gourmet e accordi con chef stellati — posizionamento premium che genera visibilità internazionale spontanea."
     },
     "sitoweb": {
       "1": "Sito con storia, prodotti e contatti — ~800-2.000€.",
       "2": "E-commerce B2C con spedizione in Italia — margini pieni sul consumatore finale.",
       "3": "Area B2B riservata per distributori con listini e modulo ordini.",
-      "4": "Piattaforma integrata B2B + B2C + export con gestione lotti e tracciabilità."
+      "4": "Piattaforma integrata B2B + B2C + export con gestione lotti e tracciabilità.",
+      "5": "Piattaforma integrata B2B + B2C + export con gestione lotti e tracciabilità — canale diretto che genera margini pieni e riduce la dipendenza dalla distribuzione tradizionale."
     },
     "ecommerce": {
       "1": "Presenza su Amazon e marketplace food italiani — visibilità immediata con consumatori qualificati.",
       "2": "E-commerce proprietario + box regalo abbonamento mensile — ricavo ricorrente con margini elevati.",
       "3": "Export online: Amazon EU, marketplace internazionali — canale export a basso costo.",
-      "4": "Strategia multicanale: marketplace + sito + export diretto — massima copertura."
+      "4": "Strategia multicanale: marketplace + sito + export diretto — massima copertura.",
+      "5": "Strategia multicanale consolidata: marketplace + sito + export diretto — massima copertura con presenza sui principali marketplace food internazionali e box regalo in abbonamento."
     }
   },
   "alimentare_ingredienti": {
@@ -1465,49 +1497,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Mappa i laboratori artigianali, pastifici, panifici e ristoranti della zona che potrebbero utilizzare i tuoi ingredienti — visita diretta con campioni.",
       "2": "Attiva agenti con portafoglio industria alimentare e HORECA (~provvigione 4-7%) — operativo in 2-4 settimane.",
       "3": "Assumi un tecnico-commerciale (~2.500-3.500€/mese) con competenza food technology — vende soluzioni, non solo ingredienti.",
-      "4": "Struttura commerciale per segmento: industria + artigianato + HORECA + export — con tecnico di supporto applicativo."
+      "4": "Struttura commerciale per segmento: industria + artigianato + HORECA + export — con tecnico di supporto applicativo.",
+      "5": "Struttura commerciale per segmento consolidata: direttore commerciale + tecnici applicativi + export specialist + key account industria — vende soluzioni complete, non solo ingredienti."
     },
     "pipeline": {
       "1": "Traccia ogni cliente su Excel: prodotto fornito, volumi mensili, frequenza di riordino.",
       "2": "CRM con gestione riordini e supporto tecnico pre-vendita (~30-80€/mese).",
       "3": "Monitoraggio consumo per cliente — anticipa i riordini e proponi varianti o prodotti complementari.",
-      "4": "CRM integrato con ERP per forecast e pianificazione acquisti materie prime."
+      "4": "CRM integrato con ERP per forecast e pianificazione acquisti materie prime.",
+      "5": "CRM integrato con ERP per forecast e pianificazione acquisti materie prime — monitoraggio consumo per cliente con anticipazione riordini e proposte di varianti complementari."
     },
     "team": {
       "1": "Forma chi gestisce i contatti sulle applicazioni tecniche degli ingredienti — il cliente vuole soluzioni, non solo prodotti.",
       "2": "Affianca al commerciale un tecnologo alimentare (~2.000-3.000€/mese) per il supporto applicativo — differenziazione forte.",
       "3": "Laboratorio applicazioni interno per sviluppare ricette e test — strumento di vendita potentissimo.",
-      "4": "Team strutturato: direttore commerciale + tecnici applicativi + export specialist + key account industria."
+      "4": "Team strutturato: direttore commerciale + tecnici applicativi + export specialist + key account industria.",
+      "5": "Team strutturato con laboratorio applicazioni interno — tecnologo alimentare dedicato al supporto pre-vendita e sviluppo ricette come strumento commerciale differenziante."
     },
     "processi": {
       "1": "Schede tecniche complete per ogni ingrediente: composizione, dosaggi, applicazioni, allergeni, shelf life.",
       "2": "Certificazioni richieste dall'industria: FSSC 22000, Halal, Kosher (~3.000-15.000€) — aprono mercati industriali e internazionali.",
       "3": "Laboratorio controllo qualità interno — garanzia di costanza del prodotto per i clienti industriali.",
-      "4": "Sistema qualità integrato con tracciabilità materie prime e gestione fornitori — standard industria alimentare strutturata."
+      "4": "Sistema qualità integrato con tracciabilità materie prime e gestione fornitori — standard industria alimentare strutturata.",
+      "5": "Sistema qualità integrato con tracciabilità materie prime e gestione fornitori — standard industria alimentare strutturata con certificazioni attive (FSSC 22000, Halal, Kosher)."
     },
     "ricavi": {
       "1": "Rivedi il pricing per volume e per applicazione — gli ingredienti per il settore pharma-food hanno margini diversi dal commodity.",
       "2": "Sviluppa blend personalizzati per i clienti principali — esclusività e margini superiori agli ingredienti standard.",
       "3": "Servizi di sviluppo ricette a pagamento — consulenza tecnica che diventa centro di profitto autonomo.",
-      "4": "Partnership R&D con clienti industriali per co-sviluppo nuovi ingredienti — lock-in strategico e royalties."
+      "4": "Partnership R&D con clienti industriali per co-sviluppo nuovi ingredienti — lock-in strategico e royalties.",
+      "5": "Partnership R&D con clienti industriali per co-sviluppo nuovi ingredienti attive — royalties ricorrenti e lock-in strategico che rende il cambio fornitore praticamente impossibile."
     },
     "marketing": {
       "1": "Partecipa a Fi Europe, HostMilano o Tuttofood (~3.000-8.000€) — fiere B2B dove incontri buyer industriali e artigianali.",
       "2": "White paper tecnici e schede applicative sul sito — content marketing B2B che genera lead qualificati.",
       "3": "Webinar tecnici su applicazioni specifiche — posizionamento come partner tecnico, non solo fornitore.",
-      "4": "Presenza riviste di settore (Industrie Alimentari, Food Technology) e collaborazioni con istituti di ricerca."
+      "4": "Presenza riviste di settore (Industrie Alimentari, Food Technology) e collaborazioni con istituti di ricerca.",
+      "5": "Presence riviste di settore e collaborazioni con istituti di ricerca — thought leadership consolidata che genera inbound spontaneo da clienti industriali e artigianali qualificati."
     },
     "sitoweb": {
       "1": "Sito con catalogo ingredienti, schede tecniche scaricabili e form contatto.",
       "2": "Area tecnica riservata con schede applicative, ricette e supporto tecnico online.",
       "3": "Portale B2B per clienti con catalogo, prezzi riservati e modulo ordini.",
-      "4": "Piattaforma integrata con configuratore blend, schede tecniche e supporto tecnico live."
+      "4": "Piattaforma integrata con configuratore blend, schede tecniche e supporto tecnico live.",
+      "5": "Piattaforma integrata con configuratore blend, schede tecniche e supporto tecnico live — canale digitale che genera lead B2B qualificati e riduce il tempo commerciale per cliente."
     },
     "ecommerce": {
       "1": "Vendita online per artigiani e piccoli laboratori — quantità ridotte con margini superiori all'industria.",
       "2": "Marketplace ingredienti B2B (Europages, Kompass Food) per visibilità internazionale.",
       "3": "E-commerce B2B con ordini minimi e listini personalizzati per categoria cliente.",
-      "4": "Integrazione EDI con i sistemi ERP dei clienti industriali principali — riordini automatici."
+      "4": "Integrazione EDI con i sistemi ERP dei clienti industriali principali — riordini automatici.",
+      "5": "Integrazione EDI con i sistemi ERP dei clienti industriali principali + e-commerce B2B per artigiani — doppio canale digitale che copre tutti i segmenti con margini ottimizzati."
     }
   },
   "alimentare_birra": {
@@ -1515,49 +1555,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Visita bar, pub e ristoranti della zona con campioni in bottiglia — il barman che conosce la tua birra è il tuo miglior commerciale. Nessun costo.",
       "2": "Attiva un agente con portafoglio HORECA e beer specialist (~provvigione 8-12%) — operativo in 2-4 settimane.",
       "3": "Assumi un commerciale HORECA (~2.000-3.000€/mese) per presidiare i locali principali e sviluppare accordi di spina.",
-      "4": "Struttura commerciale per canale: HORECA + specialty beer shop + GDO + export — con merchandiser per i locali top."
+      "4": "Struttura commerciale per canale: HORECA + specialty beer shop + GDO + export — con merchandiser per i locali top.",
+      "5": "Struttura commerciale per canale consolidata: responsabile HORECA + export specialist + brand ambassador + responsabile tap room — il titolare gestisce solo la strategia e i brand deal."
     },
     "pipeline": {
       "1": "Traccia ogni locale cliente: volumi, stili ordinati, frequenza di riordino — la birra artigianale ha cicli stagionali.",
       "2": "CRM base con alert per riordini e per locali inattivi da +30 giorni (~30-60€/mese).",
       "3": "Gestione tap room e accordi di spina esclusivi — il locale che ha la tua spina è un cliente fidelizzato per definizione.",
-      "4": "CRM integrato con gestione fusti, rotazione produzione e previsioni per stagione."
+      "4": "CRM integrato con gestione fusti, rotazione produzione e previsioni per stagione.",
+      "5": "ERP birreria integrato con CRM e produzione — dalla cotta al fusto consegnato in un unico sistema, con gestione fusti, rotazione produzione e previsioni per stagione."
     },
     "team": {
       "1": "Forma chi gestisce i contatti sugli stili birrari, gli abbinamenti e le caratteristiche organolettiche — il birraio che sa comunicare vende di più.",
       "2": "Piano incentivi per agenti con bonus su accordi di spina e su new business HORECA.",
       "3": "Brand ambassador (~1.000-1.500€/mese part-time) che presidia i locali top e forma il personale di sala.",
-      "4": "Team commerciale: responsabile HORECA + export specialist + brand ambassador + responsabile tap room."
+      "4": "Team commerciale: responsabile HORECA + export specialist + brand ambassador + responsabile tap room.",
+      "5": "Team completo autonomo: responsabile HORECA, export specialist, brand ambassador e responsabile tap room — struttura che gestisce tutti i canali senza dipendere dal titolare."
     },
     "processi": {
       "1": "Etichettatura conforme a normativa europea con grado alcolico, allergeni e codice lotto.",
       "2": "Certificazione biologica o artigianale riconosciuta (~1.000-5.000€) — differenziazione e accesso a canali premium.",
       "3": "Processo di gestione fusti e vuoti a rendere strutturato — riduce i costi e mantiene la qualità del prodotto.",
-      "4": "ERP birreria integrato con CRM e produzione — dalla cotta al fusto consegnato in un unico sistema."
+      "4": "ERP birreria integrato con CRM e produzione — dalla cotta al fusto consegnato in un unico sistema.",
+      "5": "ERP birreria con tracciabilità completa + certificazioni consolidate + processo gestione fusti automatizzato — standard per birrifici strutturati con distribuzione nazionale ed export attivo."
     },
     "ricavi": {
       "1": "Alza il prezzo delle birre premium e speciali — il consumatore di birra artigianale è disposto a pagare la qualità.",
       "2": "Lancia edizioni stagionali e limited edition — create aspettativa e urgenza, margini 40-60% superiori.",
       "3": "Abbonamento beer club o box mensile — ricavo ricorrente prevedibile con margini elevati.",
-      "4": "Tap room aziendale con eventi di degustazione e beer experience — margini altissimi e brand building."
+      "4": "Tap room aziendale con eventi di degustazione e beer experience — margini altissimi e brand building.",
+      "5": "Tap room aziendale come centro di profitto autonomo + beer club in abbonamento attivo + export premium su 3+ mercati — mix ricavi diversificato con margini elevati e prevedibili."
     },
     "marketing": {
       "1": "Instagram con foto della produzione, delle materie prime e dei nuovi lanci — la community della birra artigianale è molto attiva online.",
       "2": "Partecipa a Eurhop, Beer Attraction o festival birra locali (~1.000-5.000€) — visibilità diretta con appassionati e buyer.",
       "3": "Collaborazioni con beer influencer e portali specializzati (Ratebeer, Untappd) — endorsement credibile nella comunità.",
-      "4": "Strategia brand building: premi internazionali (World Beer Awards), presenza stampa specializzata, collaborazioni con chef."
+      "4": "Strategia brand building: premi internazionali (World Beer Awards), presenza stampa specializzata, collaborazioni con chef.",
+      "5": "Strategia brand building consolidata: premi internazionali, presenza stampa specializzata e collaborazioni con chef — reputazione che genera inbound spontaneo da importatori e buyer."
     },
     "sitoweb": {
       "1": "Sito con storia del birrificio, stili prodotti e dove trovare la birra — ~800-2.000€.",
       "2": "E-commerce con spedizione in Italia e tap room virtuale — vendita diretta al consumatore con margini pieni.",
       "3": "Area HORECA riservata con listini, disponibilità e modulo ordini.",
-      "4": "Piattaforma integrata: e-commerce + beer club + HORECA + export — copertura completa."
+      "4": "Piattaforma integrata: e-commerce + beer club + HORECA + export — copertura completa.",
+      "5": "Piattaforma integrata e-commerce + beer club + HORECA + export — canale digitale che genera il 25%+ del fatturato con margini pieni e community di appassionati fidelizzata."
     },
     "ecommerce": {
       "1": "Presenza su marketplace birra artigianale (Birra del Borgo Shop, Tannico Birra) — visibilità immediata.",
       "2": "E-commerce proprietario + abbonamento box mensile — community di appassionati fidelizzati.",
       "3": "Export online: Amazon EU, beer marketplace internazionali — canale export a basso costo.",
-      "4": "Strategia multicanale: marketplace + sito + export + tap room — massima copertura del mercato."
+      "4": "Strategia multicanale: marketplace + sito + export + tap room — massima copertura del mercato.",
+      "5": "Strategia multicanale consolidata: marketplace + sito + export + tap room — massima copertura del mercato con presenza internazionale e community attiva di brand ambassador."
     }
   },
   "tech_saas": {
