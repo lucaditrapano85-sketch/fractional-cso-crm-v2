@@ -4674,14 +4674,13 @@ function renderTargetEditor(p) {
     const curCol = cur >= 4 ? 'var(--green)' : cur >= 3 ? 'var(--gold)' : 'var(--red)';
     const tgtCol = tgt >= 4 ? 'var(--green)' : tgt >= 3 ? 'var(--gold)' : 'var(--red)';
     const azioniDim = (AZIONI_TARGET_BY_SETTORE[settore] || {})[d.id] || {};
-    // Stato attuale: descrive lo step SUCCESSIVO da fare (cur → cur+1)
-    const curNextStep = Math.min(cur + 1, 5);
-    const curStepKey = cur + '-' + curNextStep;
+    // Stato attuale: lo step che stai eseguendo ora (cur → cur+1)
+    const curStepKey = cur + '-' + Math.min(cur + 1, 5);
     const curDesc = azioniDim[curStepKey] || '—';
-    // Obiettivo finale: descrive lo step verso il target (tgt-1 → tgt)
-    const tgtEffettivo = tgt > cur ? tgt : Math.min(cur + 2, 5);
-    const tgtStepKey = (tgtEffettivo - 1) + '-' + tgtEffettivo;
-    const tgtDesc = tgtStepKey !== curStepKey ? (azioniDim[tgtStepKey] || '—') : (azioniDim[tgtEffettivo + '-' + Math.min(tgtEffettivo+1,5)] || '—');
+    // Obiettivo finale: lo step necessario per raggiungere il target (tgt-1 → tgt)
+    const tgtStep = Math.max(tgt, 2);
+    const tgtStepKey = (tgtStep - 1) + '-' + tgtStep;
+    const tgtDesc = azioniDim[tgtStepKey] || '—';
     const subObiettiviHtml = '';
     // Warning tetto strutturale
     const tettoSettore = (TETTO_BY_SETTORE[settore] || {})[d.id] || 5;
