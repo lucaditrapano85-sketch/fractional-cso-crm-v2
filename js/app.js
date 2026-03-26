@@ -208,12 +208,12 @@ function renderListinoServizi(macro) {
   var DIMS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
   var DIM_LABELS = {vendite:'Sviluppo commerciale',pipeline:'Pipeline & CRM',team:'Team commerciale',processi:'Processi & Compliance',ricavi:'Ricavi & Margini',marketing:'Marketing & Domanda',sitoweb:'Sito Web & Presenza',ecommerce:'Canale digitale / Specifico settore'};
   var DIM_DESC = {vendite:'Struttura della rete vendita, metodi di acquisizione e gestione dei clienti.',pipeline:'Implementazione CRM, tracciamento opportunita e gestione del funnel commerciale.',team:'Organizzazione, formazione e incentivazione del team commerciale.',processi:'Standardizzazione dei processi di vendita, offerte, contratti e compliance.',ricavi:'Ottimizzazione dei margini, pricing, upsell e gestione dei ricavi ricorrenti.',marketing:'Strategia di marketing, generazione domanda e posizionamento di mercato.',sitoweb:'Ottimizzazione della presenza web, SEO, contenuti e lead generation digitale.',ecommerce:'Canale e-commerce, vendita digitale o dimensione specifica del settore.'};
-  var STEP_DESC = {'1-2':'Base','2-3':'Strutturato','3-4':'Ottimizzato','4-5':'Eccellente'};
+  var STEP_DESC = {'1':'Base','2':'Strutturato','3':'Ottimizzato','4':'Eccellente','5':'Eccellente+'};
   var listinoMacro = (typeof LISTINO_DEFAULT !== 'undefined' ? LISTINO_DEFAULT[macro] : null) || {};
   var fmtV = function(v) { return v ? v.toLocaleString('it-IT') + '\u20AC' : '\u2014'; };
   var cards = DIMS.map(function(dim) {
     var dimData = listinoMacro[dim] || {};
-    var steps = ['1-2','2-3','3-4','4-5'];
+    var steps = ['1','2','3','4','5'];
     var microKeys = typeof AZIONI_TARGET_BY_SETTORE !== 'undefined' ? Object.keys(AZIONI_TARGET_BY_SETTORE).filter(function(k) { return k.startsWith(macro + '_'); }) : [];
     var microKey = microKeys[0] || (typeof AZIONI_TARGET_BY_SETTORE !== 'undefined' ? Object.keys(AZIONI_TARGET_BY_SETTORE)[0] : '');
     var azioniDim = (typeof AZIONI_TARGET_BY_SETTORE !== 'undefined' && AZIONI_TARGET_BY_SETTORE[microKey]) ? AZIONI_TARGET_BY_SETTORE[microKey][dim] : null;
@@ -231,7 +231,7 @@ function renderListinoServizi(macro) {
       }
       return '<div class="ls-step-row">' +
         '<div class="ls-step-left">' +
-          '<div class="ls-step-badge">Step ' + s + '</div>' +
+          '<div class="ls-step-badge">Livello ' + s + '</div>' +
           '<div class="ls-step-desc">' + stepDesc + '</div>' +
         '</div>' +
         '<div class="ls-step-costs">' +
@@ -240,7 +240,7 @@ function renderListinoServizi(macro) {
           '<span class="ls-cost-item"><span class="ls-cost-label">Una tantum</span><span class="ls-cost-val ' + (d.u ? '' : 'ls-cost-zero') + '">' + (d.u ? fmtV(d.u) : '\u2014') + '</span></span>' +
         '</div></div>';
     }).join('');
-    var primo = dimData['1-2'] || {};
+    var primo = dimData['1'] || {};
     return '<div class="ls-card">' +
       '<div class="ls-card-header"><div class="ls-card-title">' + DIM_LABELS[dim] + '</div><div class="ls-card-badge">' + (primo.r ? 'da ' + fmtV(primo.r) + '/mese' : '\u2014') + '</div></div>' +
       '<div class="ls-card-desc">' + DIM_DESC[dim] + '</div>' +
@@ -967,9 +967,9 @@ async function renderProspectDetail(id) {
     const t=p.targets?.[d.id];
     const col=pct>=60?'#4A9A6A':pct>=35?'#C9973A':'#C05040';
     const _azDim = (AZIONI_TARGET_BY_SETTORE[p.settore || ''] || {})[d.id] || {};
-    const _curStep = (v > 1) ? ((v-1) + '-' + v) : '1-2';
+    const _curStep = String(Math.max(v, 1));
     const desc = _azDim[_curStep] || '—';
-    const _tgtStep = t ? ((t > 1) ? ((t-1) + '-' + t) : '1-2') : '';
+    const _tgtStep = t ? String(Math.max(t, 1)) : '';
     const tgtDesc = t ? (_azDim[_tgtStep] || '—') : '';
     const tgtStr = t ? `\x3cspan style="font-size:10px;color:var(--gold-dim);margin-left:6px">-> ${t}/5\x3c/span>` : '';
     return `\x3cdiv class="dim-row" style="margin-bottom:10px">
@@ -1483,7 +1483,7 @@ function _buildReportHTML(p) {
       const azione = _getAzionePredefinita(settore, d.id, cur, cur + 1);
       const costo = _getCosto(settore, d.id, cur, cur + 1);
       const scad = scadenze[d.id] || null;
-      const impattoRaw = _getImpatto(settore, d.id, cur + '-' + (cur + 1));
+      const impattoRaw = _getImpatto(settore, d.id, String(cur + 1));
       const impattoCalc = _calcolaImpatto(impattoRaw, p.fatturato, p.fatturato_anno_1, p.ebitda, p.margine_pct, p.utile_netto);
       return azione ? { dim: getDimLabel(p.settore, d.id), dimId: d.id, cur, tgt, azione, costo, scad, impatto: impattoCalc } : null;
     })
@@ -2873,7 +2873,7 @@ function drawRadar(dims_vals, targets_vals, settore) {
 
 // Recupera l'azione predefinita per settore+dimensione+step
 function _getAzionePredefinita(settore, dimId, fromStep, toStep) {
-  const chiave = fromStep + '-' + toStep;
+  const chiave = String(toStep);
   if (AZIONI_TARGET_BY_SETTORE[settore] && AZIONI_TARGET_BY_SETTORE[settore][dimId] && AZIONI_TARGET_BY_SETTORE[settore][dimId][chiave]) {
     return AZIONI_TARGET_BY_SETTORE[settore][dimId][chiave];
   }
@@ -3931,7 +3931,7 @@ function _calcolaImpattoCumulativo(p) {
       const tgt = targets[id] || 0;
       let contributoTot = 0;
       for (let step = cur; step < tgt; step++) {
-        const stepKey = step + '-' + (step+1);
+        const stepKey = String(step + 1);
         const imp = _calcolaImpattoUnitario(settore, id, stepKey, p) || _getImpatto(settore, id, stepKey);
         if (imp) {
           const pctArr = orizzonte === 6 ? imp.pct_6m : orizzonte === 12 ? imp.pct_12m : imp.pct_24m;
@@ -4195,7 +4195,7 @@ function _buildGraficoTimeline(p) {
     .map(function(d) {
       const cur = dims[d] || 1;
       const tgt = targets[d] || cur;
-      const stepKey = cur + '-' + (cur + 1);
+      const stepKey = String(cur + 1);
       const desc = (AZIONI_TARGET_BY_SETTORE?.[settore]?.[d]?.[stepKey] || '').split('.')[0];
       const detail = typeof getStepDetail === 'function' ? getStepDetail(settore, d, stepKey) : null;
       const costoStr = detail ? (detail.costo_mensile > 0 ? '\u2248' + detail.costo_mensile.toLocaleString('it-IT') + '\u20AC/mese' : 'Nessun costo') + ' \u00B7 Operativo in ~' + detail.tempo_mesi + ' ' + (detail.tempo_mesi === 1 ? 'mese' : 'mesi') : '';
@@ -4676,9 +4676,9 @@ function renderTargetEditor(p) {
     const azioniDim = (AZIONI_TARGET_BY_SETTORE[settore] || {})[d.id] || {};
     const curLvl = Math.max(cur, 1);
     const tgtLvl = Math.max(tgt, 1);
-    const curStepKey = Math.min(curLvl, 4) + '-' + Math.min(curLvl + 1, 5);
+    const curStepKey = String(Math.min(curLvl, 5));
     const curDesc = azioniDim[curStepKey] || '—';
-    const tgtStepKey = Math.min(tgtLvl, 4) + '-' + Math.min(tgtLvl + 1, 5);
+    const tgtStepKey = String(Math.min(tgtLvl, 5));
     const tgtDesc = azioniDim[tgtStepKey] || '—';
     const subObiettiviHtml = '';
     // Warning tetto strutturale
@@ -4774,7 +4774,7 @@ function updateTargetDesc(dimId) {
   const settore = p?.settore || '';
   const azioniDim = (AZIONI_TARGET_BY_SETTORE[settore] || {})[dimId] || {};
   const tgtLvl = Math.max(tgt, 1);
-  const tgtStepKey = Math.min(tgtLvl, 4) + '-' + Math.min(tgtLvl + 1, 5);
+  const tgtStepKey = String(Math.min(tgtLvl, 5));
   const desc = azioniDim[tgtStepKey] || '—';
   const col = tgt >= 4 ? 'var(--green)' : tgt >= 3 ? 'var(--gold)' : 'var(--red)';
   descEl.textContent = desc;

@@ -952,52 +952,60 @@ var AZIONI_TARGET_BY_SETTORE =
   },
   "commercio_auto_moto_usato": {
     "vendite": {
-      "1-2": "Struttura l'accoglienza: saluto attivo, domande di qualificazione (budget, esigenza, permuta?) e follow-up entro 24h dalla visita — training interno, nessun costo.",
-      "2-3": "Assumi un venditore junior con esperienza usato (~2.500€/mese inclusi oneri) — gestisce trattative e permute in autonomia. Operativo in 2-3 mesi.",
-      "3-4": "Affianca al junior un senior (~3.500€/mese) con portafoglio clienti e capacità di chiusura su trattative complesse e flotte.",
-      "4-5": "Struttura commerciale completa: responsabile vendite (~4.000€/mese) + venditori per segmento + key account per flotte aziendali."
+      "1": "Struttura l'accoglienza: saluto attivo, domande di qualificazione (budget, esigenza, permuta?) e follow-up entro 24h dalla visita — training interno, nessun costo.",
+      "2": "Assumi un venditore junior con esperienza usato (~2.500€/mese inclusi oneri) — gestisce trattative e permute in autonomia. Operativo in 2-3 mesi.",
+      "3": "Affianca al junior un senior (~3.500€/mese) con portafoglio clienti e capacità di chiusura su trattative complesse e flotte.",
+      "4": "Struttura commerciale completa: responsabile vendite (~4.000€/mese) + venditori per segmento + key account per flotte aziendali.",
+      "5": "Struttura commerciale completa operativa: responsabile vendite, team per segmento (privati, flotte, km0) con KPI misurati e obiettivi mensili raggiunti con continuità."
     },
     "pipeline": {
-      "1-2": "Traccia ogni contatto su Excel: nome, interesse, budget, permuta, stato — nel usato la decisione è rapida, il follow-up deve essere immediato.",
-      "2-3": "CRM automotive (Autoclix, vDynamics, ~150-300€/mese) per gestire lead da marketplace con follow-up automatico entro 2h.",
-      "3-4": "Lead scoring: classifica i lead per urgenza e probabilità di chiusura — concentra il tempo commerciale sui contatti più caldi.",
-      "4-5": "DMS integrato: CRM + stock + finanziamenti + pratiche — visione completa dalla trattativa alla consegna."
+      "1": "Traccia ogni contatto su Excel: nome, interesse, budget, permuta, stato — nel usato la decisione è rapida, il follow-up deve essere immediato.",
+      "2": "CRM automotive (Autoclix, vDynamics, ~150-300€/mese) per gestire lead da marketplace con follow-up automatico entro 2h.",
+      "3": "Lead scoring: classifica i lead per urgenza e probabilità di chiusura — concentra il tempo commerciale sui contatti più caldi.",
+      "4": "DMS integrato: CRM + stock + finanziamenti + pratiche — visione completa dalla trattativa alla consegna.",
+      "5": "DMS integrato con CRM, stock e finanziamenti — pipeline completamente automatizzata, forecast preciso e reportistica settimanale strutturata."
     },
     "team": {
-      "1-2": "Forma il personale esistente sulla qualificazione del cliente: domande di discovery, gestione della permuta come leva di chiusura.",
-      "2-3": "Piano incentivi: bonus per unità vendute, bonus extra su permute acquisite al giusto prezzo e su soddisfazione cliente.",
-      "3-4": "Affianca un addetto alle pratiche e ai finanziamenti (~1.500-2.000€/mese) — libera i venditori dalla burocrazia.",
-      "4-5": "Sales manager che coordina il team, monitora KPI settimanali (contatti, trattative, chiusure) e gestisce i fleet client."
+      "1": "Forma il personale esistente sulla qualificazione del cliente: domande di discovery, gestione della permuta come leva di chiusura.",
+      "2": "Piano incentivi: bonus per unità vendute, bonus extra su permute acquisite al giusto prezzo e su soddisfazione cliente.",
+      "3": "Affianca un addetto alle pratiche e ai finanziamenti (~1.500-2.000€/mese) — libera i venditori dalla burocrazia.",
+      "4": "Sales manager che coordina il team, monitora KPI settimanali (contatti, trattative, chiusure) e gestisce i fleet client.",
+      "5": "Sales manager che coordina il team, gestisce KPI settimanali e mantiene i fleet client — struttura commerciale autonoma dal titolare."
     },
     "processi": {
-      "1-2": "Standardizza la valutazione permute: checklist danni, chilometraggio verificato, confronto Eurotax — risposta al cliente entro 2h.",
-      "2-3": "Software gestione pratiche auto (~150-350€/mese): passaggi di proprietà, finanziamenti, garanzie — riduce errori e tempi.",
-      "3-4": "Processo di preparazione veicoli strutturato: check meccanico certificato, detailing, foto professionali standard — ogni auto come nuova.",
-      "4-5": "DMS completo con tracciabilità dalla fonte di acquisto alla vendita finale — KPI per fonte, margine e rotazione."
+      "1": "Standardizza la valutazione permute: checklist danni, chilometraggio verificato, confronto Eurotax — risposta al cliente entro 2h.",
+      "2": "Software gestione pratiche auto (~150-350€/mese): passaggi di proprietà, finanziamenti, garanzie — riduce errori e tempi.",
+      "3": "Processo di preparazione veicoli strutturato: check meccanico certificato, detailing, foto professionali standard — ogni auto come nuova.",
+      "4": "DMS completo con tracciabilità dalla fonte di acquisto alla vendita finale — KPI per fonte, margine e rotazione.",
+      "5": "DMS completo con tracciabilità dalla fonte di acquisto alla vendita finale — KPI per fonte, margine e rotazione monitorati automaticamente."
     },
     "ricavi": {
-      "1-2": "Proponi sistematicamente garanzia estesa e finanziamento su ogni trattativa — margini 40-60% superiori alla sola vendita.",
-      "2-3": "Rivedi il pricing con tool professionali (Eurotax, EurotaxGlass) — vendere al prezzo di mercato, non svendere per paura.",
-      "3-4": "Attiva accordi con finanziarie per obiettivi di penetrazione mensili — bonus sul raggiungimento e clienti più fidelizzati.",
-      "4-5": "Revenue management: ottimizzazione margine per fonte di acquisto, segmento di veicolo e canale di vendita."
+      "1": "Proponi sistematicamente garanzia estesa e finanziamento su ogni trattativa — margini 40-60% superiori alla sola vendita.",
+      "2": "Rivedi il pricing con tool professionali (Eurotax, EurotaxGlass) — vendere al prezzo di mercato, non svendere per paura.",
+      "3": "Attiva accordi con finanziarie per obiettivi di penetrazione mensili — bonus sul raggiungimento e clienti più fidelizzati.",
+      "4": "Revenue management: ottimizzazione margine per fonte di acquisto, segmento di veicolo e canale di vendita.",
+      "5": "Revenue management completo: ottimizzazione margine per fonte di acquisto, segmento di veicolo e canale di vendita — titolare focalizzato sulla strategia."
     },
     "marketing": {
-      "1-2": "Stock completo su AutoScout24 e Subito con 8+ foto professionali per veicolo — il 70% dei clienti parte dalla ricerca online.",
-      "2-3": "Google My Business ottimizzato + recensioni attive + campagne Google Ads locali (~400-1.000€/mese).",
-      "3-4": "Video presentazione veicoli su YouTube e Instagram Reels — il cliente che vede il video prima della visita converte il 40% in più.",
-      "4-5": "Marketing integrato: portali + social + remarketing + programma referral — presidio completo del cliente."
+      "1": "Stock completo su AutoScout24 e Subito con 8+ foto professionali per veicolo — il 70% dei clienti parte dalla ricerca online.",
+      "2": "Google My Business ottimizzato + recensioni attive + campagne Google Ads locali (~400-1.000€/mese).",
+      "3": "Video presentazione veicoli su YouTube e Instagram Reels — il cliente che vede il video prima della visita converte il 40% in più.",
+      "4": "Marketing integrato: portali + social + remarketing + programma referral — presidio completo del cliente.",
+      "5": "Marketing integrato: portali + social + remarketing + programma referral — presidio completo del cliente con budget dedicato e misurazione ROI."
     },
     "sitoweb": {
-      "1-2": "Sito con stock aggiornato, foto e richiesta informazioni online — ~1.000-2.500€.",
-      "2-3": "Sito professionale con valutazione permuta online, richiesta finanziamento e chat live.",
-      "3-4": "Sito integrato con stock in tempo reale, prenotazione visita online e CRM automatico per i lead.",
-      "4-5": "Piattaforma digitale completa: acquisto online con anticipo, firma digitale e consegna a domicilio."
+      "1": "Sito con stock aggiornato, foto e richiesta informazioni online — ~1.000-2.500€.",
+      "2": "Sito professionale con valutazione permuta online, richiesta finanziamento e chat live.",
+      "3": "Sito integrato con stock in tempo reale, prenotazione visita online e CRM automatico per i lead.",
+      "4": "Piattaforma digitale completa: acquisto online con anticipo, firma digitale e consegna a domicilio.",
+      "5": "Piattaforma digitale completa: acquisto online con anticipo, firma digitale, consegna a domicilio — standard richiesto dai clienti premium."
     },
     "ecommerce": {
-      "1-2": "Diversifica le fonti di approvvigionamento: inizia con aste online (BCA, Autorola, ~300€/mese iscrizione) oltre alle permute.",
-      "2-3": "Buyer part-time dedicato alle aste (~800€/mese) che diversifica le fonti — aste online + acquisto da privati + flotte aziendali.",
-      "3-4": "Buyer full-time (~2.800€/mese) con accesso ad aste fisiche, rientri leasing e accordi con noleggiatori — stock più competitivo.",
-      "4-5": "Strategia acquisti strutturata: KPI per fonte (costo medio, margine, rotazione) + partnership con noleggiatori e leasing."
+      "1": "Diversifica le fonti di approvvigionamento: inizia con aste online (BCA, Autorola, ~300€/mese iscrizione) oltre alle permute.",
+      "2": "Buyer part-time dedicato alle aste (~800€/mese) che diversifica le fonti — aste online + acquisto da privati + flotte aziendali.",
+      "3": "Buyer full-time (~2.800€/mese) con accesso ad aste fisiche, rientri leasing e accordi con noleggiatori — stock più competitivo.",
+      "4": "Strategia acquisti strutturata: KPI per fonte (costo medio, margine, rotazione) + partnership con noleggiatori e leasing.",
+      "5": "Strategia acquisti strutturata: KPI per fonte (costo medio, margine, rotazione) + partnership con noleggiatori e leasing — flusso costante di veicoli competitivi."
     }
   },
   "commercio_abbigliamento_dettaglio": {
