@@ -5,49 +5,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Identifica 1-2 tecnici interni che ti affiancano nelle visite cliente e nei preventivi — nessun costo aggiuntivo, operativo subito.",
       "2": "Attiva un agente plurimandatario con portafoglio clienti nella meccanica di precisione (~800-1.200€/mese di provvigioni) — operativo in 1-2 mesi.",
       "3": "Assumi un commerciale interno con portafoglio assegnato e obiettivi mensili (~2.500-3.500€/mese) — autonomo nelle trattative entro 3 mesi.",
-      "4": "Struttura una direzione commerciale: responsabile vendite + agenti di zona + key account OEM (~6.000-9.000€/mese totale) — operativa in 6 mesi."
+      "4": "Struttura una direzione commerciale: responsabile vendite + agenti di zona + key account OEM (~6.000-9.000€/mese totale) — operativa in 6 mesi.",
+      "5": "Rete commerciale strutturata con responsabile vendite, agenti di zona e key account OEM — il titolare è uscito dalla vendita diretta e si occupa solo di strategia e relazioni strategiche."
     },
     "pipeline": {
       "1": "Crea un registro offerte su Excel: cliente, lavorazione, importo, stato — nessun costo, operativo in una settimana.",
       "2": "Adotta un CRM base (Pipedrive o HubSpot free, ~30-50€/mese) per tracciare offerte, follow-up e storico cliente — operativo in 2 settimane.",
       "3": "Definisci SLA di risposta preventivi (max 48h) e monitora win/loss rate mensile — nessun costo aggiuntivo, richiede disciplina commerciale.",
-      "4": "CRM integrato con gestione commesse, tempi produzione e fatturazione (~200-400€/mese) — operativo in 2-3 mesi con formazione."
+      "4": "CRM integrato con gestione commesse, tempi produzione e fatturazione (~200-400€/mese) — operativo in 2-3 mesi con formazione.",
+      "5": "CRM integrato con gestione commesse, forecast automatico e reportistica commerciale settimanale — zero opportunità perse, win rate monitorato e migliorato continuamente."
     },
     "team": {
       "1": "Forma i tecnici sulla comunicazione commerciale base: come presentare capacità produttive e tempi di consegna — formazione interna, nessun costo.",
       "2": "Attiva incentivi per l'agente/commerciale legati al fatturato mensile — struttura un piano provvigionale chiaro entro il primo mese.",
       "3": "Assumi o nomina un responsabile commerciale interno (~3.000-4.000€/mese) che coordina agenti e gestisce i clienti strategici.",
-      "4": "Struttura riunioni commerciali settimanali, KPI individuali e piano di formazione annuo — costo gestionale, nessun costo aggiuntivo rilevante."
+      "4": "Struttura riunioni commerciali settimanali, KPI individuali e piano di formazione annuo — costo gestionale, nessun costo aggiuntivo rilevante.",
+      "5": "Cultura commerciale consolidata: formazione continua, incentivi strutturati, riunioni settimanali con KPI individuali — il team vende in autonomia senza dipendere dal titolare."
     },
     "processi": {
       "1": "Standardizza il formato dei preventivi: copertina con capacità produttive, tempi di consegna garantiti e condizioni di pagamento — nessun costo.",
       "2": "Crea un listino interno per lavorazioni standard e una procedura di gestione delle varianti — risparmia tempo e riduce errori di pricing.",
       "3": "Implementa un gestionale di produzione integrato con la parte commerciale (~300-600€/mese) per tracciare stato commesse in tempo reale.",
-      "4": "Certificazione qualità (ISO 9001 se non presente, ~5.000-15.000€ una tantum) e auditing periodico dei processi di offerta e consegna."
+      "4": "Certificazione qualità (ISO 9001 se non presente, ~5.000-15.000€ una tantum) e auditing periodico dei processi di offerta e consegna.",
+      "5": "Certificazione ISO 9001 attiva con audit periodici, gestione non conformità strutturata e miglioramento continuo documentato — prerequisito per clienti OEM e supply chain internazionali."
     },
     "ricavi": {
       "1": "Rivedi il pricing: calcola il costo reale di ogni lavorazione (ore macchina + manodopera + overhead) e verifica i margini reali — nessun costo.",
       "2": "Inserisci sistematicamente servizi accessori nell'offerta: trattamenti superficiali, assemblaggio, imballaggio speciale — upsell immediato.",
       "3": "Proponi contratti quadro annuali ai clienti principali con volumi minimi garantiti in cambio di prezzi stabili — protegge i margini.",
-      "4": "Sviluppa un'offerta di servizi a valore aggiunto: prototipazione rapida, engineering support, just-in-time — margini 20-30% superiori."
+      "4": "Sviluppa un'offerta di servizi a valore aggiunto: prototipazione rapida, engineering support, just-in-time — margini 20-30% superiori.",
+      "5": "Portafoglio servizi a valore aggiunto consolidato: engineering support, prototipazione rapida, contratti pluriennali con revisione prezzi — margini stabili e superiori alla media di settore."
     },
     "marketing": {
       "1": "Aggiorna il profilo aziendale su Google My Business e LinkedIn con foto del reparto produttivo, capacità e settori serviti — gratuito.",
       "2": "Partecipa a 1-2 fiere di settore annue (EMO, MECSPE, ~3.000-8.000€ per stand base) — fonte diretta di contatti qualificati B2B.",
       "3": "Attiva campagne LinkedIn Ads mirate su purchasing manager e responsabili acquisti dei settori target (~500-1.500€/mese).",
-      "4": "Struttura un piano marketing annuo: fiere + digital + case study + certificazioni settoriali — budget dedicato 2-4% del fatturato."
+      "4": "Struttura un piano marketing annuo: fiere + digital + case study + certificazioni settoriali — budget dedicato 2-4% del fatturato.",
+      "5": "Presenza strutturata su fiere internazionali, LinkedIn e portali B2B con case study tecnici pubblicati — posizionamento come partner tecnico di riferimento nel settore."
     },
     "sitoweb": {
       "1": "Aggiorna il sito con capacità produttive reali, elenco lavorazioni, tolleranze e settori serviti — restyling base ~500-1.500€.",
       "2": "Aggiungi case study tecnici, video del reparto e modulo preventivo online — lead generation B2B diretta (~1.500-3.000€ una tantum).",
       "3": "SEO tecnico su parole chiave di settore (lavorazioni CNC, fresatura, tornitura + zona geografica) — agenzia ~500-1.000€/mese.",
-      "4": "Sito multilingua con area clienti riservata per tracking commesse e documentazione tecnica — investimento ~8.000-15.000€."
+      "4": "Sito multilingua con area clienti riservata per tracking commesse e documentazione tecnica — investimento ~8.000-15.000€.",
+      "5": "Sito multilingua con area clienti riservata, tracking commesse online e documentazione tecnica scaricabile — standard dei fornitori tier-2 qualificati per clienti internazionali."
     },
     "ecommerce": {
       "1": "Iscriviti a portali B2B di settore (Kompass, Europages) per aumentare la visibilità internazionale — ~200-500€/anno.",
       "2": "Attiva un configuratore preventivi online per lavorazioni standard — riduce il tempo di risposta e qualifica i lead (~2.000-5.000€).",
       "3": "Sviluppa partnership con distributori o agenti internazionali per l'export — espande il mercato senza costi fissi aggiuntivi rilevanti.",
-      "4": "Portale clienti B2B con inserimento ordini, tracking commesse e storico documenti (~5.000-12.000€) — fidelizza i clienti principali."
+      "4": "Portale clienti B2B con inserimento ordini, tracking commesse e storico documenti (~5.000-12.000€) — fidelizza i clienti principali.",
+      "5": "Portale B2B integrato con ERP cliente per ordini automatici, EDI attivo con i principali clienti OEM — zero attrito nell'approvvigionamento per i clienti strategici."
     }
   },
   "manifatturiero_automotive": {
@@ -55,49 +63,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Identifica 1-2 tecnici interni da formare sulla presentazione delle capacità produttive ai buyer automotive — nessun costo aggiuntivo.",
       "2": "Partecipa alle qualifiche fornitori dei tier-1 della tua zona con un tecnico-commerciale dedicato (~1.500-2.500€/mese) — processo lungo 3-6 mesi.",
       "3": "Assumi un key account manager specializzato OEM/tier-1 (~3.000-4.500€/mese) — gestisce le relazioni con i clienti strategici e le gare.",
-      "4": "Struttura un ufficio commerciale automotive: key account + supporto tecnico-offerta + project manager (~8.000-12.000€/mese totale)."
+      "4": "Struttura un ufficio commerciale automotive: key account + supporto tecnico-offerta + project manager (~8.000-12.000€/mese totale).",
+      "5": "Ufficio commerciale automotive strutturato: key account manager per OEM, supporto tecnico pre-vendita e project manager dedicati — posizionamento come tier-2 qualificato e affidabile."
     },
     "pipeline": {
       "1": "Traccia ogni RFQ (Request For Quotation) ricevuta su Excel: cliente, componente, volumi, stato e deadline — nessun costo.",
       "2": "Adotta un CRM con gestione RFQ e tempi di risposta garantiti (max 5 giorni lavorativi) — ~50-150€/mese.",
       "3": "Implementa un sistema di win/loss analysis su ogni gara persa — capire perché perdi è più utile di qualsiasi campagna marketing.",
-      "4": "CRM integrato con APQP/PPAP e gestione campionature — obbligatorio per fornitori tier-1 strutturati (~300-600€/mese)."
+      "4": "CRM integrato con APQP/PPAP e gestione campionature — obbligatorio per fornitori tier-1 strutturati (~300-600€/mese).",
+      "5": "CRM integrato con APQP/PPAP, gestione campionature e forecast gare — pipeline tecnica completamente strutturata con win rate monitorato per tipologia di cliente e lavorazione."
     },
     "team": {
       "1": "Forma i tuoi tecnici sulla lettura dei disegni CATIA/UG e sulle norme automotive (IATF, PPAP) — formazione esterna ~500-2.000€.",
       "2": "Assumi o forma un quality engineer dedicato all'automotive (~2.500-3.500€/mese) — indispensabile per le qualifiche tier-1.",
       "3": "Struttura un team tecnico-commerciale: application engineer + key account manager — presidia sia la parte tecnica che quella relazionale.",
-      "4": "Team multidisciplinare con APQP coordinator, quality manager e sales director automotive — struttura da tier-2 qualificato."
+      "4": "Team multidisciplinare con APQP coordinator, quality manager e sales director automotive — struttura da tier-2 qualificato.",
+      "5": "Team multidisciplinare automotive: key account, quality engineer, application engineer e APQP coordinator — struttura autonoma dal titolare per la gestione dei clienti tier-1."
     },
     "processi": {
       "1": "Documenta i processi produttivi con FMEA base e piano di controllo — prerequisito per qualsiasi qualifica tier-1.",
       "2": "Ottieni o aggiorna la certificazione IATF 16949 (~8.000-20.000€ una tantum + ~3.000€/anno mantenimento) — obbligatoria per molti tier-1.",
       "3": "Implementa SPC (Statistical Process Control) sui processi critici e gestione non conformità strutturata — riduce scarti e resi.",
-      "4": "Sistema MES integrato con tracciabilità completa di lotto, macchina e operatore — richiesto dai clienti OEM premium (~10.000-30.000€)."
+      "4": "Sistema MES integrato con tracciabilità completa di lotto, macchina e operatore — richiesto dai clienti OEM premium (~10.000-30.000€).",
+      "5": "IATF 16949 attiva, SPC sui processi critici e MES con tracciabilità completa di lotto — standard richiesto dagli OEM premium e prerequisito per nuove qualifiche tier-1."
     },
     "ricavi": {
       "1": "Calcola il costo reale per componente includendo setup, scarti e rilavorazioni — molti fornitori automotive lavorano in perdita senza saperlo.",
       "2": "Negozia clausole di revisione prezzi semestrali legate alle variazioni delle materie prime — protegge i margini su contratti pluriennali.",
       "3": "Diversifica su componenti a maggior valore aggiunto (es. da grezzo a lavorato finito, da singolo pezzo ad assemblato) — margini +15-25%.",
-      "4": "Sviluppa engineering services: co-design, DFM (Design For Manufacturing) consulting — fatturazione a progetto con margini >40%."
+      "4": "Sviluppa engineering services: co-design, DFM (Design For Manufacturing) consulting — fatturazione a progetto con margini >40%.",
+      "5": "Engineering services strutturati: co-design, DFM consulting e contratti di sviluppo a progetto — fatturazione a margini superiori al 40% rispetto alla sola lavorazione conto terzi."
     },
     "marketing": {
       "1": "Crea una scheda fornitori professionale con capacità produttive, macchinario, qualifiche e settori serviti — usata nelle qualifiche.",
       "2": "Partecipa a Automotive Dealer Day, Bologna Motor Show o fiere tier fornitori (~3.000-10.000€) — visibilità diretta con buyer.",
       "3": "Pubblica case study tecnici su LinkedIn e sui portali automotive (Motor1 Business, Automotive World) — credibilità settoriale.",
-      "4": "Strategia di thought leadership: webinar tecnici, pubblicazioni su riviste di settore e partnership con centri di ricerca automotive."
+      "4": "Strategia di thought leadership: webinar tecnici, pubblicazioni su riviste di settore e partnership con centri di ricerca automotive.",
+      "5": "Thought leadership nel settore: webinar tecnici, pubblicazioni su riviste automotive, partnership con centri di ricerca — riconosciuto come fornitore di eccellenza nel comparto."
     },
     "sitoweb": {
       "1": "Aggiorna il sito con sezione dedicata all'automotive: materiali lavorati, tolleranze, qualifiche e clienti di riferimento (se possibile).",
       "2": "Aggiungi una sezione qualifiche e certificazioni con documenti scaricabili — i buyer la verificano prima di qualsiasi visita.",
       "3": "Sito in inglese e tedesco — i buyer dei tier-1 europei (Germania, Francia) cercano fornitori in lingua locale.",
-      "4": "Portale fornitori B2B con area riservata per accesso a disegni, specifiche e stato commesse — standard dei tier-1 strutturati."
+      "4": "Portale fornitori B2B con area riservata per accesso a disegni, specifiche e stato commesse — standard dei tier-1 strutturati.",
+      "5": "Portale fornitori B2B multilingua con area riservata per accesso a disegni, specifiche e stato commesse — integrazione digitale completa con i sistemi dei clienti tier-1."
     },
     "ecommerce": {
       "1": "Iscriviti a portali fornitori automotive (Automotive-agentur.de, Kompass Automotive) per aumentare la visibilità B2B internazionale.",
       "2": "Attiva un sistema di gestione RFQ digitale — risposta entro 48h con preventivo strutturato differenzia dai competitor artigianali.",
       "3": "Sviluppa accordi di fornitura pluriennale con i tier-1 principali — volumi garantiti in cambio di prezzi stabili e priorità produttiva.",
-      "4": "EDI (Electronic Data Interchange) integrato con i sistemi degli OEM clienti — obbligatorio per i fornitori strategici (~5.000-15.000€)."
+      "4": "EDI (Electronic Data Interchange) integrato con i sistemi degli OEM clienti — obbligatorio per i fornitori strategici (~5.000-15.000€).",
+      "5": "EDI integrato con i sistemi ERP degli OEM clienti, gestione ordini automatica e tracciabilità in tempo reale — standard obbligatorio per i fornitori strategici dei grandi costruttori."
     }
   },
   "manifatturiero_packaging": {
@@ -105,49 +121,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Identifica le aziende food/farmaceutico/cosmetica della tua zona e fai visite dirette con campioni fisici — nessun costo oltre al tempo.",
       "2": "Attiva 1-2 agenti con esperienza nel packaging industriale o nel food (~800-1.500€/mese provvigioni) — portafoglio clienti pronto.",
       "3": "Assumi un commerciale con background packaging (~2.500-3.500€/mese) che gestisce i key account e sviluppa nuovi mercati verticali.",
-      "4": "Struttura una rete commerciale per verticale: food, farmaceutico, e-commerce, lusso — con key account dedicato per segmento."
+      "4": "Struttura una rete commerciale per verticale: food, farmaceutico, e-commerce, lusso — con key account dedicato per segmento.",
+      "5": "Rete commerciale per verticale consolidata: key account food, farmaceutico ed e-commerce con obiettivi mensili raggiunti — il titolare gestisce solo le relazioni con i top 5 clienti."
     },
     "pipeline": {
       "1": "Traccia ogni richiesta campionatura su Excel con cliente, formato, materiale, quantità e stato approvazione.",
       "2": "CRM con gestione campionature e follow-up approvazione — il ciclo di vendita nel packaging è lungo, serve tracciamento rigoroso (~50€/mese).",
       "3": "Definisci KPI di pipeline: nr campionature attive, tasso approvazione, tempo medio approvazione — ottimizza il processo di sviluppo.",
-      "4": "CRM integrato con gestione artwork, approvazioni grafiche e forecast ordini — indispensabile con 50+ clienti attivi."
+      "4": "CRM integrato con gestione artwork, approvazioni grafiche e forecast ordini — indispensabile con 50+ clienti attivi.",
+      "5": "CRM integrato con gestione artwork, approvazioni grafiche e forecast ordini per stagione — zero campionature perse, tasso di approvazione monitorato e ottimizzato per cliente."
     },
     "team": {
       "1": "Forma i tecnici sulla presentazione dei materiali e delle certificazioni (riciclabilità, food contact, FSC) — argomento sempre più rilevante.",
       "2": "Assumi o forma un grafico/pre-stampa interno (~1.500-2.500€/mese) — riduce i tempi di campionatura e migliora la qualità delle proposte.",
       "3": "Struttura un team sviluppo prodotto: commerciale + grafico + tecnico packaging — gestisce internamente l'intero ciclo campionatura.",
-      "4": "Key account manager per segmento + coordinatore grafico + project manager sviluppo — struttura da fornitore premium."
+      "4": "Key account manager per segmento + coordinatore grafico + project manager sviluppo — struttura da fornitore premium.",
+      "5": "Team sviluppo prodotto autonomo: commerciale, grafico, tecnico packaging e QC — gestisce internamente l'intero ciclo dalla brief alla consegna senza coinvolgere il titolare."
     },
     "processi": {
       "1": "Standardizza il processo di campionatura: template briefing, checklist materiali, tempi di consegna garantiti — riduce rilavorazioni.",
       "2": "Certifica i materiali per il contatto alimentare (Reg. CE 1935/2004) se non già fatto (~2.000-5.000€) — apre mercati food e farmaceutico.",
       "3": "Implementa un sistema di gestione artwork digitale — approvazioni online con cliente, versioning e archivio ~100-200€/mese.",
-      "4": "ISO 9001 + certificazioni sostenibilità (FSC, PEFC, riciclabilità) — prerequisito per GDO e brand premium internazionali."
+      "4": "ISO 9001 + certificazioni sostenibilità (FSC, PEFC, riciclabilità) — prerequisito per GDO e brand premium internazionali.",
+      "5": "ISO 9001 con certificazioni sostenibilità attive (FSC, PEFC, riciclabilità) e PLM per gestione completa delle collezioni — prerequisito per GDO strutturata e brand premium internazionali."
     },
     "ricavi": {
       "1": "Rivedi il pricing includendo i costi reali di setup stampa, clichè e cambio colori — spesso sottostimati nelle tirature basse.",
       "2": "Proponi contratti annuali con volumi minimi garantiti in cambio di prezzi bloccati — protegge dai picchi materie prime.",
       "3": "Sviluppa la linea sustainable packaging (materiali riciclati, biobased) — margini +20-30% rispetto al packaging tradizionale.",
-      "4": "Servizi di packaging design e consulenza normativa — fatturazione a progetto con margini >40%."
+      "4": "Servizi di packaging design e consulenza normativa — fatturazione a progetto con margini >40%.",
+      "5": "Linea sustainable packaging consolidata come centro di profitto autonomo con margini superiori del 30% — consulenza normativa e packaging design fatturati a progetto con margini >40%."
     },
     "marketing": {
       "1": "Crea un portfolio fisico e digitale con campioni per settore (food, farmaceutico, e-commerce) — strumento base di vendita.",
       "2": "Partecipa a Packaging Première, Ipack-Ima o Luxe Pack (~3.000-8.000€) — fiere verticali per il packaging premium.",
       "3": "Content marketing su LinkedIn con focus sostenibilità e innovazione materiali — tema molto rilevante per i buyer packaging.",
-      "4": "Strategia di brand positioning come packaging partner (non solo fornitore) — case study, premi di settore, presenza stampa."
+      "4": "Strategia di brand positioning come packaging partner (non solo fornitore) — case study, premi di settore, presenza stampa.",
+      "5": "Brand positioning come packaging partner sostenibile: premi di settore, presenza stampa specializzata e partnership con brand premium — non più percepito come semplice stampatore."
     },
     "sitoweb": {
       "1": "Aggiorna il sito con galleria campioni per settore e materiali, con specifiche tecniche scaricabili.",
       "2": "Aggiungi configuratore packaging base (formato, materiale, stampa, quantità minima) — lead generation qualificata.",
       "3": "Sezione sostenibilità con certificazioni, materiali e impatto ambientale — sempre più richiesta dai brand.",
-      "4": "Portale cliente per gestione ordini, stato spedizioni e archivio artwork — fidelizza i clienti principali."
+      "4": "Portale cliente per gestione ordini, stato spedizioni e archivio artwork — fidelizza i clienti principali.",
+      "5": "Portale cliente integrato per gestione ordini, stato spedizioni e archivio artwork — fidelizzazione digitale completa dei clienti principali con zero attrito nel riordino."
     },
     "ecommerce": {
       "1": "Iscriviti a portali packaging B2B (Packagingconnections, Europages) per visibilità internazionale.",
       "2": "Attiva un preventivatore online per packaging standard — riduce il tempo di risposta e qualifica i lead.",
       "3": "Sviluppa una linea packaging e-commerce (scatole, buste, nastri) con ordini online per tirature medio-basse.",
-      "4": "Piattaforma B2B con riordino automatico, gestione stock packaging cliente e integrazione ERP — fidelizza i grandi account."
+      "4": "Piattaforma B2B con riordino automatico, gestione stock packaging cliente e integrazione ERP — fidelizza i grandi account.",
+      "5": "Piattaforma B2B con riordino automatico, gestione stock packaging cliente e integrazione ERP — lock-in strategico dei grandi account con zero possibilità di sostituzione a breve."
     }
   },
   "manifatturiero_cterzi": {
@@ -155,49 +179,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Identifica 3-5 aziende nella tua zona che potrebbero esternalizzare le lavorazioni che fai — visita diretta con campioni.",
       "2": "Specializzati su una lavorazione o materiale specifico e diventa il riferimento di zona — agente con portafoglio clienti industriali (~800€/mese provvigioni).",
       "3": "Assumi un tecnico-commerciale (~2.500-3.500€/mese) che presidia i clienti esistenti e sviluppa nuove partnership conto terzi.",
-      "4": "Struttura accordi di fornitura esclusiva con 3-5 clienti strategici — volumi garantiti, prezzi stabili, crescita prevedibile."
+      "4": "Struttura accordi di fornitura esclusiva con 3-5 clienti strategici — volumi garantiti, prezzi stabili, crescita prevedibile.",
+      "5": "Accordi di fornitura esclusiva attivi con 3-5 clienti strategici e rete agenti per i clienti medi — volumi garantiti, prezzi stabili e crescita prevedibile senza dipendenza dal titolare."
     },
     "pipeline": {
       "1": "Traccia ogni richiesta di lavorazione: cliente, specifica, quantità, tempi, stato offerta — Excel base.",
       "2": "CRM semplice per gestire le offerte attive e i follow-up — nel conto terzi il cliente va seguito o va dal concorrente (~30-50€/mese).",
       "3": "Monitora il tasso di rinnovo ordini e il fatturato per cliente — identifica chi sta riducendo i volumi prima che sia tardi.",
-      "4": "CRM integrato con pianificazione produzione — il cliente vuole sapere in tempo reale lo stato delle sue lavorazioni."
+      "4": "CRM integrato con pianificazione produzione — il cliente vuole sapere in tempo reale lo stato delle sue lavorazioni.",
+      "5": "CRM integrato con pianificazione produzione, storico clienti e forecast ordini — il cliente vede in tempo reale lo stato delle sue lavorazioni e ordina senza telefonate."
     },
     "team": {
       "1": "Forma i tuoi operatori sulla comunicazione con il cliente: tempi di consegna realistici, gestione urgenze, qualità garantita.",
       "2": "Assegna un referente tecnico fisso per ogni cliente principale — la continuità relazionale è il principale fattore di fidelizzazione.",
       "3": "Struttura turni o straordinari per gestire i picchi produttivi senza perdere ordini urgenti — la reattività è il tuo vantaggio competitivo.",
-      "4": "Team di coordinamento produzione-commerciale: pianificatore + referente clienti + quality control dedicato."
+      "4": "Team di coordinamento produzione-commerciale: pianificatore + referente clienti + quality control dedicato.",
+      "5": "Team di coordinamento produzione-commerciale autonomo: pianificatore, referente clienti e QC dedicato — il titolare si occupa solo delle relazioni con i clienti strategici."
     },
     "processi": {
       "1": "Standardizza la gestione delle urgenze: procedura chiara su come gestire ordini last minute senza bloccare la produzione ordinaria.",
       "2": "Implementa un sistema di controllo qualità documentato con report per ogni lotto — riduce i resi e aumenta la fiducia del cliente.",
       "3": "MRP (Material Requirements Planning) base per ottimizzare gli acquisti di materie prime in base agli ordini confermati (~200-500€/mese).",
-      "4": "Certificazione ISO 9001 + sistema MES per tracciabilità completa — prerequisito per clienti strutturati e supply chain internazionali."
+      "4": "Certificazione ISO 9001 + sistema MES per tracciabilità completa — prerequisito per clienti strutturati e supply chain internazionali.",
+      "5": "ISO 9001 e MES con tracciabilità completa — prerequisito per clienti strutturati e supply chain internazionali, riduzione scarti documentata e miglioramento continuo attivo."
     },
     "ricavi": {
       "1": "Calcola il costo reale di ogni lavorazione: ore macchina + setup + manodopera + overhead — molti conto terzi lavorano in perdita.",
       "2": "Inserisci supplementi per urgenze, piccole serie e materiali fuori standard — il costo reale deve essere coperto.",
       "3": "Proponi servizi complementari: magazzinaggio, kitting, consegna just-in-time — aumenta il fatturato per cliente senza nuove macchine.",
-      "4": "Sviluppa accordi di partnership industriale con i clienti principali — co-investimento in attrezzature, volumi garantiti, crescita condivisa."
+      "4": "Sviluppa accordi di partnership industriale con i clienti principali — co-investimento in attrezzature, volumi garantiti, crescita condivisa.",
+      "5": "Partnership industriali consolidate con i clienti principali: co-investimento in attrezzature, volumi garantiti e crescita condivisa — fornitore strategico inamovibile per i clienti top."
     },
     "marketing": {
       "1": "Aggiorna Google My Business e LinkedIn con foto del reparto, macchinario disponibile e lavorazioni specifiche.",
       "2": "Iscriviti a portali fornitori B2B (Kompass, IndustrySearch) — i buyer industriali cercano attivamente subfornitori online.",
       "3": "Partecipa a BI-MU, Lamiera o fiere di settore specifiche (~2.000-6.000€) — contatti diretti con responsabili acquisti.",
-      "4": "Certificazioni settoriali e partnership con associazioni di categoria (UCIMU, Federmeccanica) — credibilità e visibilità."
+      "4": "Certificazioni settoriali e partnership con associazioni di categoria (UCIMU, Federmeccanica) — credibilità e visibilità.",
+      "5": "Certificazioni settoriali attive, presenza su portali B2B internazionali e partecipazione a fiere di riferimento — riconosciuto come subfornitore di qualità nel distretto industriale."
     },
     "sitoweb": {
       "1": "Sito aggiornato con elenco lavorazioni, macchinario disponibile, capacità produttiva e settori serviti.",
       "2": "Aggiungi modulo richiesta preventivo con upload disegno tecnico — riduce le barriere per i nuovi clienti.",
       "3": "Video del reparto produttivo e gallery lavorazioni eseguite — il cliente vuole vedere prima di affidarti un ordine.",
-      "4": "Area clienti con tracking ordini, documenti di qualità e storico lavorazioni — standard per i fornitori strutturati."
+      "4": "Area clienti con tracking ordini, documenti di qualità e storico lavorazioni — standard per i fornitori strutturati.",
+      "5": "Area clienti con tracking ordini, documenti di qualità e storico lavorazioni — standard per i fornitori strutturati, riduce il carico amministrativo e aumenta la soddisfazione cliente."
     },
     "ecommerce": {
       "1": "Iscriviti a Xometry o Protolabs Network per ricevere richieste di preventivo da clienti che non conosci ancora.",
       "2": "Attiva un preventivatore online per lavorazioni standard (tornitura, fresatura, taglio laser) — lead qualificati 24/7.",
       "3": "Sviluppa accordi con broker industriali o agenti multi-settore per ampliare il bacino clienti senza aumentare i costi fissi.",
-      "4": "Piattaforma B2B per inserimento ordini ricorrenti, tracciamento stato lavorazione e accesso documentazione qualità."
+      "4": "Piattaforma B2B per inserimento ordini ricorrenti, tracciamento stato lavorazione e accesso documentazione qualità.",
+      "5": "Piattaforma B2B per inserimento ordini ricorrenti, tracciamento stato lavorazione e accesso documentazione qualità — integrazione digitale completa con i sistemi dei clienti principali."
     }
   },
   "manifatturiero_elettromeccanica": {
@@ -205,49 +237,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Identifica 1-2 tecnici interni con buone capacità relazionali da formare come tecnico-commerciali — nessun costo aggiuntivo.",
       "2": "Attiva un tecnico-commerciale interno o un agente con background ingegneristico (~1.500-2.500€/mese) — conosce il prodotto e parla con i tecnici del cliente.",
       "3": "Assumi un sales engineer dedicato (~3.000-4.500€/mese) con portafoglio clienti industriali e obiettivi mensili strutturati.",
-      "4": "Struttura un team commerciale tecnico: sales engineer + application specialist + key account — presidio completo del cliente."
+      "4": "Struttura un team commerciale tecnico: sales engineer + application specialist + key account — presidio completo del cliente.",
+      "5": "Team commerciale tecnico strutturato: sales engineer, application specialist e key account — presidio completo del cliente dalla specifica tecnica alla firma del contratto."
     },
     "pipeline": {
       "1": "Traccia ogni richiesta tecnica su Excel: cliente, applicazione, specifiche, budget stimato, stato — base indispensabile.",
       "2": "CRM con gestione offerte tecniche e follow-up strutturato — nel B2B elettromeccanico il ciclo è lungo, serve persistenza (~50-100€/mese).",
       "3": "Gestisci le offerte con prioritizzazione: valore atteso, probabilità di chiusura, risorse necessarie — focus sui deal a maggior valore.",
-      "4": "CRM integrato con supporto tecnico pre-vendita, gestione campioni e laboratorio prove — pipeline tecnica strutturata."
+      "4": "CRM integrato con supporto tecnico pre-vendita, gestione campioni e laboratorio prove — pipeline tecnica strutturata.",
+      "5": "CRM integrato con supporto tecnico pre-vendita, gestione campioni e laboratorio prove — pipeline tecnica strutturata con prioritizzazione automatica per valore e probabilità di chiusura."
     },
     "team": {
       "1": "Forma i tecnici sulla presentazione dei prodotti e delle applicazioni — il cliente vuole parlare con chi capisce il suo problema.",
       "2": "Struttura un sistema di incentivi per i tecnici che generano opportunità commerciali — chi installa vede i problemi prima del commerciale.",
       "3": "Assumi un application engineer (~2.500-3.500€/mese) dedicato al supporto tecnico pre-vendita e alla gestione dei prototipi.",
-      "4": "Team tecnico-commerciale multidisciplinare con formazione continua su nuove tecnologie e normative di settore."
+      "4": "Team tecnico-commerciale multidisciplinare con formazione continua su nuove tecnologie e normative di settore.",
+      "5": "Team tecnico-commerciale multidisciplinare con formazione continua su nuove tecnologie e normative — autonomo nella gestione di clienti complessi senza supporto del titolare."
     },
     "processi": {
       "1": "Standardizza le schede tecniche prodotto con curve di prestazione, dati di installazione e normative di riferimento.",
       "2": "Implementa un processo di gestione dei campioni e dei prototipi — traccia dove sono, con chi e qual è lo stato della valutazione.",
       "3": "Certificazioni CE, ATEX o specifiche di settore richieste dai clienti principali (~3.000-15.000€ per certificazione).",
-      "4": "Sistema di gestione tecnica integrata: CAD/CAM, BOM (Bill of Materials), gestione revisioni e configuratore prodotto."
+      "4": "Sistema di gestione tecnica integrata: CAD/CAM, BOM (Bill of Materials), gestione revisioni e configuratore prodotto.",
+      "5": "Sistema di gestione tecnica integrata: CAD/CAM, BOM, gestione revisioni e configuratore prodotto — zero errori di specifica, lead time ridotti e qualità certificata su ogni componente."
     },
     "ricavi": {
       "1": "Rivedi il pricing dei ricambi e dei servizi di assistenza — spesso sottovalutati rispetto al valore che portano al cliente.",
       "2": "Proponi contratti di manutenzione preventiva ai clienti principali — ricavo ricorrente prevedibile con margini >40%.",
       "3": "Sviluppa una linea di prodotti customizzati ad alto margine — il cliente paga la specificità, non solo il componente.",
-      "4": "Servizi di engineering: consulenza applicativa, retrofitting, integrazione sistemi — fatturazione a progetto con margini elevati."
+      "4": "Servizi di engineering: consulenza applicativa, retrofitting, integrazione sistemi — fatturazione a progetto con margini elevati.",
+      "5": "Portafoglio servizi engineering consolidato: consulenza applicativa, retrofitting e integrazione sistemi — fatturazione a progetto con margini elevati e clienti fidelizzati sul lungo periodo."
     },
     "marketing": {
       "1": "Aggiorna il sito e LinkedIn con applicazioni reali del tuo prodotto: settore, problema risolto, risultato ottenuto.",
       "2": "Partecipa a SPS Italia, Hannover Messe o fiere verticali di settore (~4.000-10.000€) — contatti diretti con ingegneri e buyer.",
       "3": "Content marketing tecnico: white paper, video applicativi, webinar — posizionamento come partner tecnico non come semplice fornitore.",
-      "4": "Strategia di account based marketing sui clienti target: contenuto personalizzato, eventi dedicati, visite in stabilimento."
+      "4": "Strategia di account based marketing sui clienti target: contenuto personalizzato, eventi dedicati, visite in stabilimento.",
+      "5": "Strategia account based marketing attiva sui clienti target: contenuto personalizzato, eventi dedicati e visite in stabilimento — posizionamento come partner tecnico preferenziale."
     },
     "sitoweb": {
       "1": "Sito con catalogo prodotti tecnico, schede PDF scaricabili e form richiesta campione o preventivo.",
       "2": "Aggiungi sezione applicazioni con case study reali: settore, problema, soluzione, risultato misurabile.",
       "3": "Configuratore prodotto online per prodotti customizzabili — lead qualificati e risparmio di tempo del tecnico-commerciale.",
-      "4": "Portale partner/distributori con accesso a documentazione tecnica, listini e supporto pre-vendita online."
+      "4": "Portale partner/distributori con accesso a documentazione tecnica, listini e supporto pre-vendita online.",
+      "5": "Portale partner e distributori con accesso a documentazione tecnica, listini e supporto pre-vendita online — rete di distribuzione attiva che genera lead qualificati in autonomia."
     },
     "ecommerce": {
       "1": "Iscriviti a portali tecnici B2B (GlobalSpec, Thomasnet, Kompass) per aumentare la visibilità internazionale.",
       "2": "Attiva un e-commerce B2B per ricambi standard e prodotti a catalogo — ordini ripetitivi automatizzati senza impegno commerciale.",
       "3": "Sviluppa una rete di distributori tecnici per coprire zone geografiche non presidiate dal commerciale interno.",
-      "4": "Piattaforma digitale integrata con ERP del cliente per riordino automatico ricambi critici — lock-in strategico del cliente."
+      "4": "Piattaforma digitale integrata con ERP del cliente per riordino automatico ricambi critici — lock-in strategico del cliente.",
+      "5": "Piattaforma digitale integrata con ERP del cliente per riordino automatico ricambi critici — lock-in strategico del cliente con zero possibilità di sostituzione nel breve periodo."
     }
   },
   "manifatturiero_tessile_tessuti": {
@@ -255,49 +295,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Identifica 3-5 brand o laboratori sartoriali della tua zona che potrebbero usare i tuoi tessuti — visita diretta con campionario.",
       "2": "Attiva 1-2 agenti plurimandatari con portafoglio clienti nel fashion e nel tessile contract (~800-1.500€/mese provvigioni).",
       "3": "Assumi un commerciale con esperienza moda/tessile (~2.500-3.500€/mese) per presidiare i clienti strategici e sviluppare l'export.",
-      "4": "Struttura una rete agenti per area geografica + key account per i brand principali + ufficio stile per le collezioni."
+      "4": "Struttura una rete agenti per area geografica + key account per i brand principali + ufficio stile per le collezioni.",
+      "5": "Rete commerciale strutturata per area geografica con key account per i brand principali e ufficio stile per le collezioni — il titolare gestisce solo le relazioni con i top buyer internazionali."
     },
     "pipeline": {
       "1": "Traccia ogni richiesta campionatura: cliente, articolo, quantità, stagione, stato approvazione — ciclo moda è stagionale.",
       "2": "CRM con gestione campagne campionario per stagione (PE/AI) e follow-up strutturato (~30-80€/mese).",
       "3": "Monitora il tasso di conferma ordini per stagione e per cliente — identifica i clienti che campionano ma non ordinano.",
-      "4": "CRM integrato con gestione stock campionario, previsioni ordini per stagione e pianificazione produzione."
+      "4": "CRM integrato con gestione stock campionario, previsioni ordini per stagione e pianificazione produzione.",
+      "5": "PLM integrato con CRM e gestione stock campionario — dalla brief di sviluppo all'ordine di produzione in un unico sistema, con tasso di conferma monitorato per brand e stagione."
     },
     "team": {
       "1": "Forma chi gestisce il campionario sulla presentazione degli articoli: composizione, certificazioni, minimi d'ordine, tempi.",
       "2": "Assumi o forma un agente/showroom manager per la gestione delle campagne — il campionario non si vende da solo.",
       "3": "Struttura un ufficio sviluppo prodotto: stilista/colorista + responsabile tecnico — anticipare le tendenze è fondamentale.",
-      "4": "Team completo: commerciale + sviluppo prodotto + logistica campionario — struttura da tessitore medio strutturato."
+      "4": "Team completo: commerciale + sviluppo prodotto + logistica campionario — struttura da tessitore medio strutturato.",
+      "5": "Team completo autonomo: commerciale, colorista, responsabile tecnico e logistica campionario — gestisce tutte le campagne stagionali senza coinvolgere il titolare nelle operazioni."
     },
     "processi": {
       "1": "Standardizza il processo di campionatura: tempi di consegna garantiti, formato schede articolo, condizioni commerciali.",
       "2": "Certifica le composizioni e le certificazioni richieste dal mercato: OEKO-TEX, GOTS, riciclato GRS (~1.000-5.000€).",
       "3": "Implementa un sistema di gestione articoli e colorimetria digitale — riduce gli errori di produzione e accelera le approvazioni.",
-      "4": "PLM (Product Lifecycle Management) per la gestione delle collezioni — dal concept alla produzione in un unico sistema."
+      "4": "PLM (Product Lifecycle Management) per la gestione delle collezioni — dal concept alla produzione in un unico sistema.",
+      "5": "PLM attivo per la gestione completa delle collezioni con certificazioni sostenibilità consolidate (OEKO-TEX, GOTS, GRS) — standard richiesto dai brand premium e dalla GDO internazionale."
     },
     "ricavi": {
       "1": "Rivedi il pricing includendo i costi reali di orditura, tessitura e finissaggio — molte PMI tessili sottostimano i costi di trasformazione.",
       "2": "Proponi articoli di nicchia ad alto valore aggiunto: tessuti tecnici, sostenibili, certificati — margini 30-50% superiori al commodity.",
       "3": "Sviluppa private label per brand che vogliono un tessuto esclusivo — esclusività territoriale o di collezione a prezzi premium.",
-      "4": "Servizi di consulenza tessile: sourcing, sviluppo articolo su misura, certificazioni — fatturazione a progetto."
+      "4": "Servizi di consulenza tessile: sourcing, sviluppo articolo su misura, certificazioni — fatturazione a progetto.",
+      "5": "Private label per brand premium e linee esclusive ad alto margine consolidate come centro di profitto — margini stabili e superiori alla media del settore tessile commodity."
     },
     "marketing": {
       "1": "Partecipa a Première Vision, Milano Unica o Texworld (~3.000-8.000€ per stand base) — le fiere sono il canale principale nel tessile.",
       "2": "Showroom fisso a Milano o Firenze (~1.000-2.000€/mese) o partecipazione a showroom collettivi — presidio nei distretti moda.",
       "3": "Digital marketing su LinkedIn e Instagram con focus sulla qualità dei materiali e sulle certificazioni sostenibili.",
-      "4": "Strategia di brand building: presenza stampa specializzata (Vogue Fabrics, Textile Network), partnership con designer."
+      "4": "Strategia di brand building: presenza stampa specializzata (Vogue Fabrics, Textile Network), partnership con designer.",
+      "5": "Brand building strutturato: presenza stampa specializzata (Vogue Fabrics, Textile Network), partnership con designer e showroom fisso nei distretti moda — riconosciuto come tessitore di qualità."
     },
     "sitoweb": {
       "1": "Sito con catalogo articoli stagionale, composizioni, certificazioni e form richiesta campionatura.",
       "2": "Showroom digitale con foto ad alta risoluzione dei tessuti e richiesta campioni online — lead generation B2B.",
       "3": "Sito multilingua (inglese, francese) con area riservata per agenti e clienti fidelizzati.",
-      "4": "Piattaforma digitale con configuratore colori, gestione campionature online e accesso a schede tecniche per gli ufficio stile."
+      "4": "Piattaforma digitale con configuratore colori, gestione campionature online e accesso a schede tecniche per gli ufficio stile.",
+      "5": "Piattaforma digitale per sviluppo articoli in collaborazione remota con gli uffici stile clienti — integrazione digitale completa che riduce i tempi di sviluppo e fidelizza i brand principali."
     },
     "ecommerce": {
       "1": "Iscriviti a portali tessili B2B (Texintel, Sourceit) per visibilità internazionale senza investimenti fisici.",
       "2": "E-commerce B2B per ordini ripetitivi di articoli a catalogo — riduce il carico amministrativo sugli ordini piccoli.",
       "3": "Sviluppa canali di vendita diretti B2C per tessuti al taglio (sartorie, hobbisti, piccoli brand) — mercato in forte crescita.",
-      "4": "Piattaforma digitale integrata con i sistemi degli ufficio stile clienti principali — sviluppo articoli in collaborazione remota."
+      "4": "Piattaforma digitale integrata con i sistemi degli ufficio stile clienti principali — sviluppo articoli in collaborazione remota.",
+      "5": "Canali B2C diretti consolidati per tessuti al taglio e piattaforma integrata con i sistemi degli uffici stile — doppio canale di vendita che massimizza i margini e riduce la dipendenza da singoli buyer."
     }
   },
   "manifatturiero_tessile_capi": {
@@ -305,49 +353,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Identifica brand locali o retailer che potrebbero esternalizzare la produzione — visita con campioni della tua qualità produttiva.",
       "2": "Attiva un agente con portafoglio brand nel tuo segmento (casual, sportswear, lusso) — sa come entrare nei buyer dei brand (~800-1.500€/mese).",
       "3": "Assumi un commercial manager (~2.500-3.500€/mese) con esperienza production house — gestisce i brand clienti e sviluppa nuovi mercati.",
-      "4": "Struttura un ufficio commerciale: commercial manager + sourcing specialist + export manager — struttura da production house strutturata."
+      "4": "Struttura un ufficio commerciale: commercial manager + sourcing specialist + export manager — struttura da production house strutturata.",
+      "5": "Ufficio commerciale strutturato: commercial manager, sourcing specialist ed export manager — full-package production riconosciuta come production house di riferimento nel segmento."
     },
     "pipeline": {
       "1": "Traccia ogni richiesta di campionatura e quotazione: brand, articolo, quantità, stagione, stato — ciclo moda è rigidamente stagionale.",
       "2": "CRM per gestire le campagne di sviluppo campioni per stagione con follow-up strutturato sui buyer (~30-80€/mese).",
       "3": "Monitora il conversion rate campione→ordine per brand e per stagione — capire dove perdi è fondamentale.",
-      "4": "PLM integrato con CRM — gestione completa dal brief di sviluppo all'ordine di produzione."
+      "4": "PLM integrato con CRM — gestione completa dal brief di sviluppo all'ordine di produzione.",
+      "5": "PLM integrato con CRM — gestione completa dal brief di sviluppo all'ordine di produzione con conversion rate campione→ordine monitorato per brand e stagione."
     },
     "team": {
       "1": "Forma il responsabile produzione sulla comunicazione con i buyer: tempi, campioni, modifiche, qualità — è il tuo primo commerciale.",
       "2": "Assumi un merchandiser o product developer (~1.800-2.500€/mese) che gestisce lo sviluppo campioni con i brand clienti.",
       "3": "Struttura un team sviluppo: pattern maker + campionarista + QC — velocità e qualità nello sviluppo sono il tuo vantaggio competitivo.",
-      "4": "Team completo: commercial + sviluppo prodotto + QC + pianificazione produzione — struttura da production house qualificata."
+      "4": "Team completo: commercial + sviluppo prodotto + QC + pianificazione produzione — struttura da production house qualificata.",
+      "5": "Team completo e autonomo: commercial, sviluppo prodotto, QC e pianificazione produzione — struttura da production house qualificata che gestisce brand internazionali senza dipendere dal titolare."
     },
     "processi": {
       "1": "Standardizza i processi di campionatura: tempi garantiti, format scheda tecnica, procedura di revisione e approvazione.",
       "2": "Implementa un sistema di controllo qualità documentato con AQL (Acceptable Quality Level) — prerequisito per i brand strutturati.",
       "3": "Certificazioni SA8000 o BSCI per i brand che richiedono audit sociali (~3.000-8.000€) — sempre più richieste dai brand europei.",
-      "4": "Sistema PLM per la gestione completa delle specifiche tecniche, revisioni e approvazioni — standard dei production house qualificati."
+      "4": "Sistema PLM per la gestione completa delle specifiche tecniche, revisioni e approvazioni — standard dei production house qualificati.",
+      "5": "PLM per gestione completa delle specifiche tecniche con certificazioni SA8000 o BSCI consolidate — standard richiesto dai brand europei strutturati per audit sociali e ambientali."
     },
     "ricavi": {
       "1": "Rivedi il pricing dei campioni — il costo di sviluppo deve essere coperto, non regalato nella speranza dell'ordine.",
       "2": "Proponi servizi di sviluppo completo (tessuto + modello + campione) invece della sola confezione — margini superiori.",
       "3": "Sviluppa una linea di produzione small batch per brand emergenti — volumi piccoli ma margini più alti e relazioni a lungo termine.",
-      "4": "Full-package production: dall'acquisto del tessuto alla logistica finale — margini superiori alla sola confezione conto terzi."
+      "4": "Full-package production: dall'acquisto del tessuto alla logistica finale — margini superiori alla sola confezione conto terzi.",
+      "5": "Full-package production consolidata come offerta principale: dall'acquisto del tessuto alla logistica finale — margini superiori alla sola confezione conto terzi con clienti fidelizzati a lungo termine."
     },
     "marketing": {
       "1": "Partecipa a White Milano, Pitti Uomo o fiere production house (~2.000-6.000€) — i buyer cercano attivamente nuovi produttori.",
       "2": "Showroom produzione con sala prove e campionario permanente — i brand vogliono vedere l'ambiente prima di affidarti un ordine.",
       "3": "Portfolio digitale con foto dei capi prodotti, dettagli costruttivi e certificazioni — strumento fondamentale nelle trattative.",
-      "4": "Strategia di posizionamento come production house di qualità: press release, presenza su platform B2B moda, referenze brand."
+      "4": "Strategia di posizionamento come production house di qualità: press release, presenza su platform B2B moda, referenze brand.",
+      "5": "Posizionamento come production house di qualità consolidato: press release, presenza su platform B2B moda e referenze brand internazionali — reputazione che genera inbound spontaneo."
     },
     "sitoweb": {
       "1": "Sito con portfolio capi prodotti, capacità produttive, certificazioni e form contatto per i buyer.",
       "2": "Aggiungi sezione specializzazioni (tessuti tecnici, sostenibili, lavorazioni particolari) e caso studio recenti.",
       "3": "Sito in inglese con area riservata per brand clienti — accesso a schede tecniche, stato ordini e documentazione qualità.",
-      "4": "Piattaforma digitale per sviluppo campioni remoto: upload specifiche, revisioni online, approvazione digitale."
+      "4": "Piattaforma digitale per sviluppo campioni remoto: upload specifiche, revisioni online, approvazione digitale.",
+      "5": "Piattaforma digitale per sviluppo campioni remoto: upload specifiche, revisioni online e approvazione digitale — integrazione completa con i sistemi dei brand clienti principali."
     },
     "ecommerce": {
       "1": "Iscriviti a Maker's Row, Common Objective o portali production house per visibilità con brand internazionali.",
       "2": "Sviluppa un servizio di produzione on-demand per piccole serie (50-200 pezzi) — mercato in forte crescita con i brand DTC.",
       "3": "Piattaforma B2B per riordini e gestione ordini ricorrenti con i brand clienti — automatizza la parte amministrativa.",
-      "4": "Integrazione digitale completa con i sistemi dei brand principali — sviluppo campioni remoto, approvazioni online, tracking produzione."
+      "4": "Integrazione digitale completa con i sistemi dei brand principali — sviluppo campioni remoto, approvazioni online, tracking produzione.",
+      "5": "Integrazione digitale completa con i sistemi dei brand principali e servizio on-demand per piccole serie strutturato come centro di profitto — doppio canale consolidato con margini ottimizzati."
     }
   },
   "servizi_it": {
