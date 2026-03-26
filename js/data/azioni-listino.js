@@ -511,49 +511,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Metti un cartello professionale sui cantieri aperti con foto, contatti e QR code — e chiedi referenze attive ai clienti soddisfatti. Costo: ~200-500€ stampa materiali.",
       "2": "Costruisci una rete di segnalatori: geometri, architetti, studi tecnici della zona. Accordo di segnalazione formale con provvigione (3-5% sul contratto) — operativo in 1-2 mesi.",
       "3": "Attiva un procacciatore o agente part-time per sviluppare i contatti con sviluppatori immobiliari e amministratori di condominio (~1.000-1.800€/mese) — operativo in 2 mesi.",
-      "4": "Struttura commerciale con responsabile sviluppo clienti (~2.500-3.500€/mese) + rete segnalatori attiva + presenza portali immobiliari — operativa in 4-6 mesi."
+      "4": "Struttura commerciale con responsabile sviluppo clienti (~2.500-3.500€/mese) + rete segnalatori attiva + presenza portali immobiliari — operativa in 4-6 mesi.",
+      "5": "Struttura commerciale con responsabile sviluppo clienti, rete segnalatori attiva e presenza portali immobiliari — il titolare gestisce solo developer e cooperative, il commerciale presidia il resto."
     },
     "pipeline": {
       "1": "Tieni un registro trattative su Excel: cliente, tipo lavoro, valore stimato, stato, prossimo step — nessun costo, operativo subito.",
       "2": "Adotta un CRM base (Pipedrive o simile, ~30-50€/mese) per tracciare preventivi, follow-up e storico cliente — operativo in 1-2 settimane.",
       "3": "Definisci tempi massimi di risposta preventivi (max 48h) e monitora il tasso di chiusura mensile — nessun costo aggiuntivo, richiede disciplina.",
-      "4": "CRM integrato con gestione cantieri, SAL (Stato Avanzamento Lavori) e fatturazione (~150-300€/mese) — operativo in 2-3 mesi."
+      "4": "CRM integrato con gestione cantieri, SAL (Stato Avanzamento Lavori) e fatturazione (~150-300€/mese) — operativo in 2-3 mesi.",
+      "5": "CRM integrato con gestione cantieri, SAL e fatturazione — zero preventivi persi, win rate monitorato mensilmente e processo di follow-up completamente automatizzato."
     },
     "team": {
       "1": "Forma i tuoi capi cantiere sulla comunicazione con il cliente: aggiornamenti proattivi, gestione delle varianti, soddisfazione finale — nessun costo.",
       "2": "Struttura un sistema di incentivi per i capi cantiere che portano referenze o segnalazioni — provvigione sul contratto acquisito.",
       "3": "Assumi un coordinatore tecnico-commerciale (~2.000-3.000€/mese) che gestisce i preventivi e mantiene i rapporti con professionisti e clienti.",
-      "4": "Team strutturato: responsabile commerciale + coordinatore cantieri + back office preventivi — struttura da impresa edile media."
+      "4": "Team strutturato: responsabile commerciale + coordinatore cantieri + back office preventivi — struttura da impresa edile media.",
+      "5": "Team strutturato autonomo: responsabile commerciale, coordinatore cantieri e back office preventivi — il titolare si occupa solo di strategie e relazioni con i clienti più importanti."
     },
     "processi": {
       "1": "Standardizza il formato dei preventivi: copertina professionale, computo metrico chiaro, tempi di esecuzione garantiti e condizioni di pagamento — nessun costo.",
       "2": "Implementa un processo di gestione delle varianti in corso d'opera: ogni modifica documentata, firmata e preventivata prima di essere eseguita.",
       "3": "Software gestione cantieri (PriMus, Acca Software, ~100-300€/mese) per computi metrici, SAL e documentazione — operativo in 1 mese.",
-      "4": "Sistema integrato gestione cantieri + CRM + fatturazione — tracciabilità completa da preventivo a saldo finale."
+      "4": "Sistema integrato gestione cantieri + CRM + fatturazione — tracciabilità completa da preventivo a saldo finale.",
+      "5": "Sistema integrato gestione cantieri + CRM + fatturazione con tracciabilità completa da preventivo a saldo finale — zero errori amministrativi e varianti tutte documentate e firmate."
     },
     "ricavi": {
       "1": "Rivedi il pricing: calcola il costo reale per ogni lavorazione includendo manodopera, materiali, noli e overhead — molte imprese edili sottostimano.",
       "2": "Proponi sistematicamente servizi complementari: smaltimento macerie, arredi fissi, impianti — aumenta il valore del contratto del 15-30%.",
       "3": "Sviluppa contratti di manutenzione post-lavoro per condomini e abitazioni — ricavo ricorrente prevedibile con margini >35%.",
-      "4": "Posizionamento chiavi in mano: progetto + costruzione + pratiche burocratiche — margini superiori alla sola esecuzione."
+      "4": "Posizionamento chiavi in mano: progetto + costruzione + pratiche burocratiche — margini superiori alla sola esecuzione.",
+      "5": "Posizionamento chiavi in mano consolidato con contratti di manutenzione attivi — ricavo ricorrente prevedibile e margini superiori alla sola esecuzione grazie ai servizi complementari."
     },
     "marketing": {
       "1": "Profilo Google My Business ottimizzato con foto dei cantieri completati, recensioni e risposta attiva — gratuito, operativo in 1 settimana.",
       "2": "Pagina Facebook/Instagram con before/after dei cantieri completati (~300-600€/mese per gestione social) — lead locali diretti.",
       "3": "Campagne Google Ads locali su parole chiave ristrutturazione + zona (~500-1.500€/mese) — lead qualificati per interventi medio-grandi.",
-      "4": "Strategia marketing integrata: social + SEO locale + presenza portali (Habitissimo, Houzz) + referral program strutturato."
+      "4": "Strategia marketing integrata: social + SEO locale + presenza portali (Habitissimo, Houzz) + referral program strutturato.",
+      "5": "Strategia marketing integrata attiva: social + SEO locale + portali + referral program strutturato — flusso costante di lead qualificati senza dipendere dal passaparola spontaneo."
     },
     "sitoweb": {
       "1": "Sito base con portfolio lavori realizzati, servizi offerti, zona di intervento e form contatto — ~800-2.000€ una tantum.",
       "2": "Sito aggiornato con gallery before/after, testimonianze clienti e richiesta preventivo online — lead generation diretta.",
       "3": "SEO locale su parole chiave ristrutturazione + comune/zona (~400-800€/mese agenzia) — visibilità organica a lungo termine.",
-      "4": "Sito professionale con configuratore preventivo base, area clienti per tracking cantiere e blog tecnico per SEO."
+      "4": "Sito professionale con configuratore preventivo base, area clienti per tracking cantiere e blog tecnico per SEO.",
+      "5": "Sito professionale con configuratore preventivo base, area clienti per tracking cantiere e blog tecnico — prima posizione su Google per le ricerche locali più rilevanti."
     },
     "ecommerce": {
       "1": "Iscriviti a Habitissimo, Prontopro o portali simili (~50-150€/mese) — lead qualificati da privati che cercano imprese.",
       "2": "Sviluppa partnership con showroom materiali, rivenditori ceramiche e falegnamerie — referenze incrociate senza costi fissi.",
       "3": "Accordi con studi di architettura e progettazione per essere inserito nella loro lista fornitori consigliati.",
-      "4": "Piattaforma digitale per preventivi online e gestione cantieri da remoto — differenziazione rispetto alle imprese tradizionali."
+      "4": "Piattaforma digitale per preventivi online e gestione cantieri da remoto — differenziazione rispetto alle imprese tradizionali.",
+      "5": "Piattaforma digitale per preventivi online e gestione cantieri da remoto con partnership strutturate con studi tecnici e showroom — flusso di referenze automatico e costante."
     }
   },
   "edilizia_impianti": {
@@ -561,49 +569,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Contatta attivamente le imprese edili della zona per essere inserito come subappaltatore fisso per impianti — nessun costo, operativo subito.",
       "2": "Attiva un agente o procacciatore con portafoglio contatti in studi tecnici e imprese edili (~800-1.500€/mese provvigioni) — operativo in 1-2 mesi.",
       "3": "Assumi un tecnico-commerciale (~2.500-3.500€/mese) che presidia imprese edili, studi tecnici e developer immobiliari.",
-      "4": "Struttura commerciale con responsabile sviluppo + rete agenti per territorio + key account per i developer principali."
+      "4": "Struttura commerciale con responsabile sviluppo + rete agenti per territorio + key account per i developer principali.",
+      "5": "Struttura commerciale con responsabile sviluppo e rete agenti per territorio — il titolare gestisce solo i clienti developer e le gare più importanti, tutto il resto è gestito autonomamente."
     },
     "pipeline": {
       "1": "Traccia ogni preventivo: cliente, tipo impianto, valore, stato, scadenza — Excel base, nessun costo.",
       "2": "CRM semplice per gestire i preventivi aperti e i follow-up — nel settore impiantistico il cliente dimentica se non lo segui (~30-50€/mese).",
       "3": "Monitora il tasso di chiusura per tipo di impianto e per canale — identifica dove conviene investire tempo commerciale.",
-      "4": "CRM integrato con gestione commesse, pianificazione squadre e SAL — visibilità completa dal preventivo alla fattura finale."
+      "4": "CRM integrato con gestione commesse, pianificazione squadre e SAL — visibilità completa dal preventivo alla fattura finale.",
+      "5": "CRM integrato con gestione commesse, pianificazione squadre e SAL — visibilità completa dal preventivo alla fattura finale, zero opportunità perse e forecast mensile accurato."
     },
     "team": {
       "1": "Forma i tuoi installatori sulla comunicazione con il cliente durante i lavori — aggiornamenti proattivi e gestione pulita del cantiere.",
       "2": "Struttura incentivi per il team che segnala opportunità di lavoro aggiuntivo o nuovi clienti — provvigione sulla commessa acquisita.",
       "3": "Assumi un coordinatore tecnico-commerciale (~2.000-3.000€/mese) che gestisce preventivi e mantiene i rapporti con imprese e studi.",
-      "4": "Team strutturato: commerciale + coordinatore tecnico + back office — gestisce preventivi, commesse e relazioni clienti."
+      "4": "Team strutturato: commerciale + coordinatore tecnico + back office — gestisce preventivi, commesse e relazioni clienti.",
+      "5": "Team strutturato: commerciale, coordinatore tecnico e back office — gestisce preventivi, commesse e relazioni clienti in completa autonomia dal titolare."
     },
     "processi": {
       "1": "Standardizza i preventivi con schema fisso: tipologia impianto, materiali specificati, tempi esecuzione e condizioni di garanzia.",
       "2": "Implementa la dichiarazione di conformità (ex legge 46/90, ora DM 37/08) come processo sistematico — obbligatoria per tutti gli impianti.",
       "3": "Software gestione commesse impiantistiche (~100-250€/mese) per pianificazione squadre, ordini materiali e SAL.",
-      "4": "Sistema integrato: gestione commesse + magazzino materiali + fatturazione + CRM — visibilità completa sull'azienda."
+      "4": "Sistema integrato: gestione commesse + magazzino materiali + fatturazione + CRM — visibilità completa sull'azienda.",
+      "5": "Sistema integrato gestione commesse + magazzino materiali + fatturazione + CRM — tracciabilità completa su ogni intervento, SLA garantiti e soddisfazione cliente monitorata."
     },
     "ricavi": {
       "1": "Rivedi il pricing includendo tutti i costi: trasferte, smaltimento materiali, certificazioni e tempo per pratiche burocratiche.",
       "2": "Proponi contratti di manutenzione annuale su impianti installati (~200-800€/anno per impianto) — ricavo ricorrente prevedibile.",
       "3": "Sviluppa la divisione manutenzione e pronto intervento — margini più alti rispetto al solo installazione e clientela fidelizzata.",
-      "4": "Posizionamento come partner energetico: diagnosi energetica + efficientamento + manutenzione — valore aggiunto superiore."
+      "4": "Posizionamento come partner energetico: diagnosi energetica + efficientamento + manutenzione — valore aggiunto superiore.",
+      "5": "Divisione manutenzione e pronto intervento strutturata come centro di profitto autonomo — contratti annuali con 50+ clienti, ricavo mensile ricorrente e prevedibile."
     },
     "marketing": {
       "1": "Google My Business ottimizzato con foto degli impianti installati e certificazioni — gratuito, genera lead locali qualificati.",
       "2": "Campagne Google Ads locali su parole chiave impianti + zona (~400-1.000€/mese) — lead diretti per installazioni e manutenzioni.",
       "3": "Partnership con rivenditori materiali e showroom bagno/cucina per referenze reciproche — costo zero, lead qualificati.",
-      "4": "Presenza su portali impiantistica (CNA, Confartigianato) + certificazioni energetiche per posizionamento premium."
+      "4": "Presenza su portali impiantistica (CNA, Confartigianato) + certificazioni energetiche per posizionamento premium.",
+      "5": "Presenza digitale completa + certificazioni energetiche + partnership con rivenditori — posizionamento premium come partner energetico di riferimento nella zona."
     },
     "sitoweb": {
       "1": "Sito base con servizi, zone di intervento, certificazioni e contatti — ~800-1.500€ una tantum.",
       "2": "Aggiungi gallery lavori realizzati, certificazioni scaricabili e preventivo online — lead generation diretta.",
       "3": "SEO locale per impianti + zona (~300-700€/mese) — visibilità organica per le ricerche locali più frequenti.",
-      "4": "Sito con area clienti per accesso a dichiarazioni di conformità, manuali e storico interventi — fidelizzazione."
+      "4": "Sito con area clienti per accesso a dichiarazioni di conformità, manuali e storico interventi — fidelizzazione.",
+      "5": "Sito con area clienti per accesso a dichiarazioni di conformità, manuali e storico interventi — fidelizzazione digitale completa che riduce il churn e aumenta i rinnovi."
     },
     "ecommerce": {
       "1": "Iscriviti a Prontopro, Habitissimo (~50-150€/mese) — lead qualificati da privati che cercano impiantisti.",
       "2": "Sviluppa accordi con grossisti materiali per accesso a prezzi riservati e materiali in pronto — riduce i costi e migliora i margini.",
       "3": "Contratti di manutenzione in abbonamento digitale — il cliente si abbona online, pagamento automatico mensile.",
-      "4": "Piattaforma per richiesta pronto intervento e preventivi online — differenziazione digitale nel settore impiantistico."
+      "4": "Piattaforma per richiesta pronto intervento e preventivi online — differenziazione digitale nel settore impiantistico.",
+      "5": "Piattaforma per richiesta pronto intervento e preventivi online con contratti manutenzione in abbonamento digitale — pagamento automatico mensile e gestione completamente autonoma."
     }
   },
   "edilizia_serramenti": {
@@ -611,49 +627,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Chiedi referenze attive ai clienti soddisfatti e metti cartelli cantiere nei lavori in corso — nessun costo, genera il 30-50% dei nuovi contatti.",
       "2": "Attiva un agente con portafoglio contatti in studi tecnici, imprese edili e showroom (~800-1.500€/mese provvigioni) — operativo in 1-2 mesi.",
       "3": "Assumi un commerciale interno (~2.500-3.500€/mese) con portafoglio clienti assegnato — gestisce trattative e preventivi in autonomia.",
-      "4": "Struttura commerciale: responsabile vendite + agenti di zona + key account per developer e studi di architettura."
+      "4": "Struttura commerciale: responsabile vendite + agenti di zona + key account per developer e studi di architettura.",
+      "5": "Struttura commerciale con responsabile vendite, agenti di zona e key account per developer — il titolare gestisce solo le relazioni strategiche, tutto il commerciale è autonomo."
     },
     "pipeline": {
       "1": "Traccia ogni richiesta preventivo: cliente, tipologia serramento, valore stimato, stato — Excel base, nessun costo.",
       "2": "CRM semplice per gestire i preventivi con follow-up sistematico — nel settore serramenti il cliente confronta 3-5 preventivi, il follow-up è decisivo (~30-50€/mese).",
       "3": "Monitora il tasso di chiusura per tipologia (PVC, alluminio, legno) e per canale — ottimizza dove investi il tempo commerciale.",
-      "4": "CRM integrato con configuratore prezzi, gestione misurazioni e SAL installazioni — visibilità completa dalla trattativa alla consegna."
+      "4": "CRM integrato con configuratore prezzi, gestione misurazioni e SAL installazioni — visibilità completa dalla trattativa alla consegna.",
+      "5": "CRM integrato con configuratore prezzi, gestione misurazioni e SAL installazioni — visibilità completa dalla trattativa alla consegna, zero preventivi persi e tasso di chiusura monitorato."
     },
     "team": {
       "1": "Forma i posatori sulla comunicazione con il cliente: aggiornamenti sui tempi, gestione pulita del cantiere, segnalazione di problemi.",
       "2": "Struttura incentivi per chi porta referenze o segnalazioni — provvigione sul contratto acquisito grazie alla segnalazione.",
       "3": "Assumi un coordinatore tecnico-commerciale (~2.000-3.000€/mese) che gestisce preventivi, misurazioni e relazioni clienti.",
-      "4": "Team strutturato: commerciale + tecnico misurazioni + coordinatore installazioni + back office ordini fornitori."
+      "4": "Team strutturato: commerciale + tecnico misurazioni + coordinatore installazioni + back office ordini fornitori.",
+      "5": "Team strutturato: commerciale, tecnico misurazioni, coordinatore installazioni e back office ordini fornitori — autonomo nella gestione completa del ciclo di vendita."
     },
     "processi": {
       "1": "Standardizza il processo di preventivazione: sopralluogo, misurazione, configurazione prodotto, offerta firmata — tempi garantiti max 48h.",
       "2": "Software preventivazione serramenti (Domus, WinSer, ~100-300€/mese) — velocizza la produzione preventivi e riduce gli errori di misura.",
       "3": "Processo di gestione varianti e modifiche in corso d'ordine — ogni modifica documentata e approvata dal cliente prima dell'ordine.",
-      "4": "Sistema integrato: configuratore + CRM + gestione ordini fornitori + pianificazione installazioni — controllo completo della commessa."
+      "4": "Sistema integrato: configuratore + CRM + gestione ordini fornitori + pianificazione installazioni — controllo completo della commessa.",
+      "5": "Sistema integrato configuratore + CRM + ordini fornitori + pianificazione installazioni — controllo completo della commessa con zero errori di misura e tempi di consegna garantiti."
     },
     "ricavi": {
       "1": "Proponi sistematicamente il pacchetto completo: serramento + posa + smontaggio vecchio + smaltimento — aumenta il valore del contratto del 20-30%.",
       "2": "Attiva la vendita di accessori: zanzariere, veneziane integrate, sistemi oscuranti — upsell immediato con margini elevati.",
       "3": "Sviluppa contratti di manutenzione periodica su serramenti installati — ricavo ricorrente e fidelizzazione del cliente.",
-      "4": "Posizionamento premium: consulenza energetica + serramenti ad alta performance + certificazione installazione — margini +25-40%."
+      "4": "Posizionamento premium: consulenza energetica + serramenti ad alta performance + certificazione installazione — margini +25-40%.",
+      "5": "Contratti di manutenzione periodica su serramenti installati attivi e posizionamento premium consolidato — margini superiori del 25-40% rispetto alla media di settore."
     },
     "marketing": {
       "1": "Google My Business con foto dei lavori realizzati e recensioni — gratuito, genera il 40-60% dei lead locali per le PMI di serramenti.",
       "2": "Showroom fisico aggiornato con campioni esposti e area consulenza (~500-1.500€/mese di gestione) — converte le visite in contratti.",
       "3": "Campagne Google Ads locali su serramenti + zona (~400-1.200€/mese) + social con before/after installazioni.",
-      "4": "Presenza su Houzz, Architonic e portali architettura per raggiungere studi tecnici e developer immobiliari."
+      "4": "Presenza su Houzz, Architonic e portali architettura per raggiungere studi tecnici e developer immobiliari.",
+      "5": "Presenza su Houzz, Architonic e portali architettura con showroom aggiornato — flusso costante di lead da studi tecnici, developer e clienti privati premium."
     },
     "sitoweb": {
       "1": "Sito base con prodotti, zone di intervento, gallery lavori e richiesta preventivo — ~1.000-2.500€ una tantum.",
       "2": "Configuratore online base (tipo serramento, materiale, colore) con richiesta preventivo — lead qualificati direttamente.",
       "3": "SEO locale serramenti + zona (~400-900€/mese) + blog tecnico su efficienza energetica e bonus fiscali.",
-      "4": "Sito con configuratore avanzato, visualizzazione 3D e area clienti per tracking ordine e installazione."
+      "4": "Sito con configuratore avanzato, visualizzazione 3D e area clienti per tracking ordine e installazione.",
+      "5": "Sito con configuratore avanzato, visualizzazione 3D e area clienti per tracking ordine e installazione — esperienza digitale che converte e fidelizza i clienti premium."
     },
     "ecommerce": {
       "1": "Iscriviti a Habitissimo, Prontopro (~50-150€/mese) — lead qualificati da privati in fase di ristrutturazione.",
       "2": "Sviluppa partnership con imprese edili e ristrutturatori per essere il loro fornitore fisso di serramenti — accordo commerciale reciproco.",
       "3": "Accordi con produttori premium per essere rivenditore esclusivo di zona — differenziazione di prodotto e margini protetti.",
-      "4": "E-commerce B2C per accessori e piccoli serramenti standard + portale B2B per imprese edili — doppio canale di vendita."
+      "4": "E-commerce B2C per accessori e piccoli serramenti standard + portale B2B per imprese edili — doppio canale di vendita.",
+      "5": "E-commerce B2C per accessori e piccoli serramenti + portale B2B per imprese edili — doppio canale consolidato che genera fatturato anche fuori dall'orario commerciale."
     }
   },
   "commercio_distribuzione_industriale": {
@@ -661,49 +685,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Mappa i 20 clienti con maggior potenziale inespresso nel tuo portafoglio e fai visite sistematiche ogni 2 settimane — nessun costo.",
       "2": "Attiva 1-2 agenti plurimandatari con portafoglio clienti industriali della zona (~provvigione 5-8% sul fatturato generato) — operativo in 1 mese.",
       "3": "Assumi un key account manager (~2.500-3.500€/mese) dedicato ai clienti strategici — gestisce trattative, offerte e sviluppo account.",
-      "4": "Struttura commerciale per segmento: key account per i grandi + agenti di zona per i medi + inside sales per i piccoli."
+      "4": "Struttura commerciale per segmento: key account per i grandi + agenti di zona per i medi + inside sales per i piccoli.",
+      "5": "Struttura commerciale per segmento consolidata: key account grandi + agenti medi + inside sales piccoli — copertura completa del portafoglio senza dipendere dal titolare per nessun cliente."
     },
     "pipeline": {
       "1": "Traccia le trattative aperte su Excel: cliente, prodotto, valore, stato e data follow-up — nessun costo.",
       "2": "CRM semplice per gestire il portafoglio clienti con alert per riordini e follow-up (~30-80€/mese) — operativo in 1 settimana.",
       "3": "Definisci cicli di visita per categoria cliente (A ogni 2 settimane, B mensile, C trimestrale) — ottimizza il tempo commerciale.",
-      "4": "CRM integrato con ERP per accesso real-time a stock, prezzi e storico ordini durante la visita cliente."
+      "4": "CRM integrato con ERP per accesso real-time a stock, prezzi e storico ordini durante la visita cliente.",
+      "5": "CRM integrato con ERP per accesso real-time a stock, prezzi e storico ordini durante la visita — zero tempo perso in back office, ogni visita si trasforma in ordine immediato."
     },
     "team": {
       "1": "Forma gli agenti/commerciali sui prodotti tecnici e le applicazioni — chi vende deve sapere cosa vende più del cliente.",
       "2": "Struttura un piano provvigionale con bonus sul recupero clienti dormienti e sull'acquisizione di nuovi account.",
       "3": "Affianca un inside sales agli agenti di campo (~1.500-2.000€/mese) — gestisce ordini piccoli e libera il commerciale per i clienti strategici.",
-      "4": "Sales manager che coordina la rete commerciale, monitora i KPI e gestisce i clienti più importanti."
+      "4": "Sales manager che coordina la rete commerciale, monitora i KPI e gestisce i clienti più importanti.",
+      "5": "Sales manager che coordina la rete, monitora KPI settimanali e gestisce i top account — struttura commerciale completamente autonoma con performance prevedibili e misurabili."
     },
     "processi": {
       "1": "Standardizza il processo di offerta: tempi di risposta garantiti (max 24h per richieste standard), formato professionale, condizioni chiare.",
       "2": "Implementa un sistema di gestione degli ordini urgenti — il cliente industriale non aspetta, la reattività è il tuo principale vantaggio.",
       "3": "ERP o gestionale (~200-500€/mese) per controllo stock, ordini automatici ai fornitori e gestione back order.",
-      "4": "Integrazione EDI con i clienti principali per ordini automatici — riduce l'errore umano e fidelizza il cliente sul processo."
+      "4": "Integrazione EDI con i clienti principali per ordini automatici — riduce l'errore umano e fidelizza il cliente sul processo.",
+      "5": "Integrazione EDI con i clienti principali per ordini automatici — zero errore umano, riordino automatico su scorta minima e zero rotture di stock per i clienti strategici."
     },
     "ricavi": {
       "1": "Rivedi il pricing per fascia di cliente e volume — molti distributori applicano listino fisso perdendo margine sui grandi e lasciando soldi sul tavolo con i piccoli.",
       "2": "Proponi accordi di fornitura esclusiva o preferenziale con i clienti principali — volume garantito in cambio di prezzi stabili.",
       "3": "Sviluppa servizi a valore aggiunto: consegna just-in-time, magazzino conto deposito, kitting — margini superiori alla pura distribuzione.",
-      "4": "Contratti annuali con revisione prezzi semiannuale e bonus volume — protegge i margini e fidelizza i grandi account."
+      "4": "Contratti annuali con revisione prezzi semiannuale e bonus volume — protegge i margini e fidelizza i grandi account.",
+      "5": "Contratti annuali con i grandi account, servizi a valore aggiunto consolidati (JIT, deposito, kitting) e margini stabili — fatturato ricorrente prevedibile superiore al 70% del totale."
     },
     "marketing": {
       "1": "Aggiorna il catalogo prodotti digitale e invia newsletter mensile ai clienti attivi con novità di prodotto e promozioni — ~50-200€/mese.",
       "2": "Partecipa a fiere di settore industriale (MECSPE, BI-MU, ~2.000-6.000€) — visibilità con buyer industriali qualificati.",
       "3": "Campagne LinkedIn Ads su responsabili acquisti e produzione delle aziende target (~400-1.000€/mese).",
-      "4": "Strategia account based marketing: contenuto personalizzato per settore, visite personalizzate, offerte dedicate per i top account."
+      "4": "Strategia account based marketing: contenuto personalizzato per settore, visite personalizzate, offerte dedicate per i top account.",
+      "5": "Strategia account based marketing attiva sui top 50 clienti target — approccio personalizzato per settore con contenuti dedicati e NPS monitorato per ogni account."
     },
     "sitoweb": {
       "1": "Sito con catalogo prodotti, schede tecniche scaricabili e richiesta preventivo online — ~1.000-2.500€.",
       "2": "Area riservata per clienti con accesso a prezzi riservati, storico ordini e documentazione tecnica.",
       "3": "E-catalogue aggiornato in tempo reale con disponibilità stock e tempi di consegna — riduce le telefonate per lo stock.",
-      "4": "Portale B2B con inserimento ordini, tracking spedizioni e integrazione ERP cliente — standard per i distributori strutturati."
+      "4": "Portale B2B con inserimento ordini, tracking spedizioni e integrazione ERP cliente — standard per i distributori strutturati.",
+      "5": "Portale B2B con inserimento ordini, tracking spedizioni, fatturazione e integrazione ERP cliente — standard per i distributori strutturati che elimina le telefonate di routine."
     },
     "ecommerce": {
       "1": "E-commerce B2B per prodotti standard a catalogo — ordini piccoli automatizzati senza impegno commerciale (~500-2.000€/mese).",
       "2": "Marketplace industriali (Mercateo, Amazon Business) per aumentare la visibilità su clienti non ancora nel tuo portafoglio.",
       "3": "Piattaforma ordini B2B con listini personalizzati per cliente, approvazione ordini multi-livello e fatturazione automatica.",
-      "4": "Integrazione API con i sistemi ERP dei clienti principali per riordino automatico delle scorte minime."
+      "4": "Integrazione API con i sistemi ERP dei clienti principali per riordino automatico delle scorte minime.",
+      "5": "Integrazione API con i sistemi ERP dei clienti principali per riordino automatico delle scorte minime — lock-in strategico del cliente che rende il cambio fornitore praticamente impossibile."
     }
   },
   "commercio_ingrosso_alimentare": {
@@ -711,49 +743,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Mappa i 20 clienti HORECA e retail con maggior potenziale inespresso — visita settimanale sistematica, nessun costo aggiuntivo.",
       "2": "Attiva agenti con portafoglio HORECA o retail food della zona (~provvigione 4-7% sul fatturato) — operativo in 2-4 settimane.",
       "3": "Assumi un key account manager (~2.500-3.500€/mese) dedicato ai clienti GDO e alle catene HORECA strutturate.",
-      "4": "Struttura commerciale per canale: KAM GDO + agenti HORECA + inside sales per i clienti minori."
+      "4": "Struttura commerciale per canale: KAM GDO + agenti HORECA + inside sales per i clienti minori.",
+      "5": "Struttura commerciale per canale consolidata: KAM GDO + agenti HORECA + inside sales minori — copertura completa senza dipendere dal titolare per nessuna categoria di cliente."
     },
     "pipeline": {
       "1": "Traccia ordini e trattative per cliente su Excel — monitora la frequenza di riordino e segnala i clienti che stanno comprando meno.",
       "2": "CRM semplice con alert per riordini attesi e clienti inattivi da +30 giorni (~30-80€/mese) — recupero clienti dormienti immediato.",
       "3": "Analisi ABC clienti mensile — focus del 70% del tempo commerciale sull'80% del fatturato.",
-      "4": "CRM integrato con ERP per gestione ordini, previsioni di vendita e pianificazione acquisti fornitori."
+      "4": "CRM integrato con ERP per gestione ordini, previsioni di vendita e pianificazione acquisti fornitori.",
+      "5": "CRM integrato con ERP per gestione ordini, previsioni e pianificazione acquisti fornitori — zero rotture di stock, forecast accurato e coordinamento completo tra commerciale e magazzino."
     },
     "team": {
       "1": "Forma gli agenti sulle caratteristiche organolettiche e di origine dei prodotti — chi vende food deve sapere raccontare il prodotto.",
       "2": "Struttura un piano provvigionale con bonus su nuovi clienti acquisiti e su clienti recuperati dopo inattività.",
       "3": "Affianca un inside sales agli agenti di campo (~1.500-2.000€/mese) per la gestione degli ordini ripetitivi.",
-      "4": "Sales manager che coordina la rete, monitora KPI e gestisce i key account GDO e le catene principali."
+      "4": "Sales manager che coordina la rete, monitora KPI e gestisce i key account GDO e le catene principali.",
+      "5": "Sales manager che coordina la rete, monitora KPI settimanali e gestisce i key account GDO — struttura autonoma con performance misurabili e ricavo ricorrente prevedibile."
     },
     "processi": {
       "1": "Standardizza la gestione degli ordini urgenti e delle rotture di stock — la reattività nel food è critica, il cliente non aspetta.",
       "2": "Implementa il sistema di tracciabilità obbligatoria (Reg. CE 178/2002) in modo efficiente — richiede ~500-2.000€ di software.",
       "3": "Gestionale magazzino con FIFO rigoroso, gestione scadenze e allerta automatica per prodotti in scadenza (~200-500€/mese).",
-      "4": "WMS (Warehouse Management System) integrato con ordini e trasporti — riduce gli errori di spedizione e ottimizza il magazzino."
+      "4": "WMS (Warehouse Management System) integrato con ordini e trasporti — riduce gli errori di spedizione e ottimizza il magazzino.",
+      "5": "WMS integrato con ordini e trasporti con EDI attivo con GDO — zero errori di spedizione, tracciabilità completa e standard di qualità certificati per i buyer della grande distribuzione."
     },
     "ricavi": {
       "1": "Rivedi il pricing per categoria prodotto e volume cliente — nel food il margine varia molto tra prodotti freschi, secchi e surgelati.",
       "2": "Proponi accordi di fornitura preferenziale con i clienti HORECA principali — volume garantito in cambio di prezzi stabili.",
       "3": "Sviluppa linee private label o prodotti esclusivi per i clienti principali — differenziazione e margini superiori.",
-      "4": "Contratti annuali con GDO e catene HORECA con clausole di revisione prezzi legate agli indici materie prime."
+      "4": "Contratti annuali con GDO e catene HORECA con clausole di revisione prezzi legate agli indici materie prime.",
+      "5": "Contratti annuali con GDO e catene HORECA con clausole di revisione prezzi — private label e prodotti esclusivi consolidati come centri di profitto con margini superiori alla media."
     },
     "marketing": {
       "1": "Catalogo digitale aggiornato con schede prodotto, origine, certificazioni e prezzi — inviato mensilmente ai clienti attivi.",
       "2": "Partecipa a Cibus, SIAL o fiere HORECA regionali (~2.000-6.000€) — contatti diretti con buyer GDO e responsabili acquisti HORECA.",
       "3": "Newsletter food con ricette, abbinamenti e stagionalità dei prodotti — content marketing che fidelizza i clienti HORECA.",
-      "4": "Strategia digitale B2B: LinkedIn per GDO e catene + Instagram per il posizionamento brand con i ristoratori."
+      "4": "Strategia digitale B2B: LinkedIn per GDO e catene + Instagram per il posizionamento brand con i ristoratori.",
+      "5": "Strategia digitale B2B consolidata: LinkedIn per GDO + Instagram per ristoratori + newsletter food — posizionamento come partner food di riferimento riconosciuto nel mercato."
     },
     "sitoweb": {
       "1": "Sito con catalogo prodotti, schede tecniche e richiesta preventivo/listino — ~800-2.000€.",
       "2": "Area riservata clienti con listini aggiornati, schede tecniche e modulo ordini online.",
       "3": "E-catalogue in tempo reale con disponibilità, scadenze e tempi di consegna — riduce le telefonate.",
-      "4": "Portale B2B completo con inserimento ordini, storico e integrazione con ERP del cliente."
+      "4": "Portale B2B completo con inserimento ordini, storico e integrazione con ERP del cliente.",
+      "5": "Portale B2B completo con inserimento ordini, storico e integrazione con ERP del cliente — standard per i distributori food strutturati che elimina il carico amministrativo manuale."
     },
     "ecommerce": {
       "1": "Piattaforma ordini online semplice per i clienti abituali — riduce il carico telefonico e gli errori di ordine (~200-500€/mese).",
       "2": "App mobile per agenti con catalogo, stock e inserimento ordini in tempo reale — aumenta la produttività sul campo.",
       "3": "Marketplace food B2B (Alimenta, Stockmercato) per raggiungere nuovi clienti HORECA fuori zona.",
-      "4": "Integrazione API con i sistemi degli acquisti GDO — ordini automatici su base contratto annuale."
+      "4": "Integrazione API con i sistemi degli acquisti GDO — ordini automatici su base contratto annuale.",
+      "5": "Integrazione API con i sistemi degli acquisti GDO per ordini automatici su base contratto annuale — flusso di ordini completamente automatizzato per i clienti strategici principali."
     }
   },
   "commercio_materiali_edili": {
@@ -761,49 +801,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Visita sistematica delle imprese edili della zona — mappa chi compra e chi non ha ancora mai acquistato da te. Nessun costo.",
       "2": "Attiva 1-2 agenti con portafoglio imprese edili e geometri (~provvigione 3-6%) — operativo in 2-4 settimane.",
       "3": "Assumi un commerciale interno (~2.000-3.000€/mese) per presidiare i clienti strategici e sviluppare nuovi account.",
-      "4": "Struttura commerciale per canale: KAM imprese strutturate + agenti per le piccole + inside sales per i privati."
+      "4": "Struttura commerciale per canale: KAM imprese strutturate + agenti per le piccole + inside sales per i privati.",
+      "5": "Struttura commerciale per canale: KAM imprese strutturate + agenti piccole + inside sales privati — copertura completa del mercato locale con performance misurabili per ogni segmento."
     },
     "pipeline": {
       "1": "Traccia i preventivi aperti su Excel — chi richiede preventivo e non ordina entro 2 settimane va ricontattato.",
       "2": "CRM base per gestire preventivi, follow-up e storico cliente (~30-60€/mese) — operativo in 1 settimana.",
       "3": "Analisi stagionalità ordini per pianificare gli acquisti in anticipo e ridurre le rotture di stock nei periodi di punta.",
-      "4": "CRM integrato con gestione preventivi, stock e ordini automatici ai fornitori."
+      "4": "CRM integrato con gestione preventivi, stock e ordini automatici ai fornitori.",
+      "5": "CRM integrato con gestione preventivi, stock e ordini automatici ai fornitori — zero preventivi persi, analisi stagionalità attiva e rifornimento automatico nei periodi di punta."
     },
     "team": {
       "1": "Forma gli addetti al banco sulla consulenza tecnica — il cliente che riceve un consiglio competente torna e compra di più.",
       "2": "Struttura incentivi per il personale di vendita legati al cross-selling e alla marginalità — non solo ai volumi.",
       "3": "Assumi un responsabile commerciale (~2.000-3.000€/mese) che coordina gli agenti e gestisce i cantieri principali.",
-      "4": "Team strutturato: commerciale esterno + banco vendita specializzato + back office preventivi."
+      "4": "Team strutturato: commerciale esterno + banco vendita specializzato + back office preventivi.",
+      "5": "Responsabile commerciale che coordina agenti e gestisce i cantieri principali con back office preventivi dedicato — struttura autonoma dal titolare per la gestione quotidiana."
     },
     "processi": {
       "1": "Standardizza i preventivi con computo materiali dettagliato, tempi di consegna garantiti e condizioni di reso.",
       "2": "Gestionale magazzino per controllo stock, riordini automatici e gestione resi — evita rotture di stock sui prodotti ad alta rotazione.",
       "3": "Software preventivazione edilizia integrato con il gestionale (~150-400€/mese) — velocizza i preventivi per i cantieri.",
-      "4": "Sistema integrato: ERP + CRM + e-commerce B2B — gestione completa dal preventivo alla fattura."
+      "4": "Sistema integrato: ERP + CRM + e-commerce B2B — gestione completa dal preventivo alla fattura.",
+      "5": "Sistema integrato ERP + CRM + e-commerce B2B — gestione completa dalla richiesta preventivo alla fattura con tracciabilità completa e zero errori amministrativi."
     },
     "ricavi": {
       "1": "Rivedi i margini per categoria prodotto — nel materiale edile i margini variano molto tra commodity e prodotti specialistici.",
       "2": "Proponi il servizio di consegna cantiere programmata — il cliente paga la comodità, i margini migliorano.",
       "3": "Sviluppa linee private label o accordi di esclusiva territoriale con produttori — differenziazione e margini protetti.",
-      "4": "Contratti di fornitura annuale con le imprese edili strutturate — volume garantito e margini stabili."
+      "4": "Contratti di fornitura annuale con le imprese edili strutturate — volume garantito e margini stabili.",
+      "5": "Contratti di fornitura annuale con le imprese edili strutturate e linee private label consolidate — fatturato ricorrente prevedibile e margini protetti dalla concorrenza."
     },
     "marketing": {
       "1": "Google My Business aggiornato con orari, catalogo e recensioni — genera lead locali da privati e piccole imprese.",
       "2": "Catalogo digitale aggiornato inviato mensilmente alle imprese edili della zona — ~100-300€/mese.",
       "3": "Presenza su portali edilizia e costruzioni (Edilportale, Infobuild) — visibilità con professionisti e imprese strutturate.",
-      "4": "Fiere di settore locali + campagne digitali B2B su imprese edili e studi tecnici."
+      "4": "Fiere di settore locali + campagne digitali B2B su imprese edili e studi tecnici.",
+      "5": "Presenza completa su portali edilizia e fiere locali con campagne digitali B2B attive — flusso costante di nuovi contatti da imprese edili e studi tecnici della zona."
     },
     "sitoweb": {
       "1": "Sito base con catalogo prodotti, disponibilità e richiesta preventivo — ~800-2.000€.",
       "2": "Catalogo online con prezzi riservati per clienti registrati e modulo ordini.",
       "3": "E-catalogue in tempo reale con stock, prezzi e tempi di consegna — riduce le telefonate da cantiere.",
-      "4": "Portale B2B per imprese: ordini, tracking consegne, fatturazione e storico acquisti."
+      "4": "Portale B2B per imprese: ordini, tracking consegne, fatturazione e storico acquisti.",
+      "5": "Portale B2B per imprese: ordini, tracking consegne, fatturazione e storico acquisti — standard che elimina le telefonate da cantiere e fidelizza digitalmente i clienti principali."
     },
     "ecommerce": {
       "1": "Piattaforma ordini online per i clienti abituali — riduce il carico telefonico e gli errori (~200-500€/mese).",
       "2": "App mobile per cantieristi — ordinare dal cantiere in tempo reale senza passare in negozio.",
       "3": "Marketplace edilizia (Edilportale Shop, Leroy Merlin Pro) per raggiungere nuovi clienti.",
-      "4": "Integrazione con i sistemi gestionali delle imprese edili clienti principali — ordini automatici su base contratto."
+      "4": "Integrazione con i sistemi gestionali delle imprese edili clienti principali — ordini automatici su base contratto.",
+      "5": "Integrazione con i sistemi gestionali delle imprese edili clienti principali per ordini automatici su base contratto — lock-in digitale che rende il cambio fornitore improbabile."
     }
   },
   "commercio_ricambi_auto": {
@@ -811,49 +859,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Visita sistematica le officine e i carrozzieri della zona — mappa chi compra e chi compra dai competitor. Nessun costo.",
       "2": "Attiva 1-2 agenti con portafoglio officine e flotte (~provvigione 4-7%) — operativo in 2-4 settimane.",
       "3": "Assumi un commerciale interno (~2.000-3.000€/mese) per presidiare i clienti strategici e sviluppare flotte e carrozzerie.",
-      "4": "Struttura commerciale per segmento: KAM flotte + agenti per officine + inside sales per i privati."
+      "4": "Struttura commerciale per segmento: KAM flotte + agenti per officine + inside sales per i privati.",
+      "5": "Struttura commerciale per segmento consolidata: KAM flotte + agenti officine + inside sales privati — copertura completa con performance misurabili e ricavo ricorrente prevedibile."
     },
     "pipeline": {
       "1": "Traccia i preventivi aperti su Excel — officine e carrozzerie decidono in giornata, il follow-up deve essere immediato.",
       "2": "CRM con gestione preventivi rapida e storico per targa/modello — il cliente vuole sapere se hai il pezzo e in quanto tempo (~30-80€/mese).",
       "3": "Monitora il tasso di riordino per cliente — chi compra sempre lo stesso marca/modello va fidelizzato con accordi di fornitura.",
-      "4": "CRM integrato con ERP per disponibilità stock real-time, ordini fornitori e tracking consegne."
+      "4": "CRM integrato con ERP per disponibilità stock real-time, ordini fornitori e tracking consegne.",
+      "5": "CRM integrato con ERP per disponibilità stock real-time, ordini fornitori e tracking consegne — risposta al cliente in meno di 15 minuti per qualsiasi richiesta, zero opportunità perse."
     },
     "team": {
       "1": "Forma il personale sul banco sulla ricerca rapida dei ricambi — velocità e competenza tecnica sono il tuo vantaggio competitivo.",
       "2": "Struttura incentivi per chi sviluppa nuovi clienti officina e chi recupera clienti inattivi.",
       "3": "Assumi un addetto dedicato alle flotte aziendali (~1.800-2.500€/mese) — cliente ricorrente e prevedibile.",
-      "4": "Team strutturato: commerciale esterno + banco tecnico specializzato + gestione flotte e carrozzerie."
+      "4": "Team strutturato: commerciale esterno + banco tecnico specializzato + gestione flotte e carrozzerie.",
+      "5": "Addetto flotte dedicato, banco tecnico specializzato e gestione carrozzerie strutturata — team autonomo che presidia ogni segmento senza dipendere dal titolare per le operazioni."
     },
     "processi": {
       "1": "Standardizza i tempi di risposta alle richieste: max 30 minuti per ricambi a stock, max 2h per ricambi da ordinare.",
       "2": "Gestionale ricambi auto (TecDoc, Autodata integrati, ~200-500€/mese) — ricerca rapida per targa e codice OEM.",
       "3": "Processo di gestione resi e garanzie strutturato — le officine vogliono zero problemi con i resi.",
-      "4": "WMS integrato con i principali cataloghi ricambi (TecDoc, Nexus) per ordini automatici ai fornitori."
+      "4": "WMS integrato con i principali cataloghi ricambi (TecDoc, Nexus) per ordini automatici ai fornitori.",
+      "5": "WMS integrato con i principali cataloghi ricambi (TecDoc, Nexus) per ordini automatici — zero attesa per il cliente, tracciabilità completa e gestione resi senza attrito."
     },
     "ricavi": {
       "1": "Rivedi il pricing per categoria (OEM vs aftermarket) e per cliente — officine strutturate hanno margini diversi dai privati.",
       "2": "Proponi accordi di fornitura preferenziale alle officine principali — volume garantito in cambio di prezzi stabili.",
       "3": "Sviluppa la vendita di accessori e prodotti di consumo (lubrificanti, batterie, pneumatici) — margini superiori ai ricambi.",
-      "4": "Contratti di fornitura annuale con flotte aziendali e carrozzerie strutturate — ricavo ricorrente prevedibile."
+      "4": "Contratti di fornitura annuale con flotte aziendali e carrozzerie strutturate — ricavo ricorrente prevedibile.",
+      "5": "Contratti di fornitura annuale con flotte aziendali e carrozzerie strutturate consolidati — ricavo mensile ricorrente prevedibile con margini stabili e cliente lock-in."
     },
     "marketing": {
       "1": "Google My Business con orari, catalogo marchi trattati e recensioni officine — lead locali qualificati.",
       "2": "Newsletter mensile alle officine con promozioni su ricambi ad alta rotazione e novità di prodotto.",
       "3": "Presenza su portali ricambi (Meca, Parts Alliance) per visibilità con officine fuori zona.",
-      "4": "Strategia digitale B2B: campagne su officine e flotte + presenza fiere settore (Autopromotec)."
+      "4": "Strategia digitale B2B: campagne su officine e flotte + presenza fiere settore (Autopromotec).",
+      "5": "Strategia digitale B2B attiva: campagne su officine e flotte + presenza fiere + newsletter tecnica — posizionamento come distributore di riferimento nella zona."
     },
     "sitoweb": {
       "1": "Sito con catalogo marchi, ricerca per targa e richiesta disponibilità — ~800-2.000€.",
       "2": "E-catalogue con ricerca per targa/codice OEM e disponibilità stock in tempo reale.",
       "3": "Portale B2B per officine con prezzi riservati, ordini online e storico acquisti.",
-      "4": "Integrazione con i sistemi gestionali delle officine clienti — ordini automatici su scorta minima."
+      "4": "Integrazione con i sistemi gestionali delle officine clienti — ordini automatici su scorta minima.",
+      "5": "Portale B2B per officine con prezzi riservati, ordini online e storico acquisti integrato con DMS — standard che elimina il carico del banco e fidelizza digitalmente i clienti principali."
     },
     "ecommerce": {
       "1": "Piattaforma ordini online per officine abituali — riduce il carico telefonico del banco.",
       "2": "App mobile per officine — ordinare il ricambio direttamente dall'auto in riparazione.",
       "3": "Marketplace ricambi (Mister Auto Pro, Autodoc Pro) per raggiungere officine fuori zona.",
-      "4": "Integrazione API con i DMS delle officine principali — ordini automatici integrati nel loro gestionale."
+      "4": "Integrazione API con i DMS delle officine principali — ordini automatici integrati nel loro gestionale.",
+      "5": "Integrazione API con i DMS delle officine principali per ordini automatici integrati nel loro gestionale — lock-in strategico che rende il cambio fornitore praticamente impossibile."
     }
   },
   "commercio_abbigliamento_ingrosso": {
@@ -861,49 +917,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Visita i dettaglianti e i multimarca della tua zona con il campionario stagionale — il contatto fisico nel fashion è ancora il canale principale.",
       "2": "Attiva 1-2 agenti plurimandatari con portafoglio buyer nel tuo segmento (casual, sportswear, occasioni) (~provvigione 8-12%) — operativo in 1-2 mesi.",
       "3": "Assumi un commerciale con esperienza moda (~2.500-3.500€/mese) per i clienti strategici e lo sviluppo export.",
-      "4": "Struttura commerciale per area geografica + showroom fisso per la campagna vendite stagionale."
+      "4": "Struttura commerciale per area geografica + showroom fisso per la campagna vendite stagionale.",
+      "5": "Struttura commerciale consolidata: direttore commerciale + agenti per area + showroom manager + back office ordini — campagne vendite gestite in completa autonomia dal titolare."
     },
     "pipeline": {
       "1": "Traccia gli ordini per stagione per cliente su Excel — monitora chi ha ordinato, chi no e chi sta ordinando meno rispetto alla stagione precedente.",
       "2": "CRM con gestione campagne stagionali (PE/AI) e follow-up strutturato — il fashion ha scadenze rigide (~30-80€/mese).",
       "3": "Monitora il conversion rate visita/ordine per agente e per stagione — ottimizza l'efficacia della rete commerciale.",
-      "4": "CRM integrato con gestione ordini, conferme e pianificazione spedizioni stagionali."
+      "4": "CRM integrato con gestione ordini, conferme e pianificazione spedizioni stagionali.",
+      "5": "PLM/OMS integrato per gestione completa dalla campagna alla spedizione — conversion rate visita/ordine monitorato per agente e stagione con ottimizzazione continua."
     },
     "team": {
       "1": "Forma gli agenti sulle caratteristiche del campionario — tessuti, vestibilità, target cliente — devono saper raccontare la collezione.",
       "2": "Struttura incentivi per campagna: bonus su ordini sopra soglia e su nuovi clienti acquisiti.",
       "3": "Showroom manager (~1.800-2.500€/mese) per la gestione delle campagne vendite e la relazione con i buyer.",
-      "4": "Team completo: direttore commerciale + agenti di zona + showroom manager + back office ordini."
+      "4": "Team completo: direttore commerciale + agenti di zona + showroom manager + back office ordini.",
+      "5": "Team completo autonomo: direttore commerciale, agenti di zona, showroom manager e back office — struttura che gestisce 2 campagne stagionali senza coinvolgere il titolare nelle operazioni."
     },
     "processi": {
       "1": "Standardizza il processo di campagna: presentazione campionario, raccolta ordini, conferme e spedizioni — tempi garantiti.",
       "2": "Software gestione ordini moda (Orderchamp, NuOrder, ~100-300€/mese) — raccolta ordini digitale durante la campagna.",
       "3": "Processo di gestione resi e invenduto — le condizioni devono essere chiare prima della campagna, non dopo.",
-      "4": "PLM/OMS integrato per la gestione completa dalla campagna alla spedizione — standard dei grossisti strutturati."
+      "4": "PLM/OMS integrato per la gestione completa dalla campagna alla spedizione — standard dei grossisti strutturati.",
+      "5": "PLM integrato con OMS e logistica — gestione completa dalla campagna alla consegna con zero errori di spedizione e condizioni di reso chiare e automatizzate."
     },
     "ricavi": {
       "1": "Rivedi le condizioni di pagamento — anticipi alla conferma ordine proteggono il cash flow e scoraggiano gli ordini speculativi.",
       "2": "Proponi servizi di visual merchandising ai retailer principali — consulenza gratuita che fidelizza e aumenta il sell-out.",
       "3": "Sviluppa una linea private label esclusiva per i clienti più importanti — margini superiori e fidelizzazione.",
-      "4": "Contratti di fornitura stagionale con garanzia di riassortimento — il retailer non rimane mai senza best seller."
+      "4": "Contratti di fornitura stagionale con garanzia di riassortimento — il retailer non rimane mai senza best seller.",
+      "5": "Contratti di fornitura stagionale con garanzia di riassortimento e private label esclusiva per i clienti principali — ricavo ricorrente prevedibile e margini protetti dalla concorrenza."
     },
     "marketing": {
       "1": "Partecipa a White Milano, Pitti o fiere regionali di settore (~2.000-8.000€) — il fashion si vende ancora alle fiere.",
       "2": "Showroom fisso a Milano o nella tua città per la campagna stagionale (~1.000-2.500€/mese durante la campagna).",
       "3": "Instagram e Pinterest con le collezioni fotografate professionalmente — i buyer cercano ispirazione sui social.",
-      "4": "Strategia di brand building: press release, fashion blogger, influencer B2B nel retail moda."
+      "4": "Strategia di brand building: press release, fashion blogger, influencer B2B nel retail moda.",
+      "5": "Brand building strutturato: presenza stampa moda, showroom fisso e strategia social consolidata — posizionamento riconosciuto nel settore che genera inbound spontaneo dai buyer."
     },
     "sitoweb": {
       "1": "Sito con catalogo stagionale, condizioni di acquisto e form contatto per i buyer.",
       "2": "Showroom digitale con foto professionali della collezione e area riservata per buyer registrati.",
       "3": "Piattaforma B2B per raccolta ordini online durante la campagna — riduce il lavoro amministrativo.",
-      "4": "Portale buyer con gestione ordini, tracking spedizioni, schede tecniche e storico stagioni."
+      "4": "Portale buyer con gestione ordini, tracking spedizioni, schede tecniche e storico stagioni.",
+      "5": "Portale buyer completo con gestione ordini, tracking spedizioni, schede tecniche e storico stagioni — integrazione digitale con i sistemi dei retailer principali per riassortimenti automatici."
     },
     "ecommerce": {
       "1": "Iscriviti a Orderchamp, Faire o marketplace grossisti moda — visibilità con buyer che non conosci ancora.",
       "2": "Piattaforma ordini online per i riassortimenti fuori campagna — il cliente riordina i best seller quando vuole.",
       "3": "Canale B2C diretto per l'invenduto — stock a fine stagione venduto direttamente al consumatore finale.",
-      "4": "Integrazione digitale con i sistemi dei retailer principali — gestione riassortimenti automatica."
+      "4": "Integrazione digitale con i sistemi dei retailer principali — gestione riassortimenti automatica.",
+      "5": "Integrazione digitale con i sistemi dei retailer principali + canale B2C per invenduto consolidato — copertura completa omnicanale che massimizza i ricavi per ogni stagione."
     }
   },
   "commercio_elettronica": {
