@@ -4674,11 +4674,11 @@ function renderTargetEditor(p) {
     const curCol = cur >= 4 ? 'var(--green)' : cur >= 3 ? 'var(--gold)' : 'var(--red)';
     const tgtCol = tgt >= 4 ? 'var(--green)' : tgt >= 3 ? 'var(--gold)' : 'var(--red)';
     const azioniDim = (AZIONI_TARGET_BY_SETTORE[settore] || {})[d.id] || {};
-    // Stato attuale: step corrente (cur → cur+1), cap a 4-5
-    const curStepKey = Math.min(cur, 4) + '-' + Math.min(cur + 1, 5);
+    const curLvl = Math.max(cur, 1);
+    const tgtLvl = Math.max(tgt, 1);
+    const curStepKey = Math.min(curLvl, 4) + '-' + Math.min(curLvl + 1, 5);
     const curDesc = azioniDim[curStepKey] || '—';
-    // Obiettivo finale: step del target (tgt → tgt+1), cap a 4-5
-    const tgtStepKey = Math.min(tgt, 4) + '-' + Math.min(tgt + 1, 5);
+    const tgtStepKey = Math.min(tgtLvl, 4) + '-' + Math.min(tgtLvl + 1, 5);
     const tgtDesc = azioniDim[tgtStepKey] || '—';
     const subObiettiviHtml = '';
     // Warning tetto strutturale
