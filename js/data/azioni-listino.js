@@ -411,49 +411,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Mappa le PMI della zona con infrastruttura IT datata — chi ha server fisici e Windows 7 è il tuo cliente ideale. Visita diretta, nessun costo.",
       "2": "Assumi un account manager (~2.000-3.000€/mese) con esperienza IT SMB che gestisce le trattative e sviluppa il portafoglio.",
       "3": "Affianca all'account un tecnico-commerciale (~2.500-3.500€/mese) per le gare più complesse e i clienti strutturati.",
-      "4": "Struttura commerciale: sales manager + account per verticale + business developer per i nuovi mercati."
+      "4": "Struttura commerciale: sales manager + account per verticale + business developer per i nuovi mercati.",
+      "5": "Struttura commerciale per verticale consolidata: sales manager + account manager + business developer — copertura completa del mercato locale con ricavo ricorrente da contratti superiore al 65%."
     },
     "pipeline": {
       "1": "Traccia ogni trattativa su Excel: cliente, necessità, valore, stato — nel IT SMB il ciclo è 2-8 settimane.",
       "2": "CRM con gestione trattative e scadenze contratti esistenti — i contratti in scadenza sono il miglior momento per rinegoziare.",
       "3": "Monitoraggio proattivo dei clienti: chi ha problemi ricorrenti sta cercando un nuovo fornitore.",
-      "4": "CRM integrato con ticketing e fatturazione — visione completa dal contratto al supporto."
+      "4": "CRM integrato con ticketing e fatturazione — visione completa dal contratto al supporto.",
+      "5": "CRM integrato con ticketing e fatturazione — visione completa dal contratto al supporto con scadenze contratti monitorate e proposte di rinnovo inviate automaticamente 60 giorni prima."
     },
     "team": {
       "1": "Forma i tecnici sulla comunicazione con il cliente non tecnico — spiegare il valore in modo comprensibile è fondamentale.",
       "2": "Struttura incentivi per chi porta referenze da clienti soddisfatti — il passaparola IT SMB vale oro.",
       "3": "Assumi un service manager (~2.500-3.500€/mese) che garantisce la qualità del servizio e gestisce la soddisfazione cliente.",
-      "4": "Team strutturato: account manager + service manager + tecnici specializzati (cloud, security, networking)."
+      "4": "Team strutturato: account manager + service manager + tecnici specializzati (cloud, security, networking).",
+      "5": "Team strutturato: account manager + service manager + tecnici specializzati (cloud, security, networking) — autonomo nella gestione completa senza dipendere dal titolare per nessun cliente."
     },
     "processi": {
       "1": "Standardizza i contratti di servizio: SLA chiari, tempi di risposta garantiti, escalation procedure.",
       "2": "Sistema di ticketing (Freshdesk, Zendesk, ~50-150€/mese) per la gestione delle richieste e misurazione dei SLA.",
       "3": "Processo di monitoraggio proattivo: avvisare il cliente prima che si accorga del problema — differenziazione fondamentale.",
-      "4": "Certificazioni (ISO 27001, SOC 2) — prerequisito per clienti enterprise e PA."
+      "4": "Certificazioni (ISO 27001, SOC 2) — prerequisito per clienti enterprise e PA.",
+      "5": "Certificazioni ISO 27001 o SOC 2 attive con monitoring proattivo strutturato — prerequisito per clienti enterprise e PA con SLA garantiti e incidenti risolti prima che il cliente se ne accorga."
     },
     "ricavi": {
       "1": "Passa da interventi a chiamata a contratti di manutenzione mensili — stabilizza il fatturato e migliora i margini.",
       "2": "Upsell cloud: sposta i clienti da server fisici a Microsoft 365/Azure — margini migliori e recurring revenue.",
       "3": "Sviluppa la divisione cybersecurity — il mercato cresce del 15-20% all'anno e i margini sono elevati.",
-      "4": "Managed Security Services Provider (MSSP) — ricavo ricorrente mensile con margini >50%."
+      "4": "Managed Security Services Provider (MSSP) — ricavo ricorrente mensile con margini >50%.",
+      "5": "Managed Security Services Provider strutturato come centro di profitto — ricavo ricorrente mensile prevedibile superiore al 50% del fatturato con margini elevati e churn minimo."
     },
     "marketing": {
       "1": "Google My Business ottimizzato + referenze sui portali locali — le PMI cercano il fornitore IT locale.",
       "2": "Partnership Microsoft, Cisco, VMware — directory ufficiali e lead da vendor qualificati.",
       "3": "Content marketing su cybersecurity e cloud per PMI — il tema crea urgenza e qualifica i lead.",
-      "4": "Account based marketing sulle 100 PMI target della zona — approccio personalizzato per settore."
+      "4": "Account based marketing sulle 100 PMI target della zona — approccio personalizzato per settore.",
+      "5": "Account based marketing attivo sulle 100 PMI target della zona con content cybersecurity consolidato — posizionamento come IT partner di riferimento che genera inbound qualificato."
     },
     "sitoweb": {
       "1": "Sito con servizi, certificazioni e case study PMI — il cliente vuole vedere chi assomiglia a lui.",
       "2": "SEO su parole chiave assistenza IT + zona + settore — traffico locale qualificato.",
       "3": "Blog su cybersecurity e digital transformation per PMI — lead generation organica.",
-      "4": "Assessment tool online: 'Quanto è sicura la tua infrastruttura IT?' — lead generation con alto valore percepito."
+      "4": "Assessment tool online: 'Quanto è sicura la tua infrastruttura IT?' — lead generation con alto valore percepito.",
+      "5": "Assessment tool online attivo che genera lead qualificati autonomamente — il cliente verifica la sicurezza della sua infrastruttura e arriva già consapevole del problema da risolvere."
     },
     "ecommerce": {
       "1": "Portale self-service per richieste di supporto e ticketing — riduce i costi di gestione.",
       "2": "Marketplace Microsoft (CSP) per rivendere licenze Microsoft 365 — margini ricorrenti garantiti.",
       "3": "Piattaforma managed services con monitoring automatico — scalabilità senza aumentare il personale.",
-      "4": "Ecosistema digitale: servizi + cloud + security + compliance — cliente lock-in su più livelli."
+      "4": "Ecosistema digitale: servizi + cloud + security + compliance — cliente lock-in su più livelli.",
+      "5": "Ecosistema digitale consolidato: managed services + cloud + security + compliance — cliente lock-in su più livelli che rende il cambio fornitore praticamente impossibile."
     }
   },
   "servizi_formazione": {
@@ -461,49 +469,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Contatta HR manager e responsabili formazione delle aziende della zona con una proposta di corso pilota gratuito o scontato — nessun costo, apertura relazione.",
       "2": "Assumi un account manager (~2.000-3.000€/mese) con esperienza B2B formazione che gestisce le trattative e i budget formazione aziendali.",
       "3": "Sviluppa accordi con fondi interprofessionali (Fondimpresa, Fondirigenti) — il cliente finanziato è molto più facile da chiudere.",
-      "4": "Struttura commerciale: sales manager + account per verticale + partnerships con università e enti certificatori."
+      "4": "Struttura commerciale: sales manager + account per verticale + partnerships con università e enti certificatori.",
+      "5": "Struttura commerciale consolidata: sales manager + account per verticale + partnership con università e enti certificatori — fatturato da contratti aziendali ricorrenti superiore al 70%."
     },
     "pipeline": {
       "1": "Traccia ogni contatto aziendale su Excel: azienda, referente HR, budget formativo, esigenze — il budget formazione si decide a ottobre per l'anno seguente.",
       "2": "CRM con gestione trattative e scadenze piani formativi (~30-80€/mese) — nel B2B formazione i tempi sono lunghi.",
       "3": "Calendario commerciale allineato alle scadenze dei fondi interprofessionali — anticipa le finestre di finanziamento.",
-      "4": "CRM integrato con gestione corsi, presenze e certificazioni — visione completa dal contratto alla certificazione."
+      "4": "CRM integrato con gestione corsi, presenze e certificazioni — visione completa dal contratto alla certificazione.",
+      "5": "CRM integrato con gestione corsi, presenze e certificazioni — visione completa dal contratto alla certificazione con calendario commerciale allineato alle scadenze dei fondi interprofessionali."
     },
     "team": {
       "1": "Forma i docenti sulla vendita consultiva — chi eroga la formazione incontra il cliente e può identificare nuove esigenze.",
       "2": "Piano incentivi per chi porta nuovi corsi aziendali — i docenti con rete di contatti sono risorse commerciali preziose.",
       "3": "Assumi un responsabile sviluppo corsi (~2.000-3.000€/mese) che crea nuovi programmi su misura per le esigenze del mercato.",
-      "4": "Team strutturato: sales + sviluppo programmi + coordinamento docenti + customer success post-formazione."
+      "4": "Team strutturato: sales + sviluppo programmi + coordinamento docenti + customer success post-formazione.",
+      "5": "Team strutturato: sales + sviluppo programmi + coordinamento docenti + customer success post-formazione — autonomo nella gestione completa con NPS monitorato dopo ogni corso."
     },
     "processi": {
       "1": "Standardizza i materiali didattici e i test di apprendimento — la qualità percepita si misura anche dai materiali.",
       "2": "Accreditamento come ente formativo (SOA, accreditamenti regionali, ~1.000-5.000€) — prerequisito per i fondi interprofessionali.",
       "3": "Processo di follow-up post-formazione: verifica apprendimento, NPS, proposta corso successivo.",
-      "4": "Certificazioni ISO 29990 o UNI EN ISO 21001 — posizionamento premium e accesso a gare PA."
+      "4": "Certificazioni ISO 29990 o UNI EN ISO 21001 — posizionamento premium e accesso a gare PA.",
+      "5": "Certificazioni ISO 29990 o UNI EN ISO 21001 attive — posizionamento premium che apre le gare PA e differenzia dai competitor non certificati con prezzi giustificati."
     },
     "ricavi": {
       "1": "Proponi piani formativi annuali invece di corsi singoli — fatturato prevedibile e relazione continuativa.",
       "2": "Sviluppa corsi certificati riconosciuti (PMP, SHRM, certificazioni specifiche) — il cliente paga la credenziale.",
       "3": "Formazione finanziata via fondi interprofessionali — il cliente non paga, le barriere all'acquisto crollano.",
-      "4": "Piattaforma e-learning proprietaria — scalabilità senza costi variabili, margini >60%."
+      "4": "Piattaforma e-learning proprietaria — scalabilità senza costi variabili, margini >60%.",
+      "5": "Piattaforma e-learning proprietaria consolidata come centro di profitto scalabile — margini superiori al 60% con crescita senza costi variabili proporzionali al numero di studenti."
     },
     "marketing": {
       "1": "LinkedIn con contenuti su trend formativi e case study di clienti — la formazione B2B si vende con la credibilità.",
       "2": "Partecipa a Forum HR, HR Innovation Summit (~1.000-3.000€) — contatti diretti con HR manager e L&D director.",
       "3": "Content marketing: white paper su ROI della formazione, guide pratiche per HR — lead generation B2B.",
-      "4": "Thought leadership: speaker a conferenze, pubblicazioni su riviste HR, partnership con università."
+      "4": "Thought leadership: speaker a conferenze, pubblicazioni su riviste HR, partnership con università.",
+      "5": "Thought leadership consolidata: speaker a conferenze, pubblicazioni su riviste HR e partnership con università — posizionamento da advisor L&D riconosciuto che genera inbound spontaneo."
     },
     "sitoweb": {
       "1": "Sito con catalogo corsi, docenti e testimonianze aziendali — ~800-2.000€.",
       "2": "Piattaforma LMS integrata per corsi blended e e-learning (~200-500€/mese).",
       "3": "SEO su parole chiave formazione + tema + settore — traffico B2B qualificato.",
-      "4": "Piattaforma formazione completa: LMS + gestione presenze + certificazioni + reportistica HR."
+      "4": "Piattaforma formazione completa: LMS + gestione presenze + certificazioni + reportistica HR.",
+      "5": "Piattaforma formazione completa: LMS + gestione presenze + certificazioni + reportistica HR — standard richiesto dai clienti enterprise che integra il sistema HR aziendale."
     },
     "ecommerce": {
       "1": "Corsi online su Udemy o Teachable — visibilità immediata con investimento minimo.",
       "2": "Piattaforma e-learning proprietaria con abbonamento mensile per accesso a tutti i corsi.",
       "3": "Corporate learning platform in white label per grandi aziende — recurring revenue e lock-in.",
-      "4": "Ecosistema formazione: e-learning + live + coaching + certificazioni — offerta completa per ogni esigenza."
+      "4": "Ecosistema formazione: e-learning + live + coaching + certificazioni — offerta completa per ogni esigenza.",
+      "5": "Ecosistema formazione consolidato: e-learning + live + coaching + certificazioni — offerta completa per ogni esigenza con corporate learning platform in white label per i grandi clienti."
     }
   },
   "edilizia_residenziale": {
@@ -1613,49 +1629,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Struttura il processo inbound: landing page chiara, trial gratuito e onboarding guidato — il prodotto si deve vendere da solo nel primo step. Nessun costo aggiuntivo.",
       "2": "Assumi un Sales Development Representative (SDR, ~2.000-2.800€/mese) per qualificare lead e fissare demo — operativo in 1-2 mesi.",
       "3": "Affianca all'SDR un Account Executive (~3.000-4.500€/mese) che chiude le trattative e gestisce gli account strategici.",
-      "4": "Struttura sales completa: SDR + AE + Customer Success Manager + Sales Manager — ciclo completo dall'acquisizione alla retention."
+      "4": "Struttura sales completa: SDR + AE + Customer Success Manager + Sales Manager — ciclo completo dall'acquisizione alla retention.",
+      "5": "Struttura sales completa consolidata: SDR + Account Executive + Customer Success Manager + Sales Manager — ciclo completo dall'acquisizione alla retention con MRR crescente e churn sotto controllo."
     },
     "pipeline": {
       "1": "Traccia ogni trial e demo su Excel: azienda, interlocutore, esigenza, stato — il SaaS si vende in settimane, non mesi.",
       "2": "CRM SaaS-native (HubSpot, Pipedrive, ~50-100€/mese) con pipeline per stage: trial → demo → proposta → chiuso.",
       "3": "Lead scoring automatico basato sull'attività in-app: chi usa il trial intensivamente ha 3x più probabilità di convertire.",
-      "4": "Revenue Operations: CRM + analytics + customer success integrati — visibilità completa su acquisition, retention e expansion."
+      "4": "Revenue Operations: CRM + analytics + customer success integrati — visibilità completa su acquisition, retention e expansion.",
+      "5": "Revenue Operations strutturato: CRM + analytics + customer success integrati — visibilità completa su acquisition, retention ed expansion con forecast mensile accurato."
     },
     "team": {
       "1": "Forma il team tecnico sulle tecniche di demo e sullo storytelling del prodotto — la demo è il momento più critico del ciclo di vendita SaaS.",
       "2": "Piano incentivi per l'SDR basato su SQL (Sales Qualified Lead) generati, non solo su attività.",
       "3": "Assumi un Customer Success Manager (~2.500-3.500€/mese) — riduce il churn e aumenta l'expansion revenue.",
-      "4": "Team strutturato con Sales Manager che coordina SDR + AE + CS e monitora MRR, churn e NPS."
+      "4": "Team strutturato con Sales Manager che coordina SDR + AE + CS e monitora MRR, churn e NPS.",
+      "5": "Sales Manager che coordina SDR + AE + CS con MRR, churn e NPS monitorati settimanalmente — struttura autonoma che cresce senza dipendere dal founder per nessuna trattativa."
     },
     "processi": {
       "1": "Standardizza il processo di onboarding: welcome email, tutorial video, check-in a 7 giorni — riduce il churn nei primi 30 giorni.",
       "2": "Playbook vendita: script demo, gestione obiezioni, proposta standard e follow-up cadenzato.",
       "3": "Processo QBR (Quarterly Business Review) con i clienti principali — fidelizzazione e upsell sistematico.",
-      "4": "Processo PLG (Product Led Growth): trial → attivazione → habit → referral — il prodotto diventa il principale canale di acquisizione."
+      "4": "Processo PLG (Product Led Growth): trial → attivazione → habit → referral — il prodotto diventa il principale canale di acquisizione.",
+      "5": "Processo PLG consolidato: trial → attivazione → habit → referral — il prodotto è il principale canale di acquisizione con onboarding automatizzato e churn prevenuto proattivamente."
     },
     "ricavi": {
       "1": "Rivedi il pricing: piano mensile vs annuale con sconto 20-30% — l'annuale migliora il cash flow e riduce il churn.",
       "2": "Introduci un piano Enterprise con feature avanzate e SLA garantiti — margini superiori e clienti più fidelizzati.",
       "3": "Upsell sistematico: più utenti, più storage, più integrazioni — l'expansion revenue è il motore della crescita SaaS.",
-      "4": "Partner program: rivenditori, integratori, consulenti che portano clienti in cambio di commissioni — crescita scalabile."
+      "4": "Partner program: rivenditori, integratori, consulenti che portano clienti in cambio di commissioni — crescita scalabile.",
+      "5": "Partner program attivo con rivenditori, integratori e consulenti — crescita scalabile senza aumentare il costo commerciale, expansion revenue superiore al 30% del fatturato totale."
     },
     "marketing": {
       "1": "Content marketing: blog tecnico e guide pratiche sul problema che risolvi — SEO a lungo termine con costo marginale.",
       "2": "Campagne LinkedIn Ads su ICP (Ideal Customer Profile) — targeting preciso su ruolo, settore e dimensione azienda (~500-1.500€/mese).",
       "3": "Review su G2, Capterra, Trustpilot — il 70% degli acquirenti SaaS legge le review prima di comprare.",
-      "4": "Demand generation strutturata: SEO + paid + content + referral + partner program — flywheel completo."
+      "4": "Demand generation strutturata: SEO + paid + content + referral + partner program — flywheel completo.",
+      "5": "Demand generation strutturata consolidata: SEO + paid + content + referral + partner program — flywheel attivo che genera lead qualificati in modo prevedibile e misurabile."
     },
     "sitoweb": {
       "1": "Landing page chiara con valore proposto, social proof e CTA per il trial — ottimizza la conversion rate.",
       "2": "Sito con case study, pricing trasparente e comparison con i competitor — riduce il tempo di decisione.",
       "3": "SEO tecnico su parole chiave problema + soluzione + alternativa a [competitor] — traffico qualificato.",
-      "4": "Sito ottimizzato per PLG: trial immediato, onboarding in-app, referral program integrato."
+      "4": "Sito ottimizzato per PLG: trial immediato, onboarding in-app, referral program integrato.",
+      "5": "Sito ottimizzato per PLG con trial immediato, onboarding in-app e referral program integrato — conversion rate ottimizzato con A/B testing continuo e CAC monitorato per canale."
     },
     "ecommerce": {
       "1": "Self-service checkout per i piani mensili base — rimuovi l'attrito nell'acquisto per i clienti SMB.",
       "2": "Marketplace SaaS (AppSumo, Product Hunt) per awareness e acquisizione di early adopter.",
       "3": "API e integrazioni con gli ecosistemi principali (Salesforce, HubSpot, Zapier) — distribuzione tramite marketplace.",
-      "4": "App store dei principali ecosistemi (Salesforce AppExchange, HubSpot Marketplace) — canale di distribuzione scalabile."
+      "4": "App store dei principali ecosistemi (Salesforce AppExchange, HubSpot Marketplace) — canale di distribuzione scalabile.",
+      "5": "Presenza consolidata su App store degli ecosistemi principali (Salesforce AppExchange, HubSpot Marketplace) — canale di distribuzione scalabile che genera lead qualificati in autonomia."
     }
   },
   "tech_system_integrator": {
@@ -1663,49 +1687,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Mappa le aziende della tua zona con sistemi legacy da aggiornare — il problem-aware buyer è il tuo cliente ideale. Nessun costo.",
       "2": "Assumi un account manager (~2.500-3.500€/mese) con esperienza IT B2B che gestisce le trattative e le gare — operativo in 2-3 mesi.",
       "3": "Affianca all'account manager un pre-sales engineer (~3.000-4.000€/mese) per le gare tecniche complesse.",
-      "4": "Struttura commerciale completa: sales director + account manager per verticale + pre-sales + partner manager."
+      "4": "Struttura commerciale completa: sales director + account manager per verticale + pre-sales + partner manager.",
+      "5": "Struttura commerciale completa: sales director + account manager per verticale + pre-sales + partner manager — presidio completo del mercato con pipeline prevedibile e win rate monitorato."
     },
     "pipeline": {
       "1": "Traccia ogni RFP e trattativa su Excel: cliente, scope, valore, stato, decision maker — ciclo vendita IT è 3-9 mesi.",
       "2": "CRM con gestione gare e follow-up strutturato (~50-100€/mese) — nel system integration non rispondere a una gara è perdere il cliente.",
       "3": "Win/loss analysis su ogni gara persa — capire perché perdi contro i competitor è più utile di qualsiasi campagna.",
-      "4": "CRM integrato con project management — dalla gara alla delivery in un unico sistema."
+      "4": "CRM integrato con project management — dalla gara alla delivery in un unico sistema.",
+      "5": "CRM integrato con project management e delivery — dalla gara al go-live in un unico sistema con win/loss analysis sistematica e forecast trimestrale accurato."
     },
     "team": {
       "1": "Certifica i tuoi tecnici sulle principali piattaforme che implementi (Microsoft, SAP, Oracle) — le certificazioni aprono le gare.",
       "2": "Piano incentivi per chi porta nuove opportunità commerciali dai clienti esistenti — l'upsell nel SI vale oro.",
       "3": "Assumi un delivery manager (~3.000-4.500€/mese) che garantisce la qualità dei progetti e genera referenze positive.",
-      "4": "Team strutturato: sales + pre-sales + delivery + customer success — ciclo completo dalla vendita al rinnovo."
+      "4": "Team strutturato: sales + pre-sales + delivery + customer success — ciclo completo dalla vendita al rinnovo.",
+      "5": "Team strutturato: sales + pre-sales + delivery manager + customer success — ciclo completo dalla vendita al rinnovo con NPS monitorato e referenze generate sistematicamente."
     },
     "processi": {
       "1": "Standardizza le proposte tecniche: executive summary, architettura proposta, timeline, team, referenze — formato professionale.",
       "2": "Processo di delivery strutturato: kick-off, milestone, UAT, go-live, hypercare — riduce i problemi post-implementazione.",
       "3": "ISO 9001 o CMMI (~5.000-15.000€) — certificazioni che aprono le gare con PA e grandi aziende.",
-      "4": "PMO interno per la gestione multi-progetto — scalabilità senza perdere controllo sulla qualità."
+      "4": "PMO interno per la gestione multi-progetto — scalabilità senza perdere controllo sulla qualità.",
+      "5": "PMO interno per gestione multi-progetto con ISO 9001 o CMMI attiva — scalabilità senza perdere controllo sulla qualità, margini di progetto monitorati e ottimizzati continuamente."
     },
     "ricavi": {
       "1": "Proponi sempre contratti di manutenzione e supporto post-go-live (~15-20% del valore progetto/anno) — ricavo ricorrente con margini >50%.",
       "2": "Upsell sistematico sui clienti attivi: aggiornamenti, moduli aggiuntivi, formazione — il cliente soddisfatto espande.",
       "3": "Sviluppa IP proprietari (acceleratori, template, connettori) — riducono i costi di delivery e aumentano i margini.",
-      "4": "Revenue ricorrente da managed services: gestione infrastruttura, monitoring, supporto 24/7 — prevedibile e scalabile."
+      "4": "Revenue ricorrente da managed services: gestione infrastruttura, monitoring, supporto 24/7 — prevedibile e scalabile.",
+      "5": "Managed services e monitoring remoto degli impianti consolidati come centri di profitto — revenue ricorrente mensile prevedibile superiore al 40% del fatturato totale."
     },
     "marketing": {
       "1": "Case study dettagliati dei progetti completati — il buyer IT vuole vedere referenze simili alla sua situazione.",
       "2": "Partnership con i vendor (Microsoft Gold, SAP Partner) — visibilità nelle directory ufficiali e lead qualificati.",
       "3": "Webinar tecnici e presenza a conferenze di settore (Forum PA, Smau, ~2.000-6.000€) — thought leadership.",
-      "4": "Strategia account based marketing sulle top 50 aziende target — contenuto e approccio personalizzato."
+      "4": "Strategia account based marketing sulle top 50 aziende target — contenuto e approccio personalizzato.",
+      "5": "Strategia account based marketing attiva sui top 50 clienti target con thought leadership consolidata — posizionamento da advisor riconosciuto che genera inbound spontaneo da clienti qualificati."
     },
     "sitoweb": {
       "1": "Sito con expertise, case study e certificazioni — nel B2B IT il sito è la bigliettina da visita nella fase di valutazione.",
       "2": "Sezione case study verticali per settore (manufacturing, retail, PA) — il buyer vuole vedere chi assomiglia a lui.",
       "3": "SEO B2B su long tail keyword tecniche — chi cerca 'implementazione SAP PMI' è un lead molto qualificato.",
-      "4": "Thought leadership hub: blog tecnico, white paper, ricerche di settore — posizionamento da advisor."
+      "4": "Thought leadership hub: blog tecnico, white paper, ricerche di settore — posizionamento da advisor.",
+      "5": "Thought leadership hub consolidato: blog tecnico, white paper e ricerche di settore — prima posizione su Google per le keyword B2B più rilevanti con lead organici in crescita."
     },
     "ecommerce": {
       "1": "Marketplace Microsoft AppSource o SAP Store per i componenti standardizzati che hai sviluppato.",
       "2": "Piattaforma partner per rivendere soluzioni di vendor tier-1 con margini di rivendita garantiti.",
       "3": "SaaS verticale proprietario basato sulla tua expertise — recurring revenue indipendente dai progetti.",
-      "4": "Ecosistema digitale: SaaS + marketplace + managed services — modello ibrido prodotto-servizi."
+      "4": "Ecosistema digitale: SaaS + marketplace + managed services — modello ibrido prodotto-servizi.",
+      "5": "Ecosistema digitale consolidato: SaaS verticale + marketplace + managed services — modello ibrido prodotto-servizi con revenue ricorrente che riduce la dipendenza dai progetti."
     }
   },
   "tech_digital_agency": {
@@ -1713,49 +1745,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Chiedi referenze ai clienti soddisfatti e costruisci un portfolio con i risultati ottenuti (KPI reali) — il portfolio vale più di qualsiasi campagna. Nessun costo.",
       "2": "Assumi un account manager (~2.000-3.000€/mese) che gestisce le trattative e sviluppa il portafoglio clienti esistente.",
       "3": "Affianca all'account un business developer (~2.500-3.500€/mese) dedicato all'acquisizione di nuovi clienti e alle gare.",
-      "4": "Struttura commerciale: sales director + account manager per verticale + business developer + partnership manager."
+      "4": "Struttura commerciale: sales director + account manager per verticale + business developer + partnership manager.",
+      "5": "Struttura commerciale consolidata: sales director + account manager per verticale + business developer + partnership manager — fatturato ricorrente da retainer superiore al 70% del totale."
     },
     "pipeline": {
       "1": "Traccia ogni trattativa su Excel: cliente, servizio, budget, stato — nel digital agency il ciclo è 2-6 settimane.",
       "2": "CRM con gestione proposte e follow-up strutturato (~30-80€/mese) — il cliente che non senti in 48h va dal competitor.",
       "3": "Processo di qualificazione lead strutturato (BANT: Budget, Authority, Need, Timeline) — concentrati sui deal fattibili.",
-      "4": "CRM integrato con project management e fatturazione — visione completa da trattativa a pagamento."
+      "4": "CRM integrato con project management e fatturazione — visione completa da trattativa a pagamento.",
+      "5": "CRM integrato con project management e fatturazione — visione completa da trattativa a pagamento con tasso di upsell monitorato e QBR strutturate per ogni cliente principale."
     },
     "team": {
       "1": "Struttura incentivi per i creativi e i tecnici che portano referenze o nuovi contatti — chi lavora a contatto con i clienti vede le opportunità.",
       "2": "Account manager che fa upselling sistematico sui clienti attivi — propone sempre il servizio complementare.",
       "3": "Assumi un head of strategy (~3.000-4.500€/mese) che guida la crescita dei clienti e aumenta il valore dei contratti.",
-      "4": "Team strutturato per servizio: SEO lead, paid lead, social lead, dev lead — expertise verticale per ogni area."
+      "4": "Team strutturato per servizio: SEO lead, paid lead, social lead, dev lead — expertise verticale per ogni area.",
+      "5": "Team strutturato per servizio con head of strategy: SEO lead, paid lead, social lead, dev lead — expertise verticale che genera risultati misurabili e referenze spontanee."
     },
     "processi": {
       "1": "Standardizza il processo di onboarding cliente: brief, accessi, kick-off, piano editoriale del primo mese — professionalità percepita.",
       "2": "Report mensile automatizzato per ogni cliente con KPI di business (non solo metriche vanity) — dimostra il valore.",
       "3": "Processo di upsell strutturato: ogni QBR include una proposta di servizio aggiuntivo coerente con gli obiettivi del cliente.",
-      "4": "Certificazioni agency: Google Premier, Meta Business Partner, HubSpot Solutions Partner — badge di credibilità."
+      "4": "Certificazioni agency: Google Premier, Meta Business Partner, HubSpot Solutions Partner — badge di credibilità.",
+      "5": "Certificazioni agency consolidate: Google Premier, Meta Business Partner, HubSpot Solutions Partner — badge di credibilità che differenziano e giustificano prezzi premium."
     },
     "ricavi": {
       "1": "Passa da progetti una tantum a retainer mensili — stabilizza il fatturato e riduci i costi di acquisizione.",
       "2": "Pacchetti servizio predefiniti con prezzi fissi — facilita la vendita e riduce il tempo di negoziazione.",
       "3": "Performance-based pricing su alcuni clienti — allineamento degli interessi e margini superiori se i risultati sono buoni.",
-      "4": "Servizi proprietari scalabili: tool, template, framework — margini superiori alla pura erogazione di servizi."
+      "4": "Servizi proprietari scalabili: tool, template, framework — margini superiori alla pura erogazione di servizi.",
+      "5": "Servizi proprietari scalabili consolidati (tool, template, framework) e performance-based pricing su clienti selezionati — margini superiori alla pura erogazione di servizi."
     },
     "marketing": {
       "1": "Case study con risultati numerici reali — nel digital il cliente vuole vedere i numeri, non le promesse.",
       "2": "Presenza su Clutch, GoodFirms, DesignRush — le directory agency sono fonte primaria di lead qualificati.",
       "3": "Content marketing verticale su un settore specifico — diventa l'agenzia di riferimento per il manifatturiero o per il retail.",
-      "4": "Thought leadership: speak a eventi, pubblicazioni su Media Marketing, posizionamento da consulente strategico."
+      "4": "Thought leadership: speak a eventi, pubblicazioni su Media Marketing, posizionamento da consulente strategico.",
+      "5": "Thought leadership consolidata: speaker a eventi, pubblicazioni su Media Marketing — posizionamento da consulente strategico che genera inbound da clienti premium qualificati."
     },
     "sitoweb": {
       "1": "Portfolio aggiornato con case study e risultati — il sito è il tuo principale strumento di vendita.",
       "2": "SEO su parole chiave settore + servizio + zona — i clienti cercano 'agenzia SEO Milano', non 'agenzia digitale'.",
       "3": "Blog tecnico con guide pratiche — SEO a lungo termine e lead generation organica.",
-      "4": "Sito ottimizzato per la conversione con CRO continuativo — il tuo sito è il tuo miglior test di competenza."
+      "4": "Sito ottimizzato per la conversione con CRO continuativo — il tuo sito è il tuo miglior test di competenza.",
+      "5": "Sito ottimizzato per la conversione con CRO continuativo — conversion rate monitorato e ottimizzato come dimostrazione pratica della competenza dell'agenzia ai potenziali clienti."
     },
     "ecommerce": {
       "1": "Marketplace agenzie (Sortlist, Bark) — lead qualificati con investimento minimo.",
       "2": "Prodotti digitali: template, guide, corsi online — ricavo passivo e lead generation.",
       "3": "SaaS tool proprietario basato sulla tua expertise — revenue ricorrente indipendente dai clienti servizio.",
-      "4": "Ecosistema: servizi + prodotti + formazione + community — brand moat difficile da replicare."
+      "4": "Ecosistema: servizi + prodotti + formazione + community — brand moat difficile da replicare.",
+      "5": "Ecosistema consolidato: servizi + prodotti + formazione + community — brand moat difficile da replicare che genera ricavi diversificati e riduce la dipendenza dai clienti servizio."
     }
   },
   "tech_automazione": {
@@ -1763,49 +1803,57 @@ var AZIONI_TARGET_BY_SETTORE =
       "1": "Identifica i processi ripetitivi nei tuoi clienti esistenti che puoi automatizzare — il caso d'uso concreto è il miglior argomento di vendita. Nessun costo.",
       "2": "Assumi un tecnico-commerciale (~2.500-3.500€/mese) con competenza in automazione industriale che gestisce gare e trattative.",
       "3": "Affianca un pre-sales engineer (~3.000-4.500€/mese) che progetta soluzioni su misura e supporta le gare tecniche.",
-      "4": "Struttura commerciale: sales manager + account per verticale + pre-sales + partner manager per i vendor."
+      "4": "Struttura commerciale: sales manager + account per verticale + pre-sales + partner manager per i vendor.",
+      "5": "Struttura commerciale completa: sales manager + account per verticale + pre-sales + partner manager — presidio completo del mercato con pipeline prevedibile e gare vinte sistematicamente."
     },
     "pipeline": {
       "1": "Traccia ogni opportunità su Excel: cliente, processo da automatizzare, valore stimato, stato — ciclo 3-9 mesi.",
       "2": "CRM per gestire le trattative con decision maker multipli — nell'automazione coinvolgi sempre produzione, IT e finance.",
       "3": "Gestione pipeline per fase: awareness → analisi processo → demo → proposta → gara → chiusura.",
-      "4": "CRM integrato con project management e delivery — dalla trattativa al go-live in un unico sistema."
+      "4": "CRM integrato con project management e delivery — dalla trattativa al go-live in un unico sistema.",
+      "5": "CRM integrato con project management e delivery — dalla gara al go-live con gestione decision maker multipli e forecast trimestrale accurato per cliente e verticale."
     },
     "team": {
       "1": "Certifica i tecnici sui principali vendor di automazione (Siemens, ABB, KUKA, Fanuc) — le certificazioni aprono le gare.",
       "2": "Piano incentivi per chi porta nuove opportunità dai clienti esistenti — i progetti di espansione sono i più facili da chiudere.",
       "3": "Assumi un project manager (~2.800-3.800€/mese) che garantisce la qualità dei progetti e genera referenze.",
-      "4": "Team strutturato: commerciale + pre-sales + project manager + customer success per il post-vendita."
+      "4": "Team strutturato: commerciale + pre-sales + project manager + customer success per il post-vendita.",
+      "5": "Team strutturato: commerciale + pre-sales + project manager + customer success post-vendita — ciclo completo dalla trattativa alla manutenzione con NPS monitorato."
     },
     "processi": {
       "1": "Standardizza le proposte tecniche: ROI analysis, payback period, specifiche tecniche, referenze simili.",
       "2": "Metodologia di analisi del processo da automatizzare (AS-IS → TO-BE) — il cliente paga per la consulenza, non solo per l'hardware.",
       "3": "ISO 9001 + certificazioni di settore (CE, ATEX se necessario) — prerequisito per gare industriali strutturate.",
-      "4": "PMO interno per gestione multi-progetto e controllo margini — scalabilità senza perdere redditività."
+      "4": "PMO interno per gestione multi-progetto e controllo margini — scalabilità senza perdere redditività.",
+      "5": "PMO interno per gestione multi-progetto con ISO 9001 e certificazioni vendor consolidate — scalabilità senza perdere redditività con margini di progetto monitorati."
     },
     "ricavi": {
       "1": "Proponi sempre contratti di manutenzione e spare part management post-installazione — ricavo ricorrente con margini >40%.",
       "2": "Upsell su clienti attivi: espansione del sistema, nuove celle, aggiornamenti software — il cliente soddisfatto espande.",
       "3": "Sviluppa soluzioni standardizzate per processi ricorrenti — riduci i costi di progettazione e aumenta i margini.",
-      "4": "Managed services e monitoraggio remoto degli impianti — revenue ricorrente prevedibile e scalabile."
+      "4": "Managed services e monitoraggio remoto degli impianti — revenue ricorrente prevedibile e scalabile.",
+      "5": "Managed services e monitoraggio remoto degli impianti consolidati come centri di profitto — revenue ricorrente mensile prevedibile superiore al 35% del fatturato totale."
     },
     "marketing": {
       "1": "Case study con ROI misurato — nel manifatturiero il cliente vuole vedere il payback period, non le promesse.",
       "2": "Partnership con vendor (Siemens Solution Partner, ABB Authorized Integrator) — directory ufficiali e lead qualificati.",
       "3": "Presenza a SPS Italia, MECSPE, Industry 4.0 Summit (~3.000-8.000€) — contatti diretti con decision maker.",
-      "4": "Thought leadership Industry 4.0: white paper, webinar tecnici, presenza riviste di settore."
+      "4": "Thought leadership Industry 4.0: white paper, webinar tecnici, presenza riviste di settore.",
+      "5": "Thought leadership Industry 4.0 consolidata: white paper, webinar tecnici e presenza riviste — posizionamento come integratore di eccellenza riconosciuto nel settore manifatturiero."
     },
     "sitoweb": {
       "1": "Sito con expertise, certificazioni e case study per settore — nel B2B industriale il sito è la bigliettina da visita.",
       "2": "Video demo delle soluzioni realizzate — il cliente vuole vedere l'automazione in funzione prima di acquistare.",
       "3": "SEO su parole chiave automazione + settore + zona — traffico B2B qualificato.",
-      "4": "Configuratore ROI online — il cliente calcola il payback della sua automazione: lead generation potentissima."
+      "4": "Configuratore ROI online — il cliente calcola il payback della sua automazione: lead generation potentissima.",
+      "5": "Configuratore ROI online attivo che genera lead qualificati autonomamente — il cliente calcola il payback della sua automazione e arriva già convinto al primo appuntamento."
     },
     "ecommerce": {
       "1": "Marketplace componenti automazione (AutomationDirect, RS Components) per i ricambi standard.",
       "2": "Software di supervisione (SCADA, MES) proprietario in cloud — recurring revenue indipendente dai progetti.",
       "3": "Piattaforma IIoT per monitoring remoto degli impianti installati — lock-in strategico e revenue ricorrente.",
-      "4": "Ecosistema digitale: progettazione + software + monitoring + manutenzione — valore totale sul cliente massimizzato."
+      "4": "Ecosistema digitale: progettazione + software + monitoring + manutenzione — valore totale sul cliente massimizzato.",
+      "5": "Ecosistema digitale consolidato: SaaS IIoT + marketplace componenti + managed services — modello ricorrente che riduce la dipendenza dai progetti e stabilizza il fatturato."
     }
   }
 };
