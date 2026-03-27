@@ -4606,18 +4606,17 @@ function _buildCronistoria(p) {
   let html = '<div style="margin-top:20px;">';
   html += scrollHint;
   const containerStyle = history.length > 4
-    ? 'position:relative;padding-left:20px;border-left:2px solid var(--border2);max-height:480px;overflow-y:scroll;padding-right:8px;'
-    : 'position:relative;padding-left:20px;border-left:2px solid var(--border2);';
+    ? 'max-height:480px;overflow-y:scroll;padding-right:8px;'
+    : '';
   html += '<div style="' + containerStyle + '">';
 
   history.slice().reverse().forEach((snap, idx) => {
-    const isFirst = idx === history.length - 1;
-    const isLast = idx === 0;
     const col = scoreCol(snap.score);
-    html += '<div style="position:relative;margin-bottom:12px">';
+    html += '<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;">';
     // Dot
-    html += '<div style="position:absolute;left:-17px;top:4px;width:10px;height:10px;border-radius:50%;background:' + col + ';border:2px solid #fff;box-shadow:0 0 0 1px ' + col + '"></div>';
+    html += '<div style="width:10px;height:10px;border-radius:50%;background:' + col + ';border:2px solid #fff;flex-shrink:0;margin-top:4px;"></div>';
     // Content
+    html += '<div style="flex:1;">';
     html += '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:7px 10px">';
     html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px">';
     html += '<div style="font-size:10px;font-weight:700;color:' + col + '">' + snap.evento + '</div>';
@@ -4627,7 +4626,7 @@ function _buildCronistoria(p) {
     if (snap.score_base && snap.score_base !== snap.score) {
       html += '<div style="font-size:9px;color:var(--gray);margin-top:2px">Score base: ' + snap.score_base + ' · Live: ' + snap.score + '</div>';
     }
-    html += '</div></div>';
+    html += '</div></div></div>';
   });
 
   html += '</div></div>';
