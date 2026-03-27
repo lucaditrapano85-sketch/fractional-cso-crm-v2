@@ -718,7 +718,7 @@ label{color:var(--gray2)}
 .tl-chart-wrap{position:relative;width:100%;height:240px;margin-bottom:4px}
 .tl-dims-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px}
 .tl-dim-row{background:var(--bg3);border-radius:8px;padding:12px 14px}
-.tl-dim-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.tl-dim-header{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
 .tl-dim-name{font-size:13px;font-weight:500;color:var(--white)}
 .tl-dim-badge{font-size:11px;padding:2px 8px;border-radius:99px}
 .tl-badge-ok{background:rgba(28,184,137,0.15);color:var(--green)}
