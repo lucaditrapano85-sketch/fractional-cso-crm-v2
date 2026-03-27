@@ -742,21 +742,14 @@ label{color:var(--gray2)}
   background: var(--bg2);
 }
 
-/* Spaziatura uniforme 16px tra tutti i blocchi */
 .card {
   margin-bottom: 16px;
 }
 
-/* Gap orizzontale tra blocchi affiancati */
-.card-grid,
-.det-grid,
-.score-row,
-.benchmark-row {
-  gap: 16px;
+#view-prospect .card + .card {
+  margin-top: 0;
 }
 
-/* Contenitore principale prospect — gap verticale */
-#prospect-detail > .card,
-#prospect-detail > div > .card {
-  margin-bottom: 16px;
+.score-bench-row {
+  gap: 16px;
 }
