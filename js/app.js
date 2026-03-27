@@ -4182,11 +4182,6 @@ function _buildGraficoTimeline(p) {
         '<span class="tl-dim-name">' + _getDimLabel(settore, d) + '</span>' +
         '<span class="tl-dim-badge ' + badgeClass + '">' + badgeText + '</span>' +
       '</div>' +
-      '<div class="tl-bar-track">' +
-        '<div class="tl-bar-cur" style="width:' + curPct + '%"></div>' +
-        (haGap ? '<div class="tl-bar-tgt" style="left:' + tgtPct + '%"></div>' : '') +
-      '</div>' +
-      '<div class="tl-bar-labels"><span>1</span><span style="text-align:center">' + (haGap ? 'target ' + tgt : 'livello ' + cur) + '</span><span>5</span></div>' +
     '</div>';
   }).join('');
 
