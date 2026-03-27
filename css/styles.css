@@ -746,6 +746,10 @@ label{color:var(--gray2)}
   margin-bottom: 16px;
 }
 
+.score-bench-grid > .card {
+  margin-bottom: 0;
+}
+
 #view-prospect .card + .card {
   margin-top: 0;
 }
