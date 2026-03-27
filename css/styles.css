@@ -746,7 +746,8 @@ label{color:var(--gray2)}
   margin-bottom: 16px;
 }
 
-.score-bench-grid > .card {
+.score-bench-grid > .card,
+#radar-target-row .card {
   margin-bottom: 0;
 }
 
