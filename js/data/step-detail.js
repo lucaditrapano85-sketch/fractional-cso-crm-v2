@@ -635,6 +635,69 @@ const STEP_DETAIL_BY_SETTORE = {
     },
   },
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // SERVIZI FORMAZIONE
+  // ═══════════════════════════════════════════════════════════════════════════
+  servizi_formazione: {
+    vendite: {
+      '1': { chi:'Titolare', cosa:'Titolare/formatore vende i propri corsi — nessun commerciale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Proposta proattiva verso HR e resp. formazione aziende zona', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Commerciale', cosa:'Commerciale dedicato — sviluppo clienti corporate e enti', costo_mensile:2500, costo_setup:500, tempo_mesi:3 },
+      '4': { chi:'Team commerciale', cosa:'Team vendite — corporate + PA/bandi + catalogo interaziendale', costo_mensile:5000, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Dir. commerciale', cosa:'Dir. commerciale + rete segnalatori + partnership consulenti', costo_mensile:8500, costo_setup:2000, tempo_mesi:6 },
+    },
+    pipeline: {
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — corsi venduti a richiesta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Excel con aziende contattate, proposte inviate, follow-up', costo_mensile:0, costo_setup:100, tempo_mesi:1 },
+      '3': { chi:'CRM base', cosa:'CRM per pipeline corporate e scadenze fondi interprofessionali', costo_mensile:80, costo_setup:300, tempo_mesi:1 },
+      '4': { chi:'CRM + consulente bandi', cosa:'CRM + gestione bandi e fondi (Fondimpresa, Fondirigenti)', costo_mensile:500, costo_setup:1500, tempo_mesi:2 },
+      '5': { chi:'CRM + LMS integrato', cosa:'CRM integrato con LMS e fatturazione — ciclo completo', costo_mensile:1200, costo_setup:4000, tempo_mesi:3 },
+    },
+    team: {
+      '1': { chi:'Titolare', cosa:'Titolare-formatore solo — fa tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Assistente', cosa:'Assistente — gestione aule, materiali, iscrizioni', costo_mensile:1500, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'+ formatori freelance', cosa:'Rete di formatori freelance coordinati dal titolare', costo_mensile:3000, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Team strutturato', cosa:'Coordinatore didattico + segreteria + commerciale', costo_mensile:8000, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Academy completa', cosa:'Direttore academy + team formatori + progettazione didattica', costo_mensile:14000, costo_setup:2500, tempo_mesi:5 },
+    },
+    processi: {
+      '1': { chi:'Titolare', cosa:'Nessun processo — ogni corso è improvvisato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Catalogo corsi standard con programmi e durate definite', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Gestionale corsi', cosa:'Processo iscrizione + materiali + valutazione apprendimento', costo_mensile:200, costo_setup:800, tempo_mesi:2 },
+      '4': { chi:'LMS (Moodle, Docebo)', cosa:'LMS per e-learning + blended learning strutturato', costo_mensile:800, costo_setup:3000, tempo_mesi:3 },
+      '5': { chi:'Quality manager', cosa:'Certificazione qualità (ISO 21001) + accreditamento regionale', costo_mensile:1500, costo_setup:8000, tempo_mesi:4 },
+    },
+    ricavi: {
+      '1': { chi:'Titolare', cosa:'Corsi a giornata — fatturato a singhiozzo', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Pacchetti formativi annuali per aziende — ricavo prevedibile', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Consulente bandi', cosa:'Formazione finanziata — fondi interprofessionali come leva', costo_mensile:600, costo_setup:1000, tempo_mesi:2 },
+      '4': { chi:'Produzione contenuti', cosa:'E-learning a catalogo — ricavo passivo da corsi registrati', costo_mensile:1000, costo_setup:3000, tempo_mesi:3 },
+      '5': { chi:'Revenue manager', cosa:'Academy aziendale white-label per grandi clienti — margini premium', costo_mensile:2000, costo_setup:5000, tempo_mesi:4 },
+    },
+    marketing: {
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo passaparola e contatti personali', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'LinkedIn personale del titolare con post su temi formativi', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Webinar + email', cosa:'Webinar gratuiti come lead generation + newsletter', costo_mensile:400, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Agenzia digital', cosa:'Campagne LinkedIn Ads verso HR e responsabili formazione', costo_mensile:1000, costo_setup:1500, tempo_mesi:2 },
+      '5': { chi:'Marketing manager', cosa:'Piano marketing — eventi + content + partnership + PR', costo_mensile:2500, costo_setup:3000, tempo_mesi:3 },
+    },
+    sitoweb: {
+      '1': { chi:'Nessuno', cosa:'Nessun sito o pagina personale datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Web agency', cosa:'Sito con catalogo corsi, formatori, testimonianze', costo_mensile:100, costo_setup:1200, tempo_mesi:1 },
+      '3': { chi:'Sito professionale', cosa:'Iscrizione online + pagamento + calendario corsi', costo_mensile:350, costo_setup:3000, tempo_mesi:2 },
+      '4': { chi:'Sito avanzato', cosa:'Area riservata con materiali, attestati e storico formazione', costo_mensile:800, costo_setup:5000, tempo_mesi:2 },
+      '5': { chi:'LMS + e-commerce', cosa:'Piattaforma e-learning integrata con e-commerce corsi', costo_mensile:2000, costo_setup:12000, tempo_mesi:4 },
+    },
+    ecommerce: {
+      _label: 'Approvvigionamento docenti e contenuti',
+      '1': { chi:'Titolare', cosa:'Nessun approvvigionamento strutturato di contenuti/docenti', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Rete di 3-5 formatori freelance con tariffe concordate', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Accordi formali', cosa:'Accordi con enti certificatori + materiali didattici licenziati', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Partnership + produzione', cosa:'Partnership piattaforme + videomaker per contenuti e-learning', costo_mensile:1500, costo_setup:3000, tempo_mesi:3 },
+      '5': { chi:'Resp. contenuti + studio', cosa:'Resp. contenuti + rete 15+ docenti + studio produzione video', costo_mensile:3500, costo_setup:6000, tempo_mesi:4 },
+    },
+  },
+
 };
 
 window.STEP_DETAIL_BY_SETTORE = STEP_DETAIL_BY_SETTORE;
