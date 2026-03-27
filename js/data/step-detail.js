@@ -572,6 +572,69 @@ const STEP_DETAIL_BY_SETTORE = {
     },
   },
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // SERVIZI IT
+  // ═══════════════════════════════════════════════════════════════════════════
+  servizi_it: {
+    vendite: {
+      '1': { chi:'Titolare', cosa:'Titolare fa tutto — assistenza e vendita ai clienti storici', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Mappatura PMI della zona con IT datato — visite dirette', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Account manager', cosa:'Account manager dedicato — sviluppa portafoglio e rinnovi', costo_mensile:2500, costo_setup:500, tempo_mesi:3 },
+      '4': { chi:'Team commerciale', cosa:'Account + tecnico pre-sales per gare e clienti strutturati', costo_mensile:4500, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Dir. commerciale', cosa:'Sales manager + account per verticale + business developer', costo_mensile:8000, costo_setup:2000, tempo_mesi:6 },
+    },
+    pipeline: {
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — ticket e vendite confusi insieme', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Excel con trattative aperte e scadenze contratti esistenti', costo_mensile:0, costo_setup:100, tempo_mesi:1 },
+      '3': { chi:'CRM base', cosa:'CRM con pipeline + alert scadenza contratti — il rinnovo è oro', costo_mensile:80, costo_setup:300, tempo_mesi:1 },
+      '4': { chi:'CRM + ticketing', cosa:'CRM integrato con ticketing — visione dal contratto al supporto', costo_mensile:300, costo_setup:1000, tempo_mesi:2 },
+      '5': { chi:'PSA completo', cosa:'CRM + PSA (Professional Services Automation) completo', costo_mensile:700, costo_setup:3000, tempo_mesi:3 },
+    },
+    team: {
+      '1': { chi:'Titolare + tecnici', cosa:'Titolare + 1-2 tecnici — tutti fanno tutto', costo_mensile:5000, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Formazione interna', cosa:'Tecnici formati sulla comunicazione col cliente non tecnico', costo_mensile:5500, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'+ service manager', cosa:'Service manager — garantisce qualità servizio e soddisfazione', costo_mensile:8500, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Team specializzato', cosa:'Specializzazioni — cloud, security, networking su persone diverse', costo_mensile:13000, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Struttura completa', cosa:'Account + service + tecnici specializzati + help desk L1', costo_mensile:18000, costo_setup:2000, tempo_mesi:5 },
+    },
+    processi: {
+      '1': { chi:'Titolare', cosa:'Nessun processo — si risponde quando il cliente chiama', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Contratti di servizio standard — SLA, tempi risposta, escalation', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Ticketing', cosa:'Sistema ticketing (Freshdesk, Zendesk) per gestione richieste', costo_mensile:100, costo_setup:500, tempo_mesi:1 },
+      '4': { chi:'RMM + monitoring', cosa:'Monitoraggio proattivo — avvisare il cliente prima del problema', costo_mensile:500, costo_setup:1500, tempo_mesi:2 },
+      '5': { chi:'Quality + security', cosa:'ISO 27001 + procedure incident response + audit periodici', costo_mensile:1200, costo_setup:6000, tempo_mesi:4 },
+    },
+    ricavi: {
+      '1': { chi:'Titolare', cosa:'Interventi a chiamata — fatturato imprevedibile', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Contratti manutenzione mensili — stabilizza il ricavo', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Cloud specialist', cosa:'Upsell cloud — migrazione M365/Azure per recurring revenue', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Security specialist', cosa:'Divisione cybersecurity — servizi ad alto margine', costo_mensile:800, costo_setup:1500, tempo_mesi:3 },
+      '5': { chi:'Revenue manager', cosa:'MSSP (Managed Security Services) — ricorrente margini >50%', costo_mensile:1500, costo_setup:3000, tempo_mesi:4 },
+    },
+    marketing: {
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo passaparola tra clienti', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Google My Business ottimizzato + referenze portali locali', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Partnership', cosa:'Partnership vendor (Microsoft, Cisco) — lead da directory', costo_mensile:400, costo_setup:1000, tempo_mesi:2 },
+      '4': { chi:'Agenzia digital', cosa:'Content marketing su cybersecurity e cloud per PMI', costo_mensile:1000, costo_setup:1500, tempo_mesi:2 },
+      '5': { chi:'Marketing manager', cosa:'Account based marketing sulle 100 PMI target della zona', costo_mensile:2500, costo_setup:3000, tempo_mesi:3 },
+    },
+    sitoweb: {
+      '1': { chi:'Nessuno', cosa:'Nessun sito o sito datato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Web agency', cosa:'Sito con servizi, certificazioni e case study PMI', costo_mensile:80, costo_setup:1000, tempo_mesi:1 },
+      '3': { chi:'Sito + blog', cosa:'Blog su cybersecurity e digital transformation per PMI', costo_mensile:300, costo_setup:2000, tempo_mesi:2 },
+      '4': { chi:'Sito avanzato', cosa:'Assessment tool — "Quanto è sicura la tua infrastruttura?"', costo_mensile:600, costo_setup:4000, tempo_mesi:2 },
+      '5': { chi:'Piattaforma clienti', cosa:'Portale clienti con dashboard servizi, SLA e ticket', costo_mensile:1000, costo_setup:7000, tempo_mesi:3 },
+    },
+    ecommerce: {
+      _label: 'Approvvigionamento IT + Licensing',
+      '1': { chi:'Titolare', cosa:'Acquisto HW e licenze dal solito distributore — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Accordi con 2-3 distributori (Ingram, Esprinet) — confronto prezzi', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'CSP partner', cosa:'CSP Microsoft attivo — rivendita licenze M365/Azure con margine', costo_mensile:200, costo_setup:1000, tempo_mesi:2 },
+      '4': { chi:'Buyer IT', cosa:'Buyer dedicato + accordi volume con vendor e distributori', costo_mensile:800, costo_setup:500, tempo_mesi:2 },
+      '5': { chi:'Resp. acquisti + portale', cosa:'Strategia licensing + portale rivendita + contratti quadro vendor', costo_mensile:1500, costo_setup:3000, tempo_mesi:4 },
+    },
+  },
+
 };
 
 window.STEP_DETAIL_BY_SETTORE = STEP_DETAIL_BY_SETTORE;
