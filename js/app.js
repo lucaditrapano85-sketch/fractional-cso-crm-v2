@@ -2665,15 +2665,10 @@ function renderCronistoria(p) {
   const container = document.getElementById('cronistoria-content');
   if (!card || !container) return;
   const history = p.score_history || [];
-  if (history.length === 0) {
-    card.style.display = 'none';
-    return;
-  }
+  if (history.length === 0) { card.style.display = 'none'; return; }
   card.style.display = 'block';
   container.innerHTML = _buildCronistoria(p);
-  container.style.maxHeight = ''; // reset
-  const history2 = p.score_history || [];
-  if (history2.length > 4) {
+  if (history.length > 4) {
     container.style.maxHeight = '520px';
     container.style.overflowY = 'auto';
     container.style.paddingRight = '4px';
