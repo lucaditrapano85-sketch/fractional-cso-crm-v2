@@ -204,12 +204,15 @@
       <script>
       (function() {
         function alignTargetHeight() {
+          const leftCol = document.querySelector('#radar-target-row > div:first-child');
           const targetCard = document.querySelector('#radar-target-row > .radar-card:last-child');
-          if (targetCard) {
-            targetCard.style.height = 'auto';
+          if (!targetCard || !leftCol) return;
+          const leftH = leftCol.offsetHeight;
+          if (leftH > 0) {
+            targetCard.style.height = leftH + 'px';
             targetCard.style.minHeight = '0';
             targetCard.style.overflowY = 'auto';
-            targetCard.style.maxHeight = '85vh';
+            targetCard.style.maxHeight = leftH + 'px';
           }
         }
         // Esegui dopo il render del mega-grafico
