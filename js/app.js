@@ -2668,6 +2668,11 @@ function renderCronistoria(p) {
   if (history.length === 0) { card.style.display = 'none'; return; }
   card.style.display = 'block';
   container.innerHTML = _buildCronistoria(p);
+  if (history.length > 4) {
+    container.classList.add('cronistoria-scrollabile');
+  } else {
+    container.classList.remove('cronistoria-scrollabile');
+  }
 }
 
 function openFinModal(tab) {
