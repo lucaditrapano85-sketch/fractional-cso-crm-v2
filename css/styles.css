@@ -755,5 +755,7 @@ label{color:var(--gray2)}
 }
 
 #radar-target-row > div:last-child {
+  max-height: none !important;
+  position: relative !important;
   overflow-y: auto;
 }
