@@ -3385,23 +3385,19 @@ function _getDipendenze(settore, dimId) {
 }
 
 
-function _calcolaPenalita(settore, dimId, targets, dims) {
-  dims = dims || {};
+function _calcolaPenalita(settore, dimId, targets) {
   const matrice = (MATRICE_DIPENDENZE_BY_SETTORE && MATRICE_DIPENDENZE_BY_SETTORE[settore])
     ? MATRICE_DIPENDENZE_BY_SETTORE[settore]
     : MATRICE_DIPENDENZE;
-  const deps = matrice[dimId];
-  // Supporta sia array che oggetto con pesi
-  const dipendenze = Array.isArray(deps) ? deps : (deps ? Object.keys(deps) : []);
+  const dipendenze = matrice[dimId] || [];
   if (dipendenze.length === 0) return 0;
 
-  // Livello effettivo = il maggiore tra stato attuale e target impostato
-  const livelloDim = Math.max(targets[dimId] || 1, dims[dimId] || 1);
+  const targetDim = targets[dimId] || 1;
   let gapTotale = 0;
 
-  dipendenze.forEach(function(dep) {
-    const livelloDep = Math.max(targets[dep] || 1, dims[dep] || 1);
-    const gap = Math.max(0, livelloDim - livelloDep);
+  dipendenze.forEach(dep => {
+    const targetDep = targets[dep] || 1;
+    const gap = Math.max(0, targetDim - targetDep);
     gapTotale += gap;
   });
 
@@ -3911,7 +3907,7 @@ function _calcolaImpattoCumulativo(p) {
   if (!usaOrganica) attive.forEach(id => {
     const cur = dims[id] || 0;
     const tgt = targets[id] || 0;
-    penalitaPerDim[id] = _calcolaPenalita(settore, id, targets, dims);
+    penalitaPerDim[id] = _calcolaPenalita(settore, id, targets);
     for (let step = cur; step < tgt; step++) {
       const c = _getCosto(settore, id, step, step+1);
       if (c) {
