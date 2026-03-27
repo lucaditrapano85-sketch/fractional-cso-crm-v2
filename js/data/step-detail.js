@@ -194,6 +194,69 @@ const STEP_DETAIL_BY_SETTORE = {
     },
   },
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // MANIFATTURIERO AUTOMOTIVE
+  // ═══════════════════════════════════════════════════════════════════════════
+  manifatturiero_automotive: {
+    vendite: {
+      '1': { chi:'Titolare', cosa:'Titolare gestisce 2-3 clienti OEM storici — nessun sviluppo', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare + tecnico', cosa:'Mappatura sistematica buyer OEM e Tier1 — visite pianificate', costo_mensile:500, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'KAM automotive', cosa:'Key account dedicato per clienti OEM principali', costo_mensile:3000, costo_setup:1000, tempo_mesi:3 },
+      '4': { chi:'Team commerciale', cosa:'KAM + business development nuovi OEM', costo_mensile:5500, costo_setup:2000, tempo_mesi:4 },
+      '5': { chi:'Dir. commerciale', cosa:'Direzione commerciale con presidio internazionale e gare Tier1', costo_mensile:9000, costo_setup:3000, tempo_mesi:6 },
+    },
+    pipeline: {
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — le RFQ arrivano per email', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare + Excel', cosa:'Foglio strutturato RFQ — cliente, part number, stato, deadline, valore', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'CRM automotive', cosa:'CRM con gestione RFQ, PPAP tracking e scadenze campionature', costo_mensile:150, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'CRM + ERP', cosa:'CRM integrato con ERP — visibilità da RFQ a produzione serie', costo_mensile:500, costo_setup:2000, tempo_mesi:3 },
+      '5': { chi:'Piattaforma enterprise', cosa:'Gestione gare + portali OEM (Covisint, SupplyOn)', costo_mensile:1000, costo_setup:5000, tempo_mesi:4 },
+    },
+    team: {
+      '1': { chi:'Titolare + operatori', cosa:'Titolare + operatori — produzione e qualità insieme', costo_mensile:8000, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+ resp. qualità', cosa:'Resp. qualità dedicato — gestione IATF e audit cliente', costo_mensile:11000, costo_setup:500, tempo_mesi:2 },
+      '3': { chi:'+ resp. produzione', cosa:'Resp. produzione — libera titolare per sviluppo commerciale', costo_mensile:14500, costo_setup:1000, tempo_mesi:3 },
+      '4': { chi:'Team strutturato', cosa:'Qualità + produzione + commerciale + ufficio tecnico', costo_mensile:20000, costo_setup:1500, tempo_mesi:4 },
+      '5': { chi:'Management completo', cosa:'Plant manager + KPI di stabilimento + continuous improvement', costo_mensile:26000, costo_setup:2500, tempo_mesi:6 },
+    },
+    processi: {
+      '1': { chi:'Titolare', cosa:'Processi base — si lavora ma senza documentazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Resp. qualità', cosa:'PPAP base + controllo qualità in ingresso e uscita', costo_mensile:300, costo_setup:500, tempo_mesi:1 },
+      '3': { chi:'Consulente IATF', cosa:'IATF 16949 — sistema qualità automotive completo', costo_mensile:800, costo_setup:12000, tempo_mesi:6 },
+      '4': { chi:'ERP + qualità', cosa:'SPC, FMEA, control plan integrati nel gestionale', costo_mensile:1200, costo_setup:3000, tempo_mesi:3 },
+      '5': { chi:'Quality manager', cosa:'Lean manufacturing + audit interni + miglioramento continuo', costo_mensile:2000, costo_setup:5000, tempo_mesi:4 },
+    },
+    ricavi: {
+      '1': { chi:'Titolare', cosa:'Prezzi imposti dal cliente OEM — nessuna leva negoziale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Analisi costi reali per componente — margini trasparenti', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Ufficio tecnico', cosa:'Value engineering al cliente — riduzione costi condivisa', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Business development', cosa:'Diversificazione clienti — ridurre dipendenza da 1-2 OEM', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Revenue manager', cosa:'Servizi a valore aggiunto — co-design, assemblaggio, logistica JIT', costo_mensile:1000, costo_setup:2000, tempo_mesi:4 },
+    },
+    marketing: {
+      '1': { chi:'Nessuno', cosa:'Nessuno — i clienti OEM ti conoscono già', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'LinkedIn aziendale + certificazioni in evidenza', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Fiere', cosa:'Fiere automotive (Automechanika, MECSPE) — stand e networking', costo_mensile:600, costo_setup:6000, tempo_mesi:2 },
+      '4': { chi:'Agenzia specializzata', cosa:'Content marketing tecnico — case study, white paper, video', costo_mensile:1200, costo_setup:2000, tempo_mesi:2 },
+      '5': { chi:'Marketing manager', cosa:'Piano B2B — fiere internazionali + LinkedIn + PR settore', costo_mensile:3000, costo_setup:4000, tempo_mesi:3 },
+    },
+    sitoweb: {
+      '1': { chi:'Nessuno', cosa:'Nessun sito o sito vetrina datato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Web agency', cosa:'Sito con capacità, certificazioni IATF, settori serviti', costo_mensile:80, costo_setup:1200, tempo_mesi:1 },
+      '3': { chi:'Sito professionale', cosa:'Case study OEM + video stabilimento + richiesta RFQ online', costo_mensile:300, costo_setup:3000, tempo_mesi:2 },
+      '4': { chi:'Sito avanzato', cosa:'Area riservata clienti — documenti PPAP, certificati, tracking', costo_mensile:600, costo_setup:4000, tempo_mesi:2 },
+      '5': { chi:'Piattaforma B2B', cosa:'Portale multilingua con catalogo componenti e specifiche tecniche', costo_mensile:1000, costo_setup:10000, tempo_mesi:3 },
+    },
+    ecommerce: {
+      _label: 'Supply chain digitale',
+      '1': { chi:'Nessuno', cosa:'Nessuna presenza digitale B2B', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Registrazione su portali OEM e piattaforme sourcing', costo_mensile:50, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Portale ordini', cosa:'Portale clienti per ordini ricorrenti e gestione kanban', costo_mensile:300, costo_setup:3000, tempo_mesi:2 },
+      '4': { chi:'Integrazione EDI', cosa:'EDI con clienti principali — ordini automatici', costo_mensile:600, costo_setup:5000, tempo_mesi:3 },
+      '5': { chi:'Supply chain digitale', cosa:'Forecast condiviso, VMI, consignment stock', costo_mensile:1200, costo_setup:10000, tempo_mesi:4 },
+    },
+  },
+
 };
 
 window.STEP_DETAIL_BY_SETTORE = STEP_DETAIL_BY_SETTORE;
