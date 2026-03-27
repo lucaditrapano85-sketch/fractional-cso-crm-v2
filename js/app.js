@@ -201,60 +201,60 @@ async function saveSessione() {
   showToast(hasUpgrade ? 'Sessione e upgrade salvati' : 'Sessione registrata');
 }
 
-function renderListinoServizi(macro) {
-  macro = macro || 'manifatturiero';
+function renderListinoServizi(settore) {
+  var sd = typeof STEP_DETAIL_BY_SETTORE !== 'undefined' ? STEP_DETAIL_BY_SETTORE : {};
+  var keys = Object.keys(sd);
+  if (!settore && keys.length > 0) settore = keys[0];
+  // Render tabs
+  var tabsEl = document.getElementById('ls-macro-tabs');
+  if (tabsEl) {
+    var LABEL_MAP = typeof MARKET !== 'undefined' ? MARKET : {};
+    tabsEl.innerHTML = keys.map(function(k) {
+      var label = LABEL_MAP[k] ? LABEL_MAP[k].label.split('/')[0].trim() : k.replace(/_/g,' ');
+      return '<button class="ls-macro-btn' + (k === settore ? ' active' : '') + '" onclick="lsMacroSwitch(\'' + k + '\',this)">' + label + '</button>';
+    }).join('');
+  }
   var container = document.getElementById('listino-table-container');
   if (!container) return;
+  var data = sd[settore];
+  if (!data) { container.innerHTML = '<div style="color:var(--gray);padding:40px;text-align:center">Listino non ancora disponibile per questo micro-mercato.</div>'; return; }
   var DIMS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
-  var DIM_LABELS = {vendite:'Sviluppo commerciale',pipeline:'Pipeline & CRM',team:'Team commerciale',processi:'Processi & Compliance',ricavi:'Ricavi & Margini',marketing:'Marketing & Domanda',sitoweb:'Sito Web & Presenza',ecommerce:'Canale digitale / Specifico settore'};
-  var DIM_DESC = {vendite:'Struttura della rete vendita, metodi di acquisizione e gestione dei clienti.',pipeline:'Implementazione CRM, tracciamento opportunita e gestione del funnel commerciale.',team:'Organizzazione, formazione e incentivazione del team commerciale.',processi:'Standardizzazione dei processi di vendita, offerte, contratti e compliance.',ricavi:'Ottimizzazione dei margini, pricing, upsell e gestione dei ricavi ricorrenti.',marketing:'Strategia di marketing, generazione domanda e posizionamento di mercato.',sitoweb:'Ottimizzazione della presenza web, SEO, contenuti e lead generation digitale.',ecommerce:'Canale e-commerce, vendita digitale o dimensione specifica del settore.'};
-  var STEP_DESC = {'1':'Base','2':'Strutturato','3':'Ottimizzato','4':'Eccellente','5':'Eccellente+'};
-  var listinoMacro = (typeof LISTINO_DEFAULT !== 'undefined' ? LISTINO_DEFAULT[macro] : null) || {};
+  var DIM_LABELS = {vendite:'Vendite',pipeline:'Pipeline & CRM',team:'Team',processi:'Processi',ricavi:'Ricavi & Margini',marketing:'Marketing',sitoweb:'Sito Web',ecommerce:'Approvvigionamento / Ecommerce'};
   var fmtV = function(v) { return v ? v.toLocaleString('it-IT') + '\u20AC' : '\u2014'; };
   var cards = DIMS.map(function(dim) {
-    var dimData = listinoMacro[dim] || {};
+    var dimData = data[dim];
+    if (!dimData) return '';
     var steps = ['1','2','3','4','5'];
-    var microKeys = typeof AZIONI_TARGET_BY_SETTORE !== 'undefined' ? Object.keys(AZIONI_TARGET_BY_SETTORE).filter(function(k) { return k.startsWith(macro + '_'); }) : [];
-    var microKey = microKeys[0] || (typeof AZIONI_TARGET_BY_SETTORE !== 'undefined' ? Object.keys(AZIONI_TARGET_BY_SETTORE)[0] : '');
-    var azioniDim = (typeof AZIONI_TARGET_BY_SETTORE !== 'undefined' && AZIONI_TARGET_BY_SETTORE[microKey]) ? AZIONI_TARGET_BY_SETTORE[microKey][dim] : null;
     var stepRows = steps.map(function(s) {
-      var d = dimData[s] || {};
-      var rawDesc = (azioniDim && azioniDim[s]) ? azioniDim[s] : '';
-      var firstSentence = rawDesc.split('.')[0].trim();
-      var stepDesc = firstSentence.length > 10 ? firstSentence + '.' : STEP_DESC[s];
-      // Per automotive usa dettagli specifici
-      var p = typeof prospects !== 'undefined' && typeof currentId !== 'undefined' ? prospects.find(function(x){return x.id===currentId}) : null;
-      var isAutomotive = ['commercio_auto_moto_usato','commercio_auto_moto_nuovo'].indexOf(p && p.settore ? p.settore : '') >= 0;
-      if (isAutomotive && typeof getStepDetail === 'function') {
-        var detail = getStepDetail(p.settore, dim, s);
-        if (detail) stepDesc = detail.chi + ' \u2014 ' + detail.cosa;
-      }
+      var d = dimData[s];
+      if (!d) return '';
+      var desc = d.chi + ' \u2014 ' + d.cosa;
       return '<div class="ls-step-row">' +
         '<div class="ls-step-left">' +
-          '<div class="ls-step-badge">Livello ' + s + '</div>' +
-          '<div class="ls-step-desc">' + stepDesc + '</div>' +
+          '<div class="ls-step-badge">Step ' + s + '</div>' +
+          '<div class="ls-step-desc">' + desc + '</div>' +
         '</div>' +
         '<div class="ls-step-costs">' +
-          '<span class="ls-cost-item"><span class="ls-cost-label">Mensile</span><span class="ls-cost-val ' + (d.r ? '' : 'ls-cost-zero') + '">' + (d.r ? fmtV(d.r) : '\u2014') + '</span></span>' +
+          '<span class="ls-cost-item"><span class="ls-cost-label">Mensile</span><span class="ls-cost-val ' + (d.costo_mensile ? '' : 'ls-cost-zero') + '">' + (d.costo_mensile ? fmtV(d.costo_mensile) : '\u2014') + '</span></span>' +
           '<span class="ls-cost-sep">+</span>' +
-          '<span class="ls-cost-item"><span class="ls-cost-label">Una tantum</span><span class="ls-cost-val ' + (d.u ? '' : 'ls-cost-zero') + '">' + (d.u ? fmtV(d.u) : '\u2014') + '</span></span>' +
+          '<span class="ls-cost-item"><span class="ls-cost-label">Setup</span><span class="ls-cost-val ' + (d.costo_setup ? '' : 'ls-cost-zero') + '">' + (d.costo_setup ? fmtV(d.costo_setup) : '\u2014') + '</span></span>' +
+          '<span class="ls-cost-sep">&middot;</span>' +
+          '<span class="ls-cost-item"><span class="ls-cost-label">Tempo</span><span class="ls-cost-val">' + (d.tempo_mesi ? d.tempo_mesi + ' mesi' : '\u2014') + '</span></span>' +
         '</div></div>';
     }).join('');
-    var primo = dimData['1'] || {};
     return '<div class="ls-card">' +
-      '<div class="ls-card-header"><div class="ls-card-title">' + DIM_LABELS[dim] + '</div><div class="ls-card-badge">' + (primo.r ? 'da ' + fmtV(primo.r) + '/mese' : '\u2014') + '</div></div>' +
-      '<div class="ls-card-desc">' + DIM_DESC[dim] + '</div>' +
+      '<div class="ls-card-header"><div class="ls-card-title">' + DIM_LABELS[dim] + '</div></div>' +
       '<div class="ls-steps">' + stepRows + '</div></div>';
   }).join('');
   container.innerHTML =
     '<div class="ls-grid">' + cards + '</div>' +
-    '<div class="ls-footer">Valori al netto IVA \u00B7 R = costo ricorrente mensile \u00B7 U = costo una tantum \u00B7 I prezzi variano in base alla complessita del cliente</div>';
+    '<div class="ls-footer">Valori al netto IVA \u00B7 I costi variano in base alla complessit\u00E0 del cliente</div>';
 }
 
-function lsMacroSwitch(macro, btn) {
+function lsMacroSwitch(settore, btn) {
   document.querySelectorAll('.ls-macro-btn').forEach(function(b) { b.classList.remove('active'); });
   if (btn) btn.classList.add('active');
-  renderListinoServizi(macro);
+  renderListinoServizi(settore);
 }
 
 function glosCerca(valore) {
@@ -2888,7 +2888,8 @@ function _getCosto(settore, dimId, fromStep, toStep) {
   const chiaveRange = fromStep + '-' + toStep;
   const chiaveStep = String(toStep);
   // 1. STEP_DETAIL_BY_SETTORE — costi specifici per micro-settore (priorità massima)
-  const detail = STEP_DETAIL_BY_SETTORE?.[settore]?.[dimId]?.[chiaveRange];
+  const detail = STEP_DETAIL_BY_SETTORE?.[settore]?.[dimId]?.[chiaveRange]
+              || STEP_DETAIL_BY_SETTORE?.[settore]?.[dimId]?.[chiaveStep];
   if (detail && (detail.costo_mensile !== undefined || detail.costo_setup !== undefined)) {
     return { r: detail.costo_mensile || 0, u: detail.costo_setup || 0 };
   }
