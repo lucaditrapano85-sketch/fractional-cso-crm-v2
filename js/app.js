@@ -4606,7 +4606,7 @@ function _buildCronistoria(p) {
   let html = '<div style="margin-top:20px;">';
   html += scrollHint;
   const containerStyle = history.length > 4
-    ? 'max-height:480px;overflow-y:scroll;padding-right:8px;'
+    ? 'max-height:240px;overflow-y:scroll;padding-right:8px;'
     : '';
   html += '<div style="' + containerStyle + '">';
 
