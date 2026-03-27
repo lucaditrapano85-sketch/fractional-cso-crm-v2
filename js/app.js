@@ -2923,11 +2923,14 @@ function _getCostoLabel(settore, dimId, fromStep, toStep) {
 function _getImpatto(settore, dimId, stepKey) {
   const tetti = (typeof TETTO_BY_SETTORE !== 'undefined' ? TETTO_BY_SETTORE[settore] : null) || {};
   const tetto = tetti[dimId] || 5;
-  const targetLvl = parseInt((stepKey || '').split('-')[1]) || 5;
+  const targetLvl = parseInt((stepKey || '').split('-')[1] || stepKey) || 5;
   if (targetLvl > tetto) return null;
   const settoreData = IMPATTO_BY_SETTORE[settore] || IMPATTO_BY_SETTORE['manifatturiero_meccanica'];
   const dimData = settoreData?.[dimId];
-  return dimData?.[stepKey] || null;
+  // Supporta sia "1-2" (range) che "2" (step singolo)
+  const singleKey = String(stepKey).includes('-') ? String(stepKey).split('-')[1] : String(stepKey);
+  const rangeKey = String(stepKey).includes('-') ? String(stepKey) : (parseInt(stepKey) - 1) + '-' + stepKey;
+  return dimData?.[rangeKey] || dimData?.[singleKey] || null;
 }
 
 function _fasciaFromAnno1(fatturato_anno_1) {
@@ -3651,6 +3654,10 @@ const SETTORE_TO_UNITA_KEY = {
 window.SETTORE_TO_UNITA_KEY = SETTORE_TO_UNITA_KEY;
 
 function _calcolaImpattoUnitario(settore, dimId, stepKey, p) {
+  // Normalizza chiave: genera sia range "1-2" che singolo "2"
+  const rangeKey = String(stepKey).includes('-') ? String(stepKey) : (parseInt(stepKey) - 1) + '-' + stepKey;
+  const singleKey = String(stepKey).includes('-') ? String(stepKey).split('-')[1] : String(stepKey);
+
   const fat = p?.fatturato_anno_1 || 1;
   const vmo = p?.kpi_commerciali?.valore_medio_ordine || null;
   const tconv = (p?.kpi_commerciali?.tasso_conversione_pct || 25) / 100;
@@ -3672,8 +3679,9 @@ function _calcolaImpattoUnitario(settore, dimId, stepKey, p) {
   let dati = null;
 
   if (unitaKey === 'commercio_auto_moto_usato' || unitaKey === 'commercio_auto_moto_nuovo') {
-    // Usa UNITA_PER_STEP_AUTOMOTIVE esistente
-    dati = UNITA_PER_STEP_AUTOMOTIVE?.[settore]?.[dimId]?.[stepKey];
+    // Usa UNITA_PER_STEP_AUTOMOTIVE esistente — prova range poi singolo
+    dati = UNITA_PER_STEP_AUTOMOTIVE?.[settore]?.[dimId]?.[rangeKey]
+        || UNITA_PER_STEP_AUTOMOTIVE?.[settore]?.[dimId]?.[singleKey];
     if (!dati) return null;
 
     if (dati.unita_mese && vmo) {
@@ -3693,7 +3701,7 @@ function _calcolaImpattoUnitario(settore, dimId, stepKey, p) {
       const forbicePiccolo = {'1-2':[0.5,1.0],'2-3':[1.0,2.0],'3-4':[2.0,4.0],'4-5':[4.0,6.0]};
       const forbiceGrande  = {'1-2':[2,5],'2-3':[5,10],'3-4':[10,20],'4-5':[20,35]};
       const forbice = fatCliente < 2000000 ? forbicePiccolo : forbiceGrande;
-      const [minA, maxA] = forbice[stepKey] || [0.5,1.0];
+      const [minA, maxA] = forbice[rangeKey] || forbice[singleKey] || [0.5,1.0];
       return {
         pct_6m:  [Math.round(minA*12*vmoCliente*ramp[6] /fat*1000)/10, Math.round(maxA*12*vmoCliente*ramp[6] /fat*1000)/10],
         pct_12m: [Math.round(minA*12*vmoCliente*ramp[12]/fat*1000)/10, Math.round(maxA*12*vmoCliente*ramp[12]/fat*1000)/10],
@@ -3707,7 +3715,7 @@ function _calcolaImpattoUnitario(settore, dimId, stepKey, p) {
   if (!unitaKey) return null;
   const tabella = UNITA_PER_STEP_BY_SETTORE?.[unitaKey];
   if (!tabella) return null;
-  dati = tabella?.[dimId]?.[stepKey];
+  dati = tabella?.[dimId]?.[rangeKey] || tabella?.[dimId]?.[singleKey];
   if (!dati) return null;
 
   const vmoEff = vmo || 1000; // fallback VMO generico
@@ -3945,8 +3953,7 @@ function _calcolaImpattoCumulativo(p) {
       let contributoTot = 0;
       for (let step = cur; step < tgt; step++) {
         const stepKey = String(step + 1);
-        const rangeKey = step + '-' + (step + 1);
-        const imp = _calcolaImpattoUnitario(settore, id, rangeKey, p) || _calcolaImpattoUnitario(settore, id, stepKey, p) || _getImpatto(settore, id, stepKey);
+        const imp = _calcolaImpattoUnitario(settore, id, stepKey, p) || _getImpatto(settore, id, stepKey);
         if (imp) {
           const pctArr = orizzonte === 6 ? imp.pct_6m : orizzonte === 12 ? imp.pct_12m : imp.pct_24m;
           const midPct = (pctArr[0] + pctArr[1]) / 2 / 100;
