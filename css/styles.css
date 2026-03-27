@@ -750,12 +750,6 @@ label{color:var(--gray2)}
   margin-top: 0;
 }
 
-#radar-target-row {
-  align-items: stretch !important;
-}
-
 #radar-target-row > div:last-child {
-  max-height: none !important;
-  position: relative !important;
   overflow-y: auto;
 }
