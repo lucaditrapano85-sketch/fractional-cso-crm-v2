@@ -738,7 +738,7 @@ label{color:var(--gray2)}
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 16px;
-  margin-top: 16px;
+  margin-top: 0;
   background: var(--bg2);
 }
 
