@@ -3385,19 +3385,20 @@ function _getDipendenze(settore, dimId) {
 }
 
 
-function _calcolaPenalita(settore, dimId, targets) {
+function _calcolaPenalita(settore, dimId, targets, dims) {
   const matrice = (MATRICE_DIPENDENZE_BY_SETTORE && MATRICE_DIPENDENZE_BY_SETTORE[settore])
     ? MATRICE_DIPENDENZE_BY_SETTORE[settore]
     : MATRICE_DIPENDENZE;
   const dipendenze = matrice[dimId] || [];
   if (dipendenze.length === 0) return 0;
 
-  const targetDim = targets[dimId] || 1;
+  // Livello effettivo = il maggiore tra stato attuale e target impostato
+  const livelloDim = Math.max(targets[dimId] || 1, (dims && dims[dimId]) || 1);
   let gapTotale = 0;
 
   dipendenze.forEach(dep => {
-    const targetDep = targets[dep] || 1;
-    const gap = Math.max(0, targetDim - targetDep);
+    const livelloDep = Math.max(targets[dep] || 1, (dims && dims[dep]) || 1);
+    const gap = Math.max(0, livelloDim - livelloDep);
     gapTotale += gap;
   });
 
@@ -3405,7 +3406,7 @@ function _calcolaPenalita(settore, dimId, targets) {
   const gapMax = 4;
 
   // Penalità esponenziale — gap piccoli impattano poco, gap grandi impattano molto
-  // Gap di 1 → penalità ~18%, gap di 2 → penalità ~40%, gap di 3 → penalità ~65%, gap di 4 → penalità ~85%
+  // Gap di 1 → penalità ~35%, gap di 2 → penalità ~65%, gap di 3 → penalità ~80%, gap di 4 → penalità ~85%
   const penalita = 1 - Math.pow(1 - (gapMedio / gapMax), 1.5);
 
   return Math.min(penalita, 0.85);
@@ -3907,7 +3908,7 @@ function _calcolaImpattoCumulativo(p) {
   if (!usaOrganica) attive.forEach(id => {
     const cur = dims[id] || 0;
     const tgt = targets[id] || 0;
-    penalitaPerDim[id] = _calcolaPenalita(settore, id, targets);
+    penalitaPerDim[id] = _calcolaPenalita(settore, id, targets, dims);
     for (let step = cur; step < tgt; step++) {
       const c = _getCosto(settore, id, step, step+1);
       if (c) {
