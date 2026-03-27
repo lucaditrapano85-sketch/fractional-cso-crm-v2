@@ -561,6 +561,9 @@ async function aggiornaStatoPreventivo(id, nuovoStato) {
   }
   var p2 = prospects.find(function(x) { return x.id === currentId; });
   if (p2) renderPreventivi(p2);
+  renderSidebar();
+  renderDashboard();
+  if (currentId) await renderProspectDetail(currentId);
   showToast('Stato preventivo: ' + nuovoStato);
 }
 
