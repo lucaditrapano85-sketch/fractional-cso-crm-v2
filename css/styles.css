@@ -749,3 +749,11 @@ label{color:var(--gray2)}
 #view-prospect .card + .card {
   margin-top: 0;
 }
+
+#radar-target-row {
+  align-items: stretch !important;
+}
+
+#radar-target-row > div:last-child {
+  overflow-y: auto;
+}
