@@ -976,15 +976,13 @@ async function renderProspectDetail(id) {
     const desc = _azDim[_curStep] || '—';
     const _tgtStep = t ? String(Math.max(t, 1)) : '';
     const tgtDesc = t ? (_azDim[_tgtStep] || '—') : '';
-    const tgtStr = t ? `\x3cspan style="font-size:10px;color:var(--gold-dim);margin-left:6px">-> ${t}/5\x3c/span>` : '';
     return `\x3cdiv class="dim-row" style="margin-bottom:10px">
-      \x3cdiv class="dim-label" style="display:flex;align-items:center;margin-bottom:3px">${getDimLabel(p.settore, d.id)}${tgtStr}\x3c/div>
+      \x3cdiv class="dim-label" style="display:flex;align-items:center;margin-bottom:3px">${getDimLabel(p.settore, d.id)}\x3c/div>
       \x3cdiv style="display:flex;align-items:center;gap:8px">
         \x3cdiv class="dim-bar-bg" style="flex:1">\x3cdiv class="dim-bar-fill" style="width:${pct}%;background:${col}">\x3c/div>\x3c/div>
         \x3cdiv class="dim-val" style="color:${col}">${v}/5\x3c/div>
       \x3c/div>
       \x3cdiv style="font-size:10px;color:${col};margin-top:2px;line-height:1.3">${desc}\x3c/div>
-      ${tgtDesc && t!==v ? `\x3cdiv style="font-size:10px;color:var(--gold-dim);margin-top:1px">Obiettivo: ${tgtDesc}\x3c/div>` : ''}
     \x3c/div>`;
   }).join('');
 
