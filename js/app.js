@@ -3945,7 +3945,8 @@ function _calcolaImpattoCumulativo(p) {
       let contributoTot = 0;
       for (let step = cur; step < tgt; step++) {
         const stepKey = String(step + 1);
-        const imp = _calcolaImpattoUnitario(settore, id, stepKey, p) || _getImpatto(settore, id, stepKey);
+        const rangeKey = step + '-' + (step + 1);
+        const imp = _calcolaImpattoUnitario(settore, id, rangeKey, p) || _calcolaImpattoUnitario(settore, id, stepKey, p) || _getImpatto(settore, id, stepKey);
         if (imp) {
           const pctArr = orizzonte === 6 ? imp.pct_6m : orizzonte === 12 ? imp.pct_12m : imp.pct_24m;
           const midPct = (pctArr[0] + pctArr[1]) / 2 / 100;
