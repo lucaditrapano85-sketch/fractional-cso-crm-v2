@@ -2668,15 +2668,6 @@ function renderCronistoria(p) {
   if (history.length === 0) { card.style.display = 'none'; return; }
   card.style.display = 'block';
   container.innerHTML = _buildCronistoria(p);
-  if (history.length > 4) {
-    container.style.maxHeight = '520px';
-    container.style.overflowY = 'auto';
-    container.style.paddingRight = '4px';
-  } else {
-    container.style.maxHeight = '';
-    container.style.overflowY = '';
-    container.style.paddingRight = '';
-  }
 }
 
 function openFinModal(tab) {

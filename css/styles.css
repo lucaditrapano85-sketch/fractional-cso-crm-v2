@@ -734,6 +734,11 @@ label{color:var(--gray2)}
 .tl-azione-text{font-size:13px;color:var(--white);line-height:1.5}
 .tl-azione-costo{font-size:11px;color:var(--gray);margin-top:2px}
 .tl-empty{color:var(--gray);font-size:13px;padding:20px 0;text-align:center}
+#cronistoria-content {
+  max-height: 520px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
 #cronistoria-content::-webkit-scrollbar {
   width: 4px;
 }
