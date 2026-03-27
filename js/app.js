@@ -4600,14 +4600,17 @@ function _buildCronistoria(p) {
   };
   const scoreCol = (s) => s >= 70 ? '#2E7D32' : s >= 45 ? '#B8842E' : '#C62828';
 
-  let html = '<div style="margin-top:20px">';
+  const wrapperStyle = history.length > 4
+    ? 'margin-top:20px;overflow:hidden;max-height:480px;'
+    : 'margin-top:20px;';
+  let html = '<div style="' + wrapperStyle + '">';
   html += '<div style="font-size:10px;font-weight:700;color:var(--gray);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px">CRONISTORIA CRESCITA</div>';
-  const scrollStyle = history.length > 4
+  const containerStyle = history.length > 4
     ? 'position:relative;padding-left:20px;max-height:480px;overflow-y:auto;padding-right:8px;'
     : 'position:relative;padding-left:20px;';
-  html += '<div style="' + scrollStyle + '">';
+  html += '<div style="' + containerStyle + '">';
   // Linea verticale
-  html += '<div style="position:absolute;left:6px;top:8px;bottom:8px;width:2px;background:var(--border2);border-radius:2px"></div>';
+  html += '<div style="position:absolute;left:6px;top:8px;height:100%;width:2px;background:var(--border2);border-radius:2px"></div>';
 
   history.slice().reverse().forEach((snap, idx) => {
     const isFirst = idx === history.length - 1;
