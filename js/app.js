@@ -2669,11 +2669,6 @@ function renderCronistoria(p) {
   if (history.length === 0) { card.style.display = 'none'; return; }
   card.style.display = 'block';
   container.innerHTML = _buildCronistoria(p);
-  if (history.length > 4) {
-    container.classList.add('cronistoria-scrollabile');
-  } else {
-    container.classList.remove('cronistoria-scrollabile');
-  }
 }
 
 function openFinModal(tab) {
@@ -4607,7 +4602,10 @@ function _buildCronistoria(p) {
 
   let html = '<div style="margin-top:20px">';
   html += '<div style="font-size:10px;font-weight:700;color:var(--gray);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px">CRONISTORIA CRESCITA</div>';
-  html += '<div style="position:relative;padding-left:20px">';
+  const scrollStyle = history.length > 4
+    ? 'position:relative;padding-left:20px;max-height:480px;overflow-y:auto;padding-right:8px;'
+    : 'position:relative;padding-left:20px;';
+  html += '<div style="' + scrollStyle + '">';
   // Linea verticale
   html += '<div style="position:absolute;left:6px;top:8px;bottom:8px;width:2px;background:var(--border2);border-radius:2px"></div>';
 
