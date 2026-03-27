@@ -219,11 +219,12 @@ function renderListinoServizi(settore) {
   var data = sd[settore];
   if (!data) { container.innerHTML = '<div style="color:var(--gray);padding:40px;text-align:center">Listino non ancora disponibile per questo micro-mercato.</div>'; return; }
   var DIMS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
-  var DIM_LABELS = {vendite:'Vendite',pipeline:'Pipeline & CRM',team:'Team',processi:'Processi',ricavi:'Ricavi & Margini',marketing:'Marketing',sitoweb:'Sito Web',ecommerce:'Approvvigionamento / Ecommerce'};
+  var DIM_LABELS_DEFAULT = {vendite:'Vendite',pipeline:'Pipeline & CRM',team:'Team',processi:'Processi',ricavi:'Ricavi & Margini',marketing:'Marketing',sitoweb:'Sito Web',ecommerce:'Ecommerce'};
   var fmtV = function(v) { return v ? v.toLocaleString('it-IT') + '\u20AC' : '\u2014'; };
   var cards = DIMS.map(function(dim) {
     var dimData = data[dim];
     if (!dimData) return '';
+    var dimLabel = dimData._label || DIM_LABELS_DEFAULT[dim] || dim;
     var steps = ['1','2','3','4','5'];
     var stepRows = steps.map(function(s) {
       var d = dimData[s];
@@ -243,7 +244,7 @@ function renderListinoServizi(settore) {
         '</div></div>';
     }).join('');
     return '<div class="ls-card">' +
-      '<div class="ls-card-header"><div class="ls-card-title">' + DIM_LABELS[dim] + '</div></div>' +
+      '<div class="ls-card-header"><div class="ls-card-title">' + dimLabel + '</div></div>' +
       '<div class="ls-steps">' + stepRows + '</div></div>';
   }).join('');
   container.innerHTML =
