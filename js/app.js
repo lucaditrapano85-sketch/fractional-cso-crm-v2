@@ -2885,15 +2885,22 @@ function _getAzionePredefinita(settore, dimId, fromStep, toStep) {
 }
 
 function _getCosto(settore, dimId, fromStep, toStep) {
-  const chiave = fromStep + '-' + toStep;
-  // Prima cerca in COSTI_BY_SETTORE (override specifico)
-  if (COSTI_BY_SETTORE[settore]?.[dimId]?.[chiave]) {
-    return COSTI_BY_SETTORE[settore][dimId][chiave];
+  const chiaveRange = fromStep + '-' + toStep;
+  const chiaveStep = String(toStep);
+  // Prima cerca in COSTI_BY_SETTORE (override specifico) — supporta sia "1-2" che "2"
+  if (COSTI_BY_SETTORE[settore]?.[dimId]?.[chiaveRange]) {
+    return COSTI_BY_SETTORE[settore][dimId][chiaveRange];
   }
-  // Fallback: legge da LISTINO_DEFAULT via MICRO_TO_MACRO
+  if (COSTI_BY_SETTORE[settore]?.[dimId]?.[chiaveStep]) {
+    return COSTI_BY_SETTORE[settore][dimId][chiaveStep];
+  }
+  // Fallback: legge da LISTINO_DEFAULT via MICRO_TO_MACRO — supporta sia "1-2" che "2"
   const macro = MICRO_TO_MACRO[settore] || settore;
-  if (LISTINO_DEFAULT[macro]?.[dimId]?.[chiave]) {
-    return LISTINO_DEFAULT[macro][dimId][chiave];
+  if (LISTINO_DEFAULT[macro]?.[dimId]?.[chiaveRange]) {
+    return LISTINO_DEFAULT[macro][dimId][chiaveRange];
+  }
+  if (LISTINO_DEFAULT[macro]?.[dimId]?.[chiaveStep]) {
+    return LISTINO_DEFAULT[macro][dimId][chiaveStep];
   }
   return null;
 }
