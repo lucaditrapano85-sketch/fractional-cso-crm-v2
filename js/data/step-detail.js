@@ -509,6 +509,69 @@ const STEP_DETAIL_BY_SETTORE = {
     },
   },
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // MANIFATTURIERO TESSILE CAPI
+  // ═══════════════════════════════════════════════════════════════════════════
+  manifatturiero_tessile_capi: {
+    vendite: {
+      '1': { chi:'Titolare', cosa:'Titolare vende ai soliti grossisti/brand — nessun sviluppo', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare + campionario', cosa:'Campionario stagionale proattivo verso nuovi brand e catene', costo_mensile:500, costo_setup:800, tempo_mesi:1 },
+      '3': { chi:'Agente moda', cosa:'Agente moda con portafoglio brand e catene retail', costo_mensile:1800, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Commerciale senior', cosa:'Commerciale interno + showroom per campagne vendita', costo_mensile:3500, costo_setup:2500, tempo_mesi:3 },
+      '5': { chi:'Dir. commerciale', cosa:'Dir. commerciale + agenti export + fiere internazionali', costo_mensile:8500, costo_setup:3000, tempo_mesi:6 },
+    },
+    pipeline: {
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini stagionali a voce', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Excel con ordini, campionature inviate, conferme pendenti', costo_mensile:0, costo_setup:100, tempo_mesi:1 },
+      '3': { chi:'CRM base', cosa:'CRM per gestione campagne vendita e riordini', costo_mensile:80, costo_setup:300, tempo_mesi:1 },
+      '4': { chi:'CRM + gestionale', cosa:'CRM + gestionale — capacità produttiva e tempi consegna', costo_mensile:400, costo_setup:1500, tempo_mesi:2 },
+      '5': { chi:'ERP moda', cosa:'ERP moda — dalla campagna vendita alla produzione alla spedizione', costo_mensile:900, costo_setup:5000, tempo_mesi:3 },
+    },
+    team: {
+      '1': { chi:'Titolare + operaie', cosa:'Titolare + sarte/operaie — confezionamento in casa', costo_mensile:5000, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+ capo sarta', cosa:'Capo sarta — gestisce produzione e qualità capi', costo_mensile:7000, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'+ modellista', cosa:'Modellista/stilista — sviluppo campionari e prototipi', costo_mensile:10000, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Team completo', cosa:'Back office + commerciale + logistica spedizioni', costo_mensile:14000, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Struttura manageriale', cosa:'Resp. produzione + resp. commerciale + sviluppo prodotto', costo_mensile:20000, costo_setup:2000, tempo_mesi:5 },
+    },
+    processi: {
+      '1': { chi:'Titolare', cosa:'Nessun processo — si cuce e si spedisce', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Scheda tecnica per capo — taglie, materiali, tempi, costi', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Software gestionale', cosa:'Gestionale taglie/colori con pianificazione produzione', costo_mensile:400, costo_setup:1500, tempo_mesi:2 },
+      '4': { chi:'Consulente qualità', cosa:'Controllo qualità AQL + compliance etichettatura (reg. UE)', costo_mensile:600, costo_setup:2000, tempo_mesi:3 },
+      '5': { chi:'Quality manager', cosa:'Tracciabilità filiera completa + certificazioni sostenibilità', costo_mensile:1200, costo_setup:5000, tempo_mesi:4 },
+    },
+    ricavi: {
+      '1': { chi:'Titolare', cosa:'Prezzi a capo fissi — margini bassi su grandi volumi', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Calcolo costo reale per capo — tessuto, lavorazione, finiture', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Pricing strutturato', cosa:'Differenziazione prezzo per complessità e metratura minima', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '4': { chi:'Servizio private label', cosa:'Private label come servizio premium — margini 30-40% superiori', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
+      '5': { chi:'Revenue manager', cosa:'Collezioni proprie o co-branded + revenue da sviluppo prototipi', costo_mensile:800, costo_setup:2000, tempo_mesi:3 },
+    },
+    marketing: {
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo contatti nel distretto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Instagram con foto capi e produzione + LinkedIn B2B', costo_mensile:150, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Fiere', cosa:'Fiere moda (Première Vision, White, Pitti) — stand campionari', costo_mensile:600, costo_setup:6000, tempo_mesi:2 },
+      '4': { chi:'Agenzia digital', cosa:'Campagne digitali verso buyer brand e catene retail', costo_mensile:1000, costo_setup:1500, tempo_mesi:2 },
+      '5': { chi:'Marketing manager', cosa:'Piano marketing — fiere + lookbook + PR + influencer B2B', costo_mensile:2500, costo_setup:4000, tempo_mesi:3 },
+    },
+    sitoweb: {
+      '1': { chi:'Nessuno', cosa:'Nessun sito o sito datato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Web agency', cosa:'Sito con portfolio capi, capacità e certificazioni', costo_mensile:80, costo_setup:1000, tempo_mesi:1 },
+      '3': { chi:'Sito professionale', cosa:'Lookbook digitale stagionale + richiesta campioni online', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
+      '4': { chi:'Sito avanzato', cosa:'Area B2B — catalogo, disponibilità, ordini campioni', costo_mensile:600, costo_setup:4000, tempo_mesi:2 },
+      '5': { chi:'Piattaforma B2B', cosa:'Portale B2B con ordini, tracking produzione, documenti', costo_mensile:1000, costo_setup:8000, tempo_mesi:3 },
+    },
+    ecommerce: {
+      _label: 'Approvvigionamento tessuti',
+      '1': { chi:'Titolare', cosa:'Acquisto tessuti dal solito fornitore — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Mappatura fornitori tessuti — confronto prezzi e MOQ', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Buyer part-time', cosa:'3-4 fornitori attivi + acquisto tessuti a stock per reattività', costo_mensile:500, costo_setup:300, tempo_mesi:2 },
+      '4': { chi:'Buyer dedicato', cosa:'Buyer dedicato — negoziazione, import diretto, magazzino tessuti', costo_mensile:2000, costo_setup:500, tempo_mesi:3 },
+      '5': { chi:'Resp. acquisti', cosa:'Sourcing internazionale, contratti quadro, hedging', costo_mensile:3500, costo_setup:1500, tempo_mesi:4 },
+    },
+  },
+
 };
 
 window.STEP_DETAIL_BY_SETTORE = STEP_DETAIL_BY_SETTORE;
