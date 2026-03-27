@@ -2661,18 +2661,24 @@ const FIN_FORMS = {
 };
 
 function renderCronistoria(p) {
-  const card = document.getElementById('card-cronistoria');
-  const container = document.getElementById('cronistoria-content');
-  if (!card || !container) return;
   const history = p.score_history || [];
-  if (history.length === 0) { card.style.display = 'none'; return; }
-  card.style.display = 'block';
-  container.innerHTML = _buildCronistoria(p);
-  if (history.length > 4) {
-    container.classList.add('cronistoria-scrollabile');
-  } else {
-    container.classList.remove('cronistoria-scrollabile');
+  if (history.length === 0) {
+    const card = document.getElementById('card-cronistoria');
+    if (card) card.style.display = 'none';
+    return;
   }
+  setTimeout(function() {
+    const card = document.getElementById('card-cronistoria');
+    const container = document.getElementById('cronistoria-content');
+    if (!card || !container) return;
+    card.style.display = 'block';
+    container.innerHTML = _buildCronistoria(p);
+    if (history.length > 4) {
+      container.classList.add('cronistoria-scrollabile');
+    } else {
+      container.classList.remove('cronistoria-scrollabile');
+    }
+  }, 50);
 }
 
 function openFinModal(tab) {
