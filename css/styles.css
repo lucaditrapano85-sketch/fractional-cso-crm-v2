@@ -734,3 +734,13 @@ label{color:var(--gray2)}
 .tl-azione-text{font-size:13px;color:var(--white);line-height:1.5}
 .tl-azione-costo{font-size:11px;color:var(--gray);margin-top:2px}
 .tl-empty{color:var(--gray);font-size:13px;padding:20px 0;text-align:center}
+#cronistoria-content::-webkit-scrollbar {
+  width: 4px;
+}
+#cronistoria-content::-webkit-scrollbar-track {
+  background: var(--bg2);
+}
+#cronistoria-content::-webkit-scrollbar-thumb {
+  background: var(--border2);
+  border-radius: 2px;
+}

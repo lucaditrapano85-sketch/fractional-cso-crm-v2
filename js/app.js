@@ -2671,6 +2671,17 @@ function renderCronistoria(p) {
   }
   card.style.display = 'block';
   container.innerHTML = _buildCronistoria(p);
+  container.style.maxHeight = ''; // reset
+  const history2 = p.score_history || [];
+  if (history2.length > 4) {
+    container.style.maxHeight = '520px';
+    container.style.overflowY = 'auto';
+    container.style.paddingRight = '4px';
+  } else {
+    container.style.maxHeight = '';
+    container.style.overflowY = '';
+    container.style.paddingRight = '';
+  }
 }
 
 function openFinModal(tab) {
