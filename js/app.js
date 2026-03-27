@@ -414,13 +414,15 @@ async function aggiornaStatoAutomatico(prospectId, nuovoStato) {
   var p = prospects.find(function(x) { return x.id === prospectId; });
   if (!p) return;
   var ordine = ['nuovo', 'contattato', 'diagnosi', 'proposta', 'chiuso'];
-  var idxAttuale = ordine.indexOf(p.stato);
+  var idxAttuale = ordine.indexOf(p.stato || 'nuovo');
   var idxNuovo = ordine.indexOf(nuovoStato);
+  // Avanza solo se il nuovo stato è successivo — permette di saltare stati
   if (idxNuovo <= idxAttuale) return;
   p.stato = nuovoStato;
   await sb.from('prospects').update({ stato: nuovoStato }).eq('id', prospectId);
   showToast('Stato aggiornato: ' + nuovoStato.charAt(0).toUpperCase() + nuovoStato.slice(1));
   renderSidebar();
+  renderDashboard();
 }
 
 // ── PREVENTIVI ─────────────────────────────────────────
