@@ -4600,16 +4600,13 @@ function _buildCronistoria(p) {
   };
   const scoreCol = (s) => s >= 70 ? '#2E7D32' : s >= 45 ? '#B8842E' : '#C62828';
 
-  const wrapperStyle = history.length > 4
-    ? 'margin-top:20px;overflow:hidden;max-height:480px;'
-    : 'margin-top:20px;';
   const scrollHint = history.length > 4
     ? '<div style="font-size:10px;color:var(--text-muted);text-align:right;margin-bottom:4px;">\u2195 scorri per vedere tutti gli aggiornamenti</div>'
     : '';
-  let html = '<div style="' + wrapperStyle + '">';
+  let html = '<div style="margin-top:20px;">';
   html += scrollHint;
   const containerStyle = history.length > 4
-    ? 'position:relative;padding-left:20px;border-left:2px solid var(--border2);max-height:480px;overflow-y:auto;padding-right:8px;'
+    ? 'position:relative;padding-left:20px;border-left:2px solid var(--border2);max-height:480px;overflow-y:scroll;padding-right:8px;'
     : 'position:relative;padding-left:20px;border-left:2px solid var(--border2);';
   html += '<div style="' + containerStyle + '">';
 
