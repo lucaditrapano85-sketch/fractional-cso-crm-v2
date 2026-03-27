@@ -1301,7 +1301,7 @@ function _buildProspectModalBody(p) {
         <label>Forma giuridica</label>
         <select class="form-input" id="f-forma">
           <option value="">—</option>
-          ${['Srl','Spa','Sas','Snc','Ditta individuale','Cooperativa','Altro'].map(f=>`<option value="${f}" ${p.forma_giuridica===f?'selected':''}>${f}</option>`).join('')}
+          ${['Srl','Srls','Spa','Sapa','Sas','Snc','Ditta individuale','Imprenditore individuale','Cooperativa','Consorzio','Società agricola Srl','Società agricola Sas','Società agricola Snc','Società semplice','Associazione','Fondazione','Ente pubblico','Altro'].map(f=>`<option value="${f}" ${p.forma_giuridica===f?'selected':''}>${f}</option>`).join('')}
         </select>
       </div>
       <div class="form-group">
