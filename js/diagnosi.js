@@ -94,6 +94,23 @@ function apriDiagnosi() {
     showToast('Seleziona prima il settore del prospect', 'error');
     return;
   }
+  // Se esiste già una diagnosi, chiedi conferma e resetta tutto
+  var hasDiagnosi = p.dims && Object.keys(p.dims).length > 0 && Object.values(p.dims).some(function(v){ return v > 0; });
+  if (hasDiagnosi) {
+    if (!confirm('Esiste già una diagnosi per questo prospect.\n\nVuoi cancellarla e ricominciare da zero?\n\nVerranno azzerati: diagnosi, grafico e target.')) return;
+    // Reset completo
+    var i = prospects.findIndex(function(x){ return x.id === p.id; });
+    if (i >= 0) {
+      prospects[i].dims = {};
+      prospects[i].dims_answers = {};
+      prospects[i].targets = {};
+    }
+    _diagRisposte = {};
+    sb.from('prospects').update({ dims: {}, dims_answers: {}, targets: {} }).eq('id', p.id).catch(function(){});
+    drawRadar({}, {});
+    renderProspectDetail(p.id);
+    p = prospects.find(function(x){ return x.id === currentId; });
+  }
   _diagProspect = p;
   var settoreBase = FAMIGLIA_SETTORE[p.settore] || 'b2b_manifatturiero';
   var isAutomotive = ['commercio_auto_moto_nuovo','commercio_auto_moto_usato'].indexOf(p.settore) >= 0;
