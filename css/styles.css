@@ -1,35 +1,35 @@
 :root {
-  --bg: #0a0a0f;
-  --bg2: rgba(18, 18, 26, 0.8);
-  --bg3: rgba(25, 25, 38, 0.6);
-  --bg4: rgba(35, 35, 52, 0.5);
-  --border: rgba(255, 255, 255, 0.06);
-  --border2: rgba(255, 255, 255, 0.1);
-  --white: #f0f0f5;
-  --gray: #8888a0;
-  --gray2: #55556a;
+  --bg: #1a1a2e;
+  --bg2: rgba(30, 30, 50, 0.85);
+  --bg3: rgba(40, 40, 65, 0.7);
+  --bg4: rgba(55, 55, 80, 0.6);
+  --border: rgba(255, 255, 255, 0.09);
+  --border2: rgba(255, 255, 255, 0.14);
+  --white: #f2f2f8;
+  --gray: #9a9ab8;
+  --gray2: #6a6a88;
   --gold: #d4a843;
   --gold2: #b8922a;
-  --gold-dim: rgba(212, 168, 67, 0.1);
+  --gold-dim: rgba(212, 168, 67, 0.12);
   --green: #34d399;
-  --green-bg: rgba(52, 211, 153, 0.08);
-  --amber-bg: rgba(212, 168, 67, 0.08);
+  --green-bg: rgba(52, 211, 153, 0.1);
+  --amber-bg: rgba(212, 168, 67, 0.1);
   --red: #f87171;
-  --red-bg: rgba(248, 113, 113, 0.08);
+  --red-bg: rgba(248, 113, 113, 0.1);
   --blue: #818cf8;
-  --blue-bg: rgba(129, 140, 248, 0.08);
+  --blue-bg: rgba(129, 140, 248, 0.1);
   --accent: #818cf8;
   --accent2: #a78bfa;
   --r: 16px;
   --rs: 10px;
-  --text: #f0f0f5;
-  --text-muted: #8888a0;
-  --glass: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glow: 0 0 20px rgba(129, 140, 248, 0.1);
+  --text: #f2f2f8;
+  --text-muted: #9a9ab8;
+  --glass: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glow: 0 0 20px rgba(129, 140, 248, 0.12);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;background:linear-gradient(135deg, #0a0a0f 0%, #0f0f1a 50%, #0a0a0f 100%);color:var(--white);min-height:100vh;-webkit-font-smoothing:antialiased}
+body{font-family:'DM Sans',sans-serif;background:linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%);color:var(--white);min-height:100vh;-webkit-font-smoothing:antialiased}
 h1,h2,h3{font-family:'DM Serif Display',serif;font-weight:400;letter-spacing:-0.01em}
 
 .app{display:flex;height:100vh;overflow:hidden}
@@ -552,7 +552,7 @@ input[type=range]{flex:1;accent-color:var(--accent)}
 .tl-proj-footer b{color:var(--white)}
 
 /* ── DARK PREMIUM GLASS OVERRIDES ─────────────────────────── */
-body{background:linear-gradient(135deg, #0a0a0f 0%, #0f0f1a 50%, #0a0a0f 100%);color:var(--text)}
+body{background:linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%);color:var(--text)}
 .sidebar{background:rgba(10,10,16,0.88);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-right:1px solid var(--glass-border)}
 .sidebar-logo .wordmark{color:var(--text)}
 .sidebar-logo .sub{color:var(--gray2)}
