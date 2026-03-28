@@ -4314,32 +4314,65 @@ function schedaTabPrev() {
 
 function _renderSchedaTab() {
   var tab = _schedaTabs[_schedaTabIdx];
+  var p = prospects.find(function(x){ return x.id === currentId; });
+  if (!p) return;
+
+  // Update tab buttons
   document.querySelectorAll('#scheda-tabs .fin-tab').forEach(function(el, i) {
     el.classList.toggle('active', i === _schedaTabIdx);
   });
+
   var body = document.getElementById('scheda-body');
-  var pane = document.getElementById('fin-pane-' + tab);
-  if (body && pane) {
-    body.innerHTML = '';
-    var clone = pane.cloneNode(true);
-    clone.style.display = 'block';
-    clone.classList.add('active');
-    body.appendChild(clone);
-    var origInputs = pane.querySelectorAll('input, select, textarea');
-    var cloneInputs = clone.querySelectorAll('input, select, textarea');
-    cloneInputs.forEach(function(el, i) {
-      if (origInputs[i]) {
-        el.value = origInputs[i].value;
-        el.checked = origInputs[i].checked;
-      }
-      el.addEventListener('change', function() {
-        if (origInputs[i]) { origInputs[i].value = el.value; origInputs[i].checked = el.checked; }
-      });
-      el.addEventListener('input', function() {
-        if (origInputs[i]) { origInputs[i].value = el.value; }
-      });
+  if (!body) return;
+
+  // Build the form content (same as openFinModal but inline)
+  var html = '';
+  if (tab === 'kpi') {
+    // KPI tab has its own render
+    var KPI_LIST = (typeof KPI_BY_SETTORE !== 'undefined' && KPI_BY_SETTORE[p.settore]) ? KPI_BY_SETTORE[p.settore] : KPI_BASE;
+    var kpi = p.kpi_commerciali || {};
+    var rows = KPI_LIST.map(function(k) {
+      var val = kpi[k.id];
+      var hasVal = val !== null && val !== undefined && val !== '';
+      return '<div class="kpi-edit-row">' +
+        '<label class="kpi-edit-label">' + k.label + '</label>' +
+        '<div class="kpi-edit-input-wrap">' +
+          '<input class="form-input kpi-edit-input scheda-input" type="number" step="0.1" data-kpi-id="' + k.id + '" value="' + (hasVal ? val : '') + '" placeholder="\u2014" disabled>' +
+          '<span class="kpi-edit-unit">' + k.unita + '</span>' +
+        '</div></div>';
+    }).join('');
+    html = '<div style="padding:16px 20px">' +
+      '<div class="fin-section-label">KPI Commerciali</div>' +
+      '<p style="font-size:12px;color:var(--gray);margin-bottom:16px">Valori reali del cliente per calcolare le proiezioni.</p>' +
+      '<div class="kpi-edit-grid">' + rows + '</div></div>';
+  } else {
+    var cfg = FIN_FORMS[tab];
+    if (!cfg) { body.innerHTML = ''; return; }
+    html = '<div style="padding:16px 20px"><div class="fin-section-label">' + cfg.title + '</div><div class="form-grid">';
+    cfg.fields.forEach(function(f) {
+      var val = p[f.id] !== null && p[f.id] !== undefined ? p[f.id] : '';
+      html += buildFinField(f, val);
     });
+    if (cfg.bools && cfg.bools.length) {
+      cfg.bools.forEach(function(b) {
+        var checked = p[b.id] ? 'checked' : '';
+        html += '<div class="form-group full" style="flex-direction:row;align-items:center;gap:10px">' +
+          '<input type="checkbox" class="scheda-input" id="fin-' + b.id + '" ' + checked + ' style="width:16px;height:16px;accent-color:var(--gold)" disabled>' +
+          '<label style="font-size:13px;color:var(--white);text-transform:none;letter-spacing:0">' + b.label + '</label></div>';
+      });
+    }
+    html += '</div></div>';
   }
+
+  body.innerHTML = html;
+
+  // Disable all inputs by default
+  body.querySelectorAll('input, select, textarea').forEach(function(el) {
+    el.classList.add('scheda-input');
+    el.disabled = true;
+  });
+
+  // Update prev/next buttons
   var prevBtn = document.getElementById('scheda-btn-prev');
   var nextBtn = document.getElementById('scheda-btn-next');
   if (prevBtn) {
@@ -4355,6 +4388,95 @@ function _renderSchedaTab() {
       nextBtn.setAttribute('onclick', 'schedaTabNext()');
     }
   }
+
+  // Update modifica/salva button
+  _aggiornaSchedaEditBtn(false);
+}
+
+var _schedaEditMode = false;
+
+function _aggiornaSchedaEditBtn(editing) {
+  _schedaEditMode = editing;
+  var footer = document.querySelector('#scheda-overlay .diagnosi-footer');
+  if (!footer) return;
+  var existing = document.getElementById('scheda-btn-edit');
+  if (existing) existing.remove();
+
+  var btn = document.createElement('button');
+  btn.id = 'scheda-btn-edit';
+  btn.style.cssText = 'border-radius:8px;padding:8px 20px;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;';
+  if (editing) {
+    btn.textContent = 'Salva';
+    btn.style.background = '#1CB889';
+    btn.style.border = 'none';
+    btn.style.color = '#fff';
+    btn.onclick = function() { _salvaSchedaTab(); };
+  } else {
+    btn.textContent = 'Modifica';
+    btn.style.background = 'var(--bg3)';
+    btn.style.border = '1px solid var(--gold)';
+    btn.style.color = 'var(--gold)';
+    btn.onclick = function() { _abilitaModificaScheda(); };
+  }
+  // Insert between prev and next
+  var nextBtn = document.getElementById('scheda-btn-next');
+  footer.insertBefore(btn, nextBtn);
+}
+
+function _abilitaModificaScheda() {
+  var body = document.getElementById('scheda-body');
+  if (!body) return;
+  body.querySelectorAll('.scheda-input, input, select, textarea').forEach(function(el) {
+    el.disabled = false;
+  });
+  _aggiornaSchedaEditBtn(true);
+}
+
+function _salvaSchedaTab() {
+  var p = prospects.find(function(x){ return x.id === currentId; });
+  if (!p) return;
+  var tab = _schedaTabs[_schedaTabIdx];
+  var body = document.getElementById('scheda-body');
+  if (!body) return;
+
+  if (tab === 'kpi') {
+    // Save KPI
+    var KPI_LIST = (typeof KPI_BY_SETTORE !== 'undefined' && KPI_BY_SETTORE[p.settore]) ? KPI_BY_SETTORE[p.settore] : KPI_BASE;
+    var kpi = {};
+    body.querySelectorAll('[data-kpi-id]').forEach(function(el) {
+      var val = parseFloat(el.value);
+      kpi[el.getAttribute('data-kpi-id')] = isNaN(val) ? null : val;
+    });
+    p.kpi_commerciali = kpi;
+    sb.from('prospects').update({ kpi_commerciali: kpi }).eq('id', p.id);
+  } else {
+    // Save financial tab - sync values back to hidden pane and call saveFinancials
+    var cfg = FIN_FORMS[tab];
+    if (!cfg) return;
+    var updates = {};
+    cfg.fields.forEach(function(f) {
+      var el = body.querySelector('#fin-' + f.id);
+      if (!el || f.readonly) return;
+      var val = el.value.trim();
+      if (f.fmt === 'euro' || f.fmt === 'pct') updates[f.id] = val !== '' ? parseFloat(val) : null;
+      else if (f.fmt === 'int' || f.fmt === 'year') updates[f.id] = val !== '' ? parseInt(val) : null;
+      else updates[f.id] = val !== '' ? val : null;
+    });
+    if (cfg.bools) cfg.bools.forEach(function(b) {
+      var el = body.querySelector('#fin-' + b.id);
+      if (el) updates[b.id] = el.checked;
+    });
+    Object.assign(p, updates);
+    sb.from('prospects').update(updates).eq('id', p.id);
+  }
+
+  showToast('Salvato!');
+
+  // Disable inputs again
+  body.querySelectorAll('input, select, textarea').forEach(function(el) {
+    el.disabled = true;
+  });
+  _aggiornaSchedaEditBtn(false);
 }
 
 // ── DETAIL OVERLAY (popup dettagli costi e ROI) ──────────────────────
