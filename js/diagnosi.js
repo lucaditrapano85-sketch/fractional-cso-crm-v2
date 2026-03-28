@@ -23,8 +23,13 @@ function calcolaScoreDimensione(dimId, famiglia, risposte) {
 
   if (pesoRisposto === 0) return 0;
 
-  // Usa pesoTotale come denominatore — le domande non risposte valgono 0
-  var normalizzato = (punteggioTot / pesoTotale) * 4 + 1;
+  // Normalizza solo sulle domande risposte — le non risposte non penalizzano
+  // ma se hai risposto a meno della metà, scala proporzionalmente
+  var copertura = pesoRisposto / pesoTotale;
+  var scoreBase = (punteggioTot / pesoRisposto) * 4 + 1;
+  // Penalizza leggermente se poche domande risposte (< 50% del peso)
+  var fattoreCopertura = copertura < 0.5 ? 0.7 + (copertura * 0.6) : 1;
+  var normalizzato = scoreBase * fattoreCopertura;
   return Math.round(Math.min(5, Math.max(1, normalizzato)));
 }
 
@@ -44,7 +49,7 @@ var _diagLabels = {
   ricavi: 'Prevedibilità ricavi',
   marketing: 'Marketing & lead gen',
   sitoweb: 'Sito web',
-  ecommerce: 'E-commerce & digital',
+  ecommerce: 'Approvvigionamento / Specifico',
 };
 var _diagDescr = {
   vendite: 'Come è organizzata la funzione vendite in azienda',
@@ -54,8 +59,23 @@ var _diagDescr = {
   ricavi: 'Prevedibilità e ricorrenza del fatturato',
   marketing: 'Capacita di generare nuovi clienti in modo strutturato',
   sitoweb: 'Presenza e qualita del sito web',
-  ecommerce: 'Presenza e maturita dei canali digitali',
+  ecommerce: 'Strategia di approvvigionamento e gestione fornitori',
 };
+function _getDiagLabel(settore, dimId) {
+  // Label specifico da STEP_DETAIL se disponibile
+  var sd = (typeof STEP_DETAIL_BY_SETTORE !== 'undefined') ? STEP_DETAIL_BY_SETTORE : {};
+  var lbl = sd[settore]?.[dimId]?._label;
+  if (lbl) return lbl;
+  if (typeof getDimLabel === 'function') return getDimLabel(settore, dimId);
+  return _diagLabels[dimId] || dimId;
+}
+function _getDiagDescr(settore, dimId) {
+  // Descrizione da step 1 del STEP_DETAIL come contesto
+  var sd = (typeof STEP_DETAIL_BY_SETTORE !== 'undefined') ? STEP_DETAIL_BY_SETTORE : {};
+  var step1 = sd[settore]?.[dimId]?.['1'];
+  if (step1) return step1.cosa;
+  return _diagDescr[dimId] || '';
+}
 
 async function resetDiagnosi() {
   var p = prospects.find(function(x){ return x.id === currentId; });
@@ -85,6 +105,8 @@ function apriDiagnosi() {
   var settoreBase = FAMIGLIA_SETTORE[p.settore] || 'b2b_manifatturiero';
   var isAutomotive = ['commercio_auto_moto_nuovo','commercio_auto_moto_usato'].indexOf(p.settore) >= 0;
   _diagFamiglia = isAutomotive ? 'automotive' : settoreBase;
+  // Verifica che la famiglia esista in DIAGNOSI_DOMANDE, altrimenti fallback
+  if (!DIAGNOSI_DOMANDE[_diagFamiglia]) _diagFamiglia = 'b2b_manifatturiero';
   _diagStep = 0;
   _diagCompletata = false;
   // Ricarica risposte salvate per questo prospect (se esistono)
@@ -133,8 +155,9 @@ function renderDiagStep() {
 
   // Header
   document.getElementById('diag-step-label').textContent = 'Step ' + (_diagStep + 1) + ' di ' + totalSteps;
-  document.getElementById('diag-dim-name').textContent = (_diagProspect ? getDimLabel(_diagProspect.settore, dimId) : _diagLabels[dimId]);
-  document.getElementById('diag-dim-desc').textContent = _diagDescr[dimId];
+  var _settore = _diagProspect ? _diagProspect.settore : '';
+  document.getElementById('diag-dim-name').textContent = _getDiagLabel(_settore, dimId);
+  document.getElementById('diag-dim-desc').textContent = _getDiagDescr(_settore, dimId);
 
   // Progress bar
   var pct = ((_diagStep) / totalSteps) * 100;
@@ -215,7 +238,10 @@ function aggiornaScorePreview(dimId) {
   var previewEl = document.getElementById('diag-score-preview');
   if (score > 0) {
     var col = score >= 4 ? '#30D158' : score >= 3 ? '#FF9500' : '#FF3B30';
-    previewEl.innerHTML = 'Score stimato: \x3cstrong style="color:' + col + ';font-size:14px;margin-left:4px">' + score + '/5\x3c/strong>';
+    var settore = _diagProspect ? _diagProspect.settore : '';
+    var stepDesc = (typeof _getStepDesc === 'function') ? _getStepDesc(settore, dimId, score) : '';
+    var descHtml = (stepDesc && stepDesc !== '\u2014') ? '\x3cdiv style="font-size:10px;color:var(--gray);margin-top:3px">' + stepDesc + '\x3c/div>' : '';
+    previewEl.innerHTML = 'Score stimato: \x3cstrong style="color:' + col + ';font-size:14px;margin-left:4px">' + score + '/5\x3c/strong>' + descHtml;
   } else {
     previewEl.innerHTML = '';
   }
@@ -284,12 +310,15 @@ function mostraRisultatoDiagnosi(dims) {
   document.getElementById('diag-btn-prev').style.display = 'none';
   var scoreFinale = calcScore({dims: dims});
 
+  var _settoreR = _diagProspect ? _diagProspect.settore : '';
   var gridHtml = _diagDims.map(function(dimId) {
     var score = dims[dimId] || 0;
     var col = score >= 4 ? '#30D158' : score >= 3 ? '#FF9500' : '#FF3B30';
+    var stepDesc = (typeof _getStepDesc === 'function') ? _getStepDesc(_settoreR, dimId, Math.max(score, 1)) : '';
     return '\x3cdiv class="diag-result-item">' +
-      '\x3cdiv class="diag-result-dim">' + (_diagProspect ? getDimLabel(_diagProspect.settore, dimId) : _diagLabels[dimId]) + '\x3c/div>' +
+      '\x3cdiv class="diag-result-dim">' + _getDiagLabel(_settoreR, dimId) + '\x3c/div>' +
       '\x3cdiv class="diag-result-score" style="color:' + col + '">' + (score || '--') + '/5\x3c/div>' +
+      (stepDesc && stepDesc !== '\u2014' ? '\x3cdiv style="font-size:10px;color:var(--gray);margin-top:2px">' + stepDesc + '\x3c/div>' : '') +
     '\x3c/div>';
   }).join('');
 

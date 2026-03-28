@@ -121,12 +121,12 @@ var FAMIGLIA_SETTORE = {
   edilizia: 'edilizia',
   edilizia_residenziale: 'edilizia',
   edilizia_impianti: 'edilizia',
-  edilizia_serramenti: 'distribuzione',
+  edilizia_serramenti: 'edilizia',
   commercio: 'retail',
   commercio_distribuzione_industriale: 'distribuzione',
   commercio_ingrosso_alimentare: 'distribuzione',
   commercio_materiali_edili: 'distribuzione',
-  commercio_ricambi_auto: 'retail',
+  commercio_ricambi_auto: 'distribuzione',
   commercio_abbigliamento_ingrosso: 'distribuzione',
   commercio_elettronica: 'retail',
   alimentare_birra: 'food',
@@ -144,7 +144,7 @@ var FAMIGLIA_SETTORE = {
   tech_saas: 'tech',
   tech_system_integrator: 'tech',
   tech_digital_agency: 'tech',
-  tech_automazione: 'b2b_manifatturiero',
+  tech_automazione: 'tech',
 };
 
 // Domande per famiglia × dimensione
