@@ -5734,410 +5734,206 @@ function buildFinField(f, val) {
 }
 
 function buildCalcolatricePL() {
-  const p = prospects.find(x => x.id === currentId) || {};
-  const dc = p.dati_calcolatrice || {};
-  const fv = (field) => dc[field] !== undefined && dc[field] !== null ? dc[field] : (p[field] || '');
-  // Migrazione: vecchio campo costi_fissi -> cf_personale
-  if (!dc.cf_personale && (dc.costi_fissi || p.costi_fissi_mensili)) {
-    dc.cf_personale = dc.costi_fissi || (p.costi_fissi_mensili ? p.costi_fissi_mensili * 12 : '');
-  }
-  const FORMA_TO_REGIME = {'Srl':'srl','Spa':'srl','Srl semplificata':'srl','srl':'srl','spa':'srl','srls':'srl','Srls':'srl','Sapa':'srl','Snc':'snc_sas','Sas':'snc_sas','snc':'snc_sas','sas':'snc_sas','Ditta individuale':'ditta','Imprenditore individuale':'ditta','ditta_individuale':'ditta','Libero professionista':'ditta','Cooperativa':'srl','Consorzio':'srl','Associazione':'srl','Fondazione':'srl','Ente pubblico':'srl'};
-  const formaGiuridica = p.forma_giuridica || '';
-  const regimeFiscale = FORMA_TO_REGIME[formaGiuridica] || dc.forma || 'srl';
-  const regimeLabel = regimeFiscale === 'srl' ? 'IRES 24% + IRAP 3.9%' : regimeFiscale === 'snc_sas' ? 'IRPEF + IRAP 3.9%' : 'IRPEF + INPS ~24%';
+  var p = prospects.find(function(x){ return x.id === currentId; }) || {};
+  var dc = p.dati_calcolatrice || {};
+  var v = function(field, fallback) {
+    if (dc[field] !== undefined && dc[field] !== null) return dc[field];
+    if (fallback !== undefined) return fallback;
+    return '';
+  };
 
-  return `
-  \x3cdiv style="margin-top:8px">
-    \x3cdiv style="font-size:11px;font-weight:600;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px">
-      Conto Economico
-    \x3c/div>
+  return '<div id="calc-container" style="margin-top:8px">' +
+    '<div style="font-size:11px;font-weight:600;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px">Conto Economico</div>' +
 
-    \x3c!-- SEZIONE 1: RICAVI --\x3e
-    \x3cdiv class="pl-section-label">Ricavi\x3c/div>
-    \x3cdiv class="pl-row pl-row-input">
-      \x3cdiv class="pl-label">Fatturato anno corrente\x3c/div>
-      \x3cdiv class="pl-input-wrap">
-        \x3cinput class="form-input pl-input" type="number" id="calc-fatturato" placeholder="es. 500000"
-          value="${dc.fatturato != null ? dc.fatturato : (p.fatturato_anno_1 != null ? p.fatturato_anno_1 : '')}" oninput="aggiornaCalcolatrice()">
-      \x3c/div>
-    \x3c/div>
-    \x3cdiv class="pl-row pl-row-input">
-      \x3cdiv class="pl-label">Fatturato anno precedente \x3cspan style="font-size:9px;color:var(--gray2)">(opzionale)\x3c/span>\x3c/div>
-      \x3cdiv class="pl-input-wrap">
-        \x3cinput class="form-input pl-input" type="number" id="calc-fatturato-prec" placeholder="es. 450000"
-          value="${dc.fatturato_prec != null ? dc.fatturato_prec : ''}" oninput="aggiornaCalcolatrice()">
-        \x3cdiv class="pl-preview" id="calc-preview-delta-fat">\x3c/div>
-      \x3c/div>
-    \x3c/div>
+    // RICAVI
+    '<div class="pl-section-label">Ricavi</div>' +
+    '<table class="calc-table"><tbody>' +
+    '<tr><td>Fatturato anno corrente</td><td><input type="number" id="c-fat" value="' + v('fatturato', p.fatturato_anno_1 || '') + '" placeholder="es. 500000"></td></tr>' +
+    '<tr><td>Fatturato anno precedente <span style="color:var(--gray2)">(opz.)</span></td><td><input type="number" id="c-fat-prec" value="' + v('fatturato_prec') + '" placeholder="es. 450000"></td></tr>' +
+    '<tr class="calc-result"><td>Delta</td><td id="c-res-delta">--</td></tr>' +
+    '</tbody></table>' +
 
-    \x3c!-- SEZIONE 2: COSTI VARIABILI --\x3e
-    \x3cdiv class="pl-section-label" style="margin-top:16px">Costi variabili\x3c/div>
-    \x3cdiv class="pl-row pl-row-input">
-      \x3cdiv class="pl-label">
-        Costo del venduto
-        \x3cdiv class="pl-sublabel">materie prime, acquisti diretti, produzione\x3c/div>
-      \x3c/div>
-      \x3cdiv class="pl-input-wrap">
-        \x3cdiv style="display:flex;gap:8px;align-items:center">
-          \x3cinput class="form-input pl-input" type="number" id="calc-cdv-pct" placeholder="%" min="0" max="100" step="0.1"
-            value="${dc.cdv_pct != null ? dc.cdv_pct : ''}" oninput="document.getElementById('calc-cdv-eur').value='';aggiornaCalcolatrice()" style="width:70px">
-          \x3cspan style="color:var(--gray);font-size:12px">%\x3c/span>
-          \x3cspan style="color:var(--gray2);font-size:11px">oppure\x3c/span>
-          \x3cinput class="form-input pl-input" type="number" id="calc-cdv-eur" placeholder="EUR" min="0"
-            value="${dc.cdv_eur != null ? dc.cdv_eur : ''}" oninput="document.getElementById('calc-cdv-pct').value='';aggiornaCalcolatrice()" style="flex:1">
-        \x3c/div>
-        \x3cdiv class="pl-preview" id="calc-preview-cdv">\x3c/div>
-      \x3c/div>
-    \x3c/div>
-    \x3cdiv class="pl-row pl-row-result" id="calc-margine-row">
-      \x3cdiv class="pl-label">= Margine di Contribuzione\x3c/div>
-      \x3cdiv style="display:flex;gap:16px;align-items:baseline">
-        \x3cdiv class="pl-result-val" id="calc-margine">--\x3c/div>
-        \x3cdiv class="pl-result-pct" id="calc-margine-pct">\x3c/div>
-      \x3c/div>
-    \x3c/div>
+    // COSTI VARIABILI
+    '<div class="pl-section-label" style="margin-top:16px">Costi variabili</div>' +
+    '<table class="calc-table"><tbody>' +
+    '<tr><td>Costo del venduto %</td><td><input type="number" id="c-cdv-pct" value="' + v('cdv_pct') + '" placeholder="%" min="0" max="100" step="0.1" style="width:80px"> <span style="color:var(--gray2)">oppure EUR</span> <input type="number" id="c-cdv-eur" value="' + v('cdv_eur') + '" placeholder="EUR" style="width:120px"></td></tr>' +
+    '<tr class="calc-result"><td>= Margine di Contribuzione</td><td id="c-res-margine">--</td></tr>' +
+    '</tbody></table>' +
 
-    \x3c!-- SEZIONE 3: COSTI FISSI --\x3e
-    \x3cdiv class="pl-section-label" style="margin-top:16px">Costi fissi annui\x3c/div>
-    \x3cdiv class="pl-row pl-row-input">
-      \x3cdiv class="pl-label">Personale \x3cdiv class="pl-sublabel">stipendi lordi + contributi\x3c/div>\x3c/div>
-      \x3cdiv class="pl-input-wrap">
-        \x3cinput class="form-input pl-input" type="number" id="calc-cf-personale" placeholder="es. 120000"
-          value="${dc.cf_personale != null ? dc.cf_personale : ''}" oninput="aggiornaCalcolatrice()">
-      \x3c/div>
-    \x3c/div>
-    \x3cdiv class="pl-row pl-row-input">
-      \x3cdiv class="pl-label">Affitto e utenze\x3c/div>
-      \x3cdiv class="pl-input-wrap">
-        \x3cinput class="form-input pl-input" type="number" id="calc-cf-affitto" placeholder="es. 24000"
-          value="${dc.cf_affitto != null ? dc.cf_affitto : ''}" oninput="aggiornaCalcolatrice()">
-      \x3c/div>
-    \x3c/div>
-    \x3cdiv class="pl-row pl-row-input">
-      \x3cdiv class="pl-label">Servizi e consulenze \x3cdiv class="pl-sublabel">commercialista, software, assicurazioni\x3c/div>\x3c/div>
-      \x3cdiv class="pl-input-wrap">
-        \x3cinput class="form-input pl-input" type="number" id="calc-cf-servizi" placeholder="es. 18000"
-          value="${dc.cf_servizi != null ? dc.cf_servizi : ''}" oninput="aggiornaCalcolatrice()">
-      \x3c/div>
-    \x3c/div>
-    \x3cdiv class="pl-row pl-row-input">
-      \x3cdiv class="pl-label">Altri costi fissi \x3cdiv class="pl-sublabel">manutenzioni, trasporti, varie\x3c/div>\x3c/div>
-      \x3cdiv class="pl-input-wrap">
-        \x3cinput class="form-input pl-input" type="number" id="calc-cf-altro" placeholder="es. 12000"
-          value="${dc.cf_altro != null ? dc.cf_altro : ''}" oninput="aggiornaCalcolatrice()">
-      \x3c/div>
-    \x3c/div>
-    \x3cdiv class="pl-row pl-row-result" style="border-left-color:var(--gray)">
-      \x3cdiv class="pl-label" style="color:var(--gray)">Totale costi fissi\x3c/div>
-      \x3cdiv class="pl-result-val" id="calc-cf-totale" style="color:var(--gray)">--\x3c/div>
-    \x3c/div>
+    // COSTI FISSI
+    '<div class="pl-section-label" style="margin-top:16px">Costi fissi annui</div>' +
+    '<table class="calc-table"><tbody>' +
+    '<tr><td>Personale (stipendi + contributi)</td><td><input type="number" id="c-cf-pers" value="' + v('cf_personale') + '" placeholder="es. 120000"></td></tr>' +
+    '<tr><td>Affitto e utenze</td><td><input type="number" id="c-cf-aff" value="' + v('cf_affitto') + '" placeholder="es. 24000"></td></tr>' +
+    '<tr><td>Servizi e consulenze</td><td><input type="number" id="c-cf-serv" value="' + v('cf_servizi') + '" placeholder="es. 18000"></td></tr>' +
+    '<tr><td>Altri costi fissi</td><td><input type="number" id="c-cf-altro" value="' + v('cf_altro') + '" placeholder="es. 12000"></td></tr>' +
+    '<tr class="calc-result"><td>Totale costi fissi</td><td id="c-res-cf">--</td></tr>' +
+    '</tbody></table>' +
 
-    \x3c!-- RISULTATO: EBITDA --\x3e
-    \x3cdiv class="pl-row pl-row-result" id="calc-ebitda-row" style="margin-top:8px">
-      \x3cdiv class="pl-label" style="font-size:13px;color:var(--white);font-weight:600">= EBITDA\x3c/div>
-      \x3cdiv style="display:flex;gap:16px;align-items:baseline">
-        \x3cdiv class="pl-result-val" id="calc-ebitda" style="font-size:20px">--\x3c/div>
-        \x3cdiv class="pl-result-pct" id="calc-ebitda-pct">\x3c/div>
-      \x3c/div>
-    \x3c/div>
+    // EBITDA
+    '<table class="calc-table" style="margin-top:8px"><tbody>' +
+    '<tr class="calc-result calc-big"><td style="font-weight:700">= EBITDA</td><td id="c-res-ebitda">--</td></tr>' +
+    '</tbody></table>' +
 
-    \x3c!-- SEZIONE 4: AMMORTAMENTI --\x3e
-    \x3cdiv class="pl-section-label" style="margin-top:16px">Ammortamenti\x3c/div>
-    \x3cdiv class="pl-row pl-row-input">
-      \x3cdiv class="pl-label" style="cursor:pointer" onclick="toggleAmmPanel()">
-        Ammortamenti annui
-        \x3cdiv class="pl-sublabel">clicca per calcolare per categoria \x3cspan style="color:var(--gold)">\u25BC\x3c/span>\x3c/div>
-      \x3c/div>
-      \x3cdiv class="pl-input-wrap">
-        \x3cinput class="form-input pl-input" type="number" id="calc-ammortamenti" placeholder="es. 30000"
-          value="${dc.ammortamenti != null ? dc.ammortamenti : ''}" oninput="aggiornaCalcolatrice()">
-      \x3c/div>
-    \x3c/div>
-    \x3cdiv id="amm-panel-detail" style="display:none;background:var(--bg3);border-radius:var(--rs);padding:12px;margin:4px 0 8px;border:1px solid var(--border)">
-      \x3cdiv style="font-size:10px;color:var(--gray);margin-bottom:8px;font-weight:600">Calcola per categoria (aliquote fiscali italiane)\x3c/div>
-      \x3cdiv style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
-        ${[
-          {id:'amm-immobili',    label:'Immobili',         aliq:'3%',   val: fv('imm_amm_immobili')},
-          {id:'amm-macchinari',  label:'Macchinari',       aliq:'12.5%', val: fv('imm_amm_macchinari')},
-          {id:'amm-attrezzatura',label:'Attrezzatura',     aliq:'20%',  val: fv('imm_amm_attrezzatura')},
-          {id:'amm-veicoli',     label:'Veicoli',          aliq:'20%',  val: fv('imm_amm_veicoli')},
-          {id:'amm-software',    label:'Software',         aliq:'33%',  val: fv('imm_amm_software')},
-          {id:'amm-leasing',     label:'Leasing (EUR/mese)', aliq:'x12',  val: fv('imm_amm_leasing')},
-        ].map(a => `\x3cdiv>
-          \x3cdiv style="font-size:9px;color:var(--gray);margin-bottom:2px">${a.label} \x3cspan style="color:var(--gold-dim)">${a.aliq}\x3c/span>\x3c/div>
-          \x3cinput class="form-input" type="number" id="${a.id}" placeholder="valore EUR" value="${a.val}"
-            style="font-size:11px;padding:4px 8px" oninput="calcolaAmmDaCategorie()">
-        \x3c/div>`).join('')}
-      \x3c/div>
-      \x3cdiv style="font-size:11px;color:var(--gold);margin-top:8px;font-weight:500" id="amm-totale-detail">Totale: -- EUR\x3c/div>
-    \x3c/div>
+    // AMMORTAMENTI
+    '<div class="pl-section-label" style="margin-top:16px">Ammortamenti</div>' +
+    '<table class="calc-table"><tbody>' +
+    '<tr><td>Ammortamenti annui</td><td><input type="number" id="c-amm" value="' + v('ammortamenti') + '" placeholder="es. 30000"></td></tr>' +
+    '<tr class="calc-result"><td>= EBIT (utile operativo)</td><td id="c-res-ebit">--</td></tr>' +
+    '</tbody></table>' +
 
-    \x3c!-- RISULTATO: EBIT --\x3e
-    \x3cdiv class="pl-row pl-row-result" id="calc-ebit-row">
-      \x3cdiv class="pl-label">= EBIT (utile operativo)\x3c/div>
-      \x3cdiv style="display:flex;gap:16px;align-items:baseline">
-        \x3cdiv class="pl-result-val" id="calc-ebit">--\x3c/div>
-        \x3cdiv class="pl-result-pct" id="calc-ebit-pct">\x3c/div>
-      \x3c/div>
-    \x3c/div>
+    // AREA FISCALE
+    '<div class="pl-section-label" style="margin-top:16px">Area fiscale</div>' +
+    '<table class="calc-table"><tbody>' +
+    '<tr><td>Compenso titolare (lordo annuo)</td><td><input type="number" id="c-comp-tit" value="' + v('reddito_titolare') + '" placeholder="es. 60000"></td></tr>' +
+    '<tr class="calc-result" style="color:var(--red)"><td>- Imposte e contributi stimati</td><td id="c-res-imposte">--</td></tr>' +
+    '</tbody></table>' +
 
-    \x3c!-- SEZIONE 5: AREA FISCALE --\x3e
-    \x3cdiv class="pl-section-label" style="margin-top:16px">Area fiscale\x3c/div>
-    ${formaGiuridica && FORMA_TO_REGIME[formaGiuridica]
-      ? '\x3cdiv class="pl-row pl-row-input">\x3cdiv class="pl-label">Regime fiscale\x3c/div>\x3cdiv class="pl-input-wrap">\x3cdiv class="calc-regime-badge">' + formaGiuridica + ' \u2014 ' + regimeLabel + '\x3c/div>\x3cinput type="hidden" id="calc-forma" value="' + regimeFiscale + '">\x3c/div>\x3c/div>'
-      : '\x3cdiv class="pl-row pl-row-input">\x3cdiv class="pl-label">Regime fiscale\x3c/div>\x3cdiv class="pl-input-wrap">\x3cdiv class="calc-regime-warning">\u26A0 Imposta la forma giuridica in Struttura Aziendale\x3c/div>\x3cinput type="hidden" id="calc-forma" value="' + regimeFiscale + '">\x3c/div>\x3c/div>'}
-    \x3cdiv class="pl-row pl-row-input">
-      \x3cdiv class="pl-label">Compenso titolare/amministratore \x3cdiv class="pl-sublabel">lordo annuo\x3c/div>\x3c/div>
-      \x3cdiv class="pl-input-wrap">
-        \x3cinput class="form-input pl-input" type="number" id="calc-reddito-titolare" placeholder="es. 60000" value="${dc.reddito_titolare != null ? dc.reddito_titolare : ''}" oninput="aggiornaCalcolatrice()">
-      \x3c/div>
-    \x3c/div>
-    \x3cdiv class="pl-row pl-row-result" id="calc-imposte-row" style="border-left-color:var(--red)">
-      \x3cdiv class="pl-label" style="color:var(--red)">\u2212 Imposte & contributi stimati\x3c/div>
-      \x3cdiv style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
-        \x3cdiv class="pl-result-val" id="calc-imposte" style="color:var(--red)">--\x3c/div>
-        \x3cdiv class="pl-result-pct" id="calc-imposte-detail" style="font-size:10px;color:var(--gray)">\x3c/div>
-      \x3c/div>
-    \x3c/div>
+    // UTILE NETTO
+    '<table class="calc-table" style="margin-top:8px"><tbody>' +
+    '<tr class="calc-result calc-big"><td style="font-weight:700">= Utile Netto</td><td id="c-res-utile">--</td></tr>' +
+    '</tbody></table>' +
 
-    \x3c!-- RISULTATO FINALE: UTILE NETTO --\x3e
-    \x3cdiv class="pl-row pl-row-result pl-row-final" id="calc-utile-row" style="margin-top:8px">
-      \x3cdiv class="pl-label" style="font-size:14px;color:var(--white);font-weight:700">= Utile Netto\x3c/div>
-      \x3cdiv style="display:flex;gap:16px;align-items:baseline">
-        \x3cdiv class="pl-result-val" id="calc-utile" style="font-size:22px;font-family:'DM Serif Display',serif">--\x3c/div>
-        \x3cdiv class="pl-result-pct" id="calc-utile-pct">\x3c/div>
-      \x3c/div>
-    \x3c/div>
-
-    \x3c!-- RIEPILOGO MARGINI --\x3e
-    \x3cdiv id="calc-margini-riepilogo" style="display:none;margin-top:12px;background:var(--bg3);border-radius:var(--rs);padding:10px 14px">
-      \x3cdiv style="font-size:10px;font-weight:600;color:var(--gray);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Riepilogo margini\x3c/div>
-      \x3cdiv style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px" id="calc-margini-grid">\x3c/div>
-    \x3c/div>
-
-    \x3cdiv style="display:flex;justify-content:flex-end;margin-top:16px">\x3cbutton class="btn btn-primary" onclick="salvaDaCalcolatrice()">Salva dati finanziari\x3c/button>\x3c/div>
-
-  \x3c/div>`;
+    // BOTTONI
+    '<div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px">' +
+    '<button class="btn btn-primary" onclick="calcola()">Calcola</button>' +
+    '<button class="btn btn-primary" onclick="salvaDaCalcolatrice()" style="background:var(--green);border:none">Salva</button>' +
+    '</div>' +
+  '</div>';
 }
 
-function toggleAmmPanel() {
-  var p = document.getElementById('amm-panel-detail');
-  if (!p) {
-    // Try inside scheda-body
-    var body = document.getElementById('scheda-body');
-    if (body) p = body.querySelector('#amm-panel-detail');
-  }
-  if (p) p.style.display = p.style.display === 'none' ? 'block' : 'none';
-}
+function calcola() {
+  var fat = parseFloat(document.getElementById('c-fat')?.value) || 0;
+  var fatPrec = parseFloat(document.getElementById('c-fat-prec')?.value) || 0;
+  var cdvPct = document.getElementById('c-cdv-pct')?.value;
+  var cdvEur = document.getElementById('c-cdv-eur')?.value;
+  var cfPers = parseFloat(document.getElementById('c-cf-pers')?.value) || 0;
+  var cfAff = parseFloat(document.getElementById('c-cf-aff')?.value) || 0;
+  var cfServ = parseFloat(document.getElementById('c-cf-serv')?.value) || 0;
+  var cfAltro = parseFloat(document.getElementById('c-cf-altro')?.value) || 0;
+  var amm = parseFloat(document.getElementById('c-amm')?.value) || 0;
+  var compTit = parseFloat(document.getElementById('c-comp-tit')?.value) || 0;
 
-function calcolaAmmDaCategorie() {
-  var aliq = {immobili:0.03, macchinari:0.125, attrezzatura:0.20, veicoli:0.20, software:0.33};
-  var tot = 0;
-  ['immobili','macchinari','attrezzatura','veicoli','software'].forEach(function(k) {
-    var el = document.getElementById('amm-' + k);
-    if (el && el.value) tot += parseFloat(el.value) * aliq[k];
-  });
-  var leasing = document.getElementById('amm-leasing');
-  if (leasing && leasing.value) tot += parseFloat(leasing.value) * 12;
-  var totEl = document.getElementById('amm-totale-detail');
-  if (totEl) totEl.textContent = 'Totale: ' + Math.round(tot).toLocaleString('it-IT') + ' EUR';
-  var ammEl = document.getElementById('calc-ammortamenti');
-  if (ammEl) { ammEl.value = Math.round(tot); aggiornaCalcolatrice(); }
-}
-
-function aggiornaCalcolatrice() {
-  var fat = parseFloat(document.getElementById('calc-fatturato')?.value) || 0;
-  var fatPrec = parseFloat(document.getElementById('calc-fatturato-prec')?.value) || 0;
+  var fmt = function(n) { return Math.round(n).toLocaleString('it-IT') + ' €'; };
+  var pct = function(n, base) { return base > 0 ? ' (' + (n/base*100).toFixed(1) + '%)' : ''; };
 
   // Delta fatturato
-  var deltaFatEl = document.getElementById('calc-preview-delta-fat');
-  if (deltaFatEl && fatPrec > 0 && fat > 0) {
-    var deltaPct = ((fat - fatPrec) / fatPrec * 100).toFixed(1);
-    var sign = deltaPct >= 0 ? '+' : '';
-    var col = deltaPct >= 0 ? 'var(--green)' : 'var(--red)';
-    deltaFatEl.innerHTML = '<span style="color:' + col + '">' + sign + deltaPct + '% vs anno precedente</span>';
-  } else if (deltaFatEl) deltaFatEl.innerHTML = '';
-
-  // CDV: disabilita il campo non usato
-  var cdvPctEl = document.getElementById('calc-cdv-pct');
-  var cdvEurEl = document.getElementById('calc-cdv-eur');
-  if (cdvPctEl && cdvEurEl) {
-    if (cdvPctEl.value !== '' && cdvPctEl === document.activeElement) {
-      cdvEurEl.value = '';
-      cdvEurEl.style.opacity = '0.3';
-      cdvPctEl.style.opacity = '1';
-    } else if (cdvEurEl.value !== '' && cdvEurEl === document.activeElement) {
-      cdvPctEl.value = '';
-      cdvPctEl.style.opacity = '0.3';
-      cdvEurEl.style.opacity = '1';
-    } else {
-      cdvPctEl.style.opacity = '1';
-      cdvEurEl.style.opacity = '1';
-    }
+  var deltaEl = document.getElementById('c-res-delta');
+  if (deltaEl) {
+    if (fatPrec > 0 && fat > 0) {
+      var d = ((fat - fatPrec) / fatPrec * 100).toFixed(1);
+      deltaEl.innerHTML = '<span style="color:' + (d >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (d >= 0 ? '+' : '') + d + '%</span>';
+    } else deltaEl.textContent = '--';
   }
 
   // Costo del venduto
-  var cdvPct = parseFloat(document.getElementById('calc-cdv-pct')?.value);
-  var cdvEur = parseFloat(document.getElementById('calc-cdv-eur')?.value);
   var cdv = 0;
-  if (!isNaN(cdvPct) && fat) { cdv = fat * cdvPct / 100; }
-  else if (!isNaN(cdvEur)) { cdv = cdvEur; }
-  var prevCdv = document.getElementById('calc-preview-cdv');
-  if (prevCdv && cdv > 0) prevCdv.textContent = Math.round(cdv).toLocaleString('it-IT') + ' EUR';
-  else if (prevCdv) prevCdv.textContent = '';
+  if (cdvPct !== '' && !isNaN(parseFloat(cdvPct))) cdv = fat * parseFloat(cdvPct) / 100;
+  else if (cdvEur !== '' && !isNaN(parseFloat(cdvEur))) cdv = parseFloat(cdvEur);
 
-  // Margine di Contribuzione
+  // Margine
   var margine = fat - cdv;
-  var marginePct = fat > 0 ? (margine / fat * 100).toFixed(1) : 0;
-  var mEl = document.getElementById('calc-margine');
-  var mPctEl = document.getElementById('calc-margine-pct');
-  if (mEl) mEl.textContent = fat > 0 ? Math.round(margine).toLocaleString('it-IT') + ' EUR' : '--';
-  if (mPctEl) mPctEl.textContent = fat > 0 ? marginePct + '%' : '';
+  var margEl = document.getElementById('c-res-margine');
+  if (margEl) margEl.innerHTML = fat > 0 ? '<strong>' + fmt(margine) + '</strong>' + pct(margine, fat) : '--';
 
   // Costi fissi
-  var cfPers = parseFloat(document.getElementById('calc-cf-personale')?.value) || 0;
-  var cfAff = parseFloat(document.getElementById('calc-cf-affitto')?.value) || 0;
-  var cfServ = parseFloat(document.getElementById('calc-cf-servizi')?.value) || 0;
-  var cfAltro = parseFloat(document.getElementById('calc-cf-altro')?.value) || 0;
-  var cfTotale = cfPers + cfAff + cfServ + cfAltro;
-  var cfTotEl = document.getElementById('calc-cf-totale');
-  if (cfTotEl) cfTotEl.textContent = cfTotale > 0 ? Math.round(cfTotale).toLocaleString('it-IT') + ' EUR' : '--';
+  var cfTot = cfPers + cfAff + cfServ + cfAltro;
+  var cfEl = document.getElementById('c-res-cf');
+  if (cfEl) cfEl.textContent = cfTot > 0 ? fmt(cfTot) : '--';
 
   // EBITDA
-  var ebitda = margine - cfTotale;
-  var ebitdaPct = fat > 0 ? (ebitda / fat * 100).toFixed(1) : 0;
-  var eEl = document.getElementById('calc-ebitda');
-  var ePctEl = document.getElementById('calc-ebitda-pct');
-  var eRow = document.getElementById('calc-ebitda-row');
-  if (eEl) eEl.textContent = fat > 0 ? Math.round(ebitda).toLocaleString('it-IT') + ' EUR' : '--';
-  if (ePctEl) ePctEl.textContent = fat > 0 ? ebitdaPct + '% su fatturato' : '';
-  if (eRow) eRow.style.borderLeftColor = ebitda >= 0 ? 'var(--green)' : 'var(--red)';
-
-  // Ammortamenti
-  var amm = parseFloat(document.getElementById('calc-ammortamenti')?.value) || 0;
+  var ebitda = margine - cfTot;
+  var ebitdaEl = document.getElementById('c-res-ebitda');
+  if (ebitdaEl) {
+    ebitdaEl.innerHTML = fat > 0 ? '<strong style="color:' + (ebitda >= 0 ? 'var(--green)' : 'var(--red)') + '">' + fmt(ebitda) + '</strong>' + pct(ebitda, fat) : '--';
+  }
 
   // EBIT
   var ebit = ebitda - amm;
-  var ebitPct = fat > 0 ? (ebit / fat * 100).toFixed(1) : 0;
-  var ebitEl = document.getElementById('calc-ebit');
-  var ebitPctEl = document.getElementById('calc-ebit-pct');
-  if (ebitEl) ebitEl.textContent = fat > 0 ? Math.round(ebit).toLocaleString('it-IT') + ' EUR' : '--';
-  if (ebitPctEl) ebitPctEl.textContent = fat > 0 ? ebitPct + '%' : '';
+  var ebitEl = document.getElementById('c-res-ebit');
+  if (ebitEl) ebitEl.innerHTML = fat > 0 ? '<strong>' + fmt(ebit) + '</strong>' + pct(ebit, fat) : '--';
 
   // Imposte
-  var forma = document.getElementById('calc-forma')?.value || 'srl';
-  var redditoTitolare = parseFloat(document.getElementById('calc-reddito-titolare')?.value) || 0;
+  var p = prospects.find(function(x){ return x.id === currentId; }) || {};
+  var FORMA_TO_REGIME = {'Srl':'srl','Spa':'srl','Srls':'srl','Sapa':'srl','Snc':'snc_sas','Sas':'snc_sas','Ditta individuale':'ditta','Imprenditore individuale':'ditta','Cooperativa':'srl','Consorzio':'srl'};
+  var regime = FORMA_TO_REGIME[p.forma_giuridica || ''] || 'srl';
   var imposte = 0;
-  var dettaglioImposte = '';
+  var dettaglio = '';
   if (ebit > 0) {
-    if (forma === 'srl') {
-      var ires = ebit * 0.24;
-      var irap = ebit * 0.039;
-      var inpsTit = redditoTitolare * 0.2607;
-      imposte = ires + irap + inpsTit;
-      dettaglioImposte = 'IRES ' + Math.round(ires/1000) + 'k + IRAP ' + Math.round(irap/1000) + 'k' + (redditoTitolare > 0 ? ' + INPS ' + Math.round(inpsTit/1000) + 'k' : '');
-    } else if (forma === 'snc_sas') {
-      var irpef = ebit * 0.35;
-      var irap = ebit * 0.039;
+    if (regime === 'srl') {
+      var ires = ebit * 0.24; var irap = ebit * 0.039; var inps = compTit * 0.2607;
+      imposte = ires + irap + inps;
+      dettaglio = 'IRES ' + Math.round(ires/1000) + 'k + IRAP ' + Math.round(irap/1000) + 'k' + (compTit > 0 ? ' + INPS ' + Math.round(inps/1000) + 'k' : '');
+    } else if (regime === 'snc_sas') {
+      var irpef = ebit * 0.35; var irap = ebit * 0.039;
       imposte = irpef + irap;
-      dettaglioImposte = 'IRPEF ~' + Math.round(irpef/1000) + 'k + IRAP ' + Math.round(irap/1000) + 'k';
+      dettaglio = 'IRPEF ~' + Math.round(irpef/1000) + 'k + IRAP ' + Math.round(irap/1000) + 'k';
     } else {
-      var irpef = ebit * 0.35;
-      var inps = Math.min(ebit, 119650) * 0.24;
+      var irpef = ebit * 0.35; var inps = Math.min(ebit, 119650) * 0.24;
       imposte = irpef + inps;
-      dettaglioImposte = 'IRPEF ~' + Math.round(irpef/1000) + 'k + INPS ' + Math.round(inps/1000) + 'k';
+      dettaglio = 'IRPEF ~' + Math.round(irpef/1000) + 'k + INPS ' + Math.round(inps/1000) + 'k';
     }
   }
-  var impEl = document.getElementById('calc-imposte');
-  var impDetEl = document.getElementById('calc-imposte-detail');
-  if (impEl) impEl.textContent = imposte > 0 ? '-' + Math.round(imposte).toLocaleString('it-IT') + ' EUR' : '--';
-  if (impDetEl) impDetEl.textContent = dettaglioImposte;
+  var impEl = document.getElementById('c-res-imposte');
+  if (impEl) impEl.innerHTML = imposte > 0 ? '<span style="color:var(--red)">' + fmt(imposte) + '</span> <span style="font-size:10px;color:var(--gray)">' + dettaglio + '</span>' : '--';
 
   // Utile Netto
-  var utile = ebit - imposte - redditoTitolare;
-  var utilePct = fat > 0 ? (utile / fat * 100).toFixed(1) : 0;
-  var uEl = document.getElementById('calc-utile');
-  var uPctEl = document.getElementById('calc-utile-pct');
-  var uRow = document.getElementById('calc-utile-row');
-  if (uEl) uEl.textContent = fat > 0 ? Math.round(utile).toLocaleString('it-IT') + ' EUR' : '--';
-  if (uPctEl) uPctEl.textContent = fat > 0 ? utilePct + '%' : '';
-  if (uRow) uRow.style.borderLeftColor = utile >= 0 ? 'var(--green)' : 'var(--red)';
-  if (uEl) uEl.style.color = utile >= 0 ? 'var(--green)' : 'var(--red)';
+  var utile = ebit - imposte - compTit;
+  var utileEl = document.getElementById('c-res-utile');
+  if (utileEl) {
+    utileEl.innerHTML = fat > 0 ? '<strong style="color:' + (utile >= 0 ? 'var(--green)' : 'var(--red)') + ';font-size:18px">' + fmt(utile) + '</strong>' + pct(utile, fat) : '--';
+  }
 
-  // Riepilogo margini
-  var riepilogo = document.getElementById('calc-margini-riepilogo');
-  var rGrid = document.getElementById('calc-margini-grid');
-  if (riepilogo && rGrid && fat > 0) {
-    riepilogo.style.display = 'block';
-    rGrid.innerHTML = [
-      {label:'Margine Contribuzione', val:marginePct+'%', col: marginePct >= 40 ? 'var(--green)' : marginePct >= 20 ? 'var(--gold)' : 'var(--red)'},
-      {label:'EBITDA', val:ebitdaPct+'%', col: ebitdaPct >= 15 ? 'var(--green)' : ebitdaPct >= 8 ? 'var(--gold)' : 'var(--red)'},
-      {label:'EBIT', val:ebitPct+'%', col: ebitPct >= 10 ? 'var(--green)' : ebitPct >= 5 ? 'var(--gold)' : 'var(--red)'},
-      {label:'Utile Netto', val:utilePct+'%', col: utilePct >= 5 ? 'var(--green)' : utilePct >= 0 ? 'var(--gold)' : 'var(--red)'},
-    ].map(function(m) {
-      return '<div style="text-align:center"><div style="font-size:9px;color:var(--gray);margin-bottom:3px">' + m.label + '</div><div style="font-size:16px;font-weight:700;color:' + m.col + '">' + m.val + '</div></div>';
-    }).join('');
-  } else if (riepilogo) riepilogo.style.display = 'none';
-
-  // Salva dati per le proiezioni
-  var pObj = prospects.find(function(x){ return x.id === currentId; });
-  if (pObj) {
-    pObj.fatturato_anno_1 = fat || null;
-    pObj.ebitda = ebitda || null;
-    pObj.margine_pct = fat > 0 ? parseFloat(marginePct) : null;
-    pObj.utile_netto = utile || null;
-    pObj.costi_fissi_mensili = cfTotale > 0 ? Math.round(cfTotale / 12) : null;
+  // Aggiorna anche i dati in memoria per le proiezioni
+  if (p.id) {
+    p.fatturato_anno_1 = fat || null;
+    p.ebitda = ebitda || null;
+    p.margine_pct = fat > 0 ? parseFloat((margine / fat * 100).toFixed(1)) : null;
+    p.utile_netto = utile || null;
+    p.costi_fissi_mensili = cfTot > 0 ? Math.round(cfTot / 12) : null;
   }
 }
+
+// Alias per compatibilita
+function aggiornaCalcolatrice() { calcola(); }
 
 async function salvaDaCalcolatrice() {
   var p = prospects.find(function(x){ return x.id === currentId; });
   if (!p) return;
-  var _pv = function(id) { var el = document.getElementById(id); var v = el ? el.value : ''; return v !== '' ? parseFloat(v) : null; };
-  var fat = _pv('calc-fatturato');
-  var fatPrec = _pv('calc-fatturato-prec');
-  var cdvPct = _pv('calc-cdv-pct');
-  var cdvEur = _pv('calc-cdv-eur');
-  var cfPers = _pv('calc-cf-personale');
-  var cfAff = _pv('calc-cf-affitto');
-  var cfServ = _pv('calc-cf-servizi');
-  var cfAltro = _pv('calc-cf-altro');
-  var amm = _pv('calc-ammortamenti');
-  var redTit = _pv('calc-reddito-titolare');
-  var forma = document.getElementById('calc-forma')?.value || 'srl';
+  var _pv = function(id) { var el = document.getElementById(id); var val = el ? el.value : ''; return val !== '' ? parseFloat(val) : null; };
 
   var dati_calcolatrice = {
-    fatturato: fat, fatturato_prec: fatPrec,
-    cdv_pct: cdvPct, cdv_eur: cdvEur,
-    cf_personale: cfPers, cf_affitto: cfAff, cf_servizi: cfServ, cf_altro: cfAltro,
-    ammortamenti: amm, reddito_titolare: redTit, forma: forma,
+    fatturato: _pv('c-fat'),
+    fatturato_prec: _pv('c-fat-prec'),
+    cdv_pct: _pv('c-cdv-pct'),
+    cdv_eur: _pv('c-cdv-eur'),
+    cf_personale: _pv('c-cf-pers'),
+    cf_affitto: _pv('c-cf-aff'),
+    cf_servizi: _pv('c-cf-serv'),
+    cf_altro: _pv('c-cf-altro'),
+    ammortamenti: _pv('c-amm'),
+    reddito_titolare: _pv('c-comp-tit'),
   };
 
-  // Salva anche campi ammortamento per categoria
-  ['imm_amm_immobili','imm_amm_macchinari','imm_amm_attrezzatura','imm_amm_veicoli','imm_amm_software','imm_amm_leasing'].forEach(function(k) {
-    var elId = k.replace('imm_amm_', 'amm-');
-    var el = document.getElementById(elId);
-    if (el && el.value) dati_calcolatrice[k] = parseFloat(el.value);
-  });
-
-  var cfTotale = (cfPers||0) + (cfAff||0) + (cfServ||0) + (cfAltro||0);
-  var cdv = cdvPct && fat ? fat * cdvPct / 100 : (cdvEur || 0);
-  var margine = (fat||0) - cdv;
-  var ebitda = margine - cfTotale;
-  var marginePct = fat > 0 ? parseFloat((margine / fat * 100).toFixed(1)) : null;
+  var fat = dati_calcolatrice.fatturato || 0;
+  var cdvPct = dati_calcolatrice.cdv_pct;
+  var cdvEur = dati_calcolatrice.cdv_eur;
+  var cdv = cdvPct != null ? fat * cdvPct / 100 : (cdvEur || 0);
+  var margine = fat - cdv;
+  var cfTot = (dati_calcolatrice.cf_personale||0) + (dati_calcolatrice.cf_affitto||0) + (dati_calcolatrice.cf_servizi||0) + (dati_calcolatrice.cf_altro||0);
+  var ebitda = margine - cfTot;
 
   var updates = {
-    fatturato_anno_1: fat,
-    ebitda: ebitda > 0 ? ebitda : null,
-    margine_pct: marginePct,
-    costi_fissi_mensili: cfTotale > 0 ? Math.round(cfTotale / 12) : null,
+    fatturato_anno_1: fat || null,
+    ebitda: ebitda || null,
+    margine_pct: fat > 0 ? parseFloat((margine / fat * 100).toFixed(1)) : null,
+    costi_fissi_mensili: cfTot > 0 ? Math.round(cfTot / 12) : null,
     dati_calcolatrice: dati_calcolatrice
   };
 
   Object.assign(p, updates);
   try {
-    var res = await sb.from('prospects').update(updates).eq('id', p.id);
-    if (res.error) throw res.error;
+    await sb.from('prospects').update(updates).eq('id', p.id);
     showToast('Dati finanziari salvati');
   } catch(e) {
     showToast('Errore: ' + e.message, 'error');
