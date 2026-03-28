@@ -1076,6 +1076,69 @@ const STEP_DETAIL_BY_SETTORE = {
     },
   },
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // COMMERCIO RICAMBI AUTO
+  // ═══════════════════════════════════════════════════════════════════════════
+  commercio_ricambi_auto: {
+    vendite: {
+      '1': { chi:'Titolare', cosa:'Titolare al banco — officine vengono quando serve', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Visite pianificate a officine e carrozzerie della zona', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Titolare strutturato', cosa:'Sviluppo clienti flotte e noleggiatori — contratti fornitura', costo_mensile:400, costo_setup:300, tempo_mesi:2 },
+      '4': { chi:'Agente', cosa:'Agente esterno per officine fuori zona + flotte aziendali', costo_mensile:1800, costo_setup:500, tempo_mesi:3 },
+      '5': { chi:'Strategia multicanale', cosa:'Sviluppo e-commerce ricambi + accordi con reti officine', costo_mensile:3000, costo_setup:2000, tempo_mesi:6 },
+    },
+    pipeline: {
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — vendite al banco e telefono', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Excel con officine clienti, frequenza e volumi acquisto', costo_mensile:0, costo_setup:100, tempo_mesi:1 },
+      '3': { chi:'Gestionale + TecDoc', cosa:'Gestionale con catalogo TecDoc integrato per ricerca rapida', costo_mensile:200, costo_setup:800, tempo_mesi:1 },
+      '4': { chi:'CRM + gestionale', cosa:'CRM + gestionale — storico cliente, margini, alert riordini', costo_mensile:500, costo_setup:2000, tempo_mesi:2 },
+      '5': { chi:'ERP ricambi', cosa:'ERP ricambi — ordini, magazzino, TecDoc, logistica, fatturazione', costo_mensile:1000, costo_setup:5000, tempo_mesi:3 },
+    },
+    team: {
+      '1': { chi:'Titolare + magazziniere', cosa:'Titolare + magazziniere — banco e consegne', costo_mensile:4000, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+ addetto banco', cosa:'Addetto banco — ricerca ricambi e gestione ordini', costo_mensile:6000, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'+ autista', cosa:'Autista dedicato — consegne rapide in zona (entro 1h)', costo_mensile:8000, costo_setup:500, tempo_mesi:1 },
+      '4': { chi:'Team strutturato', cosa:'Banco + magazzino + consegne + back office', costo_mensile:13000, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Struttura manageriale', cosa:'Resp. commerciale + resp. logistica + gestione e-commerce', costo_mensile:19000, costo_setup:1500, tempo_mesi:5 },
+    },
+    processi: {
+      '1': { chi:'Titolare', cosa:'Nessun processo — ricerca manuale su cataloghi cartacei', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Software TecDoc', cosa:'Catalogo elettronico TecDoc per ricerca per targa/VIN', costo_mensile:100, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Software gestionale', cosa:'Gestionale magazzino con giacenze e riordino automatico', costo_mensile:300, costo_setup:1500, tempo_mesi:2 },
+      '4': { chi:'Gestionale logistica', cosa:'Logistica consegne ottimizzata — route planning, tracking', costo_mensile:500, costo_setup:2000, tempo_mesi:2 },
+      '5': { chi:'ERP completo', cosa:'ERP integrato + gestione resi + garanzie ricambi', costo_mensile:900, costo_setup:4000, tempo_mesi:3 },
+    },
+    ricavi: {
+      '1': { chi:'Titolare', cosa:'Margine da listino — nessuna differenziazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Pricing differenziato — officine abituali vs occasionali', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Upsell strutturato', cosa:'Upsell prodotti correlati — filtri, olio, pastiglie in kit', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '4': { chi:'Accordi commerciali', cosa:'Contratti fornitura con officine — sconti volume, fidelizzazione', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '5': { chi:'Revenue manager', cosa:'Private label consumabili + revenue da consegna express', costo_mensile:700, costo_setup:1500, tempo_mesi:3 },
+    },
+    marketing: {
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo posizione e insegna', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Google My Business + WhatsApp Business per ordini rapidi', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Agenzia digital', cosa:'Google Ads locali su "ricambi auto + città"', costo_mensile:500, costo_setup:800, tempo_mesi:2 },
+      '4': { chi:'Marketing operativo', cosa:'Promozioni mirate per officine — volantini, offerte stagionali', costo_mensile:800, costo_setup:1000, tempo_mesi:2 },
+      '5': { chi:'Marketing manager', cosa:'Piano marketing — digitale + partnership reti officine + eventi', costo_mensile:2000, costo_setup:2500, tempo_mesi:3 },
+    },
+    sitoweb: {
+      '1': { chi:'Nessuno', cosa:'Nessun sito', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Web agency', cosa:'Sito con catalogo marchi trattati, zona consegna, contatti', costo_mensile:80, costo_setup:800, tempo_mesi:1 },
+      '3': { chi:'Sito professionale', cosa:'Ricerca ricambi online per targa/VIN + preventivo', costo_mensile:350, costo_setup:3000, tempo_mesi:2 },
+      '4': { chi:'E-commerce B2B', cosa:'E-commerce ricambi B2B — ordini online con listini officina', costo_mensile:800, costo_setup:6000, tempo_mesi:2 },
+      '5': { chi:'Piattaforma B2B', cosa:'Piattaforma completa — ordini, tracking, resi, fatturazione', costo_mensile:1500, costo_setup:12000, tempo_mesi:4 },
+    },
+    ecommerce: {
+      _label: 'Approvvigionamento ricambi',
+      '1': { chi:'Titolare', cosa:'Acquisto da 1-2 distributori abituali', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Confronto prezzi tra distributori (Rhiag, LKQ, Autodis)', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Accordi distributori', cosa:'Accordi quadro con 3-4 distributori — sconti e priorità', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
+      '4': { chi:'Buyer', cosa:'Buyer dedicato — ottimizzazione stock, import aftermarket', costo_mensile:1500, costo_setup:500, tempo_mesi:2 },
+      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — contratti quadro, private label, import Asia', costo_mensile:3000, costo_setup:1500, tempo_mesi:4 },
+    },
+  },
+
 };
 
 window.STEP_DETAIL_BY_SETTORE = STEP_DETAIL_BY_SETTORE;
