@@ -2480,44 +2480,281 @@ function renderStrategico(p) {
     \x3cdiv style="text-align:right">\x3cbutton class="fin-edit-btn" onclick="openFinModal('strategico')">Modifica\x3c/button>\x3c/div>`;
 }
 
+var KPI_BASE = [
+  { id: 'valore_medio_ordine', label: 'Valore medio ordine', unita: '\u20AC' },
+  { id: 'tasso_conversione_pct', label: 'Tasso di conversione', unita: '%' },
+  { id: 'ciclo_vendita_gg', label: 'Ciclo di vendita medio', unita: 'gg' },
+  { id: 'nuovi_clienti_anno', label: 'Nuovi clienti / anno', unita: 'n' },
+  { id: 'clienti_attivi', label: 'Clienti attivi', unita: 'n' },
+  { id: 'concentrazione_top3_pct', label: 'Concentrazione top 3 clienti', unita: '%' },
+  { id: 'cac', label: 'CAC \u2014 Costo acquisizione cliente', unita: '\u20AC' },
+];
+
+var KPI_BY_SETTORE = {
+  commercio_auto_moto_usato: [
+    { id: 'valore_medio_ordine', label: 'Valore medio veicolo venduto', unita: '\u20AC' },
+    { id: 'contratti_anno', label: 'Veicoli venduti / anno', unita: 'n' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione lead\u2192contratto', unita: '%' },
+    { id: 'n_venditori', label: 'Numero venditori attuali', unita: 'n' },
+    { id: 'costo_ripristino_medio', label: 'Costo medio ripristino veicolo', unita: '\u20AC' },
+    { id: 'rotazione_veicoli_gg', label: 'Rotazione media veicoli', unita: 'gg' },
+    { id: 'penetrazione_fi_pct', label: 'Penetrazione finanziamento', unita: '%' },
+    { id: 'stock_medio', label: 'Veicoli in stock mediamente', unita: 'n' },
+    { id: 'cac', label: 'CAC \u2014 Costo acquisizione cliente', unita: '\u20AC' },
+  ],
+  commercio_auto_moto_nuovo: [
+    { id: 'valore_medio_ordine', label: 'Valore medio veicolo venduto', unita: '\u20AC' },
+    { id: 'contratti_anno', label: 'Veicoli venduti / anno', unita: 'n' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione lead\u2192contratto', unita: '%' },
+    { id: 'n_venditori', label: 'Numero venditori attuali', unita: 'n' },
+    { id: 'penetrazione_fi_pct', label: 'Penetrazione F&I', unita: '%' },
+    { id: 'stock_medio', label: 'Veicoli in stock/esposizione', unita: 'n' },
+    { id: 'passaggi_showroom_mese', label: 'Visite showroom / mese', unita: 'n' },
+    { id: 'cac', label: 'CAC \u2014 Costo acquisizione cliente', unita: '\u20AC' },
+  ],
+  manifatturiero_meccanica: [
+    { id: 'valore_medio_ordine', label: 'Valore medio commessa', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione offerte', unita: '%' },
+    { id: 'nuovi_clienti_anno', label: 'Nuovi clienti / anno', unita: 'n' },
+    { id: 'clienti_attivi', label: 'Clienti attivi', unita: 'n' },
+    { id: 'n_macchine', label: 'Macchine CNC operative', unita: 'n' },
+    { id: 'ore_macchina_mese', label: 'Ore macchina / mese', unita: 'n' },
+    { id: 'n_commesse_mese', label: 'Commesse attive / mese', unita: 'n' },
+    { id: 'concentrazione_top3_pct', label: 'Concentrazione top 3 clienti', unita: '%' },
+  ],
+  manifatturiero_automotive: [
+    { id: 'valore_medio_ordine', label: 'Valore medio commessa OEM', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione RFQ', unita: '%' },
+    { id: 'n_clienti_oem', label: 'Clienti OEM attivi', unita: 'n' },
+    { id: 'n_part_number', label: 'Part number in produzione', unita: 'n' },
+    { id: 'capacita_utilizzo_pct', label: 'Utilizzo capacit\u00E0 produttiva', unita: '%' },
+    { id: 'concentrazione_top3_pct', label: 'Concentrazione top 3 clienti', unita: '%' },
+  ],
+  manifatturiero_packaging: [
+    { id: 'valore_medio_ordine', label: 'Valore medio commessa', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione offerte', unita: '%' },
+    { id: 'clienti_attivi', label: 'Clienti attivi', unita: 'n' },
+    { id: 'tiratura_media', label: 'Tiratura media per commessa', unita: 'n' },
+    { id: 'n_clienti_gdo', label: 'Clienti GDO attivi', unita: 'n' },
+    { id: 'capacita_utilizzo_pct', label: 'Utilizzo capacit\u00E0 produttiva', unita: '%' },
+  ],
+  manifatturiero_cterzi: [
+    { id: 'valore_medio_ordine', label: 'Valore medio commessa', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione offerte', unita: '%' },
+    { id: 'clienti_attivi', label: 'Clienti attivi', unita: 'n' },
+    { id: 'concentrazione_top_cliente_pct', label: 'Peso primo cliente su fatturato', unita: '%' },
+    { id: 'ore_macchina_mese', label: 'Ore macchina / mese', unita: 'n' },
+    { id: 'concentrazione_top3_pct', label: 'Concentrazione top 3 clienti', unita: '%' },
+  ],
+  manifatturiero_elettromeccanica: [
+    { id: 'valore_medio_ordine', label: 'Valore medio commessa', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione offerte', unita: '%' },
+    { id: 'clienti_attivi', label: 'Clienti attivi', unita: 'n' },
+    { id: 'n_commesse_mese', label: 'Commesse attive / mese', unita: 'n' },
+    { id: 'backlog_mesi', label: 'Portafoglio ordini in mesi', unita: 'n' },
+    { id: 'concentrazione_top3_pct', label: 'Concentrazione top 3 clienti', unita: '%' },
+  ],
+  manifatturiero_tessile_tessuti: [
+    { id: 'valore_medio_ordine', label: 'Valore medio ordine', unita: '\u20AC' },
+    { id: 'clienti_attivi', label: 'Clienti attivi', unita: 'n' },
+    { id: 'n_telai', label: 'Telai operativi', unita: 'n' },
+    { id: 'metri_mese', label: 'Metri prodotti / mese', unita: 'n' },
+    { id: 'n_clienti_brand', label: 'Clienti brand attivi', unita: 'n' },
+    { id: 'concentrazione_top3_pct', label: 'Concentrazione top 3 clienti', unita: '%' },
+  ],
+  manifatturiero_tessile_capi: [
+    { id: 'valore_medio_ordine', label: 'Valore medio ordine', unita: '\u20AC' },
+    { id: 'clienti_attivi', label: 'Clienti attivi', unita: 'n' },
+    { id: 'capi_mese', label: 'Capi prodotti / mese', unita: 'n' },
+    { id: 'n_clienti_brand', label: 'Clienti brand attivi', unita: 'n' },
+    { id: 'pct_private_label', label: '% fatturato da private label', unita: '%' },
+    { id: 'concentrazione_top3_pct', label: 'Concentrazione top 3 clienti', unita: '%' },
+  ],
+  servizi_it: [
+    { id: 'valore_medio_ordine', label: 'Valore medio contratto', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione lead', unita: '%' },
+    { id: 'clienti_attivi', label: 'Clienti attivi', unita: 'n' },
+    { id: 'n_contratti_attivi', label: 'Contratti manutenzione attivi', unita: 'n' },
+    { id: 'canone_medio', label: 'Canone medio mensile/cliente', unita: '\u20AC' },
+    { id: 'n_endpoint_gestiti', label: 'Endpoint/postazioni gestite', unita: 'n' },
+    { id: 'arr', label: 'ARR \u2014 Fatturato ricorrente annuale', unita: '\u20AC' },
+  ],
+  servizi_formazione: [
+    { id: 'valore_medio_ordine', label: 'Valore medio progetto formativo', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione proposte', unita: '%' },
+    { id: 'corsi_anno', label: 'Corsi erogati / anno', unita: 'n' },
+    { id: 'n_aziende_clienti', label: 'Aziende clienti attive', unita: 'n' },
+    { id: 'fatturato_finanziato_pct', label: '% fatturato da fondi', unita: '%' },
+    { id: 'arr', label: 'ARR \u2014 Fatturato ricorrente annuale', unita: '\u20AC' },
+  ],
+  edilizia_residenziale: [
+    { id: 'valore_medio_ordine', label: 'Valore medio cantiere', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione preventivi', unita: '%' },
+    { id: 'cantieri_anno', label: 'Cantieri completati / anno', unita: 'n' },
+    { id: 'n_squadre', label: 'Squadre operative', unita: 'n' },
+    { id: 'nuovi_clienti_anno', label: 'Nuovi clienti / anno', unita: 'n' },
+  ],
+  edilizia_impianti: [
+    { id: 'valore_medio_ordine', label: 'Valore medio intervento', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione preventivi', unita: '%' },
+    { id: 'interventi_mese', label: 'Interventi / mese', unita: 'n' },
+    { id: 'n_contratti_manutenzione', label: 'Contratti manutenzione attivi', unita: 'n' },
+    { id: 'n_squadre', label: 'Squadre operative', unita: 'n' },
+    { id: 'arr', label: 'ARR \u2014 Ricavo ricorrente annuale', unita: '\u20AC' },
+  ],
+  edilizia_serramenti: [
+    { id: 'valore_medio_ordine', label: 'Valore medio ordine', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione preventivi', unita: '%' },
+    { id: 'preventivi_mese', label: 'Preventivi / mese', unita: 'n' },
+    { id: 'tasso_chiusura_pct', label: 'Tasso chiusura preventivi', unita: '%' },
+    { id: 'pct_privati_vs_imprese', label: '% fatturato da privati', unita: '%' },
+  ],
+  commercio_distribuzione_industriale: [
+    { id: 'valore_medio_ordine', label: 'Valore medio ordine', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione offerte', unita: '%' },
+    { id: 'clienti_attivi', label: 'Clienti attivi', unita: 'n' },
+    { id: 'n_referenze', label: 'Referenze a catalogo', unita: 'n' },
+    { id: 'ordini_mese', label: 'Ordini evasi / mese', unita: 'n' },
+    { id: 'consegna_media_ore', label: 'Tempo medio consegna', unita: 'ore' },
+  ],
+  commercio_ingrosso_alimentare: [
+    { id: 'valore_medio_ordine', label: 'Valore medio ordine', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione', unita: '%' },
+    { id: 'clienti_attivi', label: 'Clienti attivi', unita: 'n' },
+    { id: 'n_referenze', label: 'Referenze a catalogo', unita: 'n' },
+    { id: 'n_clienti_horeca', label: 'Clienti HORECA attivi', unita: 'n' },
+    { id: 'consegne_giorno', label: 'Consegne / giorno', unita: 'n' },
+  ],
+  commercio_materiali_edili: [
+    { id: 'valore_medio_ordine', label: 'Valore medio ordine', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione preventivi', unita: '%' },
+    { id: 'clienti_attivi', label: 'Clienti attivi', unita: 'n' },
+    { id: 'n_referenze', label: 'Referenze a catalogo', unita: 'n' },
+    { id: 'fatturato_showroom_pct', label: '% fatturato da showroom', unita: '%' },
+    { id: 'consegne_mese', label: 'Consegne in cantiere / mese', unita: 'n' },
+  ],
+  commercio_ricambi_auto: [
+    { id: 'valore_medio_ordine', label: 'Valore medio ordine', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione', unita: '%' },
+    { id: 'clienti_attivi', label: 'Clienti attivi', unita: 'n' },
+    { id: 'n_officine_clienti', label: 'Officine clienti attive', unita: 'n' },
+    { id: 'ordini_giorno', label: 'Ordini evasi / giorno', unita: 'n' },
+    { id: 'tempo_consegna_medio_min', label: 'Tempo consegna medio', unita: 'min' },
+  ],
+  commercio_abbigliamento_ingrosso: [
+    { id: 'valore_medio_ordine', label: 'Valore medio ordine', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione', unita: '%' },
+    { id: 'n_agenti', label: 'Agenti attivi', unita: 'n' },
+    { id: 'n_clienti_attivi_stagione', label: 'Clienti attivi per stagione', unita: 'n' },
+    { id: 'resa_campagna_pct', label: 'Resa campagna vendita', unita: '%' },
+  ],
+  commercio_elettronica: [
+    { id: 'valore_medio_ordine', label: 'Valore medio ordine', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione', unita: '%' },
+    { id: 'clienti_attivi', label: 'Clienti attivi', unita: 'n' },
+    { id: 'n_referenze', label: 'Referenze a catalogo', unita: 'n' },
+    { id: 'margine_medio_pct', label: 'Margine medio per prodotto', unita: '%' },
+    { id: 'rotazione_stock_gg', label: 'Rotazione stock media', unita: 'gg' },
+  ],
+  commercio_abbigliamento_dettaglio: [
+    { id: 'scontrino_medio', label: 'Scontrino medio', unita: '\u20AC' },
+    { id: 'ingressi_giorno', label: 'Ingressi / giorno', unita: 'n' },
+    { id: 'tasso_conversione_negozio_pct', label: 'Conversione ingressi\u2192acquisto', unita: '%' },
+    { id: 'nuovi_clienti_anno', label: 'Nuovi clienti / anno', unita: 'n' },
+    { id: 'valore_medio_ordine', label: 'Valore medio ordine', unita: '\u20AC' },
+  ],
+  commercio_orologi_gioielli: [
+    { id: 'scontrino_medio', label: 'Scontrino medio', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Conversione visite\u2192acquisto', unita: '%' },
+    { id: 'appuntamenti_mese', label: 'Appuntamenti / mese', unita: 'n' },
+    { id: 'clienti_vip', label: 'Clienti top / alto spendenti', unita: 'n' },
+    { id: 'valore_medio_ordine', label: 'Valore medio ordine', unita: '\u20AC' },
+  ],
+  alimentare_trasformazione: [
+    { id: 'valore_medio_ordine', label: 'Valore medio ordine', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione', unita: '%' },
+    { id: 'clienti_attivi', label: 'Clienti attivi', unita: 'n' },
+    { id: 'n_sku', label: 'SKU attive', unita: 'n' },
+    { id: 'n_insegne_gdo', label: 'Insegne GDO servite', unita: 'n' },
+    { id: 'pct_private_label', label: '% fatturato private label', unita: '%' },
+  ],
+  alimentare_vini: [
+    { id: 'valore_medio_ordine', label: 'Valore medio ordine', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione', unita: '%' },
+    { id: 'clienti_attivi', label: 'Clienti attivi', unita: 'n' },
+    { id: 'bottiglie_anno', label: 'Bottiglie prodotte / anno', unita: 'n' },
+    { id: 'prezzo_medio_bottiglia', label: 'Prezzo medio bottiglia', unita: '\u20AC' },
+    { id: 'pct_export', label: '% fatturato export', unita: '%' },
+  ],
+  alimentare_forno: [
+    { id: 'scontrino_medio', label: 'Scontrino medio', unita: '\u20AC' },
+    { id: 'clienti_attivi', label: 'Clienti attivi', unita: 'n' },
+    { id: 'punti_vendita', label: 'Punti vendita propri', unita: 'n' },
+    { id: 'produzione_kg_giorno', label: 'Produzione kg / giorno', unita: 'n' },
+    { id: 'valore_medio_ordine', label: 'Valore medio ordine', unita: '\u20AC' },
+  ],
+  alimentare_conserve: [
+    { id: 'valore_medio_ordine', label: 'Valore medio ordine', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione', unita: '%' },
+    { id: 'clienti_attivi', label: 'Clienti attivi', unita: 'n' },
+    { id: 'n_sku', label: 'SKU attive', unita: 'n' },
+    { id: 'n_insegne_gdo', label: 'Insegne GDO servite', unita: 'n' },
+    { id: 'pct_export', label: '% fatturato export', unita: '%' },
+  ],
+  alimentare_ingredienti: [
+    { id: 'valore_medio_ordine', label: 'Valore medio fornitura', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione', unita: '%' },
+    { id: 'n_clienti_industria', label: 'Clienti industria alimentare', unita: 'n' },
+    { id: 'valore_medio_fornitura', label: 'Valore medio fornitura annua', unita: '\u20AC' },
+    { id: 'n_certificazioni', label: 'Certificazioni attive', unita: 'n' },
+  ],
+  alimentare_birra: [
+    { id: 'valore_medio_ordine', label: 'Valore medio ordine', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione', unita: '%' },
+    { id: 'clienti_attivi', label: 'Clienti attivi', unita: 'n' },
+    { id: 'ettolitri_anno', label: 'Ettolitri prodotti / anno', unita: 'n' },
+    { id: 'n_locali_serviti', label: 'Pub/ristoranti serviti', unita: 'n' },
+    { id: 'pct_taproom', label: '% fatturato da taproom/diretto', unita: '%' },
+  ],
+  tech_saas: [
+    { id: 'mrr', label: 'MRR \u2014 Monthly Recurring Revenue', unita: '\u20AC' },
+    { id: 'n_clienti_paganti', label: 'Clienti paganti attivi', unita: 'n' },
+    { id: 'churn_rate_pct', label: 'Churn rate mensile', unita: '%' },
+    { id: 'arr', label: 'ARR \u2014 Annual Recurring Revenue', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Conversione trial\u2192paid', unita: '%' },
+    { id: 'valore_medio_ordine', label: 'ARPU mensile', unita: '\u20AC' },
+  ],
+  tech_system_integrator: [
+    { id: 'valore_medio_ordine', label: 'Valore medio progetto', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione offerte', unita: '%' },
+    { id: 'clienti_attivi', label: 'Clienti attivi', unita: 'n' },
+    { id: 'n_progetti_anno', label: 'Progetti completati / anno', unita: 'n' },
+    { id: 'backlog_mesi', label: 'Portafoglio ordini in mesi', unita: 'n' },
+    { id: 'arr', label: 'ARR \u2014 Fatturato ricorrente', unita: '\u20AC' },
+  ],
+  tech_digital_agency: [
+    { id: 'valore_medio_ordine', label: 'Valore medio progetto', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione offerte', unita: '%' },
+    { id: 'clienti_attivi', label: 'Clienti attivi', unita: 'n' },
+    { id: 'n_clienti_retainer', label: 'Clienti a retainer mensile', unita: 'n' },
+    { id: 'canone_medio_retainer', label: 'Canone medio retainer', unita: '\u20AC' },
+    { id: 'pct_ricorrente', label: '% fatturato ricorrente', unita: '%' },
+  ],
+  tech_automazione: [
+    { id: 'valore_medio_ordine', label: 'Valore medio commessa', unita: '\u20AC' },
+    { id: 'tasso_conversione_pct', label: 'Tasso conversione offerte', unita: '%' },
+    { id: 'clienti_attivi', label: 'Clienti attivi', unita: 'n' },
+    { id: 'n_commesse_anno', label: 'Commesse / anno', unita: 'n' },
+    { id: 'backlog_mesi', label: 'Portafoglio ordini in mesi', unita: 'n' },
+    { id: 'valore_medio_commessa', label: 'Valore medio commessa', unita: '\u20AC' },
+  ],
+};
+
 function renderKpiTab(p) {
   var container = document.getElementById('fin-kpi-content');
   if (!container) return;
   var kpi = p.kpi_commerciali || {};
-  var settore = p.settore || '';
-
-  var KPI_BASE = [
-    { id: 'tasso_conversione_pct', label: 'Tasso conversione lead\u2192cliente', unita: '%' },
-    { id: 'ciclo_vendita_gg', label: 'Ciclo di vendita medio', unita: 'gg' },
-    { id: 'valore_medio_ordine', label: 'Valore medio ordine/contratto', unita: '\u20AC' },
-    { id: 'concentrazione_top3_pct', label: 'Concentrazione top 3 clienti', unita: '%' },
-    { id: 'tasso_riacquisto_pct', label: 'Tasso di riacquisto', unita: '%' },
-    { id: 'nuovi_clienti_anno', label: 'Nuovi clienti / anno', unita: 'n' },
-    { id: 'clienti_attivi', label: 'Clienti attivi totali', unita: 'n' },
-    { id: 'fatturato_referral_pct', label: '% fatturato da referral', unita: '%' },
-    { id: 'cac', label: 'CAC \u2014 Costo acquisizione cliente', unita: '\u20AC' },
-    { id: 'dso_gg', label: 'DSO \u2014 Giorni medi incasso', unita: 'gg' },
-  ];
-  var KPI_ARR = { id: 'arr', label: 'ARR \u2014 Fatturato ricorrente annuale', unita: '\u20AC' };
-  var IS_RETAIL = ['commercio_ricambi_auto','commercio_elettronica','commercio_abbigliamento_dettaglio','commercio_orologi_gioielli','alimentare_forno'].indexOf(settore) >= 0;
-  var HAS_ARR = ['edilizia_impianti','commercio_auto_moto_nuovo','commercio_auto_moto_usato','alimentare_vini','alimentare_birra','tech_saas','tech_system_integrator','tech_digital_agency','tech_automazione','servizi_it','servizi_formazione'].indexOf(settore) >= 0;
-  var KPI_LIST = IS_RETAIL
-    ? KPI_BASE.filter(function(k) { return ['ciclo_vendita_gg','concentrazione_top3_pct'].indexOf(k.id) < 0; })
-    : KPI_BASE.slice();
-  if (HAS_ARR) KPI_LIST.push(KPI_ARR);
-  if (settore === 'commercio_auto_moto_usato') {
-    KPI_LIST = [
-      { id: 'tasso_conversione_pct', label: 'Tasso conversione lead\u2192contratto', unita: '%' },
-      { id: 'ciclo_vendita_gg', label: 'Ciclo di vendita medio', unita: 'gg' },
-      { id: 'valore_medio_ordine', label: 'Valore medio veicolo venduto', unita: '\u20AC' },
-      { id: 'tasso_riacquisto_pct', label: 'Tasso di riacquisto', unita: '%' },
-      { id: 'nuovi_clienti_anno', label: 'Nuovi clienti / anno', unita: 'n' },
-      { id: 'cac', label: 'CAC \u2014 Costo acquisizione cliente', unita: '\u20AC' },
-      { id: 'contratti_anno', label: 'Contratti vendita / anno', unita: 'n' },
-      { id: 'rotazione_veicoli_gg', label: 'Rotazione media veicoli', unita: 'gg' },
-      { id: 'costo_ripristino_medio', label: 'Costo medio ripristino veicolo', unita: '\u20AC' },
-    ];
-  }
+  var KPI_LIST = KPI_BY_SETTORE[p.settore] || KPI_BASE;
   var rows = KPI_LIST.map(function(k) {
     var val = kpi[k.id];
     var hasVal = val !== null && val !== undefined && val !== '';
@@ -2532,7 +2769,7 @@ function renderKpiTab(p) {
   container.innerHTML =
     '<div style="padding:16px 20px">' +
       '<div class="fin-section-label">KPI Commerciali</div>' +
-      '<p style="font-size:12px;color:var(--gray);margin-bottom:16px">Inserisci i valori reali del cliente. Vengono usati per il confronto con i benchmark di settore.</p>' +
+      '<p style="font-size:12px;color:var(--gray);margin-bottom:16px">Inserisci i valori reali del cliente. Vengono usati per calcolare le proiezioni di crescita.</p>' +
       '<div class="kpi-edit-grid">' + rows + '</div>' +
       '<button class="btn btn-primary" style="margin-top:16px" onclick="saveKpiTab()">Salva KPI</button>' +
     '</div>';
@@ -2541,25 +2778,13 @@ function renderKpiTab(p) {
 async function saveKpiTab() {
   var p = prospects.find(function(x) { return x.id === currentId; });
   if (!p) return;
-  var settore = p.settore || '';
-  var IS_RETAIL = ['commercio_ricambi_auto','commercio_elettronica','commercio_abbigliamento_dettaglio','commercio_orologi_gioielli','alimentare_forno'].indexOf(settore) >= 0;
-  var HAS_ARR = ['edilizia_impianti','commercio_auto_moto_nuovo','commercio_auto_moto_usato','alimentare_vini','alimentare_birra','tech_saas','tech_system_integrator','tech_digital_agency','tech_automazione','servizi_it','servizi_formazione'].indexOf(settore) >= 0;
-  var KPI_IDS = ['tasso_conversione_pct','valore_medio_ordine','tasso_riacquisto_pct',
-    'nuovi_clienti_anno','clienti_attivi','fatturato_referral_pct','cac','dso_gg'];
-  if (!IS_RETAIL) KPI_IDS.splice(1, 0, 'ciclo_vendita_gg', 'concentrazione_top3_pct');
-  if (HAS_ARR) KPI_IDS.push('arr');
-  if (settore === 'commercio_auto_moto_usato') {
-    KPI_IDS = ['tasso_conversione_pct','ciclo_vendita_gg','valore_medio_ordine',
-      'tasso_riacquisto_pct','nuovi_clienti_anno','cac',
-      'contratti_anno','rotazione_veicoli_gg','costo_ripristino_medio'];
-  }
+  var KPI_LIST = KPI_BY_SETTORE[p.settore] || KPI_BASE;
   var kpi_commerciali = {};
-  KPI_IDS.forEach(function(id) {
-    var el = document.getElementById('kpiedit-'+id);
-    if (el) {
-      var val = parseFloat(el.value);
-      kpi_commerciali[id] = isNaN(val) ? null : val;
-    }
+  KPI_LIST.forEach(function(k) {
+    var el = document.getElementById('kpiedit-' + k.id);
+    if (!el) return;
+    var val = parseFloat(el.value);
+    kpi_commerciali[k.id] = isNaN(val) ? null : val;
   });
   p.kpi_commerciali = kpi_commerciali;
   var res = await sb.from('prospects').update({ kpi_commerciali: kpi_commerciali }).eq('id', p.id);
@@ -2567,6 +2792,7 @@ async function saveKpiTab() {
   showToast('KPI salvati');
   renderProspectDetail(p.id);
 }
+
 
 const FIN_FORMS = {
   financials: {
