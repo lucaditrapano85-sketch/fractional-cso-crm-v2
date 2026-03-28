@@ -5706,6 +5706,10 @@ function buildCalcolatricePL() {
   const p = prospects.find(x => x.id === currentId) || {};
   const dc = p.dati_calcolatrice || {};
   const fv = (field) => dc[field] !== undefined && dc[field] !== null ? dc[field] : (p[field] || '');
+  // Migrazione: vecchio campo costi_fissi -> cf_personale
+  if (!dc.cf_personale && (dc.costi_fissi || p.costi_fissi_mensili)) {
+    dc.cf_personale = dc.costi_fissi || (p.costi_fissi_mensili ? p.costi_fissi_mensili * 12 : '');
+  }
   const FORMA_TO_REGIME = {'Srl':'srl','Spa':'srl','Srl semplificata':'srl','srl':'srl','spa':'srl','srls':'srl','Srls':'srl','Sapa':'srl','Snc':'snc_sas','Sas':'snc_sas','snc':'snc_sas','sas':'snc_sas','Ditta individuale':'ditta','Imprenditore individuale':'ditta','ditta_individuale':'ditta','Libero professionista':'ditta','Cooperativa':'srl','Consorzio':'srl','Associazione':'srl','Fondazione':'srl','Ente pubblico':'srl'};
   const formaGiuridica = p.forma_giuridica || '';
   const regimeFiscale = FORMA_TO_REGIME[formaGiuridica] || dc.forma || 'srl';
@@ -5885,6 +5889,11 @@ function buildCalcolatricePL() {
 
 function toggleAmmPanel() {
   var p = document.getElementById('amm-panel-detail');
+  if (!p) {
+    // Try inside scheda-body
+    var body = document.getElementById('scheda-body');
+    if (body) p = body.querySelector('#amm-panel-detail');
+  }
   if (p) p.style.display = p.style.display === 'none' ? 'block' : 'none';
 }
 
