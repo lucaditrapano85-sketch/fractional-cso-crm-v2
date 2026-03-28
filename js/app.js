@@ -5746,7 +5746,8 @@ function buildCalcolatricePL() {
 function mountCalcolatrice(container) {
   if (!container) container = document.getElementById('calc-mount');
   if (!container) return;
-  
+  var _root = container; // riferimento per le sotto-funzioni
+
   var p = prospects.find(function(x){ return x.id === currentId; }) || {};
   var dc = p.dati_calcolatrice || {};
   var gv = function(k, fb) { return dc[k] != null ? dc[k] : (fb != null ? fb : ''); };
@@ -5779,17 +5780,24 @@ function mountCalcolatrice(container) {
     return tr;
   }
 
-  // Helper: riga risultato
+  // Helper: riga risultato con effetto glass
   function resRow(label, resId, big) {
     var tr = document.createElement('tr');
-    tr.style.cssText = big ? 'background:var(--bg3)' : '';
+    if (big) {
+      tr.style.cssText = 'background:linear-gradient(145deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.03) 100%);border-radius:8px';
+    }
     var td1 = document.createElement('td');
     td1.textContent = label;
-    td1.style.cssText = 'padding:' + (big?'10':'7') + 'px 8px;font-size:' + (big?'14':'12') + 'px;font-weight:600;color:var(--white);border-bottom:2px solid var(--border)';
+    td1.style.cssText = 'padding:' + (big?'12':'8') + 'px ' + (big?'12':'8') + 'px;font-size:' + (big?'14':'12') + 'px;font-weight:600;color:var(--white);border-bottom:' + (big?'none':'2px solid var(--border)');
+    if (big) td1.style.borderRadius = '8px 0 0 8px';
     var td2 = document.createElement('td');
     td2.id = resId;
     td2.textContent = '--';
-    td2.style.cssText = 'padding:' + (big?'10':'7') + 'px 8px;text-align:right;font-size:' + (big?'16':'13') + 'px;font-weight:600;color:var(--white);border-bottom:2px solid var(--border)';
+    td2.style.cssText = 'padding:' + (big?'12':'8') + 'px ' + (big?'12':'8') + 'px;text-align:right;font-size:' + (big?'18':'13') + 'px;font-weight:' + (big?'700':'600') + ';color:var(--white);border-bottom:' + (big?'none':'2px solid var(--border)');
+    if (big) {
+      td2.style.borderRadius = '0 8px 8px 0';
+      td2.style.boxShadow = 'inset 0 1px 0 rgba(255,255,255,0.06)';
+    }
     tr.appendChild(td1);
     tr.appendChild(td2);
     return tr;
@@ -5886,8 +5894,72 @@ function mountCalcolatrice(container) {
   var t5 = document.createElement('table');
   t5.style.cssText = 'width:100%;border-collapse:collapse';
   t5.appendChild(row('Ammortamenti annui', 'c-amm', 'es. 30000', gv('ammortamenti')));
+
+  // Calcolatrice ammortamenti per categoria
+  var ammToggle = document.createElement('div');
+  ammToggle.style.cssText = 'font-size:10px;color:var(--gold);cursor:pointer;padding:6px 8px;margin:4px 0';
+  ammToggle.textContent = '\u25BC Calcola per categoria';
+  var ammPanel = document.createElement('div');
+  ammPanel.style.cssText = 'display:none;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;margin:4px 0 8px';
+  ammToggle.addEventListener('click', function() {
+    ammPanel.style.display = ammPanel.style.display === 'none' ? 'block' : 'none';
+    ammToggle.textContent = ammPanel.style.display === 'none' ? '\u25BC Calcola per categoria' : '\u25B2 Chiudi calcolatrice';
+  });
+
+  var ammGrid = document.createElement('div');
+  ammGrid.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:8px';
+  var ammCateg = [
+    {id:'amm-immobili', label:'Immobili', aliq:0.03, aliqLabel:'3%', val: gv('imm_amm_immobili')},
+    {id:'amm-macchinari', label:'Macchinari', aliq:0.125, aliqLabel:'12.5%', val: gv('imm_amm_macchinari')},
+    {id:'amm-attrezzatura', label:'Attrezzatura', aliq:0.20, aliqLabel:'20%', val: gv('imm_amm_attrezzatura')},
+    {id:'amm-veicoli', label:'Veicoli', aliq:0.20, aliqLabel:'20%', val: gv('imm_amm_veicoli')},
+    {id:'amm-software', label:'Software', aliq:0.33, aliqLabel:'33%', val: gv('imm_amm_software')},
+    {id:'amm-leasing', label:'Leasing (EUR/mese)', aliq:12, aliqLabel:'x12', val: gv('imm_amm_leasing')},
+  ];
+  var ammTotEl = document.createElement('div');
+  ammTotEl.style.cssText = 'font-size:12px;color:var(--gold);margin-top:10px;font-weight:600';
+  ammTotEl.textContent = 'Totale: -- EUR';
+
+  function calcAmm() {
+    var tot = 0;
+    ammCateg.forEach(function(c) {
+      var el = _root ? _root.querySelector('#' + c.id) : document.getElementById(c.id);
+      if (el && el.value) {
+        var v = parseFloat(el.value);
+        tot += c.aliq < 1 ? v * c.aliq : v * c.aliq;
+      }
+    });
+    ammTotEl.textContent = 'Totale ammortamenti: ' + Math.round(tot).toLocaleString('it-IT') + ' EUR';
+    var ammInput = _root ? _root.querySelector('#c-amm') : document.getElementById('c-amm');
+    if (ammInput) { ammInput.value = Math.round(tot); calcola(); }
+  }
+
+  ammCateg.forEach(function(c) {
+    var d = document.createElement('div');
+    var lbl = document.createElement('div');
+    lbl.style.cssText = 'font-size:10px;color:var(--gray);margin-bottom:3px';
+    lbl.innerHTML = c.label + ' <span style="color:var(--gold)">' + c.aliqLabel + '</span>';
+    var inp = document.createElement('input');
+    inp.type = 'number'; inp.id = c.id; inp.placeholder = 'valore EUR';
+    inp.value = c.val !== '' && c.val != null ? c.val : '';
+    inp.style.cssText = 'background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:12px;color:var(--white);font-family:inherit;outline:none;width:100%';
+    inp.addEventListener('input', calcAmm);
+    d.appendChild(lbl);
+    d.appendChild(inp);
+    ammGrid.appendChild(d);
+  });
+
+  ammPanel.appendChild(ammGrid);
+  ammPanel.appendChild(ammTotEl);
+
+  var ammWrap = document.createElement('div');
+  ammWrap.appendChild(ammToggle);
+  ammWrap.appendChild(ammPanel);
+  t5.parentNode || wrap.appendChild(ammWrap); // fallback
+
   t5.appendChild(resRow('= EBIT (utile operativo)', 'c-res-ebit', false));
   wrap.appendChild(t5);
+  wrap.appendChild(ammWrap);
 
   // AREA FISCALE
   wrap.appendChild(section('Area fiscale'));
@@ -6027,6 +6099,9 @@ async function salvaDaCalcolatrice() {
     cf_personale: gv('c-cf-pers'), cf_affitto: gv('c-cf-aff'),
     cf_servizi: gv('c-cf-serv'), cf_altro: gv('c-cf-altro'),
     ammortamenti: gv('c-amm'), reddito_titolare: gv('c-comp-tit'),
+    imm_amm_immobili: gv('amm-immobili'), imm_amm_macchinari: gv('amm-macchinari'),
+    imm_amm_attrezzatura: gv('amm-attrezzatura'), imm_amm_veicoli: gv('amm-veicoli'),
+    imm_amm_software: gv('amm-software'), imm_amm_leasing: gv('amm-leasing'),
   };
   var fat = dc.fatturato || 0;
   var cdv = dc.cdv_pct != null ? fat * dc.cdv_pct / 100 : (dc.cdv_eur || 0);
