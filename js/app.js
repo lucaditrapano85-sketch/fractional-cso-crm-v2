@@ -4757,6 +4757,98 @@ function apriDettaglioCosti() {
   document.body.style.overflow = 'hidden';
 }
 
+function apriMultiScenario() {
+  var p = prospects.find(function(x){ return x.id === currentId; });
+  if (!p) return;
+  var fat = p.fatturato_anno_1 || 0;
+  if (!fat) { showToast('Inserisci prima il fatturato', 'error'); return; }
+
+  var DIMS_IDS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+  var settore = p.settore || '';
+  var fmtF = function(v) { return v >= 1000000 ? (v/1000000).toFixed(1)+'M' : Math.round(v/1000)+'k'; };
+
+  // Genera scenari predefiniti
+  var targets = p.targets || {};
+  var dims = p.dims || {};
+  var attive = DIMS_IDS.filter(function(id) { return (targets[id]||0) > (dims[id]||0); });
+
+  var scenari = [];
+
+  // Scenario 1: Piano completo (tutti i target)
+  scenari.push({ nome: 'Piano completo', desc: 'Tutti i target impostati', targets: {...targets} });
+
+  // Scenario 2: Solo le top 2 per impatto/costo
+  if (attive.length > 2) {
+    var ic = _calcolaImpattoCumulativo(p);
+    var costiDim = ic ? ic.costiPerDim || {} : {};
+    var ranked = attive.map(function(id) {
+      var imp = _calcolaImpattoUnitario(settore, id, String((dims[id]||0)+1), p);
+      var impPct = imp ? (imp.pct_12m[0] + imp.pct_12m[1]) / 2 : 0;
+      var costo = costiDim[id] ? costiDim[id].r : 0;
+      return { id: id, rapporto: costo > 0 ? impPct / costo : 0 };
+    }).sort(function(a,b) { return b.rapporto - a.rapporto; });
+
+    var top2Targets = {};
+    DIMS_IDS.forEach(function(id) { top2Targets[id] = dims[id] || 0; });
+    ranked.slice(0, 2).forEach(function(r) { top2Targets[r.id] = targets[r.id]; });
+    var LABEL = {};
+    DIMS_IDS.forEach(function(id) {
+      LABEL[id] = typeof getDimLabel === 'function' ? getDimLabel(settore, id) : id;
+    });
+    scenari.push({
+      nome: 'Focus priorità',
+      desc: ranked.slice(0,2).map(function(r){ return LABEL[r.id]; }).join(' + '),
+      targets: top2Targets
+    });
+
+    // Scenario 3: Solo la top 1
+    var top1Targets = {};
+    DIMS_IDS.forEach(function(id) { top1Targets[id] = dims[id] || 0; });
+    top1Targets[ranked[0].id] = targets[ranked[0].id];
+    scenari.push({
+      nome: 'Minimo investimento',
+      desc: 'Solo ' + LABEL[ranked[0].id],
+      targets: top1Targets
+    });
+  }
+
+  // Calcola ogni scenario
+  var rows = scenari.map(function(sc) {
+    var pSim = {...p, targets: sc.targets};
+    var icSim = _calcolaImpattoCumulativo(pSim);
+    if (!icSim) return '';
+    var fat12 = icSim.fat12 || [fat, fat];
+    var costo = icSim.costoMensileTot || 0;
+    var costoAnno = costo * 12 + (icSim.costoUnaTantumTot || 0);
+    var crescita = fat12[1] - fat;
+    var pctCrescita = fat > 0 ? Math.round(crescita / fat * 100) : 0;
+    var pctFat = fat > 0 ? Math.round(costoAnno / fat * 100) : 0;
+    var sostenibile = pctFat <= 15;
+
+    return '<div style="background:rgba(255,255,255,0.3);border:1px solid rgba(0,0,0,0.06);border-radius:12px;padding:14px;margin-bottom:10px">' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
+        '<div><div style="font-size:13px;font-weight:700;color:var(--text)">' + sc.nome + '</div>' +
+        '<div style="font-size:11px;color:var(--gray)">' + sc.desc + '</div></div>' +
+        (sostenibile ? '<span style="font-size:9px;padding:3px 8px;border-radius:10px;background:rgba(40,120,70,0.1);color:rgba(40,120,70,0.8);font-weight:600">Sostenibile</span>'
+          : '<span style="font-size:9px;padding:3px 8px;border-radius:10px;background:rgba(170,50,40,0.08);color:rgba(170,50,40,0.8);font-weight:600">' + pctFat + '% fatturato</span>') +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">' +
+        '<div style="text-align:center"><div style="font-size:10px;color:var(--gray)">Fatturato 12m</div><div style="font-size:14px;font-weight:700;color:var(--text)">' + fmtF(fat12[1]) + '\u20AC</div><div style="font-size:10px;color:rgb(25,100,60)">+' + pctCrescita + '%</div></div>' +
+        '<div style="text-align:center"><div style="font-size:10px;color:var(--gray)">Costo/anno</div><div style="font-size:14px;font-weight:700;color:rgb(40,75,160)">' + fmtF(costoAnno) + '\u20AC</div><div style="font-size:10px;color:var(--gray)">' + fmtF(costo) + '/mese</div></div>' +
+        '<div style="text-align:center"><div style="font-size:10px;color:var(--gray)">ROI 12m</div><div style="font-size:14px;font-weight:700;color:' + (crescita > costoAnno ? 'rgb(25,100,60)' : 'rgba(170,50,40,0.8)') + '">' + (costoAnno > 0 ? (crescita/costoAnno).toFixed(1) + 'x' : '\u2014') + '</div></div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  var html = '<div style="margin-bottom:12px;font-size:12px;color:var(--gray)">Confronta diversi livelli di investimento per trovare il mix ottimale.</div>' + rows;
+
+  document.getElementById('detail-overlay-title').textContent = 'Confronto scenari';
+  document.getElementById('detail-overlay-subtitle').textContent = 'Quale investimento ha più senso?';
+  document.getElementById('detail-overlay-body').innerHTML = html;
+  document.getElementById('detail-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
 function apriControlloFatturato() {
   var p = prospects.find(function(x){ return x.id === currentId; });
   if (!p) return;
