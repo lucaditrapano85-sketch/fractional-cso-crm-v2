@@ -4146,52 +4146,61 @@ function _buildGraficoTimeline(p) {
       '<div class="tl-mc"><div class="tl-mc-label">ROI stimato</div><div class="tl-mc-val tl-amber">' + roiStr + '</div><div class="tl-mc-sub">breakeven ' + breakevenStr + '</div></div>' +
     '</div>' +
 
-    // 1b. BILANCIAMENTO PIANO — barre affiancate attuale vs target
+    // 1b. SBILANCIAMENTO PIANO
     (function() {
       var penDim = ic.penalitaPerDim || {};
-      var DIMS_ALL = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
       var LABEL = {vendite:'Vendite',pipeline:'Pipeline',team:'Team',processi:'Processi',ricavi:'Ricavi',marketing:'Marketing',sitoweb:'Sito Web',ecommerce:'Approvv.'};
-      // Label specifico per settore da STEP_DETAIL
       var sd = (typeof STEP_DETAIL_BY_SETTORE !== 'undefined') ? STEP_DETAIL_BY_SETTORE : {};
+      var DIMS_ALL = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
       DIMS_ALL.forEach(function(id) {
         var lbl = sd[settore]?.[id]?._label;
         if (lbl) LABEL[id] = lbl;
       });
-      var hasPenalita = Object.values(penDim).some(function(v){ return v > 0.05; });
-      var rows = DIMS_ALL.map(function(id) {
-        var cur = dims[id] || 0;
-        var tgt = targets[id] || cur;
-        var pen = penDim[id] || 0;
-        var penPct = Math.round(pen * 100);
-        var isSbilanciato = pen > 0.10;
-        var curPct = (cur / 5 * 100);
-        var tgtPct = (tgt / 5 * 100);
-        var curCol = cur >= 4 ? '#4A9A6A' : cur >= 3 ? '#C9973A' : '#6B8DB5';
-        var tgtCol = tgt >= 4 ? '#1CB889' : tgt >= 3 ? '#C9973A' : '#378ADD';
-        var penCol = penPct >= 40 ? '#C05040' : penPct >= 20 ? '#C9973A' : 'transparent';
-        var borderStyle = isSbilanciato ? 'border-left:3px solid ' + penCol + ';padding-left:8px' : 'padding-left:11px';
-        var penBadge = penPct > 5 ? '<span style="font-size:9px;font-weight:600;color:' + (penPct >= 40 ? '#C05040' : '#C9973A') + ';margin-left:4px">-' + penPct + '%</span>' : '';
-        return '<div style="margin-bottom:6px;' + borderStyle + '">' +
-          '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px">' +
-            '<div style="font-size:10px;color:var(--white);font-weight:500">' + (LABEL[id]||id) + penBadge + '</div>' +
-            '<div style="font-size:9px;color:var(--gray)">' + cur + ' \u2192 ' + tgt + '</div>' +
+      var entries = Object.entries(penDim).filter(function(e){ return e[1] > 0.05; }).sort(function(a,b){ return b[1]-a[1]; });
+      if (entries.length === 0) return '';
+      var media = entries.reduce(function(s,e){ return s+e[1]; }, 0) / entries.length;
+      var mediaCol = media >= 0.40 ? '#C05040' : media >= 0.20 ? '#C9973A' : '#4A9A6A';
+      var rows = entries.map(function(e) {
+        var id = e[0]; var pct = Math.round(e[1]*100);
+        var col = pct >= 40 ? '#C05040' : pct >= 20 ? '#C9973A' : '#C9973A';
+        var livDim = Math.max((targets[id]||1), (dims[id]||1));
+        // Trova le dipendenze basse e suggerisci il livello target
+        var deps = _getDipendenze(settore, id);
+        var suggerimenti = [];
+        Object.entries(deps).forEach(function(dep) {
+          var depId = dep[0]; var depPeso = dep[1];
+          var livDep = Math.max((targets[depId]||1), (dims[depId]||1));
+          if (livDim > livDep && depPeso >= 0.15) {
+            suggerimenti.push({ id:depId, label:LABEL[depId]||depId, da:livDep, a:livDim, peso:depPeso });
+          }
+        });
+        var sugHtml = suggerimenti.map(function(s) {
+          return '<div style="display:flex;align-items:center;gap:6px;margin-top:3px">' +
+            '<span style="color:#378ADD;font-size:10px">\u2191</span>' +
+            '<span style="font-size:10px;color:var(--white)">Porta <strong>' + s.label + '</strong> a <strong>' + s.a + '</strong></span>' +
+            '<span style="font-size:9px;color:var(--gray)">(ora a ' + s.da + ')</span>' +
+          '</div>';
+        }).join('');
+        return '<div style="margin-bottom:10px;background:var(--bg3);border-radius:6px;padding:8px 12px;border-left:3px solid ' + col + '">' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">' +
+            '<div style="font-size:11px;color:var(--white);font-weight:600">' + (LABEL[id]||id) + '</div>' +
+            '<div style="font-size:11px;font-weight:700;color:' + col + '">-' + pct + '% efficienza</div>' +
           '</div>' +
-          '<div style="display:flex;gap:3px;height:8px">' +
-            '<div style="flex:1;background:var(--border);border-radius:4px;overflow:hidden;position:relative">' +
-              '<div style="position:absolute;left:0;top:0;height:100%;width:' + curPct + '%;background:' + curCol + ';border-radius:4px;opacity:0.5"></div>' +
-              '<div style="position:absolute;left:0;top:0;height:100%;width:' + tgtPct + '%;background:' + tgtCol + ';border-radius:4px;opacity:0.8"></div>' +
-            '</div>' +
+          '<div style="height:10px;background:var(--border);border-radius:5px;overflow:hidden;margin-bottom:4px">' +
+            '<div style="width:' + Math.min(pct, 100) + '%;height:100%;background:' + col + ';border-radius:5px"></div>' +
           '</div>' +
+          (sugHtml ? '<div style="border-top:1px solid var(--border);padding-top:4px;margin-top:4px">' +
+            '<div style="font-size:9px;color:var(--gray);text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px">Per bilanciare:</div>' +
+            sugHtml +
+          '</div>' : '') +
         '</div>';
       }).join('');
       return '<div class="tl-divider"></div>' +
-        '<div class="tl-section-label">Bilanciamento piano</div>' +
-        '<div style="display:flex;gap:12px;margin-bottom:6px">' +
-          '<span style="display:flex;align-items:center;gap:4px;font-size:9px;color:var(--gray)"><span style="width:10px;height:6px;background:#6B8DB5;border-radius:2px;opacity:0.5"></span>Attuale</span>' +
-          '<span style="display:flex;align-items:center;gap:4px;font-size:9px;color:var(--gray)"><span style="width:10px;height:6px;background:#378ADD;border-radius:2px;opacity:0.8"></span>Target</span>' +
-          (hasPenalita ? '<span style="display:flex;align-items:center;gap:4px;font-size:9px;color:var(--gray)"><span style="width:3px;height:10px;background:#C05040;border-radius:1px"></span>Sbilanciato</span>' : '') +
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">' +
+          '<div class="tl-section-label" style="margin-bottom:0">\u26A0 Sbilanciamento piano</div>' +
+          '<div style="font-size:12px;font-weight:700;color:' + mediaCol + '">' + Math.round(media*100) + '% medio</div>' +
         '</div>' +
-        '<div style="padding:4px 0">' + rows + '</div>';
+        rows;
     })() +
 
     // 2. GRAFICO LINEE
