@@ -719,100 +719,100 @@ var DIAGNOSI_DOMANDE = {
   // ─────────────────────────────────────────────
   automotive: {
     vendite: [
-      { id:'v1', testo:'Come funziona il processo di vendita veicoli?', tipo:'mc', peso:5,
+      { id:'v1', testo:'Chi vende i veicoli in azienda?', tipo:'mc', peso:5,
         opzioni:[
-          {label:'Il cliente entra, guarda e tratto a voce'},
-          {label:'Accoglienza base con preventivo su richiesta'},
-          {label:'Vendita assistita con test drive su richiesta'},
-          {label:'Processo strutturato con test drive e follow-up'},
-          {label:'Team vendita con obiettivi, BDC e CRM integrato'}
+          {label:'Solo io (titolare) — faccio tutto da solo'},
+          {label:'Io + qualcuno che mi aiuta nelle visite'},
+          {label:'Ho almeno una persona dedicata alla vendita'},
+          {label:'Ho un commerciale con portafoglio e obiettivi'},
+          {label:'Ho un team vendite strutturato con responsabile'}
         ]},
-      { id:'v2', testo:'Ogni venditore ha un obiettivo mensile scritto su unità e margine?', tipo:'yn', peso:3 },
-      { id:'v3', testo:'Offri test drive strutturati con follow-up entro 24 ore?', tipo:'yn', peso:2 },
+      { id:'v2', testo:'Fai follow-up strutturato dopo ogni visita o contatto?', tipo:'yn', peso:3 },
+      { id:'v3', testo:'Chi ti sostituisce nelle vendite quando non ci sei?', tipo:'yn', peso:2 },
     ],
     pipeline: [
-      { id:'p1', testo:'Come tracci i contatti e le trattative?', tipo:'mc', peso:5,
+      { id:'p1', testo:'Come tracci contatti e trattative aperte?', tipo:'mc', peso:5,
         opzioni:[
-          {label:'Niente, gestisco tutto a memoria'},
-          {label:'Appunti del venditore su agenda o foglio'},
-          {label:'DMS con anagrafica base dei clienti'},
-          {label:'DMS con tracking dal primo contatto alla consegna'},
-          {label:'DMS/CRM integrato con lead web e tasso conversione'}
+          {label:'Tutto a memoria — non segno nulla'},
+          {label:'Appunti su agenda o foglio di carta'},
+          {label:'Excel o Google Sheet con le trattative'},
+          {label:'CRM o DMS con tracking delle trattative'},
+          {label:'DMS/CRM integrato con lead web e conversioni'}
         ]},
-      { id:'p2', testo:'Tracci ogni contatto dal primo interesse alla consegna del veicolo?', tipo:'yn', peso:3 },
-      { id:'p3', testo:'Conosci il tasso di conversione tra preventivi e contratti firmati?', tipo:'yn', peso:2 },
+      { id:'p2', testo:'Sai quanti preventivi hai aperto in questo momento?', tipo:'yn', peso:3 },
+      { id:'p3', testo:'Conosci il tasso di chiusura tra preventivi e contratti?', tipo:'yn', peso:2 },
     ],
     team: [
-      { id:'t1', testo:'Quanto è autonomo il team di vendita?', tipo:'mc', peso:5,
+      { id:'t1', testo:'Quante persone lavorano con te?', tipo:'mc', peso:5,
         opzioni:[
-          {label:'Faccio tutto io, vendo e gestisco'},
-          {label:'Ho venditori ma supervisiono ogni trattativa'},
-          {label:'I venditori gestiscono le trattative semplici'},
-          {label:'I venditori chiudono in autonomia, io firmo'},
-          {label:'Team autonomo con BDC e responsabile vendite'}
+          {label:'Nessuno — sono da solo'},
+          {label:'Ho un aiutante ma faccio quasi tutto io'},
+          {label:'Ho persone con ruoli definiti (chi vende, chi fa pratiche)'},
+          {label:'Ho un team con back office, vendita e amministrazione'},
+          {label:'Ho un responsabile che coordina il team'}
         ]},
-      { id:'t2', testo:'I venditori gestiscono l\'intero ciclo senza intervento del titolare?', tipo:'yn', peso:3 },
-      { id:'t3', testo:'Hai un BDC o persona dedicata ai lead telefonici e web?', tipo:'yn', peso:2 },
+      { id:'t2', testo:'Puoi stare via una settimana senza che si fermi tutto?', tipo:'yn', peso:3 },
+      { id:'t3', testo:'Ogni persona ha un ruolo chiaro e obiettivi definiti?', tipo:'yn', peso:2 },
     ],
     processi: [
-      { id:'pr1', testo:'Come gestisci valutazione usato e consegna?', tipo:'mc', peso:5,
+      { id:'pr1', testo:'Come gestisci le pratiche e la consegna veicoli?', tipo:'mc', peso:5,
         opzioni:[
-          {label:'Tutto a occhio e esperienza personale'},
-          {label:'Valutazione usato con listino, consegna informale'},
-          {label:'Processo base con checklist per la consegna'},
-          {label:'Valutazione strutturata e consegna con checklist'},
-          {label:'Processi standard completi con KPI su tempi'}
+          {label:'Tutto a esperienza — nessuna procedura scritta'},
+          {label:'Ho una checklist base per la consegna'},
+          {label:'Contratti standard e valutazione usato con strumenti'},
+          {label:'Gestionale per pratiche, finanziamenti e garanzie'},
+          {label:'Processi digitalizzati — firma digitale, NPS automatico'}
         ]},
-      { id:'pr2', testo:'Hai un processo standard per la valutazione e il ritiro dell\'usato?', tipo:'yn', peso:3 },
-      { id:'pr3', testo:'Gestisci la preparazione e consegna veicoli con checklist formale?', tipo:'yn', peso:2 },
+      { id:'pr2', testo:'Hai contratti e moduli standard per tutte le trattative?', tipo:'yn', peso:3 },
+      { id:'pr3', testo:'Misuri i tempi tra arrivo veicolo e vendita?', tipo:'yn', peso:2 },
     ],
     ricavi: [
-      { id:'r1', testo:'Come sono composti i ricavi della concessionaria?', tipo:'mc', peso:5,
+      { id:'r1', testo:'Da dove arrivano i tuoi ricavi?', tipo:'mc', peso:5,
         opzioni:[
-          {label:'Solo vendita veicoli, nient\'altro'},
-          {label:'Vendita più qualche finanziamento occasionale'},
-          {label:'Vendita con penetrazione F&I sotto il 30%'},
-          {label:'F&I sopra il 40% e officina attiva'},
-          {label:'Mix completo: vendita, F&I, officina, accessori'}
+          {label:'Solo vendita veicoli — nient\'altro'},
+          {label:'Vendita + qualche finanziamento ogni tanto'},
+          {label:'Vendita + finanziamento proposto sistematicamente'},
+          {label:'Vendita + F&I + garanzie + qualche servizio'},
+          {label:'Mix completo: vendita, F&I, service, accessori, noleggio'}
         ]},
-      { id:'r2', testo:'La penetrazione finanziaria supera il 40% delle vendite?', tipo:'yn', peso:3 },
-      { id:'r3', testo:'I ricavi post-vendita (officina, ricambi) pesano almeno il 30%?', tipo:'yn', peso:2 },
+      { id:'r2', testo:'Proponi finanziamento e garanzia estesa su ogni vendita?', tipo:'yn', peso:3 },
+      { id:'r3', testo:'Hai ricavi ricorrenti (contratti manutenzione, noleggio)?', tipo:'yn', peso:2 },
     ],
     marketing: [
-      { id:'m1', testo:'Come promuovi la concessionaria e lo stock?', tipo:'mc', peso:5,
+      { id:'m1', testo:'Come trovi nuovi clienti?', tipo:'mc', peso:5,
         opzioni:[
-          {label:'Nessuna promozione attiva'},
-          {label:'Qualche post sui social ogni tanto'},
-          {label:'Presenza su portali auto (AutoScout24, Subito)'},
-          {label:'Portali, social e comunicazioni ai clienti'},
-          {label:'Marketing strutturato con campagne e CRM mirato'}
+          {label:'Solo passaparola — non faccio nulla di attivo'},
+          {label:'Ho messo qualche annuncio su portali o social'},
+          {label:'Sono su 2-3 portali auto con foto aggiornate'},
+          {label:'Portali + social attivi + qualche campagna ads'},
+          {label:'Marketing strutturato con campagne, CRM e budget'}
         ]},
-      { id:'m2', testo:'Invii comunicazioni mirate ai clienti in scadenza garanzia o leasing?', tipo:'yn', peso:3 },
-      { id:'m3', testo:'Sei presente sui portali auto con stock aggiornato regolarmente?', tipo:'yn', peso:2 },
+      { id:'m2', testo:'Aggiorni lo stock sui portali almeno una volta a settimana?', tipo:'yn', peso:3 },
+      { id:'m3', testo:'Hai un budget mensile dedicato al marketing?', tipo:'yn', peso:2 },
     ],
     sitoweb: [
-      { id:'s1', testo:'Com\'è il sito web della concessionaria?', tipo:'mc', peso:5,
+      { id:'s1', testo:'Hai un sito web?', tipo:'mc', peso:5,
         opzioni:[
-          {label:'Non ho un sito oppure è molto datato'},
-          {label:'Sito con info base e contatti'},
-          {label:'Sito con qualche veicolo in vetrina'},
-          {label:'Sito con stock aggiornato e modulo contatto'},
-          {label:'Sito con stock live, configuratore e prenota test drive'}
+          {label:'No, o ne ho uno vecchissimo che non aggiorno'},
+          {label:'Sito base con contatti e qualche info'},
+          {label:'Sito con lo stock veicoli visibile'},
+          {label:'Sito con stock aggiornato, form contatto e foto'},
+          {label:'Sito con stock live, chat, test drive e finanziamento'}
         ]},
-      { id:'s2', testo:'Il sito mostra lo stock disponibile aggiornato in tempo reale?', tipo:'yn', peso:3 },
-      { id:'s3', testo:'Hai un configuratore o modulo per prenotare un test drive online?', tipo:'yn', peso:2 },
+      { id:'s2', testo:'Lo stock sul sito è aggiornato in tempo reale?', tipo:'yn', peso:3 },
+      { id:'s3', testo:'Un cliente può contattarti o prenotare dal sito?', tipo:'yn', peso:2 },
     ],
     ecommerce: [
-      { id:'e1', testo:'Come gestisci approvvigionamento e vendita online?', tipo:'mc', peso:5,
+      { id:'e1', testo:'Come ti approvvigioni di veicoli da vendere?', tipo:'mc', peso:5,
         opzioni:[
-          {label:'Compro veicoli solo da casa madre o aste base'},
-          {label:'Ritiro usato e qualche acquisto da privati'},
-          {label:'Mix di fonti con valutazione strutturata'},
-          {label:'Sourcing attivo multi-canale con target stock'},
-          {label:'Strategia acquisti ottimizzata con vendita online'}
+          {label:'Solo permute — aspetto che il cliente porti l\'usato'},
+          {label:'Permute + qualche acquisto su aste online'},
+          {label:'Aste + accordi con privati e aziende'},
+          {label:'Buyer che cerca attivamente su più canali'},
+          {label:'Strategia acquisti con team, KPI e partnership'}
         ]},
-      { id:'e2', testo:'Offri la possibilità di prenotare o bloccare un veicolo online?', tipo:'yn', peso:2 },
-      { id:'e3', testo:'Vendi online accessori, ricambi o pacchetti di manutenzione?', tipo:'yn', peso:2 },
+      { id:'e2', testo:'Hai almeno 3 fonti diverse di approvvigionamento veicoli?', tipo:'yn', peso:3 },
+      { id:'e3', testo:'Controlli il costo medio di acquisto per veicolo?', tipo:'yn', peso:2 },
     ],
   },
 
