@@ -950,6 +950,69 @@ const STEP_DETAIL_BY_SETTORE = {
     },
   },
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // COMMERCIO INGROSSO ALIMENTARE
+  // ═══════════════════════════════════════════════════════════════════════════
+  commercio_ingrosso_alimentare: {
+    vendite: {
+      '1': { chi:'Titolare', cosa:'Titolare gestisce clienti storici — ordini per telefono', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Visite pianificate a ristoranti, hotel e negozi della zona', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Titolare strutturato', cosa:'Sviluppo canale HORECA — degustazioni, campionature, listini dedicati', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Agente esterno', cosa:'Agente dedicato canale HORECA o GDO locale', costo_mensile:1800, costo_setup:500, tempo_mesi:3 },
+      '5': { chi:'Strategia + agenti export', cosa:'Sviluppo private label per GDO + apertura canale export', costo_mensile:3000, costo_setup:2000, tempo_mesi:6 },
+    },
+    pipeline: {
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini per telefono e WhatsApp', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Excel con clienti, frequenza ordini, prodotti principali', costo_mensile:0, costo_setup:100, tempo_mesi:1 },
+      '3': { chi:'CRM base', cosa:'CRM + gestione listini e promozioni per cliente', costo_mensile:80, costo_setup:300, tempo_mesi:1 },
+      '4': { chi:'CRM + gestionale', cosa:'Gestionale ordini con route planning consegne', costo_mensile:500, costo_setup:2000, tempo_mesi:2 },
+      '5': { chi:'ERP alimentare', cosa:'ERP alimentare — ordini, magazzino, tracciabilità, logistica', costo_mensile:1200, costo_setup:6000, tempo_mesi:3 },
+    },
+    team: {
+      '1': { chi:'Titolare + operativi', cosa:'Titolare + magazziniere + autista', costo_mensile:5500, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+ addetto ordini', cosa:'Addetto ordini — gestisce telefono e preparazione', costo_mensile:7500, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'+ resp. magazzino', cosa:'Resp. magazzino — gestisce stock, rotazione, scadenze', costo_mensile:10500, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Team completo', cosa:'Team logistica strutturato + back office commerciale', costo_mensile:16000, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Struttura manageriale', cosa:'Resp. commerciale + resp. logistica + qualità HACCP', costo_mensile:22000, costo_setup:1500, tempo_mesi:5 },
+    },
+    processi: {
+      '1': { chi:'Titolare', cosa:'Nessun processo — ordini e consegne gestiti a vista', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Tracciabilità lotti base + gestione scadenze prodotti', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Software + HACCP', cosa:'HACCP strutturato + gestionale magazzino con lotti e scadenze', costo_mensile:400, costo_setup:1500, tempo_mesi:2 },
+      '4': { chi:'Consulente + strumenti', cosa:'Gestione catena del freddo certificata + logistica ottimizzata', costo_mensile:700, costo_setup:2500, tempo_mesi:3 },
+      '5': { chi:'Quality manager', cosa:'Certificazioni BRC/IFS + audit interni + sistema qualità', costo_mensile:1200, costo_setup:6000, tempo_mesi:4 },
+    },
+    ricavi: {
+      '1': { chi:'Titolare', cosa:'Margine fisso da listino — nessun upsell', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Pricing per canale — HORECA, GDO, dettaglio differenziati', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Promozioni strutturate', cosa:'Promozioni settimanali + prodotti stagionali ad alto margine', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '4': { chi:'Private label', cosa:'Private label per GDO locale — margini 15-20% superiori', costo_mensile:400, costo_setup:1000, tempo_mesi:2 },
+      '5': { chi:'Revenue manager', cosa:'Contratti annuali GDO + sviluppo linee premium e bio', costo_mensile:1000, costo_setup:2000, tempo_mesi:3 },
+    },
+    marketing: {
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo relazione diretta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Catalogo digitale + listino aggiornato via WhatsApp/email', costo_mensile:100, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Fiere', cosa:'Fiere alimentari (Cibus, TuttoFood) — stand e degustazione', costo_mensile:500, costo_setup:5000, tempo_mesi:2 },
+      '4': { chi:'Agenzia digital', cosa:'Campagne digitali verso buyer GDO e HORECA', costo_mensile:800, costo_setup:1000, tempo_mesi:2 },
+      '5': { chi:'Marketing manager', cosa:'Piano marketing — fiere + catalogo + promozioni + PR settore', costo_mensile:2200, costo_setup:3000, tempo_mesi:3 },
+    },
+    sitoweb: {
+      '1': { chi:'Nessuno', cosa:'Nessun sito', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Web agency', cosa:'Sito con catalogo prodotti, certificazioni, zona servita', costo_mensile:80, costo_setup:1000, tempo_mesi:1 },
+      '3': { chi:'Sito professionale', cosa:'Catalogo online con prezzi riservati per cliente registrato', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
+      '4': { chi:'Portale ordini', cosa:'Ordini online B2B + disponibilità stock in tempo reale', costo_mensile:700, costo_setup:5000, tempo_mesi:2 },
+      '5': { chi:'Piattaforma B2B', cosa:'Piattaforma B2B completa — ordini, tracking, fatturazione', costo_mensile:1200, costo_setup:10000, tempo_mesi:3 },
+    },
+    ecommerce: {
+      _label: 'Approvvigionamento prodotti',
+      '1': { chi:'Titolare', cosa:'Acquisto da produttori locali abituali — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Diversificazione fornitori — confronto prezzi e qualità', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Accordi fornitori', cosa:'Accordi quadro con produttori — volumi, prezzi stagionali', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
+      '4': { chi:'Buyer', cosa:'Buyer dedicato — negoziazione, import, gestione catena freddo', costo_mensile:1800, costo_setup:500, tempo_mesi:2 },
+      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — contratti annuali, sourcing internazionale', costo_mensile:3500, costo_setup:1500, tempo_mesi:4 },
+    },
+  },
+
 };
 
 window.STEP_DETAIL_BY_SETTORE = STEP_DETAIL_BY_SETTORE;
