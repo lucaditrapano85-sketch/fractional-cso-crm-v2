@@ -761,6 +761,69 @@ const STEP_DETAIL_BY_SETTORE = {
     },
   },
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // EDILIZIA IMPIANTI
+  // ═══════════════════════════════════════════════════════════════════════════
+  edilizia_impianti: {
+    vendite: {
+      '1': { chi:'Titolare', cosa:'Titolare trova lavori tramite passaparola e imprese edili', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Rapporti con studi tecnici, amministratori condominio, imprese', costo_mensile:150, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Titolare strutturato', cosa:'Preventivi strutturati + proposta efficientamento su ogni sopralluogo', costo_mensile:300, costo_setup:300, tempo_mesi:2 },
+      '4': { chi:'Commerciale', cosa:'Commerciale dedicato — sviluppo condomini, industria, PA', costo_mensile:2500, costo_setup:500, tempo_mesi:3 },
+      '5': { chi:'Dir. commerciale', cosa:'Dir. commerciale + rete installatori partner + gare pubbliche', costo_mensile:6000, costo_setup:2000, tempo_mesi:6 },
+    },
+    pipeline: {
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — chiamate e preventivi a memoria', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Excel con preventivi, impianti installati, scadenze manutenzione', costo_mensile:0, costo_setup:100, tempo_mesi:1 },
+      '3': { chi:'CRM base', cosa:'CRM per preventivi + scadenze contratti manutenzione', costo_mensile:50, costo_setup:200, tempo_mesi:1 },
+      '4': { chi:'CRM + gestionale', cosa:'CRM + gestionale interventi — programmazione e consuntivo', costo_mensile:300, costo_setup:1200, tempo_mesi:2 },
+      '5': { chi:'ERP impiantistica', cosa:'ERP impiantistica — preventivi, commesse, magazzino, fatturazione', costo_mensile:600, costo_setup:3000, tempo_mesi:3 },
+    },
+    team: {
+      '1': { chi:'Titolare + installatori', cosa:'Titolare + 1-2 installatori — tutti sugli impianti', costo_mensile:5500, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+ capo squadra', cosa:'Capo squadra — gestisce cantieri, titolare esce dagli impianti', costo_mensile:8000, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'+ progettista', cosa:'Tecnico progettista — dimensionamento impianti e pratiche', costo_mensile:11500, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Squadre + back office', cosa:'2+ squadre autonome + back office amministrativo', costo_mensile:18000, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Struttura completa', cosa:'Resp. tecnico + capicantiere + amministrazione strutturata', costo_mensile:25000, costo_setup:1500, tempo_mesi:5 },
+    },
+    processi: {
+      '1': { chi:'Titolare', cosa:'Nessun processo — ogni impianto è gestito a esperienza', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Scheda impianto standard — specifiche, materiali, tempi, costi', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Software gestionale', cosa:'Gestionale interventi con programmazione manutenzioni', costo_mensile:250, costo_setup:1000, tempo_mesi:2 },
+      '4': { chi:'Consulente + procedure', cosa:'Certificazioni obbligatorie strutturate (DM 37/08) + sicurezza', costo_mensile:500, costo_setup:1500, tempo_mesi:2 },
+      '5': { chi:'Quality manager', cosa:'ISO 9001 + gestione garanzie + audit qualità impianti', costo_mensile:1000, costo_setup:5000, tempo_mesi:4 },
+    },
+    ricavi: {
+      '1': { chi:'Titolare', cosa:'Installazione a prezzo fisso — nessun ricavo ricorrente', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Calcolo costi reali — materiali, ore, spostamenti', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Contratti ricorrenti', cosa:'Contratti manutenzione annuali — caldaie, condizionatori, impianti', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
+      '4': { chi:'Upsell strutturato', cosa:'Upsell efficientamento energetico + bonus fiscali come leva', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
+      '5': { chi:'Revenue manager', cosa:'Contratti full-service condomini e industria — ricavo garantito', costo_mensile:800, costo_setup:1500, tempo_mesi:3 },
+    },
+    marketing: {
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Google My Business + foto impianti realizzati + recensioni', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Portali', cosa:'Portali locali (PagineGialle, Instapro) + partnership edili', costo_mensile:300, costo_setup:400, tempo_mesi:2 },
+      '4': { chi:'Agenzia digital', cosa:'Google Ads locali su manutenzione e efficientamento', costo_mensile:700, costo_setup:1000, tempo_mesi:2 },
+      '5': { chi:'Marketing manager', cosa:'Piano marketing — referenze, partnership costruttori, eventi', costo_mensile:1800, costo_setup:2500, tempo_mesi:3 },
+    },
+    sitoweb: {
+      '1': { chi:'Nessuno', cosa:'Nessun sito — solo pagina social', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Web agency', cosa:'Sito con servizi, zona operativa, foto impianti', costo_mensile:80, costo_setup:800, tempo_mesi:1 },
+      '3': { chi:'Sito professionale', cosa:'Portfolio lavori + preventivo online + recensioni', costo_mensile:250, costo_setup:1800, tempo_mesi:2 },
+      '4': { chi:'Sito + SEO', cosa:'Blog su risparmio energetico e bonus + SEO locale', costo_mensile:450, costo_setup:1500, tempo_mesi:2 },
+      '5': { chi:'Sito avanzato', cosa:'Area clienti — storico impianti, scadenze manutenzione, documenti', costo_mensile:750, costo_setup:4000, tempo_mesi:3 },
+    },
+    ecommerce: {
+      _label: 'Approvvigionamento materiali',
+      '1': { chi:'Titolare', cosa:'Acquisto materiali dal grossista di fiducia — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Confronto prezzi tra 2-3 grossisti per ogni commessa', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Accordi distributori', cosa:'Accordi quadro con distributori — prezzi riservati e consegna rapida', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
+      '4': { chi:'Magazzino strutturato', cosa:'Magazzino materiali ricorrenti + gestione scorte minime', costo_mensile:400, costo_setup:800, tempo_mesi:2 },
+      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — accordi volume, import diretto, stoccaggio', costo_mensile:1500, costo_setup:1000, tempo_mesi:4 },
+    },
+  },
+
 };
 
 window.STEP_DETAIL_BY_SETTORE = STEP_DETAIL_BY_SETTORE;
