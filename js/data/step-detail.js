@@ -824,6 +824,69 @@ const STEP_DETAIL_BY_SETTORE = {
     },
   },
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // EDILIZIA SERRAMENTI
+  // ═══════════════════════════════════════════════════════════════════════════
+  edilizia_serramenti: {
+    vendite: {
+      '1': { chi:'Titolare', cosa:'Titolare vende dallo showroom — chi entra compra', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Sopralluoghi a domicilio + preventivi strutturati con rendering', costo_mensile:200, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Titolare', cosa:'Sviluppo canale B2B — visite a imprese edili e studi tecnici', costo_mensile:300, costo_setup:200, tempo_mesi:2 },
+      '4': { chi:'Commerciale B2B', cosa:'Commerciale esterno dedicato a imprese edili e architetti', costo_mensile:2500, costo_setup:500, tempo_mesi:3 },
+      '5': { chi:'Dir. commerciale', cosa:'Dir. commerciale + rete posatori partner + gare ristrutturazione', costo_mensile:6500, costo_setup:2000, tempo_mesi:6 },
+    },
+    pipeline: {
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — preventivi su carta e dimenticati', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Excel con preventivi, sopralluoghi, stato trattativa', costo_mensile:0, costo_setup:100, tempo_mesi:1 },
+      '3': { chi:'CRM base', cosa:'CRM per preventivi + follow-up post-sopralluogo', costo_mensile:50, costo_setup:200, tempo_mesi:1 },
+      '4': { chi:'CRM + configuratore', cosa:'CRM + configuratore infissi per preventivi automatici', costo_mensile:400, costo_setup:2000, tempo_mesi:2 },
+      '5': { chi:'CRM + gestionale', cosa:'CRM integrato con gestionale ordini e produzione/fornitori', costo_mensile:700, costo_setup:3500, tempo_mesi:3 },
+    },
+    team: {
+      '1': { chi:'Titolare + posatori', cosa:'Titolare + 1-2 posatori — showroom e posa', costo_mensile:5000, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+ capo posatore', cosa:'Capo posatore — gestisce cantieri, titolare resta in showroom', costo_mensile:7500, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'+ addetto showroom', cosa:'Addetto showroom — accoglienza, preventivi, follow-up clienti', costo_mensile:10000, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Squadre + back office', cosa:'2+ squadre posa autonome + back office', costo_mensile:16000, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Struttura completa', cosa:'Resp. commerciale + resp. posa + amministrazione', costo_mensile:22000, costo_setup:1500, tempo_mesi:5 },
+    },
+    processi: {
+      '1': { chi:'Titolare', cosa:'Nessun processo — preventivi a mano, posa senza procedura', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Template preventivo con misure, materiali, posa e smaltimento', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Software configuratore', cosa:'Configuratore infissi per preventivi veloci e precisi', costo_mensile:300, costo_setup:1500, tempo_mesi:2 },
+      '4': { chi:'Gestionale', cosa:'Gestionale ordini — da preventivo a ordine fornitore a posa', costo_mensile:500, costo_setup:2000, tempo_mesi:2 },
+      '5': { chi:'Quality + certificazione', cosa:'Certificazione posa qualificata + gestione garanzie + NPS', costo_mensile:900, costo_setup:4000, tempo_mesi:4 },
+    },
+    ricavi: {
+      '1': { chi:'Titolare', cosa:'Vendita infissi con margine base — nessun upsell', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Calcolo margini reali per prodotto — PVC vs alluminio vs legno', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Upsell strutturato', cosa:'Upsell sistematico — zanzariere, oscuranti, cassonetti, VMC', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '4': { chi:'Consulente fiscale', cosa:'Bonus fiscali come leva di vendita — gestione pratiche inclusa', costo_mensile:400, costo_setup:800, tempo_mesi:2 },
+      '5': { chi:'Revenue manager', cosa:'Contratti con imprese edili — fornitura + posa su cantieri', costo_mensile:800, costo_setup:1500, tempo_mesi:3 },
+    },
+    marketing: {
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo insegna showroom e passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Google My Business + foto showroom e lavori realizzati', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Agenzia digital', cosa:'Google Ads locali su "infissi + città" + portali casa', costo_mensile:600, costo_setup:800, tempo_mesi:2 },
+      '4': { chi:'Social + ads', cosa:'Campagne social con prima/dopo + video posa + recensioni', costo_mensile:1000, costo_setup:1500, tempo_mesi:2 },
+      '5': { chi:'Marketing manager', cosa:'Piano marketing — eventi showroom, partnership architetti, PR', costo_mensile:2200, costo_setup:3000, tempo_mesi:3 },
+    },
+    sitoweb: {
+      '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Web agency', cosa:'Sito con catalogo infissi, showroom, zona operativa', costo_mensile:80, costo_setup:1000, tempo_mesi:1 },
+      '3': { chi:'Sito professionale', cosa:'Gallery lavori + preventivo online + simulatore colori', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
+      '4': { chi:'Sito + configuratore', cosa:'Configuratore infissi online — misure, materiali, prezzo indicativo', costo_mensile:600, costo_setup:5000, tempo_mesi:2 },
+      '5': { chi:'Sito avanzato', cosa:'E-commerce accessori + prenotazione sopralluogo + area clienti', costo_mensile:900, costo_setup:6000, tempo_mesi:3 },
+    },
+    ecommerce: {
+      _label: 'Approvvigionamento infissi',
+      '1': { chi:'Titolare', cosa:'Acquisto infissi da un solo produttore — nessuna alternativa', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Confronto tra 2-3 produttori — prezzi e tempi di consegna', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Accordi fornitori', cosa:'Accordi quadro con produttori — sconti volume e priorità consegna', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
+      '4': { chi:'Buyer dedicato', cosa:'Multi-fornitore strutturato — PVC da uno, alluminio da un altro', costo_mensile:500, costo_setup:500, tempo_mesi:2 },
+      '5': { chi:'Resp. acquisti', cosa:'Partnership produttori + private label + import diretto', costo_mensile:1500, costo_setup:1500, tempo_mesi:4 },
+    },
+  },
+
 };
 
 window.STEP_DETAIL_BY_SETTORE = STEP_DETAIL_BY_SETTORE;
