@@ -4235,12 +4235,12 @@ function _calcolaImpattoCumulativo(p) {
   // Fatturato proiettato per orizzonti estesi usando crescita composta
   // Usiamo i % di crescita calcolati e li estrapoliamo oltre 24m
   const proiettaFat = (mesi) => {
-    // Crescita per anno: usiamo crescita24 come tasso annuo di regime
-    const crescitaAnnua = crescita24;
+    // Tasso annuo equivalente dalla crescita totale a 24 mesi
+    const tassoAnnuo = Math.pow(1 + crescita24, 0.5) - 1;
     const anni = mesi / 12;
     return [
-      Math.round(fat * Math.pow(1 + crescitaAnnua * 0.82, anni) / 1000) * 1000,
-      Math.round(fat * Math.pow(1 + crescitaAnnua * 1.18, anni) / 1000) * 1000
+      Math.round(fat * Math.pow(1 + tassoAnnuo * 0.82, anni) / 1000) * 1000,
+      Math.round(fat * Math.pow(1 + tassoAnnuo * 1.18, anni) / 1000) * 1000
     ];
   };
 
