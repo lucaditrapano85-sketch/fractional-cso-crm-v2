@@ -26,7 +26,7 @@ const STEP_DETAIL_BY_SETTORE = {
     team: {
       '1': { chi:'Titolare', cosa:'Nessun team — il titolare fa tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
       '2': { chi:'Aiutante', cosa:'Assumere un aiutante — gestione clienti e pratiche base', costo_mensile:1200, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Ruoli separati', cosa:'Ruoli definiti — chi vende, chi fa pratiche, chi segue post-vendita', costo_mensile:1500, costo_setup:500, tempo_mesi:2 },
+      '3': { chi:'Ruoli separati', cosa:'Ruoli definiti — chi vende, chi fa pratiche, chi segue post-vendita', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
       '4': { chi:'Team strutturato', cosa:'Back office commerciale + addetto permute + amministrazione', costo_mensile:3000, costo_setup:1000, tempo_mesi:3 },
       '5': { chi:'Manager + team', cosa:'Responsabile che coordina team, obiettivi e KPI', costo_mensile:4500, costo_setup:2000, tempo_mesi:6 },
     },
