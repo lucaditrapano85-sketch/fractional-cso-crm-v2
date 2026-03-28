@@ -4756,6 +4756,103 @@ function apriDettaglioCosti() {
   document.body.style.overflow = 'hidden';
 }
 
+function apriControlloFatturato() {
+  var p = prospects.find(function(x){ return x.id === currentId; });
+  if (!p) return;
+  var snap = p.proiezione_snapshot;
+  var checkpoints = p.fatturato_checkpoints || {};
+  var fat0 = snap ? snap.fatturato_base : (p.fatturato_anno_1 || 0);
+  var fmtF = function(v) { return v >= 1000000 ? (v/1000000).toFixed(1)+'M' : Math.round(v/1000)+'k'; };
+  var fmtV = function(v) { return v ? v.toLocaleString('it-IT') + '\u20AC' : '\u2014'; };
+
+  var mesi = [6, 12, 18, 24, 30, 36];
+  var proiezioni = {};
+  if (snap) {
+    proiezioni[6] = snap.fat6;
+    proiezioni[12] = snap.fat12;
+    proiezioni[18] = snap.fat12 && snap.fat24 ? [Math.round((snap.fat12[0]+snap.fat24[0])/2), Math.round((snap.fat12[1]+snap.fat24[1])/2)] : null;
+    proiezioni[24] = snap.fat24;
+  }
+  // Calcola proiezioni per 30 e 36 se non nello snapshot
+  var ic = _calcolaImpattoCumulativo(p);
+  if (ic) {
+    if (!proiezioni[6]) proiezioni[6] = ic.fat6;
+    if (!proiezioni[12]) proiezioni[12] = ic.fat12;
+    if (!proiezioni[24]) proiezioni[24] = ic.fat24;
+    if (ic.fat36) proiezioni[36] = ic.fat36;
+    if (!proiezioni[18] && proiezioni[12] && proiezioni[24]) {
+      proiezioni[18] = [Math.round((proiezioni[12][0]+proiezioni[24][0])/2), Math.round((proiezioni[12][1]+proiezioni[24][1])/2)];
+    }
+    if (!proiezioni[30] && proiezioni[24] && proiezioni[36]) {
+      proiezioni[30] = [Math.round((proiezioni[24][0]+proiezioni[36][0])/2), Math.round((proiezioni[24][1]+proiezioni[36][1])/2)];
+    }
+  }
+
+  var dataInizio = snap ? new Date(snap.data) : new Date();
+
+  var rows = mesi.map(function(m) {
+    var proj = proiezioni[m];
+    var projStr = proj ? fmtF(proj[0]) + '\u2013' + fmtF(proj[1]) + '\u20AC' : '\u2014';
+    var actual = checkpoints[String(m)];
+    var hasActual = actual !== undefined && actual !== null;
+
+    var scadenzaDate = new Date(dataInizio);
+    scadenzaDate.setMonth(scadenzaDate.getMonth() + m);
+    var dateStr = scadenzaDate.toLocaleDateString('it-IT', {month:'short', year:'numeric'});
+
+    var statusHtml = '';
+    if (hasActual && proj) {
+      var inRange = actual >= proj[0] * 0.9 && actual <= proj[1] * 1.1;
+      var sopra = actual > proj[1] * 1.1;
+      var col = sopra ? 'rgb(25,100,60)' : inRange ? 'rgba(150,110,30,0.8)' : 'rgba(170,50,40,0.8)';
+      var label = sopra ? '\u2191 Sopra' : inRange ? '\u2248 In linea' : '\u2193 Sotto';
+      statusHtml = '<span style="font-size:10px;font-weight:600;color:' + col + '">' + label + '</span>';
+    }
+
+    return '<div style="display:grid;grid-template-columns:60px 70px 1fr 1fr 80px;gap:8px;padding:10px 0;border-bottom:1px solid var(--border);align-items:center">' +
+      '<div style="font-size:12px;font-weight:700;color:var(--text)">' + m + ' mesi</div>' +
+      '<div style="font-size:10px;color:var(--gray)">' + dateStr + '</div>' +
+      '<div style="text-align:center"><div style="font-size:10px;color:var(--gray)">Proiettato</div><div style="font-size:12px;color:var(--text)">' + projStr + '</div></div>' +
+      '<div style="text-align:center"><div style="font-size:10px;color:var(--gray)">Reale</div>' +
+        '<input type="number" id="ck-' + m + '" value="' + (hasActual ? actual : '') + '" placeholder="\u2014" ' +
+        'style="width:100px;text-align:center;background:rgba(255,255,255,0.4);border:1px solid rgba(0,0,0,0.08);border-radius:6px;padding:4px 8px;font-size:12px;font-weight:600;color:var(--text);font-family:inherit;outline:none">' +
+      '</div>' +
+      '<div style="text-align:center">' + statusHtml + '</div>' +
+    '</div>';
+  }).join('');
+
+  var html = '<div style="margin-bottom:12px;font-size:12px;color:var(--gray)">Fatturato di partenza: <strong style="color:var(--text)">' + fmtV(fat0) + '</strong></div>' +
+    rows +
+    '<div style="display:flex;justify-content:flex-end;margin-top:16px">' +
+      '<button class="btn btn-primary" onclick="salvaCheckpoints()" style="background:var(--green);border:none">Salva</button>' +
+    '</div>';
+
+  document.getElementById('detail-overlay-title').textContent = 'Controllo fatturato';
+  document.getElementById('detail-overlay-subtitle').textContent = 'Confronto proiezioni vs risultati reali';
+  document.getElementById('detail-overlay-body').innerHTML = html;
+  document.getElementById('detail-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+async function salvaCheckpoints() {
+  var p = prospects.find(function(x){ return x.id === currentId; });
+  if (!p) return;
+  var checkpoints = {};
+  [6, 12, 18, 24, 30, 36].forEach(function(m) {
+    var el = document.getElementById('ck-' + m);
+    if (el && el.value !== '') checkpoints[String(m)] = parseFloat(el.value);
+  });
+  p.fatturato_checkpoints = checkpoints;
+  try {
+    await sb.from('prospects').update({ fatturato_checkpoints: checkpoints }).eq('id', p.id);
+    showToast('Checkpoints salvati');
+    chiudiDetailOverlay();
+    renderProspectDetail(currentId);
+  } catch(e) {
+    showToast('Errore: ' + e.message, 'error');
+  }
+}
+
 function apriDettaglioRoi() {
   var p = prospects.find(function(x){ return x.id === currentId; });
   if (!p) return;
@@ -4942,7 +5039,7 @@ function _buildGraficoTimeline(p) {
           var statusLabel = sopra ? '\u2191 Sopra le previsioni' : inRange ? '\u2248 In linea' : '\u2193 Sotto le previsioni';
           fatSub = '<span style="color:' + statusCol + ';font-weight:600">' + (delta >= 0 ? '+' : '') + deltaPct + '% da ' + snapDate + '</span> \u00B7 <span style="color:' + statusCol + '">' + statusLabel + '</span>';
         }
-        return '<div class="tl-mc"><div class="tl-mc-label">Fatturato attuale</div><div class="tl-mc-val">' + fmtF(fat) + '\u20AC</div><div class="tl-mc-sub">' + fatSub + '</div></div>';
+        return '<div class="tl-mc" style="cursor:pointer" onclick="apriControlloFatturato()"><div class="tl-mc-label">Fatturato attuale</div><div class="tl-mc-val">' + fmtF(fat) + '\u20AC</div><div class="tl-mc-sub">' + fatSub + ' \u00B7 clicca per controllo</div></div>';
       })() +
       '<div class="tl-mc"><div class="tl-mc-label">Proiezione 12 mesi</div><div class="tl-mc-val tl-green">' + fmtF(fat12min) + '\u2013' + fmtF(fat12max) + '\u20AC</div><div class="tl-mc-sub">+' + pct12min + '\u2013' + pct12max + '%</div></div>' +
       '<div class="tl-mc" style="cursor:pointer" onclick="apriDettaglioCosti()"><div class="tl-mc-label">Investimento piano</div><div class="tl-mc-val tl-blue">' + costoLabel + '</div><div class="tl-mc-sub">costi fissi mensili · clicca per dettagli</div></div>' +
