@@ -580,7 +580,7 @@ async function eliminaPreventivo(id) {
 function renderPreventivi(p) {
   var container = document.getElementById('preventivi-container');
   if (!container) return;
-  var STATO_COLOR = {bozza:'#4A6180',inviato:'#4E9FE6',accettato:'#1CB889',rifiutato:'#E05555'};
+  var STATO_COLOR = {bozza:'#4A6180',inviato:'#4E9FE6',accettato:'rgb(25,100,60)',rifiutato:'#E05555'};
   var STATO_LABEL = {bozza:'Bozza',inviato:'Inviato',accettato:'Accettato',rifiutato:'Rifiutato'};
   if (!_preventiviList.length) {
     container.innerHTML = '<div class="prev-empty">Nessun preventivo ancora. <button class="btn btn-primary" style="margin-left:12px" onclick="openPreventivoModal()">+ Nuovo preventivo</button></div>';
@@ -4552,7 +4552,7 @@ function _abilitaModificaScheda() {
   var btn = document.getElementById('scheda-btn-edit');
   if (btn) {
     btn.textContent = 'Salva';
-    btn.style.background = '#1CB889';
+    btn.style.background = 'rgb(25,100,60)';
     btn.style.border = 'none';
     btn.style.color = '#fff';
     btn.onclick = function() { _salvaSchedaTab(); };
@@ -4649,7 +4649,7 @@ function apriDettaglioCosti() {
     return '<div style="margin-bottom:16px">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">' +
         '<div style="font-size:13px;font-weight:600;color:var(--white)">' + (LABEL[id]||id) + '</div>' +
-        '<div style="font-size:12px;font-weight:600;color:#378ADD">' + fmtV(data.r) + '/mese</div>' +
+        '<div style="font-size:12px;font-weight:600;color:rgb(40,75,160)">' + fmtV(data.r) + '/mese</div>' +
       '</div>' +
       stepsHtml +
     '</div>';
@@ -4659,7 +4659,7 @@ function apriDettaglioCosti() {
     '<div style="border-top:2px solid var(--border);padding-top:12px;margin-top:8px;display:flex;justify-content:space-between">' +
       '<div style="font-size:14px;font-weight:700;color:var(--white)">Totale</div>' +
       '<div style="text-align:right">' +
-        '<div style="font-size:14px;font-weight:700;color:#378ADD">' + fmtV(totalR) + '/mese</div>' +
+        '<div style="font-size:14px;font-weight:700;color:rgb(40,75,160)">' + fmtV(totalR) + '/mese</div>' +
         (totalU > 0 ? '<div style="font-size:11px;color:var(--gray)">+ ' + fmtV(totalU) + ' una tantum</div>' : '') +
         '<div style="font-size:11px;color:var(--gray)">' + fmtV(totalR * 12) + '/anno</div>' +
       '</div>' +
@@ -4696,12 +4696,12 @@ function apriDettaglioRoi() {
     var deltaMax = o.fat[1] - fat;
     var roiMin = o.costo > 0 ? (deltaMin / o.costo).toFixed(1) : '\u2014';
     var roiMax = o.costo > 0 ? (deltaMax / o.costo).toFixed(1) : '\u2014';
-    var roiCol = roiMax >= 1.5 ? '#1CB889' : roiMax >= 1 ? 'rgba(150,110,30,0.75)' : 'rgba(170,50,40,0.75)';
+    var roiCol = roiMax >= 1.5 ? 'rgb(25,100,60)' : roiMax >= 1 ? 'rgba(150,110,30,0.75)' : 'rgba(170,50,40,0.75)';
     return '<div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr 80px;gap:8px;padding:10px 0;border-bottom:1px solid var(--border);align-items:center">' +
       '<div style="font-size:12px;font-weight:600;color:var(--white)">' + o.label + '</div>' +
       '<div style="text-align:center"><div style="font-size:11px;color:var(--gray)">Fatturato</div><div style="font-size:12px;color:var(--white)">' + fmtF(o.fat[0]) + '\u2013' + fmtF(o.fat[1]) + '\u20AC</div></div>' +
-      '<div style="text-align:center"><div style="font-size:11px;color:var(--gray)">Crescita</div><div style="font-size:12px;color:#1CB889">+' + fmtF(deltaMin) + '\u2013' + fmtF(deltaMax) + '\u20AC</div></div>' +
-      '<div style="text-align:center"><div style="font-size:11px;color:var(--gray)">Investito</div><div style="font-size:12px;color:#378ADD">' + fmtF(o.costo) + '\u20AC</div></div>' +
+      '<div style="text-align:center"><div style="font-size:11px;color:var(--gray)">Crescita</div><div style="font-size:12px;color:rgb(25,100,60)">+' + fmtF(deltaMin) + '\u2013' + fmtF(deltaMax) + '\u20AC</div></div>' +
+      '<div style="text-align:center"><div style="font-size:11px;color:var(--gray)">Investito</div><div style="font-size:12px;color:rgb(40,75,160)">' + fmtF(o.costo) + '\u20AC</div></div>' +
       '<div style="text-align:center"><div style="font-size:11px;color:var(--gray)">ROI</div><div style="font-size:13px;font-weight:700;color:' + roiCol + '">' + roiMin + '\u2013' + roiMax + 'x</div></div>' +
     '</div>';
   }).join('');
@@ -4800,7 +4800,7 @@ function _buildGraficoTimeline(p) {
       const detail = typeof getStepDetail === 'function' ? getStepDetail(settore, d, stepKey) : null;
       const desc = detail ? detail.cosa : '';
       const costoStr = detail ? (detail.costo_mensile > 0 ? '\u2248' + detail.costo_mensile.toLocaleString('it-IT') + '\u20AC/mese' : 'Nessun costo') + ' \u00B7 Operativo in ~' + detail.tempo_mesi + ' ' + (detail.tempo_mesi === 1 ? 'mese' : 'mesi') : '';
-      const colors = {vendite:'#378ADD',pipeline:'#1CB889',ecommerce:'#BA7517',marketing:'#BA7517',team:'#378ADD',processi:'#888780',ricavi:'#1CB889',sitoweb:'#888780'};
+      const colors = {vendite:'rgb(40,75,160)',pipeline:'rgb(25,100,60)',ecommerce:'#BA7517',marketing:'#BA7517',team:'rgb(40,75,160)',processi:'#888780',ricavi:'rgb(25,100,60)',sitoweb:'#888780'};
       const col = colors[d] || '#888780';
       return '<div class="tl-azione-row">' +
         '<div class="tl-azione-dot" style="background:' + col + '"></div>' +
@@ -4855,7 +4855,7 @@ function _buildGraficoTimeline(p) {
         });
         var sugHtml = suggerimenti.map(function(s) {
           return '<div style="display:flex;align-items:center;gap:6px;margin-top:3px">' +
-            '<span style="color:#378ADD;font-size:10px">\u2191</span>' +
+            '<span style="color:rgb(40,75,160);font-size:10px">\u2191</span>' +
             '<span style="font-size:10px;color:var(--white)">Porta <strong>' + s.label + '</strong> a <strong>' + s.a + '</strong></span>' +
             '<span style="font-size:9px;color:var(--gray)">(ora a ' + s.da + ')</span>' +
           '</div>';
@@ -4888,7 +4888,7 @@ function _buildGraficoTimeline(p) {
     '<div class="tl-legend">' +
       '<span class="tl-leg-item"><span class="tl-leg-dot" style="background:#B4B2A9"></span>Base attuale</span>' +
       '<span class="tl-leg-item"><span class="tl-leg-dot" style="background:#85B7EB"></span>Scenario minimo</span>' +
-      '<span class="tl-leg-item"><span class="tl-leg-dot" style="background:#1CB889"></span>Scenario massimo</span>' +
+      '<span class="tl-leg-item"><span class="tl-leg-dot" style="background:rgb(25,100,60)"></span>Scenario massimo</span>' +
     '</div>' +
     '<div class="tl-chart-wrap"><canvas id="' + chartId + '"></canvas></div>' +
 
@@ -4938,11 +4938,11 @@ function _buildGraficoTimeline(p) {
           {
             label: 'Scenario massimo',
             data: pts.max,
-            borderColor: '#1CB889',
+            borderColor: 'rgb(25,100,60)',
             backgroundColor: 'rgba(28,184,137,0.08)',
             borderWidth: 2,
             pointRadius: 3,
-            pointBackgroundColor: '#1CB889',
+            pointBackgroundColor: 'rgb(25,100,60)',
             fill: '-1',
             tension: 0.35,
           }
