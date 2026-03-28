@@ -5727,14 +5727,14 @@ function buildCalcolatricePL() {
       \x3cdiv class="pl-label">Fatturato anno corrente\x3c/div>
       \x3cdiv class="pl-input-wrap">
         \x3cinput class="form-input pl-input" type="number" id="calc-fatturato" placeholder="es. 500000"
-          value="${dc.fatturato || p.fatturato_anno_1 || ''}" oninput="aggiornaCalcolatrice()">
+          value="${dc.fatturato != null ? dc.fatturato : (p.fatturato_anno_1 != null ? p.fatturato_anno_1 : '')}" oninput="aggiornaCalcolatrice()">
       \x3c/div>
     \x3c/div>
     \x3cdiv class="pl-row pl-row-input">
       \x3cdiv class="pl-label">Fatturato anno precedente \x3cspan style="font-size:9px;color:var(--gray2)">(opzionale)\x3c/span>\x3c/div>
       \x3cdiv class="pl-input-wrap">
         \x3cinput class="form-input pl-input" type="number" id="calc-fatturato-prec" placeholder="es. 450000"
-          value="${dc.fatturato_prec || ''}" oninput="aggiornaCalcolatrice()">
+          value="${dc.fatturato_prec != null ? dc.fatturato_prec : ''}" oninput="aggiornaCalcolatrice()">
         \x3cdiv class="pl-preview" id="calc-preview-delta-fat">\x3c/div>
       \x3c/div>
     \x3c/div>
@@ -5749,11 +5749,11 @@ function buildCalcolatricePL() {
       \x3cdiv class="pl-input-wrap">
         \x3cdiv style="display:flex;gap:8px;align-items:center">
           \x3cinput class="form-input pl-input" type="number" id="calc-cdv-pct" placeholder="%" min="0" max="100" step="0.1"
-            value="${dc.cdv_pct || ''}" oninput="document.getElementById('calc-cdv-eur').value='';aggiornaCalcolatrice()" style="width:70px">
+            value="${dc.cdv_pct != null ? dc.cdv_pct : ''}" oninput="document.getElementById('calc-cdv-eur').value='';aggiornaCalcolatrice()" style="width:70px">
           \x3cspan style="color:var(--gray);font-size:12px">%\x3c/span>
           \x3cspan style="color:var(--gray2);font-size:11px">oppure\x3c/span>
           \x3cinput class="form-input pl-input" type="number" id="calc-cdv-eur" placeholder="EUR" min="0"
-            value="${dc.cdv_eur || ''}" oninput="document.getElementById('calc-cdv-pct').value='';aggiornaCalcolatrice()" style="flex:1">
+            value="${dc.cdv_eur != null ? dc.cdv_eur : ''}" oninput="document.getElementById('calc-cdv-pct').value='';aggiornaCalcolatrice()" style="flex:1">
         \x3c/div>
         \x3cdiv class="pl-preview" id="calc-preview-cdv">\x3c/div>
       \x3c/div>
@@ -5772,28 +5772,28 @@ function buildCalcolatricePL() {
       \x3cdiv class="pl-label">Personale \x3cdiv class="pl-sublabel">stipendi lordi + contributi\x3c/div>\x3c/div>
       \x3cdiv class="pl-input-wrap">
         \x3cinput class="form-input pl-input" type="number" id="calc-cf-personale" placeholder="es. 120000"
-          value="${dc.cf_personale || ''}" oninput="aggiornaCalcolatrice()">
+          value="${dc.cf_personale != null ? dc.cf_personale : ''}" oninput="aggiornaCalcolatrice()">
       \x3c/div>
     \x3c/div>
     \x3cdiv class="pl-row pl-row-input">
       \x3cdiv class="pl-label">Affitto e utenze\x3c/div>
       \x3cdiv class="pl-input-wrap">
         \x3cinput class="form-input pl-input" type="number" id="calc-cf-affitto" placeholder="es. 24000"
-          value="${dc.cf_affitto || ''}" oninput="aggiornaCalcolatrice()">
+          value="${dc.cf_affitto != null ? dc.cf_affitto : ''}" oninput="aggiornaCalcolatrice()">
       \x3c/div>
     \x3c/div>
     \x3cdiv class="pl-row pl-row-input">
       \x3cdiv class="pl-label">Servizi e consulenze \x3cdiv class="pl-sublabel">commercialista, software, assicurazioni\x3c/div>\x3c/div>
       \x3cdiv class="pl-input-wrap">
         \x3cinput class="form-input pl-input" type="number" id="calc-cf-servizi" placeholder="es. 18000"
-          value="${dc.cf_servizi || ''}" oninput="aggiornaCalcolatrice()">
+          value="${dc.cf_servizi != null ? dc.cf_servizi : ''}" oninput="aggiornaCalcolatrice()">
       \x3c/div>
     \x3c/div>
     \x3cdiv class="pl-row pl-row-input">
       \x3cdiv class="pl-label">Altri costi fissi \x3cdiv class="pl-sublabel">manutenzioni, trasporti, varie\x3c/div>\x3c/div>
       \x3cdiv class="pl-input-wrap">
         \x3cinput class="form-input pl-input" type="number" id="calc-cf-altro" placeholder="es. 12000"
-          value="${dc.cf_altro || ''}" oninput="aggiornaCalcolatrice()">
+          value="${dc.cf_altro != null ? dc.cf_altro : ''}" oninput="aggiornaCalcolatrice()">
       \x3c/div>
     \x3c/div>
     \x3cdiv class="pl-row pl-row-result" style="border-left-color:var(--gray)">
@@ -5819,7 +5819,7 @@ function buildCalcolatricePL() {
       \x3c/div>
       \x3cdiv class="pl-input-wrap">
         \x3cinput class="form-input pl-input" type="number" id="calc-ammortamenti" placeholder="es. 30000"
-          value="${dc.ammortamenti || ''}" oninput="aggiornaCalcolatrice()">
+          value="${dc.ammortamenti != null ? dc.ammortamenti : ''}" oninput="aggiornaCalcolatrice()">
       \x3c/div>
     \x3c/div>
     \x3cdiv id="amm-panel-detail" style="display:none;background:var(--bg3);border-radius:var(--rs);padding:12px;margin:4px 0 8px;border:1px solid var(--border)">
@@ -5858,7 +5858,7 @@ function buildCalcolatricePL() {
     \x3cdiv class="pl-row pl-row-input">
       \x3cdiv class="pl-label">Compenso titolare/amministratore \x3cdiv class="pl-sublabel">lordo annuo\x3c/div>\x3c/div>
       \x3cdiv class="pl-input-wrap">
-        \x3cinput class="form-input pl-input" type="number" id="calc-reddito-titolare" placeholder="es. 60000" value="${dc.reddito_titolare || ''}" oninput="aggiornaCalcolatrice()">
+        \x3cinput class="form-input pl-input" type="number" id="calc-reddito-titolare" placeholder="es. 60000" value="${dc.reddito_titolare != null ? dc.reddito_titolare : ''}" oninput="aggiornaCalcolatrice()">
       \x3c/div>
     \x3c/div>
     \x3cdiv class="pl-row pl-row-result" id="calc-imposte-row" style="border-left-color:var(--red)">
