@@ -4407,13 +4407,11 @@ function _renderSchedaTab() {
 
   body.innerHTML = html;
 
-  // Disable inputs (except financials and commerciale which are interactive)
-  if (tab !== 'financials' && tab !== 'commerciale') {
-    body.querySelectorAll('input, select, textarea').forEach(function(el) {
-      el.classList.add('scheda-field');
-      el.disabled = true;
-    });
-  }
+  // Disable all inputs - Modifica button enables them
+  body.querySelectorAll('input, select, textarea').forEach(function(el) {
+    el.classList.add('scheda-field');
+    el.disabled = true;
+  });
 
   if (tab === 'financials') {
     setTimeout(function() {
@@ -4438,7 +4436,7 @@ function _renderSchedaTab() {
   }
 
   // Modifica/Salva (not for financials/commerciale which have own save)
-  var isInteractive = (tab === 'financials' || tab === 'commerciale');
+  var isInteractive = false; // all tabs use Modifica/Salva pattern
   _aggiornaSchedaEditBtn(isInteractive);
 }
 
@@ -4469,6 +4467,11 @@ function _abilitaModificaScheda() {
   body.querySelectorAll('.scheda-field, input, select, textarea').forEach(function(el) {
     el.disabled = false;
   });
+  // For financials, trigger calcolatrice after enabling
+  var tab = _schedaTabs[_schedaTabIdx];
+  if (tab === 'financials' && typeof aggiornaCalcolatrice === 'function') {
+    setTimeout(aggiornaCalcolatrice, 50);
+  }
   var btn = document.getElementById('scheda-btn-edit');
   if (btn) {
     btn.textContent = 'Salva';
@@ -4496,6 +4499,10 @@ function _salvaSchedaTab() {
     });
     p.kpi_commerciali = kpi;
     sb.from('prospects').update({ kpi_commerciali: kpi }).eq('id', p.id);
+  } else if (tab === 'financials') {
+    if (typeof salvaDaCalcolatrice === 'function') salvaDaCalcolatrice();
+  } else if (tab === 'commerciale') {
+    if (typeof saveCommercialeForm === 'function') saveCommercialeForm();
   } else {
     var cfg = FIN_FORMS[tab];
     if (!cfg) return;
