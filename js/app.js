@@ -4408,6 +4408,12 @@ function _renderSchedaTab() {
 
   body.innerHTML = html;
 
+  // Monta la calcolatrice (createElement con listener diretti)
+  if (tab === 'financials') {
+    var mount = document.getElementById('calc-mount');
+    if (mount) mountCalcolatrice(mount);
+  }
+
   // Financials e Commerciale sono sempre editabili (calcolatrice interattiva)
   // Le altre tab partono disabilitate
   if (tab !== 'financials' && tab !== 'commerciale') {
@@ -5734,157 +5740,262 @@ function buildFinField(f, val) {
 }
 
 function buildCalcolatricePL() {
+  return '<div id="calc-mount"></div>';
+}
+
+function mountCalcolatrice(container) {
+  if (!container) container = document.getElementById('calc-mount');
+  if (!container) return;
+  
   var p = prospects.find(function(x){ return x.id === currentId; }) || {};
   var dc = p.dati_calcolatrice || {};
-  var v = function(field, fallback) {
-    if (dc[field] !== undefined && dc[field] !== null) return dc[field];
-    if (fallback !== undefined) return fallback;
-    return '';
-  };
+  var gv = function(k, fb) { return dc[k] != null ? dc[k] : (fb != null ? fb : ''); };
 
-  return '<div id="calc-container" style="margin-top:8px">' +
-    '<div style="font-size:11px;font-weight:600;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px">Conto Economico</div>' +
+  container.innerHTML = '';
 
-    // RICAVI
-    '<div class="pl-section-label">Ricavi</div>' +
-    '<table class="calc-table"><tbody>' +
-    '<tr><td>Fatturato anno corrente</td><td><input type="number" id="c-fat" value="' + v('fatturato', p.fatturato_anno_1 || '') + '" placeholder="es. 500000"></td></tr>' +
-    '<tr><td>Fatturato anno precedente <span style="color:var(--gray2)">(opz.)</span></td><td><input type="number" id="c-fat-prec" value="' + v('fatturato_prec') + '" placeholder="es. 450000"></td></tr>' +
-    '<tr class="calc-result"><td>Delta</td><td id="c-res-delta">--</td></tr>' +
-    '</tbody></table>' +
+  var wrap = document.createElement('div');
+  wrap.style.cssText = 'padding:4px 0';
 
-    // COSTI VARIABILI
-    '<div class="pl-section-label" style="margin-top:16px">Costi variabili</div>' +
-    '<table class="calc-table"><tbody>' +
-    '<tr><td>Costo del venduto %</td><td><input type="number" id="c-cdv-pct" value="' + v('cdv_pct') + '" placeholder="%" min="0" max="100" step="0.1" style="width:80px"> <span style="color:var(--gray2)">oppure EUR</span> <input type="number" id="c-cdv-eur" value="' + v('cdv_eur') + '" placeholder="EUR" style="width:120px"></td></tr>' +
-    '<tr class="calc-result"><td>= Margine di Contribuzione</td><td id="c-res-margine">--</td></tr>' +
-    '</tbody></table>' +
+  // Helper: crea riga
+  function row(label, inputId, placeholder, value) {
+    var tr = document.createElement('tr');
+    var td1 = document.createElement('td');
+    td1.textContent = label;
+    td1.style.cssText = 'padding:7px 8px;font-size:12px;color:var(--gray);border-bottom:1px solid var(--border);width:55%';
+    var td2 = document.createElement('td');
+    td2.style.cssText = 'padding:7px 8px;text-align:right;border-bottom:1px solid var(--border)';
+    var inp = document.createElement('input');
+    inp.type = 'number';
+    inp.id = inputId;
+    inp.placeholder = placeholder || '';
+    inp.value = value !== '' && value != null ? value : '';
+    inp.style.cssText = 'background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:13px;color:var(--white);font-family:inherit;outline:none;width:130px;text-align:right';
+    inp.addEventListener('input', calcola);
+    inp.addEventListener('focus', function(){ inp.style.borderColor = 'var(--gold)'; });
+    inp.addEventListener('blur', function(){ inp.style.borderColor = 'var(--border)'; });
+    td2.appendChild(inp);
+    tr.appendChild(td1);
+    tr.appendChild(td2);
+    return tr;
+  }
 
-    // COSTI FISSI
-    '<div class="pl-section-label" style="margin-top:16px">Costi fissi annui</div>' +
-    '<table class="calc-table"><tbody>' +
-    '<tr><td>Personale (stipendi + contributi)</td><td><input type="number" id="c-cf-pers" value="' + v('cf_personale') + '" placeholder="es. 120000"></td></tr>' +
-    '<tr><td>Affitto e utenze</td><td><input type="number" id="c-cf-aff" value="' + v('cf_affitto') + '" placeholder="es. 24000"></td></tr>' +
-    '<tr><td>Servizi e consulenze</td><td><input type="number" id="c-cf-serv" value="' + v('cf_servizi') + '" placeholder="es. 18000"></td></tr>' +
-    '<tr><td>Altri costi fissi</td><td><input type="number" id="c-cf-altro" value="' + v('cf_altro') + '" placeholder="es. 12000"></td></tr>' +
-    '<tr class="calc-result"><td>Totale costi fissi</td><td id="c-res-cf">--</td></tr>' +
-    '</tbody></table>' +
+  // Helper: riga risultato
+  function resRow(label, resId, big) {
+    var tr = document.createElement('tr');
+    tr.style.cssText = big ? 'background:var(--bg3)' : '';
+    var td1 = document.createElement('td');
+    td1.textContent = label;
+    td1.style.cssText = 'padding:' + (big?'10':'7') + 'px 8px;font-size:' + (big?'14':'12') + 'px;font-weight:600;color:var(--white);border-bottom:2px solid var(--border)';
+    var td2 = document.createElement('td');
+    td2.id = resId;
+    td2.textContent = '--';
+    td2.style.cssText = 'padding:' + (big?'10':'7') + 'px 8px;text-align:right;font-size:' + (big?'16':'13') + 'px;font-weight:600;color:var(--white);border-bottom:2px solid var(--border)';
+    tr.appendChild(td1);
+    tr.appendChild(td2);
+    return tr;
+  }
 
-    // EBITDA
-    '<table class="calc-table" style="margin-top:8px"><tbody>' +
-    '<tr class="calc-result calc-big"><td style="font-weight:700">= EBITDA</td><td id="c-res-ebitda">--</td></tr>' +
-    '</tbody></table>' +
+  // Helper: sezione label
+  function section(text) {
+    var d = document.createElement('div');
+    d.textContent = text;
+    d.style.cssText = 'font-size:10px;font-weight:700;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin:16px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--border)';
+    return d;
+  }
 
-    // AMMORTAMENTI
-    '<div class="pl-section-label" style="margin-top:16px">Ammortamenti</div>' +
-    '<table class="calc-table"><tbody>' +
-    '<tr><td>Ammortamenti annui</td><td><input type="number" id="c-amm" value="' + v('ammortamenti') + '" placeholder="es. 30000"></td></tr>' +
-    '<tr class="calc-result"><td>= EBIT (utile operativo)</td><td id="c-res-ebit">--</td></tr>' +
-    '</tbody></table>' +
+  // TITOLO
+  var title = document.createElement('div');
+  title.textContent = 'Conto Economico';
+  title.style.cssText = 'font-size:12px;font-weight:700;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px';
+  wrap.appendChild(title);
 
-    // AREA FISCALE
-    '<div class="pl-section-label" style="margin-top:16px">Area fiscale</div>' +
-    '<table class="calc-table"><tbody>' +
-    '<tr><td>Compenso titolare (lordo annuo)</td><td><input type="number" id="c-comp-tit" value="' + v('reddito_titolare') + '" placeholder="es. 60000"></td></tr>' +
-    '<tr class="calc-result" style="color:var(--red)"><td>- Imposte e contributi stimati</td><td id="c-res-imposte">--</td></tr>' +
-    '</tbody></table>' +
+  // RICAVI
+  wrap.appendChild(section('Ricavi'));
+  var t1 = document.createElement('table');
+  t1.style.cssText = 'width:100%;border-collapse:collapse';
+  t1.appendChild(row('Fatturato anno corrente', 'c-fat', 'es. 500000', gv('fatturato', p.fatturato_anno_1)));
+  t1.appendChild(row('Fatturato anno precedente', 'c-fat-prec', 'es. 450000', gv('fatturato_prec')));
+  t1.appendChild(resRow('Delta', 'c-res-delta', false));
+  wrap.appendChild(t1);
 
-    // UTILE NETTO
-    '<table class="calc-table" style="margin-top:8px"><tbody>' +
-    '<tr class="calc-result calc-big"><td style="font-weight:700">= Utile Netto</td><td id="c-res-utile">--</td></tr>' +
-    '</tbody></table>' +
+  // COSTI VARIABILI
+  wrap.appendChild(section('Costi variabili'));
+  var t2 = document.createElement('table');
+  t2.style.cssText = 'width:100%;border-collapse:collapse';
 
-    // BOTTONI
-    '<div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px">' +
-    '<button class="btn btn-primary" onclick="calcola()">Calcola</button>' +
-    '<button class="btn btn-primary" onclick="salvaDaCalcolatrice()" style="background:var(--green);border:none">Salva</button>' +
-    '</div>' +
-  '</div>';
+  // CDV riga speciale con % e EUR
+  var trCdv = document.createElement('tr');
+  var tdCdv1 = document.createElement('td');
+  tdCdv1.innerHTML = 'Costo del venduto<br><span style="font-size:10px;color:var(--gray2)">materie prime, acquisti</span>';
+  tdCdv1.style.cssText = 'padding:7px 8px;font-size:12px;color:var(--gray);border-bottom:1px solid var(--border);width:55%';
+  var tdCdv2 = document.createElement('td');
+  tdCdv2.style.cssText = 'padding:7px 8px;text-align:right;border-bottom:1px solid var(--border)';
+
+  var cdvPctInp = document.createElement('input');
+  cdvPctInp.type = 'number'; cdvPctInp.id = 'c-cdv-pct';
+  cdvPctInp.placeholder = '%'; cdvPctInp.min = '0'; cdvPctInp.max = '100'; cdvPctInp.step = '0.1';
+  cdvPctInp.value = gv('cdv_pct');
+  cdvPctInp.style.cssText = 'background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:13px;color:var(--white);font-family:inherit;outline:none;width:60px;text-align:right';
+
+  var cdvEurInp = document.createElement('input');
+  cdvEurInp.type = 'number'; cdvEurInp.id = 'c-cdv-eur';
+  cdvEurInp.placeholder = 'EUR';
+  cdvEurInp.value = gv('cdv_eur');
+  cdvEurInp.style.cssText = 'background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:13px;color:var(--white);font-family:inherit;outline:none;width:100px;text-align:right;margin-left:6px';
+
+  cdvPctInp.addEventListener('input', function(){ cdvEurInp.value = ''; cdvEurInp.style.opacity = '0.3'; cdvPctInp.style.opacity = '1'; calcola(); });
+  cdvEurInp.addEventListener('input', function(){ cdvPctInp.value = ''; cdvPctInp.style.opacity = '0.3'; cdvEurInp.style.opacity = '1'; calcola(); });
+
+  var span = document.createElement('span');
+  span.textContent = '% ';
+  span.style.cssText = 'color:var(--gray);font-size:11px';
+  var span2 = document.createElement('span');
+  span2.textContent = ' o ';
+  span2.style.cssText = 'color:var(--gray2);font-size:10px';
+
+  tdCdv2.appendChild(cdvPctInp);
+  tdCdv2.appendChild(span);
+  tdCdv2.appendChild(span2);
+  tdCdv2.appendChild(cdvEurInp);
+  trCdv.appendChild(tdCdv1);
+  trCdv.appendChild(tdCdv2);
+  t2.appendChild(trCdv);
+
+  t2.appendChild(resRow('= Margine di Contribuzione', 'c-res-margine', false));
+  wrap.appendChild(t2);
+
+  // COSTI FISSI
+  wrap.appendChild(section('Costi fissi annui'));
+  var t3 = document.createElement('table');
+  t3.style.cssText = 'width:100%;border-collapse:collapse';
+  t3.appendChild(row('Personale (stipendi + contributi)', 'c-cf-pers', 'es. 120000', gv('cf_personale')));
+  t3.appendChild(row('Affitto e utenze', 'c-cf-aff', 'es. 24000', gv('cf_affitto')));
+  t3.appendChild(row('Servizi e consulenze', 'c-cf-serv', 'es. 18000', gv('cf_servizi')));
+  t3.appendChild(row('Altri costi fissi', 'c-cf-altro', 'es. 12000', gv('cf_altro')));
+  t3.appendChild(resRow('Totale costi fissi', 'c-res-cf', false));
+  wrap.appendChild(t3);
+
+  // EBITDA
+  var t4 = document.createElement('table');
+  t4.style.cssText = 'width:100%;border-collapse:collapse;margin-top:8px';
+  t4.appendChild(resRow('= EBITDA', 'c-res-ebitda', true));
+  wrap.appendChild(t4);
+
+  // AMMORTAMENTI
+  wrap.appendChild(section('Ammortamenti'));
+  var t5 = document.createElement('table');
+  t5.style.cssText = 'width:100%;border-collapse:collapse';
+  t5.appendChild(row('Ammortamenti annui', 'c-amm', 'es. 30000', gv('ammortamenti')));
+  t5.appendChild(resRow('= EBIT (utile operativo)', 'c-res-ebit', false));
+  wrap.appendChild(t5);
+
+  // AREA FISCALE
+  wrap.appendChild(section('Area fiscale'));
+  var t6 = document.createElement('table');
+  t6.style.cssText = 'width:100%;border-collapse:collapse';
+  t6.appendChild(row('Compenso titolare (lordo annuo)', 'c-comp-tit', 'es. 60000', gv('reddito_titolare')));
+  t6.appendChild(resRow('- Imposte e contributi', 'c-res-imposte', false));
+  wrap.appendChild(t6);
+
+  // UTILE NETTO
+  var t7 = document.createElement('table');
+  t7.style.cssText = 'width:100%;border-collapse:collapse;margin-top:8px';
+  t7.appendChild(resRow('= Utile Netto', 'c-res-utile', true));
+  wrap.appendChild(t7);
+
+  // BOTTONE SALVA
+  var btnDiv = document.createElement('div');
+  btnDiv.style.cssText = 'display:flex;justify-content:flex-end;margin-top:16px';
+  var btnSave = document.createElement('button');
+  btnSave.textContent = 'Salva dati finanziari';
+  btnSave.className = 'btn btn-primary';
+  btnSave.style.background = 'var(--green)';
+  btnSave.style.border = 'none';
+  btnSave.addEventListener('click', salvaDaCalcolatrice);
+  btnDiv.appendChild(btnSave);
+  wrap.appendChild(btnDiv);
+
+  container.appendChild(wrap);
+
+  // Calcola subito con i dati presenti
+  calcola();
 }
 
 function calcola() {
   var fat = parseFloat(document.getElementById('c-fat')?.value) || 0;
   var fatPrec = parseFloat(document.getElementById('c-fat-prec')?.value) || 0;
-  var cdvPct = document.getElementById('c-cdv-pct')?.value;
-  var cdvEur = document.getElementById('c-cdv-eur')?.value;
-  var cfPers = parseFloat(document.getElementById('c-cf-pers')?.value) || 0;
-  var cfAff = parseFloat(document.getElementById('c-cf-aff')?.value) || 0;
-  var cfServ = parseFloat(document.getElementById('c-cf-serv')?.value) || 0;
-  var cfAltro = parseFloat(document.getElementById('c-cf-altro')?.value) || 0;
-  var amm = parseFloat(document.getElementById('c-amm')?.value) || 0;
-  var compTit = parseFloat(document.getElementById('c-comp-tit')?.value) || 0;
+  var fmt = function(n) { return Math.round(n).toLocaleString('it-IT') + ' \u20AC'; };
+  var pct = function(n, b) { return b > 0 ? ' (' + (n/b*100).toFixed(1) + '%)' : ''; };
 
-  var fmt = function(n) { return Math.round(n).toLocaleString('it-IT') + ' €'; };
-  var pct = function(n, base) { return base > 0 ? ' (' + (n/base*100).toFixed(1) + '%)' : ''; };
-
-  // Delta fatturato
-  var deltaEl = document.getElementById('c-res-delta');
-  if (deltaEl) {
+  // Delta
+  var dEl = document.getElementById('c-res-delta');
+  if (dEl) {
     if (fatPrec > 0 && fat > 0) {
       var d = ((fat - fatPrec) / fatPrec * 100).toFixed(1);
-      deltaEl.innerHTML = '<span style="color:' + (d >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (d >= 0 ? '+' : '') + d + '%</span>';
-    } else deltaEl.textContent = '--';
+      dEl.innerHTML = '<span style="color:' + (d >= 0 ? 'var(--green)' : 'var(--red)') + '">' + (d >= 0 ? '+' : '') + d + '%</span>';
+    } else dEl.textContent = '--';
   }
 
-  // Costo del venduto
+  // CDV
+  var cdvP = document.getElementById('c-cdv-pct')?.value;
+  var cdvE = document.getElementById('c-cdv-eur')?.value;
   var cdv = 0;
-  if (cdvPct !== '' && !isNaN(parseFloat(cdvPct))) cdv = fat * parseFloat(cdvPct) / 100;
-  else if (cdvEur !== '' && !isNaN(parseFloat(cdvEur))) cdv = parseFloat(cdvEur);
+  if (cdvP !== '' && cdvP != null && !isNaN(parseFloat(cdvP))) cdv = fat * parseFloat(cdvP) / 100;
+  else if (cdvE !== '' && cdvE != null && !isNaN(parseFloat(cdvE))) cdv = parseFloat(cdvE);
 
   // Margine
   var margine = fat - cdv;
-  var margEl = document.getElementById('c-res-margine');
-  if (margEl) margEl.innerHTML = fat > 0 ? '<strong>' + fmt(margine) + '</strong>' + pct(margine, fat) : '--';
+  var mEl = document.getElementById('c-res-margine');
+  if (mEl) mEl.innerHTML = fat > 0 ? '<strong>' + fmt(margine) + '</strong>' + pct(margine, fat) : '--';
 
-  // Costi fissi
-  var cfTot = cfPers + cfAff + cfServ + cfAltro;
+  // CF
+  var cfP = parseFloat(document.getElementById('c-cf-pers')?.value) || 0;
+  var cfA = parseFloat(document.getElementById('c-cf-aff')?.value) || 0;
+  var cfS = parseFloat(document.getElementById('c-cf-serv')?.value) || 0;
+  var cfO = parseFloat(document.getElementById('c-cf-altro')?.value) || 0;
+  var cfTot = cfP + cfA + cfS + cfO;
   var cfEl = document.getElementById('c-res-cf');
   if (cfEl) cfEl.textContent = cfTot > 0 ? fmt(cfTot) : '--';
 
   // EBITDA
   var ebitda = margine - cfTot;
-  var ebitdaEl = document.getElementById('c-res-ebitda');
-  if (ebitdaEl) {
-    ebitdaEl.innerHTML = fat > 0 ? '<strong style="color:' + (ebitda >= 0 ? 'var(--green)' : 'var(--red)') + '">' + fmt(ebitda) + '</strong>' + pct(ebitda, fat) : '--';
-  }
+  var eEl = document.getElementById('c-res-ebitda');
+  if (eEl) eEl.innerHTML = fat > 0 ? '<strong style="color:' + (ebitda >= 0 ? 'var(--green)' : 'var(--red)') + '">' + fmt(ebitda) + '</strong>' + pct(ebitda, fat) : '--';
 
   // EBIT
+  var amm = parseFloat(document.getElementById('c-amm')?.value) || 0;
   var ebit = ebitda - amm;
   var ebitEl = document.getElementById('c-res-ebit');
   if (ebitEl) ebitEl.innerHTML = fat > 0 ? '<strong>' + fmt(ebit) + '</strong>' + pct(ebit, fat) : '--';
 
   // Imposte
+  var comp = parseFloat(document.getElementById('c-comp-tit')?.value) || 0;
   var p = prospects.find(function(x){ return x.id === currentId; }) || {};
-  var FORMA_TO_REGIME = {'Srl':'srl','Spa':'srl','Srls':'srl','Sapa':'srl','Snc':'snc_sas','Sas':'snc_sas','Ditta individuale':'ditta','Imprenditore individuale':'ditta','Cooperativa':'srl','Consorzio':'srl'};
+  var FORMA_TO_REGIME = {'Srl':'srl','Spa':'srl','Srls':'srl','Sapa':'srl','Snc':'snc_sas','Sas':'snc_sas','Ditta individuale':'ditta','Imprenditore individuale':'ditta','Cooperativa':'srl'};
   var regime = FORMA_TO_REGIME[p.forma_giuridica || ''] || 'srl';
-  var imposte = 0;
-  var dettaglio = '';
+  var imposte = 0, det = '';
   if (ebit > 0) {
     if (regime === 'srl') {
-      var ires = ebit * 0.24; var irap = ebit * 0.039; var inps = compTit * 0.2607;
+      var ires = ebit * 0.24, irap = ebit * 0.039, inps = comp * 0.2607;
       imposte = ires + irap + inps;
-      dettaglio = 'IRES ' + Math.round(ires/1000) + 'k + IRAP ' + Math.round(irap/1000) + 'k' + (compTit > 0 ? ' + INPS ' + Math.round(inps/1000) + 'k' : '');
+      det = 'IRES ' + Math.round(ires/1000) + 'k + IRAP ' + Math.round(irap/1000) + 'k' + (comp > 0 ? ' + INPS ' + Math.round(inps/1000) + 'k' : '');
     } else if (regime === 'snc_sas') {
-      var irpef = ebit * 0.35; var irap = ebit * 0.039;
-      imposte = irpef + irap;
-      dettaglio = 'IRPEF ~' + Math.round(irpef/1000) + 'k + IRAP ' + Math.round(irap/1000) + 'k';
+      var irpef = ebit * 0.35, irap = ebit * 0.039;
+      imposte = irpef + irap; det = 'IRPEF ~' + Math.round(irpef/1000) + 'k + IRAP ' + Math.round(irap/1000) + 'k';
     } else {
-      var irpef = ebit * 0.35; var inps = Math.min(ebit, 119650) * 0.24;
-      imposte = irpef + inps;
-      dettaglio = 'IRPEF ~' + Math.round(irpef/1000) + 'k + INPS ' + Math.round(inps/1000) + 'k';
+      var irpef = ebit * 0.35, inps = Math.min(ebit, 119650) * 0.24;
+      imposte = irpef + inps; det = 'IRPEF ~' + Math.round(irpef/1000) + 'k + INPS ' + Math.round(inps/1000) + 'k';
     }
   }
   var impEl = document.getElementById('c-res-imposte');
-  if (impEl) impEl.innerHTML = imposte > 0 ? '<span style="color:var(--red)">' + fmt(imposte) + '</span> <span style="font-size:10px;color:var(--gray)">' + dettaglio + '</span>' : '--';
+  if (impEl) impEl.innerHTML = imposte > 0 ? '<span style="color:var(--red)">' + fmt(imposte) + '</span><br><span style="font-size:9px;color:var(--gray)">' + det + '</span>' : '--';
 
-  // Utile Netto
-  var utile = ebit - imposte - compTit;
-  var utileEl = document.getElementById('c-res-utile');
-  if (utileEl) {
-    utileEl.innerHTML = fat > 0 ? '<strong style="color:' + (utile >= 0 ? 'var(--green)' : 'var(--red)') + ';font-size:18px">' + fmt(utile) + '</strong>' + pct(utile, fat) : '--';
-  }
+  // Utile
+  var utile = ebit - imposte - comp;
+  var uEl = document.getElementById('c-res-utile');
+  if (uEl) uEl.innerHTML = fat > 0 ? '<strong style="color:' + (utile >= 0 ? 'var(--green)' : 'var(--red)') + ';font-size:18px">' + fmt(utile) + '</strong>' + pct(utile, fat) : '--';
 
-  // Aggiorna anche i dati in memoria per le proiezioni
+  // Memoria
   if (p.id) {
     p.fatturato_anno_1 = fat || null;
     p.ebitda = ebitda || null;
@@ -5894,50 +6005,36 @@ function calcola() {
   }
 }
 
-// Alias per compatibilita
 function aggiornaCalcolatrice() { calcola(); }
 
 async function salvaDaCalcolatrice() {
   var p = prospects.find(function(x){ return x.id === currentId; });
   if (!p) return;
-  var _pv = function(id) { var el = document.getElementById(id); var val = el ? el.value : ''; return val !== '' ? parseFloat(val) : null; };
-
-  var dati_calcolatrice = {
-    fatturato: _pv('c-fat'),
-    fatturato_prec: _pv('c-fat-prec'),
-    cdv_pct: _pv('c-cdv-pct'),
-    cdv_eur: _pv('c-cdv-eur'),
-    cf_personale: _pv('c-cf-pers'),
-    cf_affitto: _pv('c-cf-aff'),
-    cf_servizi: _pv('c-cf-serv'),
-    cf_altro: _pv('c-cf-altro'),
-    ammortamenti: _pv('c-amm'),
-    reddito_titolare: _pv('c-comp-tit'),
+  var gv = function(id) { var el = document.getElementById(id); return el && el.value !== '' ? parseFloat(el.value) : null; };
+  var dc = {
+    fatturato: gv('c-fat'), fatturato_prec: gv('c-fat-prec'),
+    cdv_pct: gv('c-cdv-pct'), cdv_eur: gv('c-cdv-eur'),
+    cf_personale: gv('c-cf-pers'), cf_affitto: gv('c-cf-aff'),
+    cf_servizi: gv('c-cf-serv'), cf_altro: gv('c-cf-altro'),
+    ammortamenti: gv('c-amm'), reddito_titolare: gv('c-comp-tit'),
   };
-
-  var fat = dati_calcolatrice.fatturato || 0;
-  var cdvPct = dati_calcolatrice.cdv_pct;
-  var cdvEur = dati_calcolatrice.cdv_eur;
-  var cdv = cdvPct != null ? fat * cdvPct / 100 : (cdvEur || 0);
+  var fat = dc.fatturato || 0;
+  var cdv = dc.cdv_pct != null ? fat * dc.cdv_pct / 100 : (dc.cdv_eur || 0);
   var margine = fat - cdv;
-  var cfTot = (dati_calcolatrice.cf_personale||0) + (dati_calcolatrice.cf_affitto||0) + (dati_calcolatrice.cf_servizi||0) + (dati_calcolatrice.cf_altro||0);
+  var cfTot = (dc.cf_personale||0) + (dc.cf_affitto||0) + (dc.cf_servizi||0) + (dc.cf_altro||0);
   var ebitda = margine - cfTot;
-
   var updates = {
     fatturato_anno_1: fat || null,
     ebitda: ebitda || null,
     margine_pct: fat > 0 ? parseFloat((margine / fat * 100).toFixed(1)) : null,
     costi_fissi_mensili: cfTot > 0 ? Math.round(cfTot / 12) : null,
-    dati_calcolatrice: dati_calcolatrice
+    dati_calcolatrice: dc
   };
-
   Object.assign(p, updates);
   try {
     await sb.from('prospects').update(updates).eq('id', p.id);
     showToast('Dati finanziari salvati');
-  } catch(e) {
-    showToast('Errore: ' + e.message, 'error');
-  }
+  } catch(e) { showToast('Errore: ' + e.message, 'error'); }
 }
 
 function aggiornaSchemaFiscale(formaId) {
