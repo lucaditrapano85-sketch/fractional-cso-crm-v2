@@ -543,9 +543,9 @@ body{background:var(--bg);color:var(--text)}
 .sidebar{background:#060E1A;border-right:1px solid var(--border)}
 .sidebar-logo .wordmark{color:var(--gold)}
 .sidebar-logo .sub{color:var(--gold)}
-.nav-item{color:var(--gray2);border-radius:7px}
-.nav-item:hover{background:var(--bg3);color:var(--text)}
-.nav-item.active{background:var(--blue-bg);color:var(--blue);border-left:2px solid var(--blue)}
+.nav-item{color:var(--white);border-radius:7px}
+.nav-item:hover{background:var(--bg3);color:var(--white)}
+.nav-item.active{background:var(--amber-bg);color:var(--gold);border-left:2px solid var(--gold)}
 .main,.view{background:var(--bg)}
 .card,.radar-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r)}
 .card-title{color:var(--gray2);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px}
