@@ -4410,7 +4410,7 @@ function _renderSchedaTab() {
 
   // Monta la calcolatrice (createElement con listener diretti)
   if (tab === 'financials') {
-    var mount = document.getElementById('calc-mount');
+    var mount = body.querySelector('#calc-mount');
     if (mount) mountCalcolatrice(mount);
   }
 
@@ -5922,13 +5922,19 @@ function mountCalcolatrice(container) {
 }
 
 function calcola() {
-  var fat = parseFloat(document.getElementById('c-fat')?.value) || 0;
-  var fatPrec = parseFloat(document.getElementById('c-fat-prec')?.value) || 0;
+  // Trova il container visibile (potrebbe essere nel popup o nella pagina)
+  var _mounts = document.querySelectorAll('#calc-mount');
+  var _root = null;
+  _mounts.forEach(function(m) { if (m.offsetParent !== null) _root = m; });
+  if (!_root) _root = document;
+  var _el = function(id) { return _root.querySelector('#' + id) || document.getElementById(id); };
+  var fat = parseFloat(_el('c-fat')?.value) || 0;
+  var fatPrec = parseFloat(_el('c-fat-prec')?.value) || 0;
   var fmt = function(n) { return Math.round(n).toLocaleString('it-IT') + ' \u20AC'; };
   var pct = function(n, b) { return b > 0 ? ' (' + (n/b*100).toFixed(1) + '%)' : ''; };
 
   // Delta
-  var dEl = document.getElementById('c-res-delta');
+  var dEl = _el('c-res-delta');
   if (dEl) {
     if (fatPrec > 0 && fat > 0) {
       var d = ((fat - fatPrec) / fatPrec * 100).toFixed(1);
@@ -5937,39 +5943,39 @@ function calcola() {
   }
 
   // CDV
-  var cdvP = document.getElementById('c-cdv-pct')?.value;
-  var cdvE = document.getElementById('c-cdv-eur')?.value;
+  var cdvP = _el('c-cdv-pct')?.value;
+  var cdvE = _el('c-cdv-eur')?.value;
   var cdv = 0;
   if (cdvP !== '' && cdvP != null && !isNaN(parseFloat(cdvP))) cdv = fat * parseFloat(cdvP) / 100;
   else if (cdvE !== '' && cdvE != null && !isNaN(parseFloat(cdvE))) cdv = parseFloat(cdvE);
 
   // Margine
   var margine = fat - cdv;
-  var mEl = document.getElementById('c-res-margine');
+  var mEl = _el('c-res-margine');
   if (mEl) mEl.innerHTML = fat > 0 ? '<strong>' + fmt(margine) + '</strong>' + pct(margine, fat) : '--';
 
   // CF
-  var cfP = parseFloat(document.getElementById('c-cf-pers')?.value) || 0;
-  var cfA = parseFloat(document.getElementById('c-cf-aff')?.value) || 0;
-  var cfS = parseFloat(document.getElementById('c-cf-serv')?.value) || 0;
-  var cfO = parseFloat(document.getElementById('c-cf-altro')?.value) || 0;
+  var cfP = parseFloat(_el('c-cf-pers')?.value) || 0;
+  var cfA = parseFloat(_el('c-cf-aff')?.value) || 0;
+  var cfS = parseFloat(_el('c-cf-serv')?.value) || 0;
+  var cfO = parseFloat(_el('c-cf-altro')?.value) || 0;
   var cfTot = cfP + cfA + cfS + cfO;
-  var cfEl = document.getElementById('c-res-cf');
+  var cfEl = _el('c-res-cf');
   if (cfEl) cfEl.textContent = cfTot > 0 ? fmt(cfTot) : '--';
 
   // EBITDA
   var ebitda = margine - cfTot;
-  var eEl = document.getElementById('c-res-ebitda');
+  var eEl = _el('c-res-ebitda');
   if (eEl) eEl.innerHTML = fat > 0 ? '<strong style="color:' + (ebitda >= 0 ? 'var(--green)' : 'var(--red)') + '">' + fmt(ebitda) + '</strong>' + pct(ebitda, fat) : '--';
 
   // EBIT
-  var amm = parseFloat(document.getElementById('c-amm')?.value) || 0;
+  var amm = parseFloat(_el('c-amm')?.value) || 0;
   var ebit = ebitda - amm;
-  var ebitEl = document.getElementById('c-res-ebit');
+  var ebitEl = _el('c-res-ebit');
   if (ebitEl) ebitEl.innerHTML = fat > 0 ? '<strong>' + fmt(ebit) + '</strong>' + pct(ebit, fat) : '--';
 
   // Imposte
-  var comp = parseFloat(document.getElementById('c-comp-tit')?.value) || 0;
+  var comp = parseFloat(_el('c-comp-tit')?.value) || 0;
   var p = prospects.find(function(x){ return x.id === currentId; }) || {};
   var FORMA_TO_REGIME = {'Srl':'srl','Spa':'srl','Srls':'srl','Sapa':'srl','Snc':'snc_sas','Sas':'snc_sas','Ditta individuale':'ditta','Imprenditore individuale':'ditta','Cooperativa':'srl'};
   var regime = FORMA_TO_REGIME[p.forma_giuridica || ''] || 'srl';
@@ -5987,12 +5993,12 @@ function calcola() {
       imposte = irpef + inps; det = 'IRPEF ~' + Math.round(irpef/1000) + 'k + INPS ' + Math.round(inps/1000) + 'k';
     }
   }
-  var impEl = document.getElementById('c-res-imposte');
+  var impEl = _el('c-res-imposte');
   if (impEl) impEl.innerHTML = imposte > 0 ? '<span style="color:var(--red)">' + fmt(imposte) + '</span><br><span style="font-size:9px;color:var(--gray)">' + det + '</span>' : '--';
 
   // Utile
   var utile = ebit - imposte - comp;
-  var uEl = document.getElementById('c-res-utile');
+  var uEl = _el('c-res-utile');
   if (uEl) uEl.innerHTML = fat > 0 ? '<strong style="color:' + (utile >= 0 ? 'var(--green)' : 'var(--red)') + ';font-size:18px">' + fmt(utile) + '</strong>' + pct(utile, fat) : '--';
 
   // Memoria
@@ -6010,7 +6016,11 @@ function aggiornaCalcolatrice() { calcola(); }
 async function salvaDaCalcolatrice() {
   var p = prospects.find(function(x){ return x.id === currentId; });
   if (!p) return;
-  var gv = function(id) { var el = document.getElementById(id); return el && el.value !== '' ? parseFloat(el.value) : null; };
+  var _mounts = document.querySelectorAll('#calc-mount');
+  var _root = null;
+  _mounts.forEach(function(m) { if (m.offsetParent !== null) _root = m; });
+  if (!_root) _root = document;
+  var gv = function(id) { var el = _root.querySelector('#' + id) || document.getElementById(id); return el && el.value !== '' ? parseFloat(el.value) : null; };
   var dc = {
     fatturato: gv('c-fat'), fatturato_prec: gv('c-fat-prec'),
     cdv_pct: gv('c-cdv-pct'), cdv_eur: gv('c-cdv-eur'),
