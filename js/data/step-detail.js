@@ -1139,6 +1139,888 @@ const STEP_DETAIL_BY_SETTORE = {
     },
   },
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // COMMERCIO ABBIGLIAMENTO INGROSSO
+  // ═══════════════════════════════════════════════════════════════════════════
+  commercio_abbigliamento_ingrosso: {
+    vendite: {
+      '1': { chi:'Titolare', cosa:'Titolare visita clienti storici — showroom e fiere', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare + agente', cosa:'1 agente plurimandatario su zona limitrofa', costo_mensile:1500, costo_setup:0, tempo_mesi:2 },
+      '3': { chi:'Rete agenti', cosa:'3-4 agenti plurimandatari copertura regionale', costo_mensile:3500, costo_setup:500, tempo_mesi:3 },
+      '4': { chi:'Agenti + showroom', cosa:'Rete agenti + showroom permanente per buyer', costo_mensile:5500, costo_setup:3000, tempo_mesi:4 },
+      '5': { chi:'Strategia multicanale', cosa:'Vendita B2B multicanale — agenti, fiere, marketplace wholesale', costo_mensile:7000, costo_setup:5000, tempo_mesi:6 },
+    },
+    pipeline: {
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini su carta e telefono', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Excel con clienti, ordini stagionali e pagamenti', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'CRM base', cosa:'CRM con anagrafica buyer, storico ordini, preferenze', costo_mensile:300, costo_setup:500, tempo_mesi:1 },
+      '4': { chi:'CRM + gestionale', cosa:'CRM integrato con gestionale ordini e magazzino', costo_mensile:600, costo_setup:1500, tempo_mesi:2 },
+      '5': { chi:'ERP fashion B2B', cosa:'ERP fashion — ordini, campionario, spedizioni, fatturazione', costo_mensile:1200, costo_setup:4000, tempo_mesi:3 },
+    },
+    team: {
+      '1': { chi:'Titolare + magazziniere', cosa:'Titolare + 1 magazziniere — gestione ordini e spedizioni', costo_mensile:5000, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+ addetto ordini', cosa:'Addetto gestione ordini e rapporti con agenti', costo_mensile:7500, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Team commerciale', cosa:'Commerciale interno + logistica + back office', costo_mensile:11000, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Struttura completa', cosa:'Ufficio vendite + magazzino + amministrazione dedicata', costo_mensile:16000, costo_setup:1000, tempo_mesi:4 },
+      '5': { chi:'Dir. commerciale', cosa:'Direzione commerciale con coordinamento agenti e buyer', costo_mensile:21000, costo_setup:2000, tempo_mesi:6 },
+    },
+    processi: {
+      '1': { chi:'Titolare', cosa:'Nessun processo — ordini gestiti a voce e su carta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Catalogo digitale PDF + listino prezzi strutturato', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Gestionale ordini', cosa:'Gestionale ordini con conferma automatica e tracking', costo_mensile:300, costo_setup:1000, tempo_mesi:2 },
+      '4': { chi:'Campionario digitale', cosa:'Campionario digitale + ordini agenti su tablet in showroom', costo_mensile:500, costo_setup:2000, tempo_mesi:2 },
+      '5': { chi:'ERP + automazione', cosa:'ERP completo — ordini, magazzino, spedizioni, resi automatici', costo_mensile:900, costo_setup:4000, tempo_mesi:3 },
+    },
+    ricavi: {
+      '1': { chi:'Titolare', cosa:'Margine fisso su listino — nessuna strategia pricing', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Sconti volume differenziati per fasce ordine', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Pronto moda', cosa:'Linea pronto moda con margini superiori per riordini rapidi', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Mix margini', cosa:'Mix prodotto ottimizzato — campionario, pronto, fine serie', costo_mensile:300, costo_setup:1000, tempo_mesi:2 },
+      '5': { chi:'Revenue manager', cosa:'Private label + accordi GDO + dynamic pricing per stagione', costo_mensile:800, costo_setup:2000, tempo_mesi:4 },
+    },
+    marketing: {
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo fiere e passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Profilo Instagram B2B con foto collezioni', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Social + fiere', cosa:'Social professionale + partecipazione fiere settore', costo_mensile:500, costo_setup:2000, tempo_mesi:2 },
+      '4': { chi:'Marketing operativo', cosa:'Lookbook digitale + campagne email per buyer + eventi showroom', costo_mensile:1000, costo_setup:2500, tempo_mesi:2 },
+      '5': { chi:'Marketing manager', cosa:'Piano marketing B2B — brand positioning, PR, fiere internazionali', costo_mensile:2500, costo_setup:5000, tempo_mesi:4 },
+    },
+    sitoweb: {
+      '1': { chi:'Nessuno', cosa:'Nessun sito o pagina vetrina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Web agency', cosa:'Sito vetrina con collezioni, showroom, contatti', costo_mensile:80, costo_setup:800, tempo_mesi:1 },
+      '3': { chi:'Sito professionale', cosa:'Catalogo online con lookbook e richiesta campionario', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
+      '4': { chi:'Portale B2B', cosa:'Portale B2B con ordini online, listini riservati, disponibilità', costo_mensile:700, costo_setup:5000, tempo_mesi:3 },
+      '5': { chi:'Piattaforma wholesale', cosa:'Piattaforma wholesale — preordini, riassortimenti, tracking', costo_mensile:1300, costo_setup:10000, tempo_mesi:4 },
+    },
+    ecommerce: {
+      _label: 'Approvvigionamento collezioni',
+      '1': { chi:'Titolare', cosa:'Acquisto da 1-2 fornitori abituali a fiera', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Scouting fornitori a fiere — confronto prezzi e MOQ', costo_mensile:0, costo_setup:500, tempo_mesi:1 },
+      '3': { chi:'Buyer', cosa:'Buyer dedicato — sourcing Italia e Turchia, campionature', costo_mensile:1500, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Buyer + import', cosa:'Import diretto — Cina, Bangladesh — controllo qualità', costo_mensile:2500, costo_setup:2000, tempo_mesi:3 },
+      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — diversificazione fornitori, private label', costo_mensile:3500, costo_setup:3000, tempo_mesi:4 },
+    },
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // COMMERCIO ELETTRONICA
+  // ═══════════════════════════════════════════════════════════════════════════
+  commercio_elettronica: {
+    vendite: {
+      '1': { chi:'Titolare', cosa:'Vendita a banco e telefono — clienti abituali', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare + comm.', cosa:'Commerciale junior — sviluppo clienti business e VAR', costo_mensile:1800, costo_setup:0, tempo_mesi:2 },
+      '3': { chi:'Rete vendita', cosa:'2-3 commerciali su segmenti (retail, business, PA)', costo_mensile:4000, costo_setup:500, tempo_mesi:3 },
+      '4': { chi:'Team + marketplace', cosa:'Team vendite + marketplace Amazon/eBay Business', costo_mensile:5500, costo_setup:2000, tempo_mesi:3 },
+      '5': { chi:'Strategia multicanale', cosa:'Vendita omnicanale — agenti, e-commerce, tender PA, VAR', costo_mensile:7500, costo_setup:3000, tempo_mesi:6 },
+    },
+    pipeline: {
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — tutto a memoria e scontrini', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Excel con clienti business, preventivi e follow-up', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'CRM base', cosa:'CRM con lead B2B, preventivi, storico acquisti', costo_mensile:300, costo_setup:500, tempo_mesi:1 },
+      '4': { chi:'CRM + gestionale', cosa:'CRM integrato con magazzino e listini distributori', costo_mensile:600, costo_setup:1500, tempo_mesi:2 },
+      '5': { chi:'ERP distribuzione', cosa:'ERP completo — ordini, stock, pricing, margini real-time', costo_mensile:1200, costo_setup:5000, tempo_mesi:3 },
+    },
+    team: {
+      '1': { chi:'Titolare + commesso', cosa:'Titolare + 1 commesso — banco e magazzino', costo_mensile:4500, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+ tecnico', cosa:'Aggiunta tecnico per assistenza e configurazioni', costo_mensile:7000, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Team vendite', cosa:'Team vendite separato da assistenza tecnica', costo_mensile:11000, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Struttura completa', cosa:'Vendite + tecnico + magazzino + back office', costo_mensile:15000, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Dir. commerciale', cosa:'Direzione commerciale con resp. canali e business dev.', costo_mensile:20000, costo_setup:2000, tempo_mesi:6 },
+    },
+    processi: {
+      '1': { chi:'Titolare', cosa:'Nessun processo — preventivi manuali su carta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Preventivi con template + consultazione listini digitali', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Gestionale', cosa:'Gestionale con listini aggiornati e margini automatici', costo_mensile:300, costo_setup:1000, tempo_mesi:2 },
+      '4': { chi:'Automazione ordini', cosa:'Ordini automatici a distributore al raggiungimento scorta minima', costo_mensile:500, costo_setup:2000, tempo_mesi:2 },
+      '5': { chi:'ERP + BI', cosa:'ERP con BI per analisi margini, rotazione, trend vendite', costo_mensile:900, costo_setup:4000, tempo_mesi:3 },
+    },
+    ricavi: {
+      '1': { chi:'Titolare', cosa:'Margine da listino distributore — nessun pricing attivo', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Pricing differenziato — privati vs business vs PA', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Servizi a valore', cosa:'Servizi installazione, configurazione e assistenza a margine', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
+      '4': { chi:'Contratti assistenza', cosa:'Contratti assistenza annuali + estensioni garanzia', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '5': { chi:'Revenue manager', cosa:'Bundle HW+SW+servizi, noleggio operativo, ricavi ricorrenti', costo_mensile:700, costo_setup:1500, tempo_mesi:3 },
+    },
+    marketing: {
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo posizione e insegna', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Google My Business + volantini offerte settimanali', costo_mensile:150, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Agenzia digital', cosa:'Google Ads + comparatori prezzi (Trovaprezzi, Idealo)', costo_mensile:600, costo_setup:1000, tempo_mesi:2 },
+      '4': { chi:'Marketing operativo', cosa:'Newsletter offerte B2B + promozioni stagionali + social', costo_mensile:1000, costo_setup:1500, tempo_mesi:2 },
+      '5': { chi:'Marketing manager', cosa:'Piano marketing omnicanale — brand, partnership vendor, eventi', costo_mensile:2500, costo_setup:4000, tempo_mesi:3 },
+    },
+    sitoweb: {
+      '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Web agency', cosa:'Sito vetrina con catalogo prodotti e contatti', costo_mensile:80, costo_setup:800, tempo_mesi:1 },
+      '3': { chi:'E-commerce base', cosa:'E-commerce con catalogo, prezzi, carrello e pagamento', costo_mensile:400, costo_setup:3000, tempo_mesi:2 },
+      '4': { chi:'E-commerce avanzato', cosa:'E-commerce con comparazione, recensioni, stock real-time', costo_mensile:800, costo_setup:6000, tempo_mesi:2 },
+      '5': { chi:'Piattaforma omnicanale', cosa:'Piattaforma integrata — B2C, B2B, marketplace, click&collect', costo_mensile:1500, costo_setup:12000, tempo_mesi:4 },
+    },
+    ecommerce: {
+      _label: 'Approvvigionamento e distribuzione',
+      '1': { chi:'Titolare', cosa:'Acquisto da 1 distributore abituale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Confronto prezzi tra 2-3 distributori (Esprinet, Ingram, TD)', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Accordi distribuzione', cosa:'Accordi quadro con distributori — rebate e priorità consegna', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
+      '4': { chi:'Buyer', cosa:'Buyer dedicato — ottimizzazione acquisti, drop-shipping', costo_mensile:1500, costo_setup:500, tempo_mesi:2 },
+      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — import diretto, accordi vendor, stock strategy', costo_mensile:3000, costo_setup:1500, tempo_mesi:4 },
+    },
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // COMMERCIO ABBIGLIAMENTO DETTAGLIO
+  // ═══════════════════════════════════════════════════════════════════════════
+  commercio_abbigliamento_dettaglio: {
+    vendite: {
+      '1': { chi:'Titolare', cosa:'Titolare in negozio — vendita diretta ai clienti', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare + commessa', cosa:'Commessa part-time per coprire turni e weekend', costo_mensile:1200, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Visual + vendita', cosa:'Visual merchandising + tecniche di vendita assistita', costo_mensile:2000, costo_setup:800, tempo_mesi:2 },
+      '4': { chi:'Clienteling', cosa:'Clienteling strutturato — rubrica VIP, eventi, personal shopper', costo_mensile:3000, costo_setup:1500, tempo_mesi:3 },
+      '5': { chi:'Strategia omnicanale', cosa:'Vendita omnicanale — negozio, social selling, e-commerce', costo_mensile:4500, costo_setup:3000, tempo_mesi:5 },
+    },
+    pipeline: {
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — vendite solo da scontrini', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Registro clienti abituali con preferenze e taglie', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'CRM retail', cosa:'CRM retail con fidelity card e storico acquisti', costo_mensile:200, costo_setup:500, tempo_mesi:1 },
+      '4': { chi:'CRM + marketing', cosa:'CRM integrato con email/SMS per promozioni mirate', costo_mensile:400, costo_setup:1000, tempo_mesi:2 },
+      '5': { chi:'CRM omnicanale', cosa:'CRM omnicanale — negozio, web, social con vista unica cliente', costo_mensile:800, costo_setup:3000, tempo_mesi:3 },
+    },
+    team: {
+      '1': { chi:'Titolare', cosa:'Solo titolare in negozio — nessun dipendente', costo_mensile:3000, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+ commessa', cosa:'Titolare + 1 commessa part-time per turni', costo_mensile:4500, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Team negozio', cosa:'2 commesse + visual merchandiser esterno', costo_mensile:7500, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Struttura retail', cosa:'Responsabile negozio + commesse + addetto e-commerce', costo_mensile:12000, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Manager + team', cosa:'Store manager + team vendita + marketing + e-commerce', costo_mensile:18000, costo_setup:2000, tempo_mesi:5 },
+    },
+    processi: {
+      '1': { chi:'Titolare', cosa:'Nessun processo — tutto a sensazione ed esperienza', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Gestione cassa con POS e scontrini elettronici', costo_mensile:50, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Gestionale retail', cosa:'Gestionale retail — vendite, giacenze, riordini', costo_mensile:200, costo_setup:800, tempo_mesi:2 },
+      '4': { chi:'Processi standard', cosa:'Procedure accoglienza, visual, cambio merce, fidelizzazione', costo_mensile:300, costo_setup:1000, tempo_mesi:2 },
+      '5': { chi:'Retail management', cosa:'Sistema completo — KPI per m², rotazione, sell-through rate', costo_mensile:600, costo_setup:2000, tempo_mesi:3 },
+    },
+    ricavi: {
+      '1': { chi:'Titolare', cosa:'Margine da ricarico standard — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Saldi pianificati e gestione fine serie per liberare cassa', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Upsell + cross', cosa:'Upsell accessori + cross-selling outfit completi', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '4': { chi:'Fidelizzazione', cosa:'Programma fedeltà con sconti progressivi e anteprime', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '5': { chi:'Revenue manager', cosa:'Dynamic pricing stagionale + private label + eventi esclusivi', costo_mensile:600, costo_setup:1500, tempo_mesi:3 },
+    },
+    marketing: {
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo vetrina e passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Instagram con foto outfit e nuovi arrivi settimanali', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Social + influencer', cosa:'Instagram + Facebook Ads + micro-influencer locali', costo_mensile:600, costo_setup:1000, tempo_mesi:2 },
+      '4': { chi:'Agenzia + eventi', cosa:'Agenzia social + eventi in-store + collaborazioni brand', costo_mensile:1200, costo_setup:2000, tempo_mesi:2 },
+      '5': { chi:'Marketing manager', cosa:'Piano marketing — brand identity, PR, eventi, community', costo_mensile:2800, costo_setup:4000, tempo_mesi:3 },
+    },
+    sitoweb: {
+      '1': { chi:'Nessuno', cosa:'Nessun sito — solo social media', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Web agency', cosa:'Sito vetrina con brand, collezioni e orari negozio', costo_mensile:80, costo_setup:800, tempo_mesi:1 },
+      '3': { chi:'E-commerce base', cosa:'E-commerce con catalogo, taglie, pagamento online', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
+      '4': { chi:'E-commerce avanzato', cosa:'E-commerce con outfit suggeriti, wishlist, reso facile', costo_mensile:600, costo_setup:5000, tempo_mesi:2 },
+      '5': { chi:'Piattaforma omnicanale', cosa:'Piattaforma integrata — stock unico negozio/web, click&collect', costo_mensile:1200, costo_setup:10000, tempo_mesi:4 },
+    },
+    ecommerce: {
+      _label: 'Approvvigionamento collezioni',
+      '1': { chi:'Titolare', cosa:'Acquisto da rappresentanti di zona in showroom', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Scouting brand a fiere (Pitti, MICAM, White)', costo_mensile:0, costo_setup:500, tempo_mesi:1 },
+      '3': { chi:'Buyer part-time', cosa:'Buyer esterno — selezione brand e pianificazione budget acquisti', costo_mensile:800, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Buyer + pronto moda', cosa:'Acquisti campionario + riassortimenti pronto moda in stagione', costo_mensile:1500, costo_setup:1000, tempo_mesi:2 },
+      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — mix brand, private label, import diretto', costo_mensile:2800, costo_setup:2000, tempo_mesi:4 },
+    },
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // COMMERCIO OROLOGI E GIOIELLI
+  // ═══════════════════════════════════════════════════════════════════════════
+  commercio_orologi_gioielli: {
+    vendite: {
+      '1': { chi:'Titolare', cosa:'Titolare in boutique — vendita su appuntamento e walk-in', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare + addetta', cosa:'Addetta vendita formata su gemmologia e luxury', costo_mensile:1800, costo_setup:500, tempo_mesi:2 },
+      '3': { chi:'Clienteling', cosa:'Clienteling strutturato — rubrica VIP, follow-up post-vendita', costo_mensile:2500, costo_setup:1000, tempo_mesi:2 },
+      '4': { chi:'Team vendita luxury', cosa:'Team formato con cerimonia vendita e personal advisor', costo_mensile:4000, costo_setup:2000, tempo_mesi:3 },
+      '5': { chi:'Strategia omnicanale', cosa:'Vendita omnicanale — boutique, e-commerce, eventi privati', costo_mensile:5500, costo_setup:4000, tempo_mesi:5 },
+    },
+    pipeline: {
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — clienti a memoria e rubrica', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Rubrica clienti con ricorrenze, gusti e storico acquisti', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'CRM luxury', cosa:'CRM con profilo clienti, anniversari, wish list', costo_mensile:300, costo_setup:800, tempo_mesi:1 },
+      '4': { chi:'CRM + automation', cosa:'CRM con automazioni — auguri, inviti eventi, nuove collezioni', costo_mensile:500, costo_setup:1500, tempo_mesi:2 },
+      '5': { chi:'CRM clienteling', cosa:'Piattaforma clienteling completa — 360° vista cliente luxury', costo_mensile:1000, costo_setup:4000, tempo_mesi:3 },
+    },
+    team: {
+      '1': { chi:'Titolare', cosa:'Solo titolare — gestisce tutto in boutique', costo_mensile:3500, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+ addetta vendita', cosa:'Titolare + 1 addetta vendita formata', costo_mensile:5500, costo_setup:500, tempo_mesi:1 },
+      '3': { chi:'Team boutique', cosa:'2 addette vendita + orafo/riparatore esterno', costo_mensile:9000, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Struttura completa', cosa:'Boutique manager + addette + back office + laboratorio', costo_mensile:15000, costo_setup:1500, tempo_mesi:4 },
+      '5': { chi:'Manager + team', cosa:'Store manager luxury + team vendita + marketing + e-commerce', costo_mensile:22000, costo_setup:2500, tempo_mesi:6 },
+    },
+    processi: {
+      '1': { chi:'Titolare', cosa:'Nessun processo — esperienza e relazione personale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Registro pezzi con certificati e garanzie digitalizzati', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Gestionale gioielleria', cosa:'Gestionale con inventario, certificati, perizie, riparazioni', costo_mensile:250, costo_setup:1000, tempo_mesi:2 },
+      '4': { chi:'Cerimonia vendita', cosa:'Processo di vendita luxury — accoglienza, storytelling, packaging', costo_mensile:300, costo_setup:1500, tempo_mesi:2 },
+      '5': { chi:'Retail management', cosa:'KPI boutique — conversion rate, scontrino medio, clienti VIP', costo_mensile:600, costo_setup:2500, tempo_mesi:3 },
+    },
+    ricavi: {
+      '1': { chi:'Titolare', cosa:'Margine tradizionale da ricarico — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Servizi aggiuntivi — incisioni, packaging regalo, pulizia', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Upsell + servizi', cosa:'Upsell gioielli su misura + servizio riparazione e restyling', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Programma VIP', cosa:'Programma VIP — anteprime, eventi privati, sconti anniversario', costo_mensile:300, costo_setup:1000, tempo_mesi:2 },
+      '5': { chi:'Revenue manager', cosa:'Mix ricavi — vendita, riparazione, usato certificato, eventi', costo_mensile:700, costo_setup:2000, tempo_mesi:3 },
+    },
+    marketing: {
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo vetrina e passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Instagram con foto gioielli e storytelling artigianale', costo_mensile:150, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Social + PR', cosa:'Social curato + PR locale + collaborazioni wedding planner', costo_mensile:700, costo_setup:1500, tempo_mesi:2 },
+      '4': { chi:'Agenzia luxury', cosa:'Agenzia specializzata luxury — shooting, video, influencer', costo_mensile:1500, costo_setup:3000, tempo_mesi:2 },
+      '5': { chi:'Marketing manager', cosa:'Piano marketing luxury — brand awareness, eventi esclusivi, PR', costo_mensile:3000, costo_setup:5000, tempo_mesi:4 },
+    },
+    sitoweb: {
+      '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Web agency', cosa:'Sito vetrina elegante con collezioni e contatti boutique', costo_mensile:100, costo_setup:1500, tempo_mesi:1 },
+      '3': { chi:'Sito luxury', cosa:'Sito con catalogo dettagliato, certificati, prenotazione visita', costo_mensile:400, costo_setup:4000, tempo_mesi:2 },
+      '4': { chi:'E-commerce luxury', cosa:'E-commerce luxury con foto HD, zoom, certificati, reso assicurato', costo_mensile:800, costo_setup:8000, tempo_mesi:3 },
+      '5': { chi:'Piattaforma omnicanale', cosa:'Piattaforma integrata — e-commerce, CRM, stock unico, wish list', costo_mensile:1500, costo_setup:15000, tempo_mesi:4 },
+    },
+    ecommerce: {
+      _label: 'Approvvigionamento e fornitori',
+      '1': { chi:'Titolare', cosa:'Acquisto da 1-2 rappresentanti brand abituali', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Scouting brand a fiere (VicenzaOro, Baselworld)', costo_mensile:0, costo_setup:800, tempo_mesi:1 },
+      '3': { chi:'Buyer', cosa:'Buyer dedicato — selezione pietre, fornitori orafi, brand', costo_mensile:1200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Buyer + laboratorio', cosa:'Import pietre diretto + laboratorio orafo per pezzi unici', costo_mensile:2500, costo_setup:2000, tempo_mesi:3 },
+      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — accordi brand, pietre certificate, private label', costo_mensile:3500, costo_setup:3000, tempo_mesi:4 },
+    },
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ALIMENTARE TRASFORMAZIONE
+  // ═══════════════════════════════════════════════════════════════════════════
+  alimentare_trasformazione: {
+    vendite: {
+      '1': { chi:'Titolare', cosa:'Titolare vende direttamente a negozi e ristoranti zona', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare + agente', cosa:'1 agente per GDO locale e grossisti zona', costo_mensile:2000, costo_setup:0, tempo_mesi:2 },
+      '3': { chi:'Rete agenti', cosa:'3-4 agenti su GDO regionale + HORECA strutturato', costo_mensile:5000, costo_setup:1000, tempo_mesi:3 },
+      '4': { chi:'KAM + agenti', cosa:'Key account GDO nazionale + rete agenti regionali', costo_mensile:7500, costo_setup:2000, tempo_mesi:4 },
+      '5': { chi:'Strategia multicanale', cosa:'Vendita GDO + HORECA + export + e-commerce DTC', costo_mensile:10000, costo_setup:5000, tempo_mesi:6 },
+    },
+    pipeline: {
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini su carta e telefono', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Excel con clienti, ordini e scadenze pagamenti', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'CRM + gestionale', cosa:'CRM con buyer GDO, contratti annuali, promo pianificate', costo_mensile:400, costo_setup:800, tempo_mesi:1 },
+      '4': { chi:'CRM avanzato', cosa:'CRM integrato con gestionale produzione e logistica', costo_mensile:800, costo_setup:2000, tempo_mesi:2 },
+      '5': { chi:'ERP food', cosa:'ERP food completo — ordini, produzione, lotti, tracciabilità', costo_mensile:1500, costo_setup:6000, tempo_mesi:4 },
+    },
+    team: {
+      '1': { chi:'Titolare + operai', cosa:'Titolare + 3-4 operai produzione — vendita fatta dal titolare', costo_mensile:7000, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+ commerciale', cosa:'Commerciale junior per sviluppo clienti GDO e HORECA', costo_mensile:10000, costo_setup:500, tempo_mesi:2 },
+      '3': { chi:'Team strutturato', cosa:'Produzione + commerciale + amministrazione + qualità', costo_mensile:16000, costo_setup:1000, tempo_mesi:3 },
+      '4': { chi:'Struttura completa', cosa:'Resp. produzione + resp. commerciale + quality + logistica', costo_mensile:22000, costo_setup:2000, tempo_mesi:4 },
+      '5': { chi:'Dir. commerciale', cosa:'Direzione commerciale + export manager + marketing + R&D', costo_mensile:28000, costo_setup:3000, tempo_mesi:6 },
+    },
+    processi: {
+      '1': { chi:'Titolare', cosa:'Processi artigianali — nessuna formalizzazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Consulente HACCP', cosa:'HACCP strutturato + schede prodotto e allergeni', costo_mensile:200, costo_setup:500, tempo_mesi:1 },
+      '3': { chi:'Gestionale produzione', cosa:'Gestionale produzione con lotti, scadenze e tracciabilità', costo_mensile:400, costo_setup:2000, tempo_mesi:2 },
+      '4': { chi:'BRC/IFS', cosa:'Certificazione BRC/IFS — processi qualità per accesso GDO', costo_mensile:600, costo_setup:5000, tempo_mesi:4 },
+      '5': { chi:'ERP + automazione', cosa:'ERP produzione + automazione linee + BI per efficienza', costo_mensile:1200, costo_setup:8000, tempo_mesi:4 },
+    },
+    ricavi: {
+      '1': { chi:'Titolare', cosa:'Prezzo basato su costo + margine fisso — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Pricing differenziato — GDO vs HORECA vs dettaglio', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Linee prodotto', cosa:'Linea premium + linea standard — segmentazione margini', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Private label', cosa:'Produzione private label per GDO + brand proprio', costo_mensile:300, costo_setup:1500, tempo_mesi:3 },
+      '5': { chi:'Revenue manager', cosa:'Mix ricavi ottimizzato — brand, PL, export, DTC, co-packing', costo_mensile:800, costo_setup:2500, tempo_mesi:4 },
+    },
+    marketing: {
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo etichetta e passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Social con foto prodotti + partecipazione fiere food', costo_mensile:200, costo_setup:500, tempo_mesi:1 },
+      '3': { chi:'Agenzia + fiere', cosa:'Branding professionale + fiere (Cibus, TuttoFood, SIAL)', costo_mensile:800, costo_setup:3000, tempo_mesi:2 },
+      '4': { chi:'Marketing operativo', cosa:'Trade marketing GDO + social content + PR food blogger', costo_mensile:1500, costo_setup:4000, tempo_mesi:2 },
+      '5': { chi:'Marketing manager', cosa:'Piano marketing — brand building, trade, digital, export promo', costo_mensile:3000, costo_setup:6000, tempo_mesi:4 },
+    },
+    sitoweb: {
+      '1': { chi:'Nessuno', cosa:'Nessun sito o pagina vetrina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Web agency', cosa:'Sito vetrina con storia, prodotti, certificazioni', costo_mensile:80, costo_setup:1000, tempo_mesi:1 },
+      '3': { chi:'Sito professionale', cosa:'Sito con catalogo prodotti, schede tecniche, contatti buyer', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
+      '4': { chi:'Sito + e-commerce DTC', cosa:'E-commerce DTC per vendita diretta + area riservata buyer', costo_mensile:600, costo_setup:5000, tempo_mesi:3 },
+      '5': { chi:'Piattaforma integrata', cosa:'Piattaforma B2B/DTC integrata con ERP, ordini e tracciabilità', costo_mensile:1200, costo_setup:10000, tempo_mesi:4 },
+    },
+    ecommerce: {
+      _label: 'Approvvigionamento materie prime',
+      '1': { chi:'Titolare', cosa:'Acquisto materie prime da 1-2 fornitori locali', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Confronto fornitori — qualità, prezzi, tempi di consegna', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Accordi fornitura', cosa:'Contratti quadro con fornitori — prezzi bloccati e volumi', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Buyer', cosa:'Buyer dedicato — diversificazione fornitori, import materie prime', costo_mensile:2000, costo_setup:800, tempo_mesi:3 },
+      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — contratti annuali, hedging prezzi, filiera corta', costo_mensile:3500, costo_setup:2000, tempo_mesi:4 },
+    },
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ALIMENTARE VINI
+  // ═══════════════════════════════════════════════════════════════════════════
+  alimentare_vini: {
+    vendite: {
+      '1': { chi:'Titolare/enologo', cosa:'Titolare vende in cantina — degustazioni e passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare + agente', cosa:'1 agente per enoteche e ristoranti della regione', costo_mensile:1500, costo_setup:0, tempo_mesi:2 },
+      '3': { chi:'Rete HORECA', cosa:'3-4 agenti su HORECA + enoteche multiregione', costo_mensile:4000, costo_setup:800, tempo_mesi:3 },
+      '4': { chi:'Export + HORECA', cosa:'Export manager mercati UE + rete HORECA Italia', costo_mensile:6500, costo_setup:2000, tempo_mesi:4 },
+      '5': { chi:'Strategia multicanale', cosa:'Vendita HORECA + GDO + export + wine club DTC', costo_mensile:9000, costo_setup:4000, tempo_mesi:6 },
+    },
+    pipeline: {
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini a voce e WhatsApp', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Excel con clienti, ordini per etichetta e pagamenti', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'CRM wine', cosa:'CRM con ristoranti, enoteche, importatori e preferenze', costo_mensile:300, costo_setup:500, tempo_mesi:1 },
+      '4': { chi:'CRM + gestionale', cosa:'CRM integrato con gestionale cantina e magazzino vini', costo_mensile:600, costo_setup:1500, tempo_mesi:2 },
+      '5': { chi:'ERP vitivinicolo', cosa:'ERP vitivinicolo — vigna, cantina, vendite, compliance, export', costo_mensile:1200, costo_setup:5000, tempo_mesi:4 },
+    },
+    team: {
+      '1': { chi:'Titolare + cantiniere', cosa:'Titolare/enologo + 1-2 operai in vigna e cantina', costo_mensile:6000, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+ addetto cantina', cosa:'Addetto vendite cantina + degustazioni + wine shop', costo_mensile:8500, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Team strutturato', cosa:'Enologo + cantinieri + commerciale + amministrazione', costo_mensile:14000, costo_setup:800, tempo_mesi:3 },
+      '4': { chi:'Struttura completa', cosa:'Resp. commerciale + export + wine hospitality + produzione', costo_mensile:20000, costo_setup:1500, tempo_mesi:4 },
+      '5': { chi:'Dir. commerciale', cosa:'Direzione comm. + export manager + enoturismo + marketing', costo_mensile:26000, costo_setup:3000, tempo_mesi:6 },
+    },
+    processi: {
+      '1': { chi:'Titolare', cosa:'Processi artigianali — nessuna formalizzazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Enologo', cosa:'Schede tecniche vini + gestione lotti e annate', costo_mensile:100, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Gestionale cantina', cosa:'Gestionale cantina — vinificazione, imbottigliamento, lotti', costo_mensile:300, costo_setup:1500, tempo_mesi:2 },
+      '4': { chi:'Compliance export', cosa:'Documentazione export — accise, certificati, compliance DOC/DOCG', costo_mensile:500, costo_setup:2000, tempo_mesi:3 },
+      '5': { chi:'ERP + tracciabilità', cosa:'ERP completo — vigna-to-glass, tracciabilità, analisi costi', costo_mensile:1000, costo_setup:5000, tempo_mesi:4 },
+    },
+    ricavi: {
+      '1': { chi:'Titolare', cosa:'Prezzo a bottiglia fisso — nessuna segmentazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Pricing differenziato — cantina, HORECA, enoteca, export', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Enoturismo', cosa:'Degustazioni a pagamento + esperienze in vigna', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Wine club', cosa:'Wine club con abbonamento + verticali annate premium', costo_mensile:200, costo_setup:1000, tempo_mesi:2 },
+      '5': { chi:'Revenue manager', cosa:'Mix ricavi — HORECA, export, DTC, enoturismo, eventi privati', costo_mensile:700, costo_setup:2000, tempo_mesi:4 },
+    },
+    marketing: {
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo passaparola e guide vini', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Instagram con foto vigna, cantina e degustazioni', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Social + PR', cosa:'Social curato + PR enogastronomiche + guide (Gambero Rosso)', costo_mensile:600, costo_setup:2000, tempo_mesi:2 },
+      '4': { chi:'Marketing + eventi', cosa:'Wine events + fiere (Vinitaly, ProWein) + influencer wine', costo_mensile:1500, costo_setup:5000, tempo_mesi:3 },
+      '5': { chi:'Marketing manager', cosa:'Piano marketing — brand storytelling, export promo, enoturismo', costo_mensile:3000, costo_setup:6000, tempo_mesi:4 },
+    },
+    sitoweb: {
+      '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Web agency', cosa:'Sito vetrina con storia, vini, contatti cantina', costo_mensile:80, costo_setup:1000, tempo_mesi:1 },
+      '3': { chi:'Sito professionale', cosa:'Sito con catalogo vini, schede tecniche, prenotazione visite', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
+      '4': { chi:'E-commerce DTC', cosa:'E-commerce DTC — vendita diretta, wine club, gift box', costo_mensile:600, costo_setup:5000, tempo_mesi:3 },
+      '5': { chi:'Piattaforma integrata', cosa:'Piattaforma DTC + B2B + enoturismo + CRM integrato', costo_mensile:1200, costo_setup:10000, tempo_mesi:4 },
+    },
+    ecommerce: {
+      _label: 'Approvvigionamento e vigna',
+      '1': { chi:'Titolare', cosa:'Vigna propria + acquisto uve da conferitori abituali', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Enologo', cosa:'Selezione conferitori — analisi uve, contratti annuali', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Agronomo + accordi', cosa:'Agronomo per vigna + accordi pluriennali conferitori', costo_mensile:500, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Buyer enologico', cosa:'Buyer per acquisto uve selezionate e packaging premium', costo_mensile:1500, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — vigna, uve, packaging, tappi, bottiglie, export', costo_mensile:3000, costo_setup:2000, tempo_mesi:4 },
+    },
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ALIMENTARE FORNO
+  // ═══════════════════════════════════════════════════════════════════════════
+  alimentare_forno: {
+    vendite: {
+      '1': { chi:'Titolare', cosa:'Vendita al banco del proprio negozio', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare + consegne', cosa:'Consegne a bar, ristoranti e mense della zona', costo_mensile:500, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Commerciale HORECA', cosa:'Commerciale per sviluppo clienti HORECA e catering', costo_mensile:2000, costo_setup:300, tempo_mesi:2 },
+      '4': { chi:'GDO locale', cosa:'Fornitura GDO locale con linea confezionata a brand', costo_mensile:3500, costo_setup:1500, tempo_mesi:3 },
+      '5': { chi:'Strategia multicanale', cosa:'Vendita retail + HORECA + GDO + e-commerce spedizione', costo_mensile:5000, costo_setup:3000, tempo_mesi:5 },
+    },
+    pipeline: {
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — vendite solo dal registratore', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Lista clienti HORECA con ordini ricorrenti', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Gestionale base', cosa:'Gestionale con ordini, consegne programmate e fatturazione', costo_mensile:200, costo_setup:500, tempo_mesi:1 },
+      '4': { chi:'CRM + gestionale', cosa:'CRM clienti B2B + gestionale produzione e consegne', costo_mensile:400, costo_setup:1000, tempo_mesi:2 },
+      '5': { chi:'ERP panificazione', cosa:'ERP panificazione — ordini, produzione, consegne, margini', costo_mensile:800, costo_setup:3000, tempo_mesi:3 },
+    },
+    team: {
+      '1': { chi:'Titolare + fornaio', cosa:'Titolare + 1 fornaio — produzione e vendita', costo_mensile:5500, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+ commessa', cosa:'Commessa al banco + autista consegne part-time', costo_mensile:8000, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Team produzione', cosa:'2 fornai + commessa + addetto consegne', costo_mensile:12000, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Struttura completa', cosa:'Resp. produzione + fornai + vendita + logistica', costo_mensile:17000, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Manager + team', cosa:'Resp. operativo + produzione + commerciale + marketing', costo_mensile:22000, costo_setup:2000, tempo_mesi:5 },
+    },
+    processi: {
+      '1': { chi:'Titolare', cosa:'Ricette a memoria — nessun processo standardizzato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Ricettario standardizzato + schede HACCP aggiornate', costo_mensile:100, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Gestionale produzione', cosa:'Gestionale produzione — pianificazione impasti, rese, scarti', costo_mensile:250, costo_setup:1000, tempo_mesi:2 },
+      '4': { chi:'Automazione', cosa:'Impastatrici programmate + porzionatrici + cicli automatici', costo_mensile:400, costo_setup:3000, tempo_mesi:2 },
+      '5': { chi:'Lean production', cosa:'Produzione lean — riduzione sprechi, KPI efficienza, turni', costo_mensile:700, costo_setup:4000, tempo_mesi:3 },
+    },
+    ricavi: {
+      '1': { chi:'Titolare', cosa:'Prezzo al kg tradizionale — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Prodotti speciali a margine superiore (focacce, dolci)', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Linee premium', cosa:'Linea artigianale premium — lievito madre, grani antichi', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
+      '4': { chi:'Catering + eventi', cosa:'Servizio catering + torte personalizzate + eventi', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '5': { chi:'Revenue manager', cosa:'Mix ricavi — retail, HORECA, GDO confezionato, e-commerce', costo_mensile:500, costo_setup:1500, tempo_mesi:3 },
+    },
+    marketing: {
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo profumo dal forno e passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Instagram con foto prodotti freschi e dietro le quinte', costo_mensile:50, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Social + locale', cosa:'Social curato + Google Maps + promozioni stagionali', costo_mensile:400, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Marketing operativo', cosa:'Brand identity + packaging professionale + degustazioni', costo_mensile:800, costo_setup:2000, tempo_mesi:2 },
+      '5': { chi:'Marketing manager', cosa:'Piano marketing — brand artigianale, PR food, corsi, eventi', costo_mensile:2000, costo_setup:3500, tempo_mesi:3 },
+    },
+    sitoweb: {
+      '1': { chi:'Nessuno', cosa:'Nessun sito — solo Google Maps', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Web agency', cosa:'Sito vetrina con prodotti, orari, storia del forno', costo_mensile:50, costo_setup:500, tempo_mesi:1 },
+      '3': { chi:'Sito professionale', cosa:'Sito con catalogo prodotti, ordini online per ritiro', costo_mensile:200, costo_setup:1500, tempo_mesi:2 },
+      '4': { chi:'E-commerce locale', cosa:'E-commerce con consegna locale + ordini personalizzati', costo_mensile:400, costo_setup:3000, tempo_mesi:2 },
+      '5': { chi:'Piattaforma completa', cosa:'Piattaforma ordini B2B + DTC + abbonamenti pane fresco', costo_mensile:800, costo_setup:6000, tempo_mesi:3 },
+    },
+    ecommerce: {
+      _label: 'Approvvigionamento farine e ingredienti',
+      '1': { chi:'Titolare', cosa:'Acquisto farina dal mulino della zona', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Confronto mulini — qualità farine, prezzi, consegna', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Accordi mulini', cosa:'Accordi quadro con 2-3 mulini — prezzi bloccati, mix farine', costo_mensile:0, costo_setup:200, tempo_mesi:2 },
+      '4': { chi:'Buyer ingredienti', cosa:'Buyer per farine speciali, lieviti, semilavorati premium', costo_mensile:800, costo_setup:300, tempo_mesi:2 },
+      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — filiera corta, grani antichi, import', costo_mensile:2000, costo_setup:1000, tempo_mesi:3 },
+    },
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ALIMENTARE CONSERVE
+  // ═══════════════════════════════════════════════════════════════════════════
+  alimentare_conserve: {
+    vendite: {
+      '1': { chi:'Titolare', cosa:'Vendita diretta a negozi locali e mercati', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare + agente', cosa:'1 agente per GDO regionale e grossisti food', costo_mensile:1800, costo_setup:0, tempo_mesi:2 },
+      '3': { chi:'Rete commerciale', cosa:'3 agenti GDO + sviluppo HORECA e specialità', costo_mensile:4500, costo_setup:800, tempo_mesi:3 },
+      '4': { chi:'KAM + export', cosa:'Key account GDO nazionale + export manager UE', costo_mensile:7000, costo_setup:2000, tempo_mesi:4 },
+      '5': { chi:'Strategia multicanale', cosa:'GDO + export + private label + e-commerce DTC', costo_mensile:10000, costo_setup:5000, tempo_mesi:6 },
+    },
+    pipeline: {
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini telefonici e fiere', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Excel con buyer GDO, ordini stagionali, scadenze', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'CRM food', cosa:'CRM con buyer GDO, contratti promo, pianificazione annuale', costo_mensile:400, costo_setup:800, tempo_mesi:1 },
+      '4': { chi:'CRM + gestionale', cosa:'CRM integrato con produzione, stock e logistica', costo_mensile:800, costo_setup:2000, tempo_mesi:2 },
+      '5': { chi:'ERP food', cosa:'ERP food — ordini, produzione, lotti, export, tracciabilità', costo_mensile:1500, costo_setup:6000, tempo_mesi:4 },
+    },
+    team: {
+      '1': { chi:'Titolare + operai', cosa:'Titolare + 3-5 operai produzione stagionale', costo_mensile:6000, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+ commerciale', cosa:'Commerciale junior per GDO e sviluppo clienti', costo_mensile:9000, costo_setup:500, tempo_mesi:2 },
+      '3': { chi:'Team strutturato', cosa:'Produzione + commerciale + qualità + logistica', costo_mensile:15000, costo_setup:1000, tempo_mesi:3 },
+      '4': { chi:'Struttura completa', cosa:'Resp. produzione + commerciale + quality + export', costo_mensile:21000, costo_setup:2000, tempo_mesi:4 },
+      '5': { chi:'Dir. commerciale', cosa:'Dir. commerciale + export + marketing + R&D prodotto', costo_mensile:27000, costo_setup:3000, tempo_mesi:6 },
+    },
+    processi: {
+      '1': { chi:'Titolare', cosa:'Produzione artigianale — ricette tradizionali non codificate', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Consulente qualità', cosa:'HACCP + etichettatura a norma + schede prodotto', costo_mensile:200, costo_setup:500, tempo_mesi:1 },
+      '3': { chi:'Gestionale produzione', cosa:'Gestionale produzione — lotti, scadenze, rese, tracciabilità', costo_mensile:400, costo_setup:2000, tempo_mesi:2 },
+      '4': { chi:'BRC/IFS', cosa:'Certificazione BRC/IFS per accesso GDO e export', costo_mensile:600, costo_setup:5000, tempo_mesi:4 },
+      '5': { chi:'ERP + automazione', cosa:'ERP produzione + automazione linee confezionamento', costo_mensile:1200, costo_setup:8000, tempo_mesi:4 },
+    },
+    ricavi: {
+      '1': { chi:'Titolare', cosa:'Prezzo fisso su listino — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Pricing per canale — GDO vs specialità vs export', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Private label', cosa:'Produzione private label per GDO + brand proprio premium', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Export premium', cosa:'Linea export premium con packaging dedicato e storytelling', costo_mensile:300, costo_setup:1500, tempo_mesi:3 },
+      '5': { chi:'Revenue manager', cosa:'Mix brand + PL + export + DTC + co-packing stagionale', costo_mensile:800, costo_setup:2500, tempo_mesi:4 },
+    },
+    marketing: {
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo etichetta tradizionale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Social con ricette, tradizione e territorio', costo_mensile:150, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Branding + fiere', cosa:'Branding professionale + fiere food (Cibus, Fancy Food)', costo_mensile:700, costo_setup:3000, tempo_mesi:2 },
+      '4': { chi:'Marketing operativo', cosa:'Trade marketing GDO + PR food + social content professionale', costo_mensile:1500, costo_setup:4000, tempo_mesi:2 },
+      '5': { chi:'Marketing manager', cosa:'Piano marketing — brand premium, export promo, storytelling', costo_mensile:3000, costo_setup:6000, tempo_mesi:4 },
+    },
+    sitoweb: {
+      '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Web agency', cosa:'Sito vetrina con storia, prodotti, ricette', costo_mensile:80, costo_setup:1000, tempo_mesi:1 },
+      '3': { chi:'Sito professionale', cosa:'Sito con catalogo, schede prodotto, area buyer', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
+      '4': { chi:'E-commerce DTC', cosa:'E-commerce DTC — vendita diretta, box regalo, abbonamenti', costo_mensile:600, costo_setup:5000, tempo_mesi:3 },
+      '5': { chi:'Piattaforma integrata', cosa:'Piattaforma B2B + DTC integrata con ERP e tracciabilità', costo_mensile:1200, costo_setup:10000, tempo_mesi:4 },
+    },
+    ecommerce: {
+      _label: 'Approvvigionamento materie prime',
+      '1': { chi:'Titolare', cosa:'Acquisto pomodori e ortaggi da agricoltori locali', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Confronto fornitori — qualità, stagionalità, certificazioni', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Contratti filiera', cosa:'Contratti con agricoltori — volumi garantiti, prezzo fisso', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Buyer', cosa:'Buyer dedicato — scouting materie prime, import pomodoro', costo_mensile:2000, costo_setup:800, tempo_mesi:3 },
+      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — filiera controllata, contratti annuali, hedging', costo_mensile:3500, costo_setup:2000, tempo_mesi:4 },
+    },
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ALIMENTARE INGREDIENTI
+  // ═══════════════════════════════════════════════════════════════════════════
+  alimentare_ingredienti: {
+    vendite: {
+      '1': { chi:'Titolare', cosa:'Titolare vende a industrie alimentari della zona', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare + tecnico', cosa:'Tecnico commerciale per demo e specifiche prodotto', costo_mensile:2500, costo_setup:0, tempo_mesi:2 },
+      '3': { chi:'Rete tecnico-comm.', cosa:'2-3 tecnici commerciali su industrie food nazionali', costo_mensile:5500, costo_setup:1000, tempo_mesi:3 },
+      '4': { chi:'KAM + rete', cosa:'Key account per grandi industrie + rete agenti regionali', costo_mensile:8000, costo_setup:2000, tempo_mesi:4 },
+      '5': { chi:'Strategia B2B', cosa:'Vendita B2B strutturata — grandi industrie, PMI, export', costo_mensile:11000, costo_setup:4000, tempo_mesi:6 },
+    },
+    pipeline: {
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — rapporti personali e telefonate', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Excel con clienti, specifiche richieste e contratti', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'CRM B2B', cosa:'CRM con schede tecniche, campionature, storico forniture', costo_mensile:400, costo_setup:800, tempo_mesi:1 },
+      '4': { chi:'CRM + gestionale', cosa:'CRM integrato con gestionale produzione e qualità', costo_mensile:800, costo_setup:2000, tempo_mesi:2 },
+      '5': { chi:'ERP ingredienti', cosa:'ERP completo — ordini, produzione, lotti, qualità, compliance', costo_mensile:1500, costo_setup:6000, tempo_mesi:4 },
+    },
+    team: {
+      '1': { chi:'Titolare + tecnico', cosa:'Titolare + 1 tecnico di laboratorio — produzione e vendita', costo_mensile:6500, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+ commerciale', cosa:'Tecnico commerciale per sviluppo nuovi clienti', costo_mensile:9500, costo_setup:500, tempo_mesi:2 },
+      '3': { chi:'Team strutturato', cosa:'Laboratorio R&D + commerciale + quality + produzione', costo_mensile:15000, costo_setup:1000, tempo_mesi:3 },
+      '4': { chi:'Struttura completa', cosa:'Resp. R&D + commerciale + qualità + produzione + logistica', costo_mensile:22000, costo_setup:2000, tempo_mesi:4 },
+      '5': { chi:'Dir. commerciale', cosa:'Dir. commerciale + R&D + quality manager + export', costo_mensile:28000, costo_setup:3000, tempo_mesi:6 },
+    },
+    processi: {
+      '1': { chi:'Titolare', cosa:'Produzione su ricetta — nessun processo formalizzato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Tecnico qualità', cosa:'Schede tecniche + analisi laboratorio + certificati lotto', costo_mensile:300, costo_setup:500, tempo_mesi:1 },
+      '3': { chi:'Gestionale qualità', cosa:'Sistema qualità con SPC, HACCP avanzato, audit interni', costo_mensile:500, costo_setup:2000, tempo_mesi:2 },
+      '4': { chi:'Certificazioni', cosa:'FSSC 22000 + BRC + certificazioni Halal/Kosher', costo_mensile:700, costo_setup:6000, tempo_mesi:4 },
+      '5': { chi:'ERP + R&D', cosa:'ERP con modulo R&D — formulazioni, prove, scale-up, costi', costo_mensile:1300, costo_setup:8000, tempo_mesi:4 },
+    },
+    ricavi: {
+      '1': { chi:'Titolare', cosa:'Prezzo al kg basato su costi — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Pricing per volume e tipo di cliente industriale', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Prodotti specialità', cosa:'Ingredienti funzionali a margine superiore (clean label)', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Servizio R&D', cosa:'Servizio sviluppo formulazione per clienti — valore aggiunto', costo_mensile:300, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Revenue manager', cosa:'Mix commodity + specialità + R&D + tolling + export', costo_mensile:800, costo_setup:2000, tempo_mesi:4 },
+    },
+    marketing: {
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo fiere e contatti diretti', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Schede tecniche professionali + LinkedIn aziendale', costo_mensile:100, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Marketing B2B', cosa:'Fiere food ingredients (FiE, Cibus Tec) + catalogo tecnico', costo_mensile:600, costo_setup:3000, tempo_mesi:2 },
+      '4': { chi:'Content + fiere', cosa:'White paper tecnici + webinar + fiere internazionali', costo_mensile:1200, costo_setup:4000, tempo_mesi:2 },
+      '5': { chi:'Marketing manager', cosa:'Piano marketing B2B — thought leadership, R&D showcase, PR', costo_mensile:2500, costo_setup:5000, tempo_mesi:4 },
+    },
+    sitoweb: {
+      '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Web agency', cosa:'Sito vetrina con gamma prodotti e certificazioni', costo_mensile:80, costo_setup:1000, tempo_mesi:1 },
+      '3': { chi:'Sito tecnico', cosa:'Sito con schede tecniche, download, richiesta campionature', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
+      '4': { chi:'Portale B2B', cosa:'Portale B2B con ordini, specifiche personalizzate, tracking', costo_mensile:700, costo_setup:5000, tempo_mesi:3 },
+      '5': { chi:'Piattaforma integrata', cosa:'Piattaforma B2B integrata — ordini, formulazioni, compliance', costo_mensile:1300, costo_setup:10000, tempo_mesi:4 },
+    },
+    ecommerce: {
+      _label: 'Approvvigionamento e sourcing',
+      '1': { chi:'Titolare', cosa:'Acquisto materie prime da fornitore abituale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Confronto fornitori globali — qualità, certificazioni, prezzi', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Sourcing globale', cosa:'Sourcing internazionale — Europa, Asia — campionature e audit', costo_mensile:500, costo_setup:800, tempo_mesi:2 },
+      '4': { chi:'Buyer', cosa:'Buyer dedicato — contratti quadro, hedging commodity, import', costo_mensile:2500, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — supply chain globale, dual sourcing, contratti', costo_mensile:4000, costo_setup:2000, tempo_mesi:4 },
+    },
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ALIMENTARE BIRRA
+  // ═══════════════════════════════════════════════════════════════════════════
+  alimentare_birra: {
+    vendite: {
+      '1': { chi:'Birraio/titolare', cosa:'Vendita in taproom e a pub/ristoranti della zona', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare + agente', cosa:'1 agente per pub e ristoranti regionali', costo_mensile:1500, costo_setup:0, tempo_mesi:2 },
+      '3': { chi:'Rete HORECA', cosa:'2-3 agenti HORECA + beer shop + distribuzione locale', costo_mensile:3500, costo_setup:500, tempo_mesi:3 },
+      '4': { chi:'Distrib. + export', cosa:'Accordi con distributori regionali + export UE', costo_mensile:5500, costo_setup:2000, tempo_mesi:4 },
+      '5': { chi:'Strategia multicanale', cosa:'HORECA + distribuzione + export + taproom + e-commerce DTC', costo_mensile:8000, costo_setup:4000, tempo_mesi:6 },
+    },
+    pipeline: {
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — tutto a voce e WhatsApp', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Excel con pub, ristoranti, ordini e preferenze', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'CRM birrificio', cosa:'CRM con clienti HORECA, storico ordini, degustazioni', costo_mensile:300, costo_setup:500, tempo_mesi:1 },
+      '4': { chi:'CRM + gestionale', cosa:'CRM integrato con gestionale birrificio e magazzino', costo_mensile:600, costo_setup:1500, tempo_mesi:2 },
+      '5': { chi:'ERP birrificio', cosa:'ERP birrificio — ordini, produzione, lotti, accise, export', costo_mensile:1200, costo_setup:5000, tempo_mesi:4 },
+    },
+    team: {
+      '1': { chi:'Birraio + aiutante', cosa:'Birraio/titolare + 1 aiutante — produzione e vendita', costo_mensile:5000, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+ taproom', cosa:'Addetto taproom + eventi + consegne locali', costo_mensile:7500, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Team strutturato', cosa:'Birraio + assistente + commerciale + taproom', costo_mensile:12000, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Struttura completa', cosa:'Birraio capo + produzione + commerciale + taproom + admin', costo_mensile:17000, costo_setup:1500, tempo_mesi:4 },
+      '5': { chi:'Manager + team', cosa:'Resp. operativo + produzione + commerciale + marketing', costo_mensile:23000, costo_setup:2500, tempo_mesi:6 },
+    },
+    processi: {
+      '1': { chi:'Birraio', cosa:'Ricette personali — produzione artigianale senza standard', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Birraio', cosa:'Ricettario standardizzato + controllo fermentazione digitale', costo_mensile:100, costo_setup:500, tempo_mesi:1 },
+      '3': { chi:'Gestionale birrificio', cosa:'Gestionale birrificio — cotte, fermentazione, imbottigliamento', costo_mensile:300, costo_setup:1500, tempo_mesi:2 },
+      '4': { chi:'Qualità + accise', cosa:'Laboratorio analisi + gestione accise + tracciabilità lotti', costo_mensile:500, costo_setup:3000, tempo_mesi:3 },
+      '5': { chi:'Produzione ottimizzata', cosa:'Produzione lean — pianificazione cotte, rese, KPI qualità', costo_mensile:800, costo_setup:5000, tempo_mesi:4 },
+    },
+    ricavi: {
+      '1': { chi:'Birraio', cosa:'Prezzo a bottiglia/fusto fisso — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Pricing differenziato — taproom vs HORECA vs distribuzione', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Birre speciali', cosa:'Birre limited edition e stagionali a margine premium', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
+      '4': { chi:'Taproom experience', cosa:'Taproom con food pairing, eventi, brewery tour a pagamento', costo_mensile:200, costo_setup:1000, tempo_mesi:2 },
+      '5': { chi:'Revenue manager', cosa:'Mix ricavi — HORECA, taproom, DTC, eventi, contract brewing', costo_mensile:600, costo_setup:1500, tempo_mesi:3 },
+    },
+    marketing: {
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo taproom e passaparola birrofili', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Instagram con foto birre, brewing process, taproom', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Social + eventi', cosa:'Social curato + festival birra + collaborazioni birrifici', costo_mensile:500, costo_setup:1500, tempo_mesi:2 },
+      '4': { chi:'Marketing beer', cosa:'Brand identity + Untappd + PR beer blogger + tap takeover', costo_mensile:1200, costo_setup:3000, tempo_mesi:2 },
+      '5': { chi:'Marketing manager', cosa:'Piano marketing — brand craft, community, eventi, export promo', costo_mensile:2500, costo_setup:5000, tempo_mesi:4 },
+    },
+    sitoweb: {
+      '1': { chi:'Nessuno', cosa:'Nessun sito — solo Untappd e social', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Web agency', cosa:'Sito vetrina con birre, storia, taproom e orari', costo_mensile:80, costo_setup:800, tempo_mesi:1 },
+      '3': { chi:'Sito professionale', cosa:'Sito con catalogo birre, schede, dove trovarci, eventi', costo_mensile:250, costo_setup:2000, tempo_mesi:2 },
+      '4': { chi:'E-commerce DTC', cosa:'E-commerce DTC — box birre, abbonamenti, gift pack', costo_mensile:500, costo_setup:4000, tempo_mesi:3 },
+      '5': { chi:'Piattaforma integrata', cosa:'Piattaforma DTC + B2B + prenotazione taproom + CRM', costo_mensile:1000, costo_setup:8000, tempo_mesi:4 },
+    },
+    ecommerce: {
+      _label: 'Approvvigionamento malti e luppoli',
+      '1': { chi:'Birraio', cosa:'Acquisto malti e luppoli da rivenditore locale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Birraio', cosa:'Confronto fornitori — malterie europee, luppoli freschi', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Accordi malterie', cosa:'Accordi con malterie e hop dealer — contratti annuali', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
+      '4': { chi:'Buyer ingredienti', cosa:'Buyer per luppoli speciali, lieviti, import malti craft', costo_mensile:1200, costo_setup:500, tempo_mesi:2 },
+      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — contratti forward luppoli, malterie premium', costo_mensile:2500, costo_setup:1500, tempo_mesi:4 },
+    },
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TECH SAAS
+  // ═══════════════════════════════════════════════════════════════════════════
+  tech_saas: {
+    vendite: {
+      '1': { chi:'Founder', cosa:'Founder vende direttamente — demo e onboarding personale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Founder + SDR', cosa:'SDR per outbound e qualifica lead — founder chiude', costo_mensile:2000, costo_setup:0, tempo_mesi:2 },
+      '3': { chi:'Team sales', cosa:'AE + SDR con processo demo-trial-close strutturato', costo_mensile:5000, costo_setup:1000, tempo_mesi:3 },
+      '4': { chi:'Sales + CS', cosa:'Sales team + customer success per retention e upsell', costo_mensile:8000, costo_setup:2000, tempo_mesi:4 },
+      '5': { chi:'Strategia PLG + sales', cosa:'Product-led growth + sales enterprise + partnership channel', costo_mensile:12000, costo_setup:5000, tempo_mesi:6 },
+    },
+    pipeline: {
+      '1': { chi:'Founder', cosa:'Nessun CRM — lead su email e spreadsheet', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Founder', cosa:'CRM base (HubSpot free/Pipedrive) con pipeline vendita', costo_mensile:50, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'CRM + analytics', cosa:'CRM con lead scoring, sequences e analytics pipeline', costo_mensile:300, costo_setup:500, tempo_mesi:1 },
+      '4': { chi:'CRM + product data', cosa:'CRM integrato con product analytics — PQL e usage data', costo_mensile:600, costo_setup:1500, tempo_mesi:2 },
+      '5': { chi:'Revenue ops', cosa:'Revenue ops stack — CRM, BI, forecasting, churn prediction', costo_mensile:1200, costo_setup:4000, tempo_mesi:3 },
+    },
+    team: {
+      '1': { chi:'Founder solo', cosa:'Founder/CTO fa tutto — prodotto, vendita, supporto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+ developer', cosa:'1 developer + founder che vende e fa prodotto', costo_mensile:4000, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Team piccolo', cosa:'2 dev + 1 sales/CS + founder come CEO', costo_mensile:10000, costo_setup:500, tempo_mesi:3 },
+      '4': { chi:'Team strutturato', cosa:'Dev team + sales + CS + marketing + product', costo_mensile:20000, costo_setup:1500, tempo_mesi:4 },
+      '5': { chi:'Scaling team', cosa:'VP Sales + VP Eng + team completi per funzione', costo_mensile:30000, costo_setup:3000, tempo_mesi:6 },
+    },
+    processi: {
+      '1': { chi:'Founder', cosa:'Nessun processo — tutto ad hoc e manuale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Founder', cosa:'Onboarding utenti documentato + knowledge base interna', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Processo sales', cosa:'Sales playbook — discovery, demo, trial, close, onboarding', costo_mensile:200, costo_setup:1000, tempo_mesi:2 },
+      '4': { chi:'CS + automazione', cosa:'Customer success process — health score, QBR, churn alert', costo_mensile:400, costo_setup:2000, tempo_mesi:2 },
+      '5': { chi:'Revenue operations', cosa:'RevOps completo — processi scalabili, playbook, automazioni', costo_mensile:800, costo_setup:4000, tempo_mesi:3 },
+    },
+    ricavi: {
+      '1': { chi:'Founder', cosa:'1 piano pricing — prezzo fisso mensile o annuale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Founder', cosa:'2-3 piani pricing — starter, pro, enterprise', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Usage-based', cosa:'Pricing ibrido — base + usage-based per feature premium', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Expansion revenue', cosa:'Strategia expansion — upsell, cross-sell, add-on, seats', costo_mensile:300, costo_setup:1000, tempo_mesi:2 },
+      '5': { chi:'Revenue manager', cosa:'Revenue model ottimizzato — NRR >120%, LTV/CAC, pricing AI', costo_mensile:700, costo_setup:2000, tempo_mesi:3 },
+    },
+    marketing: {
+      '1': { chi:'Founder', cosa:'Solo passaparola e network personale founder', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Founder', cosa:'Content marketing — blog, LinkedIn founder, Product Hunt', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Growth hacker', cosa:'SEO + content + Google Ads + free trial funnel', costo_mensile:1000, costo_setup:1500, tempo_mesi:2 },
+      '4': { chi:'Marketing team', cosa:'Demand gen + content + paid + community + webinar', costo_mensile:2500, costo_setup:3000, tempo_mesi:3 },
+      '5': { chi:'VP Marketing', cosa:'Marketing scalabile — brand, demand gen, PLG, partner marketing', costo_mensile:5000, costo_setup:6000, tempo_mesi:4 },
+    },
+    sitoweb: {
+      '1': { chi:'Founder', cosa:'Landing page base con form di contatto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Founder/dev', cosa:'Sito prodotto con pricing, demo video, sign-up', costo_mensile:50, costo_setup:500, tempo_mesi:1 },
+      '3': { chi:'Sito professionale', cosa:'Sito marketing con case study, blog, self-service trial', costo_mensile:200, costo_setup:2000, tempo_mesi:2 },
+      '4': { chi:'Growth site', cosa:'Sito ottimizzato conversione — A/B test, CRO, chatbot', costo_mensile:500, costo_setup:4000, tempo_mesi:2 },
+      '5': { chi:'Piattaforma marketing', cosa:'Sito + app center + marketplace integrazioni + community', costo_mensile:1000, costo_setup:8000, tempo_mesi:3 },
+    },
+    ecommerce: {
+      _label: 'Infrastruttura cloud e DevOps',
+      '1': { chi:'Founder/CTO', cosa:'Hosting base su VPS o shared — deploy manuale', costo_mensile:50, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'CTO', cosa:'Cloud AWS/GCP con CI/CD base e monitoring', costo_mensile:300, costo_setup:500, tempo_mesi:1 },
+      '3': { chi:'DevOps', cosa:'Infrastruttura scalabile — container, auto-scaling, backup', costo_mensile:800, costo_setup:2000, tempo_mesi:2 },
+      '4': { chi:'DevOps + SRE', cosa:'SRE practices — SLA 99.9%, incident management, DR', costo_mensile:2000, costo_setup:4000, tempo_mesi:3 },
+      '5': { chi:'Platform team', cosa:'Platform team — multi-region, zero downtime, compliance SOC2', costo_mensile:4000, costo_setup:8000, tempo_mesi:4 },
+    },
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TECH SYSTEM INTEGRATOR
+  // ═══════════════════════════════════════════════════════════════════════════
+  tech_system_integrator: {
+    vendite: {
+      '1': { chi:'Titolare/tecnico', cosa:'Titolare vende a clienti storici — referral e passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare + comm.', cosa:'Commerciale per sviluppo nuovi clienti PMI', costo_mensile:2500, costo_setup:0, tempo_mesi:2 },
+      '3': { chi:'Team presales', cosa:'Presales tecnico + commerciale — proposte complesse', costo_mensile:5000, costo_setup:1000, tempo_mesi:3 },
+      '4': { chi:'Partnership vendor', cosa:'Partnership vendor (Microsoft, Cisco) + team vendite', costo_mensile:7500, costo_setup:3000, tempo_mesi:4 },
+      '5': { chi:'Strategia enterprise', cosa:'Vendita enterprise — tender, framework agreement, partner', costo_mensile:10000, costo_setup:5000, tempo_mesi:6 },
+    },
+    pipeline: {
+      '1': { chi:'Titolare', cosa:'Nessun CRM — progetti gestiti via email', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'CRM base con opportunità, preventivi e follow-up', costo_mensile:50, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'CRM + PSA', cosa:'CRM + PSA (Professional Services Automation) per progetti', costo_mensile:400, costo_setup:1000, tempo_mesi:1 },
+      '4': { chi:'CRM avanzato', cosa:'CRM con forecast, pipeline pesata e integrazione vendor', costo_mensile:800, costo_setup:2000, tempo_mesi:2 },
+      '5': { chi:'ERP + CRM + PSA', cosa:'Stack completo — CRM, PSA, timesheet, margini progetto', costo_mensile:1500, costo_setup:5000, tempo_mesi:3 },
+    },
+    team: {
+      '1': { chi:'Titolare + tecnico', cosa:'Titolare/tecnico + 1 sistemista — fanno tutto', costo_mensile:5000, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+ sistemista', cosa:'2 sistemisti + commerciale part-time', costo_mensile:9000, costo_setup:500, tempo_mesi:2 },
+      '3': { chi:'Team tecnico', cosa:'3-4 tecnici specializzati + commerciale + admin', costo_mensile:16000, costo_setup:1000, tempo_mesi:3 },
+      '4': { chi:'Struttura completa', cosa:'Team tecnico + presales + PM + commerciale + admin', costo_mensile:23000, costo_setup:2000, tempo_mesi:4 },
+      '5': { chi:'Dir. tecnica + comm.', cosa:'CTO + dir. commerciale + team per competenza + PM office', costo_mensile:30000, costo_setup:3000, tempo_mesi:6 },
+    },
+    processi: {
+      '1': { chi:'Titolare', cosa:'Nessun processo — ogni progetto è diverso e ad hoc', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Template preventivo + checklist installazione standard', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'PM base', cosa:'Project management base — Gantt, timesheet, documentazione', costo_mensile:300, costo_setup:1000, tempo_mesi:2 },
+      '4': { chi:'ITIL + PM', cosa:'Framework ITIL per servizi + PM strutturato per progetti', costo_mensile:600, costo_setup:3000, tempo_mesi:3 },
+      '5': { chi:'PMO + ITIL', cosa:'PMO strutturato + ITIL + knowledge base + automazioni', costo_mensile:1000, costo_setup:5000, tempo_mesi:4 },
+    },
+    ricavi: {
+      '1': { chi:'Titolare', cosa:'Fatturazione a progetto — prezzo su preventivo', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Contratti assistenza ricorrenti — canone mensile/annuale', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Managed services', cosa:'Managed services — monitoraggio, backup, supporto proattivo', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Ricavi ricorrenti', cosa:'Mix progetto + managed services + licensing = ricavi prevedibili', costo_mensile:300, costo_setup:1500, tempo_mesi:3 },
+      '5': { chi:'Revenue manager', cosa:'Revenue model — MSP, cloud managed, consulting premium, SLA', costo_mensile:800, costo_setup:2500, tempo_mesi:4 },
+    },
+    marketing: {
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo passaparola e referral', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'LinkedIn + case study + certificazioni vendor in evidenza', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Marketing B2B', cosa:'Google Ads IT + LinkedIn Ads + webinar tecnici', costo_mensile:800, costo_setup:1500, tempo_mesi:2 },
+      '4': { chi:'Content + eventi', cosa:'Content marketing tecnico + eventi vendor + partner program', costo_mensile:1500, costo_setup:3000, tempo_mesi:2 },
+      '5': { chi:'Marketing manager', cosa:'Piano marketing B2B — thought leadership, eventi, partner co-mktg', costo_mensile:3000, costo_setup:5000, tempo_mesi:4 },
+    },
+    sitoweb: {
+      '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Web agency', cosa:'Sito vetrina con servizi, competenze e certificazioni', costo_mensile:80, costo_setup:800, tempo_mesi:1 },
+      '3': { chi:'Sito professionale', cosa:'Sito con case study, blog tecnico, richiesta preventivo', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
+      '4': { chi:'Sito + portale', cosa:'Portale clienti — ticket, monitoring dashboard, documentazione', costo_mensile:600, costo_setup:5000, tempo_mesi:3 },
+      '5': { chi:'Piattaforma clienti', cosa:'Piattaforma clienti completa — portale, SLA, report, knowledge', costo_mensile:1200, costo_setup:10000, tempo_mesi:4 },
+    },
+    ecommerce: {
+      _label: 'Approvvigionamento licenze e HW',
+      '1': { chi:'Titolare', cosa:'Acquisto HW e licenze su ordine cliente — markup fisso', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Confronto distributori (Esprinet, Ingram, TD SYNNEX)', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Accordi distributori', cosa:'Accordi con distributori — rebate, deal registration vendor', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Buyer IT', cosa:'Buyer IT dedicato — ottimizzazione licensing, cloud brokering', costo_mensile:1800, costo_setup:500, tempo_mesi:2 },
+      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — CSP/LSP, hardware staging, vendor management', costo_mensile:3500, costo_setup:2000, tempo_mesi:4 },
+    },
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TECH DIGITAL AGENCY
+  // ═══════════════════════════════════════════════════════════════════════════
+  tech_digital_agency: {
+    vendite: {
+      '1': { chi:'Founder', cosa:'Founder vende a network personale — progetti one-shot', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Founder + referral', cosa:'Referral strutturato + LinkedIn outbound per nuovi clienti', costo_mensile:500, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Business developer', cosa:'Business developer per sviluppo clienti + retainer model', costo_mensile:3000, costo_setup:500, tempo_mesi:3 },
+      '4': { chi:'Team new business', cosa:'New business team + account manager per clienti esistenti', costo_mensile:5500, costo_setup:1500, tempo_mesi:3 },
+      '5': { chi:'Strategia growth', cosa:'Growth strategy — partnership, referral program, inbound + outbound', costo_mensile:8000, costo_setup:3000, tempo_mesi:5 },
+    },
+    pipeline: {
+      '1': { chi:'Founder', cosa:'Nessun CRM — progetti su email e documenti', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Founder', cosa:'CRM base con opportunità, preventivi e stato progetti', costo_mensile:50, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'CRM + PM', cosa:'CRM + project management tool integrato (Asana, Monday)', costo_mensile:300, costo_setup:500, tempo_mesi:1 },
+      '4': { chi:'CRM + automazione', cosa:'CRM con automazioni — lead nurturing, proposal, follow-up', costo_mensile:500, costo_setup:1000, tempo_mesi:2 },
+      '5': { chi:'Revenue ops', cosa:'Stack completo — CRM, PM, timesheet, profittabilità progetto', costo_mensile:1000, costo_setup:3000, tempo_mesi:3 },
+    },
+    team: {
+      '1': { chi:'Founder + freelance', cosa:'Founder + 1-2 freelance per progetti', costo_mensile:2000, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Team piccolo', cosa:'Founder + 1 dev + 1 designer — team interno base', costo_mensile:6000, costo_setup:0, tempo_mesi:2 },
+      '3': { chi:'Team operativo', cosa:'3-4 persone interne + freelance specializzati', costo_mensile:12000, costo_setup:500, tempo_mesi:3 },
+      '4': { chi:'Struttura completa', cosa:'Dev team + design + PM + account + marketing', costo_mensile:20000, costo_setup:1500, tempo_mesi:4 },
+      '5': { chi:'Dir. + team', cosa:'Direzione creativa + tech lead + team per competenza', costo_mensile:28000, costo_setup:3000, tempo_mesi:6 },
+    },
+    processi: {
+      '1': { chi:'Founder', cosa:'Nessun processo — ogni progetto gestito diversamente', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Founder', cosa:'Template brief, preventivo e contratto standardizzati', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'PM strutturato', cosa:'Processo progetto — brief, wireframe, sviluppo, test, lancio', costo_mensile:200, costo_setup:800, tempo_mesi:2 },
+      '4': { chi:'Agile + retainer', cosa:'Metodologia agile + processi retainer con reporting mensile', costo_mensile:400, costo_setup:1500, tempo_mesi:2 },
+      '5': { chi:'Operations manager', cosa:'Operations completo — PM, QA, delivery, capacity planning', costo_mensile:800, costo_setup:3000, tempo_mesi:3 },
+    },
+    ricavi: {
+      '1': { chi:'Founder', cosa:'Fatturazione a progetto — preventivo fisso', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Founder', cosa:'Contratti retainer mensili per manutenzione e supporto', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Mix progetto/retainer', cosa:'Strategia 50% retainer + 50% progetti per stabilità', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
+      '4': { chi:'Revenue ricorrente', cosa:'Servizi ricorrenti — hosting, SEO, social, email marketing', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '5': { chi:'Revenue manager', cosa:'Revenue model — retainer, progetti, SaaS proprio, formazione', costo_mensile:600, costo_setup:1500, tempo_mesi:3 },
+    },
+    marketing: {
+      '1': { chi:'Founder', cosa:'Solo passaparola e portfolio personale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Founder', cosa:'Sito portfolio + case study + LinkedIn attivo', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Inbound marketing', cosa:'Blog + SEO + webinar + lead magnet per generare lead', costo_mensile:600, costo_setup:1000, tempo_mesi:2 },
+      '4': { chi:'Marketing + PR', cosa:'Content premium + PR + speaking + awards + partnership', costo_mensile:1500, costo_setup:2500, tempo_mesi:3 },
+      '5': { chi:'Marketing manager', cosa:'Piano marketing — thought leadership, community, referral program', costo_mensile:3000, costo_setup:4000, tempo_mesi:4 },
+    },
+    sitoweb: {
+      '1': { chi:'Founder', cosa:'Portfolio personale o pagina LinkedIn', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Founder', cosa:'Sito agency con portfolio, servizi e contatti', costo_mensile:50, costo_setup:500, tempo_mesi:1 },
+      '3': { chi:'Sito professionale', cosa:'Sito con case study dettagliati, blog, richiesta preventivo', costo_mensile:200, costo_setup:2000, tempo_mesi:2 },
+      '4': { chi:'Sito + risorse', cosa:'Sito con risorse gratuite, tool, calcolatori — lead generation', costo_mensile:400, costo_setup:4000, tempo_mesi:2 },
+      '5': { chi:'Piattaforma agency', cosa:'Piattaforma con portale clienti, report automatici, knowledge', costo_mensile:800, costo_setup:8000, tempo_mesi:3 },
+    },
+    ecommerce: {
+      _label: 'Approvvigionamento freelance e tool',
+      '1': { chi:'Founder', cosa:'Freelance trovati su passaparola — tool gratuiti', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Founder', cosa:'Network freelance verificati + stack tool professionale', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Gestione fornitori', cosa:'Pool freelance contrattualizzati + licenze tool centralizzate', costo_mensile:500, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Resp. operations', cosa:'Gestione fornitori strutturata — SLA, qualità, backup', costo_mensile:1200, costo_setup:1000, tempo_mesi:2 },
+      '5': { chi:'Resp. acquisti', cosa:'Procurement strategico — nearshore team, partnership tool, white label', costo_mensile:2500, costo_setup:2000, tempo_mesi:3 },
+    },
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TECH AUTOMAZIONE
+  // ═══════════════════════════════════════════════════════════════════════════
+  tech_automazione: {
+    vendite: {
+      '1': { chi:'Titolare/ingegnere', cosa:'Titolare vende a contatti industriali — referral', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare + comm.', cosa:'Commerciale tecnico per sviluppo clienti manifatturieri', costo_mensile:2500, costo_setup:0, tempo_mesi:2 },
+      '3': { chi:'Team tecnico-comm.', cosa:'2 tecnici commerciali su settori (food, pharma, automotive)', costo_mensile:5500, costo_setup:1000, tempo_mesi:3 },
+      '4': { chi:'Sales + presales', cosa:'Team vendite + presales per offerte complesse e tender', costo_mensile:8000, costo_setup:2000, tempo_mesi:4 },
+      '5': { chi:'Strategia industriale', cosa:'Vendita Industry 4.0 — progetti, service, retrofit, partnership OEM', costo_mensile:11000, costo_setup:5000, tempo_mesi:6 },
+    },
+    pipeline: {
+      '1': { chi:'Titolare', cosa:'Nessun CRM — progetti via email e preventivi Word', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'CRM base con opportunità, preventivi e stato commesse', costo_mensile:50, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'CRM + commesse', cosa:'CRM integrato con gestione commesse e preventivazione', costo_mensile:400, costo_setup:1000, tempo_mesi:1 },
+      '4': { chi:'CRM + ERP', cosa:'CRM con ERP — commesse, costi, margini, tempistiche', costo_mensile:800, costo_setup:2500, tempo_mesi:2 },
+      '5': { chi:'ERP industriale', cosa:'ERP industriale completo — CRM, commesse, produzione, service', costo_mensile:1500, costo_setup:6000, tempo_mesi:4 },
+    },
+    team: {
+      '1': { chi:'Titolare + tecnico', cosa:'Titolare/ingegnere + 1 tecnico PLC — fanno tutto', costo_mensile:5000, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+ programmatore', cosa:'2 tecnici PLC/SCADA + commerciale part-time', costo_mensile:9000, costo_setup:500, tempo_mesi:2 },
+      '3': { chi:'Team tecnico', cosa:'3-4 tecnici specializzati + PM + commerciale', costo_mensile:16000, costo_setup:1000, tempo_mesi:3 },
+      '4': { chi:'Struttura completa', cosa:'Team progettazione + SW + commissioning + commerciale + PM', costo_mensile:24000, costo_setup:2000, tempo_mesi:4 },
+      '5': { chi:'Dir. tecnica + comm.', cosa:'CTO + dir. commerciale + team per specializzazione', costo_mensile:30000, costo_setup:3000, tempo_mesi:6 },
+    },
+    processi: {
+      '1': { chi:'Titolare', cosa:'Nessun processo — ogni impianto è un pezzo unico', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Template offerta tecnica + documentazione impianto standard', costo_mensile:0, costo_setup:500, tempo_mesi:1 },
+      '3': { chi:'PM strutturato', cosa:'Project management — Gantt, milestone, collaudo, documentazione', costo_mensile:300, costo_setup:1500, tempo_mesi:2 },
+      '4': { chi:'Ingegneria + PM', cosa:'Processo ingegneria — design review, FAT, SAT, as-built', costo_mensile:600, costo_setup:3000, tempo_mesi:3 },
+      '5': { chi:'PMO + qualità', cosa:'PMO + sistema qualità ISO 9001 + standard IEC per safety', costo_mensile:1000, costo_setup:5000, tempo_mesi:4 },
+    },
+    ricavi: {
+      '1': { chi:'Titolare', cosa:'Fatturazione a progetto — prezzo su preventivo', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Contratti assistenza post-vendita annuali', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Service ricorrente', cosa:'Service ricorrente — manutenzione programmata, teleassistenza', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Industry 4.0', cosa:'Servizi Industry 4.0 — IoT, analytics, digital twin as-a-service', costo_mensile:300, costo_setup:2000, tempo_mesi:3 },
+      '5': { chi:'Revenue manager', cosa:'Revenue mix — progetti, service, retrofit, training, SaaS IoT', costo_mensile:800, costo_setup:3000, tempo_mesi:4 },
+    },
+    marketing: {
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo fiere industriali e referral', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'LinkedIn aziendale + case study impianti realizzati', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Marketing B2B', cosa:'Fiere industriali (SPS, MECSPE) + Google Ads + LinkedIn Ads', costo_mensile:800, costo_setup:2000, tempo_mesi:2 },
+      '4': { chi:'Content + eventi', cosa:'White paper tecnici + webinar Industry 4.0 + demo center', costo_mensile:1500, costo_setup:4000, tempo_mesi:3 },
+      '5': { chi:'Marketing manager', cosa:'Piano marketing industriale — thought leadership, fiere, partner', costo_mensile:3000, costo_setup:6000, tempo_mesi:4 },
+    },
+    sitoweb: {
+      '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Web agency', cosa:'Sito vetrina con competenze, settori e impianti realizzati', costo_mensile:80, costo_setup:800, tempo_mesi:1 },
+      '3': { chi:'Sito professionale', cosa:'Sito con case study, video impianti, richiesta preventivo', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
+      '4': { chi:'Sito + portale', cosa:'Portale clienti — documentazione, ticket, teleassistenza', costo_mensile:600, costo_setup:5000, tempo_mesi:3 },
+      '5': { chi:'Piattaforma industriale', cosa:'Piattaforma clienti — IoT dashboard, service, knowledge base', costo_mensile:1200, costo_setup:10000, tempo_mesi:4 },
+    },
+    ecommerce: {
+      _label: 'Approvvigionamento componenti',
+      '1': { chi:'Titolare', cosa:'Acquisto PLC e componenti da distributore abituale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Confronto distributori — Siemens, ABB, Schneider, Omron', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Accordi vendor', cosa:'Accordi quadro con vendor — sconti volume, priorità consegna', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Buyer tecnico', cosa:'Buyer tecnico — ottimizzazione BOM, alternative, lead time', costo_mensile:2000, costo_setup:800, tempo_mesi:2 },
+      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — vendor management, dual sourcing, stock strategy', costo_mensile:3500, costo_setup:2000, tempo_mesi:4 },
+    },
+  },
+
 };
 
 window.STEP_DETAIL_BY_SETTORE = STEP_DETAIL_BY_SETTORE;
