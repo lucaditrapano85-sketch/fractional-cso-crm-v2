@@ -4687,40 +4687,52 @@ function apriDettaglioRoi() {
   var costoMensile = ic.costoMensileTot || 0;
   var costoSetup = ic.costoUnaTantumTot || 0;
 
-  var orizzonti = [
-    { label: '6 mesi', mesi: 6, fat: ic.fat6, costo: ic.costoTot6, pct: ic.pct6 },
-    { label: '12 mesi', mesi: 12, fat: ic.fat12, costo: costoMensile * 12 + costoSetup, pct: ic.pct12 },
-    { label: '24 mesi', mesi: 24, fat: ic.fat24, costo: ic.costoTot24, pct: ic.pct24 },
+  // Costruisci tabella anno per anno
+  var anni = [
+    { label: 'Anno 1', fat: ic.fat12, costoAnno: costoMensile * 12 + costoSetup },
+    { label: 'Anno 2', fat: ic.fat24, costoAnno: costoMensile * 12 },
   ];
-  if (ic.fat36) orizzonti.push({ label: '36 mesi', mesi: 36, fat: ic.fat36, costo: costoMensile * 36 + costoSetup, pct: ic.pct36 });
+  if (ic.fat36) anni.push({ label: 'Anno 3', fat: ic.fat36, costoAnno: costoMensile * 12 });
 
-  // Calcola beneficio cumulativo per ogni orizzonte
-  // La crescita annua a 6m si accumula per i mesi successivi
-  var beneficioCumulMin = 0, beneficioCumulMax = 0;
-  var prevFatMin = fat, prevFatMax = fat;
+  var investitoCumul = 0;
+  var beneficioCumul = 0;
 
-  var rows = orizzonti.map(function(o, idx) {
-    if (!o.fat) return '';
-    var deltaAnnuoMin = o.fat[0] - fat; // crescita annua a questo punto
-    var deltaAnnuoMax = o.fat[1] - fat;
+  var rows = anni.map(function(a, idx) {
+    if (!a.fat) return '';
+    var fatMin = a.fat[0], fatMax = a.fat[1];
+    var crescitaMin = fatMin - fat;
+    var crescitaMax = fatMax - fat;
+    investitoCumul += a.costoAnno;
+    var beneficioAnnoMin = crescitaMin; // beneficio di quest'anno = delta fatturato annuo
+    var beneficioAnnoMax = crescitaMax;
 
-    // Beneficio cumulativo: somma dei delta annui di ogni periodo
-    // Ogni periodo contribuisce per la sua durata
-    var mesiPeriodo = idx === 0 ? o.mesi : o.mesi - orizzonti[idx-1].mesi;
-    beneficioCumulMin += deltaAnnuoMin * (mesiPeriodo / 12);
-    beneficioCumulMax += deltaAnnuoMax * (mesiPeriodo / 12);
+    var roiAnnoMin = a.costoAnno > 0 ? (beneficioAnnoMin / a.costoAnno).toFixed(1) : '\u2014';
+    var roiAnnoMax = a.costoAnno > 0 ? (beneficioAnnoMax / a.costoAnno).toFixed(1) : '\u2014';
+    var roiCol = roiAnnoMax >= 1.5 ? 'rgb(25,100,60)' : roiAnnoMax >= 1 ? 'rgba(150,110,30,0.75)' : 'rgba(170,50,40,0.75)';
 
-    var roiMin = o.costo > 0 ? (beneficioCumulMin / o.costo).toFixed(1) : '\u2014';
-    var roiMax = o.costo > 0 ? (beneficioCumulMax / o.costo).toFixed(1) : '\u2014';
-    var roiCol = roiMax >= 1.5 ? 'rgb(25,100,60)' : roiMax >= 1 ? 'rgba(150,110,30,0.75)' : 'rgba(170,50,40,0.75)';
-    return '<div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr 80px;gap:8px;padding:10px 0;border-bottom:1px solid var(--border);align-items:center">' +
-      '<div style="font-size:12px;font-weight:600;color:var(--white)">' + o.label + '</div>' +
-      '<div style="text-align:center"><div style="font-size:11px;color:var(--gray)">Fatturato annuo</div><div style="font-size:12px;color:var(--white)">' + fmtF(o.fat[0]) + '\u2013' + fmtF(o.fat[1]) + '\u20AC</div></div>' +
-      '<div style="text-align:center"><div style="font-size:11px;color:var(--gray)">Beneficio cumul.</div><div style="font-size:12px;color:rgb(25,100,60)">+' + fmtF(beneficioCumulMin) + '\u2013' + fmtF(beneficioCumulMax) + '\u20AC</div></div>' +
-      '<div style="text-align:center"><div style="font-size:11px;color:var(--gray)">Investito cumul.</div><div style="font-size:12px;color:rgb(40,75,160)">' + fmtF(o.costo) + '\u20AC</div></div>' +
-      '<div style="text-align:center"><div style="font-size:11px;color:var(--gray)">ROI</div><div style="font-size:13px;font-weight:700;color:' + roiCol + '">' + roiMin + '\u2013' + roiMax + 'x</div></div>' +
+    return '<div style="display:grid;grid-template-columns:70px 1fr 1fr 1fr 80px;gap:8px;padding:10px 0;border-bottom:1px solid var(--border);align-items:center">' +
+      '<div style="font-size:12px;font-weight:700;color:var(--white)">' + a.label + '</div>' +
+      '<div style="text-align:center"><div style="font-size:10px;color:var(--gray)">Fatturato</div><div style="font-size:12px;font-weight:600;color:var(--white)">' + fmtF(fatMin) + '\u2013' + fmtF(fatMax) + '\u20AC</div></div>' +
+      '<div style="text-align:center"><div style="font-size:10px;color:var(--gray)">Crescita anno</div><div style="font-size:12px;font-weight:600;color:rgb(25,100,60)">+' + fmtF(crescitaMin) + '\u2013' + fmtF(crescitaMax) + '\u20AC</div></div>' +
+      '<div style="text-align:center"><div style="font-size:10px;color:var(--gray)">Costo anno</div><div style="font-size:12px;font-weight:600;color:rgb(40,75,160)">' + fmtF(a.costoAnno) + '\u20AC</div></div>' +
+      '<div style="text-align:center"><div style="font-size:10px;color:var(--gray)">ROI anno</div><div style="font-size:13px;font-weight:700;color:' + roiCol + '">' + roiAnnoMin + '\u2013' + roiAnnoMax + 'x</div></div>' +
     '</div>';
   }).join('');
+
+  // Riga totale cumulativo
+  var totCrescitaMin = (anni[anni.length-1]?.fat?.[0] || fat) - fat;
+  var totCrescitaMax = (anni[anni.length-1]?.fat?.[1] || fat) - fat;
+  var totRoiMin = investitoCumul > 0 ? (totCrescitaMin * anni.length / investitoCumul).toFixed(1) : '\u2014';
+  var totRoiMax = investitoCumul > 0 ? (totCrescitaMax * anni.length / investitoCumul).toFixed(1) : '\u2014';
+  var totRoiCol = totRoiMax >= 1.5 ? 'rgb(25,100,60)' : totRoiMax >= 1 ? 'rgba(150,110,30,0.75)' : 'rgba(170,50,40,0.75)';
+
+  rows += '<div style="display:grid;grid-template-columns:70px 1fr 1fr 1fr 80px;gap:8px;padding:12px 0;border-top:2px solid var(--border);align-items:center;margin-top:4px">' +
+    '<div style="font-size:12px;font-weight:700;color:var(--white)">Totale</div>' +
+    '<div></div>' +
+    '<div></div>' +
+    '<div style="text-align:center"><div style="font-size:10px;color:var(--gray)">Investito totale</div><div style="font-size:13px;font-weight:700;color:rgb(40,75,160)">' + fmtF(investitoCumul) + '\u20AC</div></div>' +
+    '<div style="text-align:center"><div style="font-size:10px;color:var(--gray)">ROI piano</div><div style="font-size:14px;font-weight:700;color:' + totRoiCol + '">' + totRoiMin + '\u2013' + totRoiMax + 'x</div></div>' +
+  '</div>';
 
   var breakevenStr = ic.sostenibilita?.breakevenStr || '\u2014';
   var html = rows +
