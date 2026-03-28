@@ -559,8 +559,9 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 .bench-kpi-fonte{font-size:10px;color:var(--gray2);margin-top:2px}
 .bench-td-num{text-align:right;color:var(--gray);font-size:13px}
 .bench-td-top{color:#4A9A6A!important;font-weight:600}
-.bench-td-client{text-align:right;min-width:140px}
-.bench-client-val-inline{font-weight:700;font-size:13px;margin-right:6px}
+.bench-td-client{text-align:right;min-width:140px;white-space:nowrap}
+.bench-client-val-inline{font-weight:700;font-size:13px;margin-right:6px;display:inline}
+.bench-badge{display:inline;white-space:nowrap}
 .bench-val-top{color:#4A9A6A}
 .bench-val-ok{color:#C9973A}
 .bench-val-low{color:#C05040}
