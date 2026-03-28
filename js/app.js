@@ -4332,6 +4332,7 @@ function apriSchedaFinanziaria(tab) {
 }
 
 function chiudiSchedaFinanziaria() {
+  if (window._calcPolling) { clearInterval(window._calcPolling); window._calcPolling = null; }
   document.getElementById('scheda-overlay').classList.remove('open');
   document.body.style.overflow = '';
   _schedaEditMode = false;
@@ -4482,9 +4483,20 @@ function _abilitaModificaScheda() {
   if (!body) return;
   body.querySelectorAll('.scheda-field, input, select, textarea').forEach(function(el) {
     el.disabled = false;
+    el.removeAttribute('disabled');
   });
   var tab = _schedaTabs[_schedaTabIdx];
   if (tab === 'financials') {
+    // Polling: ricalcola ogni 300ms mentre la scheda è in edit
+    if (window._calcPolling) clearInterval(window._calcPolling);
+    window._calcPolling = setInterval(function() {
+      if (!_schedaEditMode || _schedaTabs[_schedaTabIdx] !== 'financials') {
+        clearInterval(window._calcPolling);
+        window._calcPolling = null;
+        return;
+      }
+      aggiornaCalcolatrice();
+    }, 300);
     setTimeout(aggiornaCalcolatrice, 50);
   }
   var btn = document.getElementById('scheda-btn-edit');
