@@ -34,7 +34,7 @@ h1,h2,h3{font-family:'DM Serif Display',serif;font-weight:400}
 
 .sidebar-logo{padding:20px 20px 16px;border-bottom:1px solid var(--border);background:var(--bg2)}
 .wordmark{font-family:'DM Serif Display',serif;font-size:16px;color:var(--gold)}
-.sidebar-logo .sub{font-size:10px;color:var(--gray);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+.sidebar-logo .sub{font-size:10px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
 .nav-item{display:flex;align-items:center;gap:10px;padding:9px 20px;font-size:13px;color:var(--gray);cursor:pointer;transition:all .15s}
 .nav-item:hover{color:var(--white);background:var(--bg4)}
 .nav-item.active{color:var(--gold);background:var(--amber-bg)}
@@ -541,8 +541,8 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 /* ── DARK PREMIUM OVERRIDES ─────────────────────────── */
 body{background:var(--bg);color:var(--text)}
 .sidebar{background:#060E1A;border-right:1px solid var(--border)}
-.sidebar-logo .wordmark{color:var(--text)}
-.sidebar-logo .sub{color:var(--gray2)}
+.sidebar-logo .wordmark{color:var(--gold)}
+.sidebar-logo .sub{color:var(--gold)}
 .nav-item{color:var(--gray2);border-radius:7px}
 .nav-item:hover{background:var(--bg3);color:var(--text)}
 .nav-item.active{background:var(--blue-bg);color:var(--blue);border-left:2px solid var(--blue)}
