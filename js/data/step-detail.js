@@ -698,6 +698,69 @@ const STEP_DETAIL_BY_SETTORE = {
     },
   },
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // EDILIZIA RESIDENZIALE
+  // ═══════════════════════════════════════════════════════════════════════════
+  edilizia_residenziale: {
+    vendite: {
+      '1': { chi:'Titolare', cosa:'Titolare trova lavori tramite passaparola — nessuna azione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Rapporto sistematico con geometri e architetti della zona', costo_mensile:150, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Titolare strutturato', cosa:'Preventivi professionali + sopralluoghi proattivi su segnalazioni', costo_mensile:300, costo_setup:300, tempo_mesi:2 },
+      '4': { chi:'Commerciale edile', cosa:'Commerciale dedicato — sviluppo condomini, studi tecnici, enti', costo_mensile:2500, costo_setup:500, tempo_mesi:3 },
+      '5': { chi:'Dir. commerciale', cosa:'Dir. commerciale + rete segnalatori + gare pubbliche SOA', costo_mensile:6000, costo_setup:2000, tempo_mesi:6 },
+    },
+    pipeline: {
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — preventivi fatti e dimenticati', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Excel con preventivi aperti, sopralluoghi fatti, follow-up', costo_mensile:0, costo_setup:100, tempo_mesi:1 },
+      '3': { chi:'CRM base', cosa:'CRM per gestire preventivi, cantieri e referenze clienti', costo_mensile:50, costo_setup:200, tempo_mesi:1 },
+      '4': { chi:'CRM + gestionale', cosa:'CRM + gestionale cantieri — margini, avanzamento, SAL', costo_mensile:300, costo_setup:1200, tempo_mesi:2 },
+      '5': { chi:'ERP edile', cosa:'ERP edile — preventivazione, contabilità cantiere, fatturazione', costo_mensile:600, costo_setup:3000, tempo_mesi:3 },
+    },
+    team: {
+      '1': { chi:'Titolare + muratori', cosa:'Titolare + 2-3 muratori — tutti in cantiere, titolare fa tutto', costo_mensile:7000, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+ capo cantiere', cosa:'Capo cantiere — gestisce i lavori, il titolare esce dal cantiere', costo_mensile:10000, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'+ tecnico', cosa:'Geometra/tecnico interno — computi, pratiche, sicurezza, bonus', costo_mensile:13500, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Squadre + back office', cosa:'2+ squadre autonome + back office amministrativo', costo_mensile:22000, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Struttura completa', cosa:'Resp. tecnico + capicantiere + amministrazione strutturata', costo_mensile:30000, costo_setup:2000, tempo_mesi:5 },
+    },
+    processi: {
+      '1': { chi:'Titolare', cosa:'Nessun processo — ogni cantiere è diverso', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Computo metrico standard + template preventivo professionale', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Software cantiere', cosa:'Gestionale cantiere — pianificazione lavori e controllo costi', costo_mensile:250, costo_setup:1000, tempo_mesi:2 },
+      '4': { chi:'Consulente fiscale', cosa:'Gestione bonus fiscali — pratiche, asseverazioni, cessioni', costo_mensile:500, costo_setup:1500, tempo_mesi:2 },
+      '5': { chi:'Quality + SOA', cosa:'SOA + certificazioni + sistema qualità cantiere', costo_mensile:1000, costo_setup:6000, tempo_mesi:4 },
+    },
+    ricavi: {
+      '1': { chi:'Titolare', cosa:'Prezzi al ribasso per prendere i lavori — margini minimi', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Calcolo costi reali per cantiere — materiali, ore, subappalti', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Upsell strutturato', cosa:'Preventivi con voci separate — upsell su finiture e varianti', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '4': { chi:'Contratti ricorrenti', cosa:'Contratti manutenzione post-cantiere — ricavo ricorrente', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '5': { chi:'Revenue manager', cosa:'General contractor — gestione completa con margine su subappalti', costo_mensile:600, costo_setup:1000, tempo_mesi:3 },
+    },
+    marketing: {
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo passaparola nel quartiere', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Google My Business con foto cantieri prima/dopo + recensioni', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Portali', cosa:'Presenza su portali ristrutturazione (Houzz, Habitissimo)', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Agenzia digital', cosa:'Google Ads locali + campagne social prima/dopo lavori', costo_mensile:800, costo_setup:1200, tempo_mesi:2 },
+      '5': { chi:'Marketing manager', cosa:'Piano marketing — portfolio, partnership architetti, eventi locali', costo_mensile:2000, costo_setup:2500, tempo_mesi:3 },
+    },
+    sitoweb: {
+      '1': { chi:'Nessuno', cosa:'Nessun sito — solo pagina Facebook', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Web agency', cosa:'Sito con portfolio lavori, servizi e zona operativa', costo_mensile:80, costo_setup:800, tempo_mesi:1 },
+      '3': { chi:'Sito professionale', cosa:'Gallery prima/dopo + preventivo online + recensioni', costo_mensile:250, costo_setup:2000, tempo_mesi:2 },
+      '4': { chi:'Sito + SEO', cosa:'Blog su bonus fiscali e ristrutturazione + SEO locale', costo_mensile:500, costo_setup:1500, tempo_mesi:2 },
+      '5': { chi:'Sito avanzato', cosa:'Configuratore preventivo online per ristrutturazioni standard', costo_mensile:800, costo_setup:5000, tempo_mesi:3 },
+    },
+    ecommerce: {
+      _label: 'Approvvigionamento materiali e subappalti',
+      '1': { chi:'Titolare', cosa:'Acquisto materiali dal solito magazzino edile — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Confronto prezzi tra 2-3 fornitori per ogni cantiere', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Accordi fornitori', cosa:'Accordi quadro con fornitori materiali — prezzi riservati', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
+      '4': { chi:'Gestione subappalti', cosa:'Rete subappaltatori qualificati con tariffe concordate', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
+      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — negoziazione volumi, stoccaggio, import diretto', costo_mensile:1500, costo_setup:1000, tempo_mesi:4 },
+    },
+  },
+
 };
 
 window.STEP_DETAIL_BY_SETTORE = STEP_DETAIL_BY_SETTORE;
