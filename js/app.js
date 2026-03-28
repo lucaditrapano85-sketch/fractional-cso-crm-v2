@@ -4484,10 +4484,29 @@ function _abilitaModificaScheda() {
   if (!body) return;
   body.querySelectorAll('.scheda-field, input, select, textarea').forEach(function(el) {
     el.disabled = false;
+    // Rimuovi e riaggiungi per forzare il binding
+    var clone = el.cloneNode(true);
+    clone.disabled = false;
+    el.parentNode.replaceChild(clone, el);
   });
-  // For financials, trigger calcolatrice after enabling
+  // For financials, bind calcolatrice listeners dopo il re-clone
   var tab = _schedaTabs[_schedaTabIdx];
-  if (tab === 'financials' && typeof aggiornaCalcolatrice === 'function') {
+  if (tab === 'financials') {
+    var calcIds = ['calc-fatturato','calc-fatturato-prec','calc-cdv-pct','calc-cdv-eur','calc-cf-personale','calc-cf-affitto','calc-cf-servizi','calc-cf-altro','calc-ammortamenti','calc-reddito-titolare'];
+    calcIds.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) {
+        el.oninput = function() {
+          if (id === 'calc-cdv-pct') { var e2 = document.getElementById('calc-cdv-eur'); if (e2) e2.value = ''; }
+          if (id === 'calc-cdv-eur') { var e2 = document.getElementById('calc-cdv-pct'); if (e2) e2.value = ''; }
+          aggiornaCalcolatrice();
+        };
+      }
+    });
+    ['amm-immobili','amm-macchinari','amm-attrezzatura','amm-veicoli','amm-software','amm-leasing'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.oninput = calcolaAmmDaCategorie;
+    });
     setTimeout(aggiornaCalcolatrice, 50);
   }
   var btn = document.getElementById('scheda-btn-edit');
