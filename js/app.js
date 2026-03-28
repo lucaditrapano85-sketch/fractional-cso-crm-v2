@@ -4031,6 +4031,8 @@ function _calcolaImpattoCumulativo(p) {
 
   const DIMS_IDS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
   const attive = DIMS_IDS.filter(id => (targets[id]||0) > (dims[id]||0));
+  // Dimensioni completate: target raggiunto — i costi sono stati sostenuti
+  const completate = DIMS_IDS.filter(id => (targets[id]||0) > 0 && (dims[id]||0) >= (targets[id]||0) && (targets[id]||0) > 1);
   const ORGANICA_CURVA = [0,0.005,0.012,0.025,0.042,0.065];
   const ORGANICA_PESI = {
     manifatturiero:{vendite:0.32,pipeline:0.22,team:0.18,processi:0.10,ricavi:0.09,marketing:0.06,sitoweb:0.02,ecommerce:0.01},
@@ -4069,7 +4071,7 @@ function _calcolaImpattoCumulativo(p) {
   let usaOrganica = false;
   if (attive.length === 0) { isSuggerito = true; usaOrganica = true; }
   const attive2 = DIMS_IDS.filter(id => !usaOrganica && (targets[id]||0) > (dims[id]||0));
-  if (attive2.length === 0 && !usaOrganica) return null;
+  if (attive2.length === 0 && completate.length === 0 && !usaOrganica) return null;
 
   // Calcolo costi separando ricorrenti e una tantum
   let costoRicorrenteMensile = 0;
@@ -4094,6 +4096,26 @@ function _calcolaImpattoCumulativo(p) {
       dimSteps.push({ from: step, to: step+1, r: c ? c.r : 0, u: c ? c.u : 0, desc: detail ? detail.cosa : '' });
     }
     costiPerDim[id] = { r: dimR, u: dimU, steps: dimSteps };
+  });
+  // Aggiungi costi delle dimensioni completate (target raggiunto)
+  completate.forEach(id => {
+    if (costiPerDim[id]) return; // già calcolata come attiva
+    const startDim = 1; // il piano partiva da step 1 (o dal livello iniziale salvato)
+    const tgt = targets[id] || 0;
+    let dimR = 0, dimU = 0;
+    const dimSteps = [];
+    for (let step = startDim; step < tgt; step++) {
+      const c = _getCosto(settore, id, step, step+1);
+      const detail = getStepDetail(settore, id, String(step+1));
+      if (c) {
+        dimR += c.r || 0;
+        dimU += c.u || 0;
+        costoRicorrenteMensile += c.r || 0;
+        costoUnaTantumTot += c.u || 0;
+      }
+      dimSteps.push({ from: step, to: step+1, r: c ? c.r : 0, u: c ? c.u : 0, desc: detail ? detail.cosa : '' });
+    }
+    if (dimR > 0 || dimU > 0) costiPerDim[id] = { r: dimR, u: dimU, steps: dimSteps, completed: true };
   });
   const costoMensileTot = costoRicorrenteMensile; // alias per compatibilità
 
