@@ -4853,6 +4853,75 @@ function _buildGraficoTimeline(p) {
       '<div class="tl-mc" style="cursor:pointer" onclick="apriDettaglioRoi()"><div class="tl-mc-label">ROI stimato</div><div class="tl-mc-val tl-amber">' + roiStr + '</div><div class="tl-mc-sub">breakeven ' + breakevenStr + ' · clicca per dettagli</div></div>' +
     '</div>' +
 
+    // 1a. ALERT SOSTENIBILITÀ
+    (function() {
+      if (!fat || !costoMensile) return '';
+      var costoAnnuo = costoMensile * 12 + (ic.costoUnaTantumTot || 0);
+      var pctFatturato = (costoAnnuo / fat * 100).toFixed(0);
+      if (pctFatturato <= 15) return ''; // sotto il 15% è sostenibile
+
+      var livello = pctFatturato > 30 ? 'critico' : 'alto';
+      var col = livello === 'critico' ? 'rgba(170,50,40,0.8)' : 'rgba(150,110,30,0.8)';
+      var bgCol = livello === 'critico' ? 'rgba(170,50,40,0.06)' : 'rgba(150,110,30,0.06)';
+      var borderCol = livello === 'critico' ? 'rgba(170,50,40,0.2)' : 'rgba(150,110,30,0.2)';
+      var icon = livello === 'critico' ? '\u26D4' : '\u26A0';
+
+      // Suggerisci priorità: ordina dimensioni per impatto/costo e suggerisci quelle da fare prima
+      var dimAttive = ic.dimAttive || [];
+      var costiDim = ic.costiPerDim || {};
+      var priorita = dimAttive.map(function(id) {
+        var c = costiDim[id];
+        if (!c || c.r === 0) return null;
+        var imp = _calcolaImpattoUnitario(settore, id, String((dims[id]||0)+1), p);
+        var impPct = imp ? (imp.pct_12m[0] + imp.pct_12m[1]) / 2 : 0;
+        return { id: id, costo: c.r, impatto: impPct, rapporto: impPct / (c.r || 1) };
+      }).filter(Boolean).sort(function(a,b) { return b.rapporto - a.rapporto; });
+
+      var LABEL = {};
+      var sd = (typeof STEP_DETAIL_BY_SETTORE !== 'undefined') ? STEP_DETAIL_BY_SETTORE : {};
+      ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'].forEach(function(id) {
+        LABEL[id] = sd[settore]?.[id]?._label || (typeof getDimLabel === 'function' ? getDimLabel(settore, id) : id);
+      });
+
+      var budgetMensile = Math.round(fat * 0.12 / 12 / 100) * 100; // 12% del fatturato / 12 mesi
+      var suggerimento = '';
+      if (priorita.length > 0) {
+        var faseUno = [];
+        var costoFaseUno = 0;
+        for (var i = 0; i < priorita.length; i++) {
+          if (costoFaseUno + priorita[i].costo <= budgetMensile * 1.2) {
+            faseUno.push(priorita[i]);
+            costoFaseUno += priorita[i].costo;
+          }
+        }
+        if (faseUno.length > 0 && faseUno.length < priorita.length) {
+          suggerimento = '<div style="margin-top:8px;font-size:11px;color:var(--text)">' +
+            '<strong>Suggerimento:</strong> inizia con ' +
+            faseUno.map(function(d) { return '<strong>' + LABEL[d.id] + '</strong>'; }).join(' + ') +
+            ' (~' + Math.round(costoFaseUno/100)*100 + '\u20AC/mese) — il miglior rapporto impatto/costo.' +
+            ' Le altre dimensioni si aggiungono quando il fatturato cresce.' +
+          '</div>';
+        }
+      }
+
+      return '<div style="margin:12px 0;padding:12px 16px;background:' + bgCol + ';border:1px solid ' + borderCol + ';border-radius:12px">' +
+        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">' +
+          '<span style="font-size:16px">' + icon + '</span>' +
+          '<span style="font-size:13px;font-weight:700;color:' + col + '">Investimento ' + livello + ': ' + pctFatturato + '% del fatturato</span>' +
+        '</div>' +
+        '<div style="font-size:11px;color:var(--gray)">' +
+          'Il piano richiede ' + fmtF(costoAnnuo) + '\u20AC/anno su un fatturato di ' + fmtF(fat) + '\u20AC. ' +
+          (livello === 'critico'
+            ? 'Questo livello di investimento non è sostenibile. Riduci i target o distribuisci nel tempo.'
+            : 'Valuta di implementare il piano in fasi per gestire il cash flow.') +
+        '</div>' +
+        '<div style="font-size:11px;color:var(--gray);margin-top:4px">' +
+          'Budget mensile consigliato: <strong>~' + budgetMensile.toLocaleString('it-IT') + '\u20AC/mese</strong> (12% del fatturato)' +
+        '</div>' +
+        suggerimento +
+      '</div>';
+    })() +
+
     // 1b. SBILANCIAMENTO PIANO
     (function() {
       var penDim = ic.penalitaPerDim || {};
