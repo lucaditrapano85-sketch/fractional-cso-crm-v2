@@ -1,5 +1,5 @@
 :root {
-  --bg:        #eef0f4;
+  --bg:        #d8dbe2;
   --bg2:       rgba(255,255,255,0.55);
   --bg3:       rgba(255,255,255,0.35);
   --bg4:       rgba(255,255,255,0.2);
@@ -25,7 +25,7 @@
   --accent:    rgba(70,100,200,0.7);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;background:linear-gradient(145deg,#eef0f4 0%,#e4e6ec 50%,#eef0f4 100%);color:var(--white);min-height:100vh;-webkit-font-smoothing:antialiased}
+body{font-family:'DM Sans',sans-serif;background:linear-gradient(145deg,#d8dbe2 0%,#cfd2da 50%,#d8dbe2 100%);color:var(--white);min-height:100vh;-webkit-font-smoothing:antialiased}
 h1,h2,h3{font-family:'DM Serif Display',serif;font-weight:400}
 
 .app{display:flex;height:100vh;overflow:hidden}
@@ -61,7 +61,7 @@ h1,h2,h3{font-family:'DM Serif Display',serif;font-weight:400}
 .kpi-label{font-size:11px;color:var(--gray);letter-spacing:.06em;text-transform:uppercase}
 .kpi-val{font-size:28px;font-family:'DM Serif Display',serif;color:var(--white);margin-top:4px}
 .kpi-sub{font-size:11px;color:var(--gray);margin-top:4px}
-.kpi-card.gold{border-color:var(--gold);border-left:3px solid var(--gold)}
+.kpi-card.gold{border-color:rgba(255,255,255,0.6);border-left:1px solid rgba(255,255,255,0.8)}
 .kpi-card.gold .kpi-val{color:var(--gold)}
 .section-title{font-size:13px;font-weight:600;color:var(--gray);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
 .pipeline-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:28px;perspective:800px}
@@ -644,7 +644,7 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 .tl-proj-footer b{color:var(--white)}
 
 /* ── LIGHT GLASS OVERRIDES ─────────────────────────── */
-body{background:linear-gradient(145deg,#eef0f4 0%,#e4e6ec 50%,#eef0f4 100%);color:var(--text)}
+body{background:linear-gradient(145deg,#d8dbe2 0%,#cfd2da 50%,#d8dbe2 100%);color:var(--text)}
 .sidebar{background:rgba(255,255,255,0.7);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-right:1px solid rgba(0,0,0,0.06)}
 .sidebar-logo .wordmark{color:var(--gold)}
 .sidebar-logo .sub{color:var(--gold)}
