@@ -4146,6 +4146,41 @@ function _buildGraficoTimeline(p) {
       '<div class="tl-mc"><div class="tl-mc-label">ROI stimato</div><div class="tl-mc-val tl-amber">' + roiStr + '</div><div class="tl-mc-sub">breakeven ' + breakevenStr + '</div></div>' +
     '</div>' +
 
+    // 1b. SBILANCIAMENTO
+    (function() {
+      var penDim = ic.penalitaPerDim || {};
+      var entries = Object.entries(penDim).filter(function(e){ return e[1] > 0.05; }).sort(function(a,b){ return b[1]-a[1]; });
+      if (entries.length === 0) return '';
+      var media = entries.reduce(function(s,e){ return s+e[1]; }, 0) / entries.length;
+      var mediaCol = media >= 0.40 ? '#C05040' : media >= 0.20 ? '#C9973A' : '#4A9A6A';
+      var LABEL = {vendite:'Vendite',pipeline:'Pipeline',team:'Team',processi:'Processi',ricavi:'Ricavi',marketing:'Marketing',sitoweb:'Sito Web',ecommerce:'Approvv.'};
+      var rows = entries.map(function(e) {
+        var id = e[0]; var pct = Math.round(e[1]*100);
+        var col = pct >= 40 ? '#C05040' : pct >= 20 ? '#C9973A' : '#4A9A6A';
+        var deps = _getDipendenze(settore, id);
+        var depsLow = Object.keys(deps).filter(function(dep) {
+          var livDim = Math.max((targets[id]||1), (dims[id]||1));
+          var livDep = Math.max((targets[dep]||1), (dims[dep]||1));
+          return livDim > livDep;
+        }).map(function(dep){ return LABEL[dep]||dep; });
+        var motivo = depsLow.length > 0 ? ' \u2014 dipende da ' + depsLow.join(', ') : '';
+        return '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">' +
+          '<div style="width:80px;font-size:11px;color:var(--white);font-weight:500">' + (LABEL[id]||id) + '</div>' +
+          '<div style="flex:1;height:6px;background:var(--border);border-radius:3px">' +
+            '<div style="width:' + Math.min(pct, 100) + '%;height:100%;background:' + col + ';border-radius:3px"></div>' +
+          '</div>' +
+          '<div style="width:35px;font-size:11px;font-weight:600;color:' + col + ';text-align:right">' + pct + '%</div>' +
+          '<div style="font-size:9px;color:var(--gray);min-width:120px">' + motivo + '</div>' +
+        '</div>';
+      }).join('');
+      return '<div class="tl-divider"></div>' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
+          '<div class="tl-section-label" style="margin-bottom:0">\u26A0 Sbilanciamento piano</div>' +
+          '<div style="font-size:12px;font-weight:700;color:' + mediaCol + '">' + Math.round(media*100) + '% medio</div>' +
+        '</div>' +
+        '<div style="padding:10px 0">' + rows + '</div>';
+    })() +
+
     // 2. GRAFICO LINEE
     '<div class="tl-divider"></div>' +
     '<div class="tl-section-label">Proiezione fatturato</div>' +
