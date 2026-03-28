@@ -67,10 +67,6 @@ function _getDiagLabel(settore, dimId) {
   return _diagLabels[dimId] || dimId;
 }
 function _getDiagDescr(settore, dimId) {
-  // Descrizione da step 1 del STEP_DETAIL come contesto
-  var sd = (typeof STEP_DETAIL_BY_SETTORE !== 'undefined') ? STEP_DETAIL_BY_SETTORE : {};
-  var step1 = sd[settore]?.[dimId]?.['1'];
-  if (step1) return step1.cosa;
   return _diagDescr[dimId] || '';
 }
 
