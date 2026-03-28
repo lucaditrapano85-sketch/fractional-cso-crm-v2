@@ -169,7 +169,7 @@ h1,h2,h3{font-family:'DM Serif Display',serif;font-weight:400}
 .dim-bar-fill{height:100%;border-radius:2px;transition:width .6s ease}
 .dim-val{font-size:11px;font-weight:600;width:32px;text-align:right;flex-shrink:0}
 .bench-table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}
-.bench-table th{font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:0 4px 10px;border-bottom:2px solid var(--border);text-align:right;white-space:nowrap;width:25%}
+.bench-table th{font-size:9px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:0 4px 10px;border-bottom:2px solid var(--border);text-align:center;white-space:nowrap;width:25%}
 .bench-table th:first-child{text-align:left;color:var(--gray2);padding-left:0;width:25%}
 .bench-table th.col-media{color:var(--gray)}
 .bench-table th.col-best{color:var(--green)}
@@ -552,14 +552,15 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 .bench-sum-nd{background:var(--bg4);color:var(--gray);font-weight:400}
 .bench-sum-warn{font-size:12px;color:#C9973A;font-weight:500}
 .bench-table{width:100%;border-collapse:collapse;font-size:13px}
-.bench-table th{padding:8px 12px;text-align:left;font-size:12px;font-weight:600;color:var(--gray);border-bottom:2px solid var(--border)}
+.bench-table th{padding:8px 12px;text-align:center;font-size:12px;font-weight:600;color:var(--gray);border-bottom:2px solid var(--border)}
+.bench-table th:first-child{text-align:left}
 .bench-table td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
 .bench-td-label{max-width:220px}
 .bench-kpi-name{font-weight:600;font-size:13px;color:var(--white)}
 .bench-kpi-fonte{font-size:10px;color:var(--gray2);margin-top:2px}
-.bench-td-num{text-align:right;color:var(--gray);font-size:13px}
+.bench-td-num{text-align:center;color:var(--gray);font-size:13px}
 .bench-td-top{color:#4A9A6A!important;font-weight:600}
-.bench-td-client{text-align:right;min-width:140px;white-space:nowrap}
+.bench-td-client{text-align:center;min-width:140px;white-space:nowrap}
 .bench-client-val-inline{font-weight:700;font-size:13px;margin-right:6px;display:inline}
 .bench-badge{display:inline;white-space:nowrap}
 .bench-val-top{color:#4A9A6A}
