@@ -102,9 +102,13 @@ function apriDiagnosi() {
     p.dims = {};
     p.dims_answers = {};
     p.targets = {};
+    p.score_history = [];
     _diagRisposte = {};
     // Salva su DB in background
-    try { sb.from('prospects').update({ dims: {}, dims_answers: {}, targets: {} }).eq('id', p.id); } catch(e) {}
+    try { sb.from('prospects').update({ dims: {}, dims_answers: {}, targets: {}, score_history: [] }).eq('id', p.id); } catch(e) {}
+    // Forza re-render della pagina dietro
+    drawRadar({}, {});
+    renderProspectDetail(p.id);
   }
   _diagProspect = p;
   var settoreBase = FAMIGLIA_SETTORE[p.settore] || 'b2b_manifatturiero';
