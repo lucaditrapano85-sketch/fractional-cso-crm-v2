@@ -1013,6 +1013,69 @@ const STEP_DETAIL_BY_SETTORE = {
     },
   },
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // COMMERCIO MATERIALI EDILI
+  // ═══════════════════════════════════════════════════════════════════════════
+  commercio_materiali_edili: {
+    vendite: {
+      '1': { chi:'Titolare', cosa:'Titolare vende al banco — chi viene compra', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Visite pianificate a imprese edili e posatori della zona', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Titolare strutturato', cosa:'Sviluppo canale showroom ceramiche — appuntamenti con privati', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Agente edile', cosa:'Agente esterno per imprese edili + cantieri medio-grandi', costo_mensile:1800, costo_setup:500, tempo_mesi:3 },
+      '5': { chi:'Strategia + gare', cosa:'Sviluppo gare pubbliche + accordi quadro con costruttori', costo_mensile:3000, costo_setup:2000, tempo_mesi:6 },
+    },
+    pipeline: {
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — vendite al banco senza storico', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Excel con clienti principali, frequenza acquisti, volumi', costo_mensile:0, costo_setup:100, tempo_mesi:1 },
+      '3': { chi:'CRM base', cosa:'CRM per follow-up preventivi e gestione clienti imprese', costo_mensile:80, costo_setup:300, tempo_mesi:1 },
+      '4': { chi:'CRM + gestionale', cosa:'CRM + gestionale magazzino — stock, prezzi, listini cliente', costo_mensile:500, costo_setup:2000, tempo_mesi:2 },
+      '5': { chi:'ERP completo', cosa:'ERP — ordini, magazzino, logistica consegne, fatturazione', costo_mensile:1000, costo_setup:5000, tempo_mesi:3 },
+    },
+    team: {
+      '1': { chi:'Titolare + operativi', cosa:'Titolare + magazziniere + autista con gru', costo_mensile:5500, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+ addetto banco', cosa:'Addetto banco vendita — libera il titolare dal banco', costo_mensile:7500, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'+ addetto showroom', cosa:'Addetto showroom ceramiche — consulenza e preventivi privati', costo_mensile:10000, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Team completo', cosa:'Team logistica + banco + showroom + back office', costo_mensile:16000, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Struttura manageriale', cosa:'Resp. commerciale + resp. logistica + amministrazione', costo_mensile:22000, costo_setup:1500, tempo_mesi:5 },
+    },
+    processi: {
+      '1': { chi:'Titolare', cosa:'Nessun processo — magazzino gestito a vista', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Gestione ordini strutturata — conferma, tempi consegna', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Software gestionale', cosa:'Gestionale magazzino — giacenze, riordino, inventario', costo_mensile:300, costo_setup:1500, tempo_mesi:2 },
+      '4': { chi:'Gestionale logistica', cosa:'Logistica consegne ottimizzata — route planning, mezzi', costo_mensile:600, costo_setup:2500, tempo_mesi:2 },
+      '5': { chi:'ERP completo', cosa:'ERP integrato + gestione showroom + consegne pianificate', costo_mensile:1000, costo_setup:5000, tempo_mesi:4 },
+    },
+    ricavi: {
+      '1': { chi:'Titolare', cosa:'Margine fisso da listino fornitore — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Pricing differenziato — imprese vs privati vs cantieri', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Upsell strutturato', cosa:'Upsell showroom — finiture, accessori, posa consigliata', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '4': { chi:'Servizio a valore', cosa:'Servizio consegna in cantiere come voce a margine', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '5': { chi:'Revenue manager', cosa:'Contratti quadro con costruttori + private label su linee base', costo_mensile:700, costo_setup:1500, tempo_mesi:3 },
+    },
+    marketing: {
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo posizione e insegna', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Google My Business + foto showroom e magazzino', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Agenzia digital', cosa:'Google Ads locali su "materiali edili + città"', costo_mensile:500, costo_setup:800, tempo_mesi:2 },
+      '4': { chi:'Social + ads', cosa:'Campagne social con progetti realizzati + promozioni stagionali', costo_mensile:900, costo_setup:1500, tempo_mesi:2 },
+      '5': { chi:'Marketing manager', cosa:'Piano marketing — eventi showroom, partnership progettisti', costo_mensile:2000, costo_setup:2500, tempo_mesi:3 },
+    },
+    sitoweb: {
+      '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Web agency', cosa:'Sito con catalogo prodotti, showroom, zona consegna', costo_mensile:80, costo_setup:1000, tempo_mesi:1 },
+      '3': { chi:'Sito professionale', cosa:'Catalogo ceramiche online + richiesta preventivo', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
+      '4': { chi:'Sito avanzato', cosa:'Simulatore ambienti + disponibilità stock online', costo_mensile:600, costo_setup:5000, tempo_mesi:2 },
+      '5': { chi:'Piattaforma B2B', cosa:'Portale B2B — ordini imprese, listini riservati, tracking', costo_mensile:1000, costo_setup:8000, tempo_mesi:3 },
+    },
+    ecommerce: {
+      _label: 'Approvvigionamento materiali',
+      '1': { chi:'Titolare', cosa:'Acquisto da 1-2 produttori abituali — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Confronto fornitori su prodotti principali — prezzi e tempi', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Accordi fornitori', cosa:'Accordi quadro con produttori ceramiche e cemento', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
+      '4': { chi:'Buyer', cosa:'Buyer dedicato — diversificazione fornitori, import diretto', costo_mensile:1500, costo_setup:500, tempo_mesi:2 },
+      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — contratti volume, stoccaggio strategico', costo_mensile:3000, costo_setup:1500, tempo_mesi:4 },
+    },
+  },
+
 };
 
 window.STEP_DETAIL_BY_SETTORE = STEP_DETAIL_BY_SETTORE;
