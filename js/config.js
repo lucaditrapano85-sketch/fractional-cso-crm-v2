@@ -607,7 +607,7 @@ function getDimLabel(settore, dimId) {
     edilizia: {
       vendite: "Sviluppo clienti",
       pipeline: "Pipeline & preventivi",
-      team: "Organico tecnico",
+      team: "Organizzazione",
       processi: "Capacità tecnica & ufficio tecnico",
       ricavi: "Dotazione cantiere",
       sitoweb: "Sito Web",
@@ -666,7 +666,7 @@ function getDimLabel(settore, dimId) {
   const DEFAULT = {
     vendite: "Vendite",
     pipeline: "Pipeline & CRM",
-    team: "Team & HR",
+    team: "Organizzazione",
     processi: "Processi",
     ricavi: "Ricavi",
     marketing: "Marketing",
@@ -674,6 +674,10 @@ function getDimLabel(settore, dimId) {
     ecommerce: "E-commerce"
   };
 
+  // Prima fonte: _label da STEP_DETAIL_BY_SETTORE (se disponibile)
+  if (typeof STEP_DETAIL_BY_SETTORE !== 'undefined' && STEP_DETAIL_BY_SETTORE[settore]?.[dimId]?._label) {
+    return STEP_DETAIL_BY_SETTORE[settore][dimId]._label;
+  }
   return OVERRIDE[suffix]?.[dimId] || OVERRIDE[prefix]?.[dimId] || OVERRIDE[macro]?.[dimId] || DEFAULT[dimId] || dimId;
 }
 

@@ -111,7 +111,7 @@ function openSessioneModal() {
   var p = prospects.find(function(x) { return x.id === currentId; });
   if (!p) return;
   var DIMS_S = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
-  var DIM_LABELS_S = {vendite:'Sviluppo clienti',pipeline:'Pipeline & CRM',team:'Team commerciale',processi:'Processi & Compliance',ricavi:'Ricavi & Margini',marketing:'Marketing & Domanda',sitoweb:'Sito Web & Presenza',ecommerce:(typeof getDimLabel==='function'?getDimLabel(p.settore,'ecommerce'):'Ecommerce')};
+  var DIM_LABELS_S = {vendite:'Sviluppo clienti',pipeline:'Pipeline & CRM',team:'Organizzazione',processi:'Processi & Compliance',ricavi:'Ricavi & Margini',marketing:'Marketing & Domanda',sitoweb:'Sito Web & Presenza',ecommerce:(typeof getDimLabel==='function'?getDimLabel(p.settore,'ecommerce'):'Ecommerce')};
   var oggi = new Date().toISOString().split('T')[0];
   var dimsHtml = DIMS_S.map(function(d) {
     var livelloAttuale = p.dims?.[d] || 1;
@@ -144,7 +144,7 @@ function sessToggleUpgrade(dim, checked) {
 
 function sessAggiornaRiepilogo() {
   var DIMS_S = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
-  var DIM_LABELS_S = {vendite:'Sviluppo clienti',pipeline:'Pipeline & CRM',team:'Team commerciale',processi:'Processi',ricavi:'Ricavi',marketing:'Marketing',sitoweb:'Sito Web',ecommerce:'Ecommerce'};
+  var DIM_LABELS_S = {vendite:'Sviluppo clienti',pipeline:'Pipeline & CRM',team:'Organizzazione',processi:'Processi',ricavi:'Ricavi',marketing:'Marketing',sitoweb:'Sito Web',ecommerce:'Ecommerce'};
   var p = prospects.find(function(x) { return x.id === currentId; });
   var upgrades = DIMS_S.filter(function(d) { return document.getElementById('sess-chk-'+d)?.checked; });
   var riepilogo = document.getElementById('sess-riepilogo');
@@ -4120,7 +4120,7 @@ function _calcolaImpattoCumulativo(p) {
   const alertSbilanciamento = attive
     .filter(id => penalitaPerDim[id] > 0.20)
     .map(id => {
-      const LABEL = {vendite:'Struttura commerciale',pipeline:'Pipeline & CRM',team:'Capitale umano',processi:'Processi & script',ricavi:'Prevedibilità ricavi',marketing:'Marketing & lead gen',sitoweb:'Sito web',ecommerce:'E-commerce & digital'};
+      const LABEL = {vendite:'Struttura commerciale',pipeline:'Pipeline & CRM',team:'Organizzazione',processi:'Processi & script',ricavi:'Prevedibilità ricavi',marketing:'Marketing & lead gen',sitoweb:'Sito web',ecommerce:'E-commerce & digital'};
       return {id, label: LABEL[id]||id, penalita: Math.round(penalitaPerDim[id]*100)};
     });
 
@@ -6155,7 +6155,7 @@ function deriveDimsFromKpi(p, kpiData) {
 
   // -- PIPELINE & CRM ----------------------------------------------------
   // Basata su: fill rate, tempo risposta, clienti online, pipeline valore
-  // NOTA: 'team' (Capitale umano) non si ricava dai KPI commerciali ?
+  // NOTA: 'team' (Organizzazione) non si ricava dai KPI commerciali ?
   // ? una valutazione qualitativa che il CSO inserisce manualmente nel radar
   let pipelineScores = [];
   ['fill_rate_pct','tempo_risposta_h','tempo_risposta_min','pipeline_valore',
