@@ -3662,10 +3662,10 @@ function _calcolaPenalita(settore, dimId, targets, dims) {
 const UNITA_PER_STEP_AUTOMOTIVE = {
   commercio_auto_moto_usato: {
     vendite: {
-      '1-2': { unita_mese: 1.0,  tipo: 'auto' },
-      '2-3': { unita_mese: 2.5,  tipo: 'auto' },
-      '3-4': { unita_mese: 4.0,  tipo: 'auto' },
-      '4-5': { unita_mese: 6.0,  tipo: 'auto' },
+      '1-2': { unita_mese: 1.5,  tipo: 'auto' },
+      '2-3': { unita_mese: 3.0,  tipo: 'auto' },
+      '3-4': { unita_mese: 5.0,  tipo: 'auto' },
+      '4-5': { unita_mese: 7.0,  tipo: 'auto' },
     },
     pipeline: {
       '1-2': { recupero_pct: 0.15 },
@@ -3886,15 +3886,16 @@ const SETTORE_TO_UNITA_KEY = {
 window.SETTORE_TO_UNITA_KEY = SETTORE_TO_UNITA_KEY;
 
 function _calcolaImpattoUnitario(settore, dimId, stepKey, p) {
-  // Normalizza chiave: genera sia range "1-2" che singolo "2"
+  // Normalizza chiave
   const rangeKey = String(stepKey).includes('-') ? String(stepKey) : (parseInt(stepKey) - 1) + '-' + stepKey;
   const singleKey = String(stepKey).includes('-') ? String(stepKey).split('-')[1] : String(stepKey);
 
   const fat = p?.fatturato_anno_1 || 1;
-  const vmo = p?.kpi_commerciali?.valore_medio_ordine || null;
-  const tconv = (p?.kpi_commerciali?.tasso_conversione_pct || 25) / 100;
+  const kpi = p?.kpi_commerciali || {};
+  const vmo = kpi.valore_medio_ordine || kpi.scontrino_medio || null;
+  const tconv = (kpi.tasso_conversione_pct || kpi.tasso_conversione_negozio_pct || 25) / 100;
+  const nVenditori = kpi.n_venditori || 0;
 
-  // Curva ramp-up
   const ramp = { 6: 0.40, 12: 0.75, 24: 1.00 };
   const calcPct = (fattoreAnnuo, minMolt, maxMolt) => {
     minMolt = minMolt || 0.85;
@@ -3906,80 +3907,53 @@ function _calcolaImpattoUnitario(settore, dimId, stepKey, p) {
     };
   };
 
-  // Determina la chiave dati
   const unitaKey = SETTORE_TO_UNITA_KEY?.[settore];
   let dati = null;
 
   if (unitaKey === 'commercio_auto_moto_usato' || unitaKey === 'commercio_auto_moto_nuovo') {
-    // Usa UNITA_PER_STEP_AUTOMOTIVE esistente — prova range poi singolo
     dati = UNITA_PER_STEP_AUTOMOTIVE?.[settore]?.[dimId]?.[rangeKey]
         || UNITA_PER_STEP_AUTOMOTIVE?.[settore]?.[dimId]?.[singleKey];
     if (!dati) return null;
 
     if (dati.unita_mese && vmo) {
-      return calcPct(dati.unita_mese * 12 * vmo / fat);
+      let unitaEff = dati.unita_mese;
+      if (nVenditori > 0 && dimId === 'vendite') {
+        unitaEff = dati.unita_mese * (1 / (1 + nVenditori * 0.15));
+      }
+      return calcPct(unitaEff * 12 * vmo / fat);
     }
-    if (dati.recupero_pct) {
-      const fatRec = fat * dati.recupero_pct * tconv;
-      return calcPct(fatRec / fat);
-    }
-    if (dati.contatti_mese) {
-      return calcPct(dati.contatti_mese * 12 * (dati.conv_pct || tconv) * (vmo || 10000) / fat);
-    }
+    if (dati.recupero_pct) return calcPct(dati.recupero_pct * tconv);
+    if (dati.contatti_mese) return calcPct(dati.contatti_mese * 12 * (dati.conv_pct || tconv) * (vmo || 10000) / fat);
     if (dati.moltiplicatore) return calcPct(dati.moltiplicatore * 0.7);
-    if (dati.margine_extra_pct) {
-      const fatCliente = p?.fatturato_anno_1 || 0;
-      const vmoCliente = vmo || 10000;
-      const forbicePiccolo = {'1-2':[0.5,1.0],'2-3':[1.0,2.0],'3-4':[2.0,4.0],'4-5':[4.0,6.0]};
-      const forbiceGrande  = {'1-2':[2,5],'2-3':[5,10],'3-4':[10,20],'4-5':[20,35]};
-      const forbice = fatCliente < 2000000 ? forbicePiccolo : forbiceGrande;
-      const [minA, maxA] = forbice[rangeKey] || forbice[singleKey] || [0.5,1.0];
-      return {
-        pct_6m:  [Math.round(minA*12*vmoCliente*ramp[6] /fat*1000)/10, Math.round(maxA*12*vmoCliente*ramp[6] /fat*1000)/10],
-        pct_12m: [Math.round(minA*12*vmoCliente*ramp[12]/fat*1000)/10, Math.round(maxA*12*vmoCliente*ramp[12]/fat*1000)/10],
-        pct_24m: [Math.round(minA*12*vmoCliente*ramp[24]/fat*1000)/10, Math.round(maxA*12*vmoCliente*ramp[24]/fat*1000)/10],
-      };
+    if (dati.margine_extra_pct) return calcPct(dati.margine_extra_pct);
+    if (dati.efficienza_pct) return calcPct(dati.efficienza_pct);
+    if (dati.upsell_pct) {
+      const penFi = kpi.penetrazione_fi_pct || 0;
+      return calcPct(penFi > 30 ? dati.upsell_pct * 0.7 : dati.upsell_pct);
     }
     return null;
   }
 
-  // Settori generici
   if (!unitaKey) return null;
   const tabella = UNITA_PER_STEP_BY_SETTORE?.[unitaKey];
   if (!tabella) return null;
   dati = tabella?.[dimId]?.[rangeKey] || tabella?.[dimId]?.[singleKey];
   if (!dati) return null;
 
-  const vmoEff = vmo || 1000; // fallback VMO generico
+  const vmoEff = vmo || 1000;
 
   switch (dati.tipo) {
-    case 'ordini':
-      // transazioni aggiuntive × VMO
-      return calcPct(dati.val * 12 * vmoEff / fat);
-
-    case 'recupero':
-      // % transazioni recuperate × VMO
-      return calcPct(fat * dati.val * tconv / fat);
-
-    case 'contatti':
-      // contatti aggiuntivi × conversione × VMO
-      return calcPct(dati.val * 12 * (dati.conv || tconv) * vmoEff / fat);
-
-    case 'pct_fat':
-      // percentuale diretta del fatturato
-      return calcPct(dati.val);
-
-    case 'vmo_pct':
-      // aumento del valore medio ordine × transazioni attuali
-      var transAnnue = fat / (vmoEff || 1);
-      return calcPct(dati.val * transAnnue * vmoEff / fat);
-
-    case 'molt':
-      // moltiplicatore sull'efficacia esistente
-      return calcPct(dati.val * 0.7);
-
-    default:
-      return null;
+    case 'ordini': {
+      let ordiniEff = dati.val;
+      if (nVenditori > 0 && dimId === 'vendite') ordiniEff = dati.val * (1 / (1 + nVenditori * 0.15));
+      return calcPct(ordiniEff * 12 * vmoEff / fat);
+    }
+    case 'recupero': return calcPct(dati.val * tconv);
+    case 'contatti': return calcPct(dati.val * 12 * (dati.conv || tconv) * vmoEff / fat);
+    case 'pct_fat': return calcPct(dati.val);
+    case 'vmo_pct': return calcPct(dati.val);
+    case 'molt': return calcPct(dati.val * 0.7);
+    default: return null;
   }
 }
 window._calcolaImpattoUnitario = _calcolaImpattoUnitario;
