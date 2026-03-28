@@ -4415,7 +4415,25 @@ function _renderSchedaTab() {
 
   if (tab === 'financials') {
     setTimeout(function() {
-      if (typeof aggiornaCalcolatrice === 'function') aggiornaCalcolatrice();
+      // Bind event listeners per la calcolatrice (gli oninput inline non funzionano nel popup)
+      var calcIds = ['calc-fatturato','calc-fatturato-prec','calc-cdv-pct','calc-cdv-eur','calc-cf-personale','calc-cf-affitto','calc-cf-servizi','calc-cf-altro','calc-ammortamenti','calc-reddito-titolare'];
+      calcIds.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) {
+          el.addEventListener('input', function() {
+            // CDV: se compili %, svuota EUR e viceversa
+            if (id === 'calc-cdv-pct') { var e2 = document.getElementById('calc-cdv-eur'); if (e2) e2.value = ''; }
+            if (id === 'calc-cdv-eur') { var e2 = document.getElementById('calc-cdv-pct'); if (e2) e2.value = ''; }
+            aggiornaCalcolatrice();
+          });
+        }
+      });
+      // Bind ammortamenti per categoria
+      ['amm-immobili','amm-macchinari','amm-attrezzatura','amm-veicoli','amm-software','amm-leasing'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.addEventListener('input', calcolaAmmDaCategorie);
+      });
+      aggiornaCalcolatrice();
     }, 100);
   }
 
@@ -6042,16 +6060,17 @@ function aggiornaCalcolatrice() {
 async function salvaDaCalcolatrice() {
   var p = prospects.find(function(x){ return x.id === currentId; });
   if (!p) return;
-  var fat = parseFloat(document.getElementById('calc-fatturato')?.value) || null;
-  var fatPrec = parseFloat(document.getElementById('calc-fatturato-prec')?.value) || null;
-  var cdvPct = parseFloat(document.getElementById('calc-cdv-pct')?.value) || null;
-  var cdvEur = parseFloat(document.getElementById('calc-cdv-eur')?.value) || null;
-  var cfPers = parseFloat(document.getElementById('calc-cf-personale')?.value) || null;
-  var cfAff = parseFloat(document.getElementById('calc-cf-affitto')?.value) || null;
-  var cfServ = parseFloat(document.getElementById('calc-cf-servizi')?.value) || null;
-  var cfAltro = parseFloat(document.getElementById('calc-cf-altro')?.value) || null;
-  var amm = parseFloat(document.getElementById('calc-ammortamenti')?.value) || null;
-  var redTit = parseFloat(document.getElementById('calc-reddito-titolare')?.value) || null;
+  var _pv = function(id) { var el = document.getElementById(id); var v = el ? el.value : ''; return v !== '' ? parseFloat(v) : null; };
+  var fat = _pv('calc-fatturato');
+  var fatPrec = _pv('calc-fatturato-prec');
+  var cdvPct = _pv('calc-cdv-pct');
+  var cdvEur = _pv('calc-cdv-eur');
+  var cfPers = _pv('calc-cf-personale');
+  var cfAff = _pv('calc-cf-affitto');
+  var cfServ = _pv('calc-cf-servizi');
+  var cfAltro = _pv('calc-cf-altro');
+  var amm = _pv('calc-ammortamenti');
+  var redTit = _pv('calc-reddito-titolare');
   var forma = document.getElementById('calc-forma')?.value || 'srl';
 
   var dati_calcolatrice = {
