@@ -689,6 +689,38 @@ function renderDashboard() {
     <div class="kpi-val">${k.val}</div>
   </div>`).join('');
 
+  // Alert scadenze in avvicinamento
+  var alertHtml = '';
+  var scadenze = [];
+  prospects.forEach(function(p) {
+    if (!p.target_scadenze || !p.targets) return;
+    var DIMS_IDS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+    DIMS_IDS.forEach(function(dimId) {
+      var scad = p.target_scadenze[dimId];
+      var tgt = p.targets[dimId] || 0;
+      var cur = (p.dims && p.dims[dimId]) || 0;
+      if (!scad || tgt <= cur) return; // no scadenza o già raggiunto
+      var giorni = Math.round((new Date(scad) - new Date()) / 86400000);
+      if (giorni <= 30) scadenze.push({ nome: p.nome, id: p.id, dim: getDimLabel(p.settore, dimId), giorni: giorni, scaduto: giorni < 0 });
+    });
+  });
+  scadenze.sort(function(a,b) { return a.giorni - b.giorni; });
+  if (scadenze.length > 0) {
+    alertHtml = '<div style="margin-bottom:16px;padding:12px 16px;background:rgba(170,50,40,0.06);border:1px solid rgba(170,50,40,0.15);border-radius:12px">' +
+      '<div style="font-size:11px;font-weight:700;color:rgba(170,50,40,0.8);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">\u26A0 Scadenze in avvicinamento (' + scadenze.length + ')</div>' +
+      scadenze.slice(0, 5).map(function(s) {
+        var col = s.scaduto ? 'rgba(170,50,40,0.8)' : s.giorni <= 7 ? 'rgba(170,50,40,0.7)' : 'rgba(150,110,30,0.7)';
+        var label = s.scaduto ? 'Scaduto' : s.giorni + ' giorni';
+        return '<div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;cursor:pointer" onclick="openProspect(\'' + s.id + '\')">' +
+          '<div style="font-size:12px;color:var(--text)"><strong>' + s.nome + '</strong> \u00B7 ' + s.dim + '</div>' +
+          '<div style="font-size:11px;font-weight:600;color:' + col + '">' + label + '</div>' +
+        '</div>';
+      }).join('') +
+    '</div>';
+  }
+  var alertContainer = document.getElementById('alert-scadenze');
+  if (alertContainer) alertContainer.innerHTML = alertHtml;
+
   const allCols=['nuovo','contattato','diagnosi','proposta','chiuso'];
 
   // Status summary bar
