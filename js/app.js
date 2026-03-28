@@ -1192,6 +1192,7 @@ async function renderProspectDetail(id) {
   renderPreventivi(p);
   renderCronistoria(p);
   renderTimelineUnificata(p, currentCalls);
+  renderCapitoliTabs(p);
 }
 
 // -- MARKET ------------------------------------------------
@@ -4752,6 +4753,156 @@ function apriDettaglioCosti() {
 
   document.getElementById('detail-overlay-title').textContent = 'Dettaglio investimento piano';
   document.getElementById('detail-overlay-subtitle').textContent = 'Costi per dimensione e per step';
+  document.getElementById('detail-overlay-body').innerHTML = html;
+  document.getElementById('detail-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+// ── SISTEMA CAPITOLI ──────────────────────────────────────────
+function renderCapitoliTabs(p) {
+  var container = document.getElementById('capitoli-tabs');
+  if (!container) return;
+  var capitoli = p.capitoli || [];
+  var html = '';
+
+  // Tab capitoli chiusi
+  capitoli.forEach(function(cap, idx) {
+    var label = p.nome + ' \u00B7 ' + (cap.periodo || 'Capitolo ' + (idx + 1));
+    html += '<div onclick="apriCapitolo(' + idx + ')" style="padding:4px 12px;font-size:10px;border-radius:8px;cursor:pointer;' +
+      'background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.06);color:var(--gray);font-weight:500;white-space:nowrap">' +
+      label + '</div>';
+  });
+
+  // Tab capitolo attivo
+  var hasDims = p.dims && Object.keys(p.dims).length > 0;
+  if (hasDims) {
+    var startDate = '';
+    if (capitoli.length > 0) {
+      var lastCap = capitoli[capitoli.length - 1];
+      startDate = lastCap.data_fine ? new Date(lastCap.data_fine).toLocaleDateString('it-IT', {month:'short', year:'numeric'}) + ' \u2192 oggi' : 'Attuale';
+    } else {
+      startDate = 'Attuale';
+    }
+    html += '<div style="padding:4px 12px;font-size:10px;border-radius:8px;' +
+      'background:rgba(40,120,70,0.1);border:1px solid rgba(40,120,70,0.2);color:rgba(40,120,70,0.8);font-weight:600;white-space:nowrap">' +
+      p.nome + ' \u00B7 ' + startDate + '</div>';
+  }
+
+  // Bottone + nuovo capitolo
+  var allReached = hasDims && p.targets && Object.keys(p.targets).length > 0 &&
+    ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'].every(function(id) {
+      return !p.targets[id] || (p.dims[id] || 0) >= p.targets[id];
+    });
+
+  if (allReached) {
+    html += '<div onclick="nuovoCapitolo()" style="padding:4px 10px;font-size:12px;border-radius:8px;cursor:pointer;' +
+      'background:rgba(70,100,200,0.1);border:1px solid rgba(70,100,200,0.2);color:rgba(70,100,200,0.8);font-weight:700;white-space:nowrap" title="Nuovo capitolo di crescita">+</div>';
+  }
+
+  container.innerHTML = html;
+}
+
+async function nuovoCapitolo() {
+  var p = prospects.find(function(x) { return x.id === currentId; });
+  if (!p) return;
+  if (!confirm('Archivia il capitolo attuale e inizia un nuovo piano di crescita?\n\nI dati attuali vengono salvati nello storico.')) return;
+
+  var capitoli = p.capitoli || [];
+  var oggi = new Date().toISOString();
+
+  // Trova data inizio (dalla fine dell'ultimo capitolo o dalla prima diagnosi)
+  var dataInizio = '';
+  if (capitoli.length > 0) {
+    dataInizio = capitoli[capitoli.length - 1].data_fine || '';
+  } else if (p.score_history && p.score_history.length > 0) {
+    dataInizio = p.score_history[0].data || '';
+  }
+
+  var periodoLabel = '';
+  if (dataInizio) {
+    periodoLabel = new Date(dataInizio).toLocaleDateString('it-IT', {month:'short', year:'numeric'}) +
+      ' \u2013 ' + new Date().toLocaleDateString('it-IT', {month:'short', year:'numeric'});
+  } else {
+    periodoLabel = 'fino a ' + new Date().toLocaleDateString('it-IT', {month:'short', year:'numeric'});
+  }
+
+  // Archivia capitolo corrente
+  var capitoloChiuso = {
+    periodo: periodoLabel,
+    data_inizio: dataInizio || oggi,
+    data_fine: oggi,
+    dims: {...(p.dims || {})},
+    targets: {...(p.targets || {})},
+    score_history: [...(p.score_history || [])],
+    fatturato_anno_1: p.fatturato_anno_1,
+    proiezione_snapshot: p.proiezione_snapshot || null,
+    fatturato_checkpoints: p.fatturato_checkpoints || {},
+    score_finale: calcScore(p),
+  };
+
+  capitoli.push(capitoloChiuso);
+
+  // Reset per nuovo capitolo: mantieni dims (livello raggiunto), azzera target
+  var updates = {
+    capitoli: capitoli,
+    targets: {},
+    target_scadenze: {},
+    score_history: [],
+    proiezione_snapshot: null,
+    fatturato_checkpoints: {},
+  };
+
+  try {
+    await sb.from('prospects').update(updates).eq('id', p.id);
+  } catch(e) {
+    // Se fallisce per campi mancanti, salva solo capitoli e targets
+    try { await sb.from('prospects').update({ capitoli: capitoli, targets: {}, target_scadenze: {} }).eq('id', p.id); } catch(e2) {}
+  }
+
+  Object.assign(p, updates);
+  showToast('Nuovo capitolo iniziato!');
+  renderProspectDetail(currentId);
+}
+
+function apriCapitolo(idx) {
+  var p = prospects.find(function(x) { return x.id === currentId; });
+  if (!p || !p.capitoli || !p.capitoli[idx]) return;
+  var cap = p.capitoli[idx];
+
+  var fmtF = function(v) { return v >= 1000000 ? (v/1000000).toFixed(1)+'M' : Math.round(v/1000)+'k'; };
+  var DIMS_IDS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+  var settore = p.settore || '';
+
+  var dimsHtml = DIMS_IDS.map(function(id) {
+    var d = cap.dims[id] || 0;
+    var t = cap.targets[id] || 0;
+    var raggiunto = d >= t && t > 0;
+    var label = typeof getDimLabel === 'function' ? getDimLabel(settore, id) : id;
+    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)">' +
+      '<div style="font-size:12px;color:var(--text)">' + label + '</div>' +
+      '<div style="font-size:12px;font-weight:600;color:' + (raggiunto ? 'rgba(40,120,70,0.8)' : 'var(--text)') + '">' +
+        d + '/5' + (t > 0 ? ' (target ' + t + ')' : '') + (raggiunto ? ' \u2713' : '') +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  var historyHtml = (cap.score_history || []).slice(-5).reverse().map(function(s) {
+    return '<div style="font-size:11px;color:var(--gray);padding:2px 0">' +
+      new Date(s.data).toLocaleDateString('it-IT', {day:'2-digit', month:'short'}) +
+      ' \u00B7 ' + s.evento + ' \u00B7 Score ' + s.score + '/100</div>';
+  }).join('');
+
+  var html = '<div style="margin-bottom:12px">' +
+    '<div style="font-size:11px;color:var(--gray)">Periodo: <strong style="color:var(--text)">' + cap.periodo + '</strong></div>' +
+    '<div style="font-size:11px;color:var(--gray)">Fatturato: <strong style="color:var(--text)">' + (cap.fatturato_anno_1 ? fmtF(cap.fatturato_anno_1) + '\u20AC' : '\u2014') + '</strong></div>' +
+    '<div style="font-size:11px;color:var(--gray)">Score finale: <strong style="color:var(--text)">' + (cap.score_finale || '\u2014') + '/100</strong></div>' +
+  '</div>' +
+  '<div style="font-size:11px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Dimensioni</div>' +
+  dimsHtml +
+  (historyHtml ? '<div style="margin-top:12px;font-size:11px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Ultime attività</div>' + historyHtml : '');
+
+  document.getElementById('detail-overlay-title').textContent = p.nome + ' \u2014 ' + cap.periodo;
+  document.getElementById('detail-overlay-subtitle').textContent = 'Capitolo archiviato (sola lettura)';
   document.getElementById('detail-overlay-body').innerHTML = html;
   document.getElementById('detail-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
