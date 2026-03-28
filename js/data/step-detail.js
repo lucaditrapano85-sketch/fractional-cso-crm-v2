@@ -887,6 +887,69 @@ const STEP_DETAIL_BY_SETTORE = {
     },
   },
 
+  // ═══════════════════════════════════════════════════════════════════════════
+  // COMMERCIO DISTRIBUZIONE INDUSTRIALE
+  // ═══════════════════════════════════════════════════════════════════════════
+  commercio_distribuzione_industriale: {
+    vendite: {
+      '1': { chi:'Titolare', cosa:'Titolare gestisce clienti storici — ordini per telefono', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Visite sistematiche ai 20 clienti con maggior potenziale', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Agente esterno', cosa:'Agente plurimandatario con portafoglio industriale della zona', costo_mensile:1500, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'KAM + inside sales', cosa:'Key account manager per clienti strategici + inside sales', costo_mensile:4000, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Dir. commerciale', cosa:'Dir. commerciale — KAM + agenti zona + inside sales + sviluppo', costo_mensile:8000, costo_setup:2000, tempo_mesi:6 },
+    },
+    pipeline: {
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini a telefono e banco', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Excel con clienti attivi, frequenza ordini, prodotti principali', costo_mensile:0, costo_setup:100, tempo_mesi:1 },
+      '3': { chi:'CRM base', cosa:'CRM con alert riordini e follow-up clienti dormienti', costo_mensile:80, costo_setup:300, tempo_mesi:1 },
+      '4': { chi:'CRM + ERP', cosa:'CRM integrato con ERP — stock, prezzi, storico in tempo reale', costo_mensile:500, costo_setup:2000, tempo_mesi:2 },
+      '5': { chi:'ERP distribuzione', cosa:'ERP completo — clienti, acquisti, magazzino, logistica', costo_mensile:1000, costo_setup:5000, tempo_mesi:3 },
+    },
+    team: {
+      '1': { chi:'Titolare + magazziniere', cosa:'Titolare + magazziniere — banco e consegne', costo_mensile:4000, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+ addetto banco', cosa:'Addetto banco/vendite — gestisce ordini, il titolare esce', costo_mensile:6500, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'+ inside sales', cosa:'Inside sales — gestione telefonica ordini e sviluppo clienti', costo_mensile:9000, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Team strutturato', cosa:'Banco + inside sales + logistica + back office', costo_mensile:14000, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Struttura manageriale', cosa:'Resp. commerciale + resp. logistica + amministrazione', costo_mensile:20000, costo_setup:1500, tempo_mesi:5 },
+    },
+    processi: {
+      '1': { chi:'Titolare', cosa:'Nessun processo — ordini gestiti a memoria e su carta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Gestione ordini strutturata — conferma, tempi, back order', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Software gestionale', cosa:'Gestionale magazzino — giacenze, riordino automatico, inventario', costo_mensile:300, costo_setup:1500, tempo_mesi:2 },
+      '4': { chi:'ERP distribuzione', cosa:'ERP con gestione listini per cliente e ordini urgenti', costo_mensile:600, costo_setup:3000, tempo_mesi:2 },
+      '5': { chi:'ERP + EDI', cosa:'EDI con clienti principali + logistica ottimizzata', costo_mensile:1000, costo_setup:5000, tempo_mesi:4 },
+    },
+    ricavi: {
+      '1': { chi:'Titolare', cosa:'Margine fisso da listino — nessuna differenziazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Pricing differenziato per volume e categoria cliente', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Servizi a valore', cosa:'Servizi a valore — consegna rapida, magazzino conto deposito', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
+      '4': { chi:'Accordi commerciali', cosa:'Accordi fornitura esclusiva con clienti principali', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '5': { chi:'Revenue manager', cosa:'Kitting, just-in-time, VMI — margini superiori alla distribuzione', costo_mensile:700, costo_setup:1500, tempo_mesi:3 },
+    },
+    marketing: {
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo clienti storici e passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Catalogo digitale aggiornato + newsletter mensile ai clienti', costo_mensile:100, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Fiere', cosa:'Fiere industriali locali (MECSPE, BI-MU) — stand base', costo_mensile:400, costo_setup:4000, tempo_mesi:2 },
+      '4': { chi:'Agenzia digital', cosa:'Campagne LinkedIn su resp. acquisti e produzione industriale', costo_mensile:800, costo_setup:1000, tempo_mesi:2 },
+      '5': { chi:'Marketing manager', cosa:'Piano marketing — fiere + digital + catalogo + promozioni', costo_mensile:2000, costo_setup:2500, tempo_mesi:3 },
+    },
+    sitoweb: {
+      '1': { chi:'Nessuno', cosa:'Nessun sito o sito vetrina datato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Web agency', cosa:'Sito con catalogo prodotti e schede tecniche scaricabili', costo_mensile:100, costo_setup:1000, tempo_mesi:1 },
+      '3': { chi:'Sito professionale', cosa:'Area riservata con prezzi, storico ordini, documentazione', costo_mensile:350, costo_setup:3000, tempo_mesi:2 },
+      '4': { chi:'Sito avanzato', cosa:'E-catalogue con disponibilità stock e tempi di consegna', costo_mensile:600, costo_setup:5000, tempo_mesi:2 },
+      '5': { chi:'Piattaforma B2B', cosa:'Portale B2B — ordini online, tracking spedizioni, fatturazione', costo_mensile:1200, costo_setup:10000, tempo_mesi:3 },
+    },
+    ecommerce: {
+      _label: 'Approvvigionamento e fornitori',
+      '1': { chi:'Titolare', cosa:'Acquisto da 1-2 grossisti — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Confronto fornitori sistematico — prezzi, MOQ, tempi consegna', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Accordi fornitori', cosa:'Accordi quadro con produttori — sconti volume e priorità', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
+      '4': { chi:'Buyer', cosa:'Buyer dedicato — negoziazione, import diretto, stoccaggio', costo_mensile:1500, costo_setup:500, tempo_mesi:2 },
+      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — contratti quadro, import, private label', costo_mensile:3000, costo_setup:1500, tempo_mesi:4 },
+    },
+  },
+
 };
 
 window.STEP_DETAIL_BY_SETTORE = STEP_DETAIL_BY_SETTORE;
