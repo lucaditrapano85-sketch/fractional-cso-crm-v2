@@ -41,7 +41,7 @@ var _diagDims = ['vendite','pipeline','team','processi','ricavi','marketing','si
 var _diagLabels = {
   vendite: 'Struttura commerciale',
   pipeline: 'Pipeline & CRM',
-  team: 'Capitale umano',
+  team: 'Organizzazione',
   processi: 'Processi & script',
   ricavi: 'Prevedibilità ricavi',
   marketing: 'Marketing & lead gen',
@@ -51,7 +51,7 @@ var _diagLabels = {
 var _diagDescr = {
   vendite: 'Come è organizzata la funzione vendite in azienda',
   pipeline: 'Come vengono gestite le trattative e i dati commerciali',
-  team: 'Autonomia e competenze del team rispetto al titolare',
+  team: 'Come sono organizzati ruoli, deleghe e processi decisionali',
   processi: 'Quanto sono definiti e documentati i processi di vendita',
   ricavi: 'Prevedibilità e ricorrenza del fatturato',
   marketing: 'Capacita di generare nuovi clienti in modo strutturato',

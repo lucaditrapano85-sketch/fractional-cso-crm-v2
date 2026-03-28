@@ -10,11 +10,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   commercio_auto_moto_usato: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Solo il titolare vende — nessun supporto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare + aiutante', cosa:'Affiancamento nelle visite e preventivi', costo_mensile:300, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Venditore junior', cosa:'Venditore junior esperienza usato — trattative e permute', costo_mensile:2500, costo_setup:500, tempo_mesi:3 },
-      '4': { chi:'Commerciale senior', cosa:'Commerciale con portafoglio clienti e obiettivi mensili', costo_mensile:3500, costo_setup:1000, tempo_mesi:2 },
-      '5': { chi:'Resp. vendite + rete', cosa:'Direzione commerciale con agenti zona e key account fleet', costo_mensile:5000, costo_setup:2000, tempo_mesi:6 },
+      '1': { chi:'Titolare solo', cosa:'Solo il titolare vende — nessun supporto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+1 venditore', cosa:'Titolare + 1 persona che affianca nelle vendite', costo_mensile:2200, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'+1 venditore (tot 2)', cosa:'2 persone dedicate alla vendita oltre al titolare', costo_mensile:5000, costo_setup:500, tempo_mesi:3 },
+      '4': { chi:'+1-2 venditori (tot 3-4)', cosa:'3-4 venditori con il titolare che supervisiona', costo_mensile:9000, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Resp. vendite + team', cosa:'Team vendita autonomo — il titolare non vende più', costo_mensile:14000, costo_setup:2000, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — trattative a memoria', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -24,11 +24,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'DMS completo', cosa:'DMS integrato con contabilità, stock e CRM', costo_mensile:1500, costo_setup:3000, tempo_mesi:3 },
     },
     team: {
-      '1': { chi:'Titolare', cosa:'Nessun team — il titolare fa tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Aiutante', cosa:'Assumere un aiutante — gestione clienti e pratiche base', costo_mensile:1200, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Ruoli separati', cosa:'Ruoli definiti — chi vende, chi fa pratiche, chi segue post-vendita', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Team strutturato', cosa:'Back office commerciale + addetto permute + amministrazione', costo_mensile:3000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Manager + team', cosa:'Responsabile che coordina team, obiettivi e KPI', costo_mensile:4500, costo_setup:2000, tempo_mesi:6 },
+      _label: 'Organizzazione',
+      '1': { chi:'Titolare', cosa:'Nessuna organizzazione — il titolare decide tutto al momento', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Ruoli base definiti — chi fa cosa è chiaro', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Titolare', cosa:'Riunione settimanale + obiettivi misurabili per ruolo', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Consulente + titolare', cosa:'KPI individuali + processi decisionali delegati', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Manager operativo', cosa:'Governance strutturata — il titolare fa solo strategia', costo_mensile:1500, costo_setup:2000, tempo_mesi:6 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo formalizzato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -73,11 +74,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   commercio_auto_moto_nuovo: {
     vendite: {
-      '1': { chi:'Team base', cosa:'2-3 venditori formati casa madre — standard minimo brand', costo_mensile:7500, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Team + specialista', cosa:'Venditori specializzati per segmento (privati vs fleet)', costo_mensile:10000, costo_setup:500, tempo_mesi:2 },
-      '3': { chi:'Team + KAM', cosa:'Key account manager fleet + sviluppo noleggio lungo termine', costo_mensile:13500, costo_setup:1000, tempo_mesi:3 },
-      '4': { chi:'Resp. + team allargato', cosa:'Multi-sede o multi-brand con responsabile commerciale', costo_mensile:18000, costo_setup:2000, tempo_mesi:4 },
-      '5': { chi:'Dir. commerciale + team', cosa:'Direzione commerciale strutturata con business development', costo_mensile:25000, costo_setup:3000, tempo_mesi:6 },
+      '1': { chi:'2-3 venditori', cosa:'Team vendita base brand standard — 2-3 venditori formati casa madre', costo_mensile:7500, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+ 1 specialista fleet', cosa:'+1 venditore specialista fleet — segmentazione privati vs aziende', costo_mensile:10000, costo_setup:0, tempo_mesi:2 },
+      '3': { chi:'+ 1 KAM fleet', cosa:'+1 KAM fleet + noleggio lungo termine — sviluppo B2B', costo_mensile:13500, costo_setup:0, tempo_mesi:3 },
+      '4': { chi:'5-6 venditori', cosa:'Multi-sede con 5-6 venditori e responsabile commerciale', costo_mensile:18000, costo_setup:0, tempo_mesi:4 },
+      '5': { chi:'Dir. commerciale + team', cosa:'Direttore commerciale + team vendita completo e autonomo', costo_mensile:25000, costo_setup:0, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'DMS standard', cosa:'DMS casa madre base — gestione ordini e stock obbligatorio', costo_mensile:1500, costo_setup:0, tempo_mesi:0 },
@@ -87,11 +88,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'Data analyst + piattaforma', cosa:'Predictive analytics — scoring lead, propensione riacquisto', costo_mensile:7000, costo_setup:8000, tempo_mesi:4 },
     },
     team: {
-      '1': { chi:'Team base', cosa:'Team minimo brand — venditori + service advisor + back office', costo_mensile:12000, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Team + consulente', cosa:'Ruoli definiti con KPI individuali e piano incentivi strutturato', costo_mensile:13000, costo_setup:500, tempo_mesi:1 },
-      '3': { chi:'Team + formatore', cosa:'Formazione continua + certificazioni brand avanzate', costo_mensile:14500, costo_setup:1000, tempo_mesi:2 },
-      '4': { chi:'Team + middle mgmt', cosa:'Middle management — capo vendite, capo service, F&I manager', costo_mensile:20000, costo_setup:1500, tempo_mesi:3 },
-      '5': { chi:'Team completo + GM', cosa:'General manager + HR strutturato + academy interna', costo_mensile:28000, costo_setup:3000, tempo_mesi:6 },
+      _label: 'Organizzazione',
+      '1': { chi:'Casa madre', cosa:'Team minimo brand — ruoli base da casa madre', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Consulente', cosa:'KPI individuali e piano incentivi strutturato', costo_mensile:0, costo_setup:500, tempo_mesi:1 },
+      '3': { chi:'Formatore', cosa:'Formazione continua + certificazioni brand', costo_mensile:300, costo_setup:1000, tempo_mesi:2 },
+      '4': { chi:'Middle management', cosa:'Middle management — capo vendite, capo service', costo_mensile:800, costo_setup:1500, tempo_mesi:3 },
+      '5': { chi:'General manager', cosa:'General manager + governance completa', costo_mensile:2000, costo_setup:3000, tempo_mesi:6 },
     },
     processi: {
       '1': { chi:'Standard brand', cosa:'Processi base imposti dalla casa madre', costo_mensile:300, costo_setup:0, tempo_mesi:0 },
@@ -136,11 +138,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   manifatturiero_meccanica: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Solo il titolare visita clienti — nessun supporto commerciale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare + tecnico', cosa:'Tecnico interno affianca nelle visite e nei preventivi', costo_mensile:300, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Agente esterno', cosa:'Agente plurimandatario con portafoglio nella meccanica', costo_mensile:1200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Commerciale senior', cosa:'Commerciale interno con portafoglio e obiettivi mensili', costo_mensile:3000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Dir. commerciale', cosa:'Direzione commerciale — resp. vendite + agenti + KAM OEM', costo_mensile:7500, costo_setup:2500, tempo_mesi:6 },
+      '1': { chi:'Titolare solo', cosa:'Solo il titolare vende — nessun venditore', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare + tecnico', cosa:'Titolare + tecnico che affianca nelle visite — solo trasferte', costo_mensile:300, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'1 agente', cosa:'1 agente plurimandatario — provvigioni ~1.200€/mese', costo_mensile:1200, costo_setup:0, tempo_mesi:2 },
+      '4': { chi:'1 commerciale', cosa:'1 commerciale interno dedicato — lordo azienda ~2.800€', costo_mensile:2800, costo_setup:0, tempo_mesi:3 },
+      '5': { chi:'Resp. + 2 agenti + KAM', cosa:'Resp. commerciale + 2 agenti + KAM', costo_mensile:7500, costo_setup:0, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — offerte a memoria o su carta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -150,11 +152,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'CRM + gestionale', cosa:'CRM integrato con gestionale commesse e fatturazione', costo_mensile:500, costo_setup:2000, tempo_mesi:3 },
     },
     team: {
-      '1': { chi:'Titolare + operatori', cosa:'Titolare + 2-3 operatori macchina — produzione e preventivi', costo_mensile:6000, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Formazione interna', cosa:'Formare operatori sulla comunicazione commerciale con i clienti', costo_mensile:6500, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Resp. officina', cosa:'Assumere responsabile officina — libera il titolare per il commerciale', costo_mensile:9000, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Team commerciale', cosa:'Aggiungere commerciale interno + back office dedicato', costo_mensile:13000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Struttura completa', cosa:'Resp. commerciale + resp. produzione + KPI e riunioni settimanali', costo_mensile:18000, costo_setup:1500, tempo_mesi:5 },
+      _label: 'Organizzazione',
+      '1': { chi:'Titolare', cosa:'Nessuna — titolare fa tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Ruoli base tra operai', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Titolare', cosa:'Resp. produzione libera il titolare', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Consulente', cosa:'Riunioni settimanali + KPI per reparto', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Management', cosa:'Management strutturato — titolare solo strategia', costo_mensile:1500, costo_setup:2000, tempo_mesi:5 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo formalizzato — preventivi fatti caso per caso', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -199,11 +202,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   manifatturiero_automotive: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Titolare gestisce 2-3 clienti OEM storici — nessun sviluppo', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare + tecnico', cosa:'Mappatura sistematica buyer OEM e Tier1 — visite pianificate', costo_mensile:500, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'KAM automotive', cosa:'Key account dedicato per clienti OEM principali', costo_mensile:3000, costo_setup:1000, tempo_mesi:3 },
-      '4': { chi:'Team commerciale', cosa:'KAM + business development nuovi OEM', costo_mensile:5500, costo_setup:2000, tempo_mesi:4 },
-      '5': { chi:'Dir. commerciale', cosa:'Direzione commerciale con presidio internazionale e gare Tier1', costo_mensile:9000, costo_setup:3000, tempo_mesi:6 },
+      '1': { chi:'Titolare solo', cosa:'Titolare gestisce 2-3 OEM storici — nessun venditore', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Visite pianificate buyer OEM — solo trasferte', costo_mensile:500, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'1 KAM', cosa:'1 KAM automotive dedicato — lordo azienda ~3.000€', costo_mensile:3000, costo_setup:0, tempo_mesi:3 },
+      '4': { chi:'KAM + biz dev', cosa:'KAM + business development nuovi OEM', costo_mensile:5500, costo_setup:0, tempo_mesi:4 },
+      '5': { chi:'Dir. commerciale', cosa:'Dir. commerciale con presidio internazionale', costo_mensile:9000, costo_setup:0, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — le RFQ arrivano per email', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -213,11 +216,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'Piattaforma enterprise', cosa:'Gestione gare + portali OEM (Covisint, SupplyOn)', costo_mensile:1000, costo_setup:5000, tempo_mesi:4 },
     },
     team: {
-      '1': { chi:'Titolare + operatori', cosa:'Titolare + operatori — produzione e qualità insieme', costo_mensile:8000, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ resp. qualità', cosa:'Resp. qualità dedicato — gestione IATF e audit cliente', costo_mensile:11000, costo_setup:500, tempo_mesi:2 },
-      '3': { chi:'+ resp. produzione', cosa:'Resp. produzione — libera titolare per sviluppo commerciale', costo_mensile:14500, costo_setup:1000, tempo_mesi:3 },
-      '4': { chi:'Team strutturato', cosa:'Qualità + produzione + commerciale + ufficio tecnico', costo_mensile:20000, costo_setup:1500, tempo_mesi:4 },
-      '5': { chi:'Management completo', cosa:'Plant manager + KPI di stabilimento + continuous improvement', costo_mensile:26000, costo_setup:2500, tempo_mesi:6 },
+      _label: 'Organizzazione',
+      '1': { chi:'Titolare', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Ruoli definiti produzione/qualità', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
+      '3': { chi:'Titolare', cosa:'Resp. qualità IATF autonomo', costo_mensile:300, costo_setup:800, tempo_mesi:3 },
+      '4': { chi:'Consulente', cosa:'KPI stabilimento + riunioni cross-funzionali', costo_mensile:500, costo_setup:1500, tempo_mesi:4 },
+      '5': { chi:'Plant manager', cosa:'Plant manager + continuous improvement', costo_mensile:2000, costo_setup:3000, tempo_mesi:6 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Processi base — si lavora ma senza documentazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -262,11 +266,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   manifatturiero_packaging: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Titolare gestisce clienti storici — nessuno sviluppo nuovo', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare + campionature', cosa:'Mappatura prospect per settore — visite a buyer GDO e industria', costo_mensile:400, costo_setup:500, tempo_mesi:1 },
-      '3': { chi:'Agente esterno', cosa:'Agente plurimandatario con portafoglio nel packaging', costo_mensile:1500, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Commerciale senior', cosa:'Commerciale interno dedicato — offerte e key account', costo_mensile:3200, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Dir. commerciale', cosa:'Direzione commerciale — resp. vendite + agenti + export', costo_mensile:8000, costo_setup:2500, tempo_mesi:6 },
+      '1': { chi:'Titolare solo', cosa:'Titolare gestisce clienti storici — nessun venditore', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Campionature proattive verso buyer GDO e industria', costo_mensile:400, costo_setup:500, tempo_mesi:1 },
+      '3': { chi:'1 agente', cosa:'1 agente packaging — provvigioni ~1.500€/mese', costo_mensile:1500, costo_setup:0, tempo_mesi:2 },
+      '4': { chi:'1 commerciale', cosa:'1 commerciale interno dedicato — lordo azienda ~3.200€', costo_mensile:3200, costo_setup:0, tempo_mesi:3 },
+      '5': { chi:'Dir. commerciale + agenti', cosa:'Dir. commerciale + agenti + export', costo_mensile:8000, costo_setup:0, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — offerte via email senza follow-up', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -276,11 +280,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'ERP integrato', cosa:'ERP completo — da offerta a produzione a spedizione', costo_mensile:800, costo_setup:4000, tempo_mesi:3 },
     },
     team: {
-      '1': { chi:'Titolare + operatori', cosa:'Titolare + operatori macchina — produzione e commerciale insieme', costo_mensile:7000, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ resp. produzione', cosa:'Resp. produzione — gestisce turni e commesse, libera il titolare', costo_mensile:10000, costo_setup:500, tempo_mesi:2 },
-      '3': { chi:'+ back office', cosa:'Back office commerciale — gestione ordini e rapporto clienti', costo_mensile:12500, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Team commerciale', cosa:'Commerciale + grafico/prestampa interno', costo_mensile:16000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Struttura completa', cosa:'Resp. commerciale + resp. produzione + qualità + R&D packaging', costo_mensile:22000, costo_setup:2000, tempo_mesi:5 },
+      _label: 'Organizzazione',
+      '1': { chi:'Titolare', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Ruoli produzione definiti', costo_mensile:0, costo_setup:200, tempo_mesi:2 },
+      '3': { chi:'Titolare', cosa:'Riunioni + pianificazione commesse', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Consulente', cosa:'KPI + processi decisionali', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Management', cosa:'Management R&D + produzione + commerciale', costo_mensile:1500, costo_setup:2000, tempo_mesi:5 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo formalizzato — si lavora a esperienza', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -325,11 +330,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   manifatturiero_cterzi: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Titolare gestisce 3-5 clienti storici — zero prospecting', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Mappatura aziende zona che esternalizzano — visite mirate', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Agente esterno', cosa:'Agente plurimandatario nel settore di specializzazione', costo_mensile:1200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Commerciale', cosa:'Commerciale interno — sviluppo nuovi clienti e diversificazione', costo_mensile:3000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Dir. commerciale', cosa:'Resp. commerciale + rete agenti + sviluppo export', costo_mensile:7000, costo_setup:2000, tempo_mesi:6 },
+      '1': { chi:'Titolare solo', cosa:'Titolare gestisce 3-5 clienti storici — nessun venditore', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Mappatura aziende zona — visite mirate', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'1 agente', cosa:'1 agente — provvigioni ~1.200€/mese', costo_mensile:1200, costo_setup:0, tempo_mesi:2 },
+      '4': { chi:'1 commerciale', cosa:'1 commerciale diversificazione clienti — lordo azienda ~3.000€', costo_mensile:3000, costo_setup:0, tempo_mesi:3 },
+      '5': { chi:'Resp. + agenti + export', cosa:'Resp. commerciale + agenti + export', costo_mensile:7000, costo_setup:0, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — il cliente chiama quando serve', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -339,11 +344,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'ERP completo', cosa:'ERP integrato — da preventivo a produzione a fattura', costo_mensile:600, costo_setup:3000, tempo_mesi:3 },
     },
     team: {
-      '1': { chi:'Titolare + operatori', cosa:'Titolare + 2-4 operatori — il titolare è in produzione', costo_mensile:5500, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ capo reparto', cosa:'Capo reparto tra gli operatori — gestisce il quotidiano', costo_mensile:7500, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'+ resp. produzione', cosa:'Resp. produzione assunto — libera il titolare per vendere', costo_mensile:10500, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Team completo', cosa:'Back office + commerciale — il titolare fa strategia', costo_mensile:14000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Struttura manageriale', cosa:'Resp. commerciale + resp. produzione + qualità', costo_mensile:19000, costo_setup:1500, tempo_mesi:5 },
+      _label: 'Organizzazione',
+      '1': { chi:'Titolare', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Capo reparto tra operai', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Titolare', cosa:'Ruoli separati produzione/commerciale', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Consulente', cosa:'KPI + deleghe operative', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Management', cosa:'Management strutturato', costo_mensile:1500, costo_setup:1500, tempo_mesi:5 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — ogni commessa è gestita diversamente', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -388,11 +394,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   manifatturiero_elettromeccanica: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Titolare gestisce i clienti — nessun sviluppo strutturato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare + tecnico', cosa:'Visite pianificate a costruttori macchine e integratori della zona', costo_mensile:300, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Agente esterno', cosa:'Agente tecnico-commerciale con portafoglio automazione', costo_mensile:1500, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Commerciale senior', cosa:'Commerciale interno — offerte complesse e key account', costo_mensile:3200, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Dir. commerciale', cosa:'Dir. commerciale + sviluppo mercati export e OEM', costo_mensile:7500, costo_setup:2500, tempo_mesi:6 },
+      '1': { chi:'Titolare solo', cosa:'Titolare gestisce i clienti — nessun venditore', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Visite a costruttori macchine — solo trasferte', costo_mensile:300, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'1 agente', cosa:'1 agente tecnico-commerciale — provvigioni ~1.500€/mese', costo_mensile:1500, costo_setup:0, tempo_mesi:2 },
+      '4': { chi:'1 commerciale', cosa:'1 commerciale offerte complesse — lordo azienda ~3.200€', costo_mensile:3200, costo_setup:0, tempo_mesi:3 },
+      '5': { chi:'Dir. commerciale + export', cosa:'Dir. commerciale + export OEM', costo_mensile:7500, costo_setup:0, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — offerte su email e carta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -402,11 +408,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'ERP integrato', cosa:'ERP completo — preventivazione, distinte base, produzione, collaudo', costo_mensile:700, costo_setup:4000, tempo_mesi:3 },
     },
     team: {
-      '1': { chi:'Titolare + operatori', cosa:'Titolare + 2-3 cablaggiatori/quadristi', costo_mensile:6500, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ capo officina', cosa:'Capo officina — gestisce produzione e collaudi', costo_mensile:9000, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'+ progettista', cosa:'Progettista elettrico — schemi e distinte base', costo_mensile:12500, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Team strutturato', cosa:'Progettazione + produzione + commerciale', costo_mensile:17000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Struttura manageriale', cosa:'Resp. tecnico + resp. commerciale + qualità + project manager', costo_mensile:23000, costo_setup:2000, tempo_mesi:5 },
+      _label: 'Organizzazione',
+      '1': { chi:'Titolare', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Capo officina gestisce quotidiano', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Titolare', cosa:'Ruoli progettazione/produzione separati', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Consulente', cosa:'KPI + project management', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Management', cosa:'Management tecnico + commerciale', costo_mensile:1500, costo_setup:2000, tempo_mesi:5 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — ogni quadro è un progetto a sé', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -451,11 +458,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   manifatturiero_tessile_tessuti: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Titolare gestisce clienti storici — campionari su richiesta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare + campioni', cosa:'Campionatura proattiva verso confezionisti e brand della zona', costo_mensile:400, costo_setup:500, tempo_mesi:1 },
-      '3': { chi:'Agente tessile', cosa:'Agente con portafoglio moda/arredamento — visite a studi e brand', costo_mensile:1500, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Commerciale senior', cosa:'Commerciale interno + showroom campionari permanente', costo_mensile:3500, costo_setup:2000, tempo_mesi:3 },
-      '5': { chi:'Dir. commerciale', cosa:'Dir. commerciale + agenti Italia/estero + fiere internazionali', costo_mensile:8000, costo_setup:3000, tempo_mesi:6 },
+      '1': { chi:'Titolare solo', cosa:'Titolare gestisce clienti storici — nessun venditore', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Campionatura proattiva verso confezionisti e brand', costo_mensile:400, costo_setup:500, tempo_mesi:1 },
+      '3': { chi:'1 agente', cosa:'1 agente moda/arredamento — provvigioni ~1.500€/mese', costo_mensile:1500, costo_setup:0, tempo_mesi:2 },
+      '4': { chi:'1 commerciale + showroom', cosa:'1 commerciale + showroom campionari', costo_mensile:3500, costo_setup:2000, tempo_mesi:3 },
+      '5': { chi:'Dir. commerciale + agenti', cosa:'Dir. commerciale + agenti Italia/estero', costo_mensile:8000, costo_setup:3000, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini per telefono e email', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -465,11 +472,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'ERP tessile', cosa:'ERP tessile integrato — ordini, pianificazione, qualità, spedizioni', costo_mensile:800, costo_setup:5000, tempo_mesi:3 },
     },
     team: {
-      '1': { chi:'Titolare + operatori', cosa:'Titolare + operatori telai/finissaggio', costo_mensile:6000, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ capo reparto', cosa:'Capo reparto — gestisce produzione e qualità tessuto', costo_mensile:8500, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'+ resp. tecnico', cosa:'Responsabile tecnico — sviluppo nuovi tessuti e campionature', costo_mensile:11500, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Team completo', cosa:'Back office commerciale + logistica', costo_mensile:15000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Struttura manageriale', cosa:'Resp. commerciale + resp. produzione + sviluppo prodotto', costo_mensile:21000, costo_setup:2000, tempo_mesi:5 },
+      _label: 'Organizzazione',
+      '1': { chi:'Titolare', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Ruoli telaio/finissaggio definiti', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Titolare', cosa:'Resp. tecnico sviluppo tessuti', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Consulente', cosa:'KPI produzione + qualità', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Management', cosa:'Management produzione/commerciale', costo_mensile:1500, costo_setup:2000, tempo_mesi:5 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — produzione a esperienza del titolare', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -514,11 +522,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   manifatturiero_tessile_capi: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Titolare vende ai soliti grossisti/brand — nessun sviluppo', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare + campionario', cosa:'Campionario stagionale proattivo verso nuovi brand e catene', costo_mensile:500, costo_setup:800, tempo_mesi:1 },
-      '3': { chi:'Agente moda', cosa:'Agente moda con portafoglio brand e catene retail', costo_mensile:1800, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Commerciale senior', cosa:'Commerciale interno + showroom per campagne vendita', costo_mensile:3500, costo_setup:2500, tempo_mesi:3 },
-      '5': { chi:'Dir. commerciale', cosa:'Dir. commerciale + agenti export + fiere internazionali', costo_mensile:8500, costo_setup:3000, tempo_mesi:6 },
+      '1': { chi:'Titolare solo', cosa:'Titolare vende ai soliti brand — nessun venditore', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Campionario stagionale proattivo verso nuovi brand e catene', costo_mensile:500, costo_setup:800, tempo_mesi:1 },
+      '3': { chi:'1 agente', cosa:'1 agente moda brand/catene — provvigioni ~1.800€/mese', costo_mensile:1800, costo_setup:0, tempo_mesi:2 },
+      '4': { chi:'1 commerciale + showroom', cosa:'1 commerciale + showroom campagne vendita', costo_mensile:3500, costo_setup:2500, tempo_mesi:3 },
+      '5': { chi:'Dir. commerciale + agenti', cosa:'Dir. commerciale + agenti export', costo_mensile:8500, costo_setup:3000, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini stagionali a voce', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -528,11 +536,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'ERP moda', cosa:'ERP moda — dalla campagna vendita alla produzione alla spedizione', costo_mensile:900, costo_setup:5000, tempo_mesi:3 },
     },
     team: {
-      '1': { chi:'Titolare + operaie', cosa:'Titolare + sarte/operaie — confezionamento in casa', costo_mensile:5000, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ capo sarta', cosa:'Capo sarta — gestisce produzione e qualità capi', costo_mensile:7000, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'+ modellista', cosa:'Modellista/stilista — sviluppo campionari e prototipi', costo_mensile:10000, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Team completo', cosa:'Back office + commerciale + logistica spedizioni', costo_mensile:14000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Struttura manageriale', cosa:'Resp. produzione + resp. commerciale + sviluppo prodotto', costo_mensile:20000, costo_setup:2000, tempo_mesi:5 },
+      _label: 'Organizzazione',
+      '1': { chi:'Titolare', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Ruoli sartoria definiti', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Titolare', cosa:'Resp. produzione campionari', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Consulente', cosa:'KPI + pianificazione stagionale', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Management', cosa:'Management completo', costo_mensile:1500, costo_setup:2000, tempo_mesi:5 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — si cuce e si spedisce', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -576,12 +585,12 @@ const STEP_DETAIL_BY_SETTORE = {
   // SERVIZI IT
   // ═══════════════════════════════════════════════════════════════════════════
   servizi_it: {
-    vendite: {
-      '1': { chi:'Titolare', cosa:'Titolare fa tutto — assistenza e vendita ai clienti storici', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Mappatura PMI della zona con IT datato — visite dirette', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Account manager', cosa:'Account manager dedicato — sviluppa portafoglio e rinnovi', costo_mensile:2500, costo_setup:500, tempo_mesi:3 },
-      '4': { chi:'Team commerciale', cosa:'Account + tecnico pre-sales per gare e clienti strutturati', costo_mensile:4500, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Dir. commerciale', cosa:'Sales manager + account per verticale + business developer', costo_mensile:8000, costo_setup:2000, tempo_mesi:6 },
+vendite: {
+      '1': { chi:'Titolare solo', cosa:'Solo il titolare vende \u2014 assistenza e vendita insieme', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Mappatura PMI zona con IT datato \u2014 visite dirette', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'+1 account manager', cosa:'1 account manager dedicato \u2014 sviluppa portafoglio e rinnovi', costo_mensile:2500, costo_setup:500, tempo_mesi:3 },
+      '4': { chi:'+1 pre-sales (tot 2)', cosa:'Account + tecnico pre-sales per gare e clienti strutturati', costo_mensile:5300, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Sales mgr + team', cosa:'Sales manager + account per verticale + business developer', costo_mensile:8000, costo_setup:2000, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — ticket e vendite confusi insieme', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -591,11 +600,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'PSA completo', cosa:'CRM + PSA (Professional Services Automation) completo', costo_mensile:700, costo_setup:3000, tempo_mesi:3 },
     },
     team: {
-      '1': { chi:'Titolare + tecnici', cosa:'Titolare + 1-2 tecnici — tutti fanno tutto', costo_mensile:5000, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Formazione interna', cosa:'Tecnici formati sulla comunicazione col cliente non tecnico', costo_mensile:5500, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'+ service manager', cosa:'Service manager — garantisce qualità servizio e soddisfazione', costo_mensile:8500, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Team specializzato', cosa:'Specializzazioni — cloud, security, networking su persone diverse', costo_mensile:13000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Struttura completa', cosa:'Account + service + tecnici specializzati + help desk L1', costo_mensile:18000, costo_setup:2000, tempo_mesi:5 },
+      _label: 'Organizzazione',
+      '1': { chi:'Titolare', cosa:'Tutto dipende dal titolare \u2014 nessuna delega', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Know-how documentato \u2014 non dipende da una sola persona', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Titolare', cosa:'Ruoli definiti per specializzazione (cloud, security, network)', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Consulente', cosa:'Processi decisionali autonomi per team', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Manager operativo', cosa:'Governance con delega completa \u2014 titolare solo strategia', costo_mensile:1500, costo_setup:2000, tempo_mesi:6 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — si risponde quando il cliente chiama', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -640,11 +650,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   servizi_formazione: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Titolare/formatore vende i propri corsi — nessun commerciale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '1': { chi:'Titolare solo', cosa:'Titolare/formatore vende i propri corsi \u2014 nessun commerciale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
       '2': { chi:'Titolare', cosa:'Proposta proattiva verso HR e resp. formazione aziende zona', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Commerciale', cosa:'Commerciale dedicato — sviluppo clienti corporate e enti', costo_mensile:2500, costo_setup:500, tempo_mesi:3 },
-      '4': { chi:'Team commerciale', cosa:'Team vendite — corporate + PA/bandi + catalogo interaziendale', costo_mensile:5000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Dir. commerciale', cosa:'Dir. commerciale + rete segnalatori + partnership consulenti', costo_mensile:8500, costo_setup:2000, tempo_mesi:6 },
+      '3': { chi:'+1 commerciale', cosa:'1 commerciale dedicato \u2014 sviluppo clienti corporate e enti', costo_mensile:2500, costo_setup:500, tempo_mesi:3 },
+      '4': { chi:'+1 comm. (tot 2)', cosa:'Team vendite \u2014 corporate + PA/bandi + catalogo', costo_mensile:5000, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Rete + partnership', cosa:'Rete segnalatori + partnership consulenti', costo_mensile:3500, costo_setup:2000, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — corsi venduti a richiesta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -654,11 +664,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'CRM + LMS integrato', cosa:'CRM integrato con LMS e fatturazione — ciclo completo', costo_mensile:1200, costo_setup:4000, tempo_mesi:3 },
     },
     team: {
-      '1': { chi:'Titolare', cosa:'Titolare-formatore solo — fa tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Assistente', cosa:'Assistente — gestione aule, materiali, iscrizioni', costo_mensile:1500, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'+ formatori freelance', cosa:'Rete di formatori freelance coordinati dal titolare', costo_mensile:3000, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Team strutturato', cosa:'Coordinatore didattico + segreteria + commerciale', costo_mensile:8000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Academy completa', cosa:'Direttore academy + team formatori + progettazione didattica', costo_mensile:14000, costo_setup:2500, tempo_mesi:5 },
+      _label: 'Organizzazione',
+      '1': { chi:'Titolare', cosa:'Titolare fa tutto \u2014 nessuna organizzazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Catalogo corsi strutturato con programmi definiti', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Titolare', cosa:'Coordinamento rete formatori freelance', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Consulente', cosa:'KPI per formatore + pianificazione didattica', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Direttore academy', cosa:'Governance didattica \u2014 titolare solo strategia', costo_mensile:1500, costo_setup:2000, tempo_mesi:5 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — ogni corso è improvvisato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -703,11 +714,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   edilizia_residenziale: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Titolare trova lavori tramite passaparola — nessuna azione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Rapporto sistematico con geometri e architetti della zona', costo_mensile:150, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Titolare strutturato', cosa:'Preventivi professionali + sopralluoghi proattivi su segnalazioni', costo_mensile:300, costo_setup:300, tempo_mesi:2 },
-      '4': { chi:'Commerciale edile', cosa:'Commerciale dedicato — sviluppo condomini, studi tecnici, enti', costo_mensile:2500, costo_setup:500, tempo_mesi:3 },
-      '5': { chi:'Dir. commerciale', cosa:'Dir. commerciale + rete segnalatori + gare pubbliche SOA', costo_mensile:6000, costo_setup:2000, tempo_mesi:6 },
+      '1': { chi:'Titolare solo', cosa:'Titolare trova lavori tramite passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Rapporti con geometri e architetti della zona', costo_mensile:150, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Titolare strutturato', cosa:'Preventivi professionali + sopralluoghi proattivi', costo_mensile:300, costo_setup:300, tempo_mesi:2 },
+      '4': { chi:'+1 commerciale', cosa:'1 commerciale condomini/studi tecnici/enti', costo_mensile:2500, costo_setup:500, tempo_mesi:3 },
+      '5': { chi:'Gare + segnalatori', cosa:'Gare pubbliche SOA + rete segnalatori', costo_mensile:3000, costo_setup:2000, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — preventivi fatti e dimenticati', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -717,11 +728,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'ERP edile', cosa:'ERP edile — preventivazione, contabilità cantiere, fatturazione', costo_mensile:600, costo_setup:3000, tempo_mesi:3 },
     },
     team: {
-      '1': { chi:'Titolare + muratori', cosa:'Titolare + 2-3 muratori — tutti in cantiere, titolare fa tutto', costo_mensile:7000, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ capo cantiere', cosa:'Capo cantiere — gestisce i lavori, il titolare esce dal cantiere', costo_mensile:10000, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'+ tecnico', cosa:'Geometra/tecnico interno — computi, pratiche, sicurezza, bonus', costo_mensile:13500, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Squadre + back office', cosa:'2+ squadre autonome + back office amministrativo', costo_mensile:22000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Struttura completa', cosa:'Resp. tecnico + capicantiere + amministrazione strutturata', costo_mensile:30000, costo_setup:2000, tempo_mesi:5 },
+      _label: 'Organizzazione',
+      '1': { chi:'Titolare', cosa:'Titolare sempre in cantiere \u2014 decide tutto al momento', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Capo cantiere gestisce \u2014 il titolare esce dal cantiere', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Titolare', cosa:'Ruoli definiti cantiere/ufficio \u2014 deleghe operative', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Consulente', cosa:'KPI commessa + processi decisionali delegati', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Manager operativo', cosa:'Management \u2014 titolare solo strategia e clienti top', costo_mensile:1500, costo_setup:1500, tempo_mesi:5 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — ogni cantiere è diverso', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -766,11 +778,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   edilizia_impianti: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Titolare trova lavori tramite passaparola e imprese edili', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Rapporti con studi tecnici, amministratori condominio, imprese', costo_mensile:150, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Titolare strutturato', cosa:'Preventivi strutturati + proposta efficientamento su ogni sopralluogo', costo_mensile:300, costo_setup:300, tempo_mesi:2 },
-      '4': { chi:'Commerciale', cosa:'Commerciale dedicato — sviluppo condomini, industria, PA', costo_mensile:2500, costo_setup:500, tempo_mesi:3 },
-      '5': { chi:'Dir. commerciale', cosa:'Dir. commerciale + rete installatori partner + gare pubbliche', costo_mensile:6000, costo_setup:2000, tempo_mesi:6 },
+      '1': { chi:'Titolare solo', cosa:'Titolare trova lavori tramite passaparola e imprese', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Rapporti con studi tecnici e amministratori condominio', costo_mensile:150, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Titolare strutturato', cosa:'Preventivi + proposta efficientamento su ogni sopralluogo', costo_mensile:300, costo_setup:300, tempo_mesi:2 },
+      '4': { chi:'+1 commerciale', cosa:'1 commerciale condomini/industria/PA', costo_mensile:2500, costo_setup:500, tempo_mesi:3 },
+      '5': { chi:'Rete + gare', cosa:'Rete installatori partner + gare pubbliche', costo_mensile:3000, costo_setup:2000, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — chiamate e preventivi a memoria', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -780,11 +792,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'ERP impiantistica', cosa:'ERP impiantistica — preventivi, commesse, magazzino, fatturazione', costo_mensile:600, costo_setup:3000, tempo_mesi:3 },
     },
     team: {
-      '1': { chi:'Titolare + installatori', cosa:'Titolare + 1-2 installatori — tutti sugli impianti', costo_mensile:5500, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ capo squadra', cosa:'Capo squadra — gestisce cantieri, titolare esce dagli impianti', costo_mensile:8000, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'+ progettista', cosa:'Tecnico progettista — dimensionamento impianti e pratiche', costo_mensile:11500, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Squadre + back office', cosa:'2+ squadre autonome + back office amministrativo', costo_mensile:18000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Struttura completa', cosa:'Resp. tecnico + capicantiere + amministrazione strutturata', costo_mensile:25000, costo_setup:1500, tempo_mesi:5 },
+      _label: 'Organizzazione',
+      '1': { chi:'Titolare', cosa:'Titolare sugli impianti \u2014 decide tutto al momento', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Capo squadra gestisce cantieri \u2014 titolare si libera', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Titolare', cosa:'Ruoli definiti installazione/ufficio', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Consulente', cosa:'KPI + programmazione interventi delegata', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Manager operativo', cosa:'Management \u2014 deleghe complete', costo_mensile:1500, costo_setup:1500, tempo_mesi:5 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — ogni impianto è gestito a esperienza', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -829,11 +842,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   edilizia_serramenti: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Titolare vende dallo showroom — chi entra compra', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Sopralluoghi a domicilio + preventivi strutturati con rendering', costo_mensile:200, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Titolare', cosa:'Sviluppo canale B2B — visite a imprese edili e studi tecnici', costo_mensile:300, costo_setup:200, tempo_mesi:2 },
-      '4': { chi:'Commerciale B2B', cosa:'Commerciale esterno dedicato a imprese edili e architetti', costo_mensile:2500, costo_setup:500, tempo_mesi:3 },
-      '5': { chi:'Dir. commerciale', cosa:'Dir. commerciale + rete posatori partner + gare ristrutturazione', costo_mensile:6500, costo_setup:2000, tempo_mesi:6 },
+      '1': { chi:'Titolare solo', cosa:'Titolare vende dallo showroom', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Sopralluoghi a domicilio + preventivi strutturati', costo_mensile:200, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'+1 venditore showroom', cosa:'1 venditore showroom dedicato', costo_mensile:2200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'+1 comm. B2B (tot 2)', cosa:'+ commerciale B2B imprese edili e architetti', costo_mensile:4700, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Rete + gare', cosa:'Rete posatori partner + gare ristrutturazione', costo_mensile:3500, costo_setup:2000, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — preventivi su carta e dimenticati', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -843,11 +856,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'CRM + gestionale', cosa:'CRM integrato con gestionale ordini e produzione/fornitori', costo_mensile:700, costo_setup:3500, tempo_mesi:3 },
     },
     team: {
-      '1': { chi:'Titolare + posatori', cosa:'Titolare + 1-2 posatori — showroom e posa', costo_mensile:5000, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ capo posatore', cosa:'Capo posatore — gestisce cantieri, titolare resta in showroom', costo_mensile:7500, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'+ addetto showroom', cosa:'Addetto showroom — accoglienza, preventivi, follow-up clienti', costo_mensile:10000, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Squadre + back office', cosa:'2+ squadre posa autonome + back office', costo_mensile:16000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Struttura completa', cosa:'Resp. commerciale + resp. posa + amministrazione', costo_mensile:22000, costo_setup:1500, tempo_mesi:5 },
+      _label: 'Organizzazione',
+      '1': { chi:'Titolare', cosa:'Titolare gestisce tutto \u2014 showroom e posa', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Ruoli showroom/posa separati', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Titolare', cosa:'Riunioni + obiettivi per ruolo', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Consulente', cosa:'KPI + processi decisionali delegati', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Manager operativo', cosa:'Management \u2014 titolare solo strategia', costo_mensile:1500, costo_setup:1500, tempo_mesi:5 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — preventivi a mano, posa senza procedura', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -892,11 +906,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   commercio_distribuzione_industriale: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Titolare gestisce clienti storici — ordini per telefono', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Visite sistematiche ai 20 clienti con maggior potenziale', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Agente esterno', cosa:'Agente plurimandatario con portafoglio industriale della zona', costo_mensile:1500, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'KAM + inside sales', cosa:'Key account manager per clienti strategici + inside sales', costo_mensile:4000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Dir. commerciale', cosa:'Dir. commerciale — KAM + agenti zona + inside sales + sviluppo', costo_mensile:8000, costo_setup:2000, tempo_mesi:6 },
+      '1': { chi:'Titolare', cosa:'Titolare al banco — chi viene compra', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Visite ai 20 clienti top — sviluppo proattivo', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'1 agente', cosa:'1 agente plurimandatario con portafoglio industriale zona', costo_mensile:1500, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'KAM + inside sales', cosa:'1 KAM clienti strategici + 1 inside sales', costo_mensile:4800, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Dir. commerciale', cosa:'Dir. commerciale + agenti + inside sales', costo_mensile:8000, costo_setup:2000, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini a telefono e banco', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -906,11 +920,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'ERP distribuzione', cosa:'ERP completo — clienti, acquisti, magazzino, logistica', costo_mensile:1000, costo_setup:5000, tempo_mesi:3 },
     },
     team: {
-      '1': { chi:'Titolare + magazziniere', cosa:'Titolare + magazziniere — banco e consegne', costo_mensile:4000, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ addetto banco', cosa:'Addetto banco/vendite — gestisce ordini, il titolare esce', costo_mensile:6500, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'+ inside sales', cosa:'Inside sales — gestione telefonica ordini e sviluppo clienti', costo_mensile:9000, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Team strutturato', cosa:'Banco + inside sales + logistica + back office', costo_mensile:14000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Struttura manageriale', cosa:'Resp. commerciale + resp. logistica + amministrazione', costo_mensile:20000, costo_setup:1500, tempo_mesi:5 },
+      _label: 'Organizzazione',
+      '1': { chi:'Titolare', cosa:'Nessuna organizzazione — il titolare decide tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Ruoli banco/magazzino definiti — chi fa cosa è chiaro', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Titolare', cosa:'Procedure ordini e consegne formalizzate', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Consulente + titolare', cosa:'KPI per canale + deleghe operative', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Management', cosa:'Management commerciale + logistica strutturato', costo_mensile:1500, costo_setup:1500, tempo_mesi:5 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — ordini gestiti a memoria e su carta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -956,10 +971,10 @@ const STEP_DETAIL_BY_SETTORE = {
   commercio_ingrosso_alimentare: {
     vendite: {
       '1': { chi:'Titolare', cosa:'Titolare gestisce clienti storici — ordini per telefono', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Visite pianificate a ristoranti, hotel e negozi della zona', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Titolare strutturato', cosa:'Sviluppo canale HORECA — degustazioni, campionature, listini dedicati', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Agente esterno', cosa:'Agente dedicato canale HORECA o GDO locale', costo_mensile:1800, costo_setup:500, tempo_mesi:3 },
-      '5': { chi:'Strategia + agenti export', cosa:'Sviluppo private label per GDO + apertura canale export', costo_mensile:3000, costo_setup:2000, tempo_mesi:6 },
+      '2': { chi:'Titolare', cosa:'Visite pianificate HORECA/negozi della zona', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Titolare strutturato', cosa:'Sviluppo canale HORECA — degustazioni, campionature', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'1 agente', cosa:'1 agente dedicato HORECA o GDO', costo_mensile:1800, costo_setup:500, tempo_mesi:3 },
+      '5': { chi:'Strategia + agenti export', cosa:'Strategia private label + agenti export', costo_mensile:3000, costo_setup:2000, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini per telefono e WhatsApp', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -969,11 +984,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'ERP alimentare', cosa:'ERP alimentare — ordini, magazzino, tracciabilità, logistica', costo_mensile:1200, costo_setup:6000, tempo_mesi:3 },
     },
     team: {
-      '1': { chi:'Titolare + operativi', cosa:'Titolare + magazziniere + autista', costo_mensile:5500, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ addetto ordini', cosa:'Addetto ordini — gestisce telefono e preparazione', costo_mensile:7500, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'+ resp. magazzino', cosa:'Resp. magazzino — gestisce stock, rotazione, scadenze', costo_mensile:10500, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Team completo', cosa:'Team logistica strutturato + back office commerciale', costo_mensile:16000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Struttura manageriale', cosa:'Resp. commerciale + resp. logistica + qualità HACCP', costo_mensile:22000, costo_setup:1500, tempo_mesi:5 },
+      _label: 'Organizzazione',
+      '1': { chi:'Titolare', cosa:'Nessuna organizzazione — il titolare decide tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Ruoli magazzino/consegne definiti — chi fa cosa è chiaro', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Titolare', cosa:'Procedure HACCP + gestione scadenze formalizzate', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Consulente + titolare', cosa:'KPI + deleghe ordini/logistica', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Management', cosa:'Management completo — commerciale + logistica + qualità', costo_mensile:1500, costo_setup:1500, tempo_mesi:5 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — ordini e consegne gestiti a vista', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1018,11 +1034,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   commercio_materiali_edili: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Titolare vende al banco — chi viene compra', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Visite pianificate a imprese edili e posatori della zona', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Titolare strutturato', cosa:'Sviluppo canale showroom ceramiche — appuntamenti con privati', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Agente edile', cosa:'Agente esterno per imprese edili + cantieri medio-grandi', costo_mensile:1800, costo_setup:500, tempo_mesi:3 },
-      '5': { chi:'Strategia + gare', cosa:'Sviluppo gare pubbliche + accordi quadro con costruttori', costo_mensile:3000, costo_setup:2000, tempo_mesi:6 },
+      '1': { chi:'Titolare', cosa:'Titolare al banco — chi viene compra', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Visite imprese edili/posatori della zona', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Titolare strutturato', cosa:'Sviluppo showroom — appuntamenti privati', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'1 agente', cosa:'1 agente esterno imprese/cantieri', costo_mensile:1800, costo_setup:500, tempo_mesi:3 },
+      '5': { chi:'Strategia + gare', cosa:'Gare pubbliche + accordi quadro costruttori', costo_mensile:3000, costo_setup:2000, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — vendite al banco senza storico', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1032,11 +1048,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'ERP completo', cosa:'ERP — ordini, magazzino, logistica consegne, fatturazione', costo_mensile:1000, costo_setup:5000, tempo_mesi:3 },
     },
     team: {
-      '1': { chi:'Titolare + operativi', cosa:'Titolare + magazziniere + autista con gru', costo_mensile:5500, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ addetto banco', cosa:'Addetto banco vendita — libera il titolare dal banco', costo_mensile:7500, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'+ addetto showroom', cosa:'Addetto showroom ceramiche — consulenza e preventivi privati', costo_mensile:10000, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Team completo', cosa:'Team logistica + banco + showroom + back office', costo_mensile:16000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Struttura manageriale', cosa:'Resp. commerciale + resp. logistica + amministrazione', costo_mensile:22000, costo_setup:1500, tempo_mesi:5 },
+      _label: 'Organizzazione',
+      '1': { chi:'Titolare', cosa:'Nessuna organizzazione — il titolare decide tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Ruoli banco/magazzino/showroom definiti — chi fa cosa è chiaro', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Titolare', cosa:'Procedure ordini e consegne formalizzate', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Consulente + titolare', cosa:'KPI + deleghe operative', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Management', cosa:'Management commerciale + logistica strutturato', costo_mensile:1500, costo_setup:1500, tempo_mesi:5 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — magazzino gestito a vista', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1082,10 +1099,10 @@ const STEP_DETAIL_BY_SETTORE = {
   commercio_ricambi_auto: {
     vendite: {
       '1': { chi:'Titolare', cosa:'Titolare al banco — officine vengono quando serve', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Visite pianificate a officine e carrozzerie della zona', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Titolare strutturato', cosa:'Sviluppo clienti flotte e noleggiatori — contratti fornitura', costo_mensile:400, costo_setup:300, tempo_mesi:2 },
-      '4': { chi:'Agente', cosa:'Agente esterno per officine fuori zona + flotte aziendali', costo_mensile:1800, costo_setup:500, tempo_mesi:3 },
-      '5': { chi:'Strategia multicanale', cosa:'Sviluppo e-commerce ricambi + accordi con reti officine', costo_mensile:3000, costo_setup:2000, tempo_mesi:6 },
+      '2': { chi:'Titolare', cosa:'Visite officine/carrozzerie della zona', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Titolare strutturato', cosa:'Sviluppo flotte e noleggiatori — contratti fornitura', costo_mensile:400, costo_setup:300, tempo_mesi:2 },
+      '4': { chi:'1 agente', cosa:'1 agente officine fuori zona', costo_mensile:1800, costo_setup:500, tempo_mesi:3 },
+      '5': { chi:'Strategia multicanale', cosa:'E-commerce ricambi + reti officine', costo_mensile:3000, costo_setup:2000, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — vendite al banco e telefono', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1095,11 +1112,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'ERP ricambi', cosa:'ERP ricambi — ordini, magazzino, TecDoc, logistica, fatturazione', costo_mensile:1000, costo_setup:5000, tempo_mesi:3 },
     },
     team: {
-      '1': { chi:'Titolare + magazziniere', cosa:'Titolare + magazziniere — banco e consegne', costo_mensile:4000, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ addetto banco', cosa:'Addetto banco — ricerca ricambi e gestione ordini', costo_mensile:6000, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'+ autista', cosa:'Autista dedicato — consegne rapide in zona (entro 1h)', costo_mensile:8000, costo_setup:500, tempo_mesi:1 },
-      '4': { chi:'Team strutturato', cosa:'Banco + magazzino + consegne + back office', costo_mensile:13000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Struttura manageriale', cosa:'Resp. commerciale + resp. logistica + gestione e-commerce', costo_mensile:19000, costo_setup:1500, tempo_mesi:5 },
+      _label: 'Organizzazione',
+      '1': { chi:'Titolare', cosa:'Nessuna organizzazione — il titolare decide tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Ruoli banco/magazzino/consegne definiti', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Titolare', cosa:'Procedure ordini urgenti formalizzate', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Consulente + titolare', cosa:'KPI evasione ordini + tempi consegna', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Management', cosa:'Management + ottimizzazione logistica', costo_mensile:1500, costo_setup:1500, tempo_mesi:5 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — ricerca manuale su cataloghi cartacei', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1144,11 +1162,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   commercio_abbigliamento_ingrosso: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Titolare visita clienti storici — showroom e fiere', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare + agente', cosa:'1 agente plurimandatario su zona limitrofa', costo_mensile:1500, costo_setup:0, tempo_mesi:2 },
-      '3': { chi:'Rete agenti', cosa:'3-4 agenti plurimandatari copertura regionale', costo_mensile:3500, costo_setup:500, tempo_mesi:3 },
-      '4': { chi:'Agenti + showroom', cosa:'Rete agenti + showroom permanente per buyer', costo_mensile:5500, costo_setup:3000, tempo_mesi:4 },
-      '5': { chi:'Strategia multicanale', cosa:'Vendita B2B multicanale — agenti, fiere, marketplace wholesale', costo_mensile:7000, costo_setup:5000, tempo_mesi:6 },
+      '1': { chi:'Titolare', cosa:'Titolare vende direttamente — showroom e fiere', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Campionario stagionale proattivo ai buyer', costo_mensile:300, costo_setup:500, tempo_mesi:1 },
+      '3': { chi:'1 agente', cosa:'1 agente con portafoglio zona', costo_mensile:1500, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'2-3 agenti', cosa:'2-3 agenti per zona — copertura regionale', costo_mensile:4000, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Rete agenti + showroom', cosa:'Rete agenti + showroom permanente', costo_mensile:7000, costo_setup:2500, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini su carta e telefono', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1158,11 +1176,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'ERP fashion B2B', cosa:'ERP fashion — ordini, campionario, spedizioni, fatturazione', costo_mensile:1200, costo_setup:4000, tempo_mesi:3 },
     },
     team: {
-      '1': { chi:'Titolare + magazziniere', cosa:'Titolare + 1 magazziniere — gestione ordini e spedizioni', costo_mensile:5000, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ addetto ordini', cosa:'Addetto gestione ordini e rapporti con agenti', costo_mensile:7500, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Team commerciale', cosa:'Commerciale interno + logistica + back office', costo_mensile:11000, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Struttura completa', cosa:'Ufficio vendite + magazzino + amministrazione dedicata', costo_mensile:16000, costo_setup:1000, tempo_mesi:4 },
-      '5': { chi:'Dir. commerciale', cosa:'Direzione commerciale con coordinamento agenti e buyer', costo_mensile:21000, costo_setup:2000, tempo_mesi:6 },
+      _label: 'Organizzazione',
+      '1': { chi:'Titolare', cosa:'Nessuna organizzazione — il titolare decide tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Pianificazione campagne vendita stagionali', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Titolare', cosa:'Ruoli magazzino/spedizioni formalizzati', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Consulente + titolare', cosa:'KPI per agente + obiettivi stagione', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Management', cosa:'Management coordinamento rete agenti', costo_mensile:1500, costo_setup:1500, tempo_mesi:5 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — ordini gestiti a voce e su carta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1207,11 +1226,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   commercio_elettronica: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Vendita a banco e telefono — clienti abituali', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare + comm.', cosa:'Commerciale junior — sviluppo clienti business e VAR', costo_mensile:1800, costo_setup:0, tempo_mesi:2 },
-      '3': { chi:'Rete vendita', cosa:'2-3 commerciali su segmenti (retail, business, PA)', costo_mensile:4000, costo_setup:500, tempo_mesi:3 },
-      '4': { chi:'Team + marketplace', cosa:'Team vendite + marketplace Amazon/eBay Business', costo_mensile:5500, costo_setup:2000, tempo_mesi:3 },
-      '5': { chi:'Strategia multicanale', cosa:'Vendita omnicanale — agenti, e-commerce, tender PA, VAR', costo_mensile:7500, costo_setup:3000, tempo_mesi:6 },
+      '1': { chi:'Titolare', cosa:'Titolare/banco — vendita diretta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Inside sales telefonico — sviluppo clienti business', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'1 inside sales', cosa:'1 inside sales dedicato — gestione ordini e sviluppo', costo_mensile:2000, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Account + inside sales', cosa:'1 account + 1 inside sales', costo_mensile:4500, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Team vendite', cosa:'Team vendite strutturato — multicanale', costo_mensile:7500, costo_setup:2000, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — tutto a memoria e scontrini', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1221,11 +1240,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'ERP distribuzione', cosa:'ERP completo — ordini, stock, pricing, margini real-time', costo_mensile:1200, costo_setup:5000, tempo_mesi:3 },
     },
     team: {
-      '1': { chi:'Titolare + commesso', cosa:'Titolare + 1 commesso — banco e magazzino', costo_mensile:4500, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ tecnico', cosa:'Aggiunta tecnico per assistenza e configurazioni', costo_mensile:7000, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Team vendite', cosa:'Team vendite separato da assistenza tecnica', costo_mensile:11000, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Struttura completa', cosa:'Vendite + tecnico + magazzino + back office', costo_mensile:15000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Dir. commerciale', cosa:'Direzione commerciale con resp. canali e business dev.', costo_mensile:20000, costo_setup:2000, tempo_mesi:6 },
+      _label: 'Organizzazione',
+      '1': { chi:'Titolare', cosa:'Nessuna organizzazione — il titolare decide tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Ruoli vendita/magazzino definiti — chi fa cosa è chiaro', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Titolare', cosa:'Procedure pricing e stock formalizzate', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Consulente + titolare', cosa:'KPI margini + rotazione — deleghe operative', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Management', cosa:'Management + analisi dati vendita strutturato', costo_mensile:1500, costo_setup:1500, tempo_mesi:5 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — preventivi manuali su carta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1270,11 +1290,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   commercio_abbigliamento_dettaglio: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Titolare in negozio — vendita diretta ai clienti', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare + commessa', cosa:'Commessa part-time per coprire turni e weekend', costo_mensile:1200, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Visual + vendita', cosa:'Visual merchandising + tecniche di vendita assistita', costo_mensile:2000, costo_setup:800, tempo_mesi:2 },
-      '4': { chi:'Clienteling', cosa:'Clienteling strutturato — rubrica VIP, eventi, personal shopper', costo_mensile:3000, costo_setup:1500, tempo_mesi:3 },
-      '5': { chi:'Strategia omnicanale', cosa:'Vendita omnicanale — negozio, social selling, e-commerce', costo_mensile:4500, costo_setup:3000, tempo_mesi:5 },
+      '1': { chi:'Titolare', cosa:'Solo titolare in negozio', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+ 1 commesso/a PT', cosa:'1 commesso/a part-time per coprire turni e weekend', costo_mensile:1000, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'+ 1 commesso/a FT', cosa:'1 commesso/a full-time — vendita assistita', costo_mensile:1700, costo_setup:300, tempo_mesi:2 },
+      '4': { chi:'2 commessi + visual', cosa:'2 commessi + visual merchandiser', costo_mensile:4000, costo_setup:500, tempo_mesi:3 },
+      '5': { chi:'Store manager + team', cosa:'Store manager + team vendita strutturato', costo_mensile:6500, costo_setup:1000, tempo_mesi:5 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — vendite solo da scontrini', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1284,11 +1304,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'CRM omnicanale', cosa:'CRM omnicanale — negozio, web, social con vista unica cliente', costo_mensile:800, costo_setup:3000, tempo_mesi:3 },
     },
     team: {
-      '1': { chi:'Titolare', cosa:'Solo titolare in negozio — nessun dipendente', costo_mensile:3000, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ commessa', cosa:'Titolare + 1 commessa part-time per turni', costo_mensile:4500, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Team negozio', cosa:'2 commesse + visual merchandiser esterno', costo_mensile:7500, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Struttura retail', cosa:'Responsabile negozio + commesse + addetto e-commerce', costo_mensile:12000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Manager + team', cosa:'Store manager + team vendita + marketing + e-commerce', costo_mensile:18000, costo_setup:2000, tempo_mesi:5 },
+      _label: 'Organizzazione',
+      '1': { chi:'Titolare', cosa:'Nessuna organizzazione — il titolare decide tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Turni e ruoli definiti — chi fa cosa è chiaro', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Titolare', cosa:'Obiettivi vendita per persona definiti', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Consulente + titolare', cosa:'KPI negozio + deleghe operative', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Management', cosa:'Governance multi-punto vendita', costo_mensile:1500, costo_setup:1500, tempo_mesi:5 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — tutto a sensazione ed esperienza', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1333,11 +1354,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   commercio_orologi_gioielli: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Titolare in boutique — vendita su appuntamento e walk-in', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare + addetta', cosa:'Addetta vendita formata su gemmologia e luxury', costo_mensile:1800, costo_setup:500, tempo_mesi:2 },
-      '3': { chi:'Clienteling', cosa:'Clienteling strutturato — rubrica VIP, follow-up post-vendita', costo_mensile:2500, costo_setup:1000, tempo_mesi:2 },
-      '4': { chi:'Team vendita luxury', cosa:'Team formato con cerimonia vendita e personal advisor', costo_mensile:4000, costo_setup:2000, tempo_mesi:3 },
-      '5': { chi:'Strategia omnicanale', cosa:'Vendita omnicanale — boutique, e-commerce, eventi privati', costo_mensile:5500, costo_setup:4000, tempo_mesi:5 },
+      '1': { chi:'Titolare', cosa:'Solo titolare in boutique', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'+ 1 addetto clienteling', cosa:'1 addetto clienteling — accoglienza e follow-up', costo_mensile:2200, costo_setup:500, tempo_mesi:1 },
+      '3': { chi:'2 addetti vendita', cosa:'2 addetti vendita specializzati — gemmologia e luxury', costo_mensile:4500, costo_setup:1000, tempo_mesi:2 },
+      '4': { chi:'Team + gemmologa', cosa:'Team vendita + gemmologa dedicata', costo_mensile:7000, costo_setup:1500, tempo_mesi:3 },
+      '5': { chi:'Store manager + team', cosa:'Store manager + team clienteling VIP', costo_mensile:10000, costo_setup:2000, tempo_mesi:5 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — clienti a memoria e rubrica', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1347,11 +1368,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'CRM clienteling', cosa:'Piattaforma clienteling completa — 360° vista cliente luxury', costo_mensile:1000, costo_setup:4000, tempo_mesi:3 },
     },
     team: {
-      '1': { chi:'Titolare', cosa:'Solo titolare — gestisce tutto in boutique', costo_mensile:3500, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ addetta vendita', cosa:'Titolare + 1 addetta vendita formata', costo_mensile:5500, costo_setup:500, tempo_mesi:1 },
-      '3': { chi:'Team boutique', cosa:'2 addette vendita + orafo/riparatore esterno', costo_mensile:9000, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Struttura completa', cosa:'Boutique manager + addette + back office + laboratorio', costo_mensile:15000, costo_setup:1500, tempo_mesi:4 },
-      '5': { chi:'Manager + team', cosa:'Store manager luxury + team vendita + marketing + e-commerce', costo_mensile:22000, costo_setup:2500, tempo_mesi:6 },
+      _label: 'Organizzazione',
+      '1': { chi:'Titolare', cosa:'Nessuna organizzazione — il titolare decide tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Procedure accoglienza e clienteling definite', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Titolare', cosa:'CRM clienti VIP + follow-up strutturato', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'Consulente + titolare', cosa:'KPI per addetto + obiettivi vendita', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Management', cosa:'Governance + gestione eventi trunk show', costo_mensile:1500, costo_setup:2000, tempo_mesi:5 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — esperienza e relazione personale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1396,11 +1418,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   alimentare_trasformazione: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Titolare vende direttamente a negozi e ristoranti zona', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare + agente', cosa:'1 agente per GDO locale e grossisti zona', costo_mensile:2000, costo_setup:0, tempo_mesi:2 },
-      '3': { chi:'Rete agenti', cosa:'3-4 agenti su GDO regionale + HORECA strutturato', costo_mensile:5000, costo_setup:1000, tempo_mesi:3 },
-      '4': { chi:'KAM + agenti', cosa:'Key account GDO nazionale + rete agenti regionali', costo_mensile:7500, costo_setup:2000, tempo_mesi:4 },
-      '5': { chi:'Strategia multicanale', cosa:'Vendita GDO + HORECA + export + e-commerce DTC', costo_mensile:10000, costo_setup:5000, tempo_mesi:6 },
+      '1': { chi:'Titolare', cosa:'Titolare gestisce clienti storici', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Visite a buyer GDO e HORECA', costo_mensile:300, costo_setup:0, tempo_mesi:2 },
+      '3': { chi:'1 agente', cosa:'1 agente dedicato GDO o HORECA (~2.500€ fisso+provvigioni)', costo_mensile:2500, costo_setup:500, tempo_mesi:3 },
+      '4': { chi:'2 agenti + inside sales', cosa:'2 agenti per canale + inside sales (~2.800€ commerciale)', costo_mensile:6000, costo_setup:1000, tempo_mesi:4 },
+      '5': { chi:'Dir. commerciale + rete', cosa:'Dir. commerciale + rete agenti + export', costo_mensile:9000, costo_setup:2500, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini su carta e telefono', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1410,11 +1432,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'ERP food', cosa:'ERP food completo — ordini, produzione, lotti, tracciabilità', costo_mensile:1500, costo_setup:6000, tempo_mesi:4 },
     },
     team: {
-      '1': { chi:'Titolare + operai', cosa:'Titolare + 3-4 operai produzione — vendita fatta dal titolare', costo_mensile:7000, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ commerciale', cosa:'Commerciale junior per sviluppo clienti GDO e HORECA', costo_mensile:10000, costo_setup:500, tempo_mesi:2 },
-      '3': { chi:'Team strutturato', cosa:'Produzione + commerciale + amministrazione + qualità', costo_mensile:16000, costo_setup:1000, tempo_mesi:3 },
-      '4': { chi:'Struttura completa', cosa:'Resp. produzione + resp. commerciale + quality + logistica', costo_mensile:22000, costo_setup:2000, tempo_mesi:4 },
-      '5': { chi:'Dir. commerciale', cosa:'Direzione commerciale + export manager + marketing + R&D', costo_mensile:28000, costo_setup:3000, tempo_mesi:6 },
+      _label: 'Organizzazione',
+      '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Ruoli base', cosa:'Ruoli produzione/qualità definiti', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Riunioni + pianificazione', cosa:'Riunioni + pianificazione produzione', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'KPI + resp. qualità', cosa:'KPI + resp. qualità autonomo', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Management completo', cosa:'Management completo — titolare strategia', costo_mensile:1500, costo_setup:2000, tempo_mesi:4 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Processi artigianali — nessuna formalizzazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1459,11 +1482,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   alimentare_vini: {
     vendite: {
-      '1': { chi:'Titolare/enologo', cosa:'Titolare vende in cantina — degustazioni e passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare + agente', cosa:'1 agente per enoteche e ristoranti della regione', costo_mensile:1500, costo_setup:0, tempo_mesi:2 },
-      '3': { chi:'Rete HORECA', cosa:'3-4 agenti su HORECA + enoteche multiregione', costo_mensile:4000, costo_setup:800, tempo_mesi:3 },
-      '4': { chi:'Export + HORECA', cosa:'Export manager mercati UE + rete HORECA Italia', costo_mensile:6500, costo_setup:2000, tempo_mesi:4 },
-      '5': { chi:'Strategia multicanale', cosa:'Vendita HORECA + GDO + export + wine club DTC', costo_mensile:9000, costo_setup:4000, tempo_mesi:6 },
+      '1': { chi:'Titolare', cosa:'Titolare vende in cantina', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare + agente', cosa:'Visite enoteche e ristoranti zona', costo_mensile:300, costo_setup:0, tempo_mesi:2 },
+      '3': { chi:'1 agente', cosa:'1 agente HORECA/enoteche (~2.000€)', costo_mensile:2000, costo_setup:500, tempo_mesi:3 },
+      '4': { chi:'Agente + export', cosa:'Agente + export manager (~3.000€)', costo_mensile:5000, costo_setup:1500, tempo_mesi:4 },
+      '5': { chi:'Dir. commerciale + team', cosa:'Dir. commerciale + agenti + wine club', costo_mensile:8000, costo_setup:3000, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini a voce e WhatsApp', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1473,11 +1496,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'ERP vitivinicolo', cosa:'ERP vitivinicolo — vigna, cantina, vendite, compliance, export', costo_mensile:1200, costo_setup:5000, tempo_mesi:4 },
     },
     team: {
-      '1': { chi:'Titolare + cantiniere', cosa:'Titolare/enologo + 1-2 operai in vigna e cantina', costo_mensile:6000, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ addetto cantina', cosa:'Addetto vendite cantina + degustazioni + wine shop', costo_mensile:8500, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Team strutturato', cosa:'Enologo + cantinieri + commerciale + amministrazione', costo_mensile:14000, costo_setup:800, tempo_mesi:3 },
-      '4': { chi:'Struttura completa', cosa:'Resp. commerciale + export + wine hospitality + produzione', costo_mensile:20000, costo_setup:1500, tempo_mesi:4 },
-      '5': { chi:'Dir. commerciale', cosa:'Direzione comm. + export manager + enoturismo + marketing', costo_mensile:26000, costo_setup:3000, tempo_mesi:6 },
+      _label: 'Organizzazione',
+      '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Ruoli base', cosa:'Ruoli cantina/vendita definiti', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Pianificazione', cosa:'Pianificazione vendemmia/produzione', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'KPI + qualità', cosa:'KPI + gestione qualità', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Governance', cosa:'Governance enologo + commerciale', costo_mensile:1500, costo_setup:2000, tempo_mesi:4 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Processi artigianali — nessuna formalizzazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1522,11 +1546,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   alimentare_forno: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Vendita al banco del proprio negozio', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare + consegne', cosa:'Consegne a bar, ristoranti e mense della zona', costo_mensile:500, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Commerciale HORECA', cosa:'Commerciale per sviluppo clienti HORECA e catering', costo_mensile:2000, costo_setup:300, tempo_mesi:2 },
-      '4': { chi:'GDO locale', cosa:'Fornitura GDO locale con linea confezionata a brand', costo_mensile:3500, costo_setup:1500, tempo_mesi:3 },
-      '5': { chi:'Strategia multicanale', cosa:'Vendita retail + HORECA + GDO + e-commerce spedizione', costo_mensile:5000, costo_setup:3000, tempo_mesi:5 },
+      '1': { chi:'Titolare', cosa:'Titolare al banco', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'1 commesso/a', cosa:'1 commesso/a (~1.600€)', costo_mensile:1600, costo_setup:0, tempo_mesi:1 },
+      '3': { chi:'Catering + B2B', cosa:'Sviluppo catering e consegne B2B', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'2 commessi + consegne', cosa:'2 commessi + consegne strutturate', costo_mensile:3800, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Resp. vendite + team', cosa:'Resp. vendite + team punti vendita', costo_mensile:6000, costo_setup:2000, tempo_mesi:5 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — vendite solo dal registratore', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1536,11 +1560,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'ERP panificazione', cosa:'ERP panificazione — ordini, produzione, consegne, margini', costo_mensile:800, costo_setup:3000, tempo_mesi:3 },
     },
     team: {
-      '1': { chi:'Titolare + fornaio', cosa:'Titolare + 1 fornaio — produzione e vendita', costo_mensile:5500, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ commessa', cosa:'Commessa al banco + autista consegne part-time', costo_mensile:8000, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Team produzione', cosa:'2 fornai + commessa + addetto consegne', costo_mensile:12000, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Struttura completa', cosa:'Resp. produzione + fornai + vendita + logistica', costo_mensile:17000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Manager + team', cosa:'Resp. operativo + produzione + commerciale + marketing', costo_mensile:22000, costo_setup:2000, tempo_mesi:5 },
+      _label: 'Organizzazione',
+      '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Turni e ruoli', cosa:'Turni e ruoli produzione/banco', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Pianificazione', cosa:'Pianificazione produzione giornaliera', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'KPI', cosa:'KPI produzione + vendita', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Management multi-PV', cosa:'Management multi-punto vendita', costo_mensile:1500, costo_setup:2000, tempo_mesi:4 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Ricette a memoria — nessun processo standardizzato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1585,11 +1610,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   alimentare_conserve: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Vendita diretta a negozi locali e mercati', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare + agente', cosa:'1 agente per GDO regionale e grossisti food', costo_mensile:1800, costo_setup:0, tempo_mesi:2 },
-      '3': { chi:'Rete commerciale', cosa:'3 agenti GDO + sviluppo HORECA e specialità', costo_mensile:4500, costo_setup:800, tempo_mesi:3 },
-      '4': { chi:'KAM + export', cosa:'Key account GDO nazionale + export manager UE', costo_mensile:7000, costo_setup:2000, tempo_mesi:4 },
-      '5': { chi:'Strategia multicanale', cosa:'GDO + export + private label + e-commerce DTC', costo_mensile:10000, costo_setup:5000, tempo_mesi:6 },
+      '1': { chi:'Titolare', cosa:'Titolare gestisce GDO', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Visite buyer insegne', costo_mensile:300, costo_setup:0, tempo_mesi:2 },
+      '3': { chi:'1 agente GDO', cosa:'1 agente GDO nazionale (~2.500€)', costo_mensile:2500, costo_setup:500, tempo_mesi:3 },
+      '4': { chi:'Agente + export', cosa:'Agente GDO + export (~2.800€)', costo_mensile:5300, costo_setup:1000, tempo_mesi:4 },
+      '5': { chi:'Dir. commerciale + rete', cosa:'Dir. commerciale + rete + private label', costo_mensile:8500, costo_setup:2500, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini telefonici e fiere', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1599,11 +1624,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'ERP food', cosa:'ERP food — ordini, produzione, lotti, export, tracciabilità', costo_mensile:1500, costo_setup:6000, tempo_mesi:4 },
     },
     team: {
-      '1': { chi:'Titolare + operai', cosa:'Titolare + 3-5 operai produzione stagionale', costo_mensile:6000, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ commerciale', cosa:'Commerciale junior per GDO e sviluppo clienti', costo_mensile:9000, costo_setup:500, tempo_mesi:2 },
-      '3': { chi:'Team strutturato', cosa:'Produzione + commerciale + qualità + logistica', costo_mensile:15000, costo_setup:1000, tempo_mesi:3 },
-      '4': { chi:'Struttura completa', cosa:'Resp. produzione + commerciale + quality + export', costo_mensile:21000, costo_setup:2000, tempo_mesi:4 },
-      '5': { chi:'Dir. commerciale', cosa:'Dir. commerciale + export + marketing + R&D prodotto', costo_mensile:27000, costo_setup:3000, tempo_mesi:6 },
+      _label: 'Organizzazione',
+      '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Ruoli base', cosa:'Ruoli produzione/qualità', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Pianificazione + qualità', cosa:'Pianificazione + qualità autonoma', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'KPI + certificazioni', cosa:'KPI + certificazioni', costo_mensile:500, costo_setup:1500, tempo_mesi:3 },
+      '5': { chi:'Management completo', cosa:'Management completo', costo_mensile:1500, costo_setup:2000, tempo_mesi:4 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Produzione artigianale — ricette tradizionali non codificate', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1648,11 +1674,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   alimentare_ingredienti: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Titolare vende a industrie alimentari della zona', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare + tecnico', cosa:'Tecnico commerciale per demo e specifiche prodotto', costo_mensile:2500, costo_setup:0, tempo_mesi:2 },
-      '3': { chi:'Rete tecnico-comm.', cosa:'2-3 tecnici commerciali su industrie food nazionali', costo_mensile:5500, costo_setup:1000, tempo_mesi:3 },
-      '4': { chi:'KAM + rete', cosa:'Key account per grandi industrie + rete agenti regionali', costo_mensile:8000, costo_setup:2000, tempo_mesi:4 },
-      '5': { chi:'Strategia B2B', cosa:'Vendita B2B strutturata — grandi industrie, PMI, export', costo_mensile:11000, costo_setup:4000, tempo_mesi:6 },
+      '1': { chi:'Titolare', cosa:'Titolare gestisce clienti', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Campionature proattive verso industria', costo_mensile:400, costo_setup:300, tempo_mesi:2 },
+      '3': { chi:'1 tecnico commerciale', cosa:'1 tecnico commerciale (~2.800€)', costo_mensile:2800, costo_setup:500, tempo_mesi:3 },
+      '4': { chi:'2 tecnici', cosa:'2 tecnici per segmento', costo_mensile:5600, costo_setup:1000, tempo_mesi:4 },
+      '5': { chi:'Dir. commerciale + R&D', cosa:'Dir. commerciale + R&D applicativo', costo_mensile:8500, costo_setup:2000, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — rapporti personali e telefonate', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1662,11 +1688,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'ERP ingredienti', cosa:'ERP completo — ordini, produzione, lotti, qualità, compliance', costo_mensile:1500, costo_setup:6000, tempo_mesi:4 },
     },
     team: {
-      '1': { chi:'Titolare + tecnico', cosa:'Titolare + 1 tecnico di laboratorio — produzione e vendita', costo_mensile:6500, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ commerciale', cosa:'Tecnico commerciale per sviluppo nuovi clienti', costo_mensile:9500, costo_setup:500, tempo_mesi:2 },
-      '3': { chi:'Team strutturato', cosa:'Laboratorio R&D + commerciale + quality + produzione', costo_mensile:15000, costo_setup:1000, tempo_mesi:3 },
-      '4': { chi:'Struttura completa', cosa:'Resp. R&D + commerciale + qualità + produzione + logistica', costo_mensile:22000, costo_setup:2000, tempo_mesi:4 },
-      '5': { chi:'Dir. commerciale', cosa:'Dir. commerciale + R&D + quality manager + export', costo_mensile:28000, costo_setup:3000, tempo_mesi:6 },
+      _label: 'Organizzazione',
+      '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Schede tecniche', cosa:'Schede tecniche e specifiche', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Application lab', cosa:'Application lab strutturato', costo_mensile:300, costo_setup:800, tempo_mesi:2 },
+      '4': { chi:'KPI + QA', cosa:'KPI + quality assurance', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Management', cosa:'Management tecnico/commerciale', costo_mensile:1500, costo_setup:2000, tempo_mesi:4 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Produzione su ricetta — nessun processo formalizzato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1711,11 +1738,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   alimentare_birra: {
     vendite: {
-      '1': { chi:'Birraio/titolare', cosa:'Vendita in taproom e a pub/ristoranti della zona', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare + agente', cosa:'1 agente per pub e ristoranti regionali', costo_mensile:1500, costo_setup:0, tempo_mesi:2 },
-      '3': { chi:'Rete HORECA', cosa:'2-3 agenti HORECA + beer shop + distribuzione locale', costo_mensile:3500, costo_setup:500, tempo_mesi:3 },
-      '4': { chi:'Distrib. + export', cosa:'Accordi con distributori regionali + export UE', costo_mensile:5500, costo_setup:2000, tempo_mesi:4 },
-      '5': { chi:'Strategia multicanale', cosa:'HORECA + distribuzione + export + taproom + e-commerce DTC', costo_mensile:8000, costo_setup:4000, tempo_mesi:6 },
+      '1': { chi:'Titolare', cosa:'Titolare vende dal taproom', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Visite pub e ristoranti zona', costo_mensile:200, costo_setup:0, tempo_mesi:2 },
+      '3': { chi:'1 agente', cosa:'1 agente HORECA (~1.800€)', costo_mensile:1800, costo_setup:500, tempo_mesi:3 },
+      '4': { chi:'Agente + e-commerce', cosa:'Agente + e-commerce diretto', costo_mensile:3500, costo_setup:1500, tempo_mesi:4 },
+      '5': { chi:'Team vendite', cosa:'Team vendite + distribuzione', costo_mensile:6000, costo_setup:2000, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — tutto a voce e WhatsApp', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1725,11 +1752,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'ERP birrificio', cosa:'ERP birrificio — ordini, produzione, lotti, accise, export', costo_mensile:1200, costo_setup:5000, tempo_mesi:4 },
     },
     team: {
-      '1': { chi:'Birraio + aiutante', cosa:'Birraio/titolare + 1 aiutante — produzione e vendita', costo_mensile:5000, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ taproom', cosa:'Addetto taproom + eventi + consegne locali', costo_mensile:7500, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Team strutturato', cosa:'Birraio + assistente + commerciale + taproom', costo_mensile:12000, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Struttura completa', cosa:'Birraio capo + produzione + commerciale + taproom + admin', costo_mensile:17000, costo_setup:1500, tempo_mesi:4 },
-      '5': { chi:'Manager + team', cosa:'Resp. operativo + produzione + commerciale + marketing', costo_mensile:23000, costo_setup:2500, tempo_mesi:6 },
+      _label: 'Organizzazione',
+      '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Ruoli base', cosa:'Ruoli birraio/vendita', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
+      '3': { chi:'Pianificazione + qualità', cosa:'Pianificazione produzione + qualità', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'KPI + eventi', cosa:'KPI + gestione eventi', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Governance', cosa:'Governance — titolare solo R&D birra', costo_mensile:1500, costo_setup:2000, tempo_mesi:4 },
     },
     processi: {
       '1': { chi:'Birraio', cosa:'Ricette personali — produzione artigianale senza standard', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1774,11 +1802,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   tech_saas: {
     vendite: {
-      '1': { chi:'Founder', cosa:'Founder vende direttamente — demo e onboarding personale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Founder + SDR', cosa:'SDR per outbound e qualifica lead — founder chiude', costo_mensile:2000, costo_setup:0, tempo_mesi:2 },
-      '3': { chi:'Team sales', cosa:'AE + SDR con processo demo-trial-close strutturato', costo_mensile:5000, costo_setup:1000, tempo_mesi:3 },
-      '4': { chi:'Sales + CS', cosa:'Sales team + customer success per retention e upsell', costo_mensile:8000, costo_setup:2000, tempo_mesi:4 },
-      '5': { chi:'Strategia PLG + sales', cosa:'Product-led growth + sales enterprise + partnership channel', costo_mensile:12000, costo_setup:5000, tempo_mesi:6 },
+      '1': { chi:'Founder', cosa:'Founder vende', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Founder', cosa:'Inbound + content come lead gen', costo_mensile:200, costo_setup:0, tempo_mesi:2 },
+      '3': { chi:'1 account/SDR', cosa:'1 account/SDR dedicato (~3.200€ account, ~2.500€ SDR)', costo_mensile:3200, costo_setup:500, tempo_mesi:3 },
+      '4': { chi:'2 account + 1 SDR', cosa:'2 account + 1 SDR', costo_mensile:8000, costo_setup:1500, tempo_mesi:4 },
+      '5': { chi:'VP Sales + team', cosa:'VP Sales + team + partnerships', costo_mensile:14000, costo_setup:3000, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Founder', cosa:'Nessun CRM — lead su email e spreadsheet', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1788,11 +1816,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'Revenue ops', cosa:'Revenue ops stack — CRM, BI, forecasting, churn prediction', costo_mensile:1200, costo_setup:4000, tempo_mesi:3 },
     },
     team: {
-      '1': { chi:'Founder solo', cosa:'Founder/CTO fa tutto — prodotto, vendita, supporto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ developer', cosa:'1 developer + founder che vende e fa prodotto', costo_mensile:4000, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Team piccolo', cosa:'2 dev + 1 sales/CS + founder come CEO', costo_mensile:10000, costo_setup:500, tempo_mesi:3 },
-      '4': { chi:'Team strutturato', cosa:'Dev team + sales + CS + marketing + product', costo_mensile:20000, costo_setup:1500, tempo_mesi:4 },
-      '5': { chi:'Scaling team', cosa:'VP Sales + VP Eng + team completi per funzione', costo_mensile:30000, costo_setup:3000, tempo_mesi:6 },
+      _label: 'Organizzazione',
+      '1': { chi:'Tutto il founder', cosa:'Tutto il founder', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Ruoli base', cosa:'Ruoli dev/sales/support', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Sprint planning', cosa:'Sprint planning + metriche base', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'OKR + management', cosa:'OKR + management per team', costo_mensile:500, costo_setup:1500, tempo_mesi:3 },
+      '5': { chi:'Governance C-level', cosa:'Governance C-level — founder solo prodotto', costo_mensile:2000, costo_setup:3000, tempo_mesi:4 },
     },
     processi: {
       '1': { chi:'Founder', cosa:'Nessun processo — tutto ad hoc e manuale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1837,11 +1866,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   tech_system_integrator: {
     vendite: {
-      '1': { chi:'Titolare/tecnico', cosa:'Titolare vende a clienti storici — referral e passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare + comm.', cosa:'Commerciale per sviluppo nuovi clienti PMI', costo_mensile:2500, costo_setup:0, tempo_mesi:2 },
-      '3': { chi:'Team presales', cosa:'Presales tecnico + commerciale — proposte complesse', costo_mensile:5000, costo_setup:1000, tempo_mesi:3 },
-      '4': { chi:'Partnership vendor', cosa:'Partnership vendor (Microsoft, Cisco) + team vendite', costo_mensile:7500, costo_setup:3000, tempo_mesi:4 },
-      '5': { chi:'Strategia enterprise', cosa:'Vendita enterprise — tender, framework agreement, partner', costo_mensile:10000, costo_setup:5000, tempo_mesi:6 },
+      '1': { chi:'Founder/partner', cosa:'Founder/partner vende', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Networking + eventi vendor', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
+      '3': { chi:'1 account manager', cosa:'1 account manager (~3.000€)', costo_mensile:3000, costo_setup:500, tempo_mesi:3 },
+      '4': { chi:'Account + pre-sales', cosa:'Account + pre-sales (~3.200€)', costo_mensile:6200, costo_setup:1500, tempo_mesi:4 },
+      '5': { chi:'Sales manager + team', cosa:'Sales manager + team', costo_mensile:10000, costo_setup:2500, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun CRM — progetti gestiti via email', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1851,11 +1880,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'ERP + CRM + PSA', cosa:'Stack completo — CRM, PSA, timesheet, margini progetto', costo_mensile:1500, costo_setup:5000, tempo_mesi:3 },
     },
     team: {
-      '1': { chi:'Titolare + tecnico', cosa:'Titolare/tecnico + 1 sistemista — fanno tutto', costo_mensile:5000, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ sistemista', cosa:'2 sistemisti + commerciale part-time', costo_mensile:9000, costo_setup:500, tempo_mesi:2 },
-      '3': { chi:'Team tecnico', cosa:'3-4 tecnici specializzati + commerciale + admin', costo_mensile:16000, costo_setup:1000, tempo_mesi:3 },
-      '4': { chi:'Struttura completa', cosa:'Team tecnico + presales + PM + commerciale + admin', costo_mensile:23000, costo_setup:2000, tempo_mesi:4 },
-      '5': { chi:'Dir. tecnica + comm.', cosa:'CTO + dir. commerciale + team per competenza + PM office', costo_mensile:30000, costo_setup:3000, tempo_mesi:6 },
+      _label: 'Organizzazione',
+      '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Ruoli base', cosa:'Ruoli vendita/delivery separati', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'PM base', cosa:'Project management base', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'KPI progetto', cosa:'KPI progetto + delivery', costo_mensile:500, costo_setup:1500, tempo_mesi:3 },
+      '5': { chi:'Governance + PMO', cosa:'Governance + PMO', costo_mensile:2000, costo_setup:2500, tempo_mesi:4 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — ogni progetto è diverso e ad hoc', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1900,11 +1930,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   tech_digital_agency: {
     vendite: {
-      '1': { chi:'Founder', cosa:'Founder vende a network personale — progetti one-shot', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Founder + referral', cosa:'Referral strutturato + LinkedIn outbound per nuovi clienti', costo_mensile:500, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Business developer', cosa:'Business developer per sviluppo clienti + retainer model', costo_mensile:3000, costo_setup:500, tempo_mesi:3 },
-      '4': { chi:'Team new business', cosa:'New business team + account manager per clienti esistenti', costo_mensile:5500, costo_setup:1500, tempo_mesi:3 },
-      '5': { chi:'Strategia growth', cosa:'Growth strategy — partnership, referral program, inbound + outbound', costo_mensile:8000, costo_setup:3000, tempo_mesi:5 },
+      '1': { chi:'Founder', cosa:'Founder/creative director vende', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Founder', cosa:'Portfolio + case study come strumento', costo_mensile:200, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'1 account/BD', cosa:'1 account/business developer (~2.800€)', costo_mensile:2800, costo_setup:500, tempo_mesi:3 },
+      '4': { chi:'2 account', cosa:'2 account per segmento', costo_mensile:5600, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Dir. commerciale', cosa:'Dir. commerciale + rete partnership', costo_mensile:8500, costo_setup:2000, tempo_mesi:5 },
     },
     pipeline: {
       '1': { chi:'Founder', cosa:'Nessun CRM — progetti su email e documenti', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1914,11 +1944,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'Revenue ops', cosa:'Stack completo — CRM, PM, timesheet, profittabilità progetto', costo_mensile:1000, costo_setup:3000, tempo_mesi:3 },
     },
     team: {
-      '1': { chi:'Founder + freelance', cosa:'Founder + 1-2 freelance per progetti', costo_mensile:2000, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Team piccolo', cosa:'Founder + 1 dev + 1 designer — team interno base', costo_mensile:6000, costo_setup:0, tempo_mesi:2 },
-      '3': { chi:'Team operativo', cosa:'3-4 persone interne + freelance specializzati', costo_mensile:12000, costo_setup:500, tempo_mesi:3 },
-      '4': { chi:'Struttura completa', cosa:'Dev team + design + PM + account + marketing', costo_mensile:20000, costo_setup:1500, tempo_mesi:4 },
-      '5': { chi:'Dir. + team', cosa:'Direzione creativa + tech lead + team per competenza', costo_mensile:28000, costo_setup:3000, tempo_mesi:6 },
+      _label: 'Organizzazione',
+      '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Workflow', cosa:'Workflow brief-to-delivery', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'Ruoli per skill', cosa:'Ruoli per skill (design/dev/copy)', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'KPI + satisfaction', cosa:'KPI per progetto + client satisfaction', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
+      '5': { chi:'Governance', cosa:'Governance creative + operations', costo_mensile:2000, costo_setup:2000, tempo_mesi:4 },
     },
     processi: {
       '1': { chi:'Founder', cosa:'Nessun processo — ogni progetto gestito diversamente', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1963,11 +1994,11 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   tech_automazione: {
     vendite: {
-      '1': { chi:'Titolare/ingegnere', cosa:'Titolare vende a contatti industriali — referral', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare + comm.', cosa:'Commerciale tecnico per sviluppo clienti manifatturieri', costo_mensile:2500, costo_setup:0, tempo_mesi:2 },
-      '3': { chi:'Team tecnico-comm.', cosa:'2 tecnici commerciali su settori (food, pharma, automotive)', costo_mensile:5500, costo_setup:1000, tempo_mesi:3 },
-      '4': { chi:'Sales + presales', cosa:'Team vendite + presales per offerte complesse e tender', costo_mensile:8000, costo_setup:2000, tempo_mesi:4 },
-      '5': { chi:'Strategia industriale', cosa:'Vendita Industry 4.0 — progetti, service, retrofit, partnership OEM', costo_mensile:11000, costo_setup:5000, tempo_mesi:6 },
+      '1': { chi:'Titolare/fondatore', cosa:'Titolare/fondatore vende', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Titolare', cosa:'Visite a uffici tecnici industriali', costo_mensile:300, costo_setup:0, tempo_mesi:2 },
+      '3': { chi:'1 tecnico commerciale', cosa:'1 tecnico commerciale (~3.000€)', costo_mensile:3000, costo_setup:500, tempo_mesi:3 },
+      '4': { chi:'2 commerciali', cosa:'2 commerciali per settore', costo_mensile:6000, costo_setup:1000, tempo_mesi:4 },
+      '5': { chi:'Dir. commerciale + export', cosa:'Dir. commerciale + export', costo_mensile:9000, costo_setup:2500, tempo_mesi:6 },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun CRM — progetti via email e preventivi Word', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -1977,11 +2008,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'ERP industriale', cosa:'ERP industriale completo — CRM, commesse, produzione, service', costo_mensile:1500, costo_setup:6000, tempo_mesi:4 },
     },
     team: {
-      '1': { chi:'Titolare + tecnico', cosa:'Titolare/ingegnere + 1 tecnico PLC — fanno tutto', costo_mensile:5000, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ programmatore', cosa:'2 tecnici PLC/SCADA + commerciale part-time', costo_mensile:9000, costo_setup:500, tempo_mesi:2 },
-      '3': { chi:'Team tecnico', cosa:'3-4 tecnici specializzati + PM + commerciale', costo_mensile:16000, costo_setup:1000, tempo_mesi:3 },
-      '4': { chi:'Struttura completa', cosa:'Team progettazione + SW + commissioning + commerciale + PM', costo_mensile:24000, costo_setup:2000, tempo_mesi:4 },
-      '5': { chi:'Dir. tecnica + comm.', cosa:'CTO + dir. commerciale + team per specializzazione', costo_mensile:30000, costo_setup:3000, tempo_mesi:6 },
+      _label: 'Organizzazione',
+      '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { chi:'Ruoli base', cosa:'Ruoli progettazione/collaudo', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
+      '3': { chi:'PM strutturato', cosa:'Project management strutturato', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
+      '4': { chi:'KPI + FAT/SAT', cosa:'KPI + FAT/SAT procedure', costo_mensile:500, costo_setup:1500, tempo_mesi:3 },
+      '5': { chi:'Governance', cosa:'Governance tecnica + commerciale', costo_mensile:2000, costo_setup:2500, tempo_mesi:4 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — ogni impianto è un pezzo unico', costo_mensile:0, costo_setup:0, tempo_mesi:0 },

@@ -29,16 +29,16 @@ var DIAGNOSI_DOMANDE = {
       { id:'p3', testo:'Registri sistematicamente il motivo di ogni offerta persa?', tipo:'yn', peso:2 },
     ],
     team: [
-      { id:'t1', testo:'Com\'è organizzato il personale aziendale?', tipo:'mc', peso:5,
+      { id:'t1', testo:'Come vengono prese le decisioni in azienda?', tipo:'mc', peso:5,
         opzioni:[
-          {label:'Il titolare fa tutto da solo'},
-          {label:'Titolare più operai senza intermedi'},
-          {label:'C\'è un capo reparto operativo'},
-          {label:'Team con ruoli separati e responsabili'},
-          {label:'Management strutturato su più livelli'}
+          {label:'Tutte le decisioni passano dal titolare'},
+          {label:'Il titolare delega compiti ma decide tutto'},
+          {label:'Qualcuno ha autonomia operativa su alcune aree'},
+          {label:'Ruoli definiti con KPI e riunioni periodiche'},
+          {label:'Governance strutturata — il titolare fa solo strategia'}
         ]},
-      { id:'t2', testo:'Il titolare può assentarsi 2 settimane senza impatto sulle vendite?', tipo:'yn', peso:3, disableIfMcBelow: 2 },
-      { id:'t3', testo:'Hai almeno un commerciale dedicato esclusivamente ai nuovi clienti?', tipo:'yn', peso:2, disableIfMcBelow: 2 },
+      { id:'t2', testo:'Fai riunioni periodiche con obiettivi misurabili?', tipo:'yn', peso:3 },
+      { id:'t3', testo:'Le decisioni operative vengono prese senza il tuo intervento?', tipo:'yn', peso:2 },
     ],
     processi: [
       { id:'pr1', testo:'Come gestisci il passaggio offerta-produzione?', tipo:'mc', peso:5,
@@ -131,16 +131,16 @@ var DIAGNOSI_DOMANDE = {
       { id:'p3', testo:'Tracci il tempo medio tra primo contatto e firma del contratto?', tipo:'yn', peso:2 },
     ],
     team: [
-      { id:'t1', testo:'Quanto dipende l\'azienda dal fondatore?', tipo:'mc', peso:5,
+      { id:'t1', testo:'Quanto dipende l\'operatività da te?', tipo:'mc', peso:5,
         opzioni:[
-          {label:'Tutto dipende da me, sono io l\'azienda'},
-          {label:'Ho collaboratori ma devo supervisionare tutto'},
-          {label:'Alcuni consulenti lavorano in autonomia parziale'},
-          {label:'Team con specialisti autonomi e un coordinatore'},
-          {label:'Struttura con ruoli definiti e delega completa'}
+          {label:'Senza di me si ferma tutto'},
+          {label:'Delego compiti ma supervisiono ogni cosa'},
+          {label:'Alcuni processi funzionano senza il mio intervento'},
+          {label:'Ho delegato la maggior parte dell\'operatività'},
+          {label:'Mi occupo solo di strategia e clienti chiave'}
         ]},
-      { id:'t2', testo:'Il know-how critico è documentato e non dipende da una sola persona?', tipo:'yn', peso:3, disableIfMcBelow: 2 },
-      { id:'t3', testo:'Hai un piano di onboarding strutturato per i nuovi consulenti?', tipo:'yn', peso:2, disableIfMcBelow: 2 },
+      { id:'t2', testo:'Il know-how critico è documentato e accessibile?', tipo:'yn', peso:3 },
+      { id:'t3', testo:'Hai un piano di onboarding strutturato per i nuovi?', tipo:'yn', peso:2 },
     ],
     processi: [
       { id:'pr1', testo:'Come eroghi i servizi ai clienti?', tipo:'mc', peso:5,
@@ -233,16 +233,16 @@ var DIAGNOSI_DOMANDE = {
       { id:'p3', testo:'Tracci separatamente le trattative per lavori pubblici e privati?', tipo:'yn', peso:2 },
     ],
     team: [
-      { id:'t1', testo:'Chi gestisce i cantieri nella tua impresa?', tipo:'mc', peso:5,
+      { id:'t1', testo:'Come vengono gestiti i cantieri senza di te?', tipo:'mc', peso:5,
         opzioni:[
-          {label:'Solo io, sono sempre in cantiere'},
-          {label:'Io con operai che eseguono ordini diretti'},
-          {label:'Un capocantiere che gestisce la giornata'},
-          {label:'Capocantiere autonomo su più cantieri'},
-          {label:'Più squadre autonome con capicantiere dedicati'}
+          {label:'Devo essere sempre presente in cantiere'},
+          {label:'Posso assentarmi ma devo controllare tutto'},
+          {label:'Il capocantiere gestisce la giornata autonomamente'},
+          {label:'I cantieri vanno avanti senza il mio intervento quotidiano'},
+          {label:'La gestione operativa è completamente delegata'}
         ]},
-      { id:'t2', testo:'Riesci a gestire 2 cantieri contemporanei senza rallentamenti?', tipo:'yn', peso:3, disableIfMcBelow: 2 },
-      { id:'t3', testo:'Il personale di cantiere ha le certificazioni di sicurezza aggiornate?', tipo:'yn', peso:2 },
+      { id:'t2', testo:'Hai procedure documentate per apertura e chiusura cantiere?', tipo:'yn', peso:3 },
+      { id:'t3', testo:'Ogni cantiere ha KPI di costo e tempi monitorati?', tipo:'yn', peso:2 },
     ],
     processi: [
       { id:'pr1', testo:'Come gestisci la documentazione di cantiere?', tipo:'mc', peso:5,
@@ -335,16 +335,16 @@ var DIAGNOSI_DOMANDE = {
       { id:'p3', testo:'Hai visibilità sugli ordini previsti dai tuoi 10 clienti principali?', tipo:'yn', peso:2 },
     ],
     team: [
-      { id:'t1', testo:'Com\'è organizzato il personale operativo?', tipo:'mc', peso:5,
+      { id:'t1', testo:'Come funziona l\'azienda quando non ci sei?', tipo:'mc', peso:5,
         opzioni:[
-          {label:'Titolare gestisce magazzino, vendite e consegne'},
-          {label:'Magazziniere e banco, il resto lo fa il titolare'},
-          {label:'Team operativo ma serve supervisione costante'},
-          {label:'Magazzino, banco e consegne con responsabili'},
-          {label:'Struttura autonoma con responsabile commerciale'}
+          {label:'Si ferma quasi tutto'},
+          {label:'Gli ordini base vanno avanti ma il resto si ferma'},
+          {label:'Le operazioni quotidiane continuano normalmente'},
+          {label:'Qualcuno prende decisioni al mio posto su quasi tutto'},
+          {label:'L\'azienda funziona perfettamente senza di me'}
         ]},
-      { id:'t2', testo:'C\'è qualcuno che gestisce spedizioni e resi senza il tuo intervento diretto?', tipo:'yn', peso:3 },
-      { id:'t3', testo:'Hai un responsabile commerciale che coordina la rete vendita?', tipo:'yn', peso:2, disableIfMcBelow: 3 },
+      { id:'t2', testo:'Hai un responsabile che coordina operazioni e vendite?', tipo:'yn', peso:3 },
+      { id:'t3', testo:'Monitori KPI settimanali su ordini, consegne e margini?', tipo:'yn', peso:2 },
     ],
     processi: [
       { id:'pr1', testo:'Come gestisci scorte e riordini?', tipo:'mc', peso:5,
@@ -437,16 +437,16 @@ var DIAGNOSI_DOMANDE = {
       { id:'p3', testo:'Hai un piano promozionale trimestrale definito in anticipo?', tipo:'yn', peso:2 },
     ],
     team: [
-      { id:'t1', testo:'Come funziona il negozio quando non ci sei?', tipo:'mc', peso:5,
+      { id:'t1', testo:'Come funziona il negozio senza di te?', tipo:'mc', peso:5,
         opzioni:[
-          {label:'Chiudo il negozio se non ci sono'},
-          {label:'C\'è qualcuno ma devo controllare tutto'},
-          {label:'Il personale gestisce la routine base'},
-          {label:'Un responsabile di punto vendita coordina il team'},
-          {label:'Il negozio funziona perfettamente senza di me'}
+          {label:'Chiudo se non ci sono'},
+          {label:'Qualcuno apre ma non gestisce problemi'},
+          {label:'Il personale gestisce la routine quotidiana'},
+          {label:'Un responsabile prende decisioni autonomamente'},
+          {label:'Il punto vendita funziona perfettamente senza di me'}
         ]},
-      { id:'t2', testo:'Il negozio funziona normalmente anche quando il titolare non c\'è?', tipo:'yn', peso:3, disableIfMcBelow: 1 },
-      { id:'t3', testo:'C\'è qualcuno oltre a te nel punto vendita che riceve formazione regolare sui prodotti?', tipo:'yn', peso:2 },
+      { id:'t2', testo:'Hai obiettivi di vendita giornalieri/settimanali misurati?', tipo:'yn', peso:3 },
+      { id:'t3', testo:'Il visual merchandising viene aggiornato senza il tuo intervento?', tipo:'yn', peso:2 },
     ],
     processi: [
       { id:'pr1', testo:'Come gestisci il riassortimento del negozio?', tipo:'mc', peso:5,
@@ -539,16 +539,16 @@ var DIAGNOSI_DOMANDE = {
       { id:'p3', testo:'Monitori il sell-out dei tuoi prodotti presso i punti vendita?', tipo:'yn', peso:2 },
     ],
     team: [
-      { id:'t1', testo:'Come è organizzato il personale in azienda?', tipo:'mc', peso:5,
+      { id:'t1', testo:'Quanto dipende la produzione e la vendita da te?', tipo:'mc', peso:5,
         opzioni:[
-          {label:'Titolare fa produzione, qualità e vendite'},
-          {label:'Titolare con operai, nessun responsabile'},
-          {label:'Responsabile produzione, commerciale è il titolare'},
-          {label:'Ruoli separati: produzione, qualità e commerciale'},
-          {label:'Struttura completa con autonomia su ogni funzione'}
+          {label:'Faccio tutto io — produzione, qualità, vendite'},
+          {label:'Ho operai ma supervisiono ogni fase'},
+          {label:'La produzione va avanti ma le vendite dipendono da me'},
+          {label:'Produzione e qualità autonome, commerciale in crescita'},
+          {label:'Ogni funzione ha un responsabile autonomo'}
         ]},
-      { id:'t2', testo:'C\'è qualcuno che gestisce la qualità in autonomia senza il tuo intervento?', tipo:'yn', peso:3, disableIfMcBelow: 2 },
-      { id:'t3', testo:'Hai personale commerciale dedicato separato dalla produzione?', tipo:'yn', peso:2, disableIfMcBelow: 2 },
+      { id:'t2', testo:'Hai un responsabile qualità che opera senza il tuo intervento?', tipo:'yn', peso:3 },
+      { id:'t3', testo:'Fai riunioni periodiche con obiettivi per funzione?', tipo:'yn', peso:2 },
     ],
     processi: [
       { id:'pr1', testo:'Come gestisci qualità e certificazioni?', tipo:'mc', peso:5,
@@ -641,16 +641,16 @@ var DIAGNOSI_DOMANDE = {
       { id:'p3', testo:'Hai almeno 3x il target trimestrale come valore in pipeline?', tipo:'yn', peso:2 },
     ],
     team: [
-      { id:'t1', testo:'Com\'è organizzato il team aziendale?', tipo:'mc', peso:5,
+      { id:'t1', testo:'Quanto dipende l\'azienda dal fondatore?', tipo:'mc', peso:5,
         opzioni:[
-          {label:'Il fondatore fa vendite, delivery e gestione'},
-          {label:'Fondatore con sviluppatori, nessun commerciale'},
-          {label:'Ruoli tecnici separati ma vendite al fondatore'},
-          {label:'Team con vendita e delivery separati'},
-          {label:'Struttura completa con autonomia su ogni funzione'}
+          {label:'Sono io l\'azienda — tutto passa da me'},
+          {label:'Ho sviluppatori ma gestisco clienti e vendite'},
+          {label:'Il team tecnico lavora in autonomia ma le vendite sono mie'},
+          {label:'Vendite e delivery separati con responsabili'},
+          {label:'Ogni funzione ha autonomia — io faccio solo strategia'}
         ]},
-      { id:'t2', testo:'Hai separato i ruoli di vendita da quelli di delivery?', tipo:'yn', peso:3, disableIfMcBelow: 2 },
-      { id:'t3', testo:'C\'è qualcuno che gestisce l\'onboarding clienti senza il tuo intervento diretto?', tipo:'yn', peso:2, disableIfMcBelow: 2 },
+      { id:'t2', testo:'Hai separato chiaramente i ruoli di vendita da quelli di delivery?', tipo:'yn', peso:3, disableIfMcBelow: 2 },
+      { id:'t3', testo:'Usi OKR o KPI strutturati per ogni team?', tipo:'yn', peso:2 },
     ],
     processi: [
       { id:'pr1', testo:'Come gestisci l\'onboarding e il supporto clienti?', tipo:'mc', peso:5,
@@ -743,13 +743,13 @@ var DIAGNOSI_DOMANDE = {
       { id:'p3', testo:'Conosci il tasso di chiusura tra preventivi e contratti?', tipo:'yn', peso:2 },
     ],
     team: [
-      { id:'t1', testo:'Quante persone lavorano con te?', tipo:'mc', peso:5,
+      { id:'t1', testo:'Come funziona l\'attività senza di te?', tipo:'mc', peso:5,
         opzioni:[
-          {label:'Nessuno — sono da solo'},
-          {label:'Ho un aiutante ma faccio quasi tutto io'},
-          {label:'Ho persone con ruoli definiti (chi vende, chi fa pratiche)'},
-          {label:'Ho un team con back office, vendita e amministrazione'},
-          {label:'Ho un responsabile che coordina il team'}
+          {label:'Si ferma tutto — sono io che faccio tutto'},
+          {label:'Qualcosa va avanti ma devo controllare'},
+          {label:'Le pratiche base e le consegne continuano'},
+          {label:'Le vendite e le operazioni vanno avanti senza di me'},
+          {label:'L\'attività funziona perfettamente — io faccio solo strategia'}
         ]},
       { id:'t2', testo:'Puoi stare via una settimana senza che si fermi tutto?', tipo:'yn', peso:3, disableIfMcBelow: 1 },
       { id:'t3', testo:'Ogni persona ha un ruolo chiaro e obiettivi definiti?', tipo:'yn', peso:2, disableIfMcBelow: 1 },
