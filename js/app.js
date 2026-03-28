@@ -4287,6 +4287,16 @@ function apriSchedaFinanziaria(tab) {
 }
 
 function chiudiSchedaFinanziaria() {
+  // Return any moved pane back to fin-card
+  var body = document.getElementById('scheda-body');
+  if (body) {
+    var movedPane = body.querySelector('.fin-pane');
+    if (movedPane) {
+      document.getElementById('fin-card').appendChild(movedPane);
+      movedPane.style.display = '';
+      movedPane.classList.remove('active');
+    }
+  }
   document.getElementById('scheda-overlay').classList.remove('open');
   document.body.style.overflow = '';
   if (currentId) renderProspectDetail(currentId);
@@ -4325,58 +4335,38 @@ function _renderSchedaTab() {
   var body = document.getElementById('scheda-body');
   if (!body) return;
 
-  // Build the form content (same as openFinModal but inline)
-  var html = '';
-  if (tab === 'kpi') {
-    // KPI tab has its own render
-    var KPI_LIST = (typeof KPI_BY_SETTORE !== 'undefined' && KPI_BY_SETTORE[p.settore]) ? KPI_BY_SETTORE[p.settore] : KPI_BASE;
-    var kpi = p.kpi_commerciali || {};
-    var rows = KPI_LIST.map(function(k) {
-      var val = kpi[k.id];
-      var hasVal = val !== null && val !== undefined && val !== '';
-      return '<div class="kpi-edit-row">' +
-        '<label class="kpi-edit-label">' + k.label + '</label>' +
-        '<div class="kpi-edit-input-wrap">' +
-          '<input class="form-input kpi-edit-input scheda-input" type="number" step="0.1" data-kpi-id="' + k.id + '" value="' + (hasVal ? val : '') + '" placeholder="\u2014" disabled>' +
-          '<span class="kpi-edit-unit">' + k.unita + '</span>' +
-        '</div></div>';
-    }).join('');
-    html = '<div style="padding:16px 20px">' +
-      '<div class="fin-section-label">KPI Commerciali</div>' +
-      '<p style="font-size:12px;color:var(--gray);margin-bottom:16px">Valori reali del cliente per calcolare le proiezioni.</p>' +
-      '<div class="kpi-edit-grid">' + rows + '</div></div>';
-  } else {
-    var cfg = FIN_FORMS[tab];
-    if (!cfg) { body.innerHTML = ''; return; }
-    if (cfg.extra === 'calcolatrice') {
-      html = '<div style="padding:16px 20px"><div class="fin-section-label">' + cfg.title + '</div>' + buildCalcolatricePL() + '</div>';
-    } else if (cfg.extra === 'commerciale_dinamico') {
-      html = '<div style="padding:16px 20px">' + buildCommercialeForm(p) + '</div>';
-    } else {
-      html = '<div style="padding:16px 20px"><div class="fin-section-label">' + cfg.title + '</div><div class="form-grid">';
-      cfg.fields.forEach(function(f) {
-        var val = p[f.id] !== null && p[f.id] !== undefined ? p[f.id] : '';
-        html += buildFinField(f, val);
-      });
-      if (cfg.bools && cfg.bools.length) {
-        cfg.bools.forEach(function(b) {
-          var checked = p[b.id] ? 'checked' : '';
-          html += '<div class="form-group full" style="flex-direction:row;align-items:center;gap:10px">' +
-            '<input type="checkbox" class="scheda-input" id="fin-' + b.id + '" ' + checked + ' style="width:16px;height:16px;accent-color:var(--gold)" disabled>' +
-            '<label style="font-size:13px;color:var(--white);text-transform:none;letter-spacing:0">' + b.label + '</label></div>';
-        });
-      }
-      html += '</div></div>';
-    }
+  // Return any previously moved pane back to fin-card
+  var movedPane = body.querySelector('.fin-pane');
+  if (movedPane) {
+    document.getElementById('fin-card').appendChild(movedPane);
+    movedPane.style.display = '';
+    movedPane.classList.remove('active');
   }
 
-  body.innerHTML = html;
+  // For KPI, re-render to pick up latest data
+  if (tab === 'kpi') renderKpiTab(p);
+  // For financials, trigger calcolatrice after move
+  // For commerciale, rebuild form
+  if (tab === 'commerciale') {
+    var commPane = document.getElementById('fin-pane-commerciale');
+    if (commPane) commPane.innerHTML = '<div id="fin-commerciale-content">' + buildCommercialeForm(p) + '</div>';
+  }
 
-  // Disable all inputs by default
-  body.querySelectorAll('input, select, textarea').forEach(function(el) {
-    el.classList.add('scheda-input');
-    el.disabled = true;
-  });
+  // Move the actual pane into the overlay body
+  var pane = document.getElementById('fin-pane-' + tab);
+  if (pane) {
+    body.innerHTML = '';
+    pane.style.display = 'block';
+    pane.classList.add('active');
+    body.appendChild(pane);
+  }
+
+  // For financials calcolatrice, trigger recalc
+  if (tab === 'financials') {
+    setTimeout(function() {
+      if (typeof aggiornaCalcolatrice === 'function') aggiornaCalcolatrice();
+    }, 100);
+  }
 
   // Update prev/next buttons
   var prevBtn = document.getElementById('scheda-btn-prev');
@@ -4394,9 +4384,6 @@ function _renderSchedaTab() {
       nextBtn.setAttribute('onclick', 'schedaTabNext()');
     }
   }
-
-  // Update modifica/salva button
-  _aggiornaSchedaEditBtn(false);
 }
 
 var _schedaEditMode = false;
