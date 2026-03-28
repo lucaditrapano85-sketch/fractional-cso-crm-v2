@@ -4687,6 +4687,29 @@ function _buildGraficoTimeline(p) {
   const fat = p.fatturato_anno_1 || 0;
   if (!fat) return '<div class="tl-empty">Inserisci il fatturato per vedere le proiezioni.</div>';
 
+  // Controlla se tutti i target sono raggiunti
+  const DIMS_CHECK = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+  const hasTargets = DIMS_CHECK.some(function(id){ return (targets[id]||0) > 0; });
+  const allReached = hasTargets && DIMS_CHECK.every(function(id){ return !targets[id] || (dims[id]||0) >= targets[id]; });
+
+  if (allReached) {
+    return '<div style="text-align:center;padding:40px 20px">' +
+      '<div style="font-size:32px;margin-bottom:12px">\u2705</div>' +
+      '<div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px">Piano completato!</div>' +
+      '<div style="font-size:13px;color:var(--gray);margin-bottom:20px">Tutti gli obiettivi sono stati raggiunti. Imposta nuovi target per continuare la crescita.</div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:300px;margin:0 auto">' +
+        '<div style="background:rgba(255,255,255,0.4);border-radius:12px;padding:14px;text-align:center">' +
+          '<div style="font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Fatturato</div>' +
+          '<div style="font-size:20px;font-weight:700;color:var(--text)">' + fmtF(fat) + '\u20AC</div>' +
+        '</div>' +
+        '<div style="background:rgba(255,255,255,0.4);border-radius:12px;padding:14px;text-align:center">' +
+          '<div style="font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Score</div>' +
+          '<div style="font-size:20px;font-weight:700;color:var(--green)">' + calcScore(p) + '/100</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
   const ic = _calcolaImpattoCumulativo(p);
   if (!ic) return '<div class="tl-empty">Imposta i target per vedere le proiezioni.</div>';
 
