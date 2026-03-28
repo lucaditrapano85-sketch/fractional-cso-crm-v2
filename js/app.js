@@ -5981,9 +5981,12 @@ function mountCalcolatrice(container) {
   var btnSave = document.createElement('button');
   btnSave.textContent = 'Salva dati finanziari';
   btnSave.className = 'btn btn-primary';
-  btnSave.style.background = 'var(--green)';
-  btnSave.style.border = 'none';
-  btnSave.addEventListener('click', salvaDaCalcolatrice);
+  btnSave.style.cssText = 'background:var(--green);border:none;color:#fff;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;position:relative;z-index:10';
+  btnSave.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    salvaDaCalcolatrice();
+  });
   btnDiv.appendChild(btnSave);
   wrap.appendChild(btnDiv);
 
