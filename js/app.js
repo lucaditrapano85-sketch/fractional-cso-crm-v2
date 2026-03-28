@@ -4624,6 +4624,15 @@ function chiudiDetailOverlay() {
   document.body.style.overflow = '';
 }
 
+async function ignoraSostenibilita() {
+  var p = prospects.find(function(x){ return x.id === currentId; });
+  if (!p) return;
+  p.ignora_sostenibilita = true;
+  try { await sb.from('prospects').update({ ignora_sostenibilita: true }).eq('id', p.id); } catch(e) {}
+  renderProspectDetail(currentId);
+  showToast('Avviso sostenibilità nascosto');
+}
+
 function apriDettaglioCosti() {
   var p = prospects.find(function(x){ return x.id === currentId; });
   if (!p) return;
@@ -4856,6 +4865,7 @@ function _buildGraficoTimeline(p) {
     // 1a. ALERT SOSTENIBILITÀ
     (function() {
       if (!fat || !costoMensile) return '';
+      if (p.ignora_sostenibilita) return '';
       var costoAnnuo = costoMensile * 12 + (ic.costoUnaTantumTot || 0);
       var pctFatturato = (costoAnnuo / fat * 100).toFixed(0);
       if (pctFatturato <= 15) return ''; // sotto il 15% è sostenibile
@@ -4919,6 +4929,9 @@ function _buildGraficoTimeline(p) {
           'Budget mensile consigliato: <strong>~' + budgetMensile.toLocaleString('it-IT') + '\u20AC/mese</strong> (12% del fatturato)' +
         '</div>' +
         suggerimento +
+        '<div style="margin-top:10px;text-align:right">' +
+          '<span onclick="ignoraSostenibilita()" style="font-size:11px;color:var(--gray);cursor:pointer;text-decoration:underline">Il cliente ha le risorse per investire \u2014 nascondi avviso</span>' +
+        '</div>' +
       '</div>';
     })() +
 
