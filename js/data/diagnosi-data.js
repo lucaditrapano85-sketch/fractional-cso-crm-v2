@@ -14,7 +14,7 @@ var DIAGNOSI_DOMANDE = {
           {label:'Team commerciale strutturato con ruoli'}
         ]},
       { id:'v2', testo:'Hai un listino prezzi aggiornato con margini verificati per ogni linea?', tipo:'yn', peso:3 },
-      { id:'v3', testo:'I commerciali visitano almeno 5 nuovi prospect al mese?', tipo:'yn', peso:2 },
+      { id:'v3', testo:'C\'è qualcuno oltre a te che visita attivamente nuovi prospect?', tipo:'yn', peso:2 },
     ],
     pipeline: [
       { id:'p1', testo:'Come tracci le trattative commerciali?', tipo:'mc', peso:5,
@@ -98,7 +98,7 @@ var DIAGNOSI_DOMANDE = {
           {label:'Responsabile acquisti con procurement digitale'}
         ]},
       { id:'e2', testo:'Hai almeno 3 fornitori attivi per la materia prima principale?', tipo:'yn', peso:3 },
-      { id:'e3', testo:'Gestisci la vendita di ricambi o accessori tramite un canale online?', tipo:'yn', peso:2 },
+      { id:'e3', testo:'Negozi i prezzi delle materie prime con contratti a medio termine?', tipo:'yn', peso:2 },
     ],
   },
 
@@ -199,8 +199,8 @@ var DIAGNOSI_DOMANDE = {
           {label:'Rete di partner qualificati con accordi'},
           {label:'Ecosistema di partner gestito con contratti e SLA'}
         ]},
-      { id:'e2', testo:'Vendi pacchetti o servizi standardizzati acquistabili online?', tipo:'yn', peso:2 },
-      { id:'e3', testo:'Offri un\'area clienti riservata per documentazione e fatture?', tipo:'yn', peso:2 },
+      { id:'e2', testo:'Hai accordi quadro con i tuoi fornitori o subappaltatori principali?', tipo:'yn', peso:2 },
+      { id:'e3', testo:'Valuti periodicamente nuovi strumenti o fornitori per migliorare il servizio?', tipo:'yn', peso:2 },
     ],
   },
 
@@ -302,7 +302,7 @@ var DIAGNOSI_DOMANDE = {
           {label:'Strategia acquisti pianificata per commessa'}
         ]},
       { id:'e2', testo:'Hai accordi quadro con i fornitori principali di materiale?', tipo:'yn', peso:3 },
-      { id:'e3', testo:'Offri la possibilità di richiedere sopralluoghi o preventivi online?', tipo:'yn', peso:2 },
+      { id:'e3', testo:'Confronti i prezzi di almeno 2-3 fornitori prima di ogni ordine importante?', tipo:'yn', peso:2 },
     ],
   },
 
@@ -319,7 +319,7 @@ var DIAGNOSI_DOMANDE = {
           {label:'Rete vendita con obiettivi e key account'},
           {label:'Team commerciale strutturato con CRM e incentivi'}
         ]},
-      { id:'v2', testo:'I tuoi agenti hanno obiettivi mensili scritti con incentivi?', tipo:'yn', peso:3 },
+      { id:'v2', testo:'C\'è qualcuno oltre a te che vende attivamente ai clienti con obiettivi definiti?', tipo:'yn', peso:3 },
       { id:'v3', testo:'Hai un processo per riattivare i clienti inattivi da più di 6 mesi?', tipo:'yn', peso:2 },
     ],
     pipeline: [
@@ -343,7 +343,7 @@ var DIAGNOSI_DOMANDE = {
           {label:'Magazzino, banco e consegne con responsabili'},
           {label:'Struttura autonoma con responsabile commerciale'}
         ]},
-      { id:'t2', testo:'Il magazziniere gestisce spedizioni e resi senza il titolare?', tipo:'yn', peso:3 },
+      { id:'t2', testo:'C\'è qualcuno che gestisce spedizioni e resi senza il tuo intervento diretto?', tipo:'yn', peso:3 },
       { id:'t3', testo:'Hai un responsabile commerciale che coordina la rete vendita?', tipo:'yn', peso:2 },
     ],
     processi: [
@@ -395,16 +395,16 @@ var DIAGNOSI_DOMANDE = {
       { id:'s3', testo:'Le categorie prodotto sono strutturate per facilitare la ricerca?', tipo:'yn', peso:2 },
     ],
     ecommerce: [
-      { id:'e1', testo:'Come gestisci gli ordini ricorrenti dei clienti?', tipo:'mc', peso:5,
+      { id:'e1', testo:'Come gestisci i rapporti con i tuoi fornitori?', tipo:'mc', peso:5,
         opzioni:[
-          {label:'Tutti gli ordini passano dall\'agente o dal banco'},
-          {label:'Qualche cliente ordina via email o WhatsApp'},
-          {label:'Form online per ordini base'},
-          {label:'Portale ordini online per clienti abituali'},
-          {label:'E-commerce B2B integrato con gestionale'}
+          {label:'Compro da un fornitore principale senza alternative'},
+          {label:'Ho 2-3 fornitori ma senza accordi strutturati'},
+          {label:'Accordi quadro con i fornitori principali'},
+          {label:'Strategia acquisti con trattative e confronto prezzi'},
+          {label:'Procurement strutturato con scoring fornitori e contratti'}
         ]},
-      { id:'e2', testo:'I clienti abituali possono riordinare online senza passare dall\'agente?', tipo:'yn', peso:3 },
-      { id:'e3', testo:'Hai integrato il gestionale con la piattaforma di vendita online?', tipo:'yn', peso:2 },
+      { id:'e2', testo:'Hai accordi quadro con almeno 3 fornitori principali?', tipo:'yn', peso:3 },
+      { id:'e3', testo:'Valuti periodicamente fornitori alternativi per le categorie chiave?', tipo:'yn', peso:2 },
     ],
   },
 
@@ -422,7 +422,7 @@ var DIAGNOSI_DOMANDE = {
           {label:'Clienteling strutturato con appuntamenti dedicati'}
         ]},
       { id:'v2', testo:'Lo scontrino medio è cresciuto rispetto a 12 mesi fa?', tipo:'yn', peso:3 },
-      { id:'v3', testo:'Il personale propone attivamente prodotti complementari?', tipo:'yn', peso:2 },
+      { id:'v3', testo:'C\'è qualcuno oltre a te che propone attivamente prodotti complementari ai clienti?', tipo:'yn', peso:2 },
     ],
     pipeline: [
       { id:'p1', testo:'Come monitori le performance del punto vendita?', tipo:'mc', peso:5,
@@ -446,7 +446,7 @@ var DIAGNOSI_DOMANDE = {
           {label:'Il negozio funziona perfettamente senza di me'}
         ]},
       { id:'t2', testo:'Il negozio funziona normalmente anche quando il titolare non c\'è?', tipo:'yn', peso:3 },
-      { id:'t3', testo:'Il personale riceve formazione sui prodotti almeno ogni trimestre?', tipo:'yn', peso:2 },
+      { id:'t3', testo:'C\'è qualcuno oltre a te nel punto vendita che riceve formazione regolare sui prodotti?', tipo:'yn', peso:2 },
     ],
     processi: [
       { id:'pr1', testo:'Come gestisci il riassortimento del negozio?', tipo:'mc', peso:5,
@@ -547,7 +547,7 @@ var DIAGNOSI_DOMANDE = {
           {label:'Ruoli separati: produzione, qualità e commerciale'},
           {label:'Struttura completa con autonomia su ogni funzione'}
         ]},
-      { id:'t2', testo:'Il responsabile qualità opera in autonomia senza il titolare?', tipo:'yn', peso:3 },
+      { id:'t2', testo:'C\'è qualcuno che gestisce la qualità in autonomia senza il tuo intervento?', tipo:'yn', peso:3 },
       { id:'t3', testo:'Hai personale commerciale dedicato separato dalla produzione?', tipo:'yn', peso:2 },
     ],
     processi: [
@@ -607,8 +607,8 @@ var DIAGNOSI_DOMANDE = {
           {label:'Strategia acquisti con contratti e scorte'},
           {label:'Procurement strutturato con filiera controllata'}
         ]},
-      { id:'e2', testo:'Vendi direttamente al consumatore tramite e-commerce proprietario?', tipo:'yn', peso:2 },
-      { id:'e3', testo:'Sei presente su almeno una piattaforma specializzata food online?', tipo:'yn', peso:2 },
+      { id:'e2', testo:'Hai almeno 2 fornitori alternativi per ogni materia prima critica?', tipo:'yn', peso:2 },
+      { id:'e3', testo:'Blocchi i prezzi delle materie prime con contratti stagionali o annuali?', tipo:'yn', peso:2 },
     ],
   },
 
@@ -650,7 +650,7 @@ var DIAGNOSI_DOMANDE = {
           {label:'Struttura completa con autonomia su ogni funzione'}
         ]},
       { id:'t2', testo:'Hai separato i ruoli di vendita da quelli di delivery?', tipo:'yn', peso:3 },
-      { id:'t3', testo:'Il team tecnico gestisce l\'onboarding clienti senza il fondatore?', tipo:'yn', peso:2 },
+      { id:'t3', testo:'C\'è qualcuno che gestisce l\'onboarding clienti senza il tuo intervento diretto?', tipo:'yn', peso:2 },
     ],
     processi: [
       { id:'pr1', testo:'Come gestisci l\'onboarding e il supporto clienti?', tipo:'mc', peso:5,
@@ -709,8 +709,8 @@ var DIAGNOSI_DOMANDE = {
           {label:'Stack cloud ottimizzato con freelancer qualificati'},
           {label:'Infrastruttura scalabile con partner e tool integrati'}
         ]},
-      { id:'e2', testo:'I clienti possono acquistare o attivare il servizio online?', tipo:'yn', peso:3 },
-      { id:'e3', testo:'Offri un periodo di prova gratuito o freemium per nuovi utenti?', tipo:'yn', peso:2 },
+      { id:'e2', testo:'Monitori e ottimizzi regolarmente i costi di cloud e licenze software?', tipo:'yn', peso:3 },
+      { id:'e3', testo:'Hai contratti strutturati con i fornitori di servizi cloud o tool esterni?', tipo:'yn', peso:2 },
     ],
   },
 
@@ -728,7 +728,7 @@ var DIAGNOSI_DOMANDE = {
           {label:'Ho un team vendite strutturato con responsabile'}
         ]},
       { id:'v2', testo:'Fai follow-up strutturato dopo ogni visita o contatto?', tipo:'yn', peso:3 },
-      { id:'v3', testo:'Chi ti sostituisce nelle vendite quando non ci sei?', tipo:'yn', peso:2 },
+      { id:'v3', testo:'C\'è qualcuno che può vendere al tuo posto quando non ci sei?', tipo:'yn', peso:2 },
     ],
     pipeline: [
       { id:'p1', testo:'Come tracci contatti e trattative aperte?', tipo:'mc', peso:5,
