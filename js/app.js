@@ -4937,7 +4937,8 @@ async function salvaCheckpoints() {
   });
   p.fatturato_checkpoints = checkpoints;
   try {
-    await sb.from('prospects').update({ fatturato_checkpoints: checkpoints }).eq('id', p.id);
+    var res = await sb.from('prospects').update({ fatturato_checkpoints: checkpoints }).eq('id', p.id);
+    if (res.error) throw res.error;
     showToast('Checkpoints salvati');
     chiudiDetailOverlay();
     renderProspectDetail(currentId);
@@ -6050,15 +6051,17 @@ async function saveTargets() {
     targets: {...targets}
   } : null;
 
-  const updateObj = {targets, target_scadenze: scadenze};
-  if (proiezioneSnapshot) updateObj.proiezione_snapshot = proiezioneSnapshot;
-
-  const {error} = await sb.from('prospects').update(updateObj).eq('id', currentId);
+  // Salva target (campi sicuri)
+  const {error} = await sb.from('prospects').update({targets, target_scadenze: scadenze}).eq('id', currentId);
   if (error) { showToast('Errore salvataggio target', 'error'); return; }
   const i = prospects.findIndex(x => x.id === currentId);
   prospects[i].targets = targets;
   prospects[i].target_scadenze = scadenze;
-  if (proiezioneSnapshot) prospects[i].proiezione_snapshot = proiezioneSnapshot;
+  // Salva snapshot proiezione (campo opzionale, potrebbe non esistere in DB)
+  if (proiezioneSnapshot) {
+    prospects[i].proiezione_snapshot = proiezioneSnapshot;
+    try { await sb.from('prospects').update({proiezione_snapshot: proiezioneSnapshot}).eq('id', currentId); } catch(e) {}
+  }
   // Salva snapshot score con i nuovi target
   await salvaScoreSnapshot(prospects[i], 'Target aggiornati',
     'Score target: ' + calcScoreTarget(prospects[i]));
