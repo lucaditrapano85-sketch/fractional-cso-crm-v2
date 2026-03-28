@@ -5706,38 +5706,45 @@ function buildCalcolatricePL() {
   const p = prospects.find(x => x.id === currentId) || {};
   const dc = p.dati_calcolatrice || {};
   const fv = (field) => dc[field] !== undefined && dc[field] !== null ? dc[field] : (p[field] || '');
-  const FORMA_TO_REGIME = {'Srl':'srl','Spa':'srl','Srl semplificata':'srl','srl':'srl','spa':'srl','srls':'srl','Snc':'snc_sas','Sas':'snc_sas','snc':'snc_sas','sas':'snc_sas','Ditta individuale':'ditta','ditta_individuale':'ditta','Libero professionista':'ditta'};
+  const FORMA_TO_REGIME = {'Srl':'srl','Spa':'srl','Srl semplificata':'srl','srl':'srl','spa':'srl','srls':'srl','Srls':'srl','Sapa':'srl','Snc':'snc_sas','Sas':'snc_sas','snc':'snc_sas','sas':'snc_sas','Ditta individuale':'ditta','Imprenditore individuale':'ditta','ditta_individuale':'ditta','Libero professionista':'ditta','Cooperativa':'srl','Consorzio':'srl','Associazione':'srl','Fondazione':'srl','Ente pubblico':'srl'};
   const formaGiuridica = p.forma_giuridica || '';
   const regimeFiscale = FORMA_TO_REGIME[formaGiuridica] || dc.forma || 'srl';
   const regimeLabel = regimeFiscale === 'srl' ? 'IRES 24% + IRAP 3.9%' : regimeFiscale === 'snc_sas' ? 'IRPEF + IRAP 3.9%' : 'IRPEF + INPS ~24%';
-  const formaHtml = formaGiuridica && FORMA_TO_REGIME[formaGiuridica]
-    ? '\x3cdiv class="pl-row pl-row-input">\x3cdiv class="pl-label">Regime fiscale\x3c/div>\x3cdiv class="pl-input-wrap">\x3cdiv class="calc-regime-badge">' + formaGiuridica + ' \u2014 ' + regimeLabel + '\x3c/div>\x3cinput type="hidden" id="calc-forma" value="' + regimeFiscale + '">\x3c/div>\x3c/div>'
-    : '\x3cdiv class="pl-row pl-row-input">\x3cdiv class="pl-label">Regime fiscale\x3c/div>\x3cdiv class="pl-input-wrap">\x3cdiv class="calc-regime-warning">\u26A0 Imposta la forma giuridica nella tab Struttura Aziendale per calcolare le imposte\x3c/div>\x3cinput type="hidden" id="calc-forma" value="' + regimeFiscale + '">\x3c/div>\x3c/div>';
+
   return `
-  \x3cdiv style="margin-top:20px;border-top:2px solid var(--gold-dim);padding-top:16px">
-    \x3cdiv style="font-size:11px;font-weight:600;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px">
-      ! Calcolatrice Conto Economico
+  \x3cdiv style="margin-top:8px">
+    \x3cdiv style="font-size:11px;font-weight:600;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px">
+      Conto Economico
     \x3c/div>
 
-    \x3c!-- RIGA 1: Fatturato --\x3e
+    \x3c!-- SEZIONE 1: RICAVI --\x3e
+    \x3cdiv class="pl-section-label">Ricavi\x3c/div>
     \x3cdiv class="pl-row pl-row-input">
-      \x3cdiv class="pl-label">Fatturato annuo \x3cspan class="tt-wrap">\x3cspan class="tt-icon">?\x3c/span>\x3cspan class="tt-bubble">Il totale dei ricavi dell'anno. Base di tutto il conto economico.\x3c/span>\x3c/span>\x3c/div>
+      \x3cdiv class="pl-label">Fatturato anno corrente\x3c/div>
       \x3cdiv class="pl-input-wrap">
-        \x3cinput class="form-input pl-input" type="number" id="calc-fatturato" title="Il totale dei ricavi annui. Base di tutto il conto economico." placeholder="es. 3000000"
+        \x3cinput class="form-input pl-input" type="number" id="calc-fatturato" placeholder="es. 500000"
           value="${dc.fatturato || p.fatturato_anno_1 || ''}" oninput="aggiornaCalcolatrice()">
-        \x3cdiv class="pl-preview" id="calc-preview-fatturato">\x3c/div>
+      \x3c/div>
+    \x3c/div>
+    \x3cdiv class="pl-row pl-row-input">
+      \x3cdiv class="pl-label">Fatturato anno precedente \x3cspan style="font-size:9px;color:var(--gray2)">(opzionale)\x3c/span>\x3c/div>
+      \x3cdiv class="pl-input-wrap">
+        \x3cinput class="form-input pl-input" type="number" id="calc-fatturato-prec" placeholder="es. 450000"
+          value="${dc.fatturato_prec || ''}" oninput="aggiornaCalcolatrice()">
+        \x3cdiv class="pl-preview" id="calc-preview-delta-fat">\x3c/div>
       \x3c/div>
     \x3c/div>
 
-    \x3c!-- RIGA 2: Costo del venduto --\x3e
+    \x3c!-- SEZIONE 2: COSTI VARIABILI --\x3e
+    \x3cdiv class="pl-section-label" style="margin-top:16px">Costi variabili\x3c/div>
     \x3cdiv class="pl-row pl-row-input">
       \x3cdiv class="pl-label">
-        Costo del venduto \x3cspan class="tt-wrap">\x3cspan class="tt-icon">?\x3c/span>\x3cspan class="tt-bubble">Materiali, acquisti e costi direttamente legati alla produzione/vendita. NON include affitti o stipendi fissi.\x3c/span>\x3c/span>
+        Costo del venduto
         \x3cdiv class="pl-sublabel">materie prime, acquisti diretti, produzione\x3c/div>
       \x3c/div>
       \x3cdiv class="pl-input-wrap">
         \x3cdiv style="display:flex;gap:8px;align-items:center">
-          \x3cinput class="form-input pl-input" type="number" id="calc-cdv-pct" title="Il costo diretto per produrre o acquistare cio che vendi: materie prime, acquisti di merce, costo di produzione. NON include affitti o stipendi fissi." placeholder="%" min="0" max="100" step="0.1"
+          \x3cinput class="form-input pl-input" type="number" id="calc-cdv-pct" placeholder="%" min="0" max="100" step="0.1"
             value="${dc.cdv_pct || ''}" oninput="document.getElementById('calc-cdv-eur').value='';aggiornaCalcolatrice()" style="width:70px">
           \x3cspan style="color:var(--gray);font-size:12px">%\x3c/span>
           \x3cspan style="color:var(--gray2);font-size:11px">oppure\x3c/span>
@@ -5747,52 +5754,70 @@ function buildCalcolatricePL() {
         \x3cdiv class="pl-preview" id="calc-preview-cdv">\x3c/div>
       \x3c/div>
     \x3c/div>
-
-    \x3c!-- RISULTATO: Margine Lordo --\x3e
     \x3cdiv class="pl-row pl-row-result" id="calc-margine-row">
-      \x3cdiv class="pl-label">= Margine Lordo\x3c/div>
+      \x3cdiv class="pl-label">= Margine di Contribuzione\x3c/div>
       \x3cdiv style="display:flex;gap:16px;align-items:baseline">
         \x3cdiv class="pl-result-val" id="calc-margine">--\x3c/div>
         \x3cdiv class="pl-result-pct" id="calc-margine-pct">\x3c/div>
       \x3c/div>
     \x3c/div>
 
-    \x3c!-- RIGA 3: Costi fissi --\x3e
+    \x3c!-- SEZIONE 3: COSTI FISSI --\x3e
+    \x3cdiv class="pl-section-label" style="margin-top:16px">Costi fissi annui\x3c/div>
     \x3cdiv class="pl-row pl-row-input">
-      \x3cdiv class="pl-label">
-        Costi fissi mensili \x3cspan class="tt-wrap">\x3cspan class="tt-icon">?\x3c/span>\x3cspan class="tt-bubble">Tutti i costi che paghi ogni mese indipendentemente dal fatturato: affitto, stipendi fissi, utenze, software, commercialista.\x3c/span>\x3c/span>
-        \x3cdiv class="pl-sublabel">affitti, utilities, stipendi fissi, servizi\x3c/div>
-      \x3c/div>
+      \x3cdiv class="pl-label">Personale \x3cdiv class="pl-sublabel">stipendi lordi + contributi\x3c/div>\x3c/div>
       \x3cdiv class="pl-input-wrap">
-        \x3cinput class="form-input pl-input" type="number" id="calc-costi-fissi" title="Tutti i costi mensili che paghi indipendentemente da quanto vendi: affitto, stipendi fissi, utenze, software, commercialista ecc." placeholder="es. 85000"
-          value="${dc.costi_fissi || p.costi_fissi_mensili || ''}" oninput="aggiornaCalcolatrice()">
-        \x3cdiv class="pl-preview" id="calc-preview-costi">\x3c/div>
+        \x3cinput class="form-input pl-input" type="number" id="calc-cf-personale" placeholder="es. 120000"
+          value="${dc.cf_personale || ''}" oninput="aggiornaCalcolatrice()">
       \x3c/div>
+    \x3c/div>
+    \x3cdiv class="pl-row pl-row-input">
+      \x3cdiv class="pl-label">Affitto e utenze\x3c/div>
+      \x3cdiv class="pl-input-wrap">
+        \x3cinput class="form-input pl-input" type="number" id="calc-cf-affitto" placeholder="es. 24000"
+          value="${dc.cf_affitto || ''}" oninput="aggiornaCalcolatrice()">
+      \x3c/div>
+    \x3c/div>
+    \x3cdiv class="pl-row pl-row-input">
+      \x3cdiv class="pl-label">Servizi e consulenze \x3cdiv class="pl-sublabel">commercialista, software, assicurazioni\x3c/div>\x3c/div>
+      \x3cdiv class="pl-input-wrap">
+        \x3cinput class="form-input pl-input" type="number" id="calc-cf-servizi" placeholder="es. 18000"
+          value="${dc.cf_servizi || ''}" oninput="aggiornaCalcolatrice()">
+      \x3c/div>
+    \x3c/div>
+    \x3cdiv class="pl-row pl-row-input">
+      \x3cdiv class="pl-label">Altri costi fissi \x3cdiv class="pl-sublabel">manutenzioni, trasporti, varie\x3c/div>\x3c/div>
+      \x3cdiv class="pl-input-wrap">
+        \x3cinput class="form-input pl-input" type="number" id="calc-cf-altro" placeholder="es. 12000"
+          value="${dc.cf_altro || ''}" oninput="aggiornaCalcolatrice()">
+      \x3c/div>
+    \x3c/div>
+    \x3cdiv class="pl-row pl-row-result" style="border-left-color:var(--gray)">
+      \x3cdiv class="pl-label" style="color:var(--gray)">Totale costi fissi\x3c/div>
+      \x3cdiv class="pl-result-val" id="calc-cf-totale" style="color:var(--gray)">--\x3c/div>
     \x3c/div>
 
     \x3c!-- RISULTATO: EBITDA --\x3e
-    \x3cdiv class="pl-row pl-row-result" id="calc-ebitda-row">
-      \x3cdiv class="pl-label">= EBITDA\x3c/div>
+    \x3cdiv class="pl-row pl-row-result" id="calc-ebitda-row" style="margin-top:8px">
+      \x3cdiv class="pl-label" style="font-size:13px;color:var(--white);font-weight:600">= EBITDA\x3c/div>
       \x3cdiv style="display:flex;gap:16px;align-items:baseline">
-        \x3cdiv class="pl-result-val" id="calc-ebitda">--\x3c/div>
+        \x3cdiv class="pl-result-val" id="calc-ebitda" style="font-size:20px">--\x3c/div>
         \x3cdiv class="pl-result-pct" id="calc-ebitda-pct">\x3c/div>
       \x3c/div>
     \x3c/div>
 
-    \x3c!-- RIGA 4: Ammortamenti --\x3e
+    \x3c!-- SEZIONE 4: AMMORTAMENTI --\x3e
+    \x3cdiv class="pl-section-label" style="margin-top:16px">Ammortamenti\x3c/div>
     \x3cdiv class="pl-row pl-row-input">
       \x3cdiv class="pl-label" style="cursor:pointer" onclick="toggleAmmPanel()">
-        Ammortamenti annui \x3cspan class="tt-wrap">\x3cspan class="tt-icon">?\x3c/span>\x3cspan class="tt-bubble">La quota annua di svalutazione dei beni aziendali durevoli (macchinari, auto, software). Clicca per calcolarlo voce per voce.\x3c/span>\x3c/span>
-        \x3cdiv class="pl-sublabel">clicca per calcolare per categoria v\x3c/div>
+        Ammortamenti annui
+        \x3cdiv class="pl-sublabel">clicca per calcolare per categoria \x3cspan style="color:var(--gold)">\u25BC\x3c/span>\x3c/div>
       \x3c/div>
       \x3cdiv class="pl-input-wrap">
-        \x3cinput class="form-input pl-input" type="number" id="calc-ammortamenti" title="La quota annuale di "usura" di beni durevoli (macchinari, auto, software). Clicca il titolo per calcolarlo categoria per categoria." placeholder="es. 150000"
+        \x3cinput class="form-input pl-input" type="number" id="calc-ammortamenti" placeholder="es. 30000"
           value="${dc.ammortamenti || ''}" oninput="aggiornaCalcolatrice()">
-        \x3cdiv class="pl-preview" id="calc-preview-amm">\x3c/div>
       \x3c/div>
     \x3c/div>
-
-    \x3c!-- Pannello calcolo ammortamenti --\x3e
     \x3cdiv id="amm-panel-detail" style="display:none;background:var(--bg3);border-radius:var(--rs);padding:12px;margin:4px 0 8px;border:1px solid var(--border)">
       \x3cdiv style="font-size:10px;color:var(--gray);margin-bottom:8px;font-weight:600">Calcola per categoria (aliquote fiscali italiane)\x3c/div>
       \x3cdiv style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
@@ -5821,40 +5846,35 @@ function buildCalcolatricePL() {
       \x3c/div>
     \x3c/div>
 
-    \x3c!-- RIGA 5: Regime fiscale (read-only da forma giuridica) --\x3e
-    ${formaHtml}
+    \x3c!-- SEZIONE 5: AREA FISCALE --\x3e
+    \x3cdiv class="pl-section-label" style="margin-top:16px">Area fiscale\x3c/div>
+    ${formaGiuridica && FORMA_TO_REGIME[formaGiuridica]
+      ? '\x3cdiv class="pl-row pl-row-input">\x3cdiv class="pl-label">Regime fiscale\x3c/div>\x3cdiv class="pl-input-wrap">\x3cdiv class="calc-regime-badge">' + formaGiuridica + ' \u2014 ' + regimeLabel + '\x3c/div>\x3cinput type="hidden" id="calc-forma" value="' + regimeFiscale + '">\x3c/div>\x3c/div>'
+      : '\x3cdiv class="pl-row pl-row-input">\x3cdiv class="pl-label">Regime fiscale\x3c/div>\x3cdiv class="pl-input-wrap">\x3cdiv class="calc-regime-warning">\u26A0 Imposta la forma giuridica in Struttura Aziendale\x3c/div>\x3cinput type="hidden" id="calc-forma" value="' + regimeFiscale + '">\x3c/div>\x3c/div>'}
     \x3cdiv class="pl-row pl-row-input">
-      \x3cdiv class="pl-label">Reddito titolare / soci (lordo annuo) \x3cspan class="tt-wrap">\x3cspan class="tt-icon">?\x3c/span>\x3cspan class="tt-bubble">Per Srl: compenso amministratore soggetto a INPS gestione separata (~26%). Per ditte individuali: base per calcolo INPS gestione commercianti (~24%).\x3c/span>\x3c/span>\x3c/div>
+      \x3cdiv class="pl-label">Compenso titolare/amministratore \x3cdiv class="pl-sublabel">lordo annuo\x3c/div>\x3c/div>
       \x3cdiv class="pl-input-wrap">
         \x3cinput class="form-input pl-input" type="number" id="calc-reddito-titolare" placeholder="es. 60000" value="${dc.reddito_titolare || ''}" oninput="aggiornaCalcolatrice()">
       \x3c/div>
     \x3c/div>
-    \x3cdiv class="pl-row pl-row-input">
-      \x3cdiv class="pl-label">Costi strutturali fissi annui \x3cspan class="tt-wrap">\x3cspan class="tt-icon">?\x3c/span>\x3cspan class="tt-bubble">Commercialista, CCIAA, revisore legale, assicurazioni obbligatorie.\x3c/span>\x3c/span>\x3c/div>
-      \x3cdiv class="pl-input-wrap">
-        \x3cinput class="form-input pl-input" type="number" id="calc-costi-strutturali" placeholder="es. 5000" value="${dc.costi_strutturali || ''}" oninput="aggiornaCalcolatrice()">
-      \x3c/div>
-    \x3c/div>
-
-    \x3c!-- RISULTATO: Imposte --\x3e
     \x3cdiv class="pl-row pl-row-result" id="calc-imposte-row" style="border-left-color:var(--red)">
-      \x3cdiv class="pl-label" style="color:var(--red)">\u2212 Imposte & contributi\x3c/div>
+      \x3cdiv class="pl-label" style="color:var(--red)">\u2212 Imposte & contributi stimati\x3c/div>
       \x3cdiv style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
         \x3cdiv class="pl-result-val" id="calc-imposte" style="color:var(--red)">--\x3c/div>
-        \x3cdiv class="pl-result-pct" id="calc-imposte-detail" style="font-size:10px;color:var(--gray)"></div>
+        \x3cdiv class="pl-result-pct" id="calc-imposte-detail" style="font-size:10px;color:var(--gray)">\x3c/div>
       \x3c/div>
     \x3c/div>
 
-    \x3c!-- RISULTATO: Utile Netto --\x3e
-    \x3cdiv class="pl-row pl-row-result pl-row-final" id="calc-utile-row">
-      \x3cdiv class="pl-label" style="font-size:14px;color:var(--white)">= Utile Netto\x3c/div>
+    \x3c!-- RISULTATO FINALE: UTILE NETTO --\x3e
+    \x3cdiv class="pl-row pl-row-result pl-row-final" id="calc-utile-row" style="margin-top:8px">
+      \x3cdiv class="pl-label" style="font-size:14px;color:var(--white);font-weight:700">= Utile Netto\x3c/div>
       \x3cdiv style="display:flex;gap:16px;align-items:baseline">
         \x3cdiv class="pl-result-val" id="calc-utile" style="font-size:22px;font-family:'DM Serif Display',serif">--\x3c/div>
         \x3cdiv class="pl-result-pct" id="calc-utile-pct">\x3c/div>
       \x3c/div>
     \x3c/div>
 
-    \x3c!-- Riepilogo margini --\x3e
+    \x3c!-- RIEPILOGO MARGINI --\x3e
     \x3cdiv id="calc-margini-riepilogo" style="display:none;margin-top:12px;background:var(--bg3);border-radius:var(--rs);padding:10px 14px">
       \x3cdiv style="font-size:10px;font-weight:600;color:var(--gray);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Riepilogo margini\x3c/div>
       \x3cdiv style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px" id="calc-margini-grid">\x3c/div>
@@ -5864,198 +5884,205 @@ function buildCalcolatricePL() {
 }
 
 function toggleAmmPanel() {
-  const p = document.getElementById('amm-panel-detail');
+  var p = document.getElementById('amm-panel-detail');
   if (p) p.style.display = p.style.display === 'none' ? 'block' : 'none';
 }
 
 function calcolaAmmDaCategorie() {
-  const v = id => parseFloat(document.getElementById(id)?.value) || 0;
-  const tot = Math.round(
-    v('amm-immobili')    * 0.03 +
-    v('amm-macchinari')  * 0.125 +
-    v('amm-attrezzatura')* 0.20 +
-    v('amm-veicoli')     * 0.20 +
-    v('amm-software')    * 0.33 +
-    v('amm-leasing')     * 12
-  );
-  const el = document.getElementById('amm-totale-detail');
-  if (el) el.textContent = `Totale: ${tot.toLocaleString('it-IT')} EUR`;
-  // Push to main amm field
-  const ammField = document.getElementById('calc-ammortamenti');
-  if (ammField) { ammField.value = tot; aggiornaCalcolatrice(); }
-}
-
-function calcolaIRPEF(reddito) {
-  if (reddito <= 0) return 0;
-  var imposta = 0;
-  if (reddito > 50000) imposta += (reddito - 50000) * 0.43;
-  if (reddito > 28000) imposta += (Math.min(reddito, 50000) - 28000) * 0.35;
-  if (reddito > 15000) imposta += (Math.min(reddito, 28000) - 15000) * 0.25;
-  imposta += Math.min(reddito, 15000) * 0.23;
-  return imposta;
+  var aliq = {immobili:0.03, macchinari:0.125, attrezzatura:0.20, veicoli:0.20, software:0.33};
+  var tot = 0;
+  ['immobili','macchinari','attrezzatura','veicoli','software'].forEach(function(k) {
+    var el = document.getElementById('amm-' + k);
+    if (el && el.value) tot += parseFloat(el.value) * aliq[k];
+  });
+  var leasing = document.getElementById('amm-leasing');
+  if (leasing && leasing.value) tot += parseFloat(leasing.value) * 12;
+  var totEl = document.getElementById('amm-totale-detail');
+  if (totEl) totEl.textContent = 'Totale: ' + Math.round(tot).toLocaleString('it-IT') + ' EUR';
+  var ammEl = document.getElementById('calc-ammortamenti');
+  if (ammEl) { ammEl.value = Math.round(tot); aggiornaCalcolatrice(); }
 }
 
 function aggiornaCalcolatrice() {
-  var vv = function(id) { return parseFloat(document.getElementById(id)?.value) || 0; };
-  var fmt = function(n) { return Math.round(n).toLocaleString('it-IT') + '\u20AC'; };
-  var pct = function(n, base) { return base ? (n/base*100).toFixed(1)+'%' : ''; };
-  var col = function(n) { return n > 0 ? 'var(--green)' : n < 0 ? 'var(--red)' : 'var(--gray)'; };
+  var fat = parseFloat(document.getElementById('calc-fatturato')?.value) || 0;
+  var fatPrec = parseFloat(document.getElementById('calc-fatturato-prec')?.value) || 0;
 
-  var fatturato = vv('calc-fatturato');
-  var cogsPct = vv('calc-cdv-pct');
-  var cogsVal = vv('calc-cdv-eur');
-  var costiFissiMensili = vv('calc-costi-fissi');
-  var ammortamenti = vv('calc-ammortamenti');
-  var redditoTitolare = vv('calc-reddito-titolare');
-  var costiStrutturali = vv('calc-costi-strutturali');
+  // Delta fatturato
+  var deltaFatEl = document.getElementById('calc-preview-delta-fat');
+  if (deltaFatEl && fatPrec > 0 && fat > 0) {
+    var deltaPct = ((fat - fatPrec) / fatPrec * 100).toFixed(1);
+    var sign = deltaPct >= 0 ? '+' : '';
+    var col = deltaPct >= 0 ? 'var(--green)' : 'var(--red)';
+    deltaFatEl.innerHTML = '<span style="color:' + col + '">' + sign + deltaPct + '% vs anno precedente</span>';
+  } else if (deltaFatEl) deltaFatEl.innerHTML = '';
+
+  // Costo del venduto
+  var cdvPct = parseFloat(document.getElementById('calc-cdv-pct')?.value);
+  var cdvEur = parseFloat(document.getElementById('calc-cdv-eur')?.value);
+  var cdv = 0;
+  if (!isNaN(cdvPct) && fat) { cdv = fat * cdvPct / 100; }
+  else if (!isNaN(cdvEur)) { cdv = cdvEur; }
+  var prevCdv = document.getElementById('calc-preview-cdv');
+  if (prevCdv && cdv > 0) prevCdv.textContent = Math.round(cdv).toLocaleString('it-IT') + ' EUR';
+  else if (prevCdv) prevCdv.textContent = '';
+
+  // Margine di Contribuzione
+  var margine = fat - cdv;
+  var marginePct = fat > 0 ? (margine / fat * 100).toFixed(1) : 0;
+  var mEl = document.getElementById('calc-margine');
+  var mPctEl = document.getElementById('calc-margine-pct');
+  if (mEl) mEl.textContent = fat > 0 ? Math.round(margine).toLocaleString('it-IT') + ' EUR' : '--';
+  if (mPctEl) mPctEl.textContent = fat > 0 ? marginePct + '%' : '';
+
+  // Costi fissi
+  var cfPers = parseFloat(document.getElementById('calc-cf-personale')?.value) || 0;
+  var cfAff = parseFloat(document.getElementById('calc-cf-affitto')?.value) || 0;
+  var cfServ = parseFloat(document.getElementById('calc-cf-servizi')?.value) || 0;
+  var cfAltro = parseFloat(document.getElementById('calc-cf-altro')?.value) || 0;
+  var cfTotale = cfPers + cfAff + cfServ + cfAltro;
+  var cfTotEl = document.getElementById('calc-cf-totale');
+  if (cfTotEl) cfTotEl.textContent = cfTotale > 0 ? Math.round(cfTotale).toLocaleString('it-IT') + ' EUR' : '--';
+
+  // EBITDA
+  var ebitda = margine - cfTotale;
+  var ebitdaPct = fat > 0 ? (ebitda / fat * 100).toFixed(1) : 0;
+  var eEl = document.getElementById('calc-ebitda');
+  var ePctEl = document.getElementById('calc-ebitda-pct');
+  var eRow = document.getElementById('calc-ebitda-row');
+  if (eEl) eEl.textContent = fat > 0 ? Math.round(ebitda).toLocaleString('it-IT') + ' EUR' : '--';
+  if (ePctEl) ePctEl.textContent = fat > 0 ? ebitdaPct + '% su fatturato' : '';
+  if (eRow) eRow.style.borderLeftColor = ebitda >= 0 ? 'var(--green)' : 'var(--red)';
+
+  // Ammortamenti
+  var amm = parseFloat(document.getElementById('calc-ammortamenti')?.value) || 0;
+
+  // EBIT
+  var ebit = ebitda - amm;
+  var ebitPct = fat > 0 ? (ebit / fat * 100).toFixed(1) : 0;
+  var ebitEl = document.getElementById('calc-ebit');
+  var ebitPctEl = document.getElementById('calc-ebit-pct');
+  if (ebitEl) ebitEl.textContent = fat > 0 ? Math.round(ebit).toLocaleString('it-IT') + ' EUR' : '--';
+  if (ebitPctEl) ebitPctEl.textContent = fat > 0 ? ebitPct + '%' : '';
+
+  // Imposte
   var forma = document.getElementById('calc-forma')?.value || 'srl';
-
-  var cogs = cogsVal > 0 ? cogsVal : (cogsPct > 0 ? fatturato * cogsPct / 100 : 0);
-  var costiFissiAnnui = costiFissiMensili * 12;
-  var margineLordo = fatturato - cogs;
-
-  // Sincronizza % ↔ EUR in tempo reale nei placeholder
-  var cdvPctEl = document.getElementById('calc-cdv-pct');
-  var cdvEurEl = document.getElementById('calc-cdv-eur');
-  if (cdvEurEl && cdvEurEl.value && (!cdvPctEl || !cdvPctEl.value) && fatturato > 0) {
-    var pctCalc = Math.round((cogsVal / fatturato) * 1000) / 10;
-    if (cdvPctEl) { cdvPctEl.style.color = 'var(--gray)'; cdvPctEl.placeholder = pctCalc + '%'; }
-  } else if (cdvPctEl && cdvPctEl.value && (!cdvEurEl || !cdvEurEl.value) && fatturato > 0) {
-    var eurCalc = Math.round(fatturato * cogsPct / 100);
-    if (cdvEurEl) { cdvEurEl.style.color = 'var(--gray)'; cdvEurEl.placeholder = eurCalc.toLocaleString('it-IT') + '\u20AC'; }
-  }
-  var ebitda = margineLordo - costiFissiAnnui - costiStrutturali;
-  var ebit = ebitda - ammortamenti;
-
-  // Calcolo fiscale per forma societaria
-  var irap = 0, ires = 0, irpef = 0, inps = 0, imposteTot = 0, imposteDetail = '';
-  if (forma === 'srl') {
-    irap = Math.max(0, ebitda * 0.039);
-    ires = Math.max(0, (ebit - irap) * 0.24);
-    inps = redditoTitolare * 0.26;
-    imposteTot = irap + ires + inps;
-    imposteDetail = 'IRAP ' + fmt(irap) + ' + IRES ' + fmt(ires) + (inps > 0 ? ' + INPS amm. ' + fmt(inps) : '');
-  } else if (forma === 'snc_sas') {
-    irap = Math.max(0, ebitda * 0.039);
-    irpef = calcolaIRPEF(Math.max(0, ebit - irap));
-    inps = Math.max(4200, redditoTitolare * 0.24);
-    imposteTot = irap + irpef + inps;
-    imposteDetail = 'IRAP ' + fmt(irap) + ' + IRPEF ' + fmt(irpef) + ' + INPS ' + fmt(inps);
-  } else {
-    irpef = calcolaIRPEF(Math.max(0, ebit));
-    inps = Math.max(4200, redditoTitolare * 0.24);
-    imposteTot = irpef + inps;
-    imposteDetail = 'IRPEF ' + fmt(irpef) + ' + INPS ' + fmt(inps);
-  }
-  var utile = ebit - imposteTot;
-
-  var set = function(id, val) { var el = document.getElementById(id); if (el) el.textContent = val; };
-  var setCol = function(id, n) { var el = document.getElementById(id); if (el) el.style.color = col(n); };
-  var setBorder = function(id, n) { var el = document.getElementById(id); if (el) el.style.borderLeftColor = col(n); };
-
-  if (fatturato) set('calc-preview-fatturato', fmt(fatturato));
-  if (cogs) set('calc-preview-cdv', fmt(cogs));
-  if (costiFissiMensili) set('calc-preview-costi', fmt(costiFissiMensili) + '/mese \u00B7 ' + fmt(costiFissiAnnui) + ' annui');
-  if (ammortamenti) set('calc-preview-amm', fmt(ammortamenti));
-
-  if (fatturato) {
-    set('calc-margine', fmt(margineLordo)); set('calc-margine-pct', pct(margineLordo, fatturato));
-    setCol('calc-margine', margineLordo); setBorder('calc-margine-row', margineLordo);
-
-    set('calc-ebitda', fmt(ebitda)); set('calc-ebitda-pct', pct(ebitda, fatturato));
-    setCol('calc-ebitda', ebitda); setBorder('calc-ebitda-row', ebitda);
-
-    var ebitdaDisplay = document.getElementById('fin-ebitda-display');
-    var ebitdaHidden = document.getElementById('fin-ebitda');
-    if (ebitdaDisplay && ebitda) { ebitdaDisplay.textContent = fmt(ebitda); ebitdaDisplay.style.color = ebitda > 0 ? 'var(--green)' : 'var(--red)'; }
-    if (ebitdaHidden && ebitda) ebitdaHidden.value = Math.round(ebitda);
-
-    set('calc-ebit', fmt(ebit)); set('calc-ebit-pct', pct(ebit, fatturato));
-    setCol('calc-ebit', ebit); setBorder('calc-ebit-row', ebit);
-
-    set('calc-imposte', '\u2212' + fmt(imposteTot));
-    set('calc-imposte-detail', imposteDetail);
-
-    set('calc-utile', fmt(utile)); set('calc-utile-pct', pct(utile, fatturato));
-    setCol('calc-utile', utile); setBorder('calc-utile-row', utile);
-
-    var riepilogo = document.getElementById('calc-margini-riepilogo');
-    var grid = document.getElementById('calc-margini-grid');
-    if (riepilogo && grid) {
-      riepilogo.style.display = 'block';
-      var margini = [
-        { label:'Margine lordo', val: pct(margineLordo, fatturato), n: margineLordo },
-        { label:'EBITDA margin', val: pct(ebitda, fatturato), n: ebitda },
-        { label:'EBIT margin', val: pct(ebit, fatturato), n: ebit },
-        { label:'Utile netto %', val: pct(utile, fatturato), n: utile },
-      ];
-      grid.innerHTML = margini.map(function(m) {
-        return '\x3cdiv style="text-align:center;background:var(--bg2);border-radius:4px;padding:8px 4px;border:1px solid var(--border)">' +
-          '\x3cdiv style="font-size:9px;color:var(--gray);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px">' + m.label + '\x3c/div>' +
-          '\x3cdiv style="font-size:16px;font-family:\'DM Serif Display\',serif;color:' + col(m.n) + '">' + (m.val || '--') + '\x3c/div>' +
-        '\x3c/div>';
-      }).join('');
+  var redditoTitolare = parseFloat(document.getElementById('calc-reddito-titolare')?.value) || 0;
+  var imposte = 0;
+  var dettaglioImposte = '';
+  if (ebit > 0) {
+    if (forma === 'srl') {
+      var ires = ebit * 0.24;
+      var irap = ebit * 0.039;
+      var inpsTit = redditoTitolare * 0.2607;
+      imposte = ires + irap + inpsTit;
+      dettaglioImposte = 'IRES ' + Math.round(ires/1000) + 'k + IRAP ' + Math.round(irap/1000) + 'k' + (redditoTitolare > 0 ? ' + INPS ' + Math.round(inpsTit/1000) + 'k' : '');
+    } else if (forma === 'snc_sas') {
+      var irpef = ebit * 0.35;
+      var irap = ebit * 0.039;
+      imposte = irpef + irap;
+      dettaglioImposte = 'IRPEF ~' + Math.round(irpef/1000) + 'k + IRAP ' + Math.round(irap/1000) + 'k';
+    } else {
+      var irpef = ebit * 0.35;
+      var inps = Math.min(ebit, 119650) * 0.24;
+      imposte = irpef + inps;
+      dettaglioImposte = 'IRPEF ~' + Math.round(irpef/1000) + 'k + INPS ' + Math.round(inps/1000) + 'k';
     }
+  }
+  var impEl = document.getElementById('calc-imposte');
+  var impDetEl = document.getElementById('calc-imposte-detail');
+  if (impEl) impEl.textContent = imposte > 0 ? '-' + Math.round(imposte).toLocaleString('it-IT') + ' EUR' : '--';
+  if (impDetEl) impDetEl.textContent = dettaglioImposte;
+
+  // Utile Netto
+  var utile = ebit - imposte - redditoTitolare;
+  var utilePct = fat > 0 ? (utile / fat * 100).toFixed(1) : 0;
+  var uEl = document.getElementById('calc-utile');
+  var uPctEl = document.getElementById('calc-utile-pct');
+  var uRow = document.getElementById('calc-utile-row');
+  if (uEl) uEl.textContent = fat > 0 ? Math.round(utile).toLocaleString('it-IT') + ' EUR' : '--';
+  if (uPctEl) uPctEl.textContent = fat > 0 ? utilePct + '%' : '';
+  if (uRow) uRow.style.borderLeftColor = utile >= 0 ? 'var(--green)' : 'var(--red)';
+  if (uEl) uEl.style.color = utile >= 0 ? 'var(--green)' : 'var(--red)';
+
+  // Riepilogo margini
+  var riepilogo = document.getElementById('calc-margini-riepilogo');
+  var rGrid = document.getElementById('calc-margini-grid');
+  if (riepilogo && rGrid && fat > 0) {
+    riepilogo.style.display = 'block';
+    rGrid.innerHTML = [
+      {label:'Margine Contribuzione', val:marginePct+'%', col: marginePct >= 40 ? 'var(--green)' : marginePct >= 20 ? 'var(--gold)' : 'var(--red)'},
+      {label:'EBITDA', val:ebitdaPct+'%', col: ebitdaPct >= 15 ? 'var(--green)' : ebitdaPct >= 8 ? 'var(--gold)' : 'var(--red)'},
+      {label:'EBIT', val:ebitPct+'%', col: ebitPct >= 10 ? 'var(--green)' : ebitPct >= 5 ? 'var(--gold)' : 'var(--red)'},
+      {label:'Utile Netto', val:utilePct+'%', col: utilePct >= 5 ? 'var(--green)' : utilePct >= 0 ? 'var(--gold)' : 'var(--red)'},
+    ].map(function(m) {
+      return '<div style="text-align:center"><div style="font-size:9px;color:var(--gray);margin-bottom:3px">' + m.label + '</div><div style="font-size:16px;font-weight:700;color:' + m.col + '">' + m.val + '</div></div>';
+    }).join('');
+  } else if (riepilogo) riepilogo.style.display = 'none';
+
+  // Salva dati per le proiezioni
+  var pObj = prospects.find(function(x){ return x.id === currentId; });
+  if (pObj) {
+    pObj.fatturato_anno_1 = fat || null;
+    pObj.ebitda = ebitda || null;
+    pObj.margine_pct = fat > 0 ? parseFloat(marginePct) : null;
+    pObj.utile_netto = utile || null;
+    pObj.costi_fissi_mensili = cfTotale > 0 ? Math.round(cfTotale / 12) : null;
   }
 }
 
 async function salvaDaCalcolatrice() {
-  var p = prospects.find(function(x) { return x.id === currentId; });
+  var p = prospects.find(function(x){ return x.id === currentId; });
   if (!p) return;
-  var vn = function(id) { return parseFloat(document.getElementById(id)?.value) || null; };
-  var vs = function(id) { return document.getElementById(id)?.value || null; };
-  var fatturato = vn('calc-fatturato');
-  var cdvPct = vn('calc-cdv-pct');
-  var cdvEur = vn('calc-cdv-eur');
-  var costiFissi = vn('calc-costi-fissi');
-  var ammortamenti = vn('calc-ammortamenti');
-  var forma = vs('calc-forma') || 'srl';
-  var redditoTitolare = vn('calc-reddito-titolare') || 0;
-  var costiStrutturali = vn('calc-costi-strutturali') || 0;
-  var cogs = cdvEur || (cdvPct && fatturato ? fatturato * cdvPct / 100 : 0);
-  var margineLordo = fatturato ? fatturato - cogs : null;
-  var costiFissiAnnui = costiFissi ? costiFissi * 12 : 0;
-  var ebitda = margineLordo !== null ? margineLordo - costiFissiAnnui - costiStrutturali : null;
-  var ebit = ebitda !== null ? ebitda - (ammortamenti || 0) : null;
-  var irap = 0, ires = 0, irpef = 0, inps = 0;
-  if (forma === 'srl') {
-    irap = Math.max(0, (ebitda || 0) * 0.039);
-    ires = Math.max(0, ((ebit || 0) - irap) * 0.24);
-    inps = redditoTitolare * 0.26;
-  } else if (forma === 'snc_sas') {
-    irap = Math.max(0, (ebitda || 0) * 0.039);
-    irpef = calcolaIRPEF(Math.max(0, (ebit || 0) - irap));
-    inps = Math.max(4200, redditoTitolare * 0.24);
-  } else {
-    irpef = calcolaIRPEF(Math.max(0, ebit || 0));
-    inps = Math.max(4200, redditoTitolare * 0.24);
-  }
-  var imposteTot = irap + ires + irpef + inps;
-  var utile = ebit !== null ? ebit - imposteTot : null;
-  var marginePct = fatturato && utile ? Math.round(utile / fatturato * 1000) / 10 : null;
+  var fat = parseFloat(document.getElementById('calc-fatturato')?.value) || null;
+  var fatPrec = parseFloat(document.getElementById('calc-fatturato-prec')?.value) || null;
+  var cdvPct = parseFloat(document.getElementById('calc-cdv-pct')?.value) || null;
+  var cdvEur = parseFloat(document.getElementById('calc-cdv-eur')?.value) || null;
+  var cfPers = parseFloat(document.getElementById('calc-cf-personale')?.value) || null;
+  var cfAff = parseFloat(document.getElementById('calc-cf-affitto')?.value) || null;
+  var cfServ = parseFloat(document.getElementById('calc-cf-servizi')?.value) || null;
+  var cfAltro = parseFloat(document.getElementById('calc-cf-altro')?.value) || null;
+  var amm = parseFloat(document.getElementById('calc-ammortamenti')?.value) || null;
+  var redTit = parseFloat(document.getElementById('calc-reddito-titolare')?.value) || null;
+  var forma = document.getElementById('calc-forma')?.value || 'srl';
+
   var dati_calcolatrice = {
-    fatturato: fatturato, cdv_pct: cdvPct, cdv_eur: cdvEur,
-    costi_fissi: costiFissi, ammortamenti: ammortamenti,
-    forma: forma, reddito_titolare: redditoTitolare,
-    costi_strutturali: costiStrutturali,
+    fatturato: fat, fatturato_prec: fatPrec,
+    cdv_pct: cdvPct, cdv_eur: cdvEur,
+    cf_personale: cfPers, cf_affitto: cfAff, cf_servizi: cfServ, cf_altro: cfAltro,
+    ammortamenti: amm, reddito_titolare: redTit, forma: forma,
   };
+
+  // Salva anche campi ammortamento per categoria
+  ['imm_amm_immobili','imm_amm_macchinari','imm_amm_attrezzatura','imm_amm_veicoli','imm_amm_software','imm_amm_leasing'].forEach(function(k) {
+    var elId = k.replace('imm_amm_', 'amm-');
+    var el = document.getElementById(elId);
+    if (el && el.value) dati_calcolatrice[k] = parseFloat(el.value);
+  });
+
+  var cfTotale = (cfPers||0) + (cfAff||0) + (cfServ||0) + (cfAltro||0);
+  var cdv = cdvPct && fat ? fat * cdvPct / 100 : (cdvEur || 0);
+  var margine = (fat||0) - cdv;
+  var ebitda = margine - cfTotale;
+  var marginePct = fat > 0 ? parseFloat((margine / fat * 100).toFixed(1)) : null;
+
   var updates = {
-    fatturato_anno_1: fatturato,
-    costi_fissi_mensili: costiFissi,
-    utile_netto: utile ? Math.round(utile) : null,
+    fatturato_anno_1: fat,
+    ebitda: ebitda > 0 ? ebitda : null,
     margine_pct: marginePct,
-    dati_calcolatrice: dati_calcolatrice,
+    costi_fissi_mensili: cfTotale > 0 ? Math.round(cfTotale / 12) : null,
+    dati_calcolatrice: dati_calcolatrice
   };
+
   Object.assign(p, updates);
-  var res = await sb.from('prospects').update(updates).eq('id', p.id);
-  if (res.error) { showToast('Errore: ' + res.error.message, 'error'); return; }
-  showToast('Dati finanziari salvati');
-  renderFinancials(p);
+  try {
+    var res = await sb.from('prospects').update(updates).eq('id', p.id);
+    if (res.error) throw res.error;
+    showToast('Dati finanziari salvati');
+  } catch(e) {
+    showToast('Errore: ' + e.message, 'error');
+  }
 }
 
-
-
-// -- SCHEMA FISCALE per forma giuridica ------------------------------------
 function aggiornaSchemaFiscale(formaId) {
   const panel = document.getElementById('schema-fiscale-panel');
   if (!panel) return;
