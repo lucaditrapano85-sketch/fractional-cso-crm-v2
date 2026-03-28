@@ -5860,7 +5860,6 @@ function buildCalcolatricePL() {
       \x3cdiv style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px" id="calc-margini-grid">\x3c/div>
     \x3c/div>
 
-    \x3cdiv style="display:flex;justify-content:flex-end;margin-top:16px">\x3cbutton class="btn btn-primary" onclick="salvaDaCalcolatrice()">Salva dati finanziari\x3c/button>\x3c/div>
   \x3c/div>`;
 }
 
