@@ -4332,18 +4332,9 @@ function apriSchedaFinanziaria(tab) {
 }
 
 function chiudiSchedaFinanziaria() {
-  // Return any moved pane back to fin-card
-  var body = document.getElementById('scheda-body');
-  if (body) {
-    var movedPane = body.querySelector('.fin-pane');
-    if (movedPane) {
-      document.getElementById('fin-card').appendChild(movedPane);
-      movedPane.style.display = '';
-      movedPane.classList.remove('active');
-    }
-  }
   document.getElementById('scheda-overlay').classList.remove('open');
   document.body.style.overflow = '';
+  _schedaEditMode = false;
   if (currentId) renderProspectDetail(currentId);
 }
 
@@ -4372,7 +4363,6 @@ function _renderSchedaTab() {
   var p = prospects.find(function(x){ return x.id === currentId; });
   if (!p) return;
 
-  // Update tab buttons
   document.querySelectorAll('#scheda-tabs .fin-tab').forEach(function(el, i) {
     el.classList.toggle('active', i === _schedaTabIdx);
   });
@@ -4380,40 +4370,57 @@ function _renderSchedaTab() {
   var body = document.getElementById('scheda-body');
   if (!body) return;
 
-  // Return any previously moved pane back to fin-card
-  var movedPane = body.querySelector('.fin-pane');
-  if (movedPane) {
-    document.getElementById('fin-card').appendChild(movedPane);
-    movedPane.style.display = '';
-    movedPane.classList.remove('active');
+  var html = '';
+  var cfg = FIN_FORMS[tab];
+
+  if (tab === 'kpi') {
+    var KPI_LIST = (typeof KPI_BY_SETTORE !== 'undefined' && KPI_BY_SETTORE[p.settore]) ? KPI_BY_SETTORE[p.settore] : KPI_BASE;
+    var kpi = p.kpi_commerciali || {};
+    var rows = KPI_LIST.map(function(k) {
+      var val = kpi[k.id];
+      var hasVal = val !== null && val !== undefined && val !== '';
+      return '<div class="kpi-edit-row"><label class="kpi-edit-label">' + k.label + '</label>' +
+        '<div class="kpi-edit-input-wrap"><input class="form-input kpi-edit-input scheda-field" type="number" step="0.1" data-kpi-id="' + k.id + '" value="' + (hasVal ? val : '') + '" placeholder="\u2014" disabled>' +
+        '<span class="kpi-edit-unit">' + k.unita + '</span></div></div>';
+    }).join('');
+    html = '<div style="padding:16px 20px"><div class="fin-section-label">KPI Commerciali</div><div class="kpi-edit-grid">' + rows + '</div></div>';
+  } else if (tab === 'financials') {
+    html = '<div style="padding:16px 20px">' + buildCalcolatricePL() + '</div>';
+  } else if (tab === 'commerciale') {
+    html = '<div style="padding:16px 20px">' + buildCommercialeForm(p) + '</div>';
+  } else if (cfg) {
+    html = '<div style="padding:16px 20px"><div class="fin-section-label">' + cfg.title + '</div><div class="form-grid">';
+    cfg.fields.forEach(function(f) {
+      var val = p[f.id] !== null && p[f.id] !== undefined ? p[f.id] : '';
+      html += buildFinField(f, val);
+    });
+    if (cfg.bools && cfg.bools.length) {
+      cfg.bools.forEach(function(b) {
+        var checked = p[b.id] ? 'checked' : '';
+        html += '<div class="form-group full" style="flex-direction:row;align-items:center;gap:10px">' +
+          '<input type="checkbox" class="scheda-field" id="fin-' + b.id + '" ' + checked + ' style="width:16px;height:16px;accent-color:var(--gold)" disabled>' +
+          '<label style="font-size:13px;color:var(--white);text-transform:none;letter-spacing:0">' + b.label + '</label></div>';
+      });
+    }
+    html += '</div></div>';
   }
 
-  // For KPI, re-render to pick up latest data
-  if (tab === 'kpi') renderKpiTab(p);
-  // For financials, trigger calcolatrice after move
-  // For commerciale, rebuild form
-  if (tab === 'commerciale') {
-    var commPane = document.getElementById('fin-pane-commerciale');
-    if (commPane) commPane.innerHTML = '<div id="fin-commerciale-content">' + buildCommercialeForm(p) + '</div>';
+  body.innerHTML = html;
+
+  // Disable inputs (except financials and commerciale which are interactive)
+  if (tab !== 'financials' && tab !== 'commerciale') {
+    body.querySelectorAll('input, select, textarea').forEach(function(el) {
+      el.classList.add('scheda-field');
+      el.disabled = true;
+    });
   }
 
-  // Move the actual pane into the overlay body
-  var pane = document.getElementById('fin-pane-' + tab);
-  if (pane) {
-    body.innerHTML = '';
-    pane.style.display = 'block';
-    pane.classList.add('active');
-    body.appendChild(pane);
-  }
-
-  // For financials calcolatrice, trigger recalc
   if (tab === 'financials') {
     setTimeout(function() {
       if (typeof aggiornaCalcolatrice === 'function') aggiornaCalcolatrice();
     }, 100);
   }
 
-  // Update prev/next buttons
   var prevBtn = document.getElementById('scheda-btn-prev');
   var nextBtn = document.getElementById('scheda-btn-next');
   if (prevBtn) {
@@ -4429,34 +4436,29 @@ function _renderSchedaTab() {
       nextBtn.setAttribute('onclick', 'schedaTabNext()');
     }
   }
+
+  // Modifica/Salva (not for financials/commerciale which have own save)
+  var isInteractive = (tab === 'financials' || tab === 'commerciale');
+  _aggiornaSchedaEditBtn(isInteractive);
 }
 
 var _schedaEditMode = false;
 
-function _aggiornaSchedaEditBtn(editing) {
-  _schedaEditMode = editing;
-  var footer = document.querySelector('#scheda-overlay .diagnosi-footer');
-  if (!footer) return;
+function _aggiornaSchedaEditBtn(isAlwaysEditable) {
   var existing = document.getElementById('scheda-btn-edit');
   if (existing) existing.remove();
+  if (isAlwaysEditable) return;
 
+  var footer = document.querySelector('#scheda-overlay .diagnosi-footer');
+  if (!footer) return;
   var btn = document.createElement('button');
   btn.id = 'scheda-btn-edit';
   btn.style.cssText = 'border-radius:8px;padding:8px 20px;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;';
-  if (editing) {
-    btn.textContent = 'Salva';
-    btn.style.background = '#1CB889';
-    btn.style.border = 'none';
-    btn.style.color = '#fff';
-    btn.onclick = function() { _salvaSchedaTab(); };
-  } else {
-    btn.textContent = 'Modifica';
-    btn.style.background = 'var(--bg3)';
-    btn.style.border = '1px solid var(--gold)';
-    btn.style.color = 'var(--gold)';
-    btn.onclick = function() { _abilitaModificaScheda(); };
-  }
-  // Insert between prev and next
+  btn.textContent = 'Modifica';
+  btn.style.background = 'var(--bg3)';
+  btn.style.border = '1px solid var(--gold)';
+  btn.style.color = 'var(--gold)';
+  btn.onclick = function() { _abilitaModificaScheda(); };
   var nextBtn = document.getElementById('scheda-btn-next');
   footer.insertBefore(btn, nextBtn);
 }
@@ -4464,10 +4466,18 @@ function _aggiornaSchedaEditBtn(editing) {
 function _abilitaModificaScheda() {
   var body = document.getElementById('scheda-body');
   if (!body) return;
-  body.querySelectorAll('.scheda-input, input, select, textarea').forEach(function(el) {
+  body.querySelectorAll('.scheda-field, input, select, textarea').forEach(function(el) {
     el.disabled = false;
   });
-  _aggiornaSchedaEditBtn(true);
+  var btn = document.getElementById('scheda-btn-edit');
+  if (btn) {
+    btn.textContent = 'Salva';
+    btn.style.background = '#1CB889';
+    btn.style.border = 'none';
+    btn.style.color = '#fff';
+    btn.onclick = function() { _salvaSchedaTab(); };
+  }
+  _schedaEditMode = true;
 }
 
 function _salvaSchedaTab() {
@@ -4478,7 +4488,6 @@ function _salvaSchedaTab() {
   if (!body) return;
 
   if (tab === 'kpi') {
-    // Save KPI
     var KPI_LIST = (typeof KPI_BY_SETTORE !== 'undefined' && KPI_BY_SETTORE[p.settore]) ? KPI_BY_SETTORE[p.settore] : KPI_BASE;
     var kpi = {};
     body.querySelectorAll('[data-kpi-id]').forEach(function(el) {
@@ -4488,7 +4497,6 @@ function _salvaSchedaTab() {
     p.kpi_commerciali = kpi;
     sb.from('prospects').update({ kpi_commerciali: kpi }).eq('id', p.id);
   } else {
-    // Save financial tab - sync values back to hidden pane and call saveFinancials
     var cfg = FIN_FORMS[tab];
     if (!cfg) return;
     var updates = {};
@@ -4498,6 +4506,7 @@ function _salvaSchedaTab() {
       var val = el.value.trim();
       if (f.fmt === 'euro' || f.fmt === 'pct') updates[f.id] = val !== '' ? parseFloat(val) : null;
       else if (f.fmt === 'int' || f.fmt === 'year') updates[f.id] = val !== '' ? parseInt(val) : null;
+      else if (f.fmt === 'forma_giuridica') updates[f.id] = val !== '' ? val : null;
       else updates[f.id] = val !== '' ? val : null;
     });
     if (cfg.bools) cfg.bools.forEach(function(b) {
@@ -4509,12 +4518,16 @@ function _salvaSchedaTab() {
   }
 
   showToast('Salvato!');
-
-  // Disable inputs again
-  body.querySelectorAll('input, select, textarea').forEach(function(el) {
-    el.disabled = true;
-  });
-  _aggiornaSchedaEditBtn(false);
+  body.querySelectorAll('input, select, textarea').forEach(function(el) { el.disabled = true; });
+  var btn = document.getElementById('scheda-btn-edit');
+  if (btn) {
+    btn.textContent = 'Modifica';
+    btn.style.background = 'var(--bg3)';
+    btn.style.border = '1px solid var(--gold)';
+    btn.style.color = 'var(--gold)';
+    btn.onclick = function() { _abilitaModificaScheda(); };
+  }
+  _schedaEditMode = false;
 }
 
 // ── DETAIL OVERLAY (popup dettagli costi e ROI) ──────────────────────
