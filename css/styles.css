@@ -202,7 +202,7 @@ h1,h2,h3{font-family:'DM Serif Display',serif;font-weight:400}
 .slider-label{font-size:12px;font-weight:500;color:var(--white);flex:1}
 input[type=range]{flex:1;accent-color:var(--gold)}
 .slider-val{font-size:12px;font-weight:600;width:24px;text-align:right;color:var(--gold)}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;display:none;align-items:center;justify-content:center}
+.modal-overlay{position:fixed;inset:0;background:rgba(255,255,255,.4);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:100;display:none;align-items:center;justify-content:center}
 .modal-overlay.open{display:flex}
 .modal{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:28px;width:560px;max-height:85vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.12)}
 .modal-title{font-size:18px;font-family:'DM Serif Display',serif;margin-bottom:20px}
@@ -470,14 +470,14 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 .tt-wrap .tt-bubble.tt-left{left:0;transform:none}
 .tt-wrap .tt-bubble.tt-right{left:auto;right:0;transform:none}
 
-.diagnosi-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;display:none;align-items:center;justify-content:center;backdrop-filter:blur(3px)}
+.diagnosi-overlay{position:fixed;inset:0;background:rgba(255,255,255,.4);z-index:300;display:none;align-items:center;justify-content:center;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .diagnosi-overlay.open{display:flex}
 .diagnosi-panel{background:linear-gradient(165deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.25) 40%, rgba(240,242,248,0.15) 100%);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.45);border-top:1px solid rgba(255,255,255,0.7);border-radius:16px;width:560px;max-height:85vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,0.1),inset 0 1px 1px rgba(255,255,255,0.8)}
 .diagnosi-header{padding:20px 24px 16px;border-bottom:1px solid rgba(0,0,0,0.06);flex-shrink:0}
 .diagnosi-progress{height:4px;background:var(--bg3);border-radius:2px;margin-top:12px;overflow:hidden}
 .diagnosi-progress-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .3s}
 .diagnosi-body{padding:24px;overflow-y:auto;flex:1}
-.diagnosi-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.diagnosi-footer{padding:16px 24px;border-top:1px solid rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:rgba(255,255,255,0.2)}
 .diag-q{margin-bottom:20px}
 .diag-q-testo{font-size:13px;font-weight:600;color:var(--white);margin-bottom:10px;line-height:1.4}
 .diag-opt{display:flex;flex-direction:column;gap:6px}
@@ -712,17 +712,17 @@ body{background:linear-gradient(145deg,#d8dbe2 0%,#cfd2da 50%,#d8dbe2 100%);colo
 }
 .kpi-val{color:var(--text);font-size:26px;font-weight:600;letter-spacing:-.5px}
 .kpi-label{color:var(--gray2);font-size:9px;text-transform:uppercase;letter-spacing:1px}
-.fin-tabs{background:var(--bg2);border-bottom:1px solid var(--border)}
-.fin-tab{color:var(--gray2)}
-.fin-tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.fin-tabs{background:rgba(255,255,255,0.3);border-bottom:1px solid rgba(0,0,0,0.06)}
+.fin-tab{color:var(--gray)}
+.fin-tab.active{color:var(--text);border-bottom-color:var(--text);font-weight:600}
 .form-input{background:var(--bg3);border:1px solid var(--border2);color:var(--text);border-radius:var(--rs)}
 .form-input:focus{border-color:var(--blue);outline:none}
 label{color:var(--gray2)}
 .btn{background:transparent;border:1px solid var(--border2);color:var(--text);border-radius:var(--rs)}
 .btn:hover{background:var(--bg3)}
 .btn-primary,#btn-save-prospect{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
-.modal-overlay{background:rgba(7,13,24,0.85)}
-.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r)}
+.modal-overlay{background:rgba(255,255,255,0.4);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.modal{background:linear-gradient(165deg, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0.4) 40%, rgba(240,242,248,0.3) 100%);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.5);border-top:1px solid rgba(255,255,255,0.7);border-radius:var(--r);box-shadow:0 16px 48px rgba(0,0,0,0.08),inset 0 1px 1px rgba(255,255,255,0.9)}
 .modal-title{color:var(--text)}
 .modal-footer{border-top:1px solid var(--border)}
 .target-input{background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.1);border-radius:8px;color:var(--text);font-size:14px;font-weight:700;-moz-appearance:textfield}
