@@ -1191,6 +1191,7 @@ async function renderProspectDetail(id) {
   await loadPreventivi(id);
   renderPreventivi(p);
   renderCronistoria(p);
+  renderTimelineUnificata(p, currentCalls);
 }
 
 // -- MARKET ------------------------------------------------
@@ -4924,6 +4925,102 @@ function apriDettaglioRoi() {
   document.getElementById('detail-overlay-body').innerHTML = html;
   document.getElementById('detail-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
+}
+
+function renderTimelineUnificata(p, calls) {
+  var container = document.getElementById('timeline-unificata');
+  if (!container) return;
+
+  var events = [];
+  var fmt = function(d) {
+    var dt = new Date(d);
+    return dt.toLocaleDateString('it-IT', {day:'2-digit', month:'short', year:'numeric'});
+  };
+
+  // Score history (diagnosi, sessioni, target)
+  (p.score_history || []).forEach(function(s) {
+    events.push({
+      data: new Date(s.data),
+      tipo: s.evento === 'Prima valutazione' ? 'diagnosi' : s.evento.indexOf('Target') >= 0 ? 'target' : 'sessione',
+      label: s.evento,
+      dettaglio: s.nota || ('Score: ' + s.score + '/100'),
+      score: s.score
+    });
+  });
+
+  // Call
+  (calls || []).forEach(function(c) {
+    events.push({
+      data: new Date(c.data),
+      tipo: 'call',
+      label: 'Call',
+      dettaglio: (c.note || '').substring(0, 80) + ((c.note || '').length > 80 ? '...' : ''),
+      esito: c.esito
+    });
+  });
+
+  // Fatturato checkpoints
+  var ck = p.fatturato_checkpoints || {};
+  Object.keys(ck).forEach(function(m) {
+    var snap = p.proiezione_snapshot;
+    var dataSnap = snap ? new Date(snap.data) : new Date();
+    var dataCk = new Date(dataSnap);
+    dataCk.setMonth(dataCk.getMonth() + parseInt(m));
+    events.push({
+      data: dataCk,
+      tipo: 'checkpoint',
+      label: 'Fatturato ' + m + ' mesi',
+      dettaglio: ck[m].toLocaleString('it-IT') + '\u20AC'
+    });
+  });
+
+  // Ordina per data (più recente prima)
+  events.sort(function(a, b) { return b.data - a.data; });
+
+  if (events.length === 0) {
+    container.innerHTML = '<div style="color:var(--gray);font-size:12px;padding:12px 0">Nessuna attività registrata.</div>';
+    return;
+  }
+
+  var TIPO_COLORS = {
+    diagnosi: 'rgba(110,80,170,0.7)',
+    target: 'rgba(150,110,30,0.7)',
+    sessione: 'rgba(40,120,70,0.7)',
+    call: 'rgba(60,110,170,0.7)',
+    checkpoint: 'rgba(170,50,40,0.7)'
+  };
+  var TIPO_ICONS = {
+    diagnosi: '\uD83C\uDFAF',
+    target: '\uD83C\uDFF9',
+    sessione: '\u2705',
+    call: '\uD83D\uDCDE',
+    checkpoint: '\uD83D\uDCC8'
+  };
+  var TIPO_LABELS = {
+    diagnosi: 'Diagnosi',
+    target: 'Target',
+    sessione: 'Sessione',
+    call: 'Call',
+    checkpoint: 'Checkpoint'
+  };
+
+  container.innerHTML = events.map(function(e) {
+    var col = TIPO_COLORS[e.tipo] || 'var(--gray)';
+    var icon = TIPO_ICONS[e.tipo] || '\u25CF';
+    return '<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">' +
+      '<div style="width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,0.04);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">' + icon + '</div>' +
+      '<div style="flex:1;min-width:0">' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">' +
+          '<div style="font-size:12px;font-weight:600;color:var(--text)">' + e.label + '</div>' +
+          '<div style="display:flex;align-items:center;gap:6px;flex-shrink:0">' +
+            '<span style="font-size:9px;padding:2px 8px;border-radius:10px;background:rgba(0,0,0,0.04);color:' + col + ';font-weight:600">' + TIPO_LABELS[e.tipo] + '</span>' +
+            '<span style="font-size:10px;color:var(--gray)">' + fmt(e.data) + '</span>' +
+          '</div>' +
+        '</div>' +
+        (e.dettaglio ? '<div style="font-size:11px;color:var(--gray);margin-top:2px">' + e.dettaglio + '</div>' : '') +
+      '</div>' +
+    '</div>';
+  }).join('');
 }
 
 function _buildGraficoTimeline(p) {
