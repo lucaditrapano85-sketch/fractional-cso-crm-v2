@@ -1450,6 +1450,28 @@ async function saveCall() {
 
 // -- REPORT ------------------------------------------------
 
+function printReport() {
+  var content = document.getElementById('printable-report');
+  if (!content) return;
+  var win = window.open('', '_blank');
+  win.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Report</title>');
+  win.document.write('<style>');
+  win.document.write('body{font-family:Arial,Helvetica,sans-serif;color:#1a1a2e;padding:24px;max-width:800px;margin:0 auto;font-size:12px;line-height:1.5}');
+  win.document.write('table{width:100%;border-collapse:collapse}td,th{padding:6px 8px;border-bottom:1px solid #e0e0e0;text-align:left;font-size:11px}');
+  win.document.write('.rp-header{border-bottom:2px solid #b07d1e;padding-bottom:16px;margin-bottom:20px}');
+  win.document.write('.rp-company{font-size:22px;font-weight:700;color:#1a1a2e}');
+  win.document.write('.rp-sub{font-size:12px;color:#666;margin-top:4px}');
+  win.document.write('.rp-score-big{font-size:48px;font-weight:700}');
+  win.document.write('.rp-section{margin-top:20px;border-top:1px solid #ddd;padding-top:12px}');
+  win.document.write('.rp-section-title{font-size:11px;font-weight:700;color:#b07d1e;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}');
+  win.document.write('@media print{body{padding:0}@page{margin:15mm}}');
+  win.document.write('</style></head><body>');
+  win.document.write(content.innerHTML);
+  win.document.write('</body></html>');
+  win.document.close();
+  setTimeout(function() { win.print(); }, 300);
+}
+
 function showReport() {
   const p = prospects.find(x => x.id === currentId);
   if (!p) return;
