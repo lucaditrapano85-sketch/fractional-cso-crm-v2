@@ -6062,9 +6062,10 @@ function calcola() {
   var uEl = _el('c-res-utile');
   if (uEl) uEl.innerHTML = fat > 0 ? '<strong style="color:' + (utile >= 0 ? 'var(--green)' : 'var(--red)') + ';font-size:18px">' + fmt(utile) + '</strong>' + pct(utile, fat) : '--';
 
-  // Memoria
-  if (p.id) {
-    p.fatturato_anno_1 = fat || null;
+  // Memoria — aggiorna solo se il campo fatturato esiste nel DOM
+  var fatEl = _el('c-fat');
+  if (p.id && fatEl) {
+    p.fatturato_anno_1 = fat || p.fatturato_anno_1 || null;
     p.ebitda = ebitda || null;
     p.margine_pct = fat > 0 ? parseFloat((margine / fat * 100).toFixed(1)) : null;
     p.utile_netto = utile || null;

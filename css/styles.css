@@ -472,8 +472,8 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 
 .diagnosi-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;display:none;align-items:center;justify-content:center;backdrop-filter:blur(3px)}
 .diagnosi-overlay.open{display:flex}
-.diagnosi-panel{background:var(--bg2);border:1px solid var(--border);border-radius:16px;width:560px;max-height:85vh;display:flex;flex-direction:column;overflow:hidden}
-.diagnosi-header{padding:20px 24px 16px;border-bottom:1px solid var(--border);flex-shrink:0}
+.diagnosi-panel{background:linear-gradient(165deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.25) 40%, rgba(240,242,248,0.15) 100%);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.45);border-top:1px solid rgba(255,255,255,0.7);border-radius:16px;width:560px;max-height:85vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,0.1),inset 0 1px 1px rgba(255,255,255,0.8)}
+.diagnosi-header{padding:20px 24px 16px;border-bottom:1px solid rgba(0,0,0,0.06);flex-shrink:0}
 .diagnosi-progress{height:4px;background:var(--bg3);border-radius:2px;margin-top:12px;overflow:hidden}
 .diagnosi-progress-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .3s}
 .diagnosi-body{padding:24px;overflow-y:auto;flex:1}
