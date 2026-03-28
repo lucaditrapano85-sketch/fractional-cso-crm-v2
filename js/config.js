@@ -22,8 +22,8 @@ const sb = createClient(
 // ===========================================================================
 
 const TIPO_CLIENTELA_LABELS = {
-  ricorrente:    { label: 'B2B ricorrente',    color: 'rgba(50,130,80,0.35)', icon: '' },
-  mista:         { label: 'Clientela mista',   color: 'rgba(160,120,40,0.35)', icon: '!' },
+  ricorrente:    { label: 'B2B ricorrente',    color: 'rgba(40,120,70,0.75)', icon: '' },
+  mista:         { label: 'Clientela mista',   color: 'rgba(150,110,30,0.75)', icon: '!' },
   occasionale:   { label: 'Occasionale/progettuale', color: '#4A7AB5', icon: '' },
   transazionale: { label: 'Transazionale/retail',    color: '#A05AB5', icon: '' },
 };
@@ -740,15 +740,15 @@ const DIM_DESC = {
   ],
 };
 
-const STATUS_COLORS = {nuovo:'rgba(70,120,180,0.35)',contattato:'rgba(160,120,40,0.35)',diagnosi:'rgba(120,90,180,0.35)',proposta:'rgba(160,140,40,0.35)',chiuso:'rgba(50,130,80,0.35)'};
+const STATUS_COLORS = {nuovo:'rgba(60,110,170,0.75)',contattato:'rgba(150,110,30,0.75)',diagnosi:'rgba(110,80,170,0.75)',proposta:'rgba(150,130,30,0.75)',chiuso:'rgba(40,120,70,0.75)'};
 
 // Palette colori prospect ? 12 toni premium
 const PROSPECT_PALETTE = [
-  'rgba(160,120,40,0.35)', // oro
-  'rgba(50,130,80,0.35)', // verde salvia
+  'rgba(150,110,30,0.75)', // oro
+  'rgba(40,120,70,0.75)', // verde salvia
   '#4A7AB5', // blu
   '#A05AB5', // viola
-  'rgba(160,60,50,0.35)', // rosso mattone
+  'rgba(170,50,40,0.75)', // rosso mattone
   '#3A9AB5', // teal
   '#B58A3A', // ambra scura
   '#5A8A4A', // verde bosco
