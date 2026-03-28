@@ -379,8 +379,12 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 .target-editor{margin-top:12px;border-top:1px solid var(--border);padding-top:12px;display:none}
 .target-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .target-row-label{font-size:11px;color:var(--gray);flex:1}
-.target-input{width:48px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;color:var(--white);font-size:12px;text-align:center;padding:3px 6px;font-family:'DM Sans',sans-serif;outline:none}
-.target-input:focus{border-color:var(--gold-dim)}
+.target-input{width:48px;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.1);border-radius:8px;color:var(--text);font-size:14px;font-weight:700;text-align:center;padding:4px 6px;font-family:'DM Sans',sans-serif;outline:none;-moz-appearance:textfield}
+.target-input::-webkit-inner-spin-button,.target-input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.target-input:focus{border-color:rgba(70,100,200,0.4);box-shadow:0 0 0 3px rgba(70,100,200,0.1)}
+.target-input-wrap{display:flex;align-items:center;gap:4px}
+.target-btn{width:24px;height:24px;border-radius:50%;border:1px solid rgba(0,0,0,0.08);background:rgba(255,255,255,0.6);color:var(--text);font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;line-height:1;padding:0}
+.target-btn:hover{background:rgba(255,255,255,0.9);border-color:rgba(0,0,0,0.15);box-shadow:0 2px 8px rgba(0,0,0,0.06)}
 .target-save{margin-top:8px;background:var(--gold);color:#fff;border:none;border-radius:var(--rs);padding:6px 14px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
 .dim-row-target{display:flex;align-items:center;gap:6px;margin-top:2px}
 .dim-target-marker{font-size:10px;color:var(--gold-dim)}
@@ -721,7 +725,8 @@ label{color:var(--gray2)}
 .modal{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r)}
 .modal-title{color:var(--text)}
 .modal-footer{border-top:1px solid var(--border)}
-.target-input{background:rgba(255,255,255,0.6);border:1px solid rgba(0,0,0,0.12);border-radius:var(--rs);color:var(--text);color-scheme:light;-webkit-appearance:auto;appearance:auto}
+.target-input{background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.1);border-radius:8px;color:var(--text);font-size:14px;font-weight:700;-moz-appearance:textfield}
+.target-input::-webkit-inner-spin-button,.target-input::-webkit-outer-spin-button{-webkit-appearance:none}
 #radar-score-box{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r)}
 .prospect-kanban-card{background:var(--bg2);border:1px solid var(--border)}
 .prospect-kanban-card:hover{border-color:var(--border2);box-shadow:0 4px 12px rgba(0,0,0,0.3)}

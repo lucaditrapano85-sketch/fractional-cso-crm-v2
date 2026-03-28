@@ -5306,9 +5306,11 @@ function renderTargetEditor(p) {
             \x3cdiv style="font-size:9px;color:var(--gold);letter-spacing:.05em;text-transform:uppercase">Obiettivo finale\x3c/div>
             \x3cspan id="tsem-${d.id}" style="font-size:12px;font-weight:700;white-space:nowrap">${scad ? calcolaSemaforo(scad, d.id) : ''}\x3c/span>
           \x3c/div>
-          \x3cdiv style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+          \x3cdiv class="target-input-wrap" style="margin-bottom:6px">
+            \x3cbutton class="target-btn" onclick="var e=document.getElementById('tgt-${d.id}');if(e&&parseInt(e.value)>1){e.value=parseInt(e.value)-1;previewTarget();updateTargetDesc('${d.id}');aggiornaAzioni('${d.id}')}">\u2212\x3c/button>
             \x3cinput class="target-input" type="number" id="tgt-${d.id}" min="1" max="5" value="${tgt}"
               onchange="previewTarget();updateTargetDesc('${d.id}');aggiornaAzioni('${d.id}')" oninput="previewTarget();updateTargetDesc('${d.id}');aggiornaAzioni('${d.id}')">
+            \x3cbutton class="target-btn" onclick="var e=document.getElementById('tgt-${d.id}');if(e&&parseInt(e.value)<5){e.value=parseInt(e.value)+1;previewTarget();updateTargetDesc('${d.id}');aggiornaAzioni('${d.id}')}">+\x3c/button>
             \x3cspan style="font-size:10px;color:var(--gray)">/5\x3c/span>
           \x3c/div>
           ${warningTetto}
