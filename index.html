@@ -447,6 +447,21 @@
   </div>
 </div>
 
+<div class="diagnosi-overlay" id="detail-overlay" onclick="if(event.target===this)chiudiDetailOverlay()">
+  <div class="diagnosi-panel" style="max-width:600px">
+    <div class="diagnosi-header">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div class="diag-dim-title" id="detail-overlay-title"></div>
+          <div class="diag-dim-desc" id="detail-overlay-subtitle"></div>
+        </div>
+        <button onclick="chiudiDetailOverlay()" style="background:none;border:none;color:var(--gray);font-size:20px;cursor:pointer;padding:4px 8px;line-height:1">x</button>
+      </div>
+    </div>
+    <div class="diagnosi-body" id="detail-overlay-body" style="padding:20px 24px"></div>
+  </div>
+</div>
+
 <div id="modal-sessione" class="modal-overlay" style="display:none" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal" style="max-width:520px;max-height:85vh;overflow-y:auto">
     <h2 class="modal-title" id="modal-sessione-title">Registra sessione</h2>

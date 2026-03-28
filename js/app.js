@@ -4031,17 +4031,25 @@ function _calcolaImpattoCumulativo(p) {
   let costoRicorrenteMensile = 0;
   let costoUnaTantumTot = 0;      // somma una tantum di tutti gli step attivi
   const penalitaPerDim = {};
+  const costiPerDim = {};
   if (!usaOrganica) attive.forEach(id => {
     const cur = dims[id] || 0;
     const tgt = targets[id] || 0;
     penalitaPerDim[id] = _calcolaPenalita(settore, id, targets, dims);
+    let dimR = 0, dimU = 0;
+    const dimSteps = [];
     for (let step = cur; step < tgt; step++) {
       const c = _getCosto(settore, id, step, step+1);
+      const detail = getStepDetail(settore, id, String(step+1));
       if (c) {
+        dimR += c.r || 0;
+        dimU += c.u || 0;
         costoRicorrenteMensile += c.r || 0;
         costoUnaTantumTot      += c.u || 0;
       }
+      dimSteps.push({ from: step, to: step+1, r: c ? c.r : 0, u: c ? c.u : 0, desc: detail ? detail.cosa : '' });
     }
+    costiPerDim[id] = { r: dimR, u: dimU, steps: dimSteps };
   });
   const costoMensileTot = costoRicorrenteMensile; // alias per compatibilità
 
@@ -4251,12 +4259,120 @@ function _calcolaImpattoCumulativo(p) {
     // ROI e sostenibilità
     roiMin: roiMin24, roiMax: roiMax24,
     dimAttive: attive,
+    costiPerDim,
     penalitaPerDim,
     alertSbilanciamento,
     sostenibilita
   };
 }
 
+
+// ── DETAIL OVERLAY (popup dettagli costi e ROI) ──────────────────────
+function chiudiDetailOverlay() {
+  document.getElementById('detail-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function apriDettaglioCosti() {
+  var p = prospects.find(function(x){ return x.id === currentId; });
+  if (!p) return;
+  var ic = _calcolaImpattoCumulativo(p);
+  if (!ic) return;
+  var settore = p.settore || '';
+  var fmtV = function(v) { return v ? v.toLocaleString('it-IT') + '\u20AC' : '\u2014'; };
+  var LABEL = {vendite:'Vendite',pipeline:'Pipeline',team:'Team',processi:'Processi',ricavi:'Ricavi',marketing:'Marketing',sitoweb:'Sito Web',ecommerce:'Approvv.'};
+  var sd = (typeof STEP_DETAIL_BY_SETTORE !== 'undefined') ? STEP_DETAIL_BY_SETTORE : {};
+  ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'].forEach(function(id) {
+    var lbl = sd[settore]?.[id]?._label;
+    if (lbl) LABEL[id] = lbl;
+  });
+
+  var costiDim = ic.costiPerDim || {};
+  var totalR = ic.costoRicorrenteMensile || 0;
+  var totalU = ic.costoUnaTantumTot || 0;
+
+  var rows = Object.entries(costiDim).map(function(e) {
+    var id = e[0], data = e[1];
+    var stepsHtml = data.steps.map(function(s) {
+      return '<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border)">' +
+        '<div style="font-size:11px;color:var(--gray);flex:1">Step ' + s.to + ': ' + (s.desc || '\u2014') + '</div>' +
+        '<div style="font-size:11px;color:var(--white);white-space:nowrap;margin-left:12px">' + fmtV(s.r) + '/mese' + (s.u > 0 ? ' + ' + fmtV(s.u) + ' setup' : '') + '</div>' +
+      '</div>';
+    }).join('');
+    return '<div style="margin-bottom:16px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">' +
+        '<div style="font-size:13px;font-weight:600;color:var(--white)">' + (LABEL[id]||id) + '</div>' +
+        '<div style="font-size:12px;font-weight:600;color:#378ADD">' + fmtV(data.r) + '/mese</div>' +
+      '</div>' +
+      stepsHtml +
+    '</div>';
+  }).join('');
+
+  var html = rows +
+    '<div style="border-top:2px solid var(--border);padding-top:12px;margin-top:8px;display:flex;justify-content:space-between">' +
+      '<div style="font-size:14px;font-weight:700;color:var(--white)">Totale</div>' +
+      '<div style="text-align:right">' +
+        '<div style="font-size:14px;font-weight:700;color:#378ADD">' + fmtV(totalR) + '/mese</div>' +
+        (totalU > 0 ? '<div style="font-size:11px;color:var(--gray)">+ ' + fmtV(totalU) + ' una tantum</div>' : '') +
+        '<div style="font-size:11px;color:var(--gray)">' + fmtV(totalR * 12) + '/anno</div>' +
+      '</div>' +
+    '</div>';
+
+  document.getElementById('detail-overlay-title').textContent = 'Dettaglio investimento piano';
+  document.getElementById('detail-overlay-subtitle').textContent = 'Costi per dimensione e per step';
+  document.getElementById('detail-overlay-body').innerHTML = html;
+  document.getElementById('detail-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function apriDettaglioRoi() {
+  var p = prospects.find(function(x){ return x.id === currentId; });
+  if (!p) return;
+  var ic = _calcolaImpattoCumulativo(p);
+  if (!ic) return;
+  var fmtV = function(v) { return v ? v.toLocaleString('it-IT') + '\u20AC' : '\u2014'; };
+  var fmtF = function(v) { return v >= 1000000 ? (v/1000000).toFixed(1)+'M' : Math.round(v/1000)+'k'; };
+  var fat = ic.fat || 0;
+  var costoMensile = ic.costoMensileTot || 0;
+  var costoSetup = ic.costoUnaTantumTot || 0;
+
+  var orizzonti = [
+    { label: '6 mesi', fat: ic.fat6, costo: ic.costoTot6, pct: ic.pct6 },
+    { label: '12 mesi', fat: ic.fat12, costo: costoMensile * 12 + costoSetup, pct: ic.pct12 },
+    { label: '24 mesi', fat: ic.fat24, costo: ic.costoTot24, pct: ic.pct24 },
+  ];
+  if (ic.fat36) orizzonti.push({ label: '36 mesi', fat: ic.fat36, costo: costoMensile * 36 + costoSetup, pct: ic.pct36 });
+
+  var rows = orizzonti.map(function(o) {
+    if (!o.fat) return '';
+    var deltaMin = o.fat[0] - fat;
+    var deltaMax = o.fat[1] - fat;
+    var roiMin = o.costo > 0 ? (deltaMin / o.costo).toFixed(1) : '\u2014';
+    var roiMax = o.costo > 0 ? (deltaMax / o.costo).toFixed(1) : '\u2014';
+    var roiCol = roiMax >= 1.5 ? '#1CB889' : roiMax >= 1 ? '#C9973A' : '#C05040';
+    return '<div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr 80px;gap:8px;padding:10px 0;border-bottom:1px solid var(--border);align-items:center">' +
+      '<div style="font-size:12px;font-weight:600;color:var(--white)">' + o.label + '</div>' +
+      '<div style="text-align:center"><div style="font-size:11px;color:var(--gray)">Fatturato</div><div style="font-size:12px;color:var(--white)">' + fmtF(o.fat[0]) + '\u2013' + fmtF(o.fat[1]) + '\u20AC</div></div>' +
+      '<div style="text-align:center"><div style="font-size:11px;color:var(--gray)">Crescita</div><div style="font-size:12px;color:#1CB889">+' + fmtF(deltaMin) + '\u2013' + fmtF(deltaMax) + '\u20AC</div></div>' +
+      '<div style="text-align:center"><div style="font-size:11px;color:var(--gray)">Investito</div><div style="font-size:12px;color:#378ADD">' + fmtF(o.costo) + '\u20AC</div></div>' +
+      '<div style="text-align:center"><div style="font-size:11px;color:var(--gray)">ROI</div><div style="font-size:13px;font-weight:700;color:' + roiCol + '">' + roiMin + '\u2013' + roiMax + 'x</div></div>' +
+    '</div>';
+  }).join('');
+
+  var breakevenStr = ic.sostenibilita?.breakevenStr || '\u2014';
+  var html = rows +
+    '<div style="margin-top:16px;padding:12px;background:var(--bg3);border-radius:8px">' +
+      '<div style="font-size:11px;color:var(--gray);margin-bottom:4px">Breakeven stimato</div>' +
+      '<div style="font-size:14px;font-weight:600;color:var(--white)">' + breakevenStr + '</div>' +
+      '<div style="font-size:10px;color:var(--gray);margin-top:4px">Il momento in cui la crescita di fatturato supera l\'investimento cumulato</div>' +
+    '</div>';
+
+  document.getElementById('detail-overlay-title').textContent = 'Dettaglio ROI';
+  document.getElementById('detail-overlay-subtitle').textContent = 'Return on Investment per orizzonte temporale';
+  document.getElementById('detail-overlay-body').innerHTML = html;
+  document.getElementById('detail-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
 
 function _buildGraficoTimeline(p) {
   if (!p) return '';
@@ -4342,8 +4458,8 @@ function _buildGraficoTimeline(p) {
     '<div class="tl-metric-cards">' +
       '<div class="tl-mc"><div class="tl-mc-label">Fatturato attuale</div><div class="tl-mc-val">' + fmtF(fat) + '\u20AC</div><div class="tl-mc-sub">anno corrente</div></div>' +
       '<div class="tl-mc"><div class="tl-mc-label">Proiezione 12 mesi</div><div class="tl-mc-val tl-green">' + fmtF(fat12min) + '\u2013' + fmtF(fat12max) + '\u20AC</div><div class="tl-mc-sub">+' + pct12min + '\u2013' + pct12max + '%</div></div>' +
-      '<div class="tl-mc"><div class="tl-mc-label">Investimento piano</div><div class="tl-mc-val tl-blue">' + costoLabel + '</div><div class="tl-mc-sub">costi fissi mensili</div></div>' +
-      '<div class="tl-mc"><div class="tl-mc-label">ROI stimato</div><div class="tl-mc-val tl-amber">' + roiStr + '</div><div class="tl-mc-sub">breakeven ' + breakevenStr + '</div></div>' +
+      '<div class="tl-mc" style="cursor:pointer" onclick="apriDettaglioCosti()"><div class="tl-mc-label">Investimento piano</div><div class="tl-mc-val tl-blue">' + costoLabel + '</div><div class="tl-mc-sub">costi fissi mensili · clicca per dettagli</div></div>' +
+      '<div class="tl-mc" style="cursor:pointer" onclick="apriDettaglioRoi()"><div class="tl-mc-label">ROI stimato</div><div class="tl-mc-val tl-amber">' + roiStr + '</div><div class="tl-mc-sub">breakeven ' + breakevenStr + ' · clicca per dettagli</div></div>' +
     '</div>' +
 
     // 1b. SBILANCIAMENTO PIANO
