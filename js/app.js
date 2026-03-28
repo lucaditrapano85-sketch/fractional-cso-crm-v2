@@ -4414,14 +4414,11 @@ function _renderSchedaTab() {
     if (mount) mountCalcolatrice(mount);
   }
 
-  // Financials e Commerciale sono sempre editabili (calcolatrice interattiva)
-  // Le altre tab partono disabilitate
-  if (tab !== 'financials' && tab !== 'commerciale') {
-    body.querySelectorAll('input, select, textarea').forEach(function(el) {
-      el.classList.add('scheda-field');
-      el.disabled = true;
-    });
-  }
+  // Tutte le tab partono disabilitate — Modifica le abilita
+  body.querySelectorAll('input, select, textarea').forEach(function(el) {
+    el.classList.add('scheda-field');
+    el.disabled = true;
+  });
 
   // Event delegation: un solo listener su scheda-body per tutti gli input
   if (!body._schedaInputBound) {
@@ -4445,9 +4442,9 @@ function _renderSchedaTab() {
     setTimeout(aggiornaCalcolatrice, 100);
   }
 
-  // Modifica/Salva solo per tab non interattive
-  var isInteractive = (tab === 'financials' || tab === 'commerciale');
-  _aggiornaSchedaEditBtn(isInteractive);
+
+  // Tutte le tab usano Modifica/Salva
+  _aggiornaSchedaEditBtn(false);
 
   var prevBtn = document.getElementById('scheda-btn-prev');
   var nextBtn = document.getElementById('scheda-btn-next');
@@ -4462,21 +4459,6 @@ function _renderSchedaTab() {
     } else {
       nextBtn.textContent = 'Avanti \u2192';
       nextBtn.setAttribute('onclick', 'schedaTabNext()');
-    }
-  }
-
-  // Per financials/commerciale: bottone Salva nel footer del popup
-  var existingSaveBtn = document.getElementById('scheda-btn-save-inline');
-  if (existingSaveBtn) existingSaveBtn.remove();
-  if (isInteractive) {
-    var footer = document.querySelector('#scheda-overlay .diagnosi-footer');
-    if (footer && nextBtn) {
-      var saveBtn = document.createElement('button');
-      saveBtn.id = 'scheda-btn-save-inline';
-      saveBtn.textContent = 'Salva';
-      saveBtn.style.cssText = 'background:var(--green);border:none;color:#fff;border-radius:8px;padding:8px 20px;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit';
-      saveBtn.setAttribute('onclick', tab === 'financials' ? 'salvaDaCalcolatrice()' : 'saveCommercialeForm()');
-      footer.insertBefore(saveBtn, nextBtn);
     }
   }
 
