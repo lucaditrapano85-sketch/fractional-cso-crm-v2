@@ -104,7 +104,7 @@ function apriDiagnosi() {
     p.targets = {};
     _diagRisposte = {};
     // Salva su DB in background
-    sb.from('prospects').update({ dims: {}, dims_answers: {}, targets: {} }).eq('id', p.id).catch(function(){});
+    try { sb.from('prospects').update({ dims: {}, dims_answers: {}, targets: {} }).eq('id', p.id); } catch(e) {}
   }
   _diagProspect = p;
   var settoreBase = FAMIGLIA_SETTORE[p.settore] || 'b2b_manifatturiero';
