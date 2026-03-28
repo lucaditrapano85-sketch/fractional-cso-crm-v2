@@ -679,6 +679,18 @@ function renderDashboard() {
   const hot=prospects.filter(p=>calcScore(p)>=70).length;
   const prop=prospects.filter(p=>p.stato==='proposta').length;
   const closed=prospects.filter(p=>p.stato==='chiuso').length;
+  // Metriche aggregate portafoglio
+  var fatTotale = 0, fatPotenziale = 0, scoreMedia = 0, conFatturato = 0;
+  prospects.forEach(function(p) {
+    if (p.fatturato_anno_1) { fatTotale += p.fatturato_anno_1; conFatturato++; }
+    var ic = _calcolaImpattoCumulativo(p);
+    if (ic && ic.fat12) fatPotenziale += ic.fat12[1] - (p.fatturato_anno_1 || 0);
+    scoreMedia += calcScore(p);
+  });
+  scoreMedia = total > 0 ? Math.round(scoreMedia / total) : 0;
+  var fmtK = function(v) { return v >= 1000000 ? (v/1000000).toFixed(1) + 'M' : Math.round(v/1000) + 'k'; };
+  var convRate = total > 0 ? Math.round(closed / total * 100) : 0;
+
   document.getElementById('kpi-grid').innerHTML = [
     { label: 'Prospect totali', val: total, cls: '', filter: 'tutti' },
     { label: 'Score alto (\u226570)', val: hot, cls: '', filter: 'score' },
@@ -687,7 +699,13 @@ function renderDashboard() {
   ].map(k => `<div class="kpi-card ${k.cls}" onclick="showView('prospects');setProspectFilter('${k.filter}')" style="cursor:pointer" title="Clicca per vedere i prospect">
     <div class="kpi-label">${k.label}</div>
     <div class="kpi-val">${k.val}</div>
-  </div>`).join('');
+  </div>`).join('') +
+  '<div style="grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:14px">' +
+    '<div class="kpi-card"><div class="kpi-label">Fatturato gestito</div><div class="kpi-val" style="font-size:22px">' + fmtK(fatTotale) + '\u20AC</div><div class="kpi-sub">' + conFatturato + ' prospect con fatturato</div></div>' +
+    '<div class="kpi-card"><div class="kpi-label">Potenziale crescita 12m</div><div class="kpi-val tl-green" style="font-size:22px">+' + fmtK(fatPotenziale) + '\u20AC</div><div class="kpi-sub">somma proiezioni portafoglio</div></div>' +
+    '<div class="kpi-card"><div class="kpi-label">Score medio</div><div class="kpi-val" style="font-size:22px">' + scoreMedia + '/100</div><div class="kpi-sub">media portafoglio</div></div>' +
+    '<div class="kpi-card"><div class="kpi-label">Tasso conversione</div><div class="kpi-val" style="font-size:22px">' + convRate + '%</div><div class="kpi-sub">chiusi / totali</div></div>' +
+  '</div>';
 
   // Alert scadenze in avvicinamento
   var alertHtml = '';
