@@ -4348,20 +4348,26 @@ function _renderSchedaTab() {
   } else {
     var cfg = FIN_FORMS[tab];
     if (!cfg) { body.innerHTML = ''; return; }
-    html = '<div style="padding:16px 20px"><div class="fin-section-label">' + cfg.title + '</div><div class="form-grid">';
-    cfg.fields.forEach(function(f) {
-      var val = p[f.id] !== null && p[f.id] !== undefined ? p[f.id] : '';
-      html += buildFinField(f, val);
-    });
-    if (cfg.bools && cfg.bools.length) {
-      cfg.bools.forEach(function(b) {
-        var checked = p[b.id] ? 'checked' : '';
-        html += '<div class="form-group full" style="flex-direction:row;align-items:center;gap:10px">' +
-          '<input type="checkbox" class="scheda-input" id="fin-' + b.id + '" ' + checked + ' style="width:16px;height:16px;accent-color:var(--gold)" disabled>' +
-          '<label style="font-size:13px;color:var(--white);text-transform:none;letter-spacing:0">' + b.label + '</label></div>';
+    if (cfg.extra === 'calcolatrice') {
+      html = '<div style="padding:16px 20px"><div class="fin-section-label">' + cfg.title + '</div>' + buildCalcolatricePL() + '</div>';
+    } else if (cfg.extra === 'commerciale_dinamico') {
+      html = '<div style="padding:16px 20px">' + buildCommercialeForm(p) + '</div>';
+    } else {
+      html = '<div style="padding:16px 20px"><div class="fin-section-label">' + cfg.title + '</div><div class="form-grid">';
+      cfg.fields.forEach(function(f) {
+        var val = p[f.id] !== null && p[f.id] !== undefined ? p[f.id] : '';
+        html += buildFinField(f, val);
       });
+      if (cfg.bools && cfg.bools.length) {
+        cfg.bools.forEach(function(b) {
+          var checked = p[b.id] ? 'checked' : '';
+          html += '<div class="form-group full" style="flex-direction:row;align-items:center;gap:10px">' +
+            '<input type="checkbox" class="scheda-input" id="fin-' + b.id + '" ' + checked + ' style="width:16px;height:16px;accent-color:var(--gold)" disabled>' +
+            '<label style="font-size:13px;color:var(--white);text-transform:none;letter-spacing:0">' + b.label + '</label></div>';
+        });
+      }
+      html += '</div></div>';
     }
-    html += '</div></div>';
   }
 
   body.innerHTML = html;
