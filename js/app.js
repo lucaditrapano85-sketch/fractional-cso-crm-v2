@@ -3402,28 +3402,33 @@ function _getDipendenze(settore, dimId) {
 }
 
 
-function _calcolaPenalita(settore, dimId, targets) {
-  const matrice = (MATRICE_DIPENDENZE_BY_SETTORE && MATRICE_DIPENDENZE_BY_SETTORE[settore])
-    ? MATRICE_DIPENDENZE_BY_SETTORE[settore]
-    : MATRICE_DIPENDENZE;
-  const dipendenze = matrice[dimId] || [];
-  if (dipendenze.length === 0) return 0;
+function _calcolaPenalita(settore, dimId, targets, dims) {
+  dims = dims || {};
+  // Usa il sistema di dipendenze pesato per settore
+  const dipendenze = _getDipendenze(settore, dimId);
+  if (!dipendenze || Object.keys(dipendenze).length === 0) return 0;
 
-  const targetDim = targets[dimId] || 1;
-  let gapTotale = 0;
+  // Livello effettivo = il maggiore tra stato attuale e target
+  const livelloDim = Math.max(targets[dimId] || 1, dims[dimId] || 1);
 
-  dipendenze.forEach(dep => {
-    const targetDep = targets[dep] || 1;
-    const gap = Math.max(0, targetDim - targetDep);
-    gapTotale += gap;
+  // Gap pesato: ogni dipendenza conta in proporzione al suo peso
+  let gapPesato = 0;
+  let pesoTotale = 0;
+
+  Object.entries(dipendenze).forEach(([dep, peso]) => {
+    const livelloDep = Math.max(targets[dep] || 1, dims[dep] || 1);
+    const gap = Math.max(0, livelloDim - livelloDep);
+    gapPesato += gap * peso;
+    pesoTotale += peso;
   });
 
-  const gapMedio = gapTotale / dipendenze.length;
+  if (pesoTotale === 0) return 0;
+  const gapMedioPesato = gapPesato / pesoTotale;
   const gapMax = 4;
 
   // Penalità esponenziale — gap piccoli impattano poco, gap grandi impattano molto
-  // Gap di 1 → penalità ~35%, gap di 2 → penalità ~65%, gap di 3 → penalità ~80%, gap di 4 → penalità ~85%
-  const penalita = 1 - Math.pow(1 - (gapMedio / gapMax), 1.5);
+  // gapMedioPesato 0.5 → ~10%, 1 → ~20%, 2 → ~45%, 3 → ~70%, 4 → ~85%
+  const penalita = 1 - Math.pow(1 - (gapMedioPesato / gapMax), 1.8);
 
   return Math.min(penalita, 0.85);
 }
@@ -3826,7 +3831,7 @@ function _calcolaImpattoCumulativo(p) {
   if (!usaOrganica) attive.forEach(id => {
     const cur = dims[id] || 0;
     const tgt = targets[id] || 0;
-    penalitaPerDim[id] = _calcolaPenalita(settore, id, targets);
+    penalitaPerDim[id] = _calcolaPenalita(settore, id, targets, dims);
     for (let step = cur; step < tgt; step++) {
       const c = _getCosto(settore, id, step, step+1);
       if (c) {
