@@ -4408,11 +4408,14 @@ function _renderSchedaTab() {
 
   body.innerHTML = html;
 
-  // Disable all inputs - Modifica button enables them
-  body.querySelectorAll('input, select, textarea').forEach(function(el) {
-    el.classList.add('scheda-field');
-    el.disabled = true;
-  });
+  // Financials e Commerciale sono sempre editabili (calcolatrice interattiva)
+  // Le altre tab partono disabilitate
+  if (tab !== 'financials' && tab !== 'commerciale') {
+    body.querySelectorAll('input, select, textarea').forEach(function(el) {
+      el.classList.add('scheda-field');
+      el.disabled = true;
+    });
+  }
 
   // Event delegation: un solo listener su scheda-body per tutti gli input
   if (!body._schedaInputBound) {
@@ -4436,6 +4439,10 @@ function _renderSchedaTab() {
     setTimeout(aggiornaCalcolatrice, 100);
   }
 
+  // Modifica/Salva solo per tab non interattive
+  var isInteractive = (tab === 'financials' || tab === 'commerciale');
+  _aggiornaSchedaEditBtn(isInteractive);
+
   var prevBtn = document.getElementById('scheda-btn-prev');
   var nextBtn = document.getElementById('scheda-btn-next');
   if (prevBtn) {
@@ -4452,9 +4459,6 @@ function _renderSchedaTab() {
     }
   }
 
-  // Modifica/Salva (not for financials/commerciale which have own save)
-  var isInteractive = false; // all tabs use Modifica/Salva pattern
-  _aggiornaSchedaEditBtn(isInteractive);
 }
 
 var _schedaEditMode = false;
@@ -5911,6 +5915,8 @@ function buildCalcolatricePL() {
       \x3cdiv style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px" id="calc-margini-grid">\x3c/div>
     \x3c/div>
 
+    \x3cdiv style="display:flex;justify-content:flex-end;margin-top:16px">\x3cbutton class="btn btn-primary" onclick="salvaDaCalcolatrice()">Salva dati finanziari\x3c/button>\x3c/div>
+
   \x3c/div>`;
 }
 
@@ -5951,6 +5957,24 @@ function aggiornaCalcolatrice() {
     var col = deltaPct >= 0 ? 'var(--green)' : 'var(--red)';
     deltaFatEl.innerHTML = '<span style="color:' + col + '">' + sign + deltaPct + '% vs anno precedente</span>';
   } else if (deltaFatEl) deltaFatEl.innerHTML = '';
+
+  // CDV: disabilita il campo non usato
+  var cdvPctEl = document.getElementById('calc-cdv-pct');
+  var cdvEurEl = document.getElementById('calc-cdv-eur');
+  if (cdvPctEl && cdvEurEl) {
+    if (cdvPctEl.value !== '' && cdvPctEl === document.activeElement) {
+      cdvEurEl.value = '';
+      cdvEurEl.style.opacity = '0.3';
+      cdvPctEl.style.opacity = '1';
+    } else if (cdvEurEl.value !== '' && cdvEurEl === document.activeElement) {
+      cdvPctEl.value = '';
+      cdvPctEl.style.opacity = '0.3';
+      cdvEurEl.style.opacity = '1';
+    } else {
+      cdvPctEl.style.opacity = '1';
+      cdvEurEl.style.opacity = '1';
+    }
+  }
 
   // Costo del venduto
   var cdvPct = parseFloat(document.getElementById('calc-cdv-pct')?.value);
