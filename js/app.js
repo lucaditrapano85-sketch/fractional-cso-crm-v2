@@ -4855,7 +4855,23 @@ function _buildGraficoTimeline(p) {
     // 1. CARD METRICHE
     '<div class="tl-section-label">Quadro economico</div>' +
     '<div class="tl-metric-cards">' +
-      '<div class="tl-mc"><div class="tl-mc-label">Fatturato attuale</div><div class="tl-mc-val">' + fmtF(fat) + '\u20AC</div><div class="tl-mc-sub">anno corrente</div></div>' +
+      (function() {
+        var snap = p.proiezione_snapshot;
+        var fatSub = 'anno corrente';
+        if (snap && snap.fatturato_base && snap.fatturato_base !== fat) {
+          var snapDate = new Date(snap.data).toLocaleDateString('it-IT', {month:'short', year:'numeric'});
+          var delta = fat - snap.fatturato_base;
+          var deltaPct = ((delta / snap.fatturato_base) * 100).toFixed(0);
+          var proiMin12 = snap.fat12 ? snap.fat12[0] : 0;
+          var proiMax12 = snap.fat12 ? snap.fat12[1] : 0;
+          var inRange = fat >= proiMin12 * 0.9 && fat <= proiMax12 * 1.1;
+          var sopra = fat > proiMax12 * 1.1;
+          var statusCol = sopra ? 'rgb(25,100,60)' : inRange ? 'rgba(150,110,30,0.8)' : 'rgba(170,50,40,0.8)';
+          var statusLabel = sopra ? '\u2191 Sopra le previsioni' : inRange ? '\u2248 In linea' : '\u2193 Sotto le previsioni';
+          fatSub = '<span style="color:' + statusCol + ';font-weight:600">' + (delta >= 0 ? '+' : '') + deltaPct + '% da ' + snapDate + '</span> \u00B7 <span style="color:' + statusCol + '">' + statusLabel + '</span>';
+        }
+        return '<div class="tl-mc"><div class="tl-mc-label">Fatturato attuale</div><div class="tl-mc-val">' + fmtF(fat) + '\u20AC</div><div class="tl-mc-sub">' + fatSub + '</div></div>';
+      })() +
       '<div class="tl-mc"><div class="tl-mc-label">Proiezione 12 mesi</div><div class="tl-mc-val tl-green">' + fmtF(fat12min) + '\u2013' + fmtF(fat12max) + '\u20AC</div><div class="tl-mc-sub">+' + pct12min + '\u2013' + pct12max + '%</div></div>' +
       '<div class="tl-mc" style="cursor:pointer" onclick="apriDettaglioCosti()"><div class="tl-mc-label">Investimento piano</div><div class="tl-mc-val tl-blue">' + costoLabel + '</div><div class="tl-mc-sub">costi fissi mensili · clicca per dettagli</div></div>' +
       '<div class="tl-mc" style="cursor:pointer" onclick="apriDettaglioRoi()"><div class="tl-mc-label">ROI stimato</div><div class="tl-mc-val tl-amber">' + roiStr + '</div><div class="tl-mc-sub">breakeven ' + breakevenStr + ' · clicca per dettagli</div></div>' +
@@ -5664,11 +5680,27 @@ async function saveTargets() {
     if (el) targets[d.id] = Math.min(5, Math.max(0, parseInt(el.value) || 0));
     if (scEl && scEl.value) scadenze[d.id] = scEl.value;
   });
-  const {error} = await sb.from('prospects').update({targets, target_scadenze: scadenze}).eq('id', currentId);
+  // Salva snapshot proiezione prima di aggiornare i target
+  const pTemp = {...p, targets: targets};
+  const icSnap = _calcolaImpattoCumulativo(pTemp);
+  const proiezioneSnapshot = icSnap ? {
+    data: new Date().toISOString(),
+    fatturato_base: p.fatturato_anno_1 || 0,
+    fat6: icSnap.fat6, fat12: icSnap.fat12, fat24: icSnap.fat24,
+    costoMensile: icSnap.costoMensileTot,
+    dims_partenza: {...(p.dims || {})},
+    targets: {...targets}
+  } : null;
+
+  const updateObj = {targets, target_scadenze: scadenze};
+  if (proiezioneSnapshot) updateObj.proiezione_snapshot = proiezioneSnapshot;
+
+  const {error} = await sb.from('prospects').update(updateObj).eq('id', currentId);
   if (error) { showToast('Errore salvataggio target', 'error'); return; }
   const i = prospects.findIndex(x => x.id === currentId);
   prospects[i].targets = targets;
   prospects[i].target_scadenze = scadenze;
+  if (proiezioneSnapshot) prospects[i].proiezione_snapshot = proiezioneSnapshot;
   // Salva snapshot score con i nuovi target
   await salvaScoreSnapshot(prospects[i], 'Target aggiornati',
     'Score target: ' + calcScoreTarget(prospects[i]));
