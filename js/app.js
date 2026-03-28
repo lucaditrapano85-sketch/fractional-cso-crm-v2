@@ -972,11 +972,8 @@ async function renderProspectDetail(id) {
     const v=p.dims?.[d.id]||0, pct=(v/5)*100;
     const t=p.targets?.[d.id];
     const col=pct>=60?'#4A9A6A':pct>=35?'#C9973A':'#C05040';
-    const _azDim = (AZIONI_TARGET_BY_SETTORE[p.settore || ''] || {})[d.id] || {};
-    const _curStep = String(Math.max(v, 1));
-    const desc = _azDim[_curStep] || '—';
-    const _tgtStep = t ? String(Math.max(t, 1)) : '';
-    const tgtDesc = t ? (_azDim[_tgtStep] || '—') : '';
+    const _curStep = Math.max(v, 1);
+    const desc = _getStepDesc(p.settore || '', d.id, _curStep);
     return `\x3cdiv class="dim-row" style="margin-bottom:10px">
       \x3cdiv class="dim-label" style="display:flex;align-items:center;margin-bottom:3px">${getDimLabel(p.settore, d.id)}\x3c/div>
       \x3cdiv style="display:flex;align-items:center;gap:8px">
@@ -2876,11 +2873,13 @@ function drawRadar(dims_vals, targets_vals, settore) {
 // Recupera l'azione predefinita per settore+dimensione+step
 function _getAzionePredefinita(settore, dimId, fromStep, toStep) {
   const chiave = String(toStep);
-  if (AZIONI_TARGET_BY_SETTORE[settore] && AZIONI_TARGET_BY_SETTORE[settore][dimId] && AZIONI_TARGET_BY_SETTORE[settore][dimId][chiave]) {
+  // 1. STEP_DETAIL_BY_SETTORE (fonte primaria)
+  const sd = (typeof STEP_DETAIL_BY_SETTORE !== 'undefined') ? STEP_DETAIL_BY_SETTORE : {};
+  const detail = sd[settore]?.[dimId]?.[chiave];
+  if (detail) return detail.cosa;
+  // 2. Fallback AZIONI_TARGET_BY_SETTORE (legacy)
+  if (AZIONI_TARGET_BY_SETTORE[settore]?.[dimId]?.[chiave]) {
     return AZIONI_TARGET_BY_SETTORE[settore][dimId][chiave];
-  }
-  if (AZIONI_TARGET_GENERIC[dimId] && AZIONI_TARGET_GENERIC[dimId][chiave]) {
-    return AZIONI_TARGET_GENERIC[dimId][chiave][0] || null;
   }
   return null;
 }
@@ -3761,7 +3760,11 @@ window._calcolaImpattoUnitario = _calcolaImpattoUnitario;
 
 
 function getStepDetail(settore, dimId, stepKey) {
-  return STEP_DETAIL_BY_SETTORE?.[settore]?.[dimId]?.[stepKey] || null;
+  const singleKey = String(stepKey).includes('-') ? String(stepKey).split('-')[1] : String(stepKey);
+  const rangeKey = String(stepKey).includes('-') ? String(stepKey) : (parseInt(stepKey) - 1) + '-' + stepKey;
+  return STEP_DETAIL_BY_SETTORE?.[settore]?.[dimId]?.[singleKey]
+      || STEP_DETAIL_BY_SETTORE?.[settore]?.[dimId]?.[rangeKey]
+      || null;
 }
 window.getStepDetail = getStepDetail;
 
@@ -4116,8 +4119,8 @@ function _buildGraficoTimeline(p) {
       const cur = dims[d] || 1;
       const tgt = targets[d] || cur;
       const stepKey = String(cur + 1);
-      const desc = (AZIONI_TARGET_BY_SETTORE?.[settore]?.[d]?.[stepKey] || '').split('.')[0];
       const detail = typeof getStepDetail === 'function' ? getStepDetail(settore, d, stepKey) : null;
+      const desc = detail ? detail.cosa : '';
       const costoStr = detail ? (detail.costo_mensile > 0 ? '\u2248' + detail.costo_mensile.toLocaleString('it-IT') + '\u20AC/mese' : 'Nessun costo') + ' \u00B7 Operativo in ~' + detail.tempo_mesi + ' ' + (detail.tempo_mesi === 1 ? 'mese' : 'mesi') : '';
       const colors = {vendite:'#378ADD',pipeline:'#1CB889',ecommerce:'#BA7517',marketing:'#BA7517',team:'#378ADD',processi:'#888780',ricavi:'#1CB889',sitoweb:'#888780'};
       const col = colors[d] || '#888780';
@@ -4581,6 +4584,13 @@ async function salvaAzioneCustom(stepKey) {
   showToast('Azione aggiunta!');
 }
 
+function _getStepDesc(settore, dimId, stepNum) {
+  const sd = (typeof STEP_DETAIL_BY_SETTORE !== 'undefined') ? STEP_DETAIL_BY_SETTORE : {};
+  const detail = sd[settore]?.[dimId]?.[String(stepNum)];
+  if (detail) return detail.chi + ' — ' + detail.cosa;
+  return '—';
+}
+
 function renderTargetEditor(p) {
   const container = document.getElementById('target-editor-content');
   if (container) container.innerHTML = '';
@@ -4596,13 +4606,10 @@ function renderTargetEditor(p) {
     const scad = scadenze[d.id] || '';
     const curCol = cur >= 4 ? 'var(--green)' : cur >= 3 ? 'var(--gold)' : 'var(--red)';
     const tgtCol = tgt >= 4 ? 'var(--green)' : tgt >= 3 ? 'var(--gold)' : 'var(--red)';
-    const azioniDim = (AZIONI_TARGET_BY_SETTORE[settore] || {})[d.id] || {};
     const curLvl = Math.max(cur, 1);
     const tgtLvl = Math.max(tgt, 1);
-    const curStepKey = String(Math.min(curLvl, 5));
-    const curDesc = azioniDim[curStepKey] || '—';
-    const tgtStepKey = String(Math.min(tgtLvl, 5));
-    const tgtDesc = azioniDim[tgtStepKey] || '—';
+    const curDesc = _getStepDesc(settore, d.id, Math.min(curLvl, 5));
+    const tgtDesc = _getStepDesc(settore, d.id, Math.min(tgtLvl, 5));
     const subObiettiviHtml = '';
     // Warning tetto strutturale
     const tettoSettore = (TETTO_BY_SETTORE[settore] || {})[d.id] || 5;
@@ -4695,10 +4702,8 @@ function updateTargetDesc(dimId) {
   const tgt = parseInt(el.value) || 1;
   const p = prospects.find(x => x.id === currentId);
   const settore = p?.settore || '';
-  const azioniDim = (AZIONI_TARGET_BY_SETTORE[settore] || {})[dimId] || {};
   const tgtLvl = Math.max(tgt, 1);
-  const tgtStepKey = String(Math.min(tgtLvl, 5));
-  const desc = azioniDim[tgtStepKey] || '—';
+  const desc = _getStepDesc(settore, dimId, Math.min(tgtLvl, 5));
   const col = tgt >= 4 ? 'var(--green)' : tgt >= 3 ? 'var(--gold)' : 'var(--red)';
   descEl.textContent = desc;
   descEl.style.color = col;
