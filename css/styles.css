@@ -567,10 +567,10 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 .bench-val-ok{color:#C9973A}
 .bench-val-low{color:#C05040}
 .bench-badge{font-size:11px;font-weight:600;padding:2px 7px;border-radius:20px}
-.bench-top{background:#1a3a2a;color:#4A9A6A}
-.bench-ok{background:#2A2010;color:#C9973A}
-.bench-low{background:#2a1a1a;color:#C05040}
-.bench-nd{background:var(--bg4);color:var(--gray2)}
+.bench-top{background:rgba(40,130,80,0.1);color:rgba(40,130,80,0.8)}
+.bench-ok{background:rgba(160,120,30,0.1);color:rgba(160,120,30,0.8)}
+.bench-low{background:rgba(180,60,60,0.1);color:rgba(180,60,60,0.8)}
+.bench-nd{background:rgba(0,0,0,0.04);color:var(--gray2)}
 .bench-row-top{background:rgba(74,154,106,.05)}
 .bench-row-ok{background:rgba(201,151,58,.05)}
 .bench-row-low{background:rgba(192,80,64,.05)}

@@ -95,9 +95,9 @@ async function salvaScoreSnapshot(p, evento, nota) {
 }
 
 function scoreColor(s) {
-  if(s>=70) return {text:'#4A9A6A',bg:'#1A2E22',border:'#4A9A6A',label:'Buona base'};
-  if(s>=45) return {text:'#C9973A',bg:'#2A2010',border:'#C9973A',label:'Da sviluppare'};
-  return {text:'#C05040',bg:'#2A1510',border:'#C05040',label:'Critica'};
+  if(s>=70) return {text:'rgba(40,130,80,0.8)',bg:'rgba(40,130,80,0.08)',border:'rgba(40,130,80,0.3)',label:'Buona base'};
+  if(s>=45) return {text:'rgba(160,120,30,0.8)',bg:'rgba(160,120,30,0.08)',border:'rgba(160,120,30,0.3)',label:'Da sviluppare'};
+  return {text:'rgba(180,60,60,0.8)',bg:'rgba(180,60,60,0.08)',border:'rgba(180,60,60,0.3)',label:'Critica'};
 }
 
 function showToast(msg, type='success') {
