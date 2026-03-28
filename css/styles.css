@@ -8,21 +8,21 @@
   --white:     #2c2c3a;
   --gray:      #6b6b80;
   --gray2:     #a0a0b4;
-  --gold:      rgba(140,110,50,0.7);
-  --gold2:     rgba(120,90,40,0.6);
+  --gold:      rgba(140,110,50,0.35);
+  --gold2:     rgba(120,90,40,0.3);
   --gold-dim:  rgba(140,110,50,0.06);
-  --green:     rgba(40,130,80,0.7);
+  --green:     rgba(40,130,80,0.35);
   --green-bg:  rgba(40,130,80,0.05);
   --amber-bg:  rgba(140,110,50,0.05);
-  --red:       rgba(180,60,60,0.7);
+  --red:       rgba(180,60,60,0.35);
   --red-bg:    rgba(180,60,60,0.04);
-  --blue:      rgba(70,100,200,0.7);
+  --blue:      rgba(70,100,200,0.35);
   --blue-bg:   rgba(70,100,200,0.05);
   --r:         16px;
   --rs:        10px;
   --text:      #2c2c3a;
   --text-muted:#6b6b80;
-  --accent:    rgba(70,100,200,0.7);
+  --accent:    rgba(70,100,200,0.35);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:linear-gradient(145deg,#d8dbe2 0%,#cfd2da 50%,#d8dbe2 100%);color:var(--white);min-height:100vh;-webkit-font-smoothing:antialiased}
@@ -573,9 +573,9 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 .bench-val-ok{color:#C9973A}
 .bench-val-low{color:#C05040}
 .bench-badge{font-size:11px;font-weight:600;padding:2px 7px;border-radius:20px}
-.bench-top{background:rgba(40,130,80,0.1);color:rgba(40,130,80,0.8)}
-.bench-ok{background:rgba(160,120,30,0.1);color:rgba(160,120,30,0.8)}
-.bench-low{background:rgba(180,60,60,0.1);color:rgba(180,60,60,0.8)}
+.bench-top{background:rgba(40,130,80,0.1);color:rgba(40,130,80,0.4)}
+.bench-ok{background:rgba(160,120,30,0.1);color:rgba(160,120,30,0.4)}
+.bench-low{background:rgba(180,60,60,0.1);color:rgba(180,60,60,0.4)}
 .bench-nd{background:rgba(0,0,0,0.04);color:var(--gray2)}
 .bench-row-top{background:rgba(74,154,106,.05)}
 .bench-row-ok{background:rgba(201,151,58,.05)}

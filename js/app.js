@@ -95,9 +95,9 @@ async function salvaScoreSnapshot(p, evento, nota) {
 }
 
 function scoreColor(s) {
-  if(s>=70) return {text:'rgba(40,130,80,0.8)',bg:'rgba(40,130,80,0.08)',border:'rgba(40,130,80,0.3)',label:'Buona base'};
-  if(s>=45) return {text:'rgba(160,120,30,0.8)',bg:'rgba(160,120,30,0.08)',border:'rgba(160,120,30,0.3)',label:'Da sviluppare'};
-  return {text:'rgba(180,60,60,0.8)',bg:'rgba(180,60,60,0.08)',border:'rgba(180,60,60,0.3)',label:'Critica'};
+  if(s>=70) return {text:'rgba(40,130,80,0.4)',bg:'rgba(40,130,80,0.08)',border:'rgba(40,130,80,0.3)',label:'Buona base'};
+  if(s>=45) return {text:'rgba(160,120,30,0.4)',bg:'rgba(160,120,30,0.08)',border:'rgba(160,120,30,0.3)',label:'Da sviluppare'};
+  return {text:'rgba(180,60,60,0.4)',bg:'rgba(180,60,60,0.08)',border:'rgba(180,60,60,0.3)',label:'Critica'};
 }
 
 function showToast(msg, type='success') {
@@ -971,7 +971,7 @@ async function renderProspectDetail(id) {
   document.getElementById('det-dims').innerHTML=DIMS.map(d=>{
     const v=p.dims?.[d.id]||0, pct=(v/5)*100;
     const t=p.targets?.[d.id];
-    const col=pct>=60?'rgba(50,130,80,0.7)':pct>=35?'rgba(160,120,40,0.7)':'rgba(160,60,50,0.7)';
+    const col=pct>=60?'rgba(50,130,80,0.35)':pct>=35?'rgba(160,120,40,0.35)':'rgba(160,60,50,0.35)';
     const _curStep = Math.max(v, 1);
     const desc = _getStepDesc(p.settore || '', d.id, _curStep);
     return `\x3cdiv class="dim-row" style="margin-bottom:10px">
@@ -1127,7 +1127,7 @@ async function renderProspectDetail(id) {
     document.getElementById('call-log').innerHTML='\x3cdiv style="color:var(--gray);font-size:13px;padding:8px 0">Nessuna call registrata. Premi "+ Call" per aggiungere la prima nota.\x3c/div>';
   } else {
     document.getElementById('call-log').innerHTML=currentCalls.map(c=>{
-      const ec=c.esito==='positivo'?'rgba(50,130,80,0.7)':c.esito==='negativo'?'rgba(160,60,50,0.7)':'rgba(160,120,40,0.7)';
+      const ec=c.esito==='positivo'?'rgba(50,130,80,0.35)':c.esito==='negativo'?'rgba(160,60,50,0.35)':'rgba(160,120,40,0.35)';
       const el=c.esito==='positivo'?'Positivo':c.esito==='negativo'?'Negativo':'Neutro';
       return `\x3cdiv class="call-item">
         \x3cdiv style="display:flex;align-items:center;gap:10px">
@@ -1525,7 +1525,7 @@ function _buildReportHTML(p) {
           const v = p.dims?.[d.id] || 0;
           const tgt = targets[d.id] || 0;
           const pct = v > 0 ? (v/5)*100 : 0;
-          const col = v >= 4 ? 'rgba(50,130,80,0.7)' : v >= 3 ? 'rgba(160,120,40,0.7)' : v >= 1 ? 'rgba(160,60,50,0.7)' : '#CCC';
+          const col = v >= 4 ? 'rgba(50,130,80,0.35)' : v >= 3 ? 'rgba(160,120,40,0.35)' : v >= 1 ? 'rgba(160,60,50,0.35)' : '#CCC';
           const hasTgt = tgt > v;
           return `<div class="rp-dim-row" style="margin-bottom:10px">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
@@ -1544,7 +1544,7 @@ function _buildReportHTML(p) {
         <div class="rp-section-title">Aree critiche prioritarie</div>
         ${crits.map((d, i) => {
           const v = p.dims?.[d.id] || 1;
-          const colors = ['rgba(160,60,50,0.7)','rgba(160,120,40,0.7)','#8A6AC9'];
+          const colors = ['rgba(160,60,50,0.35)','rgba(160,120,40,0.35)','#8A6AC9'];
           return `<div class="rp-crit" style="border-left-color:${colors[i]};margin-bottom:10px">
             <div class="rp-crit-title">${getDimLabel(p.settore, d.id)} <span style="font-weight:400;color:#999;font-size:11px">livello ${v}/5</span></div>
             <div class="rp-crit-text">${DIM_DESC[d.id]?.[v-1] || ''}</div>
@@ -1566,7 +1566,7 @@ function _buildReportHTML(p) {
       <div style="border:1px solid #E8E4DC;border-radius:8px;overflow:hidden">
         ${priorityActions.map((a, i) => `
         <div style="display:flex;align-items:flex-start;gap:14px;padding:12px 16px;${i < priorityActions.length-1 ? 'border-bottom:1px solid #E8E4DC;' : ''}background:${i === 0 ? '#FDF8F0' : '#FAFAF7'}">
-          <div style="width:28px;height:28px;border-radius:50%;background:${i === 0 ? 'rgba(150,110,35,0.7)' : '#E8E4DC'};color:${i === 0 ? '#fff' : '#888'};font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">${i+1}</div>
+          <div style="width:28px;height:28px;border-radius:50%;background:${i === 0 ? 'rgba(150,110,35,0.35)' : '#E8E4DC'};color:${i === 0 ? '#fff' : '#888'};font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">${i+1}</div>
           <div style="flex:1">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;flex-wrap:wrap">
               <div style="font-size:10px;color:#B8842E;letter-spacing:.06em;text-transform:uppercase;font-weight:600">${a.dim} &nbsp;${a.cur}/5 → ${a.cur+1}/5</div>
@@ -3093,13 +3093,13 @@ function drawRadar(dims_vals, targets_vals, settore) {
       const v = targets_vals[d.id] || 0;
       return pt(v, angles[i]).join(',');
     }).join(' ');
-    html += `\x3cpolygon points="${tpts}" fill="rgba(201,151,58,.08)" stroke="rgba(160,120,40,0.7)" stroke-width="1.5" stroke-dasharray="5,3"/>`;
+    html += `\x3cpolygon points="${tpts}" fill="rgba(201,151,58,.08)" stroke="rgba(160,120,40,0.35)" stroke-width="1.5" stroke-dasharray="5,3"/>`;
     // Target dots
     DIMS.forEach((d, i) => {
       const v = targets_vals[d.id] || 0;
       if (!v) return;
       const [x, y] = pt(v, angles[i]);
-      html += `\x3ccircle cx="${x}" cy="${y}" r="4" fill="rgba(160,120,40,0.7)" stroke="var(--bg2)" stroke-width="1.5"/>`;
+      html += `\x3ccircle cx="${x}" cy="${y}" r="4" fill="rgba(160,120,40,0.35)" stroke="var(--bg2)" stroke-width="1.5"/>`;
     });
   }
 
@@ -3108,12 +3108,12 @@ function drawRadar(dims_vals, targets_vals, settore) {
     const v = dims_vals[d.id] || 0;
     return pt(v, angles[i]).join(',');
   }).join(' ');
-  html += `\x3cpolygon points="${cpts}" fill="rgba(74,154,106,.25)" stroke="rgba(50,130,80,0.7)" stroke-width="2"/>`;
+  html += `\x3cpolygon points="${cpts}" fill="rgba(74,154,106,.25)" stroke="rgba(50,130,80,0.35)" stroke-width="2"/>`;
   // Current dots
   DIMS.forEach((d, i) => {
     const v = dims_vals[d.id] || 0;
     const [x, y] = pt(v, angles[i]);
-    html += `\x3ccircle cx="${x}" cy="${y}" r="4" fill="rgba(50,130,80,0.7)" stroke="var(--bg2)" stroke-width="1.5"/>`;
+    html += `\x3ccircle cx="${x}" cy="${y}" r="4" fill="rgba(50,130,80,0.35)" stroke="var(--bg2)" stroke-width="1.5"/>`;
   });
 
   // Labels ? split long labels on 2 lines, font-size 8
@@ -4653,7 +4653,7 @@ function apriDettaglioRoi() {
     var deltaMax = o.fat[1] - fat;
     var roiMin = o.costo > 0 ? (deltaMin / o.costo).toFixed(1) : '\u2014';
     var roiMax = o.costo > 0 ? (deltaMax / o.costo).toFixed(1) : '\u2014';
-    var roiCol = roiMax >= 1.5 ? '#1CB889' : roiMax >= 1 ? 'rgba(160,120,40,0.7)' : 'rgba(160,60,50,0.7)';
+    var roiCol = roiMax >= 1.5 ? '#1CB889' : roiMax >= 1 ? 'rgba(160,120,40,0.35)' : 'rgba(160,60,50,0.35)';
     return '<div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr 80px;gap:8px;padding:10px 0;border-bottom:1px solid var(--border);align-items:center">' +
       '<div style="font-size:12px;font-weight:600;color:var(--white)">' + o.label + '</div>' +
       '<div style="text-align:center"><div style="font-size:11px;color:var(--gray)">Fatturato</div><div style="font-size:12px;color:var(--white)">' + fmtF(o.fat[0]) + '\u2013' + fmtF(o.fat[1]) + '\u20AC</div></div>' +
@@ -4779,10 +4779,10 @@ function _buildGraficoTimeline(p) {
       var entries = Object.entries(penDim).filter(function(e){ return e[1] > 0.05; }).sort(function(a,b){ return b[1]-a[1]; });
       if (entries.length === 0) return '';
       var media = entries.reduce(function(s,e){ return s+e[1]; }, 0) / entries.length;
-      var mediaCol = media >= 0.40 ? 'rgba(160,60,50,0.7)' : media >= 0.20 ? 'rgba(160,120,40,0.7)' : 'rgba(50,130,80,0.7)';
+      var mediaCol = media >= 0.40 ? 'rgba(160,60,50,0.35)' : media >= 0.20 ? 'rgba(160,120,40,0.35)' : 'rgba(50,130,80,0.35)';
       var rows = entries.map(function(e) {
         var id = e[0]; var pct = Math.round(e[1]*100);
-        var col = pct >= 40 ? 'rgba(160,60,50,0.7)' : pct >= 20 ? 'rgba(160,120,40,0.7)' : 'rgba(160,120,40,0.7)';
+        var col = pct >= 40 ? 'rgba(160,60,50,0.35)' : pct >= 20 ? 'rgba(160,120,40,0.35)' : 'rgba(160,120,40,0.35)';
         var livDim = Math.max((targets[id]||1), (dims[id]||1));
         // Trova le dipendenze basse e suggerisci il livello target
         var deps = _getDipendenze(settore, id);
@@ -5195,7 +5195,7 @@ function _buildCronistoria(p) {
     return dt.toLocaleDateString('it-IT', {day:'2-digit', month:'short', year:'numeric'}) +
            ' ' + dt.toLocaleTimeString('it-IT', {hour:'2-digit', minute:'2-digit'});
   };
-  const scoreCol = (s) => s >= 70 ? 'rgba(40,110,45,0.7)' : s >= 45 ? 'rgba(150,110,35,0.7)' : 'rgba(160,35,35,0.7)';
+  const scoreCol = (s) => s >= 70 ? 'rgba(40,110,45,0.35)' : s >= 45 ? 'rgba(150,110,35,0.35)' : 'rgba(160,35,35,0.35)';
 
   const scrollHint = history.length > 4
     ? '<div style="font-size:10px;color:var(--text-muted);text-align:right;margin-bottom:4px;">\u2195 scorri per vedere tutti gli aggiornamenti</div>'
