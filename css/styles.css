@@ -721,7 +721,7 @@ label{color:var(--gray2)}
 .modal{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r)}
 .modal-title{color:var(--text)}
 .modal-footer{border-top:1px solid var(--border)}
-.target-input{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);color:var(--text)}
+.target-input{background:rgba(255,255,255,0.6);border:1px solid rgba(0,0,0,0.12);border-radius:var(--rs);color:var(--text);color-scheme:light;-webkit-appearance:auto;appearance:auto}
 #radar-score-box{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r)}
 .prospect-kanban-card{background:var(--bg2);border:1px solid var(--border)}
 .prospect-kanban-card:hover{border-color:var(--border2);box-shadow:0 4px 12px rgba(0,0,0,0.3)}
