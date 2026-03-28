@@ -4465,6 +4465,21 @@ function _renderSchedaTab() {
     }
   }
 
+  // Per financials/commerciale: bottone Salva nel footer del popup
+  var existingSaveBtn = document.getElementById('scheda-btn-save-inline');
+  if (existingSaveBtn) existingSaveBtn.remove();
+  if (isInteractive) {
+    var footer = document.querySelector('#scheda-overlay .diagnosi-footer');
+    if (footer && nextBtn) {
+      var saveBtn = document.createElement('button');
+      saveBtn.id = 'scheda-btn-save-inline';
+      saveBtn.textContent = 'Salva';
+      saveBtn.style.cssText = 'background:var(--green);border:none;color:#fff;border-radius:8px;padding:8px 20px;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit';
+      saveBtn.setAttribute('onclick', tab === 'financials' ? 'salvaDaCalcolatrice()' : 'saveCommercialeForm()');
+      footer.insertBefore(saveBtn, nextBtn);
+    }
+  }
+
 }
 
 var _schedaEditMode = false;
@@ -5975,15 +5990,7 @@ function mountCalcolatrice(container) {
   t7.appendChild(resRow('= Utile Netto', 'c-res-utile', true));
   wrap.appendChild(t7);
 
-  // BOTTONE SALVA
-  var btnDiv = document.createElement('div');
-  btnDiv.style.cssText = 'display:flex;justify-content:flex-end;margin-top:16px;gap:10px';
-  var btnSave = document.createElement('div');
-  btnSave.textContent = 'Salva dati finanziari';
-  btnSave.style.cssText = 'background:var(--green);color:#fff;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;user-select:none';
-  btnSave.onmousedown = function() { salvaDaCalcolatrice(); };
-  btnDiv.appendChild(btnSave);
-  wrap.appendChild(btnDiv);
+  // Bottone Salva è nel footer del popup
 
   container.appendChild(wrap);
 
