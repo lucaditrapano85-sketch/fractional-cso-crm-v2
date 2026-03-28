@@ -375,7 +375,7 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 .status-kpi-count{font-size:26px;font-family:'DM Serif Display',serif;color:var(--white);line-height:1}
 .status-kpi-fat{font-size:11px;color:var(--gray);margin-top:4px}
 .status-kpi-score{font-size:11px;margin-top:3px}
-.pipe-col-scroll{max-height:420px;overflow-y:auto;padding-right:2px}
+.pipe-col-scroll{max-height:190px;overflow-y:auto;padding-right:4px}
 .pipe-col-scroll::-webkit-scrollbar{width:3px}
 .pipe-col-scroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 
