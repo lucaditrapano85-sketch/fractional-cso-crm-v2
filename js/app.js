@@ -2750,6 +2750,50 @@ var KPI_BY_SETTORE = {
   ],
 };
 
+function renderExtraTab(p) {
+  var container = document.getElementById('fin-extra-content');
+  if (!container) return;
+  var cfg = FIN_FORMS['extra'];
+  if (!cfg) return;
+  var html = '<div style="padding:16px 20px"><div class="fin-section-label">' + cfg.title + '</div><div class="form-grid">';
+  cfg.fields.forEach(function(f) {
+    var val = p[f.id] !== null && p[f.id] !== undefined ? p[f.id] : '';
+    html += buildFinField(f, val);
+  });
+  if (cfg.bools && cfg.bools.length) {
+    cfg.bools.forEach(function(b) {
+      var checked = p[b.id] ? 'checked' : '';
+      html += '<div class="form-group full" style="flex-direction:row;align-items:center;gap:10px">' +
+        '<input type="checkbox" id="fin-' + b.id + '" ' + checked + ' style="width:16px;height:16px;accent-color:var(--gold)">' +
+        '<label style="font-size:13px;color:var(--white);text-transform:none;letter-spacing:0">' + b.label + '</label></div>';
+    });
+  }
+  html += '</div>';
+  html += '<div style="margin-top:16px"><button class="btn btn-primary" onclick="saveExtraTab()">Salva</button></div></div>';
+  container.innerHTML = html;
+}
+
+async function saveExtraTab() {
+  var p = prospects.find(function(x) { return x.id === currentId; });
+  if (!p) return;
+  var cfg = FIN_FORMS['extra'];
+  var updates = {};
+  cfg.fields.forEach(function(f) {
+    var el = document.getElementById('fin-' + f.id);
+    if (!el) return;
+    var val = el.value.trim();
+    if (f.fmt === 'euro') updates[f.id] = val !== '' ? parseFloat(val) : null;
+    else updates[f.id] = val !== '' ? val : null;
+  });
+  cfg.bools.forEach(function(b) {
+    var el = document.getElementById('fin-' + b.id);
+    if (el) updates[b.id] = el.checked;
+  });
+  Object.assign(p, updates);
+  await sb.from('prospects').update(updates).eq('id', p.id);
+  showToast('Patrimonio salvato');
+}
+
 function renderKpiTab(p) {
   var container = document.getElementById('fin-kpi-content');
   if (!container) return;
@@ -4268,7 +4312,7 @@ function _calcolaImpattoCumulativo(p) {
 
 
 // ── SCHEDA FINANZIARIA OVERLAY ─────────────────────────────────────
-var _schedaTabs = ['struttura','financials','commerciale','strategico','kpi'];
+var _schedaTabs = ['struttura','financials','commerciale','strategico','kpi','extra'];
 var _schedaTabIdx = 0;
 
 function apriSchedaFinanziaria(tab) {
@@ -4279,6 +4323,7 @@ function apriSchedaFinanziaria(tab) {
   renderCommercialeData(p);
   renderStrategico(p);
   renderKpiTab(p);
+  renderExtraTab(p);
   _schedaTabIdx = tab ? _schedaTabs.indexOf(tab) : 0;
   if (_schedaTabIdx < 0) _schedaTabIdx = 0;
   _renderSchedaTab();
