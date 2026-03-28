@@ -66,10 +66,10 @@ h1,h2,h3{font-family:'DM Serif Display',serif;font-weight:400}
 .section-title{font-size:13px;font-weight:600;color:var(--gray);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
 .pipeline-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:28px;perspective:800px}
 .pipe-col{
-  background:linear-gradient(145deg, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0.35) 50%, rgba(255,255,255,0.15) 100%);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border:1px solid rgba(0,0,0,0.06);
+  background:linear-gradient(165deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.25) 40%, rgba(240,242,248,0.15) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border:1px solid rgba(255,255,255,0.45);
   border-top:1px solid rgba(255,255,255,0.8);
   border-left:1px solid rgba(255,255,255,0.6);
   border-radius:var(--r);
@@ -136,12 +136,14 @@ h1,h2,h3{font-family:'DM Serif Display',serif;font-weight:400}
 .btn-danger:hover{background:var(--red-bg)}
 .det-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px}
 .card{
-  background:linear-gradient(145deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0.15) 100%);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border:1px solid rgba(0,0,0,0.05);
+  background:linear-gradient(165deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.25) 40%, rgba(240,242,248,0.15) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border:1px solid rgba(255,255,255,0.45);
   border-top:1px solid rgba(255,255,255,0.7);
-  border-left:1px solid rgba(255,255,255,0.5);
+  border-left:1px solid rgba(255,255,255,0.6);
+  border-bottom:1px solid rgba(0,0,0,0.04);
+  border-right:1px solid rgba(0,0,0,0.03);
   border-radius:var(--r);
   padding:20px;
   box-shadow:
@@ -388,9 +390,11 @@ input[type=range]{flex:1;accent-color:var(--gold)}
   background:linear-gradient(145deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0.15) 100%);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border:1px solid rgba(0,0,0,0.05);
+  border:1px solid rgba(255,255,255,0.45);
   border-top:1px solid rgba(255,255,255,0.7);
-  border-left:1px solid rgba(255,255,255,0.5);
+  border-left:1px solid rgba(255,255,255,0.6);
+  border-bottom:1px solid rgba(0,0,0,0.04);
+  border-right:1px solid rgba(0,0,0,0.03);
   border-radius:var(--r);
   padding:20px;
   margin-top:0;
@@ -402,12 +406,14 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 
 .status-summary{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px;perspective:800px}
 .status-kpi{
-  background:linear-gradient(145deg, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0.35) 50%, rgba(255,255,255,0.15) 100%);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border:1px solid rgba(0,0,0,0.06);
+  background:linear-gradient(165deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.25) 40%, rgba(240,242,248,0.15) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border:1px solid rgba(255,255,255,0.45);
   border-top:3px solid transparent;
   border-left:1px solid rgba(255,255,255,0.6);
+  border-bottom:1px solid rgba(0,0,0,0.04);
+  border-right:1px solid rgba(0,0,0,0.03);
   border-radius:var(--r);
   padding:14px 16px;
   box-shadow:
@@ -645,7 +651,7 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 
 /* ── LIGHT GLASS OVERRIDES ─────────────────────────── */
 body{background:linear-gradient(145deg,#d8dbe2 0%,#cfd2da 50%,#d8dbe2 100%);color:var(--text)}
-.sidebar{background:rgba(255,255,255,0.7);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-right:1px solid rgba(0,0,0,0.06)}
+.sidebar{background:rgba(255,255,255,0.35);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-right:1px solid rgba(255,255,255,0.3)}
 .sidebar-logo .wordmark{color:var(--gold)}
 .sidebar-logo .sub{color:var(--gold)}
 .nav-item{color:var(--white);border-radius:7px}
@@ -653,15 +659,18 @@ body{background:linear-gradient(145deg,#d8dbe2 0%,#cfd2da 50%,#d8dbe2 100%);colo
 .nav-item.active{background:var(--amber-bg);color:var(--gold);border-left:2px solid var(--gold)}
 .main,.view{background:transparent}
 .card,.radar-card{
-  background:linear-gradient(145deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0.15) 100%);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border:1px solid rgba(0,0,0,0.05);
+  background:linear-gradient(165deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.25) 40%, rgba(240,242,248,0.15) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border:1px solid rgba(255,255,255,0.45);
   border-top:1px solid rgba(255,255,255,0.7);
+  border-left:1px solid rgba(255,255,255,0.6);
+  border-bottom:1px solid rgba(0,0,0,0.04);
+  border-right:1px solid rgba(0,0,0,0.03);
   border-radius:var(--r);
 }
 .card-title{color:var(--gray2);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px}
-.det-header{background:linear-gradient(145deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.25) 50%, rgba(255,255,255,0.15) 100%);border-bottom:none}
+.det-header{background:linear-gradient(165deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.25) 40%, rgba(240,242,248,0.15) 100%);border-bottom:none}
 .kpi-grid{background:transparent;border-bottom:none;perspective:800px}
 .kpi-card{
   background:linear-gradient(165deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.25) 40%, rgba(240,242,248,0.15) 100%);
