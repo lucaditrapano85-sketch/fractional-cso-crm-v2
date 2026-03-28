@@ -62,7 +62,7 @@ h1,h2,h3{font-family:'DM Serif Display',serif;font-weight:400}
 .kpi-val{font-size:28px;font-family:'DM Serif Display',serif;color:var(--white);margin-top:4px}
 .kpi-sub{font-size:11px;color:var(--gray);margin-top:4px}
 .kpi-card.gold{border-color:rgba(255,255,255,0.6);border-left:1px solid rgba(255,255,255,0.8)}
-.kpi-card.gold .kpi-val{color:var(--gold)}
+.kpi-card.gold .kpi-val{color:var(--white)}
 .section-title{font-size:13px;font-weight:600;color:var(--gray);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
 .pipeline-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:28px;perspective:800px}
 .pipe-col{

@@ -681,7 +681,7 @@ function renderDashboard() {
   const closed=prospects.filter(p=>p.stato==='chiuso').length;
   document.getElementById('kpi-grid').innerHTML = [
     { label: 'Prospect totali', val: total, cls: '', filter: 'tutti' },
-    { label: 'Score alto (≥70)', val: hot, cls: 'gold', filter: 'score' },
+    { label: 'Score alto (\u226570)', val: hot, cls: '', filter: 'score' },
     { label: 'In proposta', val: prop, cls: '', filter: 'proposta' },
     { label: 'Chiusi', val: closed, cls: '', filter: 'chiuso' },
   ].map(k => `<div class="kpi-card ${k.cls}" onclick="showView('prospects');setProspectFilter('${k.filter}')" style="cursor:pointer" title="Clicca per vedere i prospect">
