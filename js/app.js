@@ -4069,7 +4069,8 @@ function _calcolaImpattoCumulativo(p) {
   crescitaOrg = Math.max(crescitaOrg, crescitaOrgConTarget);
   let isSuggerito = false;
   let usaOrganica = false;
-  if (attive.length === 0) { isSuggerito = true; usaOrganica = true; }
+  if (attive.length === 0 && completate.length === 0) { isSuggerito = true; usaOrganica = true; }
+  if (attive.length === 0 && completate.length > 0) { usaOrganica = false; }
   const attive2 = DIMS_IDS.filter(id => !usaOrganica && (targets[id]||0) > (dims[id]||0));
   if (attive2.length === 0 && completate.length === 0 && !usaOrganica) return null;
 
@@ -4128,6 +4129,7 @@ function _calcolaImpattoCumulativo(p) {
     const anni = orizzonte / 12;
     const floorOrganico = Math.pow(1 + crescitaOrg, anni) - 1;
     let prodotto = 1;
+    // Dimensioni con lavoro ancora da fare
     attive.forEach(id => {
       const cur = dims[id] || 0;
       const tgt = targets[id] || 0;
@@ -4142,8 +4144,27 @@ function _calcolaImpattoCumulativo(p) {
         }
       }
       const peso = (pesi[id] || 0) / 100;
-      const efficienza = 1 - penalitaPerDim[id]; // riduce il contributo se sbilanciato
+      const efficienza = 1 - (penalitaPerDim[id] || 0);
       const contributoPesato = Math.min(contributoTot * peso * efficienza, 0.95);
+      prodotto *= (1 - contributoPesato);
+    });
+    // Dimensioni completate — il lavoro è stato fatto, la crescita è reale
+    completate.forEach(id => {
+      if (attive.indexOf(id) >= 0) return; // già contata
+      const startStep = 1; // partenza dal livello base
+      const tgt = targets[id] || 0;
+      let contributoTot = 0;
+      for (let step = startStep; step < tgt; step++) {
+        const stepKey = String(step + 1);
+        const imp = _calcolaImpattoUnitario(settore, id, stepKey, p) || _getImpatto(settore, id, stepKey);
+        if (imp) {
+          const pctArr = orizzonte === 6 ? imp.pct_6m : orizzonte === 12 ? imp.pct_12m : imp.pct_24m;
+          const midPct = (pctArr[0] + pctArr[1]) / 2 / 100;
+          contributoTot += midPct;
+        }
+      }
+      const peso = (pesi[id] || 0) / 100;
+      const contributoPesato = Math.min(contributoTot * peso, 0.95);
       prodotto *= (1 - contributoPesato);
     });
     const crescitaDaPiano = Math.min(1 - prodotto, 0.50);
