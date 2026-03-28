@@ -1,17 +1,59 @@
 function calcolaScoreDimensione(dimId, famiglia, risposte) {
+  // Se c'è la risposta alla domanda principale (da STEP_DETAIL), ha priorità
+  var mainKey = dimId + '_main';
+  var mainVal = risposte[mainKey];
+  var mainScore = 0;
+  var hasMain = (mainVal !== undefined && mainVal !== null && mainVal !== '');
+
+  if (hasMain) {
+    // La domanda principale ha 5 opzioni (score 0-4) → mappa a 1-5
+    mainScore = (typeof mainVal === 'number' ? mainVal : parseInt(mainVal) || 0) + 1;
+  }
+
+  // Domande di supporto dalla famiglia
   var domande = DIAGNOSI_DOMANDE[famiglia] && DIAGNOSI_DOMANDE[famiglia][dimId];
+  var supportoTot = 0;
+  var supportoPeso = 0;
+  var supportoRisposto = 0;
+
+  if (domande && domande.length) {
+    domande.forEach(function(d) {
+      // Escludi le vecchie MC principali se abbiamo la main da STEP_DETAIL
+      if (hasMain && d.tipo === 'mc' && d.peso >= 5) return;
+      supportoPeso += d.peso;
+      var val = risposte[d.id];
+      if (val === undefined || val === null || val === '') return;
+      supportoRisposto += d.peso;
+      if (d.tipo === 'yn') {
+        supportoTot += (val === 'si' || val === true || val === 1) ? d.peso : 0;
+      } else if (d.tipo === 'mc') {
+        var maxScore = d.opzioni.length - 1;
+        var rawScore = typeof val === 'number' ? val : parseInt(val) || 0;
+        supportoTot += (rawScore / maxScore) * d.peso;
+      }
+    });
+  }
+
+  // Se abbiamo la domanda principale, pesa 70% main + 30% supporto
+  if (hasMain) {
+    if (supportoRisposto > 0 && supportoPeso > 0) {
+      var supportoNorm = (supportoTot / supportoRisposto) * 4 + 1;
+      var finale = mainScore * 0.7 + supportoNorm * 0.3;
+      return Math.round(Math.min(5, Math.max(1, finale)));
+    }
+    return Math.round(Math.min(5, Math.max(1, mainScore)));
+  }
+
+  // Fallback: solo domande famiglia (vecchio sistema)
   if (!domande || !domande.length) return 0;
-
+  var pesoTotale = 0;
+  var pesoRisposto = 0;
   var punteggioTot = 0;
-  var pesoTotale = 0; // somma di TUTTI i pesi (fisso)
-  var pesoRisposto = 0; // peso delle sole domande risposte
-
   domande.forEach(function(d) {
-    pesoTotale += d.peso; // sempre
+    pesoTotale += d.peso;
     var val = risposte[d.id];
     if (val === undefined || val === null || val === '') return;
     pesoRisposto += d.peso;
-
     if (d.tipo === 'yn') {
       punteggioTot += (val === 'si' || val === true || val === 1) ? d.peso : 0;
     } else if (d.tipo === 'mc') {
@@ -20,17 +62,11 @@ function calcolaScoreDimensione(dimId, famiglia, risposte) {
       punteggioTot += (rawScore / maxScore) * d.peso;
     }
   });
-
   if (pesoRisposto === 0) return 0;
-
-  // Normalizza solo sulle domande risposte — le non risposte non penalizzano
-  // ma se hai risposto a meno della metà, scala proporzionalmente
   var copertura = pesoRisposto / pesoTotale;
   var scoreBase = (punteggioTot / pesoRisposto) * 4 + 1;
-  // Penalizza leggermente se poche domande risposte (< 50% del peso)
   var fattoreCopertura = copertura < 0.5 ? 0.7 + (copertura * 0.6) : 1;
-  var normalizzato = scoreBase * fattoreCopertura;
-  return Math.round(Math.min(5, Math.max(1, normalizzato)));
+  return Math.round(Math.min(5, Math.max(1, scoreBase * fattoreCopertura)));
 }
 
 // ── DIAGNOSI GUIDATA — LOGICA ──────────────────────────────────────────────
@@ -149,6 +185,28 @@ function chiudiDiagnosi() {
   }, 150);
 }
 
+function _buildDomandePrincipale(settore, dimId) {
+  // Genera domanda MC principale dai 5 step del STEP_DETAIL
+  var sd = (typeof STEP_DETAIL_BY_SETTORE !== 'undefined') ? STEP_DETAIL_BY_SETTORE : {};
+  var dimData = sd[settore]?.[dimId];
+  if (!dimData) return null;
+  var opzioni = [];
+  for (var s = 1; s <= 5; s++) {
+    var step = dimData[String(s)];
+    if (step) {
+      opzioni.push({ label: 'Step ' + s + ': ' + step.cosa, score: s - 1 });
+    }
+  }
+  if (opzioni.length === 0) return null;
+  return {
+    id: dimId + '_main',
+    testo: 'Qual è la situazione attuale per ' + _getDiagLabel(settore, dimId) + '?',
+    tipo: 'mc',
+    peso: 8,
+    opzioni: opzioni
+  };
+}
+
 function renderDiagStep() {
   var totalSteps = _diagDims.length;
   var dimId = _diagDims[_diagStep];
@@ -171,12 +229,23 @@ function renderDiagStep() {
   var nextBtn = document.getElementById('diag-btn-next');
   nextBtn.textContent = _diagStep === totalSteps - 1 ? 'Calcola score' : 'Avanti';
 
-  // Domande
-  var domande = DIAGNOSI_DOMANDE[_diagFamiglia] && DIAGNOSI_DOMANDE[_diagFamiglia][dimId];
+  // Domande: principale da STEP_DETAIL + supporto da famiglia
+  var domande = [];
+  var domandaPrincipale = _buildDomandePrincipale(_settore, dimId);
+  if (domandaPrincipale) domande.push(domandaPrincipale);
+  var domandeFamiglia = DIAGNOSI_DOMANDE[_diagFamiglia] && DIAGNOSI_DOMANDE[_diagFamiglia][dimId];
+  if (domandeFamiglia) {
+    domandeFamiglia.forEach(function(d) {
+      // Escludi le vecchie MC principali (peso >= 5) se abbiamo quella da STEP_DETAIL
+      if (domandaPrincipale && d.tipo === 'mc' && d.peso >= 5) return;
+      domande.push(d);
+    });
+  }
+
   var risposteDim = _diagRisposte[dimId] || {};
   var body = document.getElementById('diagnosi-body');
 
-  if (!domande) {
+  if (domande.length === 0) {
     body.innerHTML = '\x3cdiv style="color:var(--gray);text-align:center;padding:40px 0">Nessuna domanda disponibile per questo settore\x3c/div>';
     return;
   }
