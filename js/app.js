@@ -4267,6 +4267,96 @@ function _calcolaImpattoCumulativo(p) {
 }
 
 
+// ── SCHEDA FINANZIARIA OVERLAY ─────────────────────────────────────
+var _schedaTabs = ['struttura','financials','commerciale','strategico','kpi'];
+var _schedaTabIdx = 0;
+
+function apriSchedaFinanziaria(tab) {
+  var p = prospects.find(function(x){ return x.id === currentId; });
+  if (!p) return;
+  renderFinancials(p);
+  renderStruttura(p);
+  renderCommercialeData(p);
+  renderStrategico(p);
+  renderKpiTab(p);
+  _schedaTabIdx = tab ? _schedaTabs.indexOf(tab) : 0;
+  if (_schedaTabIdx < 0) _schedaTabIdx = 0;
+  _renderSchedaTab();
+  document.getElementById('scheda-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function chiudiSchedaFinanziaria() {
+  document.getElementById('scheda-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  if (currentId) renderProspectDetail(currentId);
+}
+
+function switchSchedaTab(tab, btn) {
+  _schedaTabIdx = _schedaTabs.indexOf(tab);
+  if (_schedaTabIdx < 0) _schedaTabIdx = 0;
+  _renderSchedaTab();
+}
+
+function schedaTabNext() {
+  if (_schedaTabIdx < _schedaTabs.length - 1) {
+    _schedaTabIdx++;
+    _renderSchedaTab();
+  }
+}
+
+function schedaTabPrev() {
+  if (_schedaTabIdx > 0) {
+    _schedaTabIdx--;
+    _renderSchedaTab();
+  }
+}
+
+function _renderSchedaTab() {
+  var tab = _schedaTabs[_schedaTabIdx];
+  document.querySelectorAll('#scheda-tabs .fin-tab').forEach(function(el, i) {
+    el.classList.toggle('active', i === _schedaTabIdx);
+  });
+  var body = document.getElementById('scheda-body');
+  var pane = document.getElementById('fin-pane-' + tab);
+  if (body && pane) {
+    body.innerHTML = '';
+    var clone = pane.cloneNode(true);
+    clone.style.display = 'block';
+    clone.classList.add('active');
+    body.appendChild(clone);
+    var origInputs = pane.querySelectorAll('input, select, textarea');
+    var cloneInputs = clone.querySelectorAll('input, select, textarea');
+    cloneInputs.forEach(function(el, i) {
+      if (origInputs[i]) {
+        el.value = origInputs[i].value;
+        el.checked = origInputs[i].checked;
+      }
+      el.addEventListener('change', function() {
+        if (origInputs[i]) { origInputs[i].value = el.value; origInputs[i].checked = el.checked; }
+      });
+      el.addEventListener('input', function() {
+        if (origInputs[i]) { origInputs[i].value = el.value; }
+      });
+    });
+  }
+  var prevBtn = document.getElementById('scheda-btn-prev');
+  var nextBtn = document.getElementById('scheda-btn-next');
+  if (prevBtn) {
+    prevBtn.style.opacity = _schedaTabIdx === 0 ? '0.3' : '1';
+    prevBtn.disabled = _schedaTabIdx === 0;
+  }
+  if (nextBtn) {
+    if (_schedaTabIdx === _schedaTabs.length - 1) {
+      nextBtn.textContent = 'Chiudi';
+      nextBtn.setAttribute('onclick', 'chiudiSchedaFinanziaria()');
+    } else {
+      nextBtn.textContent = 'Avanti \u2192';
+      nextBtn.setAttribute('onclick', 'schedaTabNext()');
+    }
+  }
+}
+
 // ── DETAIL OVERLAY (popup dettagli costi e ROI) ──────────────────────
 function chiudiDetailOverlay() {
   document.getElementById('detail-overlay').classList.remove('open');
