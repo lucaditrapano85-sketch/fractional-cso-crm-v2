@@ -4624,13 +4624,12 @@ function chiudiDetailOverlay() {
   document.body.style.overflow = '';
 }
 
-async function ignoraSostenibilita() {
+async function toggleSostenibilita(checked) {
   var p = prospects.find(function(x){ return x.id === currentId; });
   if (!p) return;
-  p.ignora_sostenibilita = true;
-  try { await sb.from('prospects').update({ ignora_sostenibilita: true }).eq('id', p.id); } catch(e) {}
-  renderProspectDetail(currentId);
-  showToast('Avviso sostenibilità nascosto');
+  p.ignora_sostenibilita = checked;
+  try { await sb.from('prospects').update({ ignora_sostenibilita: checked }).eq('id', p.id); } catch(e) {}
+  if (checked) showToast('Avviso sostenibilità disattivato');
 }
 
 function apriDettaglioCosti() {
@@ -4865,10 +4864,16 @@ function _buildGraficoTimeline(p) {
     // 1a. ALERT SOSTENIBILITÀ
     (function() {
       if (!fat || !costoMensile) return '';
-      if (p.ignora_sostenibilita) return '';
       var costoAnnuo = costoMensile * 12 + (ic.costoUnaTantumTot || 0);
       var pctFatturato = (costoAnnuo / fat * 100).toFixed(0);
-      if (pctFatturato <= 15) return ''; // sotto il 15% è sostenibile
+      if (pctFatturato <= 15) return '';
+      var ignorato = p.ignora_sostenibilita;
+      if (ignorato) {
+        return '<div style="margin:12px 0;padding:10px 16px;background:rgba(0,0,0,0.03);border:1px solid rgba(0,0,0,0.06);border-radius:12px;display:flex;align-items:center;gap:8px">' +
+          '<input type="checkbox" id="check-sostenibilita" checked onchange="toggleSostenibilita(this.checked)" style="width:14px;height:14px;accent-color:var(--gold);cursor:pointer">' +
+          '<label for="check-sostenibilita" style="font-size:11px;color:var(--gray);cursor:pointer">Il cliente ha le risorse per investire (' + pctFatturato + '% del fatturato)</label>' +
+        '</div>';
+      }
 
       var livello = pctFatturato > 30 ? 'critico' : 'alto';
       var col = livello === 'critico' ? 'rgba(170,50,40,0.8)' : 'rgba(150,110,30,0.8)';
@@ -4929,8 +4934,9 @@ function _buildGraficoTimeline(p) {
           'Budget mensile consigliato: <strong>~' + budgetMensile.toLocaleString('it-IT') + '\u20AC/mese</strong> (12% del fatturato)' +
         '</div>' +
         suggerimento +
-        '<div style="margin-top:10px;text-align:right">' +
-          '<span onclick="ignoraSostenibilita()" style="font-size:11px;color:var(--gray);cursor:pointer;text-decoration:underline">Il cliente ha le risorse per investire \u2014 nascondi avviso</span>' +
+        '<div style="margin-top:10px;display:flex;align-items:center;gap:8px">' +
+          '<input type="checkbox" id="check-sostenibilita" ' + (p.ignora_sostenibilita ? 'checked' : '') + ' onchange="toggleSostenibilita(this.checked)" style="width:14px;height:14px;accent-color:var(--gold);cursor:pointer">' +
+          '<label for="check-sostenibilita" style="font-size:11px;color:var(--gray);cursor:pointer">Il cliente ha le risorse per investire</label>' +
         '</div>' +
       '</div>';
     })() +
