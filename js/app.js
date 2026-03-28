@@ -5977,16 +5977,11 @@ function mountCalcolatrice(container) {
 
   // BOTTONE SALVA
   var btnDiv = document.createElement('div');
-  btnDiv.style.cssText = 'display:flex;justify-content:flex-end;margin-top:16px';
-  var btnSave = document.createElement('button');
+  btnDiv.style.cssText = 'display:flex;justify-content:flex-end;margin-top:16px;gap:10px';
+  var btnSave = document.createElement('div');
   btnSave.textContent = 'Salva dati finanziari';
-  btnSave.className = 'btn btn-primary';
-  btnSave.style.cssText = 'background:var(--green);border:none;color:#fff;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;position:relative;z-index:10';
-  btnSave.addEventListener('click', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    salvaDaCalcolatrice();
-  });
+  btnSave.style.cssText = 'background:var(--green);color:#fff;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;user-select:none';
+  btnSave.onmousedown = function() { salvaDaCalcolatrice(); };
   btnDiv.appendChild(btnSave);
   wrap.appendChild(btnDiv);
 
