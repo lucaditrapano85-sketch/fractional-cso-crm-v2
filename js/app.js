@@ -4692,26 +4692,18 @@ function _buildGraficoTimeline(p) {
   const hasTargets = DIMS_CHECK.some(function(id){ return (targets[id]||0) > 0; });
   const allReached = hasTargets && DIMS_CHECK.every(function(id){ return !targets[id] || (dims[id]||0) >= targets[id]; });
 
+  var completedBanner = '';
   if (allReached) {
-    return '<div style="text-align:center;padding:40px 20px">' +
-      '<div style="font-size:32px;margin-bottom:12px">\u2705</div>' +
-      '<div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px">Piano completato!</div>' +
-      '<div style="font-size:13px;color:var(--gray);margin-bottom:20px">Tutti gli obiettivi sono stati raggiunti. Imposta nuovi target per continuare la crescita.</div>' +
-      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:300px;margin:0 auto">' +
-        '<div style="background:rgba(255,255,255,0.4);border-radius:12px;padding:14px;text-align:center">' +
-          '<div style="font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Fatturato</div>' +
-          '<div style="font-size:20px;font-weight:700;color:var(--text)">' + fmtF(fat) + '\u20AC</div>' +
-        '</div>' +
-        '<div style="background:rgba(255,255,255,0.4);border-radius:12px;padding:14px;text-align:center">' +
-          '<div style="font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Score</div>' +
-          '<div style="font-size:20px;font-weight:700;color:var(--green)">' + calcScore(p) + '/100</div>' +
-        '</div>' +
-      '</div>' +
+    completedBanner = '<div style="text-align:center;padding:20px;margin-bottom:16px;background:rgba(40,130,80,0.08);border:1px solid rgba(40,130,80,0.2);border-radius:12px">' +
+      '<div style="font-size:20px;margin-bottom:6px">\u2705</div>' +
+      '<div style="font-size:14px;font-weight:700;color:var(--text)">Piano completato!</div>' +
+      '<div style="font-size:12px;color:var(--gray)">Obiettivi raggiunti. Imposta nuovi target per continuare la crescita.</div>' +
     '</div>';
   }
 
   const ic = _calcolaImpattoCumulativo(p);
-  if (!ic) return '<div class="tl-empty">Imposta i target per vedere le proiezioni.</div>';
+  if (!ic && !allReached) return '<div class="tl-empty">Imposta i target per vedere le proiezioni.</div>';
+  if (!ic && allReached) return completedBanner;
 
   const fat12min = ic.fat12 ? ic.fat12[0] : fat;
   const fat12max = ic.fat12 ? ic.fat12[1] : fat;
@@ -4779,6 +4771,7 @@ function _buildGraficoTimeline(p) {
   const chartId = 'tl-line-chart-' + p.id;
 
   const html = '<div class="tl-wrap">' +
+    completedBanner +
 
     // 1. CARD METRICHE
     '<div class="tl-section-label">Quadro economico</div>' +
