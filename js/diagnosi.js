@@ -192,6 +192,13 @@ function renderDiagStep() {
     return;
   }
 
+  // Trova la MC principale e il suo valore per decidere se disabilitare le yn
+  var mcDomanda = domande.find(function(d){ return d.tipo === 'mc'; });
+  var mcVal = mcDomanda ? risposteDim[mcDomanda.id] : undefined;
+  var mcLivello = (mcVal !== undefined && mcVal !== null && mcVal !== '') ? (typeof mcVal === 'number' ? mcVal : parseInt(mcVal) || 0) : -1;
+  // Se MC è al livello 0 (situazione base), le yn vengono forzate a No
+  var ynDisabilitato = mcLivello === 0;
+
   var html = domande.map(function(d) {
     var val = risposteDim[d.id];
     var inputHtml = '';
@@ -203,12 +210,23 @@ function renderDiagStep() {
       }).join('');
       inputHtml = '\x3cdiv class="diag-opt">' + optsHtml + '\x3c/div>';
     } else if (d.tipo === 'yn') {
-      var siSel = (val === 'si') ? ' selected' : '';
-      var noSel = (val === 'no') ? ' selected' : '';
-      inputHtml = '\x3cdiv class="diag-yn">' +
-        '\x3cbutton class="diag-yn-btn si' + siSel + '" onclick="diagSetRisposta(\'' + dimId + '\',\'' + d.id + '\',\'si\',this,\'yn-si\')">Si\x3c/button>' +
-        '\x3cbutton class="diag-yn-btn no' + noSel + '" onclick="diagSetRisposta(\'' + dimId + '\',\'' + d.id + '\',\'no\',this,\'yn-no\')">No\x3c/button>' +
-      '\x3c/div>';
+      if (ynDisabilitato) {
+        // Forza No e disabilita
+        risposteDim[d.id] = 'no';
+        if (!_diagRisposte[dimId]) _diagRisposte[dimId] = {};
+        _diagRisposte[dimId][d.id] = 'no';
+        inputHtml = '\x3cdiv class="diag-yn" style="opacity:0.4;pointer-events:none">' +
+          '\x3cbutton class="diag-yn-btn si">Si\x3c/button>' +
+          '\x3cbutton class="diag-yn-btn no selected">No\x3c/button>' +
+        '\x3c/div>';
+      } else {
+        var siSel = (val === 'si') ? ' selected' : '';
+        var noSel = (val === 'no') ? ' selected' : '';
+        inputHtml = '\x3cdiv class="diag-yn">' +
+          '\x3cbutton class="diag-yn-btn si' + siSel + '" onclick="diagSetRisposta(\'' + dimId + '\',\'' + d.id + '\',\'si\',this,\'yn-si\')">Si\x3c/button>' +
+          '\x3cbutton class="diag-yn-btn no' + noSel + '" onclick="diagSetRisposta(\'' + dimId + '\',\'' + d.id + '\',\'no\',this,\'yn-no\')">No\x3c/button>' +
+        '\x3c/div>';
+      }
     }
 
     return '\x3cdiv class="diag-q">' +
@@ -239,6 +257,9 @@ function diagSetRisposta(dimId, domandaId, valore, el, tipo) {
     var parent = el.closest('.diag-opt');
     if (parent) parent.querySelectorAll('.diag-opt-btn').forEach(function(b){ b.classList.remove('selected'); });
     el.classList.add('selected');
+    // Se è una MC, ri-renderizza lo step per aggiornare stato yn
+    renderDiagStep();
+    return;
   }
 
   aggiornaScorePreview(dimId);
