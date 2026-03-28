@@ -14,7 +14,7 @@ var DIAGNOSI_DOMANDE = {
           {label:'Team commerciale strutturato con ruoli'}
         ]},
       { id:'v2', testo:'Hai un listino prezzi aggiornato con margini verificati per ogni linea?', tipo:'yn', peso:3 },
-      { id:'v3', testo:'C\'è qualcuno oltre a te che visita attivamente nuovi prospect?', tipo:'yn', peso:2 },
+      { id:'v3', testo:'C\'è qualcuno oltre a te che visita attivamente nuovi prospect?', tipo:'yn', peso:2, disableIfMcBelow: 1 },
     ],
     pipeline: [
       { id:'p1', testo:'Come tracci le trattative commerciali?', tipo:'mc', peso:5,
@@ -37,8 +37,8 @@ var DIAGNOSI_DOMANDE = {
           {label:'Team con ruoli separati e responsabili'},
           {label:'Management strutturato su più livelli'}
         ]},
-      { id:'t2', testo:'Il titolare può assentarsi 2 settimane senza impatto sulle vendite?', tipo:'yn', peso:3 },
-      { id:'t3', testo:'Hai almeno un commerciale dedicato esclusivamente ai nuovi clienti?', tipo:'yn', peso:2 },
+      { id:'t2', testo:'Il titolare può assentarsi 2 settimane senza impatto sulle vendite?', tipo:'yn', peso:3, disableIfMcBelow: 2 },
+      { id:'t3', testo:'Hai almeno un commerciale dedicato esclusivamente ai nuovi clienti?', tipo:'yn', peso:2, disableIfMcBelow: 2 },
     ],
     processi: [
       { id:'pr1', testo:'Come gestisci il passaggio offerta-produzione?', tipo:'mc', peso:5,
@@ -139,8 +139,8 @@ var DIAGNOSI_DOMANDE = {
           {label:'Team con specialisti autonomi e un coordinatore'},
           {label:'Struttura con ruoli definiti e delega completa'}
         ]},
-      { id:'t2', testo:'Il know-how critico è documentato e non dipende da una sola persona?', tipo:'yn', peso:3 },
-      { id:'t3', testo:'Hai un piano di onboarding strutturato per i nuovi consulenti?', tipo:'yn', peso:2 },
+      { id:'t2', testo:'Il know-how critico è documentato e non dipende da una sola persona?', tipo:'yn', peso:3, disableIfMcBelow: 2 },
+      { id:'t3', testo:'Hai un piano di onboarding strutturato per i nuovi consulenti?', tipo:'yn', peso:2, disableIfMcBelow: 2 },
     ],
     processi: [
       { id:'pr1', testo:'Come eroghi i servizi ai clienti?', tipo:'mc', peso:5,
@@ -241,7 +241,7 @@ var DIAGNOSI_DOMANDE = {
           {label:'Capocantiere autonomo su più cantieri'},
           {label:'Più squadre autonome con capicantiere dedicati'}
         ]},
-      { id:'t2', testo:'Riesci a gestire 2 cantieri contemporanei senza rallentamenti?', tipo:'yn', peso:3 },
+      { id:'t2', testo:'Riesci a gestire 2 cantieri contemporanei senza rallentamenti?', tipo:'yn', peso:3, disableIfMcBelow: 2 },
       { id:'t3', testo:'Il personale di cantiere ha le certificazioni di sicurezza aggiornate?', tipo:'yn', peso:2 },
     ],
     processi: [
@@ -319,7 +319,7 @@ var DIAGNOSI_DOMANDE = {
           {label:'Rete vendita con obiettivi e key account'},
           {label:'Team commerciale strutturato con CRM e incentivi'}
         ]},
-      { id:'v2', testo:'C\'è qualcuno oltre a te che vende attivamente ai clienti con obiettivi definiti?', tipo:'yn', peso:3 },
+      { id:'v2', testo:'C\'è qualcuno oltre a te che vende attivamente ai clienti con obiettivi definiti?', tipo:'yn', peso:3, disableIfMcBelow: 2 },
       { id:'v3', testo:'Hai un processo per riattivare i clienti inattivi da più di 6 mesi?', tipo:'yn', peso:2 },
     ],
     pipeline: [
@@ -344,7 +344,7 @@ var DIAGNOSI_DOMANDE = {
           {label:'Struttura autonoma con responsabile commerciale'}
         ]},
       { id:'t2', testo:'C\'è qualcuno che gestisce spedizioni e resi senza il tuo intervento diretto?', tipo:'yn', peso:3 },
-      { id:'t3', testo:'Hai un responsabile commerciale che coordina la rete vendita?', tipo:'yn', peso:2 },
+      { id:'t3', testo:'Hai un responsabile commerciale che coordina la rete vendita?', tipo:'yn', peso:2, disableIfMcBelow: 3 },
     ],
     processi: [
       { id:'pr1', testo:'Come gestisci scorte e riordini?', tipo:'mc', peso:5,
@@ -422,7 +422,7 @@ var DIAGNOSI_DOMANDE = {
           {label:'Clienteling strutturato con appuntamenti dedicati'}
         ]},
       { id:'v2', testo:'Lo scontrino medio è cresciuto rispetto a 12 mesi fa?', tipo:'yn', peso:3 },
-      { id:'v3', testo:'C\'è qualcuno oltre a te che propone attivamente prodotti complementari ai clienti?', tipo:'yn', peso:2 },
+      { id:'v3', testo:'C\'è qualcuno oltre a te che propone attivamente prodotti complementari ai clienti?', tipo:'yn', peso:2, disableIfMcBelow: 1 },
     ],
     pipeline: [
       { id:'p1', testo:'Come monitori le performance del punto vendita?', tipo:'mc', peso:5,
@@ -445,7 +445,7 @@ var DIAGNOSI_DOMANDE = {
           {label:'Un responsabile di punto vendita coordina il team'},
           {label:'Il negozio funziona perfettamente senza di me'}
         ]},
-      { id:'t2', testo:'Il negozio funziona normalmente anche quando il titolare non c\'è?', tipo:'yn', peso:3 },
+      { id:'t2', testo:'Il negozio funziona normalmente anche quando il titolare non c\'è?', tipo:'yn', peso:3, disableIfMcBelow: 1 },
       { id:'t3', testo:'C\'è qualcuno oltre a te nel punto vendita che riceve formazione regolare sui prodotti?', tipo:'yn', peso:2 },
     ],
     processi: [
@@ -547,8 +547,8 @@ var DIAGNOSI_DOMANDE = {
           {label:'Ruoli separati: produzione, qualità e commerciale'},
           {label:'Struttura completa con autonomia su ogni funzione'}
         ]},
-      { id:'t2', testo:'C\'è qualcuno che gestisce la qualità in autonomia senza il tuo intervento?', tipo:'yn', peso:3 },
-      { id:'t3', testo:'Hai personale commerciale dedicato separato dalla produzione?', tipo:'yn', peso:2 },
+      { id:'t2', testo:'C\'è qualcuno che gestisce la qualità in autonomia senza il tuo intervento?', tipo:'yn', peso:3, disableIfMcBelow: 2 },
+      { id:'t3', testo:'Hai personale commerciale dedicato separato dalla produzione?', tipo:'yn', peso:2, disableIfMcBelow: 2 },
     ],
     processi: [
       { id:'pr1', testo:'Come gestisci qualità e certificazioni?', tipo:'mc', peso:5,
@@ -649,8 +649,8 @@ var DIAGNOSI_DOMANDE = {
           {label:'Team con vendita e delivery separati'},
           {label:'Struttura completa con autonomia su ogni funzione'}
         ]},
-      { id:'t2', testo:'Hai separato i ruoli di vendita da quelli di delivery?', tipo:'yn', peso:3 },
-      { id:'t3', testo:'C\'è qualcuno che gestisce l\'onboarding clienti senza il tuo intervento diretto?', tipo:'yn', peso:2 },
+      { id:'t2', testo:'Hai separato i ruoli di vendita da quelli di delivery?', tipo:'yn', peso:3, disableIfMcBelow: 2 },
+      { id:'t3', testo:'C\'è qualcuno che gestisce l\'onboarding clienti senza il tuo intervento diretto?', tipo:'yn', peso:2, disableIfMcBelow: 2 },
     ],
     processi: [
       { id:'pr1', testo:'Come gestisci l\'onboarding e il supporto clienti?', tipo:'mc', peso:5,
@@ -728,7 +728,7 @@ var DIAGNOSI_DOMANDE = {
           {label:'Ho un team vendite strutturato con responsabile'}
         ]},
       { id:'v2', testo:'Fai follow-up strutturato dopo ogni visita o contatto?', tipo:'yn', peso:3 },
-      { id:'v3', testo:'C\'è qualcuno che può vendere al tuo posto quando non ci sei?', tipo:'yn', peso:2 },
+      { id:'v3', testo:'C\'è qualcuno che può vendere al tuo posto quando non ci sei?', tipo:'yn', peso:2, disableIfMcBelow: 1 },
     ],
     pipeline: [
       { id:'p1', testo:'Come tracci contatti e trattative aperte?', tipo:'mc', peso:5,
@@ -751,8 +751,8 @@ var DIAGNOSI_DOMANDE = {
           {label:'Ho un team con back office, vendita e amministrazione'},
           {label:'Ho un responsabile che coordina il team'}
         ]},
-      { id:'t2', testo:'Puoi stare via una settimana senza che si fermi tutto?', tipo:'yn', peso:3 },
-      { id:'t3', testo:'Ogni persona ha un ruolo chiaro e obiettivi definiti?', tipo:'yn', peso:2 },
+      { id:'t2', testo:'Puoi stare via una settimana senza che si fermi tutto?', tipo:'yn', peso:3, disableIfMcBelow: 1 },
+      { id:'t3', testo:'Ogni persona ha un ruolo chiaro e obiettivi definiti?', tipo:'yn', peso:2, disableIfMcBelow: 1 },
     ],
     processi: [
       { id:'pr1', testo:'Come gestisci le pratiche e la consegna veicoli?', tipo:'mc', peso:5,

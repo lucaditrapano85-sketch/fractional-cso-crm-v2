@@ -192,12 +192,10 @@ function renderDiagStep() {
     return;
   }
 
-  // Trova la MC principale e il suo valore per decidere se disabilitare le yn
+  // Trova la MC principale e il suo valore
   var mcDomanda = domande.find(function(d){ return d.tipo === 'mc'; });
   var mcVal = mcDomanda ? risposteDim[mcDomanda.id] : undefined;
   var mcLivello = (mcVal !== undefined && mcVal !== null && mcVal !== '') ? (typeof mcVal === 'number' ? mcVal : parseInt(mcVal) || 0) : -1;
-  // Se MC è al livello 0 (situazione base), le yn vengono forzate a No
-  var ynDisabilitato = mcLivello === 0;
 
   var html = domande.map(function(d) {
     var val = risposteDim[d.id];
@@ -210,12 +208,13 @@ function renderDiagStep() {
       }).join('');
       inputHtml = '\x3cdiv class="diag-opt">' + optsHtml + '\x3c/div>';
     } else if (d.tipo === 'yn') {
-      if (ynDisabilitato) {
-        // Forza No e disabilita
+      // Se la yn ha disableIfMcBelow e la MC è sotto quel livello → forza No
+      var forzaNo = (typeof d.disableIfMcBelow === 'number' && mcLivello >= 0 && mcLivello < d.disableIfMcBelow);
+      if (forzaNo) {
         risposteDim[d.id] = 'no';
         if (!_diagRisposte[dimId]) _diagRisposte[dimId] = {};
         _diagRisposte[dimId][d.id] = 'no';
-        inputHtml = '\x3cdiv class="diag-yn" style="opacity:0.4;pointer-events:none">' +
+        inputHtml = '\x3cdiv class="diag-yn" style="opacity:0.35;pointer-events:none">' +
           '\x3cbutton class="diag-yn-btn si">Si\x3c/button>' +
           '\x3cbutton class="diag-yn-btn no selected">No\x3c/button>' +
         '\x3c/div>';
