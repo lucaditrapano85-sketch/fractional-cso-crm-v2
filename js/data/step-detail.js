@@ -24,12 +24,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'DMS completo', cosa:'DMS integrato con contabilità, stock e CRM', costo_mensile:1500, costo_setup:3000, tempo_mesi:3 },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Titolare', cosa:'Nessuna organizzazione — il titolare decide tutto al momento', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
       '2': { chi:'Titolare', cosa:'Ruoli base definiti — chi fa cosa è chiaro', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
       '3': { chi:'Titolare', cosa:'Riunione settimanale + obiettivi misurabili per ruolo', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
       '4': { chi:'Consulente + titolare', cosa:'KPI individuali + processi decisionali delegati', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
       '5': { chi:'Manager operativo', cosa:'Governance strutturata — il titolare fa solo strategia', costo_mensile:1500, costo_setup:2000, tempo_mesi:6 },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo formalizzato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -60,13 +60,13 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'Sito integrato', cosa:'Sito integrato DMS — stock real-time, CRM automatico', costo_mensile:1000, costo_setup:6000, tempo_mesi:3 },
     },
     ecommerce: {
-      _label: 'Approvvigionamento',
       '1': { chi:'Titolare', cosa:'Solo permute — nessun acquisto attivo', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
       '2': { chi:'Titolare', cosa:'Aste online base (BCA, Autorola)', costo_mensile:300, costo_setup:0, tempo_mesi:1 },
       '3': { chi:'Buyer part-time', cosa:'Aste online + accordi privati + acquisto da aziende', costo_mensile:800, costo_setup:500, tempo_mesi:2 },
       '4': { chi:'Buyer dedicato', cosa:'Buyer full-time — aste fisiche, fleet, rientri leasing', costo_mensile:2800, costo_setup:1000, tempo_mesi:3 },
       '5': { chi:'Strategia acquisti', cosa:'Team acquisti KPI, partnership noleggiatori e leasing', costo_mensile:4500, costo_setup:2000, tempo_mesi:4 },
-    },
+      _label: 'Approvvigionamento',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -88,12 +88,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'Data analyst + piattaforma', cosa:'Predictive analytics — scoring lead, propensione riacquisto', costo_mensile:7000, costo_setup:8000, tempo_mesi:4 },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Casa madre', cosa:'Team minimo brand — ruoli base da casa madre', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
       '2': { chi:'Consulente', cosa:'KPI individuali e piano incentivi strutturato', costo_mensile:0, costo_setup:500, tempo_mesi:1 },
       '3': { chi:'Formatore', cosa:'Formazione continua + certificazioni brand', costo_mensile:300, costo_setup:1000, tempo_mesi:2 },
       '4': { chi:'Middle management', cosa:'Middle management — capo vendite, capo service', costo_mensile:800, costo_setup:1500, tempo_mesi:3 },
       '5': { chi:'General manager', cosa:'General manager + governance completa', costo_mensile:2000, costo_setup:3000, tempo_mesi:6 },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Standard brand', cosa:'Processi base imposti dalla casa madre', costo_mensile:300, costo_setup:0, tempo_mesi:0 },
@@ -124,13 +124,13 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'Piattaforma digitale', cosa:'Virtual showroom, acquisto online, firma digitale', costo_mensile:1700, costo_setup:10000, tempo_mesi:4 },
     },
     ecommerce: {
-      _label: 'Post-vendita / Service',
       '1': { chi:'Service base', cosa:'Service standard — tagliandi e garanzia come da brand', costo_mensile:3000, costo_setup:0, tempo_mesi:0 },
       '2': { chi:'Service advisor', cosa:'Richiamo proattivo clienti per tagliandi e scadenze', costo_mensile:3500, costo_setup:0, tempo_mesi:1 },
       '3': { chi:'Service advisor senior', cosa:'Service advisor dedicato + upsell attivo su ogni passaggio', costo_mensile:5000, costo_setup:500, tempo_mesi:2 },
       '4': { chi:'Resp. after sales', cosa:'Carrozzeria + ricambi + accessori come centro profitto', costo_mensile:7500, costo_setup:2000, tempo_mesi:3 },
       '5': { chi:'After sales manager', cosa:'Contratti manutenzione, fleet management, fidelizzazione', costo_mensile:10000, costo_setup:3000, tempo_mesi:4 },
-    },
+      _label: 'Post-vendita / Service',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -152,12 +152,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'CRM + gestionale', cosa:'CRM integrato con gestionale commesse e fatturazione', costo_mensile:500, costo_setup:2000, tempo_mesi:3 },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Titolare', cosa:'Nessuna — titolare fa tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
       '2': { chi:'Titolare', cosa:'Ruoli base tra operai', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
       '3': { chi:'Titolare', cosa:'Resp. produzione libera il titolare', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
       '4': { chi:'Consulente', cosa:'Riunioni settimanali + KPI per reparto', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
       '5': { chi:'Management', cosa:'Management strutturato — titolare solo strategia', costo_mensile:1500, costo_setup:2000, tempo_mesi:5 },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo formalizzato — preventivi fatti caso per caso', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -188,13 +188,13 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'Sito avanzato', cosa:'Sito multilingua con area clienti per tracking commesse', costo_mensile:1000, costo_setup:8000, tempo_mesi:3 },
     },
     ecommerce: {
-      _label: 'Export / Canale digitale',
       '1': { chi:'Nessuno', cosa:'Nessuna presenza su portali o canali digitali B2B', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
       '2': { chi:'Titolare', cosa:'Iscrizione portali B2B (Kompass, Europages)', costo_mensile:30, costo_setup:300, tempo_mesi:1 },
       '3': { chi:'Configuratore', cosa:'Configuratore preventivi online per lavorazioni standard', costo_mensile:200, costo_setup:3000, tempo_mesi:2 },
       '4': { chi:'Export development', cosa:'Partnership con distributori/agenti internazionali per export', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
       '5': { chi:'Portale B2B', cosa:'Portale clienti B2B — ordini, tracking commesse, documenti', costo_mensile:800, costo_setup:8000, tempo_mesi:4 },
-    },
+      _label: 'Export / Canale digitale',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -216,12 +216,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'Piattaforma enterprise', cosa:'Gestione gare + portali OEM (Covisint, SupplyOn)', costo_mensile:1000, costo_setup:5000, tempo_mesi:4 },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Titolare', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
       '2': { chi:'Titolare', cosa:'Ruoli definiti produzione/qualità', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
       '3': { chi:'Titolare', cosa:'Resp. qualità IATF autonomo', costo_mensile:300, costo_setup:800, tempo_mesi:3 },
       '4': { chi:'Consulente', cosa:'KPI stabilimento + riunioni cross-funzionali', costo_mensile:500, costo_setup:1500, tempo_mesi:4 },
       '5': { chi:'Plant manager', cosa:'Plant manager + continuous improvement', costo_mensile:2000, costo_setup:3000, tempo_mesi:6 },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Processi base — si lavora ma senza documentazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -252,13 +252,13 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'Piattaforma B2B', cosa:'Portale multilingua con catalogo componenti e specifiche tecniche', costo_mensile:1000, costo_setup:10000, tempo_mesi:3 },
     },
     ecommerce: {
-      _label: 'Supply chain digitale',
       '1': { chi:'Nessuno', cosa:'Nessuna presenza digitale B2B', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
       '2': { chi:'Titolare', cosa:'Registrazione su portali OEM e piattaforme sourcing', costo_mensile:50, costo_setup:300, tempo_mesi:1 },
       '3': { chi:'Portale ordini', cosa:'Portale clienti per ordini ricorrenti e gestione kanban', costo_mensile:300, costo_setup:3000, tempo_mesi:2 },
       '4': { chi:'Integrazione EDI', cosa:'EDI con clienti principali — ordini automatici', costo_mensile:600, costo_setup:5000, tempo_mesi:3 },
       '5': { chi:'Supply chain digitale', cosa:'Forecast condiviso, VMI, consignment stock', costo_mensile:1200, costo_setup:10000, tempo_mesi:4 },
-    },
+      _label: 'Supply chain digitale',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -280,12 +280,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'ERP integrato', cosa:'ERP completo — da offerta a produzione a spedizione', costo_mensile:800, costo_setup:4000, tempo_mesi:3 },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Titolare', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
       '2': { chi:'Titolare', cosa:'Ruoli produzione definiti', costo_mensile:0, costo_setup:200, tempo_mesi:2 },
       '3': { chi:'Titolare', cosa:'Riunioni + pianificazione commesse', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
       '4': { chi:'Consulente', cosa:'KPI + processi decisionali', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
       '5': { chi:'Management', cosa:'Management R&D + produzione + commerciale', costo_mensile:1500, costo_setup:2000, tempo_mesi:5 },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo formalizzato — si lavora a esperienza', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -316,17 +316,17 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'Piattaforma B2B', cosa:'Portale B2B — ordini, tracking produzione, documenti qualità', costo_mensile:1000, costo_setup:8000, tempo_mesi:3 },
     },
     ecommerce: {
-      _label: 'Canale digitale B2B',
       '1': { chi:'Nessuno', cosa:'Nessuna presenza digitale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
       '2': { chi:'Titolare', cosa:'Portali B2B packaging (PackagingOnline, Europages)', costo_mensile:30, costo_setup:300, tempo_mesi:1 },
       '3': { chi:'Configuratore', cosa:'Configuratore online per prodotti standard (scatole, buste, etichette)', costo_mensile:250, costo_setup:3000, tempo_mesi:2 },
       '4': { chi:'E-commerce', cosa:'E-commerce B2B per riordini clienti + piccoli lotti', costo_mensile:500, costo_setup:5000, tempo_mesi:3 },
       '5': { chi:'Piattaforma integrata', cosa:'Portale clienti integrato — riordini automatici, stock dedicato', costo_mensile:1000, costo_setup:8000, tempo_mesi:4 },
-    },
+      _label: 'Canale digitale B2B',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // MANIFATTURIERO CONTO TERZI
+  // MANIFATTURIERO CTERZI
   // ═══════════════════════════════════════════════════════════════════════════
   manifatturiero_cterzi: {
     vendite: {
@@ -344,12 +344,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'ERP completo', cosa:'ERP integrato — da preventivo a produzione a fattura', costo_mensile:600, costo_setup:3000, tempo_mesi:3 },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Titolare', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
       '2': { chi:'Titolare', cosa:'Capo reparto tra operai', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
       '3': { chi:'Titolare', cosa:'Ruoli separati produzione/commerciale', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
       '4': { chi:'Consulente', cosa:'KPI + deleghe operative', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
       '5': { chi:'Management', cosa:'Management strutturato', costo_mensile:1500, costo_setup:1500, tempo_mesi:5 },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — ogni commessa è gestita diversamente', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -380,13 +380,13 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'Sito avanzato', cosa:'Portale clienti — tracking commesse, documenti, certificati', costo_mensile:800, costo_setup:6000, tempo_mesi:3 },
     },
     ecommerce: {
-      _label: 'Canale digitale B2B',
       '1': { chi:'Nessuno', cosa:'Nessuna presenza digitale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
       '2': { chi:'Titolare', cosa:'Iscrizione portali subfornitura B2B', costo_mensile:30, costo_setup:200, tempo_mesi:1 },
       '3': { chi:'Configuratore', cosa:'Preventivatore online per lavorazioni standard', costo_mensile:200, costo_setup:2500, tempo_mesi:2 },
       '4': { chi:'Portale B2B', cosa:'Portale ordini ricorrenti per clienti esistenti', costo_mensile:400, costo_setup:3000, tempo_mesi:3 },
       '5': { chi:'Integrazione digitale', cosa:'Integrazione ordini con ERP clienti principali', costo_mensile:700, costo_setup:6000, tempo_mesi:4 },
-    },
+      _label: 'Canale digitale B2B',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -408,12 +408,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'ERP integrato', cosa:'ERP completo — preventivazione, distinte base, produzione, collaudo', costo_mensile:700, costo_setup:4000, tempo_mesi:3 },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Titolare', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
       '2': { chi:'Titolare', cosa:'Capo officina gestisce quotidiano', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
       '3': { chi:'Titolare', cosa:'Ruoli progettazione/produzione separati', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
       '4': { chi:'Consulente', cosa:'KPI + project management', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
       '5': { chi:'Management', cosa:'Management tecnico + commerciale', costo_mensile:1500, costo_setup:2000, tempo_mesi:5 },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — ogni quadro è un progetto a sé', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -444,13 +444,13 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'Sito avanzato', cosa:'Area riservata clienti — schemi, certificati CE, manuali', costo_mensile:900, costo_setup:7000, tempo_mesi:3 },
     },
     ecommerce: {
-      _label: 'Canale digitale B2B',
       '1': { chi:'Nessuno', cosa:'Nessuna presenza digitale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
       '2': { chi:'Titolare', cosa:'Portali B2B automazione e impiantistica', costo_mensile:30, costo_setup:300, tempo_mesi:1 },
       '3': { chi:'Configuratore', cosa:'Configuratore base per quadri standard e componenti', costo_mensile:250, costo_setup:3500, tempo_mesi:2 },
       '4': { chi:'E-commerce ricambi', cosa:'E-commerce ricambi e componenti per clienti esistenti', costo_mensile:500, costo_setup:4000, tempo_mesi:3 },
       '5': { chi:'Piattaforma integrata', cosa:'Portale clienti — ordini ricorrenti, documentazione, assistenza', costo_mensile:900, costo_setup:8000, tempo_mesi:4 },
-    },
+      _label: 'Canale digitale B2B',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -472,12 +472,12 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'ERP tessile', cosa:'ERP tessile integrato — ordini, pianificazione, qualità, spedizioni', costo_mensile:800, costo_setup:5000, tempo_mesi:3 },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Titolare', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
       '2': { chi:'Titolare', cosa:'Ruoli telaio/finissaggio definiti', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
       '3': { chi:'Titolare', cosa:'Resp. tecnico sviluppo tessuti', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
       '4': { chi:'Consulente', cosa:'KPI produzione + qualità', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
       '5': { chi:'Management', cosa:'Management produzione/commerciale', costo_mensile:1500, costo_setup:2000, tempo_mesi:5 },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — produzione a esperienza del titolare', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
@@ -508,13 +508,13 @@ const STEP_DETAIL_BY_SETTORE = {
       '5': { chi:'Piattaforma B2B', cosa:'Portale B2B — ordini, tracking produzione, riordini stagionali', costo_mensile:1000, costo_setup:8000, tempo_mesi:3 },
     },
     ecommerce: {
-      _label: 'Approvvigionamento filati',
       '1': { chi:'Titolare', cosa:'Acquisto filato dal solito fornitore — nessuna diversificazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
       '2': { chi:'Titolare', cosa:'Mappatura fornitori alternativi — confronto prezzi e qualità', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
       '3': { chi:'Buyer part-time', cosa:'3-4 fornitori attivi con accordi di prezzo stagionali', costo_mensile:500, costo_setup:300, tempo_mesi:2 },
       '4': { chi:'Buyer dedicato', cosa:'Buyer dedicato — negoziazione volumi, stoccaggio strategico', costo_mensile:2000, costo_setup:500, tempo_mesi:3 },
       '5': { chi:'Resp. acquisti', cosa:'Strategia acquisti strutturata — hedging, contratti quadro, import', costo_mensile:3500, costo_setup:1500, tempo_mesi:4 },
-    },
+      _label: 'Approvvigionamento filati',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -523,126 +523,861 @@ const STEP_DETAIL_BY_SETTORE = {
   manifatturiero_tessile_capi: {
     vendite: {
       '1': { chi:'Titolare solo', cosa:'Titolare vende ai soliti brand — nessun venditore', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Campionario stagionale proattivo verso nuovi brand e catene', costo_mensile:500, costo_setup:800, tempo_mesi:1 },
-      '3': { chi:'1 agente', cosa:'1 agente moda brand/catene — provvigioni ~1.800€/mese', costo_mensile:1800, costo_setup:0, tempo_mesi:2 },
-      '4': { chi:'1 commerciale + showroom', cosa:'1 commerciale + showroom campagne vendita', costo_mensile:3500, costo_setup:2500, tempo_mesi:3 },
-      '5': { chi:'Dir. commerciale + agenti', cosa:'Dir. commerciale + agenti export', costo_mensile:8500, costo_setup:3000, tempo_mesi:6 },
+      '2': {
+        cosa: 'Campionario stagionale proattivo verso nuovi brand e catene',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:500, costo_setup:800, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: '1 agente moda brand/catene — provvigioni ~1.800€/mese',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1800, costo_setup:0, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:990, costo_setup:0, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:810, costo_setup:0, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: '1 commerciale + showroom campagne vendita',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:3500, costo_setup:2500, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1925, costo_setup:2500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1575, costo_setup:2500, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Dir. commerciale + agenti export',
+        tempo_mesi: 6,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:3400, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1870, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1700, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1275, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini stagionali a voce', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Excel con ordini, campionature inviate, conferme pendenti', costo_mensile:0, costo_setup:100, tempo_mesi:1 },
-      '3': { chi:'CRM base', cosa:'CRM per gestione campagne vendita e riordini', costo_mensile:80, costo_setup:300, tempo_mesi:1 },
-      '4': { chi:'CRM + gestionale', cosa:'CRM + gestionale — capacità produttiva e tempi consegna', costo_mensile:400, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'ERP moda', cosa:'ERP moda — dalla campagna vendita alla produzione alla spedizione', costo_mensile:900, costo_setup:5000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Excel con ordini, campionature inviate, conferme pendenti',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:100, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'CRM per gestione campagne vendita e riordini',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'CRM base', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'CRM + gestionale — capacità produttiva e tempi consegna',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM + gestionale', costo_mensile:400, costo_setup:1500, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:200, costo_setup:900, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ERP moda — dalla campagna vendita alla produzione alla spedizione',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'ERP moda', costo_mensile:900, costo_setup:5000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:450, costo_setup:3000, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Titolare', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Ruoli sartoria definiti', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Titolare', cosa:'Resp. produzione campionari', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Consulente', cosa:'KPI + pianificazione stagionale', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Management', cosa:'Management completo', costo_mensile:1500, costo_setup:2000, tempo_mesi:5 },
+      '2': {
+        cosa: 'Ruoli sartoria definiti',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'organizzazione', nome:'Ruoli sartoria definiti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Resp. produzione campionari',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'organizzazione', nome:'Resp. produzione campionari', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'KPI + pianificazione stagionale',
+        tempo_mesi: 3,
+        moduli: [
+          { id:'organizzazione', nome:'KPI + pianificazione stagionale', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Management completo',
+        tempo_mesi: 5,
+        moduli: [
+          {
+            id: 'manager',
+            nome: 'Figura manageriale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Management dipendente', costo_mensile:1500, costo_setup:2000, impatto:1, note:'Full-time' },
+              { id:'fractional', nome:'Management fractional', costo_mensile:750, costo_setup:2000, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          }
+        ]
+      },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — si cuce e si spedisce', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Scheda tecnica per capo — taglie, materiali, tempi, costi', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Software gestionale', cosa:'Gestionale taglie/colori con pianificazione produzione', costo_mensile:400, costo_setup:1500, tempo_mesi:2 },
-      '4': { chi:'Consulente qualità', cosa:'Controllo qualità AQL + compliance etichettatura (reg. UE)', costo_mensile:600, costo_setup:2000, tempo_mesi:3 },
-      '5': { chi:'Quality manager', cosa:'Tracciabilità filiera completa + certificazioni sostenibilità', costo_mensile:1200, costo_setup:5000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Scheda tecnica per capo — taglie, materiali, tempi, costi',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'processo', nome:'Scheda tecnica per capo', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Gestionale taglie/colori con pianificazione produzione',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Gestionale taglie/colori con pianificazione produzione',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:400, costo_setup:1500, impatto:1, note:'Gestionale taglie/colori con pianificazione produzione' },
+              { id:'base', nome:'Soluzione base', costo_mensile:200, costo_setup:750, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Controllo qualità AQL + compliance etichettatura (reg. UE)',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Controllo qualità AQL',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:600, costo_setup:2000, impatto:1, note:'Controllo qualità AQL + compliance etichettatura (reg. UE)' },
+              { id:'base', nome:'Soluzione base', costo_mensile:300, costo_setup:1000, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Tracciabilità filiera completa + certificazioni sostenibilità',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Tracciabilità filiera completa',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:1200, costo_setup:5000, impatto:1, note:'Tracciabilità filiera completa + certificazioni sostenibilità' },
+              { id:'base', nome:'Soluzione base', costo_mensile:600, costo_setup:2500, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Prezzi a capo fissi — margini bassi su grandi volumi', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Calcolo costo reale per capo — tessuto, lavorazione, finiture', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Pricing strutturato', cosa:'Differenziazione prezzo per complessità e metratura minima', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '4': { chi:'Servizio private label', cosa:'Private label come servizio premium — margini 30-40% superiori', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
-      '5': { chi:'Revenue manager', cosa:'Collezioni proprie o co-branded + revenue da sviluppo prototipi', costo_mensile:800, costo_setup:2000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Calcolo costo reale per capo — tessuto, lavorazione, finiture',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Calcolo costo reale per capo', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Differenziazione prezzo per complessità e metratura minima',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Differenziazione prezzo per complessità e metratura minima', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Private label come servizio premium — margini 30-40% superiori',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'ricavi', nome:'Private label come servizio premium', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Collezioni proprie o co-branded + revenue da sviluppo prototipi',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'Collezioni proprie o co-branded + revenue da sviluppo prototipi',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:800, costo_setup:2000, impatto:1, note:'Collezioni proprie o co-branded + revenue da sviluppo prototipi' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:400, costo_setup:1000, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo contatti nel distretto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Instagram con foto capi e produzione + LinkedIn B2B', costo_mensile:150, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Fiere', cosa:'Fiere moda (Première Vision, White, Pitti) — stand campionari', costo_mensile:600, costo_setup:6000, tempo_mesi:2 },
-      '4': { chi:'Agenzia digital', cosa:'Campagne digitali verso buyer brand e catene retail', costo_mensile:1000, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'Marketing manager', cosa:'Piano marketing — fiere + lookbook + PR + influencer B2B', costo_mensile:2500, costo_setup:4000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Instagram con foto capi e produzione + LinkedIn B2B',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'marketing', nome:'Instagram con foto capi e produzione + LinkedIn B2B', tipo:'flag', obbligatorio:true, costo_mensile:150, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Fiere moda (Première Vision, White, Pitti) — stand campionari',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Fiere moda (Première Vision, White, Pitti)', tipo:'flag', obbligatorio:true, costo_mensile:600, costo_setup:6000, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Campagne digitali verso buyer brand e catene retail',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Campagne digitali verso buyer brand e catene retail',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1000, costo_setup:1500, impatto:1, note:'Campagne digitali verso buyer brand e catene retail' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:400, costo_setup:750, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piano marketing — fiere + lookbook + PR + influencer B2B',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Piano marketing',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:2500, costo_setup:4000, impatto:1, note:'Piano marketing — fiere + lookbook + PR + influencer B2B' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:1000, costo_setup:2000, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito o sito datato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito con portfolio capi, capacità e certificazioni', costo_mensile:80, costo_setup:1000, tempo_mesi:1 },
-      '3': { chi:'Sito professionale', cosa:'Lookbook digitale stagionale + richiesta campioni online', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
-      '4': { chi:'Sito avanzato', cosa:'Area B2B — catalogo, disponibilità, ordini campioni', costo_mensile:600, costo_setup:4000, tempo_mesi:2 },
-      '5': { chi:'Piattaforma B2B', cosa:'Portale B2B con ordini, tracking produzione, documenti', costo_mensile:1000, costo_setup:8000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Sito con portfolio capi, capacità e certificazioni',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'sito', nome:'Sito con portfolio capi, capacità e certificazioni', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Lookbook digitale stagionale + richiesta campioni online',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Lookbook digitale stagionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:300, costo_setup:2500, impatto:1, note:'Lookbook digitale stagionale + richiesta campioni online' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:120, costo_setup:1000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Area B2B — catalogo, disponibilità, ordini campioni',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Area B2B',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:600, costo_setup:4000, impatto:1, note:'Area B2B — catalogo, disponibilità, ordini campioni' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:240, costo_setup:1600, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Portale B2B con ordini, tracking produzione, documenti',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Portale B2B con ordini, tracking produzione, documenti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:1000, costo_setup:8000, impatto:1, note:'Portale B2B con ordini, tracking produzione, documenti' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:400, costo_setup:3200, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
     },
     ecommerce: {
-      _label: 'Approvvigionamento tessuti',
       '1': { chi:'Titolare', cosa:'Acquisto tessuti dal solito fornitore — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Mappatura fornitori tessuti — confronto prezzi e MOQ', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Buyer part-time', cosa:'3-4 fornitori attivi + acquisto tessuti a stock per reattività', costo_mensile:500, costo_setup:300, tempo_mesi:2 },
-      '4': { chi:'Buyer dedicato', cosa:'Buyer dedicato — negoziazione, import diretto, magazzino tessuti', costo_mensile:2000, costo_setup:500, tempo_mesi:3 },
-      '5': { chi:'Resp. acquisti', cosa:'Sourcing internazionale, contratti quadro, hedging', costo_mensile:3500, costo_setup:1500, tempo_mesi:4 },
-    },
+      '2': {
+        cosa: 'Mappatura fornitori tessuti — confronto prezzi e MOQ',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'canale', nome:'Mappatura fornitori tessuti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: '3-4 fornitori attivi + acquisto tessuti a stock per reattività',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'canale',
+            nome: '3-4 fornitori attivi + acquisto tessuti a stock per reattività',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:500, costo_setup:300, impatto:1, note:'3-4 fornitori attivi + acquisto tessuti a stock per reattività' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:250, costo_setup:120, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Buyer dedicato — negoziazione, import diretto, magazzino tessuti',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Buyer dedicato',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:2000, costo_setup:500, impatto:1, note:'Buyer dedicato — negoziazione, import diretto, magazzino tessuti' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1000, costo_setup:200, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Sourcing internazionale, contratti quadro, hedging',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Sourcing internazionale, contratti quadro, hedging',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:3500, costo_setup:1500, impatto:1, note:'Sourcing internazionale, contratti quadro, hedging' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1750, costo_setup:600, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      _label: 'Approvvigionamento tessuti',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
   // SERVIZI IT
   // ═══════════════════════════════════════════════════════════════════════════
   servizi_it: {
-vendite: {
-      '1': { chi:'Titolare solo', cosa:'Solo il titolare vende \u2014 assistenza e vendita insieme', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Mappatura PMI zona con IT datato \u2014 visite dirette', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'+1 account manager', cosa:'1 account manager dedicato \u2014 sviluppa portafoglio e rinnovi', costo_mensile:2500, costo_setup:500, tempo_mesi:3 },
-      '4': { chi:'+1 pre-sales (tot 2)', cosa:'Account + tecnico pre-sales per gare e clienti strutturati', costo_mensile:5300, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Sales mgr + team', cosa:'Sales manager + account per verticale + business developer', costo_mensile:8000, costo_setup:2000, tempo_mesi:6 },
+    vendite: {
+      '1': { chi:'Titolare solo', cosa:'Solo il titolare vende — assistenza e vendita insieme', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': {
+        cosa: 'Mappatura PMI zona con IT datato — visite dirette',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: '1 account manager dedicato — sviluppa portafoglio e rinnovi',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2500, costo_setup:500, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1375, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1125, costo_setup:500, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Account + tecnico pre-sales per gare e clienti strutturati',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2120, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1166, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1060, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:795, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Sales manager + account per verticale + business developer',
+        tempo_mesi: 6,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:3200, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1760, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1600, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1200, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — ticket e vendite confusi insieme', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Excel con trattative aperte e scadenze contratti esistenti', costo_mensile:0, costo_setup:100, tempo_mesi:1 },
-      '3': { chi:'CRM base', cosa:'CRM con pipeline + alert scadenza contratti — il rinnovo è oro', costo_mensile:80, costo_setup:300, tempo_mesi:1 },
-      '4': { chi:'CRM + ticketing', cosa:'CRM integrato con ticketing — visione dal contratto al supporto', costo_mensile:300, costo_setup:1000, tempo_mesi:2 },
-      '5': { chi:'PSA completo', cosa:'CRM + PSA (Professional Services Automation) completo', costo_mensile:700, costo_setup:3000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Excel con trattative aperte e scadenze contratti esistenti',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:100, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'CRM con pipeline + alert scadenza contratti — il rinnovo è oro',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'CRM base', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'CRM integrato con ticketing — visione dal contratto al supporto',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM integrato con ticketing', costo_mensile:300, costo_setup:1000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:150, costo_setup:600, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'CRM + PSA (Professional Services Automation) completo',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM + PSA (Professional Services Automation) completo', costo_mensile:700, costo_setup:3000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:350, costo_setup:1800, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
     },
     team: {
+      '1': { chi:'Titolare', cosa:'Tutto dipende dal titolare — nessuna delega', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': {
+        cosa: 'Know-how documentato — non dipende da una sola persona',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'organizzazione', nome:'Know-how documentato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Ruoli definiti per specializzazione (cloud, security, network)',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'organizzazione', nome:'Ruoli definiti per specializzazione (cloud, security, network)', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Processi decisionali autonomi per team',
+        tempo_mesi: 3,
+        moduli: [
+          { id:'organizzazione', nome:'Processi decisionali autonomi per team', tipo:'flag', obbligatorio:true, costo_mensile:500, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Governance con delega completa — titolare solo strategia',
+        tempo_mesi: 6,
+        moduli: [
+          {
+            id: 'manager',
+            nome: 'Figura manageriale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Manager operativo dipendente', costo_mensile:1500, costo_setup:2000, impatto:1, note:'Full-time' },
+              { id:'fractional', nome:'Manager operativo fractional', costo_mensile:750, costo_setup:2000, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          }
+        ]
+      },
       _label: 'Organizzazione',
-      '1': { chi:'Titolare', cosa:'Tutto dipende dal titolare \u2014 nessuna delega', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Know-how documentato \u2014 non dipende da una sola persona', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Titolare', cosa:'Ruoli definiti per specializzazione (cloud, security, network)', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Consulente', cosa:'Processi decisionali autonomi per team', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Manager operativo', cosa:'Governance con delega completa \u2014 titolare solo strategia', costo_mensile:1500, costo_setup:2000, tempo_mesi:6 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — si risponde quando il cliente chiama', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Contratti di servizio standard — SLA, tempi risposta, escalation', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Ticketing', cosa:'Sistema ticketing (Freshdesk, Zendesk) per gestione richieste', costo_mensile:100, costo_setup:500, tempo_mesi:1 },
-      '4': { chi:'RMM + monitoring', cosa:'Monitoraggio proattivo — avvisare il cliente prima del problema', costo_mensile:500, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'Quality + security', cosa:'ISO 27001 + procedure incident response + audit periodici', costo_mensile:1200, costo_setup:6000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Contratti di servizio standard — SLA, tempi risposta, escalation',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'processo', nome:'Contratti di servizio standard', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Sistema ticketing (Freshdesk, Zendesk) per gestione richieste',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'processo', nome:'Sistema ticketing (Freshdesk, Zendesk) per gestione richieste', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Monitoraggio proattivo — avvisare il cliente prima del problema',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Monitoraggio proattivo',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:500, costo_setup:1500, impatto:1, note:'Monitoraggio proattivo — avvisare il cliente prima del problema' },
+              { id:'base', nome:'Soluzione base', costo_mensile:250, costo_setup:750, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ISO 27001 + procedure incident response + audit periodici',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'ISO 27001',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:1200, costo_setup:6000, impatto:1, note:'ISO 27001 + procedure incident response + audit periodici' },
+              { id:'base', nome:'Soluzione base', costo_mensile:600, costo_setup:3000, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Interventi a chiamata — fatturato imprevedibile', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Contratti manutenzione mensili — stabilizza il ricavo', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Cloud specialist', cosa:'Upsell cloud — migrazione M365/Azure per recurring revenue', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Security specialist', cosa:'Divisione cybersecurity — servizi ad alto margine', costo_mensile:800, costo_setup:1500, tempo_mesi:3 },
-      '5': { chi:'Revenue manager', cosa:'MSSP (Managed Security Services) — ricorrente margini >50%', costo_mensile:1500, costo_setup:3000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Contratti manutenzione mensili — stabilizza il ricavo',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Contratti manutenzione mensili', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Upsell cloud — migrazione M365/Azure per recurring revenue',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'ricavi', nome:'Upsell cloud', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Divisione cybersecurity — servizi ad alto margine',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'Divisione cybersecurity',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:800, costo_setup:1500, impatto:1, note:'Divisione cybersecurity — servizi ad alto margine' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:400, costo_setup:750, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'MSSP (Managed Security Services) — ricorrente margini >50%',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'MSSP (Managed Security Services)',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:1500, costo_setup:3000, impatto:1, note:'MSSP (Managed Security Services) — ricorrente margini >50%' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:750, costo_setup:1500, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo passaparola tra clienti', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Google My Business ottimizzato + referenze portali locali', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Partnership', cosa:'Partnership vendor (Microsoft, Cisco) — lead da directory', costo_mensile:400, costo_setup:1000, tempo_mesi:2 },
-      '4': { chi:'Agenzia digital', cosa:'Content marketing su cybersecurity e cloud per PMI', costo_mensile:1000, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'Marketing manager', cosa:'Account based marketing sulle 100 PMI target della zona', costo_mensile:2500, costo_setup:3000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Google My Business ottimizzato + referenze portali locali',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'marketing', nome:'Google My Business ottimizzato + referenze portali locali', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Partnership vendor (Microsoft, Cisco) — lead da directory',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Partnership vendor (Microsoft, Cisco)', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Content marketing su cybersecurity e cloud per PMI',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Content marketing su cybersecurity e cloud per PMI',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1000, costo_setup:1500, impatto:1, note:'Content marketing su cybersecurity e cloud per PMI' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:400, costo_setup:750, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Account based marketing sulle 100 PMI target della zona',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Account based marketing sulle 100 PMI target della zona',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:2500, costo_setup:3000, impatto:1, note:'Account based marketing sulle 100 PMI target della zona' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:1000, costo_setup:1500, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito o sito datato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito con servizi, certificazioni e case study PMI', costo_mensile:80, costo_setup:1000, tempo_mesi:1 },
-      '3': { chi:'Sito + blog', cosa:'Blog su cybersecurity e digital transformation per PMI', costo_mensile:300, costo_setup:2000, tempo_mesi:2 },
-      '4': { chi:'Sito avanzato', cosa:'Assessment tool — "Quanto è sicura la tua infrastruttura?"', costo_mensile:600, costo_setup:4000, tempo_mesi:2 },
-      '5': { chi:'Piattaforma clienti', cosa:'Portale clienti con dashboard servizi, SLA e ticket', costo_mensile:1000, costo_setup:7000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Sito con servizi, certificazioni e case study PMI',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'sito', nome:'Sito con servizi, certificazioni e case study PMI', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Blog su cybersecurity e digital transformation per PMI',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Blog su cybersecurity e digital transformation per PMI',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:300, costo_setup:2000, impatto:1, note:'Blog su cybersecurity e digital transformation per PMI' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:120, costo_setup:800, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Assessment tool — "Quanto è sicura la tua infrastruttura?"',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Assessment tool',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:600, costo_setup:4000, impatto:1, note:'Assessment tool — "Quanto è sicura la tua infrastruttura?"' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:240, costo_setup:1600, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Portale clienti con dashboard servizi, SLA e ticket',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Portale clienti con dashboard servizi, SLA e ticket',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:1000, costo_setup:7000, impatto:1, note:'Portale clienti con dashboard servizi, SLA e ticket' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:400, costo_setup:2800, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
     },
     ecommerce: {
-      _label: 'Approvvigionamento IT + Licensing',
       '1': { chi:'Titolare', cosa:'Acquisto HW e licenze dal solito distributore — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Accordi con 2-3 distributori (Ingram, Esprinet) — confronto prezzi', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'CSP partner', cosa:'CSP Microsoft attivo — rivendita licenze M365/Azure con margine', costo_mensile:200, costo_setup:1000, tempo_mesi:2 },
-      '4': { chi:'Buyer IT', cosa:'Buyer dedicato + accordi volume con vendor e distributori', costo_mensile:800, costo_setup:500, tempo_mesi:2 },
-      '5': { chi:'Resp. acquisti + portale', cosa:'Strategia licensing + portale rivendita + contratti quadro vendor', costo_mensile:1500, costo_setup:3000, tempo_mesi:4 },
-    },
+      '2': {
+        cosa: 'Accordi con 2-3 distributori (Ingram, Esprinet) — confronto prezzi',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'canale', nome:'Accordi con 2-3 distributori (Ingram, Esprinet)', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'CSP Microsoft attivo — rivendita licenze M365/Azure con margine',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'canale', nome:'CSP Microsoft attivo', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Buyer dedicato + accordi volume con vendor e distributori',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Buyer dedicato + accordi volume con vendor e distributori',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:800, costo_setup:500, impatto:1, note:'Buyer dedicato + accordi volume con vendor e distributori' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:400, costo_setup:200, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Strategia licensing + portale rivendita + contratti quadro vendor',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Strategia licensing + portale rivendita + contratti quadro vendor',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:1500, costo_setup:3000, impatto:1, note:'Strategia licensing + portale rivendita + contratti quadro vendor' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:750, costo_setup:1200, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      _label: 'Approvvigionamento IT + Licensing',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -650,63 +1385,430 @@ vendite: {
   // ═══════════════════════════════════════════════════════════════════════════
   servizi_formazione: {
     vendite: {
-      '1': { chi:'Titolare solo', cosa:'Titolare/formatore vende i propri corsi \u2014 nessun commerciale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Proposta proattiva verso HR e resp. formazione aziende zona', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'+1 commerciale', cosa:'1 commerciale dedicato \u2014 sviluppo clienti corporate e enti', costo_mensile:2500, costo_setup:500, tempo_mesi:3 },
-      '4': { chi:'+1 comm. (tot 2)', cosa:'Team vendite \u2014 corporate + PA/bandi + catalogo', costo_mensile:5000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Rete + partnership', cosa:'Rete segnalatori + partnership consulenti', costo_mensile:3500, costo_setup:2000, tempo_mesi:6 },
+      '1': { chi:'Titolare solo', cosa:'Titolare/formatore vende i propri corsi — nessun commerciale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': {
+        cosa: 'Proposta proattiva verso HR e resp. formazione aziende zona',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: '1 commerciale dedicato — sviluppo clienti corporate e enti',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2500, costo_setup:500, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1375, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1125, costo_setup:500, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Team vendite — corporate + PA/bandi + catalogo',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2000, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1100, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1000, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:750, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Rete segnalatori + partnership consulenti',
+        tempo_mesi: 6,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:3500, costo_setup:2000, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1925, costo_setup:2000, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1575, costo_setup:2000, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — corsi venduti a richiesta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Excel con aziende contattate, proposte inviate, follow-up', costo_mensile:0, costo_setup:100, tempo_mesi:1 },
-      '3': { chi:'CRM base', cosa:'CRM per pipeline corporate e scadenze fondi interprofessionali', costo_mensile:80, costo_setup:300, tempo_mesi:1 },
-      '4': { chi:'CRM + consulente bandi', cosa:'CRM + gestione bandi e fondi (Fondimpresa, Fondirigenti)', costo_mensile:500, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'CRM + LMS integrato', cosa:'CRM integrato con LMS e fatturazione — ciclo completo', costo_mensile:1200, costo_setup:4000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Excel con aziende contattate, proposte inviate, follow-up',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:100, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'CRM per pipeline corporate e scadenze fondi interprofessionali',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'CRM base', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'CRM + gestione bandi e fondi (Fondimpresa, Fondirigenti)',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM + gestione bandi e fondi (Fondimpresa, Fondirigenti)', costo_mensile:500, costo_setup:1500, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:250, costo_setup:900, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'CRM integrato con LMS e fatturazione — ciclo completo',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM integrato con LMS e fatturazione', costo_mensile:1200, costo_setup:4000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:600, costo_setup:2400, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
     },
     team: {
+      '1': { chi:'Titolare', cosa:'Titolare fa tutto — nessuna organizzazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': {
+        cosa: 'Catalogo corsi strutturato con programmi definiti',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'organizzazione', nome:'Catalogo corsi strutturato con programmi definiti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Coordinamento rete formatori freelance',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'organizzazione', nome:'Coordinamento rete formatori freelance', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'KPI per formatore + pianificazione didattica',
+        tempo_mesi: 3,
+        moduli: [
+          { id:'organizzazione', nome:'KPI per formatore + pianificazione didattica', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Governance didattica — titolare solo strategia',
+        tempo_mesi: 5,
+        moduli: [
+          {
+            id: 'manager',
+            nome: 'Figura manageriale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Direttore academy dipendente', costo_mensile:1500, costo_setup:2000, impatto:1, note:'Full-time' },
+              { id:'fractional', nome:'Direttore academy fractional', costo_mensile:750, costo_setup:2000, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          }
+        ]
+      },
       _label: 'Organizzazione',
-      '1': { chi:'Titolare', cosa:'Titolare fa tutto \u2014 nessuna organizzazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Catalogo corsi strutturato con programmi definiti', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Titolare', cosa:'Coordinamento rete formatori freelance', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Consulente', cosa:'KPI per formatore + pianificazione didattica', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Direttore academy', cosa:'Governance didattica \u2014 titolare solo strategia', costo_mensile:1500, costo_setup:2000, tempo_mesi:5 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — ogni corso è improvvisato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Catalogo corsi standard con programmi e durate definite', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Gestionale corsi', cosa:'Processo iscrizione + materiali + valutazione apprendimento', costo_mensile:200, costo_setup:800, tempo_mesi:2 },
-      '4': { chi:'LMS (Moodle, Docebo)', cosa:'LMS per e-learning + blended learning strutturato', costo_mensile:800, costo_setup:3000, tempo_mesi:3 },
-      '5': { chi:'Quality manager', cosa:'Certificazione qualità (ISO 21001) + accreditamento regionale', costo_mensile:1500, costo_setup:8000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Catalogo corsi standard con programmi e durate definite',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'processo', nome:'Catalogo corsi standard con programmi e durate definite', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Processo iscrizione + materiali + valutazione apprendimento',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'processo', nome:'Processo iscrizione + materiali + valutazione apprendimento', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:800, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'LMS per e-learning + blended learning strutturato',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'LMS per e-learning',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:800, costo_setup:3000, impatto:1, note:'LMS per e-learning + blended learning strutturato' },
+              { id:'base', nome:'Soluzione base', costo_mensile:400, costo_setup:1500, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Certificazione qualità (ISO 21001) + accreditamento regionale',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Certificazione qualità (ISO 21001)',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:1500, costo_setup:8000, impatto:1, note:'Certificazione qualità (ISO 21001) + accreditamento regionale' },
+              { id:'base', nome:'Soluzione base', costo_mensile:750, costo_setup:4000, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Corsi a giornata — fatturato a singhiozzo', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Pacchetti formativi annuali per aziende — ricavo prevedibile', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Consulente bandi', cosa:'Formazione finanziata — fondi interprofessionali come leva', costo_mensile:600, costo_setup:1000, tempo_mesi:2 },
-      '4': { chi:'Produzione contenuti', cosa:'E-learning a catalogo — ricavo passivo da corsi registrati', costo_mensile:1000, costo_setup:3000, tempo_mesi:3 },
-      '5': { chi:'Revenue manager', cosa:'Academy aziendale white-label per grandi clienti — margini premium', costo_mensile:2000, costo_setup:5000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Pacchetti formativi annuali per aziende — ricavo prevedibile',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Pacchetti formativi annuali per aziende', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Formazione finanziata — fondi interprofessionali come leva',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'Formazione finanziata',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:600, costo_setup:1000, impatto:1, note:'Formazione finanziata — fondi interprofessionali come leva' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:300, costo_setup:500, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'E-learning a catalogo — ricavo passivo da corsi registrati',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'E-learning a catalogo',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:1000, costo_setup:3000, impatto:1, note:'E-learning a catalogo — ricavo passivo da corsi registrati' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:500, costo_setup:1500, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Academy aziendale white-label per grandi clienti — margini premium',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'Academy aziendale white-label per grandi clienti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:2000, costo_setup:5000, impatto:1, note:'Academy aziendale white-label per grandi clienti — margini premium' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:1000, costo_setup:2500, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo passaparola e contatti personali', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'LinkedIn personale del titolare con post su temi formativi', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Webinar + email', cosa:'Webinar gratuiti come lead generation + newsletter', costo_mensile:400, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Agenzia digital', cosa:'Campagne LinkedIn Ads verso HR e responsabili formazione', costo_mensile:1000, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'Marketing manager', cosa:'Piano marketing — eventi + content + partnership + PR', costo_mensile:2500, costo_setup:3000, tempo_mesi:3 },
+      '2': {
+        cosa: 'LinkedIn personale del titolare con post su temi formativi',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'marketing', nome:'LinkedIn personale del titolare con post su temi formativi', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Webinar gratuiti come lead generation + newsletter',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Webinar gratuiti come lead generation + newsletter', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Campagne LinkedIn Ads verso HR e responsabili formazione',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Campagne LinkedIn Ads verso HR e responsabili formazione',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1000, costo_setup:1500, impatto:1, note:'Campagne LinkedIn Ads verso HR e responsabili formazione' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:400, costo_setup:750, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piano marketing — eventi + content + partnership + PR',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Piano marketing',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:2500, costo_setup:3000, impatto:1, note:'Piano marketing — eventi + content + partnership + PR' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:1000, costo_setup:1500, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito o pagina personale datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito con catalogo corsi, formatori, testimonianze', costo_mensile:100, costo_setup:1200, tempo_mesi:1 },
-      '3': { chi:'Sito professionale', cosa:'Iscrizione online + pagamento + calendario corsi', costo_mensile:350, costo_setup:3000, tempo_mesi:2 },
-      '4': { chi:'Sito avanzato', cosa:'Area riservata con materiali, attestati e storico formazione', costo_mensile:800, costo_setup:5000, tempo_mesi:2 },
-      '5': { chi:'LMS + e-commerce', cosa:'Piattaforma e-learning integrata con e-commerce corsi', costo_mensile:2000, costo_setup:12000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Sito con catalogo corsi, formatori, testimonianze',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'sito', nome:'Sito con catalogo corsi, formatori, testimonianze', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:1200, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Iscrizione online + pagamento + calendario corsi',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Iscrizione online',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:350, costo_setup:3000, impatto:1, note:'Iscrizione online + pagamento + calendario corsi' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:140, costo_setup:1200, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Area riservata con materiali, attestati e storico formazione',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Area riservata con materiali, attestati e storico formazione',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:800, costo_setup:5000, impatto:1, note:'Area riservata con materiali, attestati e storico formazione' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:320, costo_setup:2000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piattaforma e-learning integrata con e-commerce corsi',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Piattaforma e-learning integrata con e-commerce corsi',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:2000, costo_setup:12000, impatto:1, note:'Piattaforma e-learning integrata con e-commerce corsi' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:800, costo_setup:4800, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
     },
     ecommerce: {
-      _label: 'Approvvigionamento docenti e contenuti',
       '1': { chi:'Titolare', cosa:'Nessun approvvigionamento strutturato di contenuti/docenti', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Rete di 3-5 formatori freelance con tariffe concordate', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Accordi formali', cosa:'Accordi con enti certificatori + materiali didattici licenziati', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Partnership + produzione', cosa:'Partnership piattaforme + videomaker per contenuti e-learning', costo_mensile:1500, costo_setup:3000, tempo_mesi:3 },
-      '5': { chi:'Resp. contenuti + studio', cosa:'Resp. contenuti + rete 15+ docenti + studio produzione video', costo_mensile:3500, costo_setup:6000, tempo_mesi:4 },
-    },
+      '2': {
+        cosa: 'Rete di 3-5 formatori freelance con tariffe concordate',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'canale', nome:'Rete di 3-5 formatori freelance con tariffe concordate', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Accordi con enti certificatori + materiali didattici licenziati',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'canale', nome:'Accordi con enti certificatori + materiali didattici licenziati', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Partnership piattaforme + videomaker per contenuti e-learning',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Partnership piattaforme + videomaker per contenuti e-learning',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:1500, costo_setup:3000, impatto:1, note:'Partnership piattaforme + videomaker per contenuti e-learning' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:750, costo_setup:1200, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Resp. contenuti + rete 15+ docenti + studio produzione video',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Resp. contenuti + rete 15+ docenti + studio produzione video',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:3500, costo_setup:6000, impatto:1, note:'Resp. contenuti + rete 15+ docenti + studio produzione video' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1750, costo_setup:2400, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      _label: 'Approvvigionamento docenti e contenuti',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -715,62 +1817,373 @@ vendite: {
   edilizia_residenziale: {
     vendite: {
       '1': { chi:'Titolare solo', cosa:'Titolare trova lavori tramite passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Rapporti con geometri e architetti della zona', costo_mensile:150, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Titolare strutturato', cosa:'Preventivi professionali + sopralluoghi proattivi', costo_mensile:300, costo_setup:300, tempo_mesi:2 },
-      '4': { chi:'+1 commerciale', cosa:'1 commerciale condomini/studi tecnici/enti', costo_mensile:2500, costo_setup:500, tempo_mesi:3 },
-      '5': { chi:'Gare + segnalatori', cosa:'Gare pubbliche SOA + rete segnalatori', costo_mensile:3000, costo_setup:2000, tempo_mesi:6 },
+      '2': {
+        cosa: 'Rapporti con geometri e architetti della zona',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:150, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Preventivi professionali + sopralluoghi proattivi',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'supporto', nome:'Titolare strutturato', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: '1 commerciale condomini/studi tecnici/enti',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2500, costo_setup:500, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1375, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1125, costo_setup:500, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Gare pubbliche SOA + rete segnalatori',
+        tempo_mesi: 6,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:3000, costo_setup:2000, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1650, costo_setup:2000, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1350, costo_setup:2000, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — preventivi fatti e dimenticati', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Excel con preventivi aperti, sopralluoghi fatti, follow-up', costo_mensile:0, costo_setup:100, tempo_mesi:1 },
-      '3': { chi:'CRM base', cosa:'CRM per gestire preventivi, cantieri e referenze clienti', costo_mensile:50, costo_setup:200, tempo_mesi:1 },
-      '4': { chi:'CRM + gestionale', cosa:'CRM + gestionale cantieri — margini, avanzamento, SAL', costo_mensile:300, costo_setup:1200, tempo_mesi:2 },
-      '5': { chi:'ERP edile', cosa:'ERP edile — preventivazione, contabilità cantiere, fatturazione', costo_mensile:600, costo_setup:3000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Excel con preventivi aperti, sopralluoghi fatti, follow-up',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:100, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'CRM per gestire preventivi, cantieri e referenze clienti',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'CRM base', tipo:'flag', obbligatorio:true, costo_mensile:50, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'CRM + gestionale cantieri — margini, avanzamento, SAL',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM + gestionale cantieri', costo_mensile:300, costo_setup:1200, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:150, costo_setup:720, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ERP edile — preventivazione, contabilità cantiere, fatturazione',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'ERP edile', costo_mensile:600, costo_setup:3000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:300, costo_setup:1800, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
     },
     team: {
+      '1': { chi:'Titolare', cosa:'Titolare sempre in cantiere — decide tutto al momento', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': {
+        cosa: 'Capo cantiere gestisce — il titolare esce dal cantiere',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'organizzazione', nome:'Capo cantiere gestisce', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Ruoli definiti cantiere/ufficio — deleghe operative',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'organizzazione', nome:'Ruoli definiti cantiere/ufficio', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'KPI commessa + processi decisionali delegati',
+        tempo_mesi: 3,
+        moduli: [
+          { id:'organizzazione', nome:'KPI commessa + processi decisionali delegati', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Management — titolare solo strategia e clienti top',
+        tempo_mesi: 5,
+        moduli: [
+          {
+            id: 'manager',
+            nome: 'Figura manageriale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Manager operativo dipendente', costo_mensile:1500, costo_setup:1500, impatto:1, note:'Full-time' },
+              { id:'fractional', nome:'Manager operativo fractional', costo_mensile:750, costo_setup:1500, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          }
+        ]
+      },
       _label: 'Organizzazione',
-      '1': { chi:'Titolare', cosa:'Titolare sempre in cantiere \u2014 decide tutto al momento', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Capo cantiere gestisce \u2014 il titolare esce dal cantiere', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Titolare', cosa:'Ruoli definiti cantiere/ufficio \u2014 deleghe operative', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Consulente', cosa:'KPI commessa + processi decisionali delegati', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Manager operativo', cosa:'Management \u2014 titolare solo strategia e clienti top', costo_mensile:1500, costo_setup:1500, tempo_mesi:5 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — ogni cantiere è diverso', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Computo metrico standard + template preventivo professionale', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Software cantiere', cosa:'Gestionale cantiere — pianificazione lavori e controllo costi', costo_mensile:250, costo_setup:1000, tempo_mesi:2 },
-      '4': { chi:'Consulente fiscale', cosa:'Gestione bonus fiscali — pratiche, asseverazioni, cessioni', costo_mensile:500, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'Quality + SOA', cosa:'SOA + certificazioni + sistema qualità cantiere', costo_mensile:1000, costo_setup:6000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Computo metrico standard + template preventivo professionale',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'processo', nome:'Computo metrico standard + template preventivo professionale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Gestionale cantiere — pianificazione lavori e controllo costi',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'processo', nome:'Gestionale cantiere', tipo:'flag', obbligatorio:true, costo_mensile:250, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Gestione bonus fiscali — pratiche, asseverazioni, cessioni',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Gestione bonus fiscali',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:500, costo_setup:1500, impatto:1, note:'Gestione bonus fiscali — pratiche, asseverazioni, cessioni' },
+              { id:'base', nome:'Soluzione base', costo_mensile:250, costo_setup:750, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'SOA + certificazioni + sistema qualità cantiere',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'SOA',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:1000, costo_setup:6000, impatto:1, note:'SOA + certificazioni + sistema qualità cantiere' },
+              { id:'base', nome:'Soluzione base', costo_mensile:500, costo_setup:3000, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Prezzi al ribasso per prendere i lavori — margini minimi', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Calcolo costi reali per cantiere — materiali, ore, subappalti', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Upsell strutturato', cosa:'Preventivi con voci separate — upsell su finiture e varianti', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '4': { chi:'Contratti ricorrenti', cosa:'Contratti manutenzione post-cantiere — ricavo ricorrente', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '5': { chi:'Revenue manager', cosa:'General contractor — gestione completa con margine su subappalti', costo_mensile:600, costo_setup:1000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Calcolo costi reali per cantiere — materiali, ore, subappalti',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Calcolo costi reali per cantiere', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Preventivi con voci separate — upsell su finiture e varianti',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Preventivi con voci separate', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Contratti manutenzione post-cantiere — ricavo ricorrente',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'ricavi', nome:'Contratti manutenzione post-cantiere', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'General contractor — gestione completa con margine su subappalti',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'General contractor',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:600, costo_setup:1000, impatto:1, note:'General contractor — gestione completa con margine su subappalti' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:300, costo_setup:500, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo passaparola nel quartiere', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Google My Business con foto cantieri prima/dopo + recensioni', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Portali', cosa:'Presenza su portali ristrutturazione (Houzz, Habitissimo)', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Agenzia digital', cosa:'Google Ads locali + campagne social prima/dopo lavori', costo_mensile:800, costo_setup:1200, tempo_mesi:2 },
-      '5': { chi:'Marketing manager', cosa:'Piano marketing — portfolio, partnership architetti, eventi locali', costo_mensile:2000, costo_setup:2500, tempo_mesi:3 },
+      '2': {
+        cosa: 'Google My Business con foto cantieri prima/dopo + recensioni',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'marketing', nome:'Google My Business con foto cantieri prima/dopo + recensioni', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Presenza su portali ristrutturazione (Houzz, Habitissimo)',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Presenza su portali ristrutturazione (Houzz, Habitissimo)', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Google Ads locali + campagne social prima/dopo lavori',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Google Ads locali + campagne social prima/dopo lavori', tipo:'flag', obbligatorio:true, costo_mensile:800, costo_setup:1200, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Piano marketing — portfolio, partnership architetti, eventi locali',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Piano marketing',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:2000, costo_setup:2500, impatto:1, note:'Piano marketing — portfolio, partnership architetti, eventi locali' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:800, costo_setup:1250, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito — solo pagina Facebook', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito con portfolio lavori, servizi e zona operativa', costo_mensile:80, costo_setup:800, tempo_mesi:1 },
-      '3': { chi:'Sito professionale', cosa:'Gallery prima/dopo + preventivo online + recensioni', costo_mensile:250, costo_setup:2000, tempo_mesi:2 },
-      '4': { chi:'Sito + SEO', cosa:'Blog su bonus fiscali e ristrutturazione + SEO locale', costo_mensile:500, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'Sito avanzato', cosa:'Configuratore preventivo online per ristrutturazioni standard', costo_mensile:800, costo_setup:5000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Sito con portfolio lavori, servizi e zona operativa',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'sito', nome:'Sito con portfolio lavori, servizi e zona operativa', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:800, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Gallery prima/dopo + preventivo online + recensioni',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Gallery prima/dopo',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:250, costo_setup:2000, impatto:1, note:'Gallery prima/dopo + preventivo online + recensioni' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:100, costo_setup:800, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Blog su bonus fiscali e ristrutturazione + SEO locale',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Blog su bonus fiscali e ristrutturazione',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:500, costo_setup:1500, impatto:1, note:'Blog su bonus fiscali e ristrutturazione + SEO locale' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:200, costo_setup:600, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Configuratore preventivo online per ristrutturazioni standard',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Configuratore preventivo online per ristrutturazioni standard',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:800, costo_setup:5000, impatto:1, note:'Configuratore preventivo online per ristrutturazioni standard' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:320, costo_setup:2000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
     },
     ecommerce: {
-      _label: 'Approvvigionamento materiali e subappalti',
       '1': { chi:'Titolare', cosa:'Acquisto materiali dal solito magazzino edile — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Confronto prezzi tra 2-3 fornitori per ogni cantiere', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Accordi fornitori', cosa:'Accordi quadro con fornitori materiali — prezzi riservati', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
-      '4': { chi:'Gestione subappalti', cosa:'Rete subappaltatori qualificati con tariffe concordate', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
-      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — negoziazione volumi, stoccaggio, import diretto', costo_mensile:1500, costo_setup:1000, tempo_mesi:4 },
-    },
+      '2': {
+        cosa: 'Confronto prezzi tra 2-3 fornitori per ogni cantiere',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'canale', nome:'Confronto prezzi tra 2-3 fornitori per ogni cantiere', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Accordi quadro con fornitori materiali — prezzi riservati',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'canale', nome:'Accordi quadro con fornitori materiali', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Rete subappaltatori qualificati con tariffe concordate',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'canale', nome:'Rete subappaltatori qualificati con tariffe concordate', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Resp. acquisti — negoziazione volumi, stoccaggio, import diretto',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Resp. acquisti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:1500, costo_setup:1000, impatto:1, note:'Resp. acquisti — negoziazione volumi, stoccaggio, import diretto' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:750, costo_setup:400, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      _label: 'Approvvigionamento materiali e subappalti',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -779,62 +2192,373 @@ vendite: {
   edilizia_impianti: {
     vendite: {
       '1': { chi:'Titolare solo', cosa:'Titolare trova lavori tramite passaparola e imprese', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Rapporti con studi tecnici e amministratori condominio', costo_mensile:150, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Titolare strutturato', cosa:'Preventivi + proposta efficientamento su ogni sopralluogo', costo_mensile:300, costo_setup:300, tempo_mesi:2 },
-      '4': { chi:'+1 commerciale', cosa:'1 commerciale condomini/industria/PA', costo_mensile:2500, costo_setup:500, tempo_mesi:3 },
-      '5': { chi:'Rete + gare', cosa:'Rete installatori partner + gare pubbliche', costo_mensile:3000, costo_setup:2000, tempo_mesi:6 },
+      '2': {
+        cosa: 'Rapporti con studi tecnici e amministratori condominio',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:150, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Preventivi + proposta efficientamento su ogni sopralluogo',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'supporto', nome:'Titolare strutturato', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: '1 commerciale condomini/industria/PA',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2500, costo_setup:500, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1375, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1125, costo_setup:500, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Rete installatori partner + gare pubbliche',
+        tempo_mesi: 6,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:3000, costo_setup:2000, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1650, costo_setup:2000, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1350, costo_setup:2000, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — chiamate e preventivi a memoria', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Excel con preventivi, impianti installati, scadenze manutenzione', costo_mensile:0, costo_setup:100, tempo_mesi:1 },
-      '3': { chi:'CRM base', cosa:'CRM per preventivi + scadenze contratti manutenzione', costo_mensile:50, costo_setup:200, tempo_mesi:1 },
-      '4': { chi:'CRM + gestionale', cosa:'CRM + gestionale interventi — programmazione e consuntivo', costo_mensile:300, costo_setup:1200, tempo_mesi:2 },
-      '5': { chi:'ERP impiantistica', cosa:'ERP impiantistica — preventivi, commesse, magazzino, fatturazione', costo_mensile:600, costo_setup:3000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Excel con preventivi, impianti installati, scadenze manutenzione',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:100, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'CRM per preventivi + scadenze contratti manutenzione',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'CRM base', tipo:'flag', obbligatorio:true, costo_mensile:50, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'CRM + gestionale interventi — programmazione e consuntivo',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM + gestionale interventi', costo_mensile:300, costo_setup:1200, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:150, costo_setup:720, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ERP impiantistica — preventivi, commesse, magazzino, fatturazione',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'ERP impiantistica', costo_mensile:600, costo_setup:3000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:300, costo_setup:1800, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
     },
     team: {
+      '1': { chi:'Titolare', cosa:'Titolare sugli impianti — decide tutto al momento', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': {
+        cosa: 'Capo squadra gestisce cantieri — titolare si libera',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'organizzazione', nome:'Capo squadra gestisce cantieri', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Ruoli definiti installazione/ufficio',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'organizzazione', nome:'Ruoli definiti installazione/ufficio', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'KPI + programmazione interventi delegata',
+        tempo_mesi: 3,
+        moduli: [
+          { id:'organizzazione', nome:'KPI + programmazione interventi delegata', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Management — deleghe complete',
+        tempo_mesi: 5,
+        moduli: [
+          {
+            id: 'manager',
+            nome: 'Figura manageriale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Manager operativo dipendente', costo_mensile:1500, costo_setup:1500, impatto:1, note:'Full-time' },
+              { id:'fractional', nome:'Manager operativo fractional', costo_mensile:750, costo_setup:1500, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          }
+        ]
+      },
       _label: 'Organizzazione',
-      '1': { chi:'Titolare', cosa:'Titolare sugli impianti \u2014 decide tutto al momento', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Capo squadra gestisce cantieri \u2014 titolare si libera', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Titolare', cosa:'Ruoli definiti installazione/ufficio', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Consulente', cosa:'KPI + programmazione interventi delegata', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Manager operativo', cosa:'Management \u2014 deleghe complete', costo_mensile:1500, costo_setup:1500, tempo_mesi:5 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — ogni impianto è gestito a esperienza', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Scheda impianto standard — specifiche, materiali, tempi, costi', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Software gestionale', cosa:'Gestionale interventi con programmazione manutenzioni', costo_mensile:250, costo_setup:1000, tempo_mesi:2 },
-      '4': { chi:'Consulente + procedure', cosa:'Certificazioni obbligatorie strutturate (DM 37/08) + sicurezza', costo_mensile:500, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'Quality manager', cosa:'ISO 9001 + gestione garanzie + audit qualità impianti', costo_mensile:1000, costo_setup:5000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Scheda impianto standard — specifiche, materiali, tempi, costi',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'processo', nome:'Scheda impianto standard', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Gestionale interventi con programmazione manutenzioni',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'processo', nome:'Gestionale interventi con programmazione manutenzioni', tipo:'flag', obbligatorio:true, costo_mensile:250, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Certificazioni obbligatorie strutturate (DM 37/08) + sicurezza',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Certificazioni obbligatorie strutturate (DM 37/08)',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:500, costo_setup:1500, impatto:1, note:'Certificazioni obbligatorie strutturate (DM 37/08) + sicurezza' },
+              { id:'base', nome:'Soluzione base', costo_mensile:250, costo_setup:750, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ISO 9001 + gestione garanzie + audit qualità impianti',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'ISO 9001',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:1000, costo_setup:5000, impatto:1, note:'ISO 9001 + gestione garanzie + audit qualità impianti' },
+              { id:'base', nome:'Soluzione base', costo_mensile:500, costo_setup:2500, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Installazione a prezzo fisso — nessun ricavo ricorrente', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Calcolo costi reali — materiali, ore, spostamenti', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Contratti ricorrenti', cosa:'Contratti manutenzione annuali — caldaie, condizionatori, impianti', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
-      '4': { chi:'Upsell strutturato', cosa:'Upsell efficientamento energetico + bonus fiscali come leva', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
-      '5': { chi:'Revenue manager', cosa:'Contratti full-service condomini e industria — ricavo garantito', costo_mensile:800, costo_setup:1500, tempo_mesi:3 },
+      '2': {
+        cosa: 'Calcolo costi reali — materiali, ore, spostamenti',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Calcolo costi reali', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Contratti manutenzione annuali — caldaie, condizionatori, impianti',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Contratti manutenzione annuali', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Upsell efficientamento energetico + bonus fiscali come leva',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'ricavi', nome:'Upsell efficientamento energetico + bonus fiscali come leva', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Contratti full-service condomini e industria — ricavo garantito',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'Contratti full-service condomini e industria',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:800, costo_setup:1500, impatto:1, note:'Contratti full-service condomini e industria — ricavo garantito' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:400, costo_setup:750, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Google My Business + foto impianti realizzati + recensioni', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Portali', cosa:'Portali locali (PagineGialle, Instapro) + partnership edili', costo_mensile:300, costo_setup:400, tempo_mesi:2 },
-      '4': { chi:'Agenzia digital', cosa:'Google Ads locali su manutenzione e efficientamento', costo_mensile:700, costo_setup:1000, tempo_mesi:2 },
-      '5': { chi:'Marketing manager', cosa:'Piano marketing — referenze, partnership costruttori, eventi', costo_mensile:1800, costo_setup:2500, tempo_mesi:3 },
+      '2': {
+        cosa: 'Google My Business + foto impianti realizzati + recensioni',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'marketing', nome:'Google My Business + foto impianti realizzati + recensioni', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Portali locali (PagineGialle, Instapro) + partnership edili',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Portali locali (PagineGialle, Instapro) + partnership edili', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:400, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Google Ads locali su manutenzione e efficientamento',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Google Ads locali su manutenzione e efficientamento', tipo:'flag', obbligatorio:true, costo_mensile:700, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Piano marketing — referenze, partnership costruttori, eventi',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Piano marketing',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1800, costo_setup:2500, impatto:1, note:'Piano marketing — referenze, partnership costruttori, eventi' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:720, costo_setup:1250, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito — solo pagina social', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito con servizi, zona operativa, foto impianti', costo_mensile:80, costo_setup:800, tempo_mesi:1 },
-      '3': { chi:'Sito professionale', cosa:'Portfolio lavori + preventivo online + recensioni', costo_mensile:250, costo_setup:1800, tempo_mesi:2 },
-      '4': { chi:'Sito + SEO', cosa:'Blog su risparmio energetico e bonus + SEO locale', costo_mensile:450, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'Sito avanzato', cosa:'Area clienti — storico impianti, scadenze manutenzione, documenti', costo_mensile:750, costo_setup:4000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Sito con servizi, zona operativa, foto impianti',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'sito', nome:'Sito con servizi, zona operativa, foto impianti', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:800, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Portfolio lavori + preventivo online + recensioni',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Portfolio lavori',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:250, costo_setup:1800, impatto:1, note:'Portfolio lavori + preventivo online + recensioni' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:100, costo_setup:720, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Blog su risparmio energetico e bonus + SEO locale',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Blog su risparmio energetico e bonus',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:450, costo_setup:1500, impatto:1, note:'Blog su risparmio energetico e bonus + SEO locale' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:180, costo_setup:600, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Area clienti — storico impianti, scadenze manutenzione, documenti',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Area clienti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:750, costo_setup:4000, impatto:1, note:'Area clienti — storico impianti, scadenze manutenzione, documenti' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:300, costo_setup:1600, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
     },
     ecommerce: {
-      _label: 'Approvvigionamento materiali',
       '1': { chi:'Titolare', cosa:'Acquisto materiali dal grossista di fiducia — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Confronto prezzi tra 2-3 grossisti per ogni commessa', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Accordi distributori', cosa:'Accordi quadro con distributori — prezzi riservati e consegna rapida', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
-      '4': { chi:'Magazzino strutturato', cosa:'Magazzino materiali ricorrenti + gestione scorte minime', costo_mensile:400, costo_setup:800, tempo_mesi:2 },
-      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — accordi volume, import diretto, stoccaggio', costo_mensile:1500, costo_setup:1000, tempo_mesi:4 },
-    },
+      '2': {
+        cosa: 'Confronto prezzi tra 2-3 grossisti per ogni commessa',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'canale', nome:'Confronto prezzi tra 2-3 grossisti per ogni commessa', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Accordi quadro con distributori — prezzi riservati e consegna rapida',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'canale', nome:'Accordi quadro con distributori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Magazzino materiali ricorrenti + gestione scorte minime',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'canale', nome:'Magazzino materiali ricorrenti + gestione scorte minime', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:800, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Resp. acquisti — accordi volume, import diretto, stoccaggio',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Resp. acquisti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:1500, costo_setup:1000, impatto:1, note:'Resp. acquisti — accordi volume, import diretto, stoccaggio' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:750, costo_setup:400, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      _label: 'Approvvigionamento materiali',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -843,62 +2567,410 @@ vendite: {
   edilizia_serramenti: {
     vendite: {
       '1': { chi:'Titolare solo', cosa:'Titolare vende dallo showroom', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Sopralluoghi a domicilio + preventivi strutturati', costo_mensile:200, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'+1 venditore showroom', cosa:'1 venditore showroom dedicato', costo_mensile:2200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'+1 comm. B2B (tot 2)', cosa:'+ commerciale B2B imprese edili e architetti', costo_mensile:4700, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Rete + gare', cosa:'Rete posatori partner + gare ristrutturazione', costo_mensile:3500, costo_setup:2000, tempo_mesi:6 },
+      '2': {
+        cosa: 'Sopralluoghi a domicilio + preventivi strutturati',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: '1 venditore showroom dedicato',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2200, costo_setup:500, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1210, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:990, costo_setup:500, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: '+ commerciale B2B imprese edili e architetti',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:4700, costo_setup:1000, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:2585, costo_setup:1000, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:2115, costo_setup:1000, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Rete posatori partner + gare ristrutturazione',
+        tempo_mesi: 6,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:3500, costo_setup:2000, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1925, costo_setup:2000, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1575, costo_setup:2000, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — preventivi su carta e dimenticati', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Excel con preventivi, sopralluoghi, stato trattativa', costo_mensile:0, costo_setup:100, tempo_mesi:1 },
-      '3': { chi:'CRM base', cosa:'CRM per preventivi + follow-up post-sopralluogo', costo_mensile:50, costo_setup:200, tempo_mesi:1 },
-      '4': { chi:'CRM + configuratore', cosa:'CRM + configuratore infissi per preventivi automatici', costo_mensile:400, costo_setup:2000, tempo_mesi:2 },
-      '5': { chi:'CRM + gestionale', cosa:'CRM integrato con gestionale ordini e produzione/fornitori', costo_mensile:700, costo_setup:3500, tempo_mesi:3 },
+      '2': {
+        cosa: 'Excel con preventivi, sopralluoghi, stato trattativa',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:100, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'CRM per preventivi + follow-up post-sopralluogo',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'CRM base', tipo:'flag', obbligatorio:true, costo_mensile:50, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'CRM + configuratore infissi per preventivi automatici',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM + configuratore infissi per preventivi automatici', costo_mensile:400, costo_setup:2000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:200, costo_setup:1200, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'CRM integrato con gestionale ordini e produzione/fornitori',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM integrato con gestionale ordini e produzione/fornitori', costo_mensile:700, costo_setup:3500, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:350, costo_setup:2100, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
     },
     team: {
+      '1': { chi:'Titolare', cosa:'Titolare gestisce tutto — showroom e posa', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': {
+        cosa: 'Ruoli showroom/posa separati',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'organizzazione', nome:'Ruoli showroom/posa separati', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Riunioni + obiettivi per ruolo',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'organizzazione', nome:'Riunioni + obiettivi per ruolo', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'KPI + processi decisionali delegati',
+        tempo_mesi: 3,
+        moduli: [
+          { id:'organizzazione', nome:'KPI + processi decisionali delegati', tipo:'flag', obbligatorio:true, costo_mensile:500, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Management — titolare solo strategia',
+        tempo_mesi: 5,
+        moduli: [
+          {
+            id: 'manager',
+            nome: 'Figura manageriale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Manager operativo dipendente', costo_mensile:1500, costo_setup:1500, impatto:1, note:'Full-time' },
+              { id:'fractional', nome:'Manager operativo fractional', costo_mensile:750, costo_setup:1500, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          }
+        ]
+      },
       _label: 'Organizzazione',
-      '1': { chi:'Titolare', cosa:'Titolare gestisce tutto \u2014 showroom e posa', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Ruoli showroom/posa separati', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Titolare', cosa:'Riunioni + obiettivi per ruolo', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Consulente', cosa:'KPI + processi decisionali delegati', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Manager operativo', cosa:'Management \u2014 titolare solo strategia', costo_mensile:1500, costo_setup:1500, tempo_mesi:5 },
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — preventivi a mano, posa senza procedura', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Template preventivo con misure, materiali, posa e smaltimento', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Software configuratore', cosa:'Configuratore infissi per preventivi veloci e precisi', costo_mensile:300, costo_setup:1500, tempo_mesi:2 },
-      '4': { chi:'Gestionale', cosa:'Gestionale ordini — da preventivo a ordine fornitore a posa', costo_mensile:500, costo_setup:2000, tempo_mesi:2 },
-      '5': { chi:'Quality + certificazione', cosa:'Certificazione posa qualificata + gestione garanzie + NPS', costo_mensile:900, costo_setup:4000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Template preventivo con misure, materiali, posa e smaltimento',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'processo', nome:'Template preventivo con misure, materiali, posa e smaltimento', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Configuratore infissi per preventivi veloci e precisi',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Configuratore infissi per preventivi veloci e precisi',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:300, costo_setup:1500, impatto:1, note:'Configuratore infissi per preventivi veloci e precisi' },
+              { id:'base', nome:'Soluzione base', costo_mensile:150, costo_setup:750, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Gestionale ordini — da preventivo a ordine fornitore a posa',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Gestionale ordini',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:500, costo_setup:2000, impatto:1, note:'Gestionale ordini — da preventivo a ordine fornitore a posa' },
+              { id:'base', nome:'Soluzione base', costo_mensile:250, costo_setup:1000, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Certificazione posa qualificata + gestione garanzie + NPS',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Certificazione posa qualificata',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:900, costo_setup:4000, impatto:1, note:'Certificazione posa qualificata + gestione garanzie + NPS' },
+              { id:'base', nome:'Soluzione base', costo_mensile:450, costo_setup:2000, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Vendita infissi con margine base — nessun upsell', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Calcolo margini reali per prodotto — PVC vs alluminio vs legno', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Upsell strutturato', cosa:'Upsell sistematico — zanzariere, oscuranti, cassonetti, VMC', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '4': { chi:'Consulente fiscale', cosa:'Bonus fiscali come leva di vendita — gestione pratiche inclusa', costo_mensile:400, costo_setup:800, tempo_mesi:2 },
-      '5': { chi:'Revenue manager', cosa:'Contratti con imprese edili — fornitura + posa su cantieri', costo_mensile:800, costo_setup:1500, tempo_mesi:3 },
+      '2': {
+        cosa: 'Calcolo margini reali per prodotto — PVC vs alluminio vs legno',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Calcolo margini reali per prodotto', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Upsell sistematico — zanzariere, oscuranti, cassonetti, VMC',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Upsell sistematico', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Bonus fiscali come leva di vendita — gestione pratiche inclusa',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'ricavi', nome:'Bonus fiscali come leva di vendita', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:800, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Contratti con imprese edili — fornitura + posa su cantieri',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'Contratti con imprese edili',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:800, costo_setup:1500, impatto:1, note:'Contratti con imprese edili — fornitura + posa su cantieri' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:400, costo_setup:750, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo insegna showroom e passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Google My Business + foto showroom e lavori realizzati', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Agenzia digital', cosa:'Google Ads locali su "infissi + città" + portali casa', costo_mensile:600, costo_setup:800, tempo_mesi:2 },
-      '4': { chi:'Social + ads', cosa:'Campagne social con prima/dopo + video posa + recensioni', costo_mensile:1000, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'Marketing manager', cosa:'Piano marketing — eventi showroom, partnership architetti, PR', costo_mensile:2200, costo_setup:3000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Google My Business + foto showroom e lavori realizzati',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'marketing', nome:'Google My Business + foto showroom e lavori realizzati', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Google Ads locali su "infissi + città" + portali casa',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Google Ads locali su "infissi + città" + portali casa', tipo:'flag', obbligatorio:true, costo_mensile:600, costo_setup:800, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Campagne social con prima/dopo + video posa + recensioni',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Campagne social con prima/dopo + video posa + recensioni',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1000, costo_setup:1500, impatto:1, note:'Campagne social con prima/dopo + video posa + recensioni' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:400, costo_setup:750, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piano marketing — eventi showroom, partnership architetti, PR',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Piano marketing',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:2200, costo_setup:3000, impatto:1, note:'Piano marketing — eventi showroom, partnership architetti, PR' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:880, costo_setup:1500, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito con catalogo infissi, showroom, zona operativa', costo_mensile:80, costo_setup:1000, tempo_mesi:1 },
-      '3': { chi:'Sito professionale', cosa:'Gallery lavori + preventivo online + simulatore colori', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
-      '4': { chi:'Sito + configuratore', cosa:'Configuratore infissi online — misure, materiali, prezzo indicativo', costo_mensile:600, costo_setup:5000, tempo_mesi:2 },
-      '5': { chi:'Sito avanzato', cosa:'E-commerce accessori + prenotazione sopralluogo + area clienti', costo_mensile:900, costo_setup:6000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Sito con catalogo infissi, showroom, zona operativa',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'sito', nome:'Sito con catalogo infissi, showroom, zona operativa', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Gallery lavori + preventivo online + simulatore colori',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Gallery lavori',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:300, costo_setup:2500, impatto:1, note:'Gallery lavori + preventivo online + simulatore colori' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:120, costo_setup:1000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Configuratore infissi online — misure, materiali, prezzo indicativo',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Configuratore infissi online',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:600, costo_setup:5000, impatto:1, note:'Configuratore infissi online — misure, materiali, prezzo indicativo' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:240, costo_setup:2000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'E-commerce accessori + prenotazione sopralluogo + area clienti',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'E-commerce accessori',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:900, costo_setup:6000, impatto:1, note:'E-commerce accessori + prenotazione sopralluogo + area clienti' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:360, costo_setup:2400, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
     },
     ecommerce: {
-      _label: 'Approvvigionamento infissi',
       '1': { chi:'Titolare', cosa:'Acquisto infissi da un solo produttore — nessuna alternativa', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Confronto tra 2-3 produttori — prezzi e tempi di consegna', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Accordi fornitori', cosa:'Accordi quadro con produttori — sconti volume e priorità consegna', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
-      '4': { chi:'Buyer dedicato', cosa:'Multi-fornitore strutturato — PVC da uno, alluminio da un altro', costo_mensile:500, costo_setup:500, tempo_mesi:2 },
-      '5': { chi:'Resp. acquisti', cosa:'Partnership produttori + private label + import diretto', costo_mensile:1500, costo_setup:1500, tempo_mesi:4 },
-    },
+      '2': {
+        cosa: 'Confronto tra 2-3 produttori — prezzi e tempi di consegna',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'canale', nome:'Confronto tra 2-3 produttori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Accordi quadro con produttori — sconti volume e priorità consegna',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'canale', nome:'Accordi quadro con produttori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Multi-fornitore strutturato — PVC da uno, alluminio da un altro',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Multi-fornitore strutturato',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:500, costo_setup:500, impatto:1, note:'Multi-fornitore strutturato — PVC da uno, alluminio da un altro' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:250, costo_setup:200, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Partnership produttori + private label + import diretto',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Partnership produttori + private label + import diretto',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:1500, costo_setup:1500, impatto:1, note:'Partnership produttori + private label + import diretto' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:750, costo_setup:600, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      _label: 'Approvvigionamento infissi',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -907,62 +2979,411 @@ vendite: {
   commercio_distribuzione_industriale: {
     vendite: {
       '1': { chi:'Titolare', cosa:'Titolare al banco — chi viene compra', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Visite ai 20 clienti top — sviluppo proattivo', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'1 agente', cosa:'1 agente plurimandatario con portafoglio industriale zona', costo_mensile:1500, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'KAM + inside sales', cosa:'1 KAM clienti strategici + 1 inside sales', costo_mensile:4800, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Dir. commerciale', cosa:'Dir. commerciale + agenti + inside sales', costo_mensile:8000, costo_setup:2000, tempo_mesi:6 },
+      '2': {
+        cosa: 'Visite ai 20 clienti top — sviluppo proattivo',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: '1 agente plurimandatario con portafoglio industriale zona',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1500, costo_setup:500, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:825, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:675, costo_setup:500, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: '1 KAM clienti strategici + 1 inside sales',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:4800, costo_setup:1000, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:2640, costo_setup:1000, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:2160, costo_setup:1000, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Dir. commerciale + agenti + inside sales',
+        tempo_mesi: 6,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:3200, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1760, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1600, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1200, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini a telefono e banco', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Excel con clienti attivi, frequenza ordini, prodotti principali', costo_mensile:0, costo_setup:100, tempo_mesi:1 },
-      '3': { chi:'CRM base', cosa:'CRM con alert riordini e follow-up clienti dormienti', costo_mensile:80, costo_setup:300, tempo_mesi:1 },
-      '4': { chi:'CRM + ERP', cosa:'CRM integrato con ERP — stock, prezzi, storico in tempo reale', costo_mensile:500, costo_setup:2000, tempo_mesi:2 },
-      '5': { chi:'ERP distribuzione', cosa:'ERP completo — clienti, acquisti, magazzino, logistica', costo_mensile:1000, costo_setup:5000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Excel con clienti attivi, frequenza ordini, prodotti principali',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:100, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'CRM con alert riordini e follow-up clienti dormienti',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'CRM base', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'CRM integrato con ERP — stock, prezzi, storico in tempo reale',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM integrato con ERP', costo_mensile:500, costo_setup:2000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:250, costo_setup:1200, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ERP completo — clienti, acquisti, magazzino, logistica',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'ERP completo', costo_mensile:1000, costo_setup:5000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:500, costo_setup:3000, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Titolare', cosa:'Nessuna organizzazione — il titolare decide tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Ruoli banco/magazzino definiti — chi fa cosa è chiaro', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Titolare', cosa:'Procedure ordini e consegne formalizzate', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Consulente + titolare', cosa:'KPI per canale + deleghe operative', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Management', cosa:'Management commerciale + logistica strutturato', costo_mensile:1500, costo_setup:1500, tempo_mesi:5 },
+      '2': {
+        cosa: 'Ruoli banco/magazzino definiti — chi fa cosa è chiaro',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'organizzazione', nome:'Ruoli banco/magazzino definiti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Procedure ordini e consegne formalizzate',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'organizzazione', nome:'Procedure ordini e consegne formalizzate', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'KPI per canale + deleghe operative',
+        tempo_mesi: 3,
+        moduli: [
+          { id:'organizzazione', nome:'KPI per canale + deleghe operative', tipo:'flag', obbligatorio:true, costo_mensile:500, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Management commerciale + logistica strutturato',
+        tempo_mesi: 5,
+        moduli: [
+          {
+            id: 'manager',
+            nome: 'Figura manageriale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Management dipendente', costo_mensile:1500, costo_setup:1500, impatto:1, note:'Full-time' },
+              { id:'fractional', nome:'Management fractional', costo_mensile:750, costo_setup:1500, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          }
+        ]
+      },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — ordini gestiti a memoria e su carta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Gestione ordini strutturata — conferma, tempi, back order', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Software gestionale', cosa:'Gestionale magazzino — giacenze, riordino automatico, inventario', costo_mensile:300, costo_setup:1500, tempo_mesi:2 },
-      '4': { chi:'ERP distribuzione', cosa:'ERP con gestione listini per cliente e ordini urgenti', costo_mensile:600, costo_setup:3000, tempo_mesi:2 },
-      '5': { chi:'ERP + EDI', cosa:'EDI con clienti principali + logistica ottimizzata', costo_mensile:1000, costo_setup:5000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Gestione ordini strutturata — conferma, tempi, back order',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'processo', nome:'Gestione ordini strutturata', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Gestionale magazzino — giacenze, riordino automatico, inventario',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Gestionale magazzino',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:300, costo_setup:1500, impatto:1, note:'Gestionale magazzino — giacenze, riordino automatico, inventario' },
+              { id:'base', nome:'Soluzione base', costo_mensile:150, costo_setup:750, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'ERP con gestione listini per cliente e ordini urgenti',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'ERP con gestione listini per cliente e ordini urgenti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:600, costo_setup:3000, impatto:1, note:'ERP con gestione listini per cliente e ordini urgenti' },
+              { id:'base', nome:'Soluzione base', costo_mensile:300, costo_setup:1500, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'EDI con clienti principali + logistica ottimizzata',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'EDI con clienti principali',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:1000, costo_setup:5000, impatto:1, note:'EDI con clienti principali + logistica ottimizzata' },
+              { id:'base', nome:'Soluzione base', costo_mensile:500, costo_setup:2500, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Margine fisso da listino — nessuna differenziazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Pricing differenziato per volume e categoria cliente', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Servizi a valore', cosa:'Servizi a valore — consegna rapida, magazzino conto deposito', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
-      '4': { chi:'Accordi commerciali', cosa:'Accordi fornitura esclusiva con clienti principali', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '5': { chi:'Revenue manager', cosa:'Kitting, just-in-time, VMI — margini superiori alla distribuzione', costo_mensile:700, costo_setup:1500, tempo_mesi:3 },
+      '2': {
+        cosa: 'Pricing differenziato per volume e categoria cliente',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Pricing differenziato per volume e categoria cliente', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Servizi a valore — consegna rapida, magazzino conto deposito',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Servizi a valore', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Accordi fornitura esclusiva con clienti principali',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'ricavi', nome:'Accordi fornitura esclusiva con clienti principali', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Kitting, just-in-time, VMI — margini superiori alla distribuzione',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'Kitting, just-in-time, VMI',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:700, costo_setup:1500, impatto:1, note:'Kitting, just-in-time, VMI — margini superiori alla distribuzione' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:350, costo_setup:750, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo clienti storici e passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Catalogo digitale aggiornato + newsletter mensile ai clienti', costo_mensile:100, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Fiere', cosa:'Fiere industriali locali (MECSPE, BI-MU) — stand base', costo_mensile:400, costo_setup:4000, tempo_mesi:2 },
-      '4': { chi:'Agenzia digital', cosa:'Campagne LinkedIn su resp. acquisti e produzione industriale', costo_mensile:800, costo_setup:1000, tempo_mesi:2 },
-      '5': { chi:'Marketing manager', cosa:'Piano marketing — fiere + digital + catalogo + promozioni', costo_mensile:2000, costo_setup:2500, tempo_mesi:3 },
+      '2': {
+        cosa: 'Catalogo digitale aggiornato + newsletter mensile ai clienti',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'marketing', nome:'Catalogo digitale aggiornato + newsletter mensile ai clienti', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Fiere industriali locali (MECSPE, BI-MU) — stand base',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Fiere industriali locali (MECSPE, BI-MU)', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:4000, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Campagne LinkedIn su resp. acquisti e produzione industriale',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Campagne LinkedIn su resp. acquisti e produzione industriale', tipo:'flag', obbligatorio:true, costo_mensile:800, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Piano marketing — fiere + digital + catalogo + promozioni',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Piano marketing',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:2000, costo_setup:2500, impatto:1, note:'Piano marketing — fiere + digital + catalogo + promozioni' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:800, costo_setup:1250, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito o sito vetrina datato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito con catalogo prodotti e schede tecniche scaricabili', costo_mensile:100, costo_setup:1000, tempo_mesi:1 },
-      '3': { chi:'Sito professionale', cosa:'Area riservata con prezzi, storico ordini, documentazione', costo_mensile:350, costo_setup:3000, tempo_mesi:2 },
-      '4': { chi:'Sito avanzato', cosa:'E-catalogue con disponibilità stock e tempi di consegna', costo_mensile:600, costo_setup:5000, tempo_mesi:2 },
-      '5': { chi:'Piattaforma B2B', cosa:'Portale B2B — ordini online, tracking spedizioni, fatturazione', costo_mensile:1200, costo_setup:10000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Sito con catalogo prodotti e schede tecniche scaricabili',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'sito', nome:'Sito con catalogo prodotti e schede tecniche scaricabili', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Area riservata con prezzi, storico ordini, documentazione',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Area riservata con prezzi, storico ordini, documentazione',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:350, costo_setup:3000, impatto:1, note:'Area riservata con prezzi, storico ordini, documentazione' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:140, costo_setup:1200, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'E-catalogue con disponibilità stock e tempi di consegna',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'E-catalogue con disponibilità stock e tempi di consegna',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:600, costo_setup:5000, impatto:1, note:'E-catalogue con disponibilità stock e tempi di consegna' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:240, costo_setup:2000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Portale B2B — ordini online, tracking spedizioni, fatturazione',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Portale B2B',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:1200, costo_setup:10000, impatto:1, note:'Portale B2B — ordini online, tracking spedizioni, fatturazione' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:480, costo_setup:4000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
     },
     ecommerce: {
-      _label: 'Approvvigionamento e fornitori',
       '1': { chi:'Titolare', cosa:'Acquisto da 1-2 grossisti — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Confronto fornitori sistematico — prezzi, MOQ, tempi consegna', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Accordi fornitori', cosa:'Accordi quadro con produttori — sconti volume e priorità', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
-      '4': { chi:'Buyer', cosa:'Buyer dedicato — negoziazione, import diretto, stoccaggio', costo_mensile:1500, costo_setup:500, tempo_mesi:2 },
-      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — contratti quadro, import, private label', costo_mensile:3000, costo_setup:1500, tempo_mesi:4 },
-    },
+      '2': {
+        cosa: 'Confronto fornitori sistematico — prezzi, MOQ, tempi consegna',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'canale', nome:'Confronto fornitori sistematico', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Accordi quadro con produttori — sconti volume e priorità',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'canale', nome:'Accordi quadro con produttori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Buyer dedicato — negoziazione, import diretto, stoccaggio',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Buyer dedicato',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:1500, costo_setup:500, impatto:1, note:'Buyer dedicato — negoziazione, import diretto, stoccaggio' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:750, costo_setup:200, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Resp. acquisti — contratti quadro, import, private label',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Resp. acquisti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:3000, costo_setup:1500, impatto:1, note:'Resp. acquisti — contratti quadro, import, private label' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1500, costo_setup:600, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      _label: 'Approvvigionamento e fornitori',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -971,62 +3392,391 @@ vendite: {
   commercio_ingrosso_alimentare: {
     vendite: {
       '1': { chi:'Titolare', cosa:'Titolare gestisce clienti storici — ordini per telefono', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Visite pianificate HORECA/negozi della zona', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Titolare strutturato', cosa:'Sviluppo canale HORECA — degustazioni, campionature', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'1 agente', cosa:'1 agente dedicato HORECA o GDO', costo_mensile:1800, costo_setup:500, tempo_mesi:3 },
-      '5': { chi:'Strategia + agenti export', cosa:'Strategia private label + agenti export', costo_mensile:3000, costo_setup:2000, tempo_mesi:6 },
+      '2': {
+        cosa: 'Visite pianificate HORECA/negozi della zona',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Sviluppo canale HORECA — degustazioni, campionature',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'supporto', nome:'Titolare strutturato', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: '1 agente dedicato HORECA o GDO',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1800, costo_setup:500, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:990, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:810, costo_setup:500, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Strategia private label + agenti export',
+        tempo_mesi: 6,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:3000, costo_setup:2000, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1650, costo_setup:2000, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1350, costo_setup:2000, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini per telefono e WhatsApp', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Excel con clienti, frequenza ordini, prodotti principali', costo_mensile:0, costo_setup:100, tempo_mesi:1 },
-      '3': { chi:'CRM base', cosa:'CRM + gestione listini e promozioni per cliente', costo_mensile:80, costo_setup:300, tempo_mesi:1 },
-      '4': { chi:'CRM + gestionale', cosa:'Gestionale ordini con route planning consegne', costo_mensile:500, costo_setup:2000, tempo_mesi:2 },
-      '5': { chi:'ERP alimentare', cosa:'ERP alimentare — ordini, magazzino, tracciabilità, logistica', costo_mensile:1200, costo_setup:6000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Excel con clienti, frequenza ordini, prodotti principali',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:100, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'CRM + gestione listini e promozioni per cliente',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'CRM base', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Gestionale ordini con route planning consegne',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Gestionale ordini con route planning consegne', costo_mensile:500, costo_setup:2000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:250, costo_setup:1200, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ERP alimentare — ordini, magazzino, tracciabilità, logistica',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'ERP alimentare', costo_mensile:1200, costo_setup:6000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:600, costo_setup:3600, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Titolare', cosa:'Nessuna organizzazione — il titolare decide tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Ruoli magazzino/consegne definiti — chi fa cosa è chiaro', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Titolare', cosa:'Procedure HACCP + gestione scadenze formalizzate', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Consulente + titolare', cosa:'KPI + deleghe ordini/logistica', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Management', cosa:'Management completo — commerciale + logistica + qualità', costo_mensile:1500, costo_setup:1500, tempo_mesi:5 },
+      '2': {
+        cosa: 'Ruoli magazzino/consegne definiti — chi fa cosa è chiaro',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'organizzazione', nome:'Ruoli magazzino/consegne definiti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Procedure HACCP + gestione scadenze formalizzate',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'organizzazione', nome:'Procedure HACCP + gestione scadenze formalizzate', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'KPI + deleghe ordini/logistica',
+        tempo_mesi: 3,
+        moduli: [
+          { id:'organizzazione', nome:'KPI + deleghe ordini/logistica', tipo:'flag', obbligatorio:true, costo_mensile:500, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Management completo — commerciale + logistica + qualità',
+        tempo_mesi: 5,
+        moduli: [
+          {
+            id: 'manager',
+            nome: 'Figura manageriale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Management dipendente', costo_mensile:1500, costo_setup:1500, impatto:1, note:'Full-time' },
+              { id:'fractional', nome:'Management fractional', costo_mensile:750, costo_setup:1500, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          }
+        ]
+      },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — ordini e consegne gestiti a vista', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Tracciabilità lotti base + gestione scadenze prodotti', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Software + HACCP', cosa:'HACCP strutturato + gestionale magazzino con lotti e scadenze', costo_mensile:400, costo_setup:1500, tempo_mesi:2 },
-      '4': { chi:'Consulente + strumenti', cosa:'Gestione catena del freddo certificata + logistica ottimizzata', costo_mensile:700, costo_setup:2500, tempo_mesi:3 },
-      '5': { chi:'Quality manager', cosa:'Certificazioni BRC/IFS + audit interni + sistema qualità', costo_mensile:1200, costo_setup:6000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Tracciabilità lotti base + gestione scadenze prodotti',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'processo', nome:'Tracciabilità lotti base + gestione scadenze prodotti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'HACCP strutturato + gestionale magazzino con lotti e scadenze',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'HACCP strutturato',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:400, costo_setup:1500, impatto:1, note:'HACCP strutturato + gestionale magazzino con lotti e scadenze' },
+              { id:'base', nome:'Soluzione base', costo_mensile:200, costo_setup:750, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Gestione catena del freddo certificata + logistica ottimizzata',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Gestione catena del freddo certificata',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:700, costo_setup:2500, impatto:1, note:'Gestione catena del freddo certificata + logistica ottimizzata' },
+              { id:'base', nome:'Soluzione base', costo_mensile:350, costo_setup:1250, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Certificazioni BRC/IFS + audit interni + sistema qualità',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Certificazioni BRC/IFS',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:1200, costo_setup:6000, impatto:1, note:'Certificazioni BRC/IFS + audit interni + sistema qualità' },
+              { id:'base', nome:'Soluzione base', costo_mensile:600, costo_setup:3000, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Margine fisso da listino — nessun upsell', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Pricing per canale — HORECA, GDO, dettaglio differenziati', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Promozioni strutturate', cosa:'Promozioni settimanali + prodotti stagionali ad alto margine', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '4': { chi:'Private label', cosa:'Private label per GDO locale — margini 15-20% superiori', costo_mensile:400, costo_setup:1000, tempo_mesi:2 },
-      '5': { chi:'Revenue manager', cosa:'Contratti annuali GDO + sviluppo linee premium e bio', costo_mensile:1000, costo_setup:2000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Pricing per canale — HORECA, GDO, dettaglio differenziati',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Pricing per canale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Promozioni settimanali + prodotti stagionali ad alto margine',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Promozioni settimanali + prodotti stagionali ad alto margine', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Private label per GDO locale — margini 15-20% superiori',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'ricavi', nome:'Private label per GDO locale', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Contratti annuali GDO + sviluppo linee premium e bio',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'Contratti annuali GDO + sviluppo linee premium e bio',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:1000, costo_setup:2000, impatto:1, note:'Contratti annuali GDO + sviluppo linee premium e bio' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:500, costo_setup:1000, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo relazione diretta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Catalogo digitale + listino aggiornato via WhatsApp/email', costo_mensile:100, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Fiere', cosa:'Fiere alimentari (Cibus, TuttoFood) — stand e degustazione', costo_mensile:500, costo_setup:5000, tempo_mesi:2 },
-      '4': { chi:'Agenzia digital', cosa:'Campagne digitali verso buyer GDO e HORECA', costo_mensile:800, costo_setup:1000, tempo_mesi:2 },
-      '5': { chi:'Marketing manager', cosa:'Piano marketing — fiere + catalogo + promozioni + PR settore', costo_mensile:2200, costo_setup:3000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Catalogo digitale + listino aggiornato via WhatsApp/email',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'marketing', nome:'Catalogo digitale + listino aggiornato via WhatsApp/email', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Fiere alimentari (Cibus, TuttoFood) — stand e degustazione',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Fiere alimentari (Cibus, TuttoFood)', tipo:'flag', obbligatorio:true, costo_mensile:500, costo_setup:5000, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Campagne digitali verso buyer GDO e HORECA',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Campagne digitali verso buyer GDO e HORECA', tipo:'flag', obbligatorio:true, costo_mensile:800, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Piano marketing — fiere + catalogo + promozioni + PR settore',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Piano marketing',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:2200, costo_setup:3000, impatto:1, note:'Piano marketing — fiere + catalogo + promozioni + PR settore' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:880, costo_setup:1500, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito con catalogo prodotti, certificazioni, zona servita', costo_mensile:80, costo_setup:1000, tempo_mesi:1 },
-      '3': { chi:'Sito professionale', cosa:'Catalogo online con prezzi riservati per cliente registrato', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
-      '4': { chi:'Portale ordini', cosa:'Ordini online B2B + disponibilità stock in tempo reale', costo_mensile:700, costo_setup:5000, tempo_mesi:2 },
-      '5': { chi:'Piattaforma B2B', cosa:'Piattaforma B2B completa — ordini, tracking, fatturazione', costo_mensile:1200, costo_setup:10000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Sito con catalogo prodotti, certificazioni, zona servita',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'sito', nome:'Sito con catalogo prodotti, certificazioni, zona servita', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Catalogo online con prezzi riservati per cliente registrato',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Catalogo online con prezzi riservati per cliente registrato',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:300, costo_setup:2500, impatto:1, note:'Catalogo online con prezzi riservati per cliente registrato' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:120, costo_setup:1000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Ordini online B2B + disponibilità stock in tempo reale',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Ordini online B2B',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:700, costo_setup:5000, impatto:1, note:'Ordini online B2B + disponibilità stock in tempo reale' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:280, costo_setup:2000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piattaforma B2B completa — ordini, tracking, fatturazione',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Piattaforma B2B completa',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:1200, costo_setup:10000, impatto:1, note:'Piattaforma B2B completa — ordini, tracking, fatturazione' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:480, costo_setup:4000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
     },
     ecommerce: {
-      _label: 'Approvvigionamento prodotti',
       '1': { chi:'Titolare', cosa:'Acquisto da produttori locali abituali — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Diversificazione fornitori — confronto prezzi e qualità', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Accordi fornitori', cosa:'Accordi quadro con produttori — volumi, prezzi stagionali', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
-      '4': { chi:'Buyer', cosa:'Buyer dedicato — negoziazione, import, gestione catena freddo', costo_mensile:1800, costo_setup:500, tempo_mesi:2 },
-      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — contratti annuali, sourcing internazionale', costo_mensile:3500, costo_setup:1500, tempo_mesi:4 },
-    },
+      '2': {
+        cosa: 'Diversificazione fornitori — confronto prezzi e qualità',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'canale', nome:'Diversificazione fornitori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Accordi quadro con produttori — volumi, prezzi stagionali',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'canale', nome:'Accordi quadro con produttori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Buyer dedicato — negoziazione, import, gestione catena freddo',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Buyer dedicato',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:1800, costo_setup:500, impatto:1, note:'Buyer dedicato — negoziazione, import, gestione catena freddo' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:900, costo_setup:200, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Resp. acquisti — contratti annuali, sourcing internazionale',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Resp. acquisti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:3500, costo_setup:1500, impatto:1, note:'Resp. acquisti — contratti annuali, sourcing internazionale' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1750, costo_setup:600, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      _label: 'Approvvigionamento prodotti',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1035,62 +3785,391 @@ vendite: {
   commercio_materiali_edili: {
     vendite: {
       '1': { chi:'Titolare', cosa:'Titolare al banco — chi viene compra', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Visite imprese edili/posatori della zona', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Titolare strutturato', cosa:'Sviluppo showroom — appuntamenti privati', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'1 agente', cosa:'1 agente esterno imprese/cantieri', costo_mensile:1800, costo_setup:500, tempo_mesi:3 },
-      '5': { chi:'Strategia + gare', cosa:'Gare pubbliche + accordi quadro costruttori', costo_mensile:3000, costo_setup:2000, tempo_mesi:6 },
+      '2': {
+        cosa: 'Visite imprese edili/posatori della zona',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Sviluppo showroom — appuntamenti privati',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'supporto', nome:'Titolare strutturato', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: '1 agente esterno imprese/cantieri',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1800, costo_setup:500, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:990, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:810, costo_setup:500, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Gare pubbliche + accordi quadro costruttori',
+        tempo_mesi: 6,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:3000, costo_setup:2000, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1650, costo_setup:2000, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1350, costo_setup:2000, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — vendite al banco senza storico', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Excel con clienti principali, frequenza acquisti, volumi', costo_mensile:0, costo_setup:100, tempo_mesi:1 },
-      '3': { chi:'CRM base', cosa:'CRM per follow-up preventivi e gestione clienti imprese', costo_mensile:80, costo_setup:300, tempo_mesi:1 },
-      '4': { chi:'CRM + gestionale', cosa:'CRM + gestionale magazzino — stock, prezzi, listini cliente', costo_mensile:500, costo_setup:2000, tempo_mesi:2 },
-      '5': { chi:'ERP completo', cosa:'ERP — ordini, magazzino, logistica consegne, fatturazione', costo_mensile:1000, costo_setup:5000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Excel con clienti principali, frequenza acquisti, volumi',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:100, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'CRM per follow-up preventivi e gestione clienti imprese',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'CRM base', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'CRM + gestionale magazzino — stock, prezzi, listini cliente',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM + gestionale magazzino', costo_mensile:500, costo_setup:2000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:250, costo_setup:1200, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ERP — ordini, magazzino, logistica consegne, fatturazione',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'ERP', costo_mensile:1000, costo_setup:5000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:500, costo_setup:3000, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Titolare', cosa:'Nessuna organizzazione — il titolare decide tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Ruoli banco/magazzino/showroom definiti — chi fa cosa è chiaro', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Titolare', cosa:'Procedure ordini e consegne formalizzate', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Consulente + titolare', cosa:'KPI + deleghe operative', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Management', cosa:'Management commerciale + logistica strutturato', costo_mensile:1500, costo_setup:1500, tempo_mesi:5 },
+      '2': {
+        cosa: 'Ruoli banco/magazzino/showroom definiti — chi fa cosa è chiaro',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'organizzazione', nome:'Ruoli banco/magazzino/showroom definiti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Procedure ordini e consegne formalizzate',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'organizzazione', nome:'Procedure ordini e consegne formalizzate', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'KPI + deleghe operative',
+        tempo_mesi: 3,
+        moduli: [
+          { id:'organizzazione', nome:'KPI + deleghe operative', tipo:'flag', obbligatorio:true, costo_mensile:500, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Management commerciale + logistica strutturato',
+        tempo_mesi: 5,
+        moduli: [
+          {
+            id: 'manager',
+            nome: 'Figura manageriale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Management dipendente', costo_mensile:1500, costo_setup:1500, impatto:1, note:'Full-time' },
+              { id:'fractional', nome:'Management fractional', costo_mensile:750, costo_setup:1500, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          }
+        ]
+      },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — magazzino gestito a vista', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Gestione ordini strutturata — conferma, tempi consegna', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Software gestionale', cosa:'Gestionale magazzino — giacenze, riordino, inventario', costo_mensile:300, costo_setup:1500, tempo_mesi:2 },
-      '4': { chi:'Gestionale logistica', cosa:'Logistica consegne ottimizzata — route planning, mezzi', costo_mensile:600, costo_setup:2500, tempo_mesi:2 },
-      '5': { chi:'ERP completo', cosa:'ERP integrato + gestione showroom + consegne pianificate', costo_mensile:1000, costo_setup:5000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Gestione ordini strutturata — conferma, tempi consegna',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'processo', nome:'Gestione ordini strutturata', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Gestionale magazzino — giacenze, riordino, inventario',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Gestionale magazzino',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:300, costo_setup:1500, impatto:1, note:'Gestionale magazzino — giacenze, riordino, inventario' },
+              { id:'base', nome:'Soluzione base', costo_mensile:150, costo_setup:750, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Logistica consegne ottimizzata — route planning, mezzi',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Logistica consegne ottimizzata',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:600, costo_setup:2500, impatto:1, note:'Logistica consegne ottimizzata — route planning, mezzi' },
+              { id:'base', nome:'Soluzione base', costo_mensile:300, costo_setup:1250, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ERP integrato + gestione showroom + consegne pianificate',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'ERP integrato',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:1000, costo_setup:5000, impatto:1, note:'ERP integrato + gestione showroom + consegne pianificate' },
+              { id:'base', nome:'Soluzione base', costo_mensile:500, costo_setup:2500, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Margine fisso da listino fornitore — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Pricing differenziato — imprese vs privati vs cantieri', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Upsell strutturato', cosa:'Upsell showroom — finiture, accessori, posa consigliata', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '4': { chi:'Servizio a valore', cosa:'Servizio consegna in cantiere come voce a margine', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '5': { chi:'Revenue manager', cosa:'Contratti quadro con costruttori + private label su linee base', costo_mensile:700, costo_setup:1500, tempo_mesi:3 },
+      '2': {
+        cosa: 'Pricing differenziato — imprese vs privati vs cantieri',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Pricing differenziato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Upsell showroom — finiture, accessori, posa consigliata',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Upsell showroom', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Servizio consegna in cantiere come voce a margine',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'ricavi', nome:'Servizio consegna in cantiere come voce a margine', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Contratti quadro con costruttori + private label su linee base',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'Contratti quadro con costruttori + private label su linee base',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:700, costo_setup:1500, impatto:1, note:'Contratti quadro con costruttori + private label su linee base' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:350, costo_setup:750, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo posizione e insegna', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Google My Business + foto showroom e magazzino', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Agenzia digital', cosa:'Google Ads locali su "materiali edili + città"', costo_mensile:500, costo_setup:800, tempo_mesi:2 },
-      '4': { chi:'Social + ads', cosa:'Campagne social con progetti realizzati + promozioni stagionali', costo_mensile:900, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'Marketing manager', cosa:'Piano marketing — eventi showroom, partnership progettisti', costo_mensile:2000, costo_setup:2500, tempo_mesi:3 },
+      '2': {
+        cosa: 'Google My Business + foto showroom e magazzino',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'marketing', nome:'Google My Business + foto showroom e magazzino', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Google Ads locali su "materiali edili + città"',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Google Ads locali su "materiali edili + città"', tipo:'flag', obbligatorio:true, costo_mensile:500, costo_setup:800, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Campagne social con progetti realizzati + promozioni stagionali',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Campagne social con progetti realizzati + promozioni stagionali', tipo:'flag', obbligatorio:true, costo_mensile:900, costo_setup:1500, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Piano marketing — eventi showroom, partnership progettisti',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Piano marketing',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:2000, costo_setup:2500, impatto:1, note:'Piano marketing — eventi showroom, partnership progettisti' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:800, costo_setup:1250, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito con catalogo prodotti, showroom, zona consegna', costo_mensile:80, costo_setup:1000, tempo_mesi:1 },
-      '3': { chi:'Sito professionale', cosa:'Catalogo ceramiche online + richiesta preventivo', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
-      '4': { chi:'Sito avanzato', cosa:'Simulatore ambienti + disponibilità stock online', costo_mensile:600, costo_setup:5000, tempo_mesi:2 },
-      '5': { chi:'Piattaforma B2B', cosa:'Portale B2B — ordini imprese, listini riservati, tracking', costo_mensile:1000, costo_setup:8000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Sito con catalogo prodotti, showroom, zona consegna',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'sito', nome:'Sito con catalogo prodotti, showroom, zona consegna', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Catalogo ceramiche online + richiesta preventivo',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Catalogo ceramiche online',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:300, costo_setup:2500, impatto:1, note:'Catalogo ceramiche online + richiesta preventivo' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:120, costo_setup:1000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Simulatore ambienti + disponibilità stock online',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Simulatore ambienti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:600, costo_setup:5000, impatto:1, note:'Simulatore ambienti + disponibilità stock online' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:240, costo_setup:2000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Portale B2B — ordini imprese, listini riservati, tracking',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Portale B2B',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:1000, costo_setup:8000, impatto:1, note:'Portale B2B — ordini imprese, listini riservati, tracking' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:400, costo_setup:3200, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
     },
     ecommerce: {
-      _label: 'Approvvigionamento materiali',
       '1': { chi:'Titolare', cosa:'Acquisto da 1-2 produttori abituali — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Confronto fornitori su prodotti principali — prezzi e tempi', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Accordi fornitori', cosa:'Accordi quadro con produttori ceramiche e cemento', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
-      '4': { chi:'Buyer', cosa:'Buyer dedicato — diversificazione fornitori, import diretto', costo_mensile:1500, costo_setup:500, tempo_mesi:2 },
-      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — contratti volume, stoccaggio strategico', costo_mensile:3000, costo_setup:1500, tempo_mesi:4 },
-    },
+      '2': {
+        cosa: 'Confronto fornitori su prodotti principali — prezzi e tempi',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'canale', nome:'Confronto fornitori su prodotti principali', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Accordi quadro con produttori ceramiche e cemento',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'canale', nome:'Accordi quadro con produttori ceramiche e cemento', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Buyer dedicato — diversificazione fornitori, import diretto',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Buyer dedicato',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:1500, costo_setup:500, impatto:1, note:'Buyer dedicato — diversificazione fornitori, import diretto' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:750, costo_setup:200, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Resp. acquisti — contratti volume, stoccaggio strategico',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Resp. acquisti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:3000, costo_setup:1500, impatto:1, note:'Resp. acquisti — contratti volume, stoccaggio strategico' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1500, costo_setup:600, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      _label: 'Approvvigionamento materiali',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1099,62 +4178,400 @@ vendite: {
   commercio_ricambi_auto: {
     vendite: {
       '1': { chi:'Titolare', cosa:'Titolare al banco — officine vengono quando serve', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Visite officine/carrozzerie della zona', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Titolare strutturato', cosa:'Sviluppo flotte e noleggiatori — contratti fornitura', costo_mensile:400, costo_setup:300, tempo_mesi:2 },
-      '4': { chi:'1 agente', cosa:'1 agente officine fuori zona', costo_mensile:1800, costo_setup:500, tempo_mesi:3 },
-      '5': { chi:'Strategia multicanale', cosa:'E-commerce ricambi + reti officine', costo_mensile:3000, costo_setup:2000, tempo_mesi:6 },
+      '2': {
+        cosa: 'Visite officine/carrozzerie della zona',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Sviluppo flotte e noleggiatori — contratti fornitura',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'supporto', nome:'Titolare strutturato', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: '1 agente officine fuori zona',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1800, costo_setup:500, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:990, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:810, costo_setup:500, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'E-commerce ricambi + reti officine',
+        tempo_mesi: 6,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:3000, costo_setup:2000, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1650, costo_setup:2000, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1350, costo_setup:2000, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — vendite al banco e telefono', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Excel con officine clienti, frequenza e volumi acquisto', costo_mensile:0, costo_setup:100, tempo_mesi:1 },
-      '3': { chi:'Gestionale + TecDoc', cosa:'Gestionale con catalogo TecDoc integrato per ricerca rapida', costo_mensile:200, costo_setup:800, tempo_mesi:1 },
-      '4': { chi:'CRM + gestionale', cosa:'CRM + gestionale — storico cliente, margini, alert riordini', costo_mensile:500, costo_setup:2000, tempo_mesi:2 },
-      '5': { chi:'ERP ricambi', cosa:'ERP ricambi — ordini, magazzino, TecDoc, logistica, fatturazione', costo_mensile:1000, costo_setup:5000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Excel con officine clienti, frequenza e volumi acquisto',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:100, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Gestionale con catalogo TecDoc integrato per ricerca rapida',
+        tempo_mesi: 1,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Gestionale con catalogo TecDoc integrato per ricerca rapida', costo_mensile:200, costo_setup:800, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:100, costo_setup:480, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'CRM + gestionale — storico cliente, margini, alert riordini',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM + gestionale', costo_mensile:500, costo_setup:2000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:250, costo_setup:1200, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ERP ricambi — ordini, magazzino, TecDoc, logistica, fatturazione',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'ERP ricambi', costo_mensile:1000, costo_setup:5000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:500, costo_setup:3000, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Titolare', cosa:'Nessuna organizzazione — il titolare decide tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Ruoli banco/magazzino/consegne definiti', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Titolare', cosa:'Procedure ordini urgenti formalizzate', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Consulente + titolare', cosa:'KPI evasione ordini + tempi consegna', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Management', cosa:'Management + ottimizzazione logistica', costo_mensile:1500, costo_setup:1500, tempo_mesi:5 },
+      '2': {
+        cosa: 'Ruoli banco/magazzino/consegne definiti',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'organizzazione', nome:'Ruoli banco/magazzino/consegne definiti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Procedure ordini urgenti formalizzate',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'organizzazione', nome:'Procedure ordini urgenti formalizzate', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'KPI evasione ordini + tempi consegna',
+        tempo_mesi: 3,
+        moduli: [
+          { id:'organizzazione', nome:'KPI evasione ordini + tempi consegna', tipo:'flag', obbligatorio:true, costo_mensile:500, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Management + ottimizzazione logistica',
+        tempo_mesi: 5,
+        moduli: [
+          {
+            id: 'manager',
+            nome: 'Figura manageriale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Management dipendente', costo_mensile:1500, costo_setup:1500, impatto:1, note:'Full-time' },
+              { id:'fractional', nome:'Management fractional', costo_mensile:750, costo_setup:1500, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          }
+        ]
+      },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — ricerca manuale su cataloghi cartacei', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Software TecDoc', cosa:'Catalogo elettronico TecDoc per ricerca per targa/VIN', costo_mensile:100, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Software gestionale', cosa:'Gestionale magazzino con giacenze e riordino automatico', costo_mensile:300, costo_setup:1500, tempo_mesi:2 },
-      '4': { chi:'Gestionale logistica', cosa:'Logistica consegne ottimizzata — route planning, tracking', costo_mensile:500, costo_setup:2000, tempo_mesi:2 },
-      '5': { chi:'ERP completo', cosa:'ERP integrato + gestione resi + garanzie ricambi', costo_mensile:900, costo_setup:4000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Catalogo elettronico TecDoc per ricerca per targa/VIN',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'processo', nome:'Catalogo elettronico TecDoc per ricerca per targa/VIN', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Gestionale magazzino con giacenze e riordino automatico',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Gestionale magazzino con giacenze e riordino automatico',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:300, costo_setup:1500, impatto:1, note:'Gestionale magazzino con giacenze e riordino automatico' },
+              { id:'base', nome:'Soluzione base', costo_mensile:150, costo_setup:750, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Logistica consegne ottimizzata — route planning, tracking',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Logistica consegne ottimizzata',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:500, costo_setup:2000, impatto:1, note:'Logistica consegne ottimizzata — route planning, tracking' },
+              { id:'base', nome:'Soluzione base', costo_mensile:250, costo_setup:1000, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ERP integrato + gestione resi + garanzie ricambi',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'ERP integrato',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:900, costo_setup:4000, impatto:1, note:'ERP integrato + gestione resi + garanzie ricambi' },
+              { id:'base', nome:'Soluzione base', costo_mensile:450, costo_setup:2000, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Margine da listino — nessuna differenziazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Pricing differenziato — officine abituali vs occasionali', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Upsell strutturato', cosa:'Upsell prodotti correlati — filtri, olio, pastiglie in kit', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '4': { chi:'Accordi commerciali', cosa:'Contratti fornitura con officine — sconti volume, fidelizzazione', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '5': { chi:'Revenue manager', cosa:'Private label consumabili + revenue da consegna express', costo_mensile:700, costo_setup:1500, tempo_mesi:3 },
+      '2': {
+        cosa: 'Pricing differenziato — officine abituali vs occasionali',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Pricing differenziato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Upsell prodotti correlati — filtri, olio, pastiglie in kit',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Upsell prodotti correlati', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Contratti fornitura con officine — sconti volume, fidelizzazione',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'ricavi', nome:'Contratti fornitura con officine', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Private label consumabili + revenue da consegna express',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'Private label consumabili + revenue da consegna express',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:700, costo_setup:1500, impatto:1, note:'Private label consumabili + revenue da consegna express' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:350, costo_setup:750, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo posizione e insegna', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Google My Business + WhatsApp Business per ordini rapidi', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Agenzia digital', cosa:'Google Ads locali su "ricambi auto + città"', costo_mensile:500, costo_setup:800, tempo_mesi:2 },
-      '4': { chi:'Marketing operativo', cosa:'Promozioni mirate per officine — volantini, offerte stagionali', costo_mensile:800, costo_setup:1000, tempo_mesi:2 },
-      '5': { chi:'Marketing manager', cosa:'Piano marketing — digitale + partnership reti officine + eventi', costo_mensile:2000, costo_setup:2500, tempo_mesi:3 },
+      '2': {
+        cosa: 'Google My Business + WhatsApp Business per ordini rapidi',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'marketing', nome:'Google My Business + WhatsApp Business per ordini rapidi', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Google Ads locali su "ricambi auto + città"',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Google Ads locali su "ricambi auto + città"', tipo:'flag', obbligatorio:true, costo_mensile:500, costo_setup:800, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Promozioni mirate per officine — volantini, offerte stagionali',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Promozioni mirate per officine', tipo:'flag', obbligatorio:true, costo_mensile:800, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Piano marketing — digitale + partnership reti officine + eventi',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Piano marketing',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:2000, costo_setup:2500, impatto:1, note:'Piano marketing — digitale + partnership reti officine + eventi' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:800, costo_setup:1250, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito con catalogo marchi trattati, zona consegna, contatti', costo_mensile:80, costo_setup:800, tempo_mesi:1 },
-      '3': { chi:'Sito professionale', cosa:'Ricerca ricambi online per targa/VIN + preventivo', costo_mensile:350, costo_setup:3000, tempo_mesi:2 },
-      '4': { chi:'E-commerce B2B', cosa:'E-commerce ricambi B2B — ordini online con listini officina', costo_mensile:800, costo_setup:6000, tempo_mesi:2 },
-      '5': { chi:'Piattaforma B2B', cosa:'Piattaforma completa — ordini, tracking, resi, fatturazione', costo_mensile:1500, costo_setup:12000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Sito con catalogo marchi trattati, zona consegna, contatti',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'sito', nome:'Sito con catalogo marchi trattati, zona consegna, contatti', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:800, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Ricerca ricambi online per targa/VIN + preventivo',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Ricerca ricambi online per targa/VIN',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:350, costo_setup:3000, impatto:1, note:'Ricerca ricambi online per targa/VIN + preventivo' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:140, costo_setup:1200, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'E-commerce ricambi B2B — ordini online con listini officina',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'E-commerce ricambi B2B',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:800, costo_setup:6000, impatto:1, note:'E-commerce ricambi B2B — ordini online con listini officina' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:320, costo_setup:2400, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piattaforma completa — ordini, tracking, resi, fatturazione',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Piattaforma completa',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:1500, costo_setup:12000, impatto:1, note:'Piattaforma completa — ordini, tracking, resi, fatturazione' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:600, costo_setup:4800, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
     },
     ecommerce: {
-      _label: 'Approvvigionamento ricambi',
       '1': { chi:'Titolare', cosa:'Acquisto da 1-2 distributori abituali', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Confronto prezzi tra distributori (Rhiag, LKQ, Autodis)', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Accordi distributori', cosa:'Accordi quadro con 3-4 distributori — sconti e priorità', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
-      '4': { chi:'Buyer', cosa:'Buyer dedicato — ottimizzazione stock, import aftermarket', costo_mensile:1500, costo_setup:500, tempo_mesi:2 },
-      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — contratti quadro, private label, import Asia', costo_mensile:3000, costo_setup:1500, tempo_mesi:4 },
-    },
+      '2': {
+        cosa: 'Confronto prezzi tra distributori (Rhiag, LKQ, Autodis)',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'canale', nome:'Confronto prezzi tra distributori (Rhiag, LKQ, Autodis)', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Accordi quadro con 3-4 distributori — sconti e priorità',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'canale', nome:'Accordi quadro con 3-4 distributori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Buyer dedicato — ottimizzazione stock, import aftermarket',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Buyer dedicato',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:1500, costo_setup:500, impatto:1, note:'Buyer dedicato — ottimizzazione stock, import aftermarket' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:750, costo_setup:200, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Resp. acquisti — contratti quadro, private label, import Asia',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Resp. acquisti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:3000, costo_setup:1500, impatto:1, note:'Resp. acquisti — contratti quadro, private label, import Asia' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1500, costo_setup:600, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      _label: 'Approvvigionamento ricambi',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1163,62 +4580,438 @@ vendite: {
   commercio_abbigliamento_ingrosso: {
     vendite: {
       '1': { chi:'Titolare', cosa:'Titolare vende direttamente — showroom e fiere', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Campionario stagionale proattivo ai buyer', costo_mensile:300, costo_setup:500, tempo_mesi:1 },
-      '3': { chi:'1 agente', cosa:'1 agente con portafoglio zona', costo_mensile:1500, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'2-3 agenti', cosa:'2-3 agenti per zona — copertura regionale', costo_mensile:4000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Rete agenti + showroom', cosa:'Rete agenti + showroom permanente', costo_mensile:7000, costo_setup:2500, tempo_mesi:6 },
+      '2': {
+        cosa: 'Campionario stagionale proattivo ai buyer',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: '1 agente con portafoglio zona',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1500, costo_setup:500, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:825, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:675, costo_setup:500, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: '2-3 agenti per zona — copertura regionale',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:4000, costo_setup:1000, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:2200, costo_setup:1000, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1800, costo_setup:1000, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Rete agenti + showroom permanente',
+        tempo_mesi: 6,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2800, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1540, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1400, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1050, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini su carta e telefono', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Excel con clienti, ordini stagionali e pagamenti', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'CRM base', cosa:'CRM con anagrafica buyer, storico ordini, preferenze', costo_mensile:300, costo_setup:500, tempo_mesi:1 },
-      '4': { chi:'CRM + gestionale', cosa:'CRM integrato con gestionale ordini e magazzino', costo_mensile:600, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'ERP fashion B2B', cosa:'ERP fashion — ordini, campionario, spedizioni, fatturazione', costo_mensile:1200, costo_setup:4000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Excel con clienti, ordini stagionali e pagamenti',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'CRM con anagrafica buyer, storico ordini, preferenze',
+        tempo_mesi: 1,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM con anagrafica buyer, storico ordini, preferenze', costo_mensile:300, costo_setup:500, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:150, costo_setup:300, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'CRM integrato con gestionale ordini e magazzino',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM integrato con gestionale ordini e magazzino', costo_mensile:600, costo_setup:1500, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:300, costo_setup:900, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ERP fashion — ordini, campionario, spedizioni, fatturazione',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'ERP fashion', costo_mensile:1200, costo_setup:4000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:600, costo_setup:2400, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Titolare', cosa:'Nessuna organizzazione — il titolare decide tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Pianificazione campagne vendita stagionali', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Titolare', cosa:'Ruoli magazzino/spedizioni formalizzati', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Consulente + titolare', cosa:'KPI per agente + obiettivi stagione', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Management', cosa:'Management coordinamento rete agenti', costo_mensile:1500, costo_setup:1500, tempo_mesi:5 },
+      '2': {
+        cosa: 'Pianificazione campagne vendita stagionali',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'organizzazione', nome:'Pianificazione campagne vendita stagionali', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Ruoli magazzino/spedizioni formalizzati',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'organizzazione', nome:'Ruoli magazzino/spedizioni formalizzati', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'KPI per agente + obiettivi stagione',
+        tempo_mesi: 3,
+        moduli: [
+          { id:'organizzazione', nome:'KPI per agente + obiettivi stagione', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Management coordinamento rete agenti',
+        tempo_mesi: 5,
+        moduli: [
+          {
+            id: 'manager',
+            nome: 'Figura manageriale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Management dipendente', costo_mensile:1500, costo_setup:1500, impatto:1, note:'Full-time' },
+              { id:'fractional', nome:'Management fractional', costo_mensile:750, costo_setup:1500, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          }
+        ]
+      },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — ordini gestiti a voce e su carta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Catalogo digitale PDF + listino prezzi strutturato', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Gestionale ordini', cosa:'Gestionale ordini con conferma automatica e tracking', costo_mensile:300, costo_setup:1000, tempo_mesi:2 },
-      '4': { chi:'Campionario digitale', cosa:'Campionario digitale + ordini agenti su tablet in showroom', costo_mensile:500, costo_setup:2000, tempo_mesi:2 },
-      '5': { chi:'ERP + automazione', cosa:'ERP completo — ordini, magazzino, spedizioni, resi automatici', costo_mensile:900, costo_setup:4000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Catalogo digitale PDF + listino prezzi strutturato',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'processo', nome:'Catalogo digitale PDF + listino prezzi strutturato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Gestionale ordini con conferma automatica e tracking',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Gestionale ordini con conferma automatica e tracking',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:300, costo_setup:1000, impatto:1, note:'Gestionale ordini con conferma automatica e tracking' },
+              { id:'base', nome:'Soluzione base', costo_mensile:150, costo_setup:500, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Campionario digitale + ordini agenti su tablet in showroom',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Campionario digitale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:500, costo_setup:2000, impatto:1, note:'Campionario digitale + ordini agenti su tablet in showroom' },
+              { id:'base', nome:'Soluzione base', costo_mensile:250, costo_setup:1000, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ERP completo — ordini, magazzino, spedizioni, resi automatici',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'ERP completo',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:900, costo_setup:4000, impatto:1, note:'ERP completo — ordini, magazzino, spedizioni, resi automatici' },
+              { id:'base', nome:'Soluzione base', costo_mensile:450, costo_setup:2000, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Margine fisso su listino — nessuna strategia pricing', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Sconti volume differenziati per fasce ordine', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Pronto moda', cosa:'Linea pronto moda con margini superiori per riordini rapidi', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Mix margini', cosa:'Mix prodotto ottimizzato — campionario, pronto, fine serie', costo_mensile:300, costo_setup:1000, tempo_mesi:2 },
-      '5': { chi:'Revenue manager', cosa:'Private label + accordi GDO + dynamic pricing per stagione', costo_mensile:800, costo_setup:2000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Sconti volume differenziati per fasce ordine',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Sconti volume differenziati per fasce ordine', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Linea pronto moda con margini superiori per riordini rapidi',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'ricavi', nome:'Linea pronto moda con margini superiori per riordini rapidi', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Mix prodotto ottimizzato — campionario, pronto, fine serie',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'ricavi', nome:'Mix prodotto ottimizzato', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Private label + accordi GDO + dynamic pricing per stagione',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'Private label + accordi GDO + dynamic pricing per stagione',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:800, costo_setup:2000, impatto:1, note:'Private label + accordi GDO + dynamic pricing per stagione' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:400, costo_setup:1000, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo fiere e passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Profilo Instagram B2B con foto collezioni', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Social + fiere', cosa:'Social professionale + partecipazione fiere settore', costo_mensile:500, costo_setup:2000, tempo_mesi:2 },
-      '4': { chi:'Marketing operativo', cosa:'Lookbook digitale + campagne email per buyer + eventi showroom', costo_mensile:1000, costo_setup:2500, tempo_mesi:2 },
-      '5': { chi:'Marketing manager', cosa:'Piano marketing B2B — brand positioning, PR, fiere internazionali', costo_mensile:2500, costo_setup:5000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Profilo Instagram B2B con foto collezioni',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'marketing', nome:'Profilo Instagram B2B con foto collezioni', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Social professionale + partecipazione fiere settore',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Social professionale + partecipazione fiere settore', tipo:'flag', obbligatorio:true, costo_mensile:500, costo_setup:2000, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Lookbook digitale + campagne email per buyer + eventi showroom',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Lookbook digitale + campagne email per buyer + eventi showroom',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1000, costo_setup:2500, impatto:1, note:'Lookbook digitale + campagne email per buyer + eventi showroom' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:400, costo_setup:1250, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piano marketing B2B — brand positioning, PR, fiere internazionali',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Piano marketing B2B',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:2500, costo_setup:5000, impatto:1, note:'Piano marketing B2B — brand positioning, PR, fiere internazionali' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:1000, costo_setup:2500, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito o pagina vetrina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito vetrina con collezioni, showroom, contatti', costo_mensile:80, costo_setup:800, tempo_mesi:1 },
-      '3': { chi:'Sito professionale', cosa:'Catalogo online con lookbook e richiesta campionario', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
-      '4': { chi:'Portale B2B', cosa:'Portale B2B con ordini online, listini riservati, disponibilità', costo_mensile:700, costo_setup:5000, tempo_mesi:3 },
-      '5': { chi:'Piattaforma wholesale', cosa:'Piattaforma wholesale — preordini, riassortimenti, tracking', costo_mensile:1300, costo_setup:10000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Sito vetrina con collezioni, showroom, contatti',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'sito', nome:'Sito vetrina con collezioni, showroom, contatti', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:800, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Catalogo online con lookbook e richiesta campionario',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Catalogo online con lookbook e richiesta campionario',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:300, costo_setup:2500, impatto:1, note:'Catalogo online con lookbook e richiesta campionario' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:120, costo_setup:1000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Portale B2B con ordini online, listini riservati, disponibilità',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Portale B2B con ordini online, listini riservati, disponibilità',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:700, costo_setup:5000, impatto:1, note:'Portale B2B con ordini online, listini riservati, disponibilità' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:280, costo_setup:2000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piattaforma wholesale — preordini, riassortimenti, tracking',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Piattaforma wholesale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:1300, costo_setup:10000, impatto:1, note:'Piattaforma wholesale — preordini, riassortimenti, tracking' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:520, costo_setup:4000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
     },
     ecommerce: {
-      _label: 'Approvvigionamento collezioni',
       '1': { chi:'Titolare', cosa:'Acquisto da 1-2 fornitori abituali a fiera', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Scouting fornitori a fiere — confronto prezzi e MOQ', costo_mensile:0, costo_setup:500, tempo_mesi:1 },
-      '3': { chi:'Buyer', cosa:'Buyer dedicato — sourcing Italia e Turchia, campionature', costo_mensile:1500, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Buyer + import', cosa:'Import diretto — Cina, Bangladesh — controllo qualità', costo_mensile:2500, costo_setup:2000, tempo_mesi:3 },
-      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — diversificazione fornitori, private label', costo_mensile:3500, costo_setup:3000, tempo_mesi:4 },
-    },
+      '2': {
+        cosa: 'Scouting fornitori a fiere — confronto prezzi e MOQ',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'canale', nome:'Scouting fornitori a fiere', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Buyer dedicato — sourcing Italia e Turchia, campionature',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Buyer dedicato',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:1500, costo_setup:500, impatto:1, note:'Buyer dedicato — sourcing Italia e Turchia, campionature' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:750, costo_setup:200, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Import diretto — Cina, Bangladesh — controllo qualità',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Import diretto',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:2500, costo_setup:2000, impatto:1, note:'Import diretto — Cina, Bangladesh — controllo qualità' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1250, costo_setup:800, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Resp. acquisti — diversificazione fornitori, private label',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Resp. acquisti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:3500, costo_setup:3000, impatto:1, note:'Resp. acquisti — diversificazione fornitori, private label' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1750, costo_setup:1200, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      _label: 'Approvvigionamento collezioni',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1227,62 +5020,429 @@ vendite: {
   commercio_elettronica: {
     vendite: {
       '1': { chi:'Titolare', cosa:'Titolare/banco — vendita diretta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Inside sales telefonico — sviluppo clienti business', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'1 inside sales', cosa:'1 inside sales dedicato — gestione ordini e sviluppo', costo_mensile:2000, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Account + inside sales', cosa:'1 account + 1 inside sales', costo_mensile:4500, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Team vendite', cosa:'Team vendite strutturato — multicanale', costo_mensile:7500, costo_setup:2000, tempo_mesi:6 },
+      '2': {
+        cosa: 'Inside sales telefonico — sviluppo clienti business',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: '1 inside sales dedicato — gestione ordini e sviluppo',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2000, costo_setup:500, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1100, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:900, costo_setup:500, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: '1 account + 1 inside sales',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:4500, costo_setup:1000, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:2475, costo_setup:1000, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:2025, costo_setup:1000, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Team vendite strutturato — multicanale',
+        tempo_mesi: 6,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:3000, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1650, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1500, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1125, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — tutto a memoria e scontrini', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Excel con clienti business, preventivi e follow-up', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'CRM base', cosa:'CRM con lead B2B, preventivi, storico acquisti', costo_mensile:300, costo_setup:500, tempo_mesi:1 },
-      '4': { chi:'CRM + gestionale', cosa:'CRM integrato con magazzino e listini distributori', costo_mensile:600, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'ERP distribuzione', cosa:'ERP completo — ordini, stock, pricing, margini real-time', costo_mensile:1200, costo_setup:5000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Excel con clienti business, preventivi e follow-up',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'CRM con lead B2B, preventivi, storico acquisti',
+        tempo_mesi: 1,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM con lead B2B, preventivi, storico acquisti', costo_mensile:300, costo_setup:500, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:150, costo_setup:300, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'CRM integrato con magazzino e listini distributori',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM integrato con magazzino e listini distributori', costo_mensile:600, costo_setup:1500, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:300, costo_setup:900, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ERP completo — ordini, stock, pricing, margini real-time',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'ERP completo', costo_mensile:1200, costo_setup:5000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:600, costo_setup:3000, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Titolare', cosa:'Nessuna organizzazione — il titolare decide tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Ruoli vendita/magazzino definiti — chi fa cosa è chiaro', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Titolare', cosa:'Procedure pricing e stock formalizzate', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Consulente + titolare', cosa:'KPI margini + rotazione — deleghe operative', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Management', cosa:'Management + analisi dati vendita strutturato', costo_mensile:1500, costo_setup:1500, tempo_mesi:5 },
+      '2': {
+        cosa: 'Ruoli vendita/magazzino definiti — chi fa cosa è chiaro',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'organizzazione', nome:'Ruoli vendita/magazzino definiti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Procedure pricing e stock formalizzate',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'organizzazione', nome:'Procedure pricing e stock formalizzate', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'KPI margini + rotazione — deleghe operative',
+        tempo_mesi: 3,
+        moduli: [
+          { id:'organizzazione', nome:'KPI margini + rotazione', tipo:'flag', obbligatorio:true, costo_mensile:500, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Management + analisi dati vendita strutturato',
+        tempo_mesi: 5,
+        moduli: [
+          {
+            id: 'manager',
+            nome: 'Figura manageriale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Management dipendente', costo_mensile:1500, costo_setup:1500, impatto:1, note:'Full-time' },
+              { id:'fractional', nome:'Management fractional', costo_mensile:750, costo_setup:1500, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          }
+        ]
+      },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — preventivi manuali su carta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Preventivi con template + consultazione listini digitali', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Gestionale', cosa:'Gestionale con listini aggiornati e margini automatici', costo_mensile:300, costo_setup:1000, tempo_mesi:2 },
-      '4': { chi:'Automazione ordini', cosa:'Ordini automatici a distributore al raggiungimento scorta minima', costo_mensile:500, costo_setup:2000, tempo_mesi:2 },
-      '5': { chi:'ERP + BI', cosa:'ERP con BI per analisi margini, rotazione, trend vendite', costo_mensile:900, costo_setup:4000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Preventivi con template + consultazione listini digitali',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'processo', nome:'Preventivi con template + consultazione listini digitali', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Gestionale con listini aggiornati e margini automatici',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Gestionale con listini aggiornati e margini automatici',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:300, costo_setup:1000, impatto:1, note:'Gestionale con listini aggiornati e margini automatici' },
+              { id:'base', nome:'Soluzione base', costo_mensile:150, costo_setup:500, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Ordini automatici a distributore al raggiungimento scorta minima',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Ordini automatici a distributore al raggiungimento scorta minima',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:500, costo_setup:2000, impatto:1, note:'Ordini automatici a distributore al raggiungimento scorta minima' },
+              { id:'base', nome:'Soluzione base', costo_mensile:250, costo_setup:1000, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ERP con BI per analisi margini, rotazione, trend vendite',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'ERP con BI per analisi margini, rotazione, trend vendite',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:900, costo_setup:4000, impatto:1, note:'ERP con BI per analisi margini, rotazione, trend vendite' },
+              { id:'base', nome:'Soluzione base', costo_mensile:450, costo_setup:2000, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Margine da listino distributore — nessun pricing attivo', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Pricing differenziato — privati vs business vs PA', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Servizi a valore', cosa:'Servizi installazione, configurazione e assistenza a margine', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
-      '4': { chi:'Contratti assistenza', cosa:'Contratti assistenza annuali + estensioni garanzia', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '5': { chi:'Revenue manager', cosa:'Bundle HW+SW+servizi, noleggio operativo, ricavi ricorrenti', costo_mensile:700, costo_setup:1500, tempo_mesi:3 },
+      '2': {
+        cosa: 'Pricing differenziato — privati vs business vs PA',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Pricing differenziato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Servizi installazione, configurazione e assistenza a margine',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Servizi installazione, configurazione e assistenza a margine', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Contratti assistenza annuali + estensioni garanzia',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'ricavi', nome:'Contratti assistenza annuali + estensioni garanzia', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Bundle HW+SW+servizi, noleggio operativo, ricavi ricorrenti',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'Bundle HW+SW+servizi, noleggio operativo, ricavi ricorrenti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:700, costo_setup:1500, impatto:1, note:'Bundle HW+SW+servizi, noleggio operativo, ricavi ricorrenti' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:350, costo_setup:750, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo posizione e insegna', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Google My Business + volantini offerte settimanali', costo_mensile:150, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Agenzia digital', cosa:'Google Ads + comparatori prezzi (Trovaprezzi, Idealo)', costo_mensile:600, costo_setup:1000, tempo_mesi:2 },
-      '4': { chi:'Marketing operativo', cosa:'Newsletter offerte B2B + promozioni stagionali + social', costo_mensile:1000, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'Marketing manager', cosa:'Piano marketing omnicanale — brand, partnership vendor, eventi', costo_mensile:2500, costo_setup:4000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Google My Business + volantini offerte settimanali',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'marketing', nome:'Google My Business + volantini offerte settimanali', tipo:'flag', obbligatorio:true, costo_mensile:150, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Google Ads + comparatori prezzi (Trovaprezzi, Idealo)',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Google Ads + comparatori prezzi (Trovaprezzi, Idealo)', tipo:'flag', obbligatorio:true, costo_mensile:600, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Newsletter offerte B2B + promozioni stagionali + social',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Newsletter offerte B2B + promozioni stagionali + social',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1000, costo_setup:1500, impatto:1, note:'Newsletter offerte B2B + promozioni stagionali + social' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:400, costo_setup:750, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piano marketing omnicanale — brand, partnership vendor, eventi',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Piano marketing omnicanale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:2500, costo_setup:4000, impatto:1, note:'Piano marketing omnicanale — brand, partnership vendor, eventi' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:1000, costo_setup:2000, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito vetrina con catalogo prodotti e contatti', costo_mensile:80, costo_setup:800, tempo_mesi:1 },
-      '3': { chi:'E-commerce base', cosa:'E-commerce con catalogo, prezzi, carrello e pagamento', costo_mensile:400, costo_setup:3000, tempo_mesi:2 },
-      '4': { chi:'E-commerce avanzato', cosa:'E-commerce con comparazione, recensioni, stock real-time', costo_mensile:800, costo_setup:6000, tempo_mesi:2 },
-      '5': { chi:'Piattaforma omnicanale', cosa:'Piattaforma integrata — B2C, B2B, marketplace, click&collect', costo_mensile:1500, costo_setup:12000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Sito vetrina con catalogo prodotti e contatti',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'sito', nome:'Sito vetrina con catalogo prodotti e contatti', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:800, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'E-commerce con catalogo, prezzi, carrello e pagamento',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'E-commerce con catalogo, prezzi, carrello e pagamento',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:400, costo_setup:3000, impatto:1, note:'E-commerce con catalogo, prezzi, carrello e pagamento' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:160, costo_setup:1200, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'E-commerce con comparazione, recensioni, stock real-time',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'E-commerce con comparazione, recensioni, stock real-time',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:800, costo_setup:6000, impatto:1, note:'E-commerce con comparazione, recensioni, stock real-time' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:320, costo_setup:2400, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piattaforma integrata — B2C, B2B, marketplace, click&collect',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Piattaforma integrata',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:1500, costo_setup:12000, impatto:1, note:'Piattaforma integrata — B2C, B2B, marketplace, click&collect' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:600, costo_setup:4800, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
     },
     ecommerce: {
-      _label: 'Approvvigionamento e distribuzione',
       '1': { chi:'Titolare', cosa:'Acquisto da 1 distributore abituale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Confronto prezzi tra 2-3 distributori (Esprinet, Ingram, TD)', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Accordi distribuzione', cosa:'Accordi quadro con distributori — rebate e priorità consegna', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
-      '4': { chi:'Buyer', cosa:'Buyer dedicato — ottimizzazione acquisti, drop-shipping', costo_mensile:1500, costo_setup:500, tempo_mesi:2 },
-      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — import diretto, accordi vendor, stock strategy', costo_mensile:3000, costo_setup:1500, tempo_mesi:4 },
-    },
+      '2': {
+        cosa: 'Confronto prezzi tra 2-3 distributori (Esprinet, Ingram, TD)',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'canale', nome:'Confronto prezzi tra 2-3 distributori (Esprinet, Ingram, TD)', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Accordi quadro con distributori — rebate e priorità consegna',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'canale', nome:'Accordi quadro con distributori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Buyer dedicato — ottimizzazione acquisti, drop-shipping',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Buyer dedicato',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:1500, costo_setup:500, impatto:1, note:'Buyer dedicato — ottimizzazione acquisti, drop-shipping' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:750, costo_setup:200, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Resp. acquisti — import diretto, accordi vendor, stock strategy',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Resp. acquisti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:3000, costo_setup:1500, impatto:1, note:'Resp. acquisti — import diretto, accordi vendor, stock strategy' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1500, costo_setup:600, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      _label: 'Approvvigionamento e distribuzione',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1291,126 +5451,889 @@ vendite: {
   commercio_abbigliamento_dettaglio: {
     vendite: {
       '1': { chi:'Titolare', cosa:'Solo titolare in negozio', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ 1 commesso/a PT', cosa:'1 commesso/a part-time per coprire turni e weekend', costo_mensile:1000, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'+ 1 commesso/a FT', cosa:'1 commesso/a full-time — vendita assistita', costo_mensile:1700, costo_setup:300, tempo_mesi:2 },
-      '4': { chi:'2 commessi + visual', cosa:'2 commessi + visual merchandiser', costo_mensile:4000, costo_setup:500, tempo_mesi:3 },
-      '5': { chi:'Store manager + team', cosa:'Store manager + team vendita strutturato', costo_mensile:6500, costo_setup:1000, tempo_mesi:5 },
+      '2': {
+        cosa: '1 commesso/a part-time per coprire turni e weekend',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'supporto', nome:'+ 1 commesso/a PT', tipo:'flag', obbligatorio:true, costo_mensile:1000, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: '1 commesso/a full-time — vendita assistita',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1700, costo_setup:300, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:935, costo_setup:300, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:765, costo_setup:300, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: '2 commessi + visual merchandiser',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:4000, costo_setup:500, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:2200, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1800, costo_setup:500, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Store manager + team vendita strutturato',
+        tempo_mesi: 5,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2600, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1430, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1300, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:975, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — vendite solo da scontrini', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Registro clienti abituali con preferenze e taglie', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'CRM retail', cosa:'CRM retail con fidelity card e storico acquisti', costo_mensile:200, costo_setup:500, tempo_mesi:1 },
-      '4': { chi:'CRM + marketing', cosa:'CRM integrato con email/SMS per promozioni mirate', costo_mensile:400, costo_setup:1000, tempo_mesi:2 },
-      '5': { chi:'CRM omnicanale', cosa:'CRM omnicanale — negozio, web, social con vista unica cliente', costo_mensile:800, costo_setup:3000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Registro clienti abituali con preferenze e taglie',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'CRM retail con fidelity card e storico acquisti',
+        tempo_mesi: 1,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM retail con fidelity card e storico acquisti', costo_mensile:200, costo_setup:500, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:100, costo_setup:300, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'CRM integrato con email/SMS per promozioni mirate',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM integrato con email/SMS per promozioni mirate', costo_mensile:400, costo_setup:1000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:200, costo_setup:600, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'CRM omnicanale — negozio, web, social con vista unica cliente',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM omnicanale', costo_mensile:800, costo_setup:3000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:400, costo_setup:1800, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Titolare', cosa:'Nessuna organizzazione — il titolare decide tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Turni e ruoli definiti — chi fa cosa è chiaro', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Titolare', cosa:'Obiettivi vendita per persona definiti', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Consulente + titolare', cosa:'KPI negozio + deleghe operative', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Management', cosa:'Governance multi-punto vendita', costo_mensile:1500, costo_setup:1500, tempo_mesi:5 },
+      '2': {
+        cosa: 'Turni e ruoli definiti — chi fa cosa è chiaro',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'organizzazione', nome:'Turni e ruoli definiti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Obiettivi vendita per persona definiti',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'organizzazione', nome:'Obiettivi vendita per persona definiti', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'KPI negozio + deleghe operative',
+        tempo_mesi: 3,
+        moduli: [
+          { id:'organizzazione', nome:'KPI negozio + deleghe operative', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Governance multi-punto vendita',
+        tempo_mesi: 5,
+        moduli: [
+          {
+            id: 'manager',
+            nome: 'Figura manageriale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Management dipendente', costo_mensile:1500, costo_setup:1500, impatto:1, note:'Full-time' },
+              { id:'fractional', nome:'Management fractional', costo_mensile:750, costo_setup:1500, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          }
+        ]
+      },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — tutto a sensazione ed esperienza', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Gestione cassa con POS e scontrini elettronici', costo_mensile:50, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Gestionale retail', cosa:'Gestionale retail — vendite, giacenze, riordini', costo_mensile:200, costo_setup:800, tempo_mesi:2 },
-      '4': { chi:'Processi standard', cosa:'Procedure accoglienza, visual, cambio merce, fidelizzazione', costo_mensile:300, costo_setup:1000, tempo_mesi:2 },
-      '5': { chi:'Retail management', cosa:'Sistema completo — KPI per m², rotazione, sell-through rate', costo_mensile:600, costo_setup:2000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Gestione cassa con POS e scontrini elettronici',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'processo', nome:'Gestione cassa con POS e scontrini elettronici', tipo:'flag', obbligatorio:true, costo_mensile:50, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Gestionale retail — vendite, giacenze, riordini',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'processo', nome:'Gestionale retail', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:800, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Procedure accoglienza, visual, cambio merce, fidelizzazione',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Procedure accoglienza, visual, cambio merce, fidelizzazione',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:300, costo_setup:1000, impatto:1, note:'Procedure accoglienza, visual, cambio merce, fidelizzazione' },
+              { id:'base', nome:'Soluzione base', costo_mensile:150, costo_setup:500, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Sistema completo — KPI per m², rotazione, sell-through rate',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Sistema completo',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:600, costo_setup:2000, impatto:1, note:'Sistema completo — KPI per m², rotazione, sell-through rate' },
+              { id:'base', nome:'Soluzione base', costo_mensile:300, costo_setup:1000, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Margine da ricarico standard — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Saldi pianificati e gestione fine serie per liberare cassa', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Upsell + cross', cosa:'Upsell accessori + cross-selling outfit completi', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '4': { chi:'Fidelizzazione', cosa:'Programma fedeltà con sconti progressivi e anteprime', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '5': { chi:'Revenue manager', cosa:'Dynamic pricing stagionale + private label + eventi esclusivi', costo_mensile:600, costo_setup:1500, tempo_mesi:3 },
+      '2': {
+        cosa: 'Saldi pianificati e gestione fine serie per liberare cassa',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Saldi pianificati e gestione fine serie per liberare cassa', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Upsell accessori + cross-selling outfit completi',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Upsell accessori + cross-selling outfit completi', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Programma fedeltà con sconti progressivi e anteprime',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'ricavi', nome:'Programma fedeltà con sconti progressivi e anteprime', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Dynamic pricing stagionale + private label + eventi esclusivi',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'Dynamic pricing stagionale + private label + eventi esclusivi',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:600, costo_setup:1500, impatto:1, note:'Dynamic pricing stagionale + private label + eventi esclusivi' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:300, costo_setup:750, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo vetrina e passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Instagram con foto outfit e nuovi arrivi settimanali', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Social + influencer', cosa:'Instagram + Facebook Ads + micro-influencer locali', costo_mensile:600, costo_setup:1000, tempo_mesi:2 },
-      '4': { chi:'Agenzia + eventi', cosa:'Agenzia social + eventi in-store + collaborazioni brand', costo_mensile:1200, costo_setup:2000, tempo_mesi:2 },
-      '5': { chi:'Marketing manager', cosa:'Piano marketing — brand identity, PR, eventi, community', costo_mensile:2800, costo_setup:4000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Instagram con foto outfit e nuovi arrivi settimanali',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'marketing', nome:'Instagram con foto outfit e nuovi arrivi settimanali', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Instagram + Facebook Ads + micro-influencer locali',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Instagram + Facebook Ads + micro-influencer locali', tipo:'flag', obbligatorio:true, costo_mensile:600, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Agenzia social + eventi in-store + collaborazioni brand',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Agenzia social + eventi in-store + collaborazioni brand',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1200, costo_setup:2000, impatto:1, note:'Agenzia social + eventi in-store + collaborazioni brand' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:480, costo_setup:1000, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piano marketing — brand identity, PR, eventi, community',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Piano marketing',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:2800, costo_setup:4000, impatto:1, note:'Piano marketing — brand identity, PR, eventi, community' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:1120, costo_setup:2000, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito — solo social media', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito vetrina con brand, collezioni e orari negozio', costo_mensile:80, costo_setup:800, tempo_mesi:1 },
-      '3': { chi:'E-commerce base', cosa:'E-commerce con catalogo, taglie, pagamento online', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
-      '4': { chi:'E-commerce avanzato', cosa:'E-commerce con outfit suggeriti, wishlist, reso facile', costo_mensile:600, costo_setup:5000, tempo_mesi:2 },
-      '5': { chi:'Piattaforma omnicanale', cosa:'Piattaforma integrata — stock unico negozio/web, click&collect', costo_mensile:1200, costo_setup:10000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Sito vetrina con brand, collezioni e orari negozio',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'sito', nome:'Sito vetrina con brand, collezioni e orari negozio', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:800, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'E-commerce con catalogo, taglie, pagamento online',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'E-commerce con catalogo, taglie, pagamento online',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:300, costo_setup:2500, impatto:1, note:'E-commerce con catalogo, taglie, pagamento online' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:120, costo_setup:1000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'E-commerce con outfit suggeriti, wishlist, reso facile',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'E-commerce con outfit suggeriti, wishlist, reso facile',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:600, costo_setup:5000, impatto:1, note:'E-commerce con outfit suggeriti, wishlist, reso facile' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:240, costo_setup:2000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piattaforma integrata — stock unico negozio/web, click&collect',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Piattaforma integrata',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:1200, costo_setup:10000, impatto:1, note:'Piattaforma integrata — stock unico negozio/web, click&collect' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:480, costo_setup:4000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
     },
     ecommerce: {
-      _label: 'Approvvigionamento collezioni',
       '1': { chi:'Titolare', cosa:'Acquisto da rappresentanti di zona in showroom', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Scouting brand a fiere (Pitti, MICAM, White)', costo_mensile:0, costo_setup:500, tempo_mesi:1 },
-      '3': { chi:'Buyer part-time', cosa:'Buyer esterno — selezione brand e pianificazione budget acquisti', costo_mensile:800, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Buyer + pronto moda', cosa:'Acquisti campionario + riassortimenti pronto moda in stagione', costo_mensile:1500, costo_setup:1000, tempo_mesi:2 },
-      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — mix brand, private label, import diretto', costo_mensile:2800, costo_setup:2000, tempo_mesi:4 },
-    },
+      '2': {
+        cosa: 'Scouting brand a fiere (Pitti, MICAM, White)',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'canale', nome:'Scouting brand a fiere (Pitti, MICAM, White)', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Buyer esterno — selezione brand e pianificazione budget acquisti',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Buyer esterno',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:800, costo_setup:500, impatto:1, note:'Buyer esterno — selezione brand e pianificazione budget acquisti' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:400, costo_setup:200, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Acquisti campionario + riassortimenti pronto moda in stagione',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Acquisti campionario + riassortimenti pronto moda in stagione',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:1500, costo_setup:1000, impatto:1, note:'Acquisti campionario + riassortimenti pronto moda in stagione' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:750, costo_setup:400, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Resp. acquisti — mix brand, private label, import diretto',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Resp. acquisti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:2800, costo_setup:2000, impatto:1, note:'Resp. acquisti — mix brand, private label, import diretto' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1400, costo_setup:800, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      _label: 'Approvvigionamento collezioni',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
-  // COMMERCIO OROLOGI E GIOIELLI
+  // COMMERCIO OROLOGI GIOIELLI
   // ═══════════════════════════════════════════════════════════════════════════
   commercio_orologi_gioielli: {
     vendite: {
       '1': { chi:'Titolare', cosa:'Solo titolare in boutique', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ 1 addetto clienteling', cosa:'1 addetto clienteling — accoglienza e follow-up', costo_mensile:2200, costo_setup:500, tempo_mesi:1 },
-      '3': { chi:'2 addetti vendita', cosa:'2 addetti vendita specializzati — gemmologia e luxury', costo_mensile:4500, costo_setup:1000, tempo_mesi:2 },
-      '4': { chi:'Team + gemmologa', cosa:'Team vendita + gemmologa dedicata', costo_mensile:7000, costo_setup:1500, tempo_mesi:3 },
-      '5': { chi:'Store manager + team', cosa:'Store manager + team clienteling VIP', costo_mensile:10000, costo_setup:2000, tempo_mesi:5 },
+      '2': {
+        cosa: '1 addetto clienteling — accoglienza e follow-up',
+        tempo_mesi: 1,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2200, costo_setup:500, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1210, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:990, costo_setup:500, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '3': {
+        cosa: '2 addetti vendita specializzati — gemmologia e luxury',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:4500, costo_setup:1000, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:2475, costo_setup:1000, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:2025, costo_setup:1000, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Team vendita + gemmologa dedicata',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2800, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1540, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1400, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1050, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Store manager + team clienteling VIP',
+        tempo_mesi: 5,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:4000, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:2200, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2000, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1500, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — clienti a memoria e rubrica', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Rubrica clienti con ricorrenze, gusti e storico acquisti', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'CRM luxury', cosa:'CRM con profilo clienti, anniversari, wish list', costo_mensile:300, costo_setup:800, tempo_mesi:1 },
-      '4': { chi:'CRM + automation', cosa:'CRM con automazioni — auguri, inviti eventi, nuove collezioni', costo_mensile:500, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'CRM clienteling', cosa:'Piattaforma clienteling completa — 360° vista cliente luxury', costo_mensile:1000, costo_setup:4000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Rubrica clienti con ricorrenze, gusti e storico acquisti',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'CRM con profilo clienti, anniversari, wish list',
+        tempo_mesi: 1,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM con profilo clienti, anniversari, wish list', costo_mensile:300, costo_setup:800, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:150, costo_setup:480, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'CRM con automazioni — auguri, inviti eventi, nuove collezioni',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM con automazioni', costo_mensile:500, costo_setup:1500, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:250, costo_setup:900, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piattaforma clienteling completa — 360° vista cliente luxury',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Piattaforma clienteling completa', costo_mensile:1000, costo_setup:4000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:500, costo_setup:2400, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Titolare', cosa:'Nessuna organizzazione — il titolare decide tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Procedure accoglienza e clienteling definite', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Titolare', cosa:'CRM clienti VIP + follow-up strutturato', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Consulente + titolare', cosa:'KPI per addetto + obiettivi vendita', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Management', cosa:'Governance + gestione eventi trunk show', costo_mensile:1500, costo_setup:2000, tempo_mesi:5 },
+      '2': {
+        cosa: 'Procedure accoglienza e clienteling definite',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'organizzazione', nome:'Procedure accoglienza e clienteling definite', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'CRM clienti VIP + follow-up strutturato',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'organizzazione', nome:'CRM clienti VIP + follow-up strutturato', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'KPI per addetto + obiettivi vendita',
+        tempo_mesi: 3,
+        moduli: [
+          { id:'organizzazione', nome:'KPI per addetto + obiettivi vendita', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Governance + gestione eventi trunk show',
+        tempo_mesi: 5,
+        moduli: [
+          {
+            id: 'manager',
+            nome: 'Figura manageriale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Management dipendente', costo_mensile:1500, costo_setup:2000, impatto:1, note:'Full-time' },
+              { id:'fractional', nome:'Management fractional', costo_mensile:750, costo_setup:2000, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          }
+        ]
+      },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — esperienza e relazione personale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Registro pezzi con certificati e garanzie digitalizzati', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Gestionale gioielleria', cosa:'Gestionale con inventario, certificati, perizie, riparazioni', costo_mensile:250, costo_setup:1000, tempo_mesi:2 },
-      '4': { chi:'Cerimonia vendita', cosa:'Processo di vendita luxury — accoglienza, storytelling, packaging', costo_mensile:300, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'Retail management', cosa:'KPI boutique — conversion rate, scontrino medio, clienti VIP', costo_mensile:600, costo_setup:2500, tempo_mesi:3 },
+      '2': {
+        cosa: 'Registro pezzi con certificati e garanzie digitalizzati',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'processo', nome:'Registro pezzi con certificati e garanzie digitalizzati', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Gestionale con inventario, certificati, perizie, riparazioni',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'processo', nome:'Gestionale con inventario, certificati, perizie, riparazioni', tipo:'flag', obbligatorio:true, costo_mensile:250, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Processo di vendita luxury — accoglienza, storytelling, packaging',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Processo di vendita luxury',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:300, costo_setup:1500, impatto:1, note:'Processo di vendita luxury — accoglienza, storytelling, packaging' },
+              { id:'base', nome:'Soluzione base', costo_mensile:150, costo_setup:750, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'KPI boutique — conversion rate, scontrino medio, clienti VIP',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'KPI boutique',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:600, costo_setup:2500, impatto:1, note:'KPI boutique — conversion rate, scontrino medio, clienti VIP' },
+              { id:'base', nome:'Soluzione base', costo_mensile:300, costo_setup:1250, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Margine tradizionale da ricarico — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Servizi aggiuntivi — incisioni, packaging regalo, pulizia', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Upsell + servizi', cosa:'Upsell gioielli su misura + servizio riparazione e restyling', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Programma VIP', cosa:'Programma VIP — anteprime, eventi privati, sconti anniversario', costo_mensile:300, costo_setup:1000, tempo_mesi:2 },
-      '5': { chi:'Revenue manager', cosa:'Mix ricavi — vendita, riparazione, usato certificato, eventi', costo_mensile:700, costo_setup:2000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Servizi aggiuntivi — incisioni, packaging regalo, pulizia',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Servizi aggiuntivi', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Upsell gioielli su misura + servizio riparazione e restyling',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'ricavi', nome:'Upsell gioielli su misura + servizio riparazione e restyling', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Programma VIP — anteprime, eventi privati, sconti anniversario',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'ricavi', nome:'Programma VIP', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:1000, impatto:0.8 }
+        ]
+      },
+      '5': {
+        cosa: 'Mix ricavi — vendita, riparazione, usato certificato, eventi',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'Mix ricavi',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:700, costo_setup:2000, impatto:1, note:'Mix ricavi — vendita, riparazione, usato certificato, eventi' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:350, costo_setup:1000, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo vetrina e passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Instagram con foto gioielli e storytelling artigianale', costo_mensile:150, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Social + PR', cosa:'Social curato + PR locale + collaborazioni wedding planner', costo_mensile:700, costo_setup:1500, tempo_mesi:2 },
-      '4': { chi:'Agenzia luxury', cosa:'Agenzia specializzata luxury — shooting, video, influencer', costo_mensile:1500, costo_setup:3000, tempo_mesi:2 },
-      '5': { chi:'Marketing manager', cosa:'Piano marketing luxury — brand awareness, eventi esclusivi, PR', costo_mensile:3000, costo_setup:5000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Instagram con foto gioielli e storytelling artigianale',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'marketing', nome:'Instagram con foto gioielli e storytelling artigianale', tipo:'flag', obbligatorio:true, costo_mensile:150, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Social curato + PR locale + collaborazioni wedding planner',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Social curato + PR locale + collaborazioni wedding planner', tipo:'flag', obbligatorio:true, costo_mensile:700, costo_setup:1500, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: 'Agenzia specializzata luxury — shooting, video, influencer',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Agenzia specializzata luxury',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1500, costo_setup:3000, impatto:1, note:'Agenzia specializzata luxury — shooting, video, influencer' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:600, costo_setup:1500, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piano marketing luxury — brand awareness, eventi esclusivi, PR',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Piano marketing luxury',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:3000, costo_setup:5000, impatto:1, note:'Piano marketing luxury — brand awareness, eventi esclusivi, PR' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:1200, costo_setup:2500, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito vetrina elegante con collezioni e contatti boutique', costo_mensile:100, costo_setup:1500, tempo_mesi:1 },
-      '3': { chi:'Sito luxury', cosa:'Sito con catalogo dettagliato, certificati, prenotazione visita', costo_mensile:400, costo_setup:4000, tempo_mesi:2 },
-      '4': { chi:'E-commerce luxury', cosa:'E-commerce luxury con foto HD, zoom, certificati, reso assicurato', costo_mensile:800, costo_setup:8000, tempo_mesi:3 },
-      '5': { chi:'Piattaforma omnicanale', cosa:'Piattaforma integrata — e-commerce, CRM, stock unico, wish list', costo_mensile:1500, costo_setup:15000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Sito vetrina elegante con collezioni e contatti boutique',
+        tempo_mesi: 1,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Sito vetrina elegante con collezioni e contatti boutique',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:100, costo_setup:1500, impatto:1, note:'Sito vetrina elegante con collezioni e contatti boutique' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:40, costo_setup:600, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '3': {
+        cosa: 'Sito con catalogo dettagliato, certificati, prenotazione visita',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Sito con catalogo dettagliato, certificati, prenotazione visita',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:400, costo_setup:4000, impatto:1, note:'Sito con catalogo dettagliato, certificati, prenotazione visita' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:160, costo_setup:1600, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'E-commerce luxury con foto HD, zoom, certificati, reso assicurato',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'E-commerce luxury con foto HD, zoom, certificati, reso assicurato',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:800, costo_setup:8000, impatto:1, note:'E-commerce luxury con foto HD, zoom, certificati, reso assicurato' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:320, costo_setup:3200, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piattaforma integrata — e-commerce, CRM, stock unico, wish list',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Piattaforma integrata',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:1500, costo_setup:15000, impatto:1, note:'Piattaforma integrata — e-commerce, CRM, stock unico, wish list' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:600, costo_setup:6000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
     },
     ecommerce: {
-      _label: 'Approvvigionamento e fornitori',
       '1': { chi:'Titolare', cosa:'Acquisto da 1-2 rappresentanti brand abituali', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Scouting brand a fiere (VicenzaOro, Baselworld)', costo_mensile:0, costo_setup:800, tempo_mesi:1 },
-      '3': { chi:'Buyer', cosa:'Buyer dedicato — selezione pietre, fornitori orafi, brand', costo_mensile:1200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Buyer + laboratorio', cosa:'Import pietre diretto + laboratorio orafo per pezzi unici', costo_mensile:2500, costo_setup:2000, tempo_mesi:3 },
-      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — accordi brand, pietre certificate, private label', costo_mensile:3500, costo_setup:3000, tempo_mesi:4 },
-    },
+      '2': {
+        cosa: 'Scouting brand a fiere (VicenzaOro, Baselworld)',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'canale', nome:'Scouting brand a fiere (VicenzaOro, Baselworld)', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:800, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'Buyer dedicato — selezione pietre, fornitori orafi, brand',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Buyer dedicato',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:1200, costo_setup:500, impatto:1, note:'Buyer dedicato — selezione pietre, fornitori orafi, brand' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:600, costo_setup:200, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Import pietre diretto + laboratorio orafo per pezzi unici',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Import pietre diretto + laboratorio orafo per pezzi unici',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:2500, costo_setup:2000, impatto:1, note:'Import pietre diretto + laboratorio orafo per pezzi unici' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1250, costo_setup:800, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Resp. acquisti — accordi brand, pietre certificate, private label',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Resp. acquisti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:3500, costo_setup:3000, impatto:1, note:'Resp. acquisti — accordi brand, pietre certificate, private label' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1750, costo_setup:1200, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      _label: 'Approvvigionamento e fornitori',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1419,62 +6342,648 @@ vendite: {
   alimentare_trasformazione: {
     vendite: {
       '1': { chi:'Titolare', cosa:'Titolare gestisce clienti storici', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Visite a buyer GDO e HORECA', costo_mensile:300, costo_setup:0, tempo_mesi:2 },
-      '3': { chi:'1 agente', cosa:'1 agente dedicato GDO o HORECA (~2.500€ fisso+provvigioni)', costo_mensile:2500, costo_setup:500, tempo_mesi:3 },
-      '4': { chi:'2 agenti + inside sales', cosa:'2 agenti per canale + inside sales (~2.800€ commerciale)', costo_mensile:6000, costo_setup:1000, tempo_mesi:4 },
-      '5': { chi:'Dir. commerciale + rete', cosa:'Dir. commerciale + rete agenti + export', costo_mensile:9000, costo_setup:2500, tempo_mesi:6 },
+      '2': {
+        cosa: 'Visite a buyer GDO e HORECA',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: '1 agente dedicato GDO o HORECA (~2.500€ fisso+provvigioni)',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2500, costo_setup:500, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1375, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1125, costo_setup:500, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: '2 agenti per canale + inside sales (~2.800€ commerciale)',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2400, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1320, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1200, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:900, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Dir. commerciale + rete agenti + export',
+        tempo_mesi: 6,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:3600, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1980, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1800, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1350, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini su carta e telefono', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Excel con clienti, ordini e scadenze pagamenti', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'CRM + gestionale', cosa:'CRM con buyer GDO, contratti annuali, promo pianificate', costo_mensile:400, costo_setup:800, tempo_mesi:1 },
-      '4': { chi:'CRM avanzato', cosa:'CRM integrato con gestionale produzione e logistica', costo_mensile:800, costo_setup:2000, tempo_mesi:2 },
-      '5': { chi:'ERP food', cosa:'ERP food completo — ordini, produzione, lotti, tracciabilità', costo_mensile:1500, costo_setup:6000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Excel con clienti, ordini e scadenze pagamenti',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: 'CRM con buyer GDO, contratti annuali, promo pianificate',
+        tempo_mesi: 1,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM con buyer GDO, contratti annuali, promo pianificate', costo_mensile:400, costo_setup:800, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:200, costo_setup:480, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'CRM integrato con gestionale produzione e logistica',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM integrato con gestionale produzione e logistica', costo_mensile:800, costo_setup:2000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:400, costo_setup:1200, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ERP food completo — ordini, produzione, lotti, tracciabilità',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'ERP food completo', costo_mensile:1500, costo_setup:6000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:750, costo_setup:3600, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Ruoli base', cosa:'Ruoli produzione/qualità definiti', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Riunioni + pianificazione', cosa:'Riunioni + pianificazione produzione', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'KPI + resp. qualità', cosa:'KPI + resp. qualità autonomo', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Management completo', cosa:'Management completo — titolare strategia', costo_mensile:1500, costo_setup:2000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Ruoli produzione/qualità/vendita definiti',
+        tempo_mesi: 1,
+        moduli: [
+      {
+            id: 'ruoli',
+            nome: 'Organigramma produzione + commerciale',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 200,
+            impatto: 0.7,
+            note: 'Chi produce, chi controlla qualità, chi vende — mansionario'
+      }
+,
+{
+        id: 'sicurezza',
+        nome: 'Formazione sicurezza alimentare base',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 100,
+        impatto: 0.15,
+        note: 'HACCP base per tutti i dipendenti'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Resp. produzione + pianificazione settimanale',
+        tempo_mesi: 2,
+        moduli: [
+      {
+            id: 'resp_prod',
+            nome: 'Responsabile produzione',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'promozione',
+                        nome: 'Promozione interna operaio senior',
+                        costo_mensile: 200,
+                        costo_setup: 500,
+                        impatto: 0.85,
+                        note: 'Già conosce processi e macchinari'
+                  },
+                  {
+                        id: 'esterno',
+                        nome: 'Resp. produzione esterno',
+                        costo_mensile: 2500,
+                        costo_setup: 0,
+                        impatto: 1,
+                        note: 'Esperienza da altro stabilimento food'
+                  }
+            ]
+      }
+]
+      },
+      '4': {
+        cosa: 'KPI produzione + resp. qualità autonomo',
+        tempo_mesi: 3,
+        moduli: [
+      {
+            id: 'kpi',
+            nome: 'Sistema KPI stabilimento',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 500,
+            impatto: 0.5,
+            note: 'Resa produttiva, scarti, tempi, costi per lotto'
+      },
+      {
+            id: 'qualita',
+            nome: 'Responsabile qualità dedicato',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'interno',
+                        nome: 'Addetto qualità interno formato',
+                        costo_mensile: 200,
+                        costo_setup: 500,
+                        impatto: 0.3,
+                        note: 'Formazione HACCP avanzata + delega'
+                  },
+                  {
+                        id: 'consulente',
+                        nome: 'Consulente qualità esterno',
+                        costo_mensile: 400,
+                        costo_setup: 0,
+                        impatto: 0.4,
+                        note: 'Visite periodiche, audit, aggiornamento'
+                  }
+            ]
+      }
+]
+      },
+      '5': {
+        cosa: 'Management completo — titolare solo strategia',
+        tempo_mesi: 4,
+        moduli: [
+      {
+            id: 'manager',
+            nome: 'Direttore stabilimento',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'dip',
+                        nome: 'Direttore stabilimento dipendente',
+                        costo_mensile: 3500,
+                        costo_setup: 0,
+                        impatto: 1,
+                        note: 'Produzione + qualità + personale + logistica'
+                  },
+                  {
+                        id: 'fractional',
+                        nome: 'Plant manager fractional',
+                        costo_mensile: 1500,
+                        costo_setup: 0,
+                        impatto: 0.65,
+                        note: '2-3 giorni/settimana'
+                  }
+            ]
+      }
+]
+      },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Processi artigianali — nessuna formalizzazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Consulente HACCP', cosa:'HACCP strutturato + schede prodotto e allergeni', costo_mensile:200, costo_setup:500, tempo_mesi:1 },
-      '3': { chi:'Gestionale produzione', cosa:'Gestionale produzione con lotti, scadenze e tracciabilità', costo_mensile:400, costo_setup:2000, tempo_mesi:2 },
-      '4': { chi:'BRC/IFS', cosa:'Certificazione BRC/IFS — processi qualità per accesso GDO', costo_mensile:600, costo_setup:5000, tempo_mesi:4 },
-      '5': { chi:'ERP + automazione', cosa:'ERP produzione + automazione linee + BI per efficienza', costo_mensile:1200, costo_setup:8000, tempo_mesi:4 },
+      '2': {
+        cosa: 'HACCP strutturato + schede prodotto e allergeni',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'processo', nome:'HACCP strutturato + schede prodotto e allergeni', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
+        ,
+{
+        id: 'allergeni',
+        nome: 'Gestione allergeni e contaminazioni',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Procedure cross-contamination, etichettatura allergeni'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Gestionale produzione con lotti, scadenze e tracciabilità',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Gestionale produzione con lotti, scadenze e tracciabilità',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:400, costo_setup:2000, impatto:1, note:'Gestionale produzione con lotti, scadenze e tracciabilità' },
+              { id:'base', nome:'Soluzione base', costo_mensile:200, costo_setup:1000, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Certificazione BRC/IFS — processi qualità per accesso GDO',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Certificazione BRC/IFS',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:600, costo_setup:5000, impatto:1, note:'Certificazione BRC/IFS — processi qualità per accesso GDO' },
+              { id:'base', nome:'Soluzione base', costo_mensile:300, costo_setup:2500, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ERP produzione + automazione linee + BI per efficienza',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'ERP produzione',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:1200, costo_setup:8000, impatto:1, note:'ERP produzione + automazione linee + BI per efficienza' },
+              { id:'base', nome:'Soluzione base', costo_mensile:600, costo_setup:4000, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Prezzo basato su costo + margine fisso — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Pricing differenziato — GDO vs HORECA vs dettaglio', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Linee prodotto', cosa:'Linea premium + linea standard — segmentazione margini', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Private label', cosa:'Produzione private label per GDO + brand proprio', costo_mensile:300, costo_setup:1500, tempo_mesi:3 },
-      '5': { chi:'Revenue manager', cosa:'Mix ricavi ottimizzato — brand, PL, export, DTC, co-packing', costo_mensile:800, costo_setup:2500, tempo_mesi:4 },
+      '2': {
+        cosa: 'Pricing differenziato — GDO vs HORECA vs dettaglio',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Pricing differenziato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'analisi_margini',
+        nome: 'Analisi margini per prodotto/canale',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.15,
+        note: 'Quale prodotto guadagna di più, quale canale rende meglio'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Linea premium + linea standard — segmentazione margini',
+        tempo_mesi: 2,
+        moduli: [
+      {
+            id: 'premium',
+            nome: 'Linea premium/artigianale',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 500,
+            impatto: 0.5,
+            note: 'Packaging premium, ingredienti selezionati — margine 2x'
+      },
+      {
+            id: 'standard',
+            nome: 'Linea standard/GDO',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 0,
+            impatto: 0.3,
+            note: 'Volume, pricing competitivo, margine base'
+      }
+]
+      },
+      '4': {
+        cosa: 'Private label per GDO + brand proprio posizionato',
+        tempo_mesi: 3,
+        moduli: [
+      {
+            id: 'private_label',
+            nome: 'Produzione private label GDO',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'copacker',
+                        nome: 'Copacking per insegne GDO',
+                        costo_mensile: 200,
+                        costo_setup: 1000,
+                        impatto: 0.7,
+                        note: 'Produci con marchio del supermercato — volume garantito'
+                  },
+                  {
+                        id: 'brand',
+                        nome: 'Brand proprio per GDO',
+                        costo_mensile: 300,
+                        costo_setup: 1500,
+                        impatto: 1,
+                        note: 'Listing fee + promozioni, ma margine e brand tuoi'
+                  }
+            ]
+      }
+]
+      },
+      '5': {
+        cosa: 'Mix ricavi ottimizzato — brand, PL, export, DTC, co-packing',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'Mix ricavi ottimizzato',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:800, costo_setup:2500, impatto:1, note:'Mix ricavi ottimizzato — brand, PL, export, DTC, co-packing' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:400, costo_setup:1250, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo etichetta e passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Social con foto prodotti + partecipazione fiere food', costo_mensile:200, costo_setup:500, tempo_mesi:1 },
-      '3': { chi:'Agenzia + fiere', cosa:'Branding professionale + fiere (Cibus, TuttoFood, SIAL)', costo_mensile:800, costo_setup:3000, tempo_mesi:2 },
-      '4': { chi:'Marketing operativo', cosa:'Trade marketing GDO + social content + PR food blogger', costo_mensile:1500, costo_setup:4000, tempo_mesi:2 },
-      '5': { chi:'Marketing manager', cosa:'Piano marketing — brand building, trade, digital, export promo', costo_mensile:3000, costo_setup:6000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Social con foto prodotti + partecipazione fiere food',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'marketing', nome:'Social con foto prodotti + partecipazione fiere food', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
+        ,
+{
+        id: 'packaging_comm',
+        nome: 'Packaging come strumento di marketing',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 300,
+        impatto: 0.15,
+        note: 'Restyling etichette, storytelling su confezione — il pack vende'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Branding professionale + fiere (Cibus, TuttoFood, SIAL)',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Branding professionale + fiere (Cibus, TuttoFood, SIAL)', tipo:'flag', obbligatorio:true, costo_mensile:800, costo_setup:3000, impatto:0.8 }
+        ,
+{
+        id: 'degustazioni',
+        nome: 'Degustazioni in-store/fiere come lead gen',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 200,
+        costo_setup: 300,
+        impatto: 0.15,
+        note: 'Far assaggiare il prodotto — conversion altissima nel food'
+}
+      ]
+      },
+      '4': {
+        cosa: 'Trade marketing GDO + social content + PR food blogger',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Trade marketing GDO + social content + PR food blogger',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1500, costo_setup:4000, impatto:1, note:'Trade marketing GDO + social content + PR food blogger' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:600, costo_setup:2000, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piano marketing — brand building, trade, digital, export promo',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Piano marketing',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:3000, costo_setup:6000, impatto:1, note:'Piano marketing — brand building, trade, digital, export promo' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:1200, costo_setup:3000, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito o pagina vetrina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito vetrina con storia, prodotti, certificazioni', costo_mensile:80, costo_setup:1000, tempo_mesi:1 },
-      '3': { chi:'Sito professionale', cosa:'Sito con catalogo prodotti, schede tecniche, contatti buyer', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
-      '4': { chi:'Sito + e-commerce DTC', cosa:'E-commerce DTC per vendita diretta + area riservata buyer', costo_mensile:600, costo_setup:5000, tempo_mesi:3 },
-      '5': { chi:'Piattaforma integrata', cosa:'Piattaforma B2B/DTC integrata con ERP, ordini e tracciabilità', costo_mensile:1200, costo_setup:10000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Sito vetrina con storia, prodotti, certificazioni',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'sito', nome:'Sito vetrina con storia, prodotti, certificazioni', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:1000, impatto:0.8 }
+        ,
+{
+        id: 'social_link',
+        nome: 'Link a social e Google My Business',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.1,
+        note: 'Integrazione con profili social esistenti'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Sito con catalogo prodotti, schede tecniche, contatti buyer',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Sito con catalogo prodotti, schede tecniche, contatti buyer',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:300, costo_setup:2500, impatto:1, note:'Sito con catalogo prodotti, schede tecniche, contatti buyer' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:120, costo_setup:1000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'E-commerce DTC per vendita diretta + area riservata buyer',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'E-commerce DTC per vendita diretta',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:600, costo_setup:5000, impatto:1, note:'E-commerce DTC per vendita diretta + area riservata buyer' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:240, costo_setup:2000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piattaforma B2B/DTC integrata con ERP, ordini e tracciabilità',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Piattaforma B2B/DTC integrata con ERP, ordini e tracciabilità',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:1200, costo_setup:10000, impatto:1, note:'Piattaforma B2B/DTC integrata con ERP, ordini e tracciabilità' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:480, costo_setup:4000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
     },
     ecommerce: {
-      _label: 'Approvvigionamento materie prime',
       '1': { chi:'Titolare', cosa:'Acquisto materie prime da 1-2 fornitori locali', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Confronto fornitori — qualità, prezzi, tempi di consegna', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Accordi fornitura', cosa:'Contratti quadro con fornitori — prezzi bloccati e volumi', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Buyer', cosa:'Buyer dedicato — diversificazione fornitori, import materie prime', costo_mensile:2000, costo_setup:800, tempo_mesi:3 },
-      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — contratti annuali, hedging prezzi, filiera corta', costo_mensile:3500, costo_setup:2000, tempo_mesi:4 },
-    },
+      '2': {
+        cosa: 'Confronto fornitori — qualità, prezzi, tempi di consegna',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'canale', nome:'Confronto fornitori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'qualita_mp',
+        nome: 'Controllo qualità materie prime in ingresso',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Analisi a campione su ogni lotto — no sorprese in produzione'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Contratti quadro con fornitori — prezzi bloccati e volumi',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'canale', nome:'Contratti quadro con fornitori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.8 }
+        ,
+{
+        id: 'filiera_corta',
+        nome: 'Sourcing filiera corta/km0',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Fornitori locali per storytelling + freschezza + sostenibilità'
+}
+      ]
+      },
+      '4': {
+        cosa: 'Buyer dedicato — diversificazione fornitori, import materie prime',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Buyer dedicato',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:2000, costo_setup:800, impatto:1, note:'Buyer dedicato — diversificazione fornitori, import materie prime' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1000, costo_setup:320, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Resp. acquisti — contratti annuali, hedging prezzi, filiera corta',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Resp. acquisti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:3500, costo_setup:2000, impatto:1, note:'Resp. acquisti — contratti annuali, hedging prezzi, filiera corta' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1750, costo_setup:800, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      _label: 'Approvvigionamento materie prime',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1483,62 +6992,666 @@ vendite: {
   alimentare_vini: {
     vendite: {
       '1': { chi:'Titolare', cosa:'Titolare vende in cantina', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare + agente', cosa:'Visite enoteche e ristoranti zona', costo_mensile:300, costo_setup:0, tempo_mesi:2 },
-      '3': { chi:'1 agente', cosa:'1 agente HORECA/enoteche (~2.000€)', costo_mensile:2000, costo_setup:500, tempo_mesi:3 },
-      '4': { chi:'Agente + export', cosa:'Agente + export manager (~3.000€)', costo_mensile:5000, costo_setup:1500, tempo_mesi:4 },
-      '5': { chi:'Dir. commerciale + team', cosa:'Dir. commerciale + agenti + wine club', costo_mensile:8000, costo_setup:3000, tempo_mesi:6 },
+      '2': {
+        cosa: 'Visite enoteche e ristoranti zona',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'supporto', nome:'Titolare + agente', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: '1 agente HORECA/enoteche (~2.000€)',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2000, costo_setup:500, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1100, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:900, costo_setup:500, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Agente + export manager (~3.000€)',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2000, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1100, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1000, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:750, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Dir. commerciale + agenti + wine club',
+        tempo_mesi: 6,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:3200, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1760, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1600, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1200, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini a voce e WhatsApp', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Excel con clienti, ordini per etichetta e pagamenti', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'CRM wine', cosa:'CRM con ristoranti, enoteche, importatori e preferenze', costo_mensile:300, costo_setup:500, tempo_mesi:1 },
-      '4': { chi:'CRM + gestionale', cosa:'CRM integrato con gestionale cantina e magazzino vini', costo_mensile:600, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'ERP vitivinicolo', cosa:'ERP vitivinicolo — vigna, cantina, vendite, compliance, export', costo_mensile:1200, costo_setup:5000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Excel con clienti, ordini per etichetta e pagamenti',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'agenda_buyer',
+        nome: 'Agenda contatti buyer/importatori',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.15,
+        note: 'Database ristoranti, enoteche, importatori con note preferenze'
+}
+      ]
+      },
+      '3': {
+        cosa: 'CRM con ristoranti, enoteche, importatori e preferenze',
+        tempo_mesi: 1,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM con ristoranti, enoteche, importatori e preferenze', costo_mensile:300, costo_setup:500, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:150, costo_setup:300, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'CRM integrato con gestionale cantina e magazzino vini',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM integrato con gestionale cantina e magazzino vini', costo_mensile:600, costo_setup:1500, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:300, costo_setup:900, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ERP vitivinicolo — vigna, cantina, vendite, compliance, export',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'ERP vitivinicolo', costo_mensile:1200, costo_setup:5000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:600, costo_setup:3000, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Ruoli base', cosa:'Ruoli cantina/vendita definiti', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Pianificazione', cosa:'Pianificazione vendemmia/produzione', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'KPI + qualità', cosa:'KPI + gestione qualità', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Governance', cosa:'Governance enologo + commerciale', costo_mensile:1500, costo_setup:2000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Ruoli cantina/vendita/enoturismo definiti',
+        tempo_mesi: 1,
+        moduli: [
+      {
+            id: 'ruoli',
+            nome: 'Organigramma cantina',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 200,
+            impatto: 0.7,
+            note: 'Chi fa cantina, chi vende, chi accoglie in cantina'
+      }
+,
+{
+        id: 'accoglienza',
+        nome: 'Standard accoglienza visitatori cantina',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 100,
+        impatto: 0.15,
+        note: 'Come accogliere, cosa far assaggiare, come vendere'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Enologo consulente + pianificazione vendemmia/produzione',
+        tempo_mesi: 2,
+        moduli: [
+      {
+            id: 'enologo',
+            nome: 'Supporto enologico',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'consulente',
+                        nome: 'Enologo consulente esterno',
+                        costo_mensile: 300,
+                        costo_setup: 0,
+                        impatto: 1,
+                        note: 'Vinificazione, blend, qualità — visite periodiche'
+                  },
+                  {
+                        id: 'interno',
+                        nome: 'Cantiniere formato con delega',
+                        costo_mensile: 200,
+                        costo_setup: 500,
+                        impatto: 0.7,
+                        note: 'Formazione enologica base, segue le indicazioni'
+                  }
+            ]
+      }
+]
+      },
+      '4': {
+        cosa: 'KPI cantina + gestione qualità DOC/DOCG',
+        tempo_mesi: 3,
+        moduli: [
+      {
+            id: 'kpi',
+            nome: 'KPI produzione e qualità',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 500,
+            impatto: 0.5,
+            note: 'Resa per ettaro, costi per bottiglia, qualità per annata'
+      },
+      {
+            id: 'doc',
+            nome: 'Gestione disciplinare DOC/DOCG',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 500,
+            impatto: 0.3,
+            note: 'Rispetto disciplinare, documentazione, controlli'
+      },
+      {
+            id: 'consulente',
+            nome: 'Consulente gestione cantina',
+            tipo: 'flag',
+            obbligatorio: false,
+            costo_mensile: 400,
+            costo_setup: 0,
+            impatto: 0.2
+      }
+]
+      },
+      '5': {
+        cosa: 'Governance enologo + commerciale strutturata',
+        tempo_mesi: 4,
+        moduli: [
+      {
+            id: 'manager',
+            nome: 'Direttore di cantina',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'dip',
+                        nome: 'Direttore cantina dipendente',
+                        costo_mensile: 3000,
+                        costo_setup: 0,
+                        impatto: 1,
+                        note: 'Produzione + commerciale + enoturismo + qualità'
+                  },
+                  {
+                        id: 'fractional',
+                        nome: 'Wine manager fractional',
+                        costo_mensile: 1500,
+                        costo_setup: 0,
+                        impatto: 0.65,
+                        note: '2-3 giorni/settimana + vendemmia'
+                  }
+            ]
+      }
+]
+      },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Processi artigianali — nessuna formalizzazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Enologo', cosa:'Schede tecniche vini + gestione lotti e annate', costo_mensile:100, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Gestionale cantina', cosa:'Gestionale cantina — vinificazione, imbottigliamento, lotti', costo_mensile:300, costo_setup:1500, tempo_mesi:2 },
-      '4': { chi:'Compliance export', cosa:'Documentazione export — accise, certificati, compliance DOC/DOCG', costo_mensile:500, costo_setup:2000, tempo_mesi:3 },
-      '5': { chi:'ERP + tracciabilità', cosa:'ERP completo — vigna-to-glass, tracciabilità, analisi costi', costo_mensile:1000, costo_setup:5000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Schede tecniche vini + gestione lotti e annate',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'processo', nome:'Schede tecniche vini + gestione lotti e annate', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:300, impatto:0.8 }
+        ,
+{
+        id: 'registro_cantina',
+        nome: 'Registro cantina digitale (lotti, analisi)',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Registro vinificazione, analisi, travasi — obbligatorio ICQRF'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Gestionale cantina — vinificazione, imbottigliamento, lotti',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Gestionale cantina',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:300, costo_setup:1500, impatto:1, note:'Gestionale cantina — vinificazione, imbottigliamento, lotti' },
+              { id:'base', nome:'Soluzione base', costo_mensile:150, costo_setup:750, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Documentazione export — accise, certificati, compliance DOC/DOCG',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Documentazione export',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:500, costo_setup:2000, impatto:1, note:'Documentazione export — accise, certificati, compliance DOC/DOCG' },
+              { id:'base', nome:'Soluzione base', costo_mensile:250, costo_setup:1000, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ERP completo — vigna-to-glass, tracciabilità, analisi costi',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'ERP completo',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:1000, costo_setup:5000, impatto:1, note:'ERP completo — vigna-to-glass, tracciabilità, analisi costi' },
+              { id:'base', nome:'Soluzione base', costo_mensile:500, costo_setup:2500, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Prezzo a bottiglia fisso — nessuna segmentazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Pricing differenziato — cantina, HORECA, enoteca, export', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Enoturismo', cosa:'Degustazioni a pagamento + esperienze in vigna', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Wine club', cosa:'Wine club con abbonamento + verticali annate premium', costo_mensile:200, costo_setup:1000, tempo_mesi:2 },
-      '5': { chi:'Revenue manager', cosa:'Mix ricavi — HORECA, export, DTC, enoturismo, eventi privati', costo_mensile:700, costo_setup:2000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Pricing differenziato — cantina, HORECA, enoteca, export',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Pricing differenziato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'prezzi_canale',
+        nome: 'Listino per canale (cantina, HORECA, export)',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.15,
+        note: 'Prezzo diverso per vendita diretta, ristorante, importatore'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Degustazioni a pagamento + esperienze in vigna',
+        tempo_mesi: 2,
+        moduli: [
+      {
+            id: 'enoturismo',
+            nome: 'Enoturismo strutturato',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'base',
+                        nome: 'Degustazioni in cantina',
+                        costo_mensile: 0,
+                        costo_setup: 500,
+                        impatto: 0.7,
+                        note: '15-25€ a persona, 2-3 degustazioni/giorno'
+                  },
+                  {
+                        id: 'premium',
+                        nome: 'Esperienze premium (vigna + pranzo + degustazione)',
+                        costo_mensile: 0,
+                        costo_setup: 1000,
+                        impatto: 1,
+                        note: '50-100€ a persona, margine altissimo'
+                  }
+            ]
+      }
+]
+      },
+      '4': {
+        cosa: 'Wine club con abbonamento + verticali annate premium',
+        tempo_mesi: 2,
+        moduli: [
+      {
+            id: 'wine_club',
+            nome: 'Wine club/abbonamento',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'fisico',
+                        nome: 'Wine club con spedizione trimestrale',
+                        costo_mensile: 100,
+                        costo_setup: 500,
+                        impatto: 0.7,
+                        note: 'Box 3-6 bottiglie/trimestre — ricavo ricorrente, DTC'
+                  },
+                  {
+                        id: 'digitale',
+                        nome: 'Membership digitale + accesso prioritario',
+                        costo_mensile: 50,
+                        costo_setup: 300,
+                        impatto: 0.5,
+                        note: 'Anteprime, sconti, eventi riservati — fidelizzazione'
+                  }
+            ]
+      },
+      {
+            id: 'verticali',
+            nome: 'Verticali annate premium',
+            tipo: 'flag',
+            obbligatorio: false,
+            costo_mensile: 0,
+            costo_setup: 500,
+            impatto: 0.2,
+            note: 'Selezione annate vecchie — margine altissimo per intenditori'
+      }
+]
+      },
+      '5': {
+        cosa: 'Mix ricavi — HORECA, export, DTC, enoturismo, eventi privati',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'Mix ricavi',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:700, costo_setup:2000, impatto:1, note:'Mix ricavi — HORECA, export, DTC, enoturismo, eventi privati' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:350, costo_setup:1000, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo passaparola e guide vini', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Instagram con foto vigna, cantina e degustazioni', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Social + PR', cosa:'Social curato + PR enogastronomiche + guide (Gambero Rosso)', costo_mensile:600, costo_setup:2000, tempo_mesi:2 },
-      '4': { chi:'Marketing + eventi', cosa:'Wine events + fiere (Vinitaly, ProWein) + influencer wine', costo_mensile:1500, costo_setup:5000, tempo_mesi:3 },
-      '5': { chi:'Marketing manager', cosa:'Piano marketing — brand storytelling, export promo, enoturismo', costo_mensile:3000, costo_setup:6000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Instagram con foto vigna, cantina e degustazioni',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'marketing', nome:'Instagram con foto vigna, cantina e degustazioni', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'wine_press',
+        nome: 'Invio campioni a giornalisti/guide vini',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 300,
+        impatto: 0.15,
+        note: 'Gambero Rosso, Slow Wine, Veronelli — punteggi = vendite'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Social curato + PR enogastronomiche + guide (Gambero Rosso)',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Social curato + PR enogastronomiche + guide (Gambero Rosso)', tipo:'flag', obbligatorio:true, costo_mensile:600, costo_setup:2000, impatto:0.8 }
+        ,
+{
+        id: 'enoturismo_mkt',
+        nome: 'Promozione enoturismo (portali, TripAdvisor)',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 100,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Winedering, Airbnb Experiences, TripAdvisor — turisti in cantina'
+}
+      ]
+      },
+      '4': {
+        cosa: 'Wine events + fiere (Vinitaly, ProWein) + influencer wine',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Wine events + fiere (Vinitaly, ProWein) + influencer wine',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1500, costo_setup:5000, impatto:1, note:'Wine events + fiere (Vinitaly, ProWein) + influencer wine' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:600, costo_setup:2500, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piano marketing — brand storytelling, export promo, enoturismo',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Piano marketing',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:3000, costo_setup:6000, impatto:1, note:'Piano marketing — brand storytelling, export promo, enoturismo' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:1200, costo_setup:3000, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito vetrina con storia, vini, contatti cantina', costo_mensile:80, costo_setup:1000, tempo_mesi:1 },
-      '3': { chi:'Sito professionale', cosa:'Sito con catalogo vini, schede tecniche, prenotazione visite', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
-      '4': { chi:'E-commerce DTC', cosa:'E-commerce DTC — vendita diretta, wine club, gift box', costo_mensile:600, costo_setup:5000, tempo_mesi:3 },
-      '5': { chi:'Piattaforma integrata', cosa:'Piattaforma DTC + B2B + enoturismo + CRM integrato', costo_mensile:1200, costo_setup:10000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Sito vetrina con storia, vini, contatti cantina',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'sito', nome:'Sito vetrina con storia, vini, contatti cantina', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:1000, impatto:0.8 }
+        ,
+{
+        id: 'booking',
+        nome: 'Form prenotazione visita/degustazione',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Prenotazione online per enoturismo'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Sito con catalogo vini, schede tecniche, prenotazione visite',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Sito con catalogo vini, schede tecniche, prenotazione visite',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:300, costo_setup:2500, impatto:1, note:'Sito con catalogo vini, schede tecniche, prenotazione visite' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:120, costo_setup:1000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'E-commerce DTC — vendita diretta, wine club, gift box',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'E-commerce DTC',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:600, costo_setup:5000, impatto:1, note:'E-commerce DTC — vendita diretta, wine club, gift box' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:240, costo_setup:2000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piattaforma DTC + B2B + enoturismo + CRM integrato',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Piattaforma DTC',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:1200, costo_setup:10000, impatto:1, note:'Piattaforma DTC + B2B + enoturismo + CRM integrato' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:480, costo_setup:4000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
     },
     ecommerce: {
-      _label: 'Approvvigionamento e vigna',
       '1': { chi:'Titolare', cosa:'Vigna propria + acquisto uve da conferitori abituali', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Enologo', cosa:'Selezione conferitori — analisi uve, contratti annuali', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Agronomo + accordi', cosa:'Agronomo per vigna + accordi pluriennali conferitori', costo_mensile:500, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Buyer enologico', cosa:'Buyer per acquisto uve selezionate e packaging premium', costo_mensile:1500, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — vigna, uve, packaging, tappi, bottiglie, export', costo_mensile:3000, costo_setup:2000, tempo_mesi:4 },
-    },
+      '2': {
+        cosa: 'Selezione conferitori — analisi uve, contratti annuali',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'canale', nome:'Selezione conferitori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ,
+{
+        id: 'analisi_uve',
+        nome: 'Analisi qualità uve per fornitore',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 100,
+        impatto: 0.15,
+        note: 'Zuccheri, acidità, stato sanitario — selezione obiettiva'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Agronomo per vigna + accordi pluriennali conferitori',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Agronomo per vigna + accordi pluriennali conferitori',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:500, costo_setup:500, impatto:1, note:'Agronomo per vigna + accordi pluriennali conferitori' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:250, costo_setup:200, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Buyer per acquisto uve selezionate e packaging premium',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Buyer per acquisto uve selezionate e packaging premium',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:1500, costo_setup:1000, impatto:1, note:'Buyer per acquisto uve selezionate e packaging premium' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:750, costo_setup:400, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Resp. acquisti — vigna, uve, packaging, tappi, bottiglie, export',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Resp. acquisti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:3000, costo_setup:2000, impatto:1, note:'Resp. acquisti — vigna, uve, packaging, tappi, bottiglie, export' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1500, costo_setup:800, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      _label: 'Approvvigionamento e vigna',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1547,62 +7660,619 @@ vendite: {
   alimentare_forno: {
     vendite: {
       '1': { chi:'Titolare', cosa:'Titolare al banco', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'1 commesso/a', cosa:'1 commesso/a (~1.600€)', costo_mensile:1600, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Catering + B2B', cosa:'Sviluppo catering e consegne B2B', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'2 commessi + consegne', cosa:'2 commessi + consegne strutturate', costo_mensile:3800, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Resp. vendite + team', cosa:'Resp. vendite + team punti vendita', costo_mensile:6000, costo_setup:2000, tempo_mesi:5 },
+      '2': {
+        cosa: '1 commesso/a (~1.600€)',
+        tempo_mesi: 1,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1600, costo_setup:0, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:880, costo_setup:0, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:720, costo_setup:0, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '3': {
+        cosa: 'Sviluppo catering e consegne B2B',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'supporto', nome:'Catering + B2B', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '4': {
+        cosa: '2 commessi + consegne strutturate',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:3800, costo_setup:1000, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:2090, costo_setup:1000, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1710, costo_setup:1000, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Resp. vendite + team punti vendita',
+        tempo_mesi: 5,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2400, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1320, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1200, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:900, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — vendite solo dal registratore', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Lista clienti HORECA con ordini ricorrenti', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Gestionale base', cosa:'Gestionale con ordini, consegne programmate e fatturazione', costo_mensile:200, costo_setup:500, tempo_mesi:1 },
-      '4': { chi:'CRM + gestionale', cosa:'CRM clienti B2B + gestionale produzione e consegne', costo_mensile:400, costo_setup:1000, tempo_mesi:2 },
-      '5': { chi:'ERP panificazione', cosa:'ERP panificazione — ordini, produzione, consegne, margini', costo_mensile:800, costo_setup:3000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Lista clienti HORECA con ordini ricorrenti',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'registro_B2B',
+        nome: 'Lista clienti B2B potenziali (bar, ristoranti, hotel)',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.15,
+        note: 'Mappatura locali zona per consegne giornaliere'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Gestionale con ordini, consegne programmate e fatturazione',
+        tempo_mesi: 1,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Gestionale con ordini, consegne programmate e fatturazione', costo_mensile:200, costo_setup:500, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:100, costo_setup:300, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'CRM clienti B2B + gestionale produzione e consegne',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM clienti B2B + gestionale produzione e consegne', costo_mensile:400, costo_setup:1000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:200, costo_setup:600, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ERP panificazione — ordini, produzione, consegne, margini',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'ERP panificazione', costo_mensile:800, costo_setup:3000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:400, costo_setup:1800, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Turni e ruoli', cosa:'Turni e ruoli produzione/banco', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Pianificazione', cosa:'Pianificazione produzione giornaliera', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'KPI', cosa:'KPI produzione + vendita', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Management multi-PV', cosa:'Management multi-punto vendita', costo_mensile:1500, costo_setup:2000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Turni forno/banco definiti — chi produce chi vende',
+        tempo_mesi: 1,
+        moduli: [
+      {
+            id: 'turni',
+            nome: 'Organigramma forno + banco',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 200,
+            impatto: 0.7,
+            note: 'Turni mattina presto (produzione) + mattina/pomeriggio (vendita)'
+      }
+,
+{
+        id: 'igiene',
+        nome: 'Formazione igiene e sicurezza alimentare',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 100,
+        impatto: 0.15,
+        note: 'HACCP base per tutti — obbligatorio'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Capo panettiere + procedure produzione standardizzate',
+        tempo_mesi: 2,
+        moduli: [
+      {
+            id: 'capo',
+            nome: 'Capo panettiere/fornaio',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'promozione',
+                        nome: 'Promozione fornaio senior',
+                        costo_mensile: 200,
+                        costo_setup: 300,
+                        impatto: 0.85,
+                        note: 'Già conosce ricette e processi'
+                  },
+                  {
+                        id: 'esterno',
+                        nome: 'Capo panettiere esperto esterno',
+                        costo_mensile: 2500,
+                        costo_setup: 0,
+                        impatto: 1,
+                        note: 'Esperienza da altri forni, nuove ricette'
+                  }
+            ]
+      }
+]
+      },
+      '4': {
+        cosa: 'KPI produzione + gestione sprechi + pianificazione',
+        tempo_mesi: 3,
+        moduli: [
+      {
+            id: 'kpi',
+            nome: 'KPI forno (sprechi, resa, costi)',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 500,
+            impatto: 0.5,
+            note: 'Spreco pane invenduto, resa per kg farina, costo per pezzo'
+      },
+      {
+            id: 'pianificazione',
+            nome: 'Pianificazione produzione giornaliera',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 300,
+            impatto: 0.3,
+            note: 'Quanti pezzi per tipo basato su storico vendite per giorno'
+      }
+]
+      },
+      '5': {
+        cosa: 'Management completo — titolare solo strategia e ricette',
+        tempo_mesi: 4,
+        moduli: [
+      {
+            id: 'manager',
+            nome: 'Store/production manager',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'dip',
+                        nome: 'Responsabile punto vendita dipendente',
+                        costo_mensile: 2500,
+                        costo_setup: 0,
+                        impatto: 1,
+                        note: 'Gestisce produzione + banco + personale + acquisti'
+                  },
+                  {
+                        id: 'fractional',
+                        nome: 'Consulente gestione bakery',
+                        costo_mensile: 1000,
+                        costo_setup: 0,
+                        impatto: 0.6,
+                        note: '2 giorni/settimana + setup processi'
+                  }
+            ]
+      }
+]
+      },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Ricette a memoria — nessun processo standardizzato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Ricettario standardizzato + schede HACCP aggiornate', costo_mensile:100, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Gestionale produzione', cosa:'Gestionale produzione — pianificazione impasti, rese, scarti', costo_mensile:250, costo_setup:1000, tempo_mesi:2 },
-      '4': { chi:'Automazione', cosa:'Impastatrici programmate + porzionatrici + cicli automatici', costo_mensile:400, costo_setup:3000, tempo_mesi:2 },
-      '5': { chi:'Lean production', cosa:'Produzione lean — riduzione sprechi, KPI efficienza, turni', costo_mensile:700, costo_setup:4000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Ricettario standardizzato + schede HACCP aggiornate',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'processo', nome:'Ricettario standardizzato + schede HACCP aggiornate', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:300, impatto:0.8 }
+        ,
+{
+        id: 'ricette_standard',
+        nome: 'Ricettario standardizzato con grammature',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 100,
+        impatto: 0.15,
+        note: 'Ogni prodotto: ingredienti, grammature, tempi, temperature — replicabile'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Gestionale produzione — pianificazione impasti, rese, scarti',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'processo', nome:'Gestionale produzione', tipo:'flag', obbligatorio:true, costo_mensile:250, costo_setup:1000, impatto:0.8 }
+        ,
+{
+        id: 'haccp_forno',
+        nome: 'HACCP specifico forno artigianale',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Temperature, contaminazione allergeni, pulizia — obbligatorio'
+}
+      ]
+      },
+      '4': {
+        cosa: 'Impastatrici programmate + porzionatrici + cicli automatici',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Impastatrici programmate',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:400, costo_setup:3000, impatto:1, note:'Impastatrici programmate + porzionatrici + cicli automatici' },
+              { id:'base', nome:'Soluzione base', costo_mensile:200, costo_setup:1500, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Produzione lean — riduzione sprechi, KPI efficienza, turni',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Produzione lean',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:700, costo_setup:4000, impatto:1, note:'Produzione lean — riduzione sprechi, KPI efficienza, turni' },
+              { id:'base', nome:'Soluzione base', costo_mensile:350, costo_setup:2000, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Prezzo al kg tradizionale — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Prodotti speciali a margine superiore (focacce, dolci)', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Linee premium', cosa:'Linea artigianale premium — lievito madre, grani antichi', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
-      '4': { chi:'Catering + eventi', cosa:'Servizio catering + torte personalizzate + eventi', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '5': { chi:'Revenue manager', cosa:'Mix ricavi — retail, HORECA, GDO confezionato, e-commerce', costo_mensile:500, costo_setup:1500, tempo_mesi:3 },
+      '2': {
+        cosa: 'Prodotti speciali a margine superiore (focacce, dolci)',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Prodotti speciali a margine superiore (focacce, dolci)', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'mix_prodotti',
+        nome: 'Analisi margine per prodotto (pane vs dolci vs focacce)',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.15,
+        note: 'I dolci marginano 3x il pane — sposta il mix'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Linea artigianale premium — lievito madre, grani antichi',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'ricavi', nome:'Linea artigianale premium', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ,
+{
+        id: 'colazione_business',
+        nome: 'Servizio colazione per bar/hotel zona',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Cornetti e brioche consegnati alle 6 — ricavo B2B ricorrente'
+}
+      ]
+      },
+      '4': {
+        cosa: 'Servizio catering + torte personalizzate + eventi',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'ricavi', nome:'Servizio catering + torte personalizzate + eventi', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
+        ,
+{
+        id: 'catering',
+        nome: 'Servizio catering eventi/feste',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 300,
+        impatto: 0.15,
+        note: 'Focacce, torte, finger food — margine alto su eventi'
+}
+      ]
+      },
+      '5': {
+        cosa: 'Mix ricavi — retail, HORECA, GDO confezionato, e-commerce',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'Mix ricavi',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:500, costo_setup:1500, impatto:1, note:'Mix ricavi — retail, HORECA, GDO confezionato, e-commerce' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:250, costo_setup:750, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo profumo dal forno e passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Instagram con foto prodotti freschi e dietro le quinte', costo_mensile:50, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Social + locale', cosa:'Social curato + Google Maps + promozioni stagionali', costo_mensile:400, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Marketing operativo', cosa:'Brand identity + packaging professionale + degustazioni', costo_mensile:800, costo_setup:2000, tempo_mesi:2 },
-      '5': { chi:'Marketing manager', cosa:'Piano marketing — brand artigianale, PR food, corsi, eventi', costo_mensile:2000, costo_setup:3500, tempo_mesi:3 },
+      '2': {
+        cosa: 'Instagram con foto prodotti freschi e dietro le quinte',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'marketing', nome:'Instagram con foto prodotti freschi e dietro le quinte', tipo:'flag', obbligatorio:true, costo_mensile:50, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'social_pane',
+        nome: 'Foto pane/dolci appena sfornati su Instagram',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.15,
+        note: 'Stories mattutine con il pane caldo — appetizing content'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Social curato + Google Maps + promozioni stagionali',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Social curato + Google Maps + promozioni stagionali', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:500, impatto:0.8 }
+        ,
+{
+        id: 'local_collab',
+        nome: 'Collaborazioni ristoranti/bar zona',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Fornitura pane/focacce a ristoranti — co-marketing'
+}
+      ]
+      },
+      '4': {
+        cosa: 'Brand identity + packaging professionale + degustazioni',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Brand identity + packaging professionale + degustazioni', tipo:'flag', obbligatorio:true, costo_mensile:800, costo_setup:2000, impatto:0.8 }
+        ,
+{
+        id: 'eventi_forno',
+        nome: 'Corsi pane/pizza per clienti',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 300,
+        impatto: 0.15,
+        note: 'Workshop → fidelizzazione + social content + passaparola'
+}
+      ]
+      },
+      '5': {
+        cosa: 'Piano marketing — brand artigianale, PR food, corsi, eventi',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Piano marketing',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:2000, costo_setup:3500, impatto:1, note:'Piano marketing — brand artigianale, PR food, corsi, eventi' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:800, costo_setup:1750, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito — solo Google Maps', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito vetrina con prodotti, orari, storia del forno', costo_mensile:50, costo_setup:500, tempo_mesi:1 },
-      '3': { chi:'Sito professionale', cosa:'Sito con catalogo prodotti, ordini online per ritiro', costo_mensile:200, costo_setup:1500, tempo_mesi:2 },
-      '4': { chi:'E-commerce locale', cosa:'E-commerce con consegna locale + ordini personalizzati', costo_mensile:400, costo_setup:3000, tempo_mesi:2 },
-      '5': { chi:'Piattaforma completa', cosa:'Piattaforma ordini B2B + DTC + abbonamenti pane fresco', costo_mensile:800, costo_setup:6000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Sito vetrina con prodotti, orari, storia del forno',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'sito', nome:'Sito vetrina con prodotti, orari, storia del forno', tipo:'flag', obbligatorio:true, costo_mensile:50, costo_setup:500, impatto:0.8 }
+        ,
+{
+        id: 'orari_online',
+        nome: 'Orari e prodotti del giorno online',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.15,
+        note: 'Google My Business + social con prodotti freschi del giorno'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Sito con catalogo prodotti, ordini online per ritiro',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Sito con catalogo prodotti, ordini online per ritiro',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:200, costo_setup:1500, impatto:1, note:'Sito con catalogo prodotti, ordini online per ritiro' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:80, costo_setup:600, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'E-commerce con consegna locale + ordini personalizzati',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'E-commerce con consegna locale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:400, costo_setup:3000, impatto:1, note:'E-commerce con consegna locale + ordini personalizzati' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:160, costo_setup:1200, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piattaforma ordini B2B + DTC + abbonamenti pane fresco',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Piattaforma ordini B2B',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:800, costo_setup:6000, impatto:1, note:'Piattaforma ordini B2B + DTC + abbonamenti pane fresco' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:320, costo_setup:2400, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
     },
     ecommerce: {
-      _label: 'Approvvigionamento farine e ingredienti',
       '1': { chi:'Titolare', cosa:'Acquisto farina dal mulino della zona', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Confronto mulini — qualità farine, prezzi, consegna', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Accordi mulini', cosa:'Accordi quadro con 2-3 mulini — prezzi bloccati, mix farine', costo_mensile:0, costo_setup:200, tempo_mesi:2 },
-      '4': { chi:'Buyer ingredienti', cosa:'Buyer per farine speciali, lieviti, semilavorati premium', costo_mensile:800, costo_setup:300, tempo_mesi:2 },
-      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — filiera corta, grani antichi, import', costo_mensile:2000, costo_setup:1000, tempo_mesi:3 },
-    },
+      '2': {
+        cosa: 'Confronto mulini — qualità farine, prezzi, consegna',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'canale', nome:'Confronto mulini', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'farine_confronto',
+        nome: 'Confronto farine tra 2-3 mulini',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.15,
+        note: 'Test farine diverse per W, assorbimento, resa — scegli la migliore'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Accordi quadro con 2-3 mulini — prezzi bloccati, mix farine',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'canale', nome:'Accordi quadro con 2-3 mulini', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ,
+{
+        id: 'accordi_mulino',
+        nome: 'Accordo quadro con mulino di fiducia',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Prezzo bloccato, farina riservata, consegna programmata'
+}
+      ]
+      },
+      '4': {
+        cosa: 'Buyer per farine speciali, lieviti, semilavorati premium',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Buyer per farine speciali, lieviti, semilavorati premium',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:800, costo_setup:300, impatto:1, note:'Buyer per farine speciali, lieviti, semilavorati premium' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:400, costo_setup:120, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Resp. acquisti — filiera corta, grani antichi, import',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Resp. acquisti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:2000, costo_setup:1000, impatto:1, note:'Resp. acquisti — filiera corta, grani antichi, import' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1000, costo_setup:400, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      _label: 'Approvvigionamento farine e ingredienti',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1611,62 +8281,639 @@ vendite: {
   alimentare_conserve: {
     vendite: {
       '1': { chi:'Titolare', cosa:'Titolare gestisce GDO', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Visite buyer insegne', costo_mensile:300, costo_setup:0, tempo_mesi:2 },
-      '3': { chi:'1 agente GDO', cosa:'1 agente GDO nazionale (~2.500€)', costo_mensile:2500, costo_setup:500, tempo_mesi:3 },
-      '4': { chi:'Agente + export', cosa:'Agente GDO + export (~2.800€)', costo_mensile:5300, costo_setup:1000, tempo_mesi:4 },
-      '5': { chi:'Dir. commerciale + rete', cosa:'Dir. commerciale + rete + private label', costo_mensile:8500, costo_setup:2500, tempo_mesi:6 },
+      '2': {
+        cosa: 'Visite buyer insegne',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: '1 agente GDO nazionale (~2.500€)',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2500, costo_setup:500, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1375, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1125, costo_setup:500, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Agente GDO + export (~2.800€)',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2120, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1166, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1060, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:795, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Dir. commerciale + rete + private label',
+        tempo_mesi: 6,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:3400, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1870, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1700, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1275, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini telefonici e fiere', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Excel con buyer GDO, ordini stagionali, scadenze', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'CRM food', cosa:'CRM con buyer GDO, contratti promo, pianificazione annuale', costo_mensile:400, costo_setup:800, tempo_mesi:1 },
-      '4': { chi:'CRM + gestionale', cosa:'CRM integrato con produzione, stock e logistica', costo_mensile:800, costo_setup:2000, tempo_mesi:2 },
-      '5': { chi:'ERP food', cosa:'ERP food — ordini, produzione, lotti, export, tracciabilità', costo_mensile:1500, costo_setup:6000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Excel con buyer GDO, ordini stagionali, scadenze',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'calendario_listing',
+        nome: 'Calendario aperture listing GDO',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.15,
+        note: 'Quando ogni insegna apre inserimenti nuovi prodotti'
+}
+      ]
+      },
+      '3': {
+        cosa: 'CRM con buyer GDO, contratti promo, pianificazione annuale',
+        tempo_mesi: 1,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM con buyer GDO, contratti promo, pianificazione annuale', costo_mensile:400, costo_setup:800, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:200, costo_setup:480, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'CRM integrato con produzione, stock e logistica',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM integrato con produzione, stock e logistica', costo_mensile:800, costo_setup:2000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:400, costo_setup:1200, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ERP food — ordini, produzione, lotti, export, tracciabilità',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'ERP food', costo_mensile:1500, costo_setup:6000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:750, costo_setup:3600, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Ruoli base', cosa:'Ruoli produzione/qualità', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Pianificazione + qualità', cosa:'Pianificazione + qualità autonoma', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'KPI + certificazioni', cosa:'KPI + certificazioni', costo_mensile:500, costo_setup:1500, tempo_mesi:3 },
-      '5': { chi:'Management completo', cosa:'Management completo', costo_mensile:1500, costo_setup:2000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Ruoli produzione/qualità/commerciale definiti',
+        tempo_mesi: 1,
+        moduli: [
+      {
+            id: 'ruoli',
+            nome: 'Organigramma stabilimento',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 200,
+            impatto: 0.7,
+            note: 'Produzione, confezionamento, qualità, vendite — mansionario'
+      }
+,
+{
+        id: 'haccp_base',
+        nome: 'Formazione HACCP per tutto il personale',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 100,
+        impatto: 0.15,
+        note: 'Obbligatoria, base per certificazioni successive'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Resp. produzione + pianificazione stagionale',
+        tempo_mesi: 2,
+        moduli: [
+      {
+            id: 'resp',
+            nome: 'Responsabile produzione',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'promozione',
+                        nome: 'Promozione interna operaio senior',
+                        costo_mensile: 200,
+                        costo_setup: 500,
+                        impatto: 0.85,
+                        note: 'Conosce le linee e i processi'
+                  },
+                  {
+                        id: 'esterno',
+                        nome: 'Resp. produzione conserviero esperto',
+                        costo_mensile: 2800,
+                        costo_setup: 0,
+                        impatto: 1,
+                        note: 'Esperienza da altro conservificio'
+                  }
+            ]
+      }
+]
+      },
+      '4': {
+        cosa: 'KPI + resp. qualità + pianificazione campagne produzione',
+        tempo_mesi: 3,
+        moduli: [
+      {
+            id: 'kpi',
+            nome: 'KPI stabilimento conserviero',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 500,
+            impatto: 0.5,
+            note: 'Resa per lotto, scarti, costi, tempi di confezionamento'
+      },
+      {
+            id: 'qualita',
+            nome: 'Responsabile qualità',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'interno',
+                        nome: 'Addetto qualità formato HACCP/BRC',
+                        costo_mensile: 200,
+                        costo_setup: 500,
+                        impatto: 0.3,
+                        note: 'Controlli, documentazione, audit interni'
+                  },
+                  {
+                        id: 'consulente',
+                        nome: 'Consulente qualità food esterno',
+                        costo_mensile: 400,
+                        costo_setup: 0,
+                        impatto: 0.4,
+                        note: 'Preparazione BRC/IFS, audit, compliance'
+                  }
+            ]
+      }
+]
+      },
+      '5': {
+        cosa: 'Management strutturato — titolare solo strategia',
+        tempo_mesi: 4,
+        moduli: [
+      {
+            id: 'manager',
+            nome: 'Direttore stabilimento',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'dip',
+                        nome: 'Direttore stabilimento dipendente',
+                        costo_mensile: 3500,
+                        costo_setup: 0,
+                        impatto: 1,
+                        note: 'Produzione + qualità + logistica + personale'
+                  },
+                  {
+                        id: 'fractional',
+                        nome: 'Plant manager fractional',
+                        costo_mensile: 1500,
+                        costo_setup: 0,
+                        impatto: 0.65,
+                        note: '2-3 giorni/settimana'
+                  }
+            ]
+      }
+]
+      },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Produzione artigianale — ricette tradizionali non codificate', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Consulente qualità', cosa:'HACCP + etichettatura a norma + schede prodotto', costo_mensile:200, costo_setup:500, tempo_mesi:1 },
-      '3': { chi:'Gestionale produzione', cosa:'Gestionale produzione — lotti, scadenze, rese, tracciabilità', costo_mensile:400, costo_setup:2000, tempo_mesi:2 },
-      '4': { chi:'BRC/IFS', cosa:'Certificazione BRC/IFS per accesso GDO e export', costo_mensile:600, costo_setup:5000, tempo_mesi:4 },
-      '5': { chi:'ERP + automazione', cosa:'ERP produzione + automazione linee confezionamento', costo_mensile:1200, costo_setup:8000, tempo_mesi:4 },
+      '2': {
+        cosa: 'HACCP + etichettatura a norma + schede prodotto',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'processo', nome:'HACCP + etichettatura a norma + schede prodotto', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
+        ,
+{
+        id: 'etichettatura',
+        nome: 'Compliance etichettatura (reg. UE 1169)',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Ingredienti, allergeni, valori nutrizionali — obbligatorio'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Gestionale produzione — lotti, scadenze, rese, tracciabilità',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Gestionale produzione',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:400, costo_setup:2000, impatto:1, note:'Gestionale produzione — lotti, scadenze, rese, tracciabilità' },
+              { id:'base', nome:'Soluzione base', costo_mensile:200, costo_setup:1000, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Certificazione BRC/IFS per accesso GDO e export',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Certificazione BRC/IFS per accesso GDO e export',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:600, costo_setup:5000, impatto:1, note:'Certificazione BRC/IFS per accesso GDO e export' },
+              { id:'base', nome:'Soluzione base', costo_mensile:300, costo_setup:2500, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ERP produzione + automazione linee confezionamento',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'ERP produzione',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:1200, costo_setup:8000, impatto:1, note:'ERP produzione + automazione linee confezionamento' },
+              { id:'base', nome:'Soluzione base', costo_mensile:600, costo_setup:4000, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Prezzo fisso su listino — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Pricing per canale — GDO vs specialità vs export', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Private label', cosa:'Produzione private label per GDO + brand proprio premium', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Export premium', cosa:'Linea export premium con packaging dedicato e storytelling', costo_mensile:300, costo_setup:1500, tempo_mesi:3 },
-      '5': { chi:'Revenue manager', cosa:'Mix brand + PL + export + DTC + co-packing stagionale', costo_mensile:800, costo_setup:2500, tempo_mesi:4 },
+      '2': {
+        cosa: 'Pricing per canale — GDO vs specialità vs export',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Pricing per canale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'margini_prodotto',
+        nome: 'Analisi margine per referenza',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.15,
+        note: 'Quale conserva guadagna di più — focus sul mix migliore'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Produzione private label per GDO + brand proprio premium',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'ricavi', nome:'Produzione private label per GDO + brand proprio premium', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.8 }
+        ,
+{
+        id: 'formato_famiglia',
+        nome: 'Formato famiglia/HORECA ad alto margine',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Formati grandi per HORECA — margine unitario migliore'
+}
+      ]
+      },
+      '4': {
+        cosa: 'Linea export premium con packaging dedicato e storytelling',
+        tempo_mesi: 3,
+        moduli: [
+          { id:'ricavi', nome:'Linea export premium con packaging dedicato e storytelling', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:1500, impatto:0.8 }
+        ,
+{
+        id: 'bio_premium',
+        nome: 'Linea BIO/DOP premium',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 500,
+        impatto: 0.15,
+        note: 'Certificazione BIO — margine +30-40% sul convenzionale'
+}
+      ]
+      },
+      '5': {
+        cosa: 'Mix brand + PL + export + DTC + co-packing stagionale',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'Mix brand + PL + export + DTC + co-packing stagionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:800, costo_setup:2500, impatto:1, note:'Mix brand + PL + export + DTC + co-packing stagionale' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:400, costo_setup:1250, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo etichetta tradizionale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Social con ricette, tradizione e territorio', costo_mensile:150, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Branding + fiere', cosa:'Branding professionale + fiere food (Cibus, Fancy Food)', costo_mensile:700, costo_setup:3000, tempo_mesi:2 },
-      '4': { chi:'Marketing operativo', cosa:'Trade marketing GDO + PR food + social content professionale', costo_mensile:1500, costo_setup:4000, tempo_mesi:2 },
-      '5': { chi:'Marketing manager', cosa:'Piano marketing — brand premium, export promo, storytelling', costo_mensile:3000, costo_setup:6000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Social con ricette, tradizione e territorio',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'marketing', nome:'Social con ricette, tradizione e territorio', tipo:'flag', obbligatorio:true, costo_mensile:150, costo_setup:300, impatto:0.8 }
+        ,
+{
+        id: 'storytelling',
+        nome: 'Storytelling prodotto (origine, tradizione)',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'La storia dietro il prodotto — differenzia dal marchio bianco'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Branding professionale + fiere food (Cibus, Fancy Food)',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Branding professionale + fiere food (Cibus, Fancy Food)', tipo:'flag', obbligatorio:true, costo_mensile:700, costo_setup:3000, impatto:0.8 }
+        ,
+{
+        id: 'sampling',
+        nome: 'Campagne sampling in-store',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 200,
+        costo_setup: 300,
+        impatto: 0.15,
+        note: 'Degustazione al supermercato — conversion 20-30%'
+}
+      ]
+      },
+      '4': {
+        cosa: 'Trade marketing GDO + PR food + social content professionale',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Trade marketing GDO + PR food + social content professionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1500, costo_setup:4000, impatto:1, note:'Trade marketing GDO + PR food + social content professionale' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:600, costo_setup:2000, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piano marketing — brand premium, export promo, storytelling',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Piano marketing',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:3000, costo_setup:6000, impatto:1, note:'Piano marketing — brand premium, export promo, storytelling' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:1200, costo_setup:3000, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito vetrina con storia, prodotti, ricette', costo_mensile:80, costo_setup:1000, tempo_mesi:1 },
-      '3': { chi:'Sito professionale', cosa:'Sito con catalogo, schede prodotto, area buyer', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
-      '4': { chi:'E-commerce DTC', cosa:'E-commerce DTC — vendita diretta, box regalo, abbonamenti', costo_mensile:600, costo_setup:5000, tempo_mesi:3 },
-      '5': { chi:'Piattaforma integrata', cosa:'Piattaforma B2B + DTC integrata con ERP e tracciabilità', costo_mensile:1200, costo_setup:10000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Sito vetrina con storia, prodotti, ricette',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'sito', nome:'Sito vetrina con storia, prodotti, ricette', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:1000, impatto:0.8 }
+        ,
+{
+        id: 'ricette',
+        nome: 'Sezione ricette con i prodotti',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 100,
+        impatto: 0.15,
+        note: 'Content marketing: come usare le conserve — SEO + engagement'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Sito con catalogo, schede prodotto, area buyer',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Sito con catalogo, schede prodotto, area buyer',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:300, costo_setup:2500, impatto:1, note:'Sito con catalogo, schede prodotto, area buyer' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:120, costo_setup:1000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'E-commerce DTC — vendita diretta, box regalo, abbonamenti',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'E-commerce DTC',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:600, costo_setup:5000, impatto:1, note:'E-commerce DTC — vendita diretta, box regalo, abbonamenti' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:240, costo_setup:2000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piattaforma B2B + DTC integrata con ERP e tracciabilità',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Piattaforma B2B',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:1200, costo_setup:10000, impatto:1, note:'Piattaforma B2B + DTC integrata con ERP e tracciabilità' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:480, costo_setup:4000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
     },
     ecommerce: {
-      _label: 'Approvvigionamento materie prime',
       '1': { chi:'Titolare', cosa:'Acquisto pomodori e ortaggi da agricoltori locali', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Confronto fornitori — qualità, stagionalità, certificazioni', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Contratti filiera', cosa:'Contratti con agricoltori — volumi garantiti, prezzo fisso', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Buyer', cosa:'Buyer dedicato — scouting materie prime, import pomodoro', costo_mensile:2000, costo_setup:800, tempo_mesi:3 },
-      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — filiera controllata, contratti annuali, hedging', costo_mensile:3500, costo_setup:2000, tempo_mesi:4 },
-    },
+      '2': {
+        cosa: 'Confronto fornitori — qualità, stagionalità, certificazioni',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'canale', nome:'Confronto fornitori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'stagionalita',
+        nome: 'Pianificazione acquisti per stagionalità',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.15,
+        note: 'Pomodori in estate, olive in autunno — stock al momento giusto'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Contratti con agricoltori — volumi garantiti, prezzo fisso',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'canale', nome:'Contratti con agricoltori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.8 }
+        ,
+{
+        id: 'km0',
+        nome: 'Rete agricoltori locali per km0',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Prodotto locale = storytelling + qualità + prezzo migliore'
+}
+      ]
+      },
+      '4': {
+        cosa: 'Buyer dedicato — scouting materie prime, import pomodoro',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Buyer dedicato',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:2000, costo_setup:800, impatto:1, note:'Buyer dedicato — scouting materie prime, import pomodoro' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1000, costo_setup:320, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Resp. acquisti — filiera controllata, contratti annuali, hedging',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Resp. acquisti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:3500, costo_setup:2000, impatto:1, note:'Resp. acquisti — filiera controllata, contratti annuali, hedging' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1750, costo_setup:800, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      _label: 'Approvvigionamento materie prime',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1675,62 +8922,621 @@ vendite: {
   alimentare_ingredienti: {
     vendite: {
       '1': { chi:'Titolare', cosa:'Titolare gestisce clienti', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Campionature proattive verso industria', costo_mensile:400, costo_setup:300, tempo_mesi:2 },
-      '3': { chi:'1 tecnico commerciale', cosa:'1 tecnico commerciale (~2.800€)', costo_mensile:2800, costo_setup:500, tempo_mesi:3 },
-      '4': { chi:'2 tecnici', cosa:'2 tecnici per segmento', costo_mensile:5600, costo_setup:1000, tempo_mesi:4 },
-      '5': { chi:'Dir. commerciale + R&D', cosa:'Dir. commerciale + R&D applicativo', costo_mensile:8500, costo_setup:2000, tempo_mesi:6 },
+      '2': {
+        cosa: 'Campionature proattive verso industria',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:300, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: '1 tecnico commerciale (~2.800€)',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2800, costo_setup:500, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1540, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1260, costo_setup:500, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: '2 tecnici per segmento',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2240, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1232, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1120, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:840, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Dir. commerciale + R&D applicativo',
+        tempo_mesi: 6,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:3400, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1870, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1700, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1275, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — rapporti personali e telefonate', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Excel con clienti, specifiche richieste e contratti', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'CRM B2B', cosa:'CRM con schede tecniche, campionature, storico forniture', costo_mensile:400, costo_setup:800, tempo_mesi:1 },
-      '4': { chi:'CRM + gestionale', cosa:'CRM integrato con gestionale produzione e qualità', costo_mensile:800, costo_setup:2000, tempo_mesi:2 },
-      '5': { chi:'ERP ingredienti', cosa:'ERP completo — ordini, produzione, lotti, qualità, compliance', costo_mensile:1500, costo_setup:6000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Excel con clienti, specifiche richieste e contratti',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'database_rd',
+        nome: 'Database resp. R&D industrie target',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.15,
+        note: 'Contatti R&D e acquisti delle industrie alimentari target'
+}
+      ]
+      },
+      '3': {
+        cosa: 'CRM con schede tecniche, campionature, storico forniture',
+        tempo_mesi: 1,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM con schede tecniche, campionature, storico forniture', costo_mensile:400, costo_setup:800, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:200, costo_setup:480, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'CRM integrato con gestionale produzione e qualità',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM integrato con gestionale produzione e qualità', costo_mensile:800, costo_setup:2000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:400, costo_setup:1200, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ERP completo — ordini, produzione, lotti, qualità, compliance',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'ERP completo', costo_mensile:1500, costo_setup:6000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:750, costo_setup:3600, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Schede tecniche', cosa:'Schede tecniche e specifiche', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Application lab', cosa:'Application lab strutturato', costo_mensile:300, costo_setup:800, tempo_mesi:2 },
-      '4': { chi:'KPI + QA', cosa:'KPI + quality assurance', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Management', cosa:'Management tecnico/commerciale', costo_mensile:1500, costo_setup:2000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Ruoli R&D/produzione/commerciale definiti',
+        tempo_mesi: 1,
+        moduli: [
+      {
+            id: 'ruoli',
+            nome: 'Organigramma R&D + produzione',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 200,
+            impatto: 0.7,
+            note: 'Chi fa R&D, chi produce, chi fa qualità, chi vende'
+      }
+,
+{
+        id: 'food_safety',
+        nome: 'Formazione food safety per personale',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 100,
+        impatto: 0.15,
+        note: 'HACCP + GMP base per tutti i dipendenti'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Tecnologo alimentare + procedure R&D strutturate',
+        tempo_mesi: 2,
+        moduli: [
+      {
+            id: 'tecnologo',
+            nome: 'Tecnologo alimentare',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'dip',
+                        nome: 'Tecnologo alimentare dipendente',
+                        costo_mensile: 2800,
+                        costo_setup: 0,
+                        impatto: 1,
+                        note: 'R&D, schede tecniche, campionature, compliance'
+                  },
+                  {
+                        id: 'consulente',
+                        nome: 'Consulente tecnologo esterno',
+                        costo_mensile: 500,
+                        costo_setup: 300,
+                        impatto: 0.7,
+                        note: 'Visite periodiche, supporto R&D'
+                  }
+            ]
+      }
+]
+      },
+      '4': {
+        cosa: 'KPI + sistema qualità + gestione certificazioni',
+        tempo_mesi: 3,
+        moduli: [
+      {
+            id: 'kpi',
+            nome: 'KPI produzione ingredienti',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 500,
+            impatto: 0.5,
+            note: 'Purezza, resa, contaminazioni, shelf life, costi'
+      },
+      {
+            id: 'certificazioni',
+            nome: 'Gestione certificazioni (BRC, FSSC, BIO)',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 200,
+            costo_setup: 500,
+            impatto: 0.3,
+            note: 'Documentazione, audit, aggiornamento'
+      }
+]
+      },
+      '5': {
+        cosa: 'Management completo — titolare solo R&D e strategia',
+        tempo_mesi: 4,
+        moduli: [
+      {
+            id: 'manager',
+            nome: 'Direttore operativo',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'dip',
+                        nome: 'COO/direttore operativo dipendente',
+                        costo_mensile: 3500,
+                        costo_setup: 0,
+                        impatto: 1,
+                        note: 'Produzione + qualità + R&D coordination + logistica'
+                  },
+                  {
+                        id: 'fractional',
+                        nome: 'Operations manager fractional',
+                        costo_mensile: 1500,
+                        costo_setup: 0,
+                        impatto: 0.65,
+                        note: '2-3 giorni/settimana'
+                  }
+            ]
+      }
+]
+      },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Produzione su ricetta — nessun processo formalizzato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Tecnico qualità', cosa:'Schede tecniche + analisi laboratorio + certificati lotto', costo_mensile:300, costo_setup:500, tempo_mesi:1 },
-      '3': { chi:'Gestionale qualità', cosa:'Sistema qualità con SPC, HACCP avanzato, audit interni', costo_mensile:500, costo_setup:2000, tempo_mesi:2 },
-      '4': { chi:'Certificazioni', cosa:'FSSC 22000 + BRC + certificazioni Halal/Kosher', costo_mensile:700, costo_setup:6000, tempo_mesi:4 },
-      '5': { chi:'ERP + R&D', cosa:'ERP con modulo R&D — formulazioni, prove, scale-up, costi', costo_mensile:1300, costo_setup:8000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Schede tecniche + analisi laboratorio + certificati lotto',
+        tempo_mesi: 1,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Schede tecniche',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:300, costo_setup:500, impatto:1, note:'Schede tecniche + analisi laboratorio + certificati lotto' },
+              { id:'base', nome:'Soluzione base', costo_mensile:150, costo_setup:250, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '3': {
+        cosa: 'Sistema qualità con SPC, HACCP avanzato, audit interni',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Sistema qualità con SPC, HACCP avanzato, audit interni',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:500, costo_setup:2000, impatto:1, note:'Sistema qualità con SPC, HACCP avanzato, audit interni' },
+              { id:'base', nome:'Soluzione base', costo_mensile:250, costo_setup:1000, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'FSSC 22000 + BRC + certificazioni Halal/Kosher',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'FSSC 22000',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:700, costo_setup:6000, impatto:1, note:'FSSC 22000 + BRC + certificazioni Halal/Kosher' },
+              { id:'base', nome:'Soluzione base', costo_mensile:350, costo_setup:3000, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ERP con modulo R&D — formulazioni, prove, scale-up, costi',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'ERP con modulo R&D',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:1300, costo_setup:8000, impatto:1, note:'ERP con modulo R&D — formulazioni, prove, scale-up, costi' },
+              { id:'base', nome:'Soluzione base', costo_mensile:650, costo_setup:4000, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Prezzo al kg basato su costi — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Pricing per volume e tipo di cliente industriale', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Prodotti specialità', cosa:'Ingredienti funzionali a margine superiore (clean label)', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Servizio R&D', cosa:'Servizio sviluppo formulazione per clienti — valore aggiunto', costo_mensile:300, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Revenue manager', cosa:'Mix commodity + specialità + R&D + tolling + export', costo_mensile:800, costo_setup:2000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Pricing per volume e tipo di cliente industriale',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Pricing per volume e tipo di cliente industriale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'margini_cliente',
+        nome: 'Analisi margine per cliente/settore',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.15,
+        note: 'Quale industria paga meglio — focus sui segmenti più redditizi'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Ingredienti funzionali a margine superiore (clean label)',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'ricavi', nome:'Ingredienti funzionali a margine superiore (clean label)', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.8 }
+        ,
+{
+        id: 'custom_blend',
+        nome: 'Miscele personalizzate come servizio premium',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 300,
+        impatto: 0.15,
+        note: 'Blend su misura per il cliente — margine extra + lock-in'
+}
+      ]
+      },
+      '4': {
+        cosa: 'Servizio sviluppo formulazione per clienti — valore aggiunto',
+        tempo_mesi: 3,
+        moduli: [
+          { id:'ricavi', nome:'Servizio sviluppo formulazione per clienti', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:1000, impatto:0.8 }
+        ,
+{
+        id: 'consulenza_app',
+        nome: 'Consulenza applicativa come servizio',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Aiuti il cliente a usare ingrediente — fiducia + vendite'
+}
+      ]
+      },
+      '5': {
+        cosa: 'Mix commodity + specialità + R&D + tolling + export',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'Mix commodity + specialità + R&D + tolling + export',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:800, costo_setup:2000, impatto:1, note:'Mix commodity + specialità + R&D + tolling + export' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:400, costo_setup:1000, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo fiere e contatti diretti', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Schede tecniche professionali + LinkedIn aziendale', costo_mensile:100, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Marketing B2B', cosa:'Fiere food ingredients (FiE, Cibus Tec) + catalogo tecnico', costo_mensile:600, costo_setup:3000, tempo_mesi:2 },
-      '4': { chi:'Content + fiere', cosa:'White paper tecnici + webinar + fiere internazionali', costo_mensile:1200, costo_setup:4000, tempo_mesi:2 },
-      '5': { chi:'Marketing manager', cosa:'Piano marketing B2B — thought leadership, R&D showcase, PR', costo_mensile:2500, costo_setup:5000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Schede tecniche professionali + LinkedIn aziendale',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'marketing', nome:'Schede tecniche professionali + LinkedIn aziendale', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:300, impatto:0.8 }
+        ,
+{
+        id: 'schede_app',
+        nome: 'Schede applicative per industria',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 300,
+        impatto: 0.15,
+        note: 'Come usare ingrediente, dosaggi, ricette industriali — valore tecnico'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Fiere food ingredients (FiE, Cibus Tec) + catalogo tecnico',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Fiere food ingredients (FiE, Cibus Tec) + catalogo tecnico', tipo:'flag', obbligatorio:true, costo_mensile:600, costo_setup:3000, impatto:0.8 }
+        ,
+{
+        id: 'webinar_tecnici',
+        nome: 'Webinar tecnici per R&D clienti',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 100,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Presentazione nuovi ingredienti/applicazioni — lead gen B2B'
+}
+      ]
+      },
+      '4': {
+        cosa: 'White paper tecnici + webinar + fiere internazionali',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'White paper tecnici + webinar + fiere internazionali',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1200, costo_setup:4000, impatto:1, note:'White paper tecnici + webinar + fiere internazionali' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:480, costo_setup:2000, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piano marketing B2B — thought leadership, R&D showcase, PR',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Piano marketing B2B',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:2500, costo_setup:5000, impatto:1, note:'Piano marketing B2B — thought leadership, R&D showcase, PR' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:1000, costo_setup:2500, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito vetrina con gamma prodotti e certificazioni', costo_mensile:80, costo_setup:1000, tempo_mesi:1 },
-      '3': { chi:'Sito tecnico', cosa:'Sito con schede tecniche, download, richiesta campionature', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
-      '4': { chi:'Portale B2B', cosa:'Portale B2B con ordini, specifiche personalizzate, tracking', costo_mensile:700, costo_setup:5000, tempo_mesi:3 },
-      '5': { chi:'Piattaforma integrata', cosa:'Piattaforma B2B integrata — ordini, formulazioni, compliance', costo_mensile:1300, costo_setup:10000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Sito vetrina con gamma prodotti e certificazioni',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'sito', nome:'Sito vetrina con gamma prodotti e certificazioni', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:1000, impatto:0.8 }
+        ,
+{
+        id: 'schede_tecniche',
+        nome: 'Download schede tecniche prodotti',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 100,
+        impatto: 0.15,
+        note: 'Il buyer scarica spec sheet direttamente dal sito'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Sito con schede tecniche, download, richiesta campionature',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Sito con schede tecniche, download, richiesta campionature',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:300, costo_setup:2500, impatto:1, note:'Sito con schede tecniche, download, richiesta campionature' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:120, costo_setup:1000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Portale B2B con ordini, specifiche personalizzate, tracking',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Portale B2B con ordini, specifiche personalizzate, tracking',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:700, costo_setup:5000, impatto:1, note:'Portale B2B con ordini, specifiche personalizzate, tracking' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:280, costo_setup:2000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piattaforma B2B integrata — ordini, formulazioni, compliance',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Piattaforma B2B integrata',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:1300, costo_setup:10000, impatto:1, note:'Piattaforma B2B integrata — ordini, formulazioni, compliance' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:520, costo_setup:4000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
     },
     ecommerce: {
-      _label: 'Approvvigionamento e sourcing',
       '1': { chi:'Titolare', cosa:'Acquisto materie prime da fornitore abituale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Confronto fornitori globali — qualità, certificazioni, prezzi', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Sourcing globale', cosa:'Sourcing internazionale — Europa, Asia — campionature e audit', costo_mensile:500, costo_setup:800, tempo_mesi:2 },
-      '4': { chi:'Buyer', cosa:'Buyer dedicato — contratti quadro, hedging commodity, import', costo_mensile:2500, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — supply chain globale, dual sourcing, contratti', costo_mensile:4000, costo_setup:2000, tempo_mesi:4 },
-    },
+      '2': {
+        cosa: 'Confronto fornitori globali — qualità, certificazioni, prezzi',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'canale', nome:'Confronto fornitori globali', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'audit_fornitori',
+        nome: 'Audit qualità fornitori base',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Visita + checklist qualità per ogni fornitore critico'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Sourcing internazionale — Europa, Asia — campionature e audit',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Sourcing internazionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:500, costo_setup:800, impatto:1, note:'Sourcing internazionale — Europa, Asia — campionature e audit' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:250, costo_setup:320, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Buyer dedicato — contratti quadro, hedging commodity, import',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Buyer dedicato',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:2500, costo_setup:1000, impatto:1, note:'Buyer dedicato — contratti quadro, hedging commodity, import' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1250, costo_setup:400, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Resp. acquisti — supply chain globale, dual sourcing, contratti',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Resp. acquisti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:4000, costo_setup:2000, impatto:1, note:'Resp. acquisti — supply chain globale, dual sourcing, contratti' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:2000, costo_setup:800, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      _label: 'Approvvigionamento e sourcing',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1739,62 +9545,635 @@ vendite: {
   alimentare_birra: {
     vendite: {
       '1': { chi:'Titolare', cosa:'Titolare vende dal taproom', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Visite pub e ristoranti zona', costo_mensile:200, costo_setup:0, tempo_mesi:2 },
-      '3': { chi:'1 agente', cosa:'1 agente HORECA (~1.800€)', costo_mensile:1800, costo_setup:500, tempo_mesi:3 },
-      '4': { chi:'Agente + e-commerce', cosa:'Agente + e-commerce diretto', costo_mensile:3500, costo_setup:1500, tempo_mesi:4 },
-      '5': { chi:'Team vendite', cosa:'Team vendite + distribuzione', costo_mensile:6000, costo_setup:2000, tempo_mesi:6 },
+      '2': {
+        cosa: 'Visite pub e ristoranti zona',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: '1 agente HORECA (~1.800€)',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1800, costo_setup:500, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:990, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:810, costo_setup:500, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Agente + e-commerce diretto',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:3500, costo_setup:1500, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1925, costo_setup:1500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1575, costo_setup:1500, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Team vendite + distribuzione',
+        tempo_mesi: 6,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2400, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1320, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1200, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:900, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — tutto a voce e WhatsApp', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Excel con pub, ristoranti, ordini e preferenze', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'CRM birrificio', cosa:'CRM con clienti HORECA, storico ordini, degustazioni', costo_mensile:300, costo_setup:500, tempo_mesi:1 },
-      '4': { chi:'CRM + gestionale', cosa:'CRM integrato con gestionale birrificio e magazzino', costo_mensile:600, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'ERP birrificio', cosa:'ERP birrificio — ordini, produzione, lotti, accise, export', costo_mensile:1200, costo_setup:5000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Excel con pub, ristoranti, ordini e preferenze',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'mappa_locali',
+        nome: 'Mappa locali zona con spine disponibili',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.15,
+        note: 'Quali pub/ristoranti hanno spine libere per la tua birra'
+}
+      ]
+      },
+      '3': {
+        cosa: 'CRM con clienti HORECA, storico ordini, degustazioni',
+        tempo_mesi: 1,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM con clienti HORECA, storico ordini, degustazioni', costo_mensile:300, costo_setup:500, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:150, costo_setup:300, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'CRM integrato con gestionale birrificio e magazzino',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM integrato con gestionale birrificio e magazzino', costo_mensile:600, costo_setup:1500, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:300, costo_setup:900, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ERP birrificio — ordini, produzione, lotti, accise, export',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'ERP birrificio', costo_mensile:1200, costo_setup:5000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:600, costo_setup:3000, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Ruoli base', cosa:'Ruoli birraio/vendita', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Pianificazione + qualità', cosa:'Pianificazione produzione + qualità', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'KPI + eventi', cosa:'KPI + gestione eventi', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Governance', cosa:'Governance — titolare solo R&D birra', costo_mensile:1500, costo_setup:2000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Ruoli birreria/taproom definiti — chi produce chi vende',
+        tempo_mesi: 1,
+        moduli: [
+      {
+            id: 'ruoli',
+            nome: 'Organigramma birrificio',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 200,
+            impatto: 0.7,
+            note: 'Birraio, taproom, vendite, consegne — chi fa cosa'
+      }
+,
+{
+        id: 'igiene_birra',
+        nome: 'Formazione igiene e pulizia impianti',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 100,
+        impatto: 0.15,
+        note: 'CIP, sanitizzazione, controllo contaminazioni — base'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Birraio capo + pianificazione cotte e fermentazione',
+        tempo_mesi: 2,
+        moduli: [
+      {
+            id: 'birraio',
+            nome: 'Birraio capo',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'promozione',
+                        nome: 'Promozione birraio senior',
+                        costo_mensile: 200,
+                        costo_setup: 300,
+                        impatto: 0.85,
+                        note: 'Già conosce ricette e impianto'
+                  },
+                  {
+                        id: 'esperto',
+                        nome: 'Mastro birraio esperto esterno',
+                        costo_mensile: 2500,
+                        costo_setup: 0,
+                        impatto: 1,
+                        note: 'Esperienza internazionale, nuove ricette'
+                  }
+            ]
+      }
+]
+      },
+      '4': {
+        cosa: 'KPI birrificio + gestione qualità + taproom management',
+        tempo_mesi: 3,
+        moduli: [
+      {
+            id: 'kpi',
+            nome: 'KPI birrificio',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 500,
+            impatto: 0.5,
+            note: 'Resa per cotta, costo per litro, rotazione fusti, vendite taproom'
+      },
+      {
+            id: 'taproom',
+            nome: 'Responsabile taproom/eventi',
+            tipo: 'flag',
+            obbligatorio: false,
+            costo_mensile: 1500,
+            costo_setup: 0,
+            impatto: 0.3,
+            note: 'Gestisce taproom, eventi, degustazioni — libera il birraio'
+      }
+]
+      },
+      '5': {
+        cosa: 'Management strutturato — fondatore solo ricette e strategia',
+        tempo_mesi: 4,
+        moduli: [
+      {
+            id: 'manager',
+            nome: 'General manager birrificio',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'dip',
+                        nome: 'GM birrificio dipendente',
+                        costo_mensile: 3000,
+                        costo_setup: 0,
+                        impatto: 1,
+                        note: 'Produzione + vendite + taproom + eventi + logistica'
+                  },
+                  {
+                        id: 'fractional',
+                        nome: 'Brewery manager fractional',
+                        costo_mensile: 1500,
+                        costo_setup: 0,
+                        impatto: 0.65,
+                        note: '2-3 giorni/settimana'
+                  }
+            ]
+      }
+]
+      },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Birraio', cosa:'Ricette personali — produzione artigianale senza standard', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Birraio', cosa:'Ricettario standardizzato + controllo fermentazione digitale', costo_mensile:100, costo_setup:500, tempo_mesi:1 },
-      '3': { chi:'Gestionale birrificio', cosa:'Gestionale birrificio — cotte, fermentazione, imbottigliamento', costo_mensile:300, costo_setup:1500, tempo_mesi:2 },
-      '4': { chi:'Qualità + accise', cosa:'Laboratorio analisi + gestione accise + tracciabilità lotti', costo_mensile:500, costo_setup:3000, tempo_mesi:3 },
-      '5': { chi:'Produzione ottimizzata', cosa:'Produzione lean — pianificazione cotte, rese, KPI qualità', costo_mensile:800, costo_setup:5000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Ricettario standardizzato + controllo fermentazione digitale',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'processo', nome:'Ricettario standardizzato + controllo fermentazione digitale', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:500, impatto:0.8 }
+        ,
+{
+        id: 'analisi_birra',
+        nome: 'Analisi birra per ogni cotta',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 100,
+        impatto: 0.15,
+        note: 'OG/FG, IBU, colore, pH — scheda per ogni batch'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Gestionale birrificio — cotte, fermentazione, imbottigliamento',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Gestionale birrificio',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:300, costo_setup:1500, impatto:1, note:'Gestionale birrificio — cotte, fermentazione, imbottigliamento' },
+              { id:'base', nome:'Soluzione base', costo_mensile:150, costo_setup:750, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Laboratorio analisi + gestione accise + tracciabilità lotti',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Laboratorio analisi',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:500, costo_setup:3000, impatto:1, note:'Laboratorio analisi + gestione accise + tracciabilità lotti' },
+              { id:'base', nome:'Soluzione base', costo_mensile:250, costo_setup:1500, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Produzione lean — pianificazione cotte, rese, KPI qualità',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Produzione lean',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:800, costo_setup:5000, impatto:1, note:'Produzione lean — pianificazione cotte, rese, KPI qualità' },
+              { id:'base', nome:'Soluzione base', costo_mensile:400, costo_setup:2500, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
     },
     ricavi: {
       '1': { chi:'Birraio', cosa:'Prezzo a bottiglia/fusto fisso — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Pricing differenziato — taproom vs HORECA vs distribuzione', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Birre speciali', cosa:'Birre limited edition e stagionali a margine premium', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
-      '4': { chi:'Taproom experience', cosa:'Taproom con food pairing, eventi, brewery tour a pagamento', costo_mensile:200, costo_setup:1000, tempo_mesi:2 },
-      '5': { chi:'Revenue manager', cosa:'Mix ricavi — HORECA, taproom, DTC, eventi, contract brewing', costo_mensile:600, costo_setup:1500, tempo_mesi:3 },
+      '2': {
+        cosa: 'Pricing differenziato — taproom vs HORECA vs distribuzione',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Pricing differenziato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'prezzi_canale',
+        nome: 'Listino per canale (taproom, pub, negozi)',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.15,
+        note: 'Prezzo diverso per taproom (margine max) vs pub vs bottiglia'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Taproom come centro profitto + eventi degustazione',
+        tempo_mesi: 2,
+        moduli: [
+      {
+            id: 'taproom',
+            nome: 'Taproom strutturato',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'completo',
+                        nome: 'Taproom con food + eventi',
+                        costo_mensile: 0,
+                        costo_setup: 500,
+                        impatto: 0.8,
+                        note: 'Birra alla spina + taglieri + eventi — margine 70%+'
+                  },
+                  {
+                        id: 'base',
+                        nome: 'Solo mescita + merchandising',
+                        costo_mensile: 0,
+                        costo_setup: 200,
+                        impatto: 0.5,
+                        note: 'Birra + gadget brandizzati'
+                  }
+            ]
+      }
+]
+      },
+      '4': {
+        cosa: 'Contratti HORECA annuali + birre stagionali/limited',
+        tempo_mesi: 2,
+        moduli: [
+      {
+            id: 'contratti',
+            nome: 'Contratti fornitura HORECA annuali',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 500,
+            impatto: 0.5,
+            note: 'Spine in comodato, fornitura garantita, fidelizzazione'
+      },
+      {
+            id: 'limited',
+            nome: 'Birre stagionali/limited edition',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 300,
+            impatto: 0.3,
+            note: 'Edizioni limitate — prezzo premium, FOMO, buzz social'
+      }
+]
+      },
+      '5': {
+        cosa: 'Mix ricavi — HORECA, taproom, DTC, eventi, contract brewing',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'Mix ricavi',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:600, costo_setup:1500, impatto:1, note:'Mix ricavi — HORECA, taproom, DTC, eventi, contract brewing' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:300, costo_setup:750, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo taproom e passaparola birrofili', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Instagram con foto birre, brewing process, taproom', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Social + eventi', cosa:'Social curato + festival birra + collaborazioni birrifici', costo_mensile:500, costo_setup:1500, tempo_mesi:2 },
-      '4': { chi:'Marketing beer', cosa:'Brand identity + Untappd + PR beer blogger + tap takeover', costo_mensile:1200, costo_setup:3000, tempo_mesi:2 },
-      '5': { chi:'Marketing manager', cosa:'Piano marketing — brand craft, community, eventi, export promo', costo_mensile:2500, costo_setup:5000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Instagram con foto birre, brewing process, taproom',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'marketing', nome:'Instagram con foto birre, brewing process, taproom', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'tap_takeover',
+        nome: 'Tap takeover in pub partner',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Serata con tutte le tue birre in un pub — awareness + vendite'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Social curato + festival birra + collaborazioni birrifici',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Social curato + festival birra + collaborazioni birrifici', tipo:'flag', obbligatorio:true, costo_mensile:500, costo_setup:1500, impatto:0.8 }
+        ,
+{
+        id: 'beer_community',
+        nome: 'Community online beer lovers',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Gruppo Facebook/Telegram per appassionati — eventi, anteprime'
+}
+      ]
+      },
+      '4': {
+        cosa: 'Brand identity + Untappd + PR beer blogger + tap takeover',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Brand identity + Untappd + PR beer blogger + tap takeover',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1200, costo_setup:3000, impatto:1, note:'Brand identity + Untappd + PR beer blogger + tap takeover' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:480, costo_setup:1500, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piano marketing — brand craft, community, eventi, export promo',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Piano marketing',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:2500, costo_setup:5000, impatto:1, note:'Piano marketing — brand craft, community, eventi, export promo' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:1000, costo_setup:2500, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito — solo Untappd e social', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito vetrina con birre, storia, taproom e orari', costo_mensile:80, costo_setup:800, tempo_mesi:1 },
-      '3': { chi:'Sito professionale', cosa:'Sito con catalogo birre, schede, dove trovarci, eventi', costo_mensile:250, costo_setup:2000, tempo_mesi:2 },
-      '4': { chi:'E-commerce DTC', cosa:'E-commerce DTC — box birre, abbonamenti, gift pack', costo_mensile:500, costo_setup:4000, tempo_mesi:3 },
-      '5': { chi:'Piattaforma integrata', cosa:'Piattaforma DTC + B2B + prenotazione taproom + CRM', costo_mensile:1000, costo_setup:8000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Sito vetrina con birre, storia, taproom e orari',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'sito', nome:'Sito vetrina con birre, storia, taproom e orari', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:800, impatto:0.8 }
+        ,
+{
+        id: 'taproom_info',
+        nome: 'Orari taproom + birre alla spina oggi',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.15,
+        note: 'Aggiornamento in tempo reale birre disponibili'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Sito con catalogo birre, schede, dove trovarci, eventi',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Sito con catalogo birre, schede, dove trovarci, eventi',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:250, costo_setup:2000, impatto:1, note:'Sito con catalogo birre, schede, dove trovarci, eventi' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:100, costo_setup:800, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'E-commerce DTC — box birre, abbonamenti, gift pack',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'E-commerce DTC',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:500, costo_setup:4000, impatto:1, note:'E-commerce DTC — box birre, abbonamenti, gift pack' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:200, costo_setup:1600, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piattaforma DTC + B2B + prenotazione taproom + CRM',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Piattaforma DTC',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:1000, costo_setup:8000, impatto:1, note:'Piattaforma DTC + B2B + prenotazione taproom + CRM' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:400, costo_setup:3200, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
     },
     ecommerce: {
-      _label: 'Approvvigionamento malti e luppoli',
       '1': { chi:'Birraio', cosa:'Acquisto malti e luppoli da rivenditore locale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Birraio', cosa:'Confronto fornitori — malterie europee, luppoli freschi', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Accordi malterie', cosa:'Accordi con malterie e hop dealer — contratti annuali', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
-      '4': { chi:'Buyer ingredienti', cosa:'Buyer per luppoli speciali, lieviti, import malti craft', costo_mensile:1200, costo_setup:500, tempo_mesi:2 },
-      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — contratti forward luppoli, malterie premium', costo_mensile:2500, costo_setup:1500, tempo_mesi:4 },
-    },
+      '2': {
+        cosa: 'Confronto fornitori — malterie europee, luppoli freschi',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'canale', nome:'Confronto fornitori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'malti_confronto',
+        nome: 'Confronto malterie e luppoli tra fornitori',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.15,
+        note: 'Qualità, prezzo, disponibilità — non dipendere da uno solo'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Accordi con malterie e hop dealer — contratti annuali',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'canale', nome:'Accordi con malterie e hop dealer', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ,
+{
+        id: 'import_luppoli',
+        nome: 'Import diretto luppoli (USA, NZ, DE)',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 300,
+        impatto: 0.15,
+        note: 'Luppoli speciali non disponibili da grossisti italiani'
+}
+      ]
+      },
+      '4': {
+        cosa: 'Buyer per luppoli speciali, lieviti, import malti craft',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Buyer per luppoli speciali, lieviti, import malti craft',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:1200, costo_setup:500, impatto:1, note:'Buyer per luppoli speciali, lieviti, import malti craft' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:600, costo_setup:200, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Resp. acquisti — contratti forward luppoli, malterie premium',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Resp. acquisti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:2500, costo_setup:1500, impatto:1, note:'Resp. acquisti — contratti forward luppoli, malterie premium' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1250, costo_setup:600, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      _label: 'Approvvigionamento malti e luppoli',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1803,62 +10182,654 @@ vendite: {
   tech_saas: {
     vendite: {
       '1': { chi:'Founder', cosa:'Founder vende', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Founder', cosa:'Inbound + content come lead gen', costo_mensile:200, costo_setup:0, tempo_mesi:2 },
-      '3': { chi:'1 account/SDR', cosa:'1 account/SDR dedicato (~3.200€ account, ~2.500€ SDR)', costo_mensile:3200, costo_setup:500, tempo_mesi:3 },
-      '4': { chi:'2 account + 1 SDR', cosa:'2 account + 1 SDR', costo_mensile:8000, costo_setup:1500, tempo_mesi:4 },
-      '5': { chi:'VP Sales + team', cosa:'VP Sales + team + partnerships', costo_mensile:14000, costo_setup:3000, tempo_mesi:6 },
+      '2': {
+        cosa: 'Inbound + content come lead gen',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'supporto', nome:'Founder', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'outreach',
+        nome: 'Outreach strutturato (email + LinkedIn)',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Sequenze email fredde + LinkedIn verso ICP definito'
+}
+      ]
+      },
+      '3': {
+        cosa: '1 account/SDR dedicato (~3.200€ account, ~2.500€ SDR)',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:3200, costo_setup:500, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1760, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1440, costo_setup:500, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: '2 account + 1 SDR',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:3200, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1760, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1600, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1200, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'VP Sales + team + partnerships',
+        tempo_mesi: 6,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:5600, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:3080, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2800, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:2100, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
     },
     pipeline: {
       '1': { chi:'Founder', cosa:'Nessun CRM — lead su email e spreadsheet', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Founder', cosa:'CRM base (HubSpot free/Pipedrive) con pipeline vendita', costo_mensile:50, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'CRM + analytics', cosa:'CRM con lead scoring, sequences e analytics pipeline', costo_mensile:300, costo_setup:500, tempo_mesi:1 },
-      '4': { chi:'CRM + product data', cosa:'CRM integrato con product analytics — PQL e usage data', costo_mensile:600, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'Revenue ops', cosa:'Revenue ops stack — CRM, BI, forecasting, churn prediction', costo_mensile:1200, costo_setup:4000, tempo_mesi:3 },
+      '2': {
+        cosa: 'CRM base (HubSpot free/Pipedrive) con pipeline vendita',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'Founder', tipo:'flag', obbligatorio:true, costo_mensile:50, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'product_analytics',
+        nome: 'Product analytics per lead scoring',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Chi usa il free tier e come — identifica chi è pronto a pagare'
+}
+      ]
+      },
+      '3': {
+        cosa: 'CRM con lead scoring, sequences e analytics pipeline',
+        tempo_mesi: 1,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM con lead scoring, sequences e analytics pipeline', costo_mensile:300, costo_setup:500, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:150, costo_setup:300, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'CRM integrato con product analytics — PQL e usage data',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM integrato con product analytics', costo_mensile:600, costo_setup:1500, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:300, costo_setup:900, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Revenue ops stack — CRM, BI, forecasting, churn prediction',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Revenue ops stack', costo_mensile:1200, costo_setup:4000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:600, costo_setup:2400, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Tutto il founder', cosa:'Tutto il founder', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Ruoli base', cosa:'Ruoli dev/sales/support', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Sprint planning', cosa:'Sprint planning + metriche base', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'OKR + management', cosa:'OKR + management per team', costo_mensile:500, costo_setup:1500, tempo_mesi:3 },
-      '5': { chi:'Governance C-level', cosa:'Governance C-level — founder solo prodotto', costo_mensile:2000, costo_setup:3000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Ruoli dev/vendite separati — founder esce dal codice',
+        tempo_mesi: 1,
+        moduli: [
+      {
+            id: 'ruoli',
+            nome: 'Separazione dev/vendite/support',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 200,
+            impatto: 0.7,
+            note: 'Chi sviluppa, chi vende, chi fa support — il founder delega'
+      }
+,
+{
+        id: 'standup',
+        nome: 'Daily standup dev + weekly all-hands',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.15,
+        note: 'Allineamento quotidiano dev, settimanale tutto il team'
+}
+      ]
+      },
+      '3': {
+        cosa: 'CTO/lead dev + processo development strutturato',
+        tempo_mesi: 2,
+        moduli: [
+      {
+            id: 'cto',
+            nome: 'CTO/Lead developer',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'dip',
+                        nome: 'CTO dipendente',
+                        costo_mensile: 3500,
+                        costo_setup: 0,
+                        impatto: 1,
+                        note: 'Architettura, team dev, roadmap tecnica'
+                  },
+                  {
+                        id: 'fractional',
+                        nome: 'CTO fractional',
+                        costo_mensile: 1500,
+                        costo_setup: 0,
+                        impatto: 0.7,
+                        note: '2 giorni/settimana + code review'
+                  }
+            ]
+      }
+]
+      },
+      '4': {
+        cosa: 'Team strutturato + KPI per reparto (dev, sales, support)',
+        tempo_mesi: 3,
+        moduli: [
+      {
+            id: 'kpi',
+            nome: 'KPI per team (MRR, churn, NPS, velocity)',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 500,
+            impatto: 0.5,
+            note: 'MRR, churn rate, NPS, sprint velocity, response time'
+      },
+      {
+            id: 'hr',
+            nome: 'Processi HR + cultura aziendale',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 500,
+            impatto: 0.3,
+            note: 'Onboarding, 1:1, review, OKR'
+      }
+]
+      },
+      '5': {
+        cosa: 'Management completo — founder solo prodotto e vision',
+        tempo_mesi: 4,
+        moduli: [
+      {
+            id: 'coo',
+            nome: 'COO / Head of Operations',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'dip',
+                        nome: 'COO dipendente',
+                        costo_mensile: 4000,
+                        costo_setup: 0,
+                        impatto: 1,
+                        note: 'Operations, team, processi, metriche, cultura'
+                  },
+                  {
+                        id: 'fractional',
+                        nome: 'COO fractional',
+                        costo_mensile: 2000,
+                        costo_setup: 0,
+                        impatto: 0.65,
+                        note: '2-3 giorni/settimana'
+                  }
+            ]
+      }
+]
+      },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Founder', cosa:'Nessun processo — tutto ad hoc e manuale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Founder', cosa:'Onboarding utenti documentato + knowledge base interna', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Processo sales', cosa:'Sales playbook — discovery, demo, trial, close, onboarding', costo_mensile:200, costo_setup:1000, tempo_mesi:2 },
-      '4': { chi:'CS + automazione', cosa:'Customer success process — health score, QBR, churn alert', costo_mensile:400, costo_setup:2000, tempo_mesi:2 },
-      '5': { chi:'Revenue operations', cosa:'RevOps completo — processi scalabili, playbook, automazioni', costo_mensile:800, costo_setup:4000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Onboarding utenti documentato + knowledge base interna',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'processo', nome:'Onboarding utenti documentato + knowledge base interna', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ,
+{
+        id: 'docs_api',
+        nome: 'Documentazione API + knowledge base utenti',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 300,
+        impatto: 0.15,
+        note: 'Self-service per clienti — riduce ticket support'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Sales playbook — discovery, demo, trial, close, onboarding',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'processo', nome:'Sales playbook', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:1000, impatto:0.8 }
+        ,
+{
+        id: 'ci_cd',
+        nome: 'CI/CD pipeline strutturata',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 500,
+        impatto: 0.15,
+        note: 'Deploy automatico, test, rollback — rilasci più frequenti e sicuri'
+}
+      ]
+      },
+      '4': {
+        cosa: 'Customer success process — health score, QBR, churn alert',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Customer success process',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:400, costo_setup:2000, impatto:1, note:'Customer success process — health score, QBR, churn alert' },
+              { id:'base', nome:'Soluzione base', costo_mensile:200, costo_setup:1000, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'RevOps completo — processi scalabili, playbook, automazioni',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'RevOps completo',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:800, costo_setup:4000, impatto:1, note:'RevOps completo — processi scalabili, playbook, automazioni' },
+              { id:'base', nome:'Soluzione base', costo_mensile:400, costo_setup:2000, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
     },
     ricavi: {
       '1': { chi:'Founder', cosa:'1 piano pricing — prezzo fisso mensile o annuale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Founder', cosa:'2-3 piani pricing — starter, pro, enterprise', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Usage-based', cosa:'Pricing ibrido — base + usage-based per feature premium', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Expansion revenue', cosa:'Strategia expansion — upsell, cross-sell, add-on, seats', costo_mensile:300, costo_setup:1000, tempo_mesi:2 },
-      '5': { chi:'Revenue manager', cosa:'Revenue model ottimizzato — NRR >120%, LTV/CAC, pricing AI', costo_mensile:700, costo_setup:2000, tempo_mesi:3 },
+      '2': {
+        cosa: '2-3 piani pricing — starter, pro, enterprise',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'2-3 piani pricing', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'metriche_saas',
+        nome: 'Tracking MRR, churn, LTV base',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Spreadsheet con metriche SaaS essenziali'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Pricing tier strutturato + annual billing come leva',
+        tempo_mesi: 2,
+        moduli: [
+      {
+            id: 'pricing',
+            nome: 'Pricing strategy SaaS',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'tier',
+                        nome: '3-tier pricing (Starter/Pro/Enterprise)',
+                        costo_mensile: 0,
+                        costo_setup: 500,
+                        impatto: 1,
+                        note: 'Segmentazione per valore — upsell naturale'
+                  },
+                  {
+                        id: 'usage',
+                        nome: 'Usage-based pricing',
+                        costo_mensile: 0,
+                        costo_setup: 500,
+                        impatto: 0.7,
+                        note: 'Pay per use — bassa barriera ingresso'
+                  }
+            ]
+      }
+]
+      },
+      '4': {
+        cosa: 'Upsell/cross-sell + expansion revenue + annual billing',
+        tempo_mesi: 2,
+        moduli: [
+      {
+            id: 'expansion',
+            nome: 'Programma expansion revenue',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 500,
+            impatto: 0.6,
+            note: 'Upsell feature, cross-sell moduli, upgrade piano — NRR >100%'
+      },
+      {
+            id: 'annual',
+            nome: 'Incentivo annual billing',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 200,
+            impatto: 0.25,
+            note: 'Sconto 15-20% per pagamento annuale — cash flow + retention'
+      }
+]
+      },
+      '5': {
+        cosa: 'Revenue model ottimizzato — NRR >120%, LTV/CAC, pricing AI',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'Revenue model ottimizzato',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:700, costo_setup:2000, impatto:1, note:'Revenue model ottimizzato — NRR >120%, LTV/CAC, pricing AI' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:350, costo_setup:1000, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
     },
     marketing: {
       '1': { chi:'Founder', cosa:'Solo passaparola e network personale founder', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Founder', cosa:'Content marketing — blog, LinkedIn founder, Product Hunt', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Growth hacker', cosa:'SEO + content + Google Ads + free trial funnel', costo_mensile:1000, costo_setup:1500, tempo_mesi:2 },
-      '4': { chi:'Marketing team', cosa:'Demand gen + content + paid + community + webinar', costo_mensile:2500, costo_setup:3000, tempo_mesi:3 },
-      '5': { chi:'VP Marketing', cosa:'Marketing scalabile — brand, demand gen, PLG, partner marketing', costo_mensile:5000, costo_setup:6000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Content marketing — blog, LinkedIn founder, Product Hunt',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'marketing', nome:'Content marketing', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'seo_blog',
+        nome: 'Blog + SEO per keyword prodotto',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: '2-4 articoli/mese su problemi che il prodotto risolve'
+}
+      ]
+      },
+      '3': {
+        cosa: 'SEO + content + Google Ads + free trial funnel',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'SEO + content + Google Ads + free trial funnel',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1000, costo_setup:1500, impatto:1, note:'SEO + content + Google Ads + free trial funnel' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:400, costo_setup:750, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Demand gen + content + paid + community + webinar',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Demand gen + content + paid + community + webinar',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:2500, costo_setup:3000, impatto:1, note:'Demand gen + content + paid + community + webinar' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:1000, costo_setup:1500, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Marketing scalabile — brand, demand gen, PLG, partner marketing',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Marketing scalabile',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:5000, costo_setup:6000, impatto:1, note:'Marketing scalabile — brand, demand gen, PLG, partner marketing' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:2000, costo_setup:3000, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
     },
     sitoweb: {
       '1': { chi:'Founder', cosa:'Landing page base con form di contatto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Founder/dev', cosa:'Sito prodotto con pricing, demo video, sign-up', costo_mensile:50, costo_setup:500, tempo_mesi:1 },
-      '3': { chi:'Sito professionale', cosa:'Sito marketing con case study, blog, self-service trial', costo_mensile:200, costo_setup:2000, tempo_mesi:2 },
-      '4': { chi:'Growth site', cosa:'Sito ottimizzato conversione — A/B test, CRO, chatbot', costo_mensile:500, costo_setup:4000, tempo_mesi:2 },
-      '5': { chi:'Piattaforma marketing', cosa:'Sito + app center + marketplace integrazioni + community', costo_mensile:1000, costo_setup:8000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Sito prodotto con pricing, demo video, sign-up',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'sito', nome:'Sito prodotto con pricing, demo video, sign-up', tipo:'flag', obbligatorio:true, costo_mensile:50, costo_setup:500, impatto:0.8 }
+        ,
+{
+        id: 'demo_cta',
+        nome: 'CTA demo/trial prominente',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 100,
+        impatto: 0.15,
+        note: 'Bottone demo/free trial visibile su ogni pagina'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Sito marketing con case study, blog, self-service trial',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Sito marketing con case study, blog, self-service trial',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:200, costo_setup:2000, impatto:1, note:'Sito marketing con case study, blog, self-service trial' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:80, costo_setup:800, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Sito ottimizzato conversione — A/B test, CRO, chatbot',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Sito ottimizzato conversione',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:500, costo_setup:4000, impatto:1, note:'Sito ottimizzato conversione — A/B test, CRO, chatbot' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:200, costo_setup:1600, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Sito + app center + marketplace integrazioni + community',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Sito',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:1000, costo_setup:8000, impatto:1, note:'Sito + app center + marketplace integrazioni + community' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:400, costo_setup:3200, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
     },
     ecommerce: {
-      _label: 'Infrastruttura cloud e DevOps',
       '1': { chi:'Founder/CTO', cosa:'Hosting base su VPS o shared — deploy manuale', costo_mensile:50, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'CTO', cosa:'Cloud AWS/GCP con CI/CD base e monitoring', costo_mensile:300, costo_setup:500, tempo_mesi:1 },
-      '3': { chi:'DevOps', cosa:'Infrastruttura scalabile — container, auto-scaling, backup', costo_mensile:800, costo_setup:2000, tempo_mesi:2 },
-      '4': { chi:'DevOps + SRE', cosa:'SRE practices — SLA 99.9%, incident management, DR', costo_mensile:2000, costo_setup:4000, tempo_mesi:3 },
-      '5': { chi:'Platform team', cosa:'Platform team — multi-region, zero downtime, compliance SOC2', costo_mensile:4000, costo_setup:8000, tempo_mesi:4 },
-    },
+      '2': {
+        cosa: 'Cloud AWS/GCP con CI/CD base e monitoring',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'canale', nome:'Cloud AWS/GCP con CI/CD base e monitoring', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:500, impatto:0.8 }
+        ,
+{
+        id: 'monitoring',
+        nome: 'Monitoring base (uptime, errori)',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Sentry/Datadog base per alert e debug'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Infrastruttura scalabile — container, auto-scaling, backup',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Infrastruttura scalabile',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:800, costo_setup:2000, impatto:1, note:'Infrastruttura scalabile — container, auto-scaling, backup' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:400, costo_setup:800, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'SRE practices — SLA 99.9%, incident management, DR',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'SRE practices',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:2000, costo_setup:4000, impatto:1, note:'SRE practices — SLA 99.9%, incident management, DR' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1000, costo_setup:1600, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Platform team — multi-region, zero downtime, compliance SOC2',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Platform team',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:4000, costo_setup:8000, impatto:1, note:'Platform team — multi-region, zero downtime, compliance SOC2' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:2000, costo_setup:3200, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      _label: 'Infrastruttura cloud e DevOps',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1867,62 +10838,639 @@ vendite: {
   tech_system_integrator: {
     vendite: {
       '1': { chi:'Founder/partner', cosa:'Founder/partner vende', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Networking + eventi vendor', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
-      '3': { chi:'1 account manager', cosa:'1 account manager (~3.000€)', costo_mensile:3000, costo_setup:500, tempo_mesi:3 },
-      '4': { chi:'Account + pre-sales', cosa:'Account + pre-sales (~3.200€)', costo_mensile:6200, costo_setup:1500, tempo_mesi:4 },
-      '5': { chi:'Sales manager + team', cosa:'Sales manager + team', costo_mensile:10000, costo_setup:2500, tempo_mesi:6 },
+      '2': {
+        cosa: 'Networking + eventi vendor',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:500, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: '1 account manager (~3.000€)',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:3000, costo_setup:500, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1650, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1350, costo_setup:500, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Account + pre-sales (~3.200€)',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2480, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1364, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1240, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:930, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Sales manager + team',
+        tempo_mesi: 6,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:4000, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:2200, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2000, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1500, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun CRM — progetti gestiti via email', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'CRM base con opportunità, preventivi e follow-up', costo_mensile:50, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'CRM + PSA', cosa:'CRM + PSA (Professional Services Automation) per progetti', costo_mensile:400, costo_setup:1000, tempo_mesi:1 },
-      '4': { chi:'CRM avanzato', cosa:'CRM con forecast, pipeline pesata e integrazione vendor', costo_mensile:800, costo_setup:2000, tempo_mesi:2 },
-      '5': { chi:'ERP + CRM + PSA', cosa:'Stack completo — CRM, PSA, timesheet, margini progetto', costo_mensile:1500, costo_setup:5000, tempo_mesi:3 },
+      '2': {
+        cosa: 'CRM base con opportunità, preventivi e follow-up',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:50, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'forecast',
+        nome: 'Forecast pipeline trimestrale',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.15,
+        note: 'Previsione chiusure e revenue per trimestre'
+}
+      ]
+      },
+      '3': {
+        cosa: 'CRM + PSA (Professional Services Automation) per progetti',
+        tempo_mesi: 1,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM + PSA (Professional Services Automation) per progetti', costo_mensile:400, costo_setup:1000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:200, costo_setup:600, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'CRM con forecast, pipeline pesata e integrazione vendor',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM con forecast, pipeline pesata e integrazione vendor', costo_mensile:800, costo_setup:2000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:400, costo_setup:1200, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Stack completo — CRM, PSA, timesheet, margini progetto',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Stack completo', costo_mensile:1500, costo_setup:5000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:750, costo_setup:3000, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Ruoli base', cosa:'Ruoli vendita/delivery separati', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'PM base', cosa:'Project management base', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'KPI progetto', cosa:'KPI progetto + delivery', costo_mensile:500, costo_setup:1500, tempo_mesi:3 },
-      '5': { chi:'Governance + PMO', cosa:'Governance + PMO', costo_mensile:2000, costo_setup:2500, tempo_mesi:4 },
+      '2': {
+        cosa: 'Ruoli tecnico/commerciale/PM definiti',
+        tempo_mesi: 1,
+        moduli: [
+      {
+            id: 'ruoli',
+            nome: 'Organigramma per competenze',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 200,
+            impatto: 0.7,
+            note: 'Tecnici per specializzazione, PM, commerciale — chi fa cosa'
+      }
+,
+{
+        id: 'knowledge_base',
+        nome: 'Knowledge base procedure interne',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Wiki con procedure, configurazioni, troubleshooting'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Team lead tecnico + processi di progetto strutturati',
+        tempo_mesi: 2,
+        moduli: [
+      {
+            id: 'team_lead',
+            nome: 'Team lead tecnico',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'promozione',
+                        nome: 'Promozione senior engineer',
+                        costo_mensile: 300,
+                        costo_setup: 500,
+                        impatto: 0.85,
+                        note: 'Coordinamento tecnici, code review, standard'
+                  },
+                  {
+                        id: 'esterno',
+                        nome: 'Technical manager esterno',
+                        costo_mensile: 3000,
+                        costo_setup: 0,
+                        impatto: 1,
+                        note: 'Esperienza da SI più strutturato'
+                  }
+            ]
+      }
+]
+      },
+      '4': {
+        cosa: 'PM dedicati + KPI per progetto + certificazioni team',
+        tempo_mesi: 3,
+        moduli: [
+      {
+            id: 'pm',
+            nome: 'Project manager dedicato',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'dip',
+                        nome: 'PM dipendente certificato (PMP/Prince2)',
+                        costo_mensile: 2800,
+                        costo_setup: 0,
+                        impatto: 0.5,
+                        note: 'Gestione progetti, clienti, delivery'
+                  },
+                  {
+                        id: 'freelance',
+                        nome: 'PM freelance a progetto',
+                        costo_mensile: 1500,
+                        costo_setup: 0,
+                        impatto: 0.35,
+                        note: 'Solo su progetti grandi'
+                  }
+            ]
+      },
+      {
+            id: 'certificazioni',
+            nome: 'Piano certificazioni team (MS, AWS, Cisco)',
+            tipo: 'flag',
+            obbligatorio: false,
+            costo_mensile: 200,
+            costo_setup: 500,
+            impatto: 0.2,
+            note: 'Budget annuo per certificazioni — punti nelle gare'
+      }
+]
+      },
+      '5': {
+        cosa: 'Governance completa — founder solo strategia e relazioni',
+        tempo_mesi: 4,
+        moduli: [
+      {
+            id: 'cto',
+            nome: 'CTO / Direttore tecnico',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'dip',
+                        nome: 'CTO dipendente',
+                        costo_mensile: 4000,
+                        costo_setup: 0,
+                        impatto: 1,
+                        note: 'Architettura, standard, team, vendor relationship'
+                  },
+                  {
+                        id: 'fractional',
+                        nome: 'CTO fractional',
+                        costo_mensile: 2000,
+                        costo_setup: 0,
+                        impatto: 0.65,
+                        note: '2-3 giorni/settimana + review'
+                  }
+            ]
+      }
+]
+      },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — ogni progetto è diverso e ad hoc', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Template preventivo + checklist installazione standard', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'PM base', cosa:'Project management base — Gantt, timesheet, documentazione', costo_mensile:300, costo_setup:1000, tempo_mesi:2 },
-      '4': { chi:'ITIL + PM', cosa:'Framework ITIL per servizi + PM strutturato per progetti', costo_mensile:600, costo_setup:3000, tempo_mesi:3 },
-      '5': { chi:'PMO + ITIL', cosa:'PMO strutturato + ITIL + knowledge base + automazioni', costo_mensile:1000, costo_setup:5000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Template preventivo + checklist installazione standard',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'processo', nome:'Template preventivo + checklist installazione standard', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ,
+{
+        id: 'sla_template',
+        nome: 'Template SLA standard per clienti',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 100,
+        impatto: 0.15,
+        note: 'Livelli di servizio, tempi risposta, escalation'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Project management base — Gantt, timesheet, documentazione',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Project management base',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:300, costo_setup:1000, impatto:1, note:'Project management base — Gantt, timesheet, documentazione' },
+              { id:'base', nome:'Soluzione base', costo_mensile:150, costo_setup:500, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Framework ITIL per servizi + PM strutturato per progetti',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Framework ITIL per servizi',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:600, costo_setup:3000, impatto:1, note:'Framework ITIL per servizi + PM strutturato per progetti' },
+              { id:'base', nome:'Soluzione base', costo_mensile:300, costo_setup:1500, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'PMO strutturato + ITIL + knowledge base + automazioni',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'PMO strutturato',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:1000, costo_setup:5000, impatto:1, note:'PMO strutturato + ITIL + knowledge base + automazioni' },
+              { id:'base', nome:'Soluzione base', costo_mensile:500, costo_setup:2500, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Fatturazione a progetto — prezzo su preventivo', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Contratti assistenza ricorrenti — canone mensile/annuale', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Managed services', cosa:'Managed services — monitoraggio, backup, supporto proattivo', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Ricavi ricorrenti', cosa:'Mix progetto + managed services + licensing = ricavi prevedibili', costo_mensile:300, costo_setup:1500, tempo_mesi:3 },
-      '5': { chi:'Revenue manager', cosa:'Revenue model — MSP, cloud managed, consulting premium, SLA', costo_mensile:800, costo_setup:2500, tempo_mesi:4 },
+      '2': {
+        cosa: 'Contratti assistenza ricorrenti — canone mensile/annuale',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Contratti assistenza ricorrenti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'manutenzione',
+        nome: 'Contratti manutenzione annuali',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.15,
+        note: 'Da intervento a chiamata a canone fisso — MRR'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Managed services — monitoraggio, backup, supporto proattivo',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'ricavi', nome:'Managed services', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.8 }
+        ,
+{
+        id: 'managed_svc',
+        nome: 'Managed services (monitoraggio + manutenzione)',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 300,
+        impatto: 0.15,
+        note: 'Tu gestisci infrastruttura del cliente — margine 40-60%'
+}
+      ]
+      },
+      '4': {
+        cosa: 'Mix progetto + managed services + licensing = ricavi prevedibili',
+        tempo_mesi: 3,
+        moduli: [
+          { id:'ricavi', nome:'Mix progetto + managed services + licensing = ricavi prevedibili', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:1500, impatto:0.8 }
+        ,
+{
+        id: 'cloud_migration',
+        nome: 'Revenue da migrazione cloud',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Migrazione + licenze cloud — progetto + ricorrente'
+}
+      ]
+      },
+      '5': {
+        cosa: 'Revenue model — MSP, cloud managed, consulting premium, SLA',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'Revenue model',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:800, costo_setup:2500, impatto:1, note:'Revenue model — MSP, cloud managed, consulting premium, SLA' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:400, costo_setup:1250, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo passaparola e referral', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'LinkedIn + case study + certificazioni vendor in evidenza', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Marketing B2B', cosa:'Google Ads IT + LinkedIn Ads + webinar tecnici', costo_mensile:800, costo_setup:1500, tempo_mesi:2 },
-      '4': { chi:'Content + eventi', cosa:'Content marketing tecnico + eventi vendor + partner program', costo_mensile:1500, costo_setup:3000, tempo_mesi:2 },
-      '5': { chi:'Marketing manager', cosa:'Piano marketing B2B — thought leadership, eventi, partner co-mktg', costo_mensile:3000, costo_setup:5000, tempo_mesi:4 },
+      '2': {
+        cosa: 'LinkedIn + case study + certificazioni vendor in evidenza',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'marketing', nome:'LinkedIn + case study + certificazioni vendor in evidenza', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'referenze',
+        nome: 'Case study clienti sul sito + LinkedIn',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Problema → soluzione → risultato — credibilità per prospect'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Google Ads IT + LinkedIn Ads + webinar tecnici',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Google Ads IT + LinkedIn Ads + webinar tecnici', tipo:'flag', obbligatorio:true, costo_mensile:800, costo_setup:1500, impatto:0.8 }
+        ,
+{
+        id: 'vendor_mkt',
+        nome: 'Co-marketing con vendor (Microsoft, Cisco)',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 300,
+        impatto: 0.15,
+        note: 'Fondi MDF, eventi congiunti, lead sharing'
+}
+      ]
+      },
+      '4': {
+        cosa: 'Content marketing tecnico + eventi vendor + partner program',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Content marketing tecnico + eventi vendor + partner program',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1500, costo_setup:3000, impatto:1, note:'Content marketing tecnico + eventi vendor + partner program' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:600, costo_setup:1500, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piano marketing B2B — thought leadership, eventi, partner co-mktg',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Piano marketing B2B',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:3000, costo_setup:5000, impatto:1, note:'Piano marketing B2B — thought leadership, eventi, partner co-mktg' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:1200, costo_setup:2500, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito vetrina con servizi, competenze e certificazioni', costo_mensile:80, costo_setup:800, tempo_mesi:1 },
-      '3': { chi:'Sito professionale', cosa:'Sito con case study, blog tecnico, richiesta preventivo', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
-      '4': { chi:'Sito + portale', cosa:'Portale clienti — ticket, monitoring dashboard, documentazione', costo_mensile:600, costo_setup:5000, tempo_mesi:3 },
-      '5': { chi:'Piattaforma clienti', cosa:'Piattaforma clienti completa — portale, SLA, report, knowledge', costo_mensile:1200, costo_setup:10000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Sito vetrina con servizi, competenze e certificazioni',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'sito', nome:'Sito vetrina con servizi, competenze e certificazioni', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:800, impatto:0.8 }
+        ,
+{
+        id: 'case_study',
+        nome: '2-3 case study clienti sul sito',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Problema → soluzione → risultato — credibilità'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Sito con case study, blog tecnico, richiesta preventivo',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Sito con case study, blog tecnico, richiesta preventivo',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:300, costo_setup:2500, impatto:1, note:'Sito con case study, blog tecnico, richiesta preventivo' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:120, costo_setup:1000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Portale clienti — ticket, monitoring dashboard, documentazione',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Portale clienti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:600, costo_setup:5000, impatto:1, note:'Portale clienti — ticket, monitoring dashboard, documentazione' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:240, costo_setup:2000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piattaforma clienti completa — portale, SLA, report, knowledge',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Piattaforma clienti completa',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:1200, costo_setup:10000, impatto:1, note:'Piattaforma clienti completa — portale, SLA, report, knowledge' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:480, costo_setup:4000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
     },
     ecommerce: {
-      _label: 'Approvvigionamento licenze e HW',
       '1': { chi:'Titolare', cosa:'Acquisto HW e licenze su ordine cliente — markup fisso', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Confronto distributori (Esprinet, Ingram, TD SYNNEX)', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Accordi distributori', cosa:'Accordi con distributori — rebate, deal registration vendor', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Buyer IT', cosa:'Buyer IT dedicato — ottimizzazione licensing, cloud brokering', costo_mensile:1800, costo_setup:500, tempo_mesi:2 },
-      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — CSP/LSP, hardware staging, vendor management', costo_mensile:3500, costo_setup:2000, tempo_mesi:4 },
-    },
+      '2': {
+        cosa: 'Confronto distributori (Esprinet, Ingram, TD SYNNEX)',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'canale', nome:'Confronto distributori (Esprinet, Ingram, TD SYNNEX)', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'vendor_tier',
+        nome: 'Upgrade tier partnership vendor',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Da Silver a Gold/Platinum — sconti migliori, più lead'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Accordi con distributori — rebate, deal registration vendor',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'canale', nome:'Accordi con distributori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.8 }
+        ,
+{
+        id: 'demo_lab',
+        nome: 'Lab interno per demo/POC',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 100,
+        costo_setup: 500,
+        impatto: 0.15,
+        note: 'Ambiente di test per mostrare soluzioni ai prospect'
+}
+      ]
+      },
+      '4': {
+        cosa: 'Buyer IT dedicato — ottimizzazione licensing, cloud brokering',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Buyer IT dedicato',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:1800, costo_setup:500, impatto:1, note:'Buyer IT dedicato — ottimizzazione licensing, cloud brokering' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:900, costo_setup:200, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Resp. acquisti — CSP/LSP, hardware staging, vendor management',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Resp. acquisti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:3500, costo_setup:2000, impatto:1, note:'Resp. acquisti — CSP/LSP, hardware staging, vendor management' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1750, costo_setup:800, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      _label: 'Approvvigionamento licenze e HW',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1931,62 +11479,650 @@ vendite: {
   tech_digital_agency: {
     vendite: {
       '1': { chi:'Founder', cosa:'Founder/creative director vende', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Founder', cosa:'Portfolio + case study come strumento', costo_mensile:200, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'1 account/BD', cosa:'1 account/business developer (~2.800€)', costo_mensile:2800, costo_setup:500, tempo_mesi:3 },
-      '4': { chi:'2 account', cosa:'2 account per segmento', costo_mensile:5600, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Dir. commerciale', cosa:'Dir. commerciale + rete partnership', costo_mensile:8500, costo_setup:2000, tempo_mesi:5 },
+      '2': {
+        cosa: 'Portfolio + case study come strumento',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'supporto', nome:'Founder', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:300, impatto:0.8 }
+        ,
+{
+        id: 'portfolio',
+        nome: 'Portfolio progetti strutturato',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 300,
+        impatto: 0.15,
+        note: 'Case study con metriche: +X% conversioni, +Y% traffico'
+}
+      ]
+      },
+      '3': {
+        cosa: '1 account/business developer (~2.800€)',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2800, costo_setup:500, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1540, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1260, costo_setup:500, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: '2 account per segmento',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2240, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1232, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1120, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:840, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Dir. commerciale + rete partnership',
+        tempo_mesi: 5,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:3400, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1870, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1700, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1275, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
     },
     pipeline: {
       '1': { chi:'Founder', cosa:'Nessun CRM — progetti su email e documenti', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Founder', cosa:'CRM base con opportunità, preventivi e stato progetti', costo_mensile:50, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'CRM + PM', cosa:'CRM + project management tool integrato (Asana, Monday)', costo_mensile:300, costo_setup:500, tempo_mesi:1 },
-      '4': { chi:'CRM + automazione', cosa:'CRM con automazioni — lead nurturing, proposal, follow-up', costo_mensile:500, costo_setup:1000, tempo_mesi:2 },
-      '5': { chi:'Revenue ops', cosa:'Stack completo — CRM, PM, timesheet, profittabilità progetto', costo_mensile:1000, costo_setup:3000, tempo_mesi:3 },
+      '2': {
+        cosa: 'CRM base con opportunità, preventivi e stato progetti',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'Founder', tipo:'flag', obbligatorio:true, costo_mensile:50, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'brief_template',
+        nome: 'Template brief + proposta strutturata',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Brief standard, proposta con scope/tempi/costi/KPI'
+}
+      ]
+      },
+      '3': {
+        cosa: 'CRM + project management tool integrato (Asana, Monday)',
+        tempo_mesi: 1,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM + project management tool integrato (Asana, Monday)', costo_mensile:300, costo_setup:500, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:150, costo_setup:300, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'CRM con automazioni — lead nurturing, proposal, follow-up',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM con automazioni', costo_mensile:500, costo_setup:1000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:250, costo_setup:600, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Stack completo — CRM, PM, timesheet, profittabilità progetto',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Stack completo', costo_mensile:1000, costo_setup:3000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:500, costo_setup:1800, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Workflow', cosa:'Workflow brief-to-delivery', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Ruoli per skill', cosa:'Ruoli per skill (design/dev/copy)', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'KPI + satisfaction', cosa:'KPI per progetto + client satisfaction', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Governance', cosa:'Governance creative + operations', costo_mensile:2000, costo_setup:2000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Ruoli creativi/tecnici/account definiti',
+        tempo_mesi: 1,
+        moduli: [
+      {
+            id: 'ruoli',
+            nome: 'Organigramma per competenze creative/tech',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 200,
+            impatto: 0.7,
+            note: 'Designer, developer, copywriter, account — chi fa cosa'
+      }
+,
+{
+        id: 'standup',
+        nome: 'Daily standup + retrospettive',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.15,
+        note: 'Allineamento quotidiano, retrospettiva fine progetto'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Art director/creative lead + processo creativo strutturato',
+        tempo_mesi: 2,
+        moduli: [
+      {
+            id: 'creative',
+            nome: 'Creative lead',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'dip',
+                        nome: 'Art director dipendente',
+                        costo_mensile: 2800,
+                        costo_setup: 0,
+                        impatto: 1,
+                        note: 'Direzione creativa, standard qualità, team design'
+                  },
+                  {
+                        id: 'freelance',
+                        nome: 'Art director freelance senior',
+                        costo_mensile: 1500,
+                        costo_setup: 0,
+                        impatto: 0.7,
+                        note: '2-3 giorni/settimana + supervisione'
+                  }
+            ]
+      }
+]
+      },
+      '4': {
+        cosa: 'Account director + PM + KPI per progetto',
+        tempo_mesi: 3,
+        moduli: [
+      {
+            id: 'account_dir',
+            nome: 'Account director',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'dip',
+                        nome: 'Account director dipendente',
+                        costo_mensile: 3000,
+                        costo_setup: 0,
+                        impatto: 0.5,
+                        note: 'Gestione clienti key, upsell, retention'
+                  },
+                  {
+                        id: 'promozione',
+                        nome: 'Promozione account senior',
+                        costo_mensile: 500,
+                        costo_setup: 500,
+                        impatto: 0.35,
+                        note: 'Bonus responsabilità + formazione management'
+                  }
+            ]
+      },
+      {
+            id: 'kpi',
+            nome: 'KPI per progetto e per account',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 500,
+            impatto: 0.3,
+            note: 'Margine per progetto, NPS, delivery on time, lifetime value'
+      }
+]
+      },
+      '5': {
+        cosa: 'Management completo — founder solo strategia e new business',
+        tempo_mesi: 4,
+        moduli: [
+      {
+            id: 'md',
+            nome: 'Managing director / COO',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'dip',
+                        nome: 'Managing director dipendente',
+                        costo_mensile: 4000,
+                        costo_setup: 0,
+                        impatto: 1,
+                        note: 'Team, processi, P&L, delivery, cultura'
+                  },
+                  {
+                        id: 'fractional',
+                        nome: 'COO fractional',
+                        costo_mensile: 2000,
+                        costo_setup: 0,
+                        impatto: 0.65,
+                        note: '2-3 giorni/settimana'
+                  }
+            ]
+      }
+]
+      },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Founder', cosa:'Nessun processo — ogni progetto gestito diversamente', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Founder', cosa:'Template brief, preventivo e contratto standardizzati', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'PM strutturato', cosa:'Processo progetto — brief, wireframe, sviluppo, test, lancio', costo_mensile:200, costo_setup:800, tempo_mesi:2 },
-      '4': { chi:'Agile + retainer', cosa:'Metodologia agile + processi retainer con reporting mensile', costo_mensile:400, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'Operations manager', cosa:'Operations completo — PM, QA, delivery, capacity planning', costo_mensile:800, costo_setup:3000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Template brief, preventivo e contratto standardizzati',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'processo', nome:'Template brief, preventivo e contratto standardizzati', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
+        ,
+{
+        id: 'workflow',
+        nome: 'Workflow progetto standardizzato (brief→design→dev→QA→live)',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 300,
+        impatto: 0.15,
+        note: 'Ogni progetto segue lo stesso flusso — meno errori, più velocità'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Processo progetto — brief, wireframe, sviluppo, test, lancio',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'processo', nome:'Processo progetto', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:800, impatto:0.8 }
+        ,
+{
+        id: 'time_tracking',
+        nome: 'Time tracking per progetto (Harvest, Toggl)',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 50,
+        costo_setup: 100,
+        impatto: 0.15,
+        note: 'Sai quanto tempo dedichi a ogni cliente — margine reale'
+}
+      ]
+      },
+      '4': {
+        cosa: 'Metodologia agile + processi retainer con reporting mensile',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Metodologia agile',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:400, costo_setup:1500, impatto:1, note:'Metodologia agile + processi retainer con reporting mensile' },
+              { id:'base', nome:'Soluzione base', costo_mensile:200, costo_setup:750, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Operations completo — PM, QA, delivery, capacity planning',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Operations completo',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:800, costo_setup:3000, impatto:1, note:'Operations completo — PM, QA, delivery, capacity planning' },
+              { id:'base', nome:'Soluzione base', costo_mensile:400, costo_setup:1500, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
     },
     ricavi: {
       '1': { chi:'Founder', cosa:'Fatturazione a progetto — preventivo fisso', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Founder', cosa:'Contratti retainer mensili per manutenzione e supporto', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Mix progetto/retainer', cosa:'Strategia 50% retainer + 50% progetti per stabilità', costo_mensile:0, costo_setup:300, tempo_mesi:2 },
-      '4': { chi:'Revenue ricorrente', cosa:'Servizi ricorrenti — hosting, SEO, social, email marketing', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '5': { chi:'Revenue manager', cosa:'Revenue model — retainer, progetti, SaaS proprio, formazione', costo_mensile:600, costo_setup:1500, tempo_mesi:3 },
+      '2': {
+        cosa: 'Contratti retainer mensili per manutenzione e supporto',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Contratti retainer mensili per manutenzione e supporto', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'retainer',
+        nome: 'Modello retainer mensile vs progetto',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.15,
+        note: 'Sposta clienti da progetto singolo a retainer mensile — MRR'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Strategia 50% retainer + 50% progetti per stabilità',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'ricavi', nome:'Strategia 50% retainer + 50% progetti per stabilità', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
+        ,
+{
+        id: 'upsell_servizi',
+        nome: 'Upsell servizi ricorrenti (SEO, social, manutenzione)',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Dopo il sito, vendi SEO/social/manutenzione — revenue ricorrente'
+}
+      ]
+      },
+      '4': {
+        cosa: 'Servizi ricorrenti — hosting, SEO, social, email marketing',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'ricavi', nome:'Servizi ricorrenti', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
+        ,
+{
+        id: 'performance',
+        nome: 'Fee basata su performance (% revenue, lead gen)',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 300,
+        impatto: 0.15,
+        note: 'Il cliente paga in base ai risultati — margine potenzialmente infinito'
+}
+      ]
+      },
+      '5': {
+        cosa: 'Revenue model — retainer, progetti, SaaS proprio, formazione',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'Revenue model',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:600, costo_setup:1500, impatto:1, note:'Revenue model — retainer, progetti, SaaS proprio, formazione' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:300, costo_setup:750, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
     },
     marketing: {
       '1': { chi:'Founder', cosa:'Solo passaparola e portfolio personale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Founder', cosa:'Sito portfolio + case study + LinkedIn attivo', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Inbound marketing', cosa:'Blog + SEO + webinar + lead magnet per generare lead', costo_mensile:600, costo_setup:1000, tempo_mesi:2 },
-      '4': { chi:'Marketing + PR', cosa:'Content premium + PR + speaking + awards + partnership', costo_mensile:1500, costo_setup:2500, tempo_mesi:3 },
-      '5': { chi:'Marketing manager', cosa:'Piano marketing — thought leadership, community, referral program', costo_mensile:3000, costo_setup:4000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Sito portfolio + case study + LinkedIn attivo',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'marketing', nome:'Sito portfolio + case study + LinkedIn attivo', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'clutch',
+        nome: 'Profilo su piattaforme agency (Clutch, GoodFirms)',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.15,
+        note: 'Recensioni verificate — i prospect cercano qui'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Blog + SEO + webinar + lead magnet per generare lead',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Blog + SEO + webinar + lead magnet per generare lead', tipo:'flag', obbligatorio:true, costo_mensile:600, costo_setup:1000, impatto:0.8 }
+        ,
+{
+        id: 'award',
+        nome: 'Partecipazione a contest/award digitali',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 300,
+        impatto: 0.15,
+        note: 'Awwwards, CSS Design Awards — portfolio + credibilità'
+}
+      ]
+      },
+      '4': {
+        cosa: 'Content premium + PR + speaking + awards + partnership',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Content premium + PR + speaking + awards + partnership',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1500, costo_setup:2500, impatto:1, note:'Content premium + PR + speaking + awards + partnership' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:600, costo_setup:1250, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piano marketing — thought leadership, community, referral program',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Piano marketing',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:3000, costo_setup:4000, impatto:1, note:'Piano marketing — thought leadership, community, referral program' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:1200, costo_setup:2000, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
     },
     sitoweb: {
       '1': { chi:'Founder', cosa:'Portfolio personale o pagina LinkedIn', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Founder', cosa:'Sito agency con portfolio, servizi e contatti', costo_mensile:50, costo_setup:500, tempo_mesi:1 },
-      '3': { chi:'Sito professionale', cosa:'Sito con case study dettagliati, blog, richiesta preventivo', costo_mensile:200, costo_setup:2000, tempo_mesi:2 },
-      '4': { chi:'Sito + risorse', cosa:'Sito con risorse gratuite, tool, calcolatori — lead generation', costo_mensile:400, costo_setup:4000, tempo_mesi:2 },
-      '5': { chi:'Piattaforma agency', cosa:'Piattaforma con portale clienti, report automatici, knowledge', costo_mensile:800, costo_setup:8000, tempo_mesi:3 },
+      '2': {
+        cosa: 'Sito agency con portfolio, servizi e contatti',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'sito', nome:'Sito agency con portfolio, servizi e contatti', tipo:'flag', obbligatorio:true, costo_mensile:50, costo_setup:500, impatto:0.8 }
+        ,
+{
+        id: 'portfolio_web',
+        nome: 'Portfolio interattivo con filtri',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 300,
+        impatto: 0.15,
+        note: 'Filtri per settore, tipo progetto, risultati — social proof'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Sito con case study dettagliati, blog, richiesta preventivo',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Sito con case study dettagliati, blog, richiesta preventivo',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:200, costo_setup:2000, impatto:1, note:'Sito con case study dettagliati, blog, richiesta preventivo' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:80, costo_setup:800, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Sito con risorse gratuite, tool, calcolatori — lead generation',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Sito con risorse gratuite, tool, calcolatori',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:400, costo_setup:4000, impatto:1, note:'Sito con risorse gratuite, tool, calcolatori — lead generation' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:160, costo_setup:1600, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piattaforma con portale clienti, report automatici, knowledge',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Piattaforma con portale clienti, report automatici, knowledge',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:800, costo_setup:8000, impatto:1, note:'Piattaforma con portale clienti, report automatici, knowledge' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:320, costo_setup:3200, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
     },
     ecommerce: {
-      _label: 'Approvvigionamento freelance e tool',
       '1': { chi:'Founder', cosa:'Freelance trovati su passaparola — tool gratuiti', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Founder', cosa:'Network freelance verificati + stack tool professionale', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Gestione fornitori', cosa:'Pool freelance contrattualizzati + licenze tool centralizzate', costo_mensile:500, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Resp. operations', cosa:'Gestione fornitori strutturata — SLA, qualità, backup', costo_mensile:1200, costo_setup:1000, tempo_mesi:2 },
-      '5': { chi:'Resp. acquisti', cosa:'Procurement strategico — nearshore team, partnership tool, white label', costo_mensile:2500, costo_setup:2000, tempo_mesi:3 },
-    },
+      '2': {
+        cosa: 'Network freelance verificati + stack tool professionale',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'canale', nome:'Network freelance verificati + stack tool professionale', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'contratti_freelance',
+        nome: 'Template contratto collaborazione freelance',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 100,
+        impatto: 0.15,
+        note: 'NDA, cessione diritti, tariffe, SLA — standard per tutti'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Pool freelance contrattualizzati + licenze tool centralizzate',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Pool freelance contrattualizzati + licenze tool centralizzate',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:500, costo_setup:500, impatto:1, note:'Pool freelance contrattualizzati + licenze tool centralizzate' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:250, costo_setup:200, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Gestione fornitori strutturata — SLA, qualità, backup',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Gestione fornitori strutturata',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:1200, costo_setup:1000, impatto:1, note:'Gestione fornitori strutturata — SLA, qualità, backup' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:600, costo_setup:400, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Procurement strategico — nearshore team, partnership tool, white label',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Procurement strategico',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:2500, costo_setup:2000, impatto:1, note:'Procurement strategico — nearshore team, partnership tool, white label' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1250, costo_setup:800, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      _label: 'Approvvigionamento freelance e tool',
+    }
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -1995,63 +12131,639 @@ vendite: {
   tech_automazione: {
     vendite: {
       '1': { chi:'Titolare/fondatore', cosa:'Titolare/fondatore vende', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Visite a uffici tecnici industriali', costo_mensile:300, costo_setup:0, tempo_mesi:2 },
-      '3': { chi:'1 tecnico commerciale', cosa:'1 tecnico commerciale (~3.000€)', costo_mensile:3000, costo_setup:500, tempo_mesi:3 },
-      '4': { chi:'2 commerciali', cosa:'2 commerciali per settore', costo_mensile:6000, costo_setup:1000, tempo_mesi:4 },
-      '5': { chi:'Dir. commerciale + export', cosa:'Dir. commerciale + export', costo_mensile:9000, costo_setup:2500, tempo_mesi:6 },
+      '2': {
+        cosa: 'Visite a uffici tecnici industriali',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:0, impatto:0.8 }
+        ]
+      },
+      '3': {
+        cosa: '1 tecnico commerciale (~3.000€)',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'commerciale',
+            nome: 'Figura commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:3000, costo_setup:500, impatto:1, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1650, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
+              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1350, costo_setup:500, impatto:0.5, note:'20h/settimana' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: '2 commerciali per settore',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2400, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1320, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1200, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:900, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Dir. commerciale + export',
+        tempo_mesi: 6,
+        moduli: [
+          {
+            id: 'resp',
+            nome: 'Responsabile commerciale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:3600, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
+              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1980, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
+            ]
+          },
+          {
+            id: 'team',
+            nome: 'Figure commerciali',
+            tipo: 'multi',
+            obbligatorio: true,
+            min: 2,
+            varianti: [
+              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1800, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
+              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1350, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
+            ]
+          }
+        ]
+      },
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun CRM — progetti via email e preventivi Word', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'CRM base con opportunità, preventivi e stato commesse', costo_mensile:50, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'CRM + commesse', cosa:'CRM integrato con gestione commesse e preventivazione', costo_mensile:400, costo_setup:1000, tempo_mesi:1 },
-      '4': { chi:'CRM + ERP', cosa:'CRM con ERP — commesse, costi, margini, tempistiche', costo_mensile:800, costo_setup:2500, tempo_mesi:2 },
-      '5': { chi:'ERP industriale', cosa:'ERP industriale completo — CRM, commesse, produzione, service', costo_mensile:1500, costo_setup:6000, tempo_mesi:4 },
+      '2': {
+        cosa: 'CRM base con opportunità, preventivi e stato commesse',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:50, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'database_stabilimenti',
+        nome: 'Database stabilimenti industriali target',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Lista aziende manifatturiere con impianti da modernizzare'
+}
+      ]
+      },
+      '3': {
+        cosa: 'CRM integrato con gestione commesse e preventivazione',
+        tempo_mesi: 1,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM integrato con gestione commesse e preventivazione', costo_mensile:400, costo_setup:1000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:200, costo_setup:600, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'CRM con ERP — commesse, costi, margini, tempistiche',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'CRM con ERP', costo_mensile:800, costo_setup:2500, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:400, costo_setup:1500, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'ERP industriale completo — CRM, commesse, produzione, service',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'crm',
+            nome: 'Piattaforma CRM/gestionale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'ERP industriale completo', costo_mensile:1500, costo_setup:6000, impatto:1, note:'Soluzione completa' },
+              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:750, costo_setup:3600, impatto:0.75, note:'Più semplice, meno funzioni' }
+            ]
+          }
+        ]
+      },
     },
     team: {
-      _label: 'Organizzazione',
       '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Ruoli base', cosa:'Ruoli progettazione/collaudo', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'PM strutturato', cosa:'Project management strutturato', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'KPI + FAT/SAT', cosa:'KPI + FAT/SAT procedure', costo_mensile:500, costo_setup:1500, tempo_mesi:3 },
-      '5': { chi:'Governance', cosa:'Governance tecnica + commerciale', costo_mensile:2000, costo_setup:2500, tempo_mesi:4 },
+      '2': {
+        cosa: 'Ruoli progettazione/produzione/commerciale definiti',
+        tempo_mesi: 1,
+        moduli: [
+      {
+            id: 'ruoli',
+            nome: 'Organigramma per funzione',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 200,
+            impatto: 0.7,
+            note: 'Progettazione, assemblaggio, collaudo, commerciale — mansionario'
+      }
+,
+{
+        id: 'documentazione',
+        nome: 'Documentazione tecnica per ruolo',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Schemi, procedure assemblaggio, collaudo per ogni mansione'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Resp. produzione/collaudo + procedure assembly strutturate',
+        tempo_mesi: 2,
+        moduli: [
+      {
+            id: 'resp',
+            nome: 'Responsabile tecnico/produzione',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'promozione',
+                        nome: 'Promozione senior engineer',
+                        costo_mensile: 300,
+                        costo_setup: 500,
+                        impatto: 0.85,
+                        note: 'Già conosce i sistemi, gestisce assemblaggio e collaudo'
+                  },
+                  {
+                        id: 'esterno',
+                        nome: 'Resp. produzione automazione esterno',
+                        costo_mensile: 3000,
+                        costo_setup: 0,
+                        impatto: 1,
+                        note: 'Esperienza da altro integratore, nuovi metodi'
+                  }
+            ]
+      }
+]
+      },
+      '4': {
+        cosa: 'KPI per progetto + PM dedicato + certificazioni',
+        tempo_mesi: 3,
+        moduli: [
+      {
+            id: 'pm',
+            nome: 'Project manager tecnico',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'dip',
+                        nome: 'PM/application engineer dipendente',
+                        costo_mensile: 3000,
+                        costo_setup: 0,
+                        impatto: 0.5,
+                        note: 'Gestione progetti, clienti, FAT/SAT'
+                  },
+                  {
+                        id: 'freelance',
+                        nome: 'PM freelance a commessa',
+                        costo_mensile: 1500,
+                        costo_setup: 0,
+                        impatto: 0.35,
+                        note: 'Solo su progetti grandi'
+                  }
+            ]
+      },
+      {
+            id: 'kpi',
+            nome: 'KPI per commessa (margine, tempi, reclami)',
+            tipo: 'flag',
+            obbligatorio: true,
+            costo_mensile: 0,
+            costo_setup: 500,
+            impatto: 0.3
+      }
+]
+      },
+      '5': {
+        cosa: 'Governance completa — fondatore solo R&D e strategia',
+        tempo_mesi: 4,
+        moduli: [
+      {
+            id: 'cto',
+            nome: 'CTO / Direttore tecnico automazione',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+                  {
+                        id: 'dip',
+                        nome: 'Direttore tecnico dipendente',
+                        costo_mensile: 4000,
+                        costo_setup: 0,
+                        impatto: 1,
+                        note: 'R&D, standard, team, commesse chiave'
+                  },
+                  {
+                        id: 'fractional',
+                        nome: 'CTO fractional',
+                        costo_mensile: 2000,
+                        costo_setup: 0,
+                        impatto: 0.65,
+                        note: '2-3 giorni/settimana'
+                  }
+            ]
+      }
+]
+      },
+      _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — ogni impianto è un pezzo unico', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Template offerta tecnica + documentazione impianto standard', costo_mensile:0, costo_setup:500, tempo_mesi:1 },
-      '3': { chi:'PM strutturato', cosa:'Project management — Gantt, milestone, collaudo, documentazione', costo_mensile:300, costo_setup:1500, tempo_mesi:2 },
-      '4': { chi:'Ingegneria + PM', cosa:'Processo ingegneria — design review, FAT, SAT, as-built', costo_mensile:600, costo_setup:3000, tempo_mesi:3 },
-      '5': { chi:'PMO + qualità', cosa:'PMO + sistema qualità ISO 9001 + standard IEC per safety', costo_mensile:1000, costo_setup:5000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Template offerta tecnica + documentazione impianto standard',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'processo', nome:'Template offerta tecnica + documentazione impianto standard', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.8 }
+        ,
+{
+        id: 'collaudo_checklist',
+        nome: 'Checklist collaudo FAT standard',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 100,
+        impatto: 0.15,
+        note: 'Test funzionale pre-consegna per ogni macchina/linea'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Project management — Gantt, milestone, collaudo, documentazione',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Project management',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:300, costo_setup:1500, impatto:1, note:'Project management — Gantt, milestone, collaudo, documentazione' },
+              { id:'base', nome:'Soluzione base', costo_mensile:150, costo_setup:750, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Processo ingegneria — design review, FAT, SAT, as-built',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'Processo ingegneria',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:600, costo_setup:3000, impatto:1, note:'Processo ingegneria — design review, FAT, SAT, as-built' },
+              { id:'base', nome:'Soluzione base', costo_mensile:300, costo_setup:1500, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'PMO + sistema qualità ISO 9001 + standard IEC per safety',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'processo',
+            nome: 'PMO',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Soluzione completa', costo_mensile:1000, costo_setup:5000, impatto:1, note:'PMO + sistema qualità ISO 9001 + standard IEC per safety' },
+              { id:'base', nome:'Soluzione base', costo_mensile:500, costo_setup:2500, impatto:0.7, note:'Versione semplificata' }
+            ]
+          }
+        ]
+      },
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Fatturazione a progetto — prezzo su preventivo', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Contratti assistenza post-vendita annuali', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Service ricorrente', cosa:'Service ricorrente — manutenzione programmata, teleassistenza', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Industry 4.0', cosa:'Servizi Industry 4.0 — IoT, analytics, digital twin as-a-service', costo_mensile:300, costo_setup:2000, tempo_mesi:3 },
-      '5': { chi:'Revenue manager', cosa:'Revenue mix — progetti, service, retrofit, training, SaaS IoT', costo_mensile:800, costo_setup:3000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Contratti assistenza post-vendita annuali',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'ricavi', nome:'Contratti assistenza post-vendita annuali', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'service_contract',
+        nome: 'Contratti service/manutenzione impianti',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.15,
+        note: 'Manutenzione programmata — ricorrente, margine 50%+'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Service ricorrente — manutenzione programmata, teleassistenza',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'ricavi', nome:'Service ricorrente', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.8 }
+        ,
+{
+        id: 'retrofit',
+        nome: 'Retrofit e upgrade impianti esistenti',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Modernizzazione impianti vecchi — mercato enorme, margine alto'
+}
+      ]
+      },
+      '4': {
+        cosa: 'Servizi Industry 4.0 — IoT, analytics, digital twin as-a-service',
+        tempo_mesi: 3,
+        moduli: [
+          { id:'ricavi', nome:'Servizi Industry 4.0', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:2000, impatto:0.8 }
+        ,
+{
+        id: 'ricambi',
+        nome: 'Vendita ricambi e consumabili',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'Ricambi proprietari — lock-in + margine alto'
+}
+      ]
+      },
+      '5': {
+        cosa: 'Revenue mix — progetti, service, retrofit, training, SaaS IoT',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'ricavi',
+            nome: 'Revenue mix',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:800, costo_setup:3000, impatto:1, note:'Revenue mix — progetti, service, retrofit, training, SaaS IoT' },
+              { id:'graduale', nome:'Implementazione graduale', costo_mensile:400, costo_setup:1500, impatto:0.65, note:'Avvio parziale, si espande' }
+            ]
+          }
+        ]
+      },
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo fiere industriali e referral', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'LinkedIn aziendale + case study impianti realizzati', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Marketing B2B', cosa:'Fiere industriali (SPS, MECSPE) + Google Ads + LinkedIn Ads', costo_mensile:800, costo_setup:2000, tempo_mesi:2 },
-      '4': { chi:'Content + eventi', cosa:'White paper tecnici + webinar Industry 4.0 + demo center', costo_mensile:1500, costo_setup:4000, tempo_mesi:3 },
-      '5': { chi:'Marketing manager', cosa:'Piano marketing industriale — thought leadership, fiere, partner', costo_mensile:3000, costo_setup:6000, tempo_mesi:4 },
+      '2': {
+        cosa: 'LinkedIn aziendale + case study impianti realizzati',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'marketing', nome:'LinkedIn aziendale + case study impianti realizzati', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'linkedin_tecnico',
+        nome: 'LinkedIn con contenuti tecnici Industry 4.0',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 0,
+        impatto: 0.15,
+        note: 'Post su automazione, casi studio, trend — reach su decision maker'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Fiere industriali (SPS, MECSPE) + Google Ads + LinkedIn Ads',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'marketing', nome:'Fiere industriali (SPS, MECSPE) + Google Ads + LinkedIn Ads', tipo:'flag', obbligatorio:true, costo_mensile:800, costo_setup:2000, impatto:0.8 }
+        ,
+{
+        id: 'fiere_sps',
+        nome: 'Stand a fiere automazione (SPS, MECSPE)',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 500,
+        impatto: 0.15,
+        note: 'Demo macchine, networking, lead qualificati'
+}
+      ]
+      },
+      '4': {
+        cosa: 'White paper tecnici + webinar Industry 4.0 + demo center',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'White paper tecnici + webinar Industry 4.0 + demo center',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1500, costo_setup:4000, impatto:1, note:'White paper tecnici + webinar Industry 4.0 + demo center' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:600, costo_setup:2000, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piano marketing industriale — thought leadership, fiere, partner',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'marketing',
+            nome: 'Piano marketing industriale',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:3000, costo_setup:6000, impatto:1, note:'Piano marketing industriale — thought leadership, fiere, partner' },
+              { id:'inhouse', nome:'Gestione interna', costo_mensile:1200, costo_setup:3000, impatto:0.6, note:'Formazione + tool, gestione interna' }
+            ]
+          }
+        ]
+      },
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito vetrina con competenze, settori e impianti realizzati', costo_mensile:80, costo_setup:800, tempo_mesi:1 },
-      '3': { chi:'Sito professionale', cosa:'Sito con case study, video impianti, richiesta preventivo', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
-      '4': { chi:'Sito + portale', cosa:'Portale clienti — documentazione, ticket, teleassistenza', costo_mensile:600, costo_setup:5000, tempo_mesi:3 },
-      '5': { chi:'Piattaforma industriale', cosa:'Piattaforma clienti — IoT dashboard, service, knowledge base', costo_mensile:1200, costo_setup:10000, tempo_mesi:4 },
+      '2': {
+        cosa: 'Sito vetrina con competenze, settori e impianti realizzati',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'sito', nome:'Sito vetrina con competenze, settori e impianti realizzati', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:800, impatto:0.8 }
+        ,
+{
+        id: 'video_impianti',
+        nome: 'Video impianti realizzati',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 300,
+        impatto: 0.15,
+        note: 'Video delle macchine in funzione — convincente per buyer tecnici'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Sito con case study, video impianti, richiesta preventivo',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Sito con case study, video impianti, richiesta preventivo',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:300, costo_setup:2500, impatto:1, note:'Sito con case study, video impianti, richiesta preventivo' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:120, costo_setup:1000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '4': {
+        cosa: 'Portale clienti — documentazione, ticket, teleassistenza',
+        tempo_mesi: 3,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Portale clienti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:600, costo_setup:5000, impatto:1, note:'Portale clienti — documentazione, ticket, teleassistenza' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:240, costo_setup:2000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Piattaforma clienti — IoT dashboard, service, knowledge base',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'sito',
+            nome: 'Piattaforma clienti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:1200, costo_setup:10000, impatto:1, note:'Piattaforma clienti — IoT dashboard, service, knowledge base' },
+              { id:'economica', nome:'Soluzione economica', costo_mensile:480, costo_setup:4000, impatto:0.65, note:'Template/base, meno personalizzazione' }
+            ]
+          }
+        ]
+      },
     },
     ecommerce: {
-      _label: 'Approvvigionamento componenti',
       '1': { chi:'Titolare', cosa:'Acquisto PLC e componenti da distributore abituale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Confronto distributori — Siemens, ABB, Schneider, Omron', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Accordi vendor', cosa:'Accordi quadro con vendor — sconti volume, priorità consegna', costo_mensile:0, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Buyer tecnico', cosa:'Buyer tecnico — ottimizzazione BOM, alternative, lead time', costo_mensile:2000, costo_setup:800, tempo_mesi:2 },
-      '5': { chi:'Resp. acquisti', cosa:'Resp. acquisti — vendor management, dual sourcing, stock strategy', costo_mensile:3500, costo_setup:2000, tempo_mesi:4 },
-    },
-  },
+      '2': {
+        cosa: 'Confronto distributori — Siemens, ABB, Schneider, Omron',
+        tempo_mesi: 1,
+        moduli: [
+          { id:'canale', nome:'Confronto distributori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
+        ,
+{
+        id: 'componentistica',
+        nome: 'Database fornitori componentistica',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 200,
+        impatto: 0.15,
+        note: 'PLC, sensori, motori — confronto prezzi e tempi per marca'
+}
+      ]
+      },
+      '3': {
+        cosa: 'Accordi quadro con vendor — sconti volume, priorità consegna',
+        tempo_mesi: 2,
+        moduli: [
+          { id:'canale', nome:'Accordi quadro con vendor', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.8 }
+        ,
+{
+        id: 'partnership_plc',
+        nome: 'Partnership con produttori PLC (Siemens, Allen-Bradley)',
+        tipo: 'flag',
+        obbligatorio: false,
+        costo_mensile: 0,
+        costo_setup: 300,
+        impatto: 0.15,
+        note: 'Sconti, formazione, supporto tecnico, co-marketing'
+}
+      ]
+      },
+      '4': {
+        cosa: 'Buyer tecnico — ottimizzazione BOM, alternative, lead time',
+        tempo_mesi: 2,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Buyer tecnico',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:2000, costo_setup:800, impatto:1, note:'Buyer tecnico — ottimizzazione BOM, alternative, lead time' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1000, costo_setup:320, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      '5': {
+        cosa: 'Resp. acquisti — vendor management, dual sourcing, stock strategy',
+        tempo_mesi: 4,
+        moduli: [
+          {
+            id: 'canale',
+            nome: 'Resp. acquisti',
+            tipo: 'scelta',
+            obbligatorio: true,
+            varianti: [
+              { id:'completo', nome:'Implementazione completa', costo_mensile:3500, costo_setup:2000, impatto:1, note:'Resp. acquisti — vendor management, dual sourcing, stock strategy' },
+              { id:'graduale', nome:'Avvio graduale', costo_mensile:1750, costo_setup:800, impatto:0.65, note:'Versione base, si espande' }
+            ]
+          }
+        ]
+      },
+      _label: 'Approvvigionamento componenti',
+    }
+  }
 
 };
 
