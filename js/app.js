@@ -4777,7 +4777,7 @@ function renderCapitoliTabs(p) {
   // Tab capitoli chiusi
   capitoli.forEach(function(cap, idx) {
     var label = p.nome + ' \u00B7 ' + (cap.periodo || 'Capitolo ' + (idx + 1));
-    html += '<div onclick="apriCapitolo(' + idx + ')" style="padding:4px 12px;font-size:10px;border-radius:8px;cursor:pointer;' +
+    html += '<div onclick="apriCapitoliOverlay(' + idx + ')" style="padding:4px 12px;font-size:10px;border-radius:8px;cursor:pointer;' +
       'background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.06);color:var(--gray);font-weight:500;white-space:nowrap">' +
       label + '</div>';
   });
@@ -4792,7 +4792,7 @@ function renderCapitoliTabs(p) {
     } else {
       startDate = 'Attuale';
     }
-    html += '<div style="padding:4px 12px;font-size:10px;border-radius:8px;' +
+    html += '<div onclick="apriCapitoliOverlay(-1)" style="padding:4px 12px;font-size:10px;border-radius:8px;cursor:pointer;' +
       'background:rgba(40,120,70,0.1);border:1px solid rgba(40,120,70,0.2);color:rgba(40,120,70,0.8);font-weight:600;white-space:nowrap">' +
       p.nome + ' \u00B7 ' + startDate + '</div>';
   }
@@ -4903,6 +4903,185 @@ async function nuovoCapitolo() {
   renderProspectDetail(currentId);
 }
 
+function chiudiCapitoliOverlay() {
+  document.getElementById('capitoli-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function apriCapitoliOverlay(idxIniziale) {
+  var p = prospects.find(function(x) { return x.id === currentId; });
+  if (!p) return;
+  var capitoli = p.capitoli || [];
+  if (capitoli.length === 0 && !(p.dims && Object.keys(p.dims).length > 0)) {
+    showToast('Nessun capitolo disponibile', 'error');
+    return;
+  }
+
+  document.getElementById('capitoli-overlay-title').textContent = p.nome + ' \u2014 Capitoli';
+
+  // Render tabs
+  var tabsHtml = '';
+  capitoli.forEach(function(cap, idx) {
+    var isActive = idx === (idxIniziale !== undefined ? idxIniziale : 0);
+    tabsHtml += '<div onclick="switchCapitolo(' + idx + ')" style="padding:5px 12px;font-size:11px;border-radius:8px;cursor:pointer;white-space:nowrap;' +
+      (isActive ? 'background:rgba(70,100,200,0.15);border:1px solid rgba(70,100,200,0.3);color:rgba(70,100,200,0.9);font-weight:600' : 'background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.06);color:var(--gray);font-weight:500') +
+      '">' + (cap.periodo || 'Cap. ' + (idx+1)) + '</div>';
+  });
+
+  // Tab "Attuale"
+  var hasDims = p.dims && Object.keys(p.dims).length > 0;
+  if (hasDims) {
+    var isAttuale = idxIniziale === -1 || (idxIniziale === undefined && capitoli.length === 0);
+    tabsHtml += '<div onclick="switchCapitolo(-1)" style="padding:5px 12px;font-size:11px;border-radius:8px;cursor:pointer;white-space:nowrap;' +
+      (isAttuale ? 'background:rgba(40,120,70,0.15);border:1px solid rgba(40,120,70,0.3);color:rgba(40,120,70,0.9);font-weight:600' : 'background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.06);color:var(--gray);font-weight:500') +
+      '">Attuale</div>';
+  }
+
+  document.getElementById('capitoli-overlay-tabs').innerHTML = tabsHtml;
+
+  // Render contenuto
+  var idx = idxIniziale !== undefined ? idxIniziale : (capitoli.length > 0 ? 0 : -1);
+  _renderCapitoloContent(p, idx);
+
+  document.getElementById('capitoli-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function switchCapitolo(idx) {
+  var p = prospects.find(function(x) { return x.id === currentId; });
+  if (!p) return;
+
+  // Aggiorna tabs attive
+  var capitoli = p.capitoli || [];
+  var tabs = document.getElementById('capitoli-overlay-tabs');
+  if (tabs) {
+    var children = tabs.children;
+    for (var i = 0; i < children.length; i++) {
+      var isThis = (i < capitoli.length && i === idx) || (i === children.length - 1 && idx === -1);
+      if (isThis) {
+        children[i].style.background = idx === -1 ? 'rgba(40,120,70,0.15)' : 'rgba(70,100,200,0.15)';
+        children[i].style.borderColor = idx === -1 ? 'rgba(40,120,70,0.3)' : 'rgba(70,100,200,0.3)';
+        children[i].style.color = idx === -1 ? 'rgba(40,120,70,0.9)' : 'rgba(70,100,200,0.9)';
+        children[i].style.fontWeight = '600';
+      } else {
+        children[i].style.background = 'rgba(0,0,0,0.04)';
+        children[i].style.borderColor = 'rgba(0,0,0,0.06)';
+        children[i].style.color = 'var(--gray)';
+        children[i].style.fontWeight = '500';
+      }
+    }
+  }
+
+  _renderCapitoloContent(p, idx);
+}
+
+function _renderCapitoloContent(p, idx) {
+  var body = document.getElementById('capitoli-overlay-body');
+  if (!body) return;
+  var fmtF = function(v) { return v >= 1000000 ? (v/1000000).toFixed(1)+'M' : Math.round(v/1000)+'k'; };
+  var DIMS_IDS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+  var settore = p.settore || '';
+
+  // Capitolo attuale
+  if (idx === -1) {
+    var targets = p.targets || {};
+    var dims = p.dims || {};
+    var hasTargets = DIMS_IDS.some(function(id){ return (targets[id]||0) > 0; });
+    var snap = p.proiezione_snapshot;
+    var fat = p.fatturato_anno_1 || 0;
+    var sc = calcScore(p);
+
+    var dimsHtml = DIMS_IDS.map(function(id) {
+      var cur = dims[id] || 0;
+      var tgt = targets[id] || 0;
+      var label = typeof getDimLabel === 'function' ? getDimLabel(settore, id) : id;
+      var desc = typeof _getStepDesc === 'function' ? _getStepDesc(settore, id, Math.max(cur, 1)) : '';
+      return '<div style="padding:8px 0;border-bottom:1px solid var(--border)">' +
+        '<div style="display:flex;align-items:center;justify-content:space-between">' +
+          '<div style="font-size:12px;font-weight:600;color:var(--text)">' + label + '</div>' +
+          '<div style="font-size:12px;font-weight:600;color:var(--text)">' + cur + '/5' + (tgt > cur ? ' \u2192 target ' + tgt : '') + '</div>' +
+        '</div>' +
+        (desc && desc !== '\u2014' ? '<div style="font-size:10px;color:var(--gray);margin-top:2px">' + desc + '</div>' : '') +
+      '</div>';
+    }).join('');
+
+    body.innerHTML = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">' +
+      '<div style="background:rgba(0,0,0,0.03);border-radius:10px;padding:12px;text-align:center"><div style="font-size:9px;color:var(--gray);text-transform:uppercase;margin-bottom:4px">Fatturato</div><div style="font-size:18px;font-weight:700;color:var(--text)">' + (fat ? fmtF(fat) + '\u20AC' : '\u2014') + '</div></div>' +
+      '<div style="background:rgba(0,0,0,0.03);border-radius:10px;padding:12px;text-align:center"><div style="font-size:9px;color:var(--gray);text-transform:uppercase;margin-bottom:4px">Score</div><div style="font-size:18px;font-weight:700;color:var(--text)">' + sc + '/100</div></div>' +
+    '</div>' +
+    '<div style="font-size:10px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Dimensioni</div>' +
+    dimsHtml;
+    return;
+  }
+
+  // Capitolo archiviato
+  var capitoli = p.capitoli || [];
+  if (!capitoli[idx]) { body.innerHTML = ''; return; }
+  var cap = capitoli[idx];
+
+  var durataStr = cap.durata_mesi ? cap.durata_mesi + ' mesi' : (cap.durata_giorni ? cap.durata_giorni + ' giorni' : '\u2014');
+  var fatIniziale = cap.fatturato_iniziale || cap.fatturato_anno_1;
+  var fatFinale = cap.fatturato_finale || cap.fatturato_anno_1;
+  var deltaCol = cap.delta_pct > 0 ? 'rgb(25,100,60)' : cap.delta_pct < 0 ? 'rgba(170,50,40,0.8)' : 'var(--text)';
+
+  var dimsHtml = (function() {
+    var sc = cap.step_completamenti || {};
+    return DIMS_IDS.map(function(id) {
+      var d = cap.dims[id] || 0;
+      var t = cap.targets[id] || 0;
+      var di = cap.dims_iniziali ? (cap.dims_iniziali[id] || 0) : 0;
+      var raggiunto = d >= t && t > 0;
+      var label = typeof getDimLabel === 'function' ? getDimLabel(settore, id) : id;
+      var dataComp = '';
+      if (sc[id]) {
+        var ultime = Object.values(sc[id]).sort();
+        if (ultime.length > 0) dataComp = new Date(ultime[ultime.length-1]).toLocaleDateString('it-IT', {day:'2-digit', month:'short', year:'numeric'});
+      }
+      var desc = typeof _getStepDesc === 'function' ? _getStepDesc(settore, id, Math.max(d, 1)) : '';
+      return '<div style="padding:8px 0;border-bottom:1px solid var(--border)">' +
+        '<div style="display:flex;align-items:center;justify-content:space-between">' +
+          '<div style="font-size:12px;font-weight:600;color:var(--text)">' + label + '</div>' +
+          '<div style="display:flex;align-items:center;gap:8px">' +
+            (dataComp ? '<span style="font-size:10px;color:var(--gray)">' + dataComp + '</span>' : '') +
+            '<span style="font-size:12px;font-weight:600;color:' + (raggiunto ? 'rgba(40,120,70,0.8)' : 'var(--text)') + '">' +
+              di + ' \u2192 ' + d + '/5' + (raggiunto ? ' \u2713' : '') +
+            '</span>' +
+          '</div>' +
+        '</div>' +
+        (desc && desc !== '\u2014' ? '<div style="font-size:10px;color:var(--gray);margin-top:2px">' + desc + '</div>' : '') +
+      '</div>';
+    }).join('');
+  })();
+
+  var historyHtml = (cap.score_history || []).reverse().map(function(s) {
+    return '<div style="display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--gray);padding:3px 0;border-bottom:1px solid var(--border)">' +
+      '<span>' + s.evento + '</span>' +
+      '<span>' + new Date(s.data).toLocaleDateString('it-IT', {day:'2-digit', month:'short', year:'numeric'}) + ' \u00B7 Score ' + s.score + '</span>' +
+    '</div>';
+  }).join('');
+
+  body.innerHTML = '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px">' +
+    '<div style="background:rgba(0,0,0,0.03);border-radius:10px;padding:12px;text-align:center">' +
+      '<div style="font-size:9px;color:var(--gray);text-transform:uppercase;margin-bottom:4px">Durata</div>' +
+      '<div style="font-size:16px;font-weight:700;color:var(--text)">' + durataStr + '</div>' +
+      '<div style="font-size:10px;color:var(--gray)">' + (cap.periodo || '') + '</div>' +
+    '</div>' +
+    '<div style="background:rgba(0,0,0,0.03);border-radius:10px;padding:12px;text-align:center">' +
+      '<div style="font-size:9px;color:var(--gray);text-transform:uppercase;margin-bottom:4px">Fatturato</div>' +
+      '<div style="font-size:14px;font-weight:700;color:var(--text)">' + (fatIniziale ? fmtF(fatIniziale) : '\u2014') + ' \u2192 ' + (fatFinale ? fmtF(fatFinale) : '\u2014') + '\u20AC</div>' +
+      (cap.delta_pct !== null && cap.delta_pct !== undefined ? '<div style="font-size:11px;font-weight:600;color:' + deltaCol + '">' + (cap.delta_pct >= 0 ? '+' : '') + cap.delta_pct + '%</div>' : '') +
+    '</div>' +
+    '<div style="background:rgba(0,0,0,0.03);border-radius:10px;padding:12px;text-align:center">' +
+      '<div style="font-size:9px;color:var(--gray);text-transform:uppercase;margin-bottom:4px">Score finale</div>' +
+      '<div style="font-size:16px;font-weight:700;color:var(--text)">' + (cap.score_finale || '\u2014') + '/100</div>' +
+    '</div>' +
+  '</div>' +
+  '<div style="font-size:10px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Dimensioni</div>' +
+  dimsHtml +
+  (historyHtml ? '<div style="margin-top:14px;font-size:10px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Timeline attivit\u00E0</div>' + historyHtml : '');
+}
+
+// Vecchio popup semplificato (manteniamo per compatibilità)
 function apriCapitolo(idx) {
   var p = prospects.find(function(x) { return x.id === currentId; });
   if (!p || !p.capitoli || !p.capitoli[idx]) return;
