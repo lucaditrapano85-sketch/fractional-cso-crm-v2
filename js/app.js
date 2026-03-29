@@ -6053,8 +6053,24 @@ function _getStepDesc(settore, dimId, stepNum) {
 
 function renderTargetEditor(p) {
   const container = document.getElementById('target-editor-content');
-  if (container) container.innerHTML = '';
+  if (!container) return;
+  container.innerHTML = '';
+
   const targets = p.targets || {};
+  const DIMS_CHECK = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+  const hasTargets = DIMS_CHECK.some(function(id){ return (targets[id]||0) > 0; });
+  const allReached = hasTargets && DIMS_CHECK.every(function(id){ return !targets[id] || (p.dims?.[id]||0) >= targets[id]; });
+
+  if (allReached) {
+    container.innerHTML = '<div style="text-align:center;padding:40px 16px">' +
+      '<div style="font-size:28px;margin-bottom:10px">\u2705</div>' +
+      '<div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px">Obiettivi raggiunti!</div>' +
+      '<div style="font-size:12px;color:var(--gray);margin-bottom:20px;line-height:1.5">Tutti gli step target sono stati completati.<br>Apri un nuovo capitolo per continuare la crescita.</div>' +
+      '<div onclick="nuovoCapitolo()" style="display:inline-block;padding:10px 24px;background:rgba(70,100,200,0.1);border:1px solid rgba(70,100,200,0.2);color:rgba(70,100,200,0.8);border-radius:10px;font-size:13px;font-weight:600;cursor:pointer">+ Nuovo capitolo</div>' +
+    '</div>';
+    return;
+  }
+
   const scadenze = p.target_scadenze || {};
   const settore = p.settore || '';
   const azioniDone = p.azioni_completate || {};
