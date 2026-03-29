@@ -81,20 +81,24 @@
     <!-- PROSPECT DETAIL -->
     <div class="view" id="view-prospect">
       <div class="det-header">
-        <div style="flex:1;min-width:0">
+        <div style="width:100%">
           <div class="det-company-row">
             <h1 class="det-company" id="det-company-name"></h1>
-            <div id="det-status-badge" class="det-status-badge"></div>
           </div>
           <div class="det-info-labels" id="det-info-labels"></div>
           <div id="capitoli-tabs" style="display:flex;align-items:center;gap:4px;margin-top:8px;flex-wrap:wrap"></div>
-        </div>
-        <div class="btn-group" style="flex-shrink:0;margin-left:20px">
-          <button class="btn btn-secondary" onclick="openAddCall()">+ Call</button>
-          <button class="btn btn-secondary" onclick="openAddEvento()">+ Evento</button>
-          <button class="btn btn-primary" onclick="apriSchedaFinanziaria()">Scheda Finanziaria</button>
-          <button class="btn btn-primary" onclick="showReport()">Genera Report</button>
-          <button class="btn btn-danger" onclick="deleteProspect()">Elimina</button>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px solid rgba(0,0,0,0.06)">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div id="det-status-badge" class="det-status-badge"></div>
+            </div>
+            <div class="btn-group" style="display:flex;gap:6px">
+              <button class="btn btn-secondary" onclick="openAddCall()">+ Call</button>
+              <button class="btn btn-secondary" onclick="openAddEvento()">+ Evento</button>
+              <button class="btn btn-primary" onclick="apriSchedaFinanziaria()">Scheda Finanziaria</button>
+              <button class="btn btn-primary" onclick="showReport()">Genera Report</button>
+              <button class="btn btn-danger" onclick="deleteProspect()">Elimina</button>
+            </div>
+          </div>
         </div>
       </div>
       <!-- SCHEDA FINANZIARIA (nascosta, contenuto nell'overlay) -->
