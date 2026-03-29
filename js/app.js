@@ -168,19 +168,28 @@ async function saveSessione() {
   var newDims = Object.assign({}, p.dims || {});
   var upgradeEseguiti = {};
   var hasUpgrade = false;
+  var stepCompletamenti = p.step_completamenti || {};
   DIMS_S.forEach(function(d) {
     if (document.getElementById('sess-chk-'+d)?.checked) {
       var nuovoLivello = parseInt(document.getElementById('sess-sel-'+d)?.value);
       if (nuovoLivello && nuovoLivello > (p.dims?.[d] || 1)) {
+        var vecchio = p.dims?.[d] || 1;
         newDims[d] = nuovoLivello;
-        upgradeEseguiti[d] = { da: p.dims?.[d] || 1, a: nuovoLivello };
+        upgradeEseguiti[d] = { da: vecchio, a: nuovoLivello };
         hasUpgrade = true;
+        // Registra data completamento per ogni step intermedio
+        if (!stepCompletamenti[d]) stepCompletamenti[d] = {};
+        for (var s = vecchio + 1; s <= nuovoLivello; s++) {
+          stepCompletamenti[d][String(s)] = data;
+        }
       }
     }
   });
   if (hasUpgrade) {
     p.dims = newDims;
+    p.step_completamenti = stepCompletamenti;
     await sb.from('prospects').update({ dims: newDims }).eq('id', p.id);
+    try { await sb.from('prospects').update({ step_completamenti: stepCompletamenti }).eq('id', p.id); } catch(e) {}
   }
   var scoreVal = calcScore({ dims: newDims });
   var snapshot = {
@@ -4827,14 +4836,43 @@ async function nuovoCapitolo() {
   }
 
   // Archivia capitolo corrente
+  // Calcola data fine reale dall'ultimo step completato
+  var stepComp = p.step_completamenti || {};
+  var ultimaData = oggi;
+  Object.values(stepComp).forEach(function(dim) {
+    Object.values(dim).forEach(function(d) {
+      if (d && d > ultimaData) ultimaData = d;
+    });
+  });
+
+  // Calcola durata
+  var dataInizioDate = new Date(dataInizio || oggi);
+  var dataFineDate = new Date(ultimaData);
+  var durataGiorni = Math.round((dataFineDate - dataInizioDate) / 86400000);
+  var durataMesi = Math.round(durataGiorni / 30);
+
+  // Fatturato iniziale (dallo snapshot) e finale (attuale)
+  var snap = p.proiezione_snapshot;
+  var fatturatoIniziale = snap ? snap.fatturato_base : p.fatturato_anno_1;
+  var fatturatoFinale = p.fatturato_anno_1;
+  var deltaFatturato = fatturatoFinale && fatturatoIniziale ? fatturatoFinale - fatturatoIniziale : null;
+  var deltaPct = fatturatoIniziale > 0 && deltaFatturato !== null ? Math.round(deltaFatturato / fatturatoIniziale * 100) : null;
+
   var capitoloChiuso = {
     periodo: periodoLabel,
     data_inizio: dataInizio || oggi,
-    data_fine: oggi,
+    data_fine: ultimaData,
+    durata_giorni: durataGiorni,
+    durata_mesi: durataMesi,
+    dims_iniziali: snap ? snap.dims_partenza : {},
     dims: {...(p.dims || {})},
     targets: {...(p.targets || {})},
+    step_completamenti: {...stepComp},
     score_history: [...(p.score_history || [])],
-    fatturato_anno_1: p.fatturato_anno_1,
+    fatturato_iniziale: fatturatoIniziale,
+    fatturato_finale: fatturatoFinale,
+    delta_fatturato: deltaFatturato,
+    delta_pct: deltaPct,
     proiezione_snapshot: p.proiezione_snapshot || null,
     fatturato_checkpoints: p.fatturato_checkpoints || {},
     score_finale: calcScore(p),
@@ -4850,6 +4888,7 @@ async function nuovoCapitolo() {
     score_history: [],
     proiezione_snapshot: null,
     fatturato_checkpoints: {},
+    step_completamenti: {},
   };
 
   try {
@@ -4892,14 +4931,57 @@ function apriCapitolo(idx) {
       ' \u00B7 ' + s.evento + ' \u00B7 Score ' + s.score + '/100</div>';
   }).join('');
 
-  var html = '<div style="margin-bottom:12px">' +
-    '<div style="font-size:11px;color:var(--gray)">Periodo: <strong style="color:var(--text)">' + cap.periodo + '</strong></div>' +
-    '<div style="font-size:11px;color:var(--gray)">Fatturato: <strong style="color:var(--text)">' + (cap.fatturato_anno_1 ? fmtF(cap.fatturato_anno_1) + '\u20AC' : '\u2014') + '</strong></div>' +
-    '<div style="font-size:11px;color:var(--gray)">Score finale: <strong style="color:var(--text)">' + (cap.score_finale || '\u2014') + '/100</strong></div>' +
+  // Riepilogo periodo
+  var durataStr = cap.durata_mesi ? cap.durata_mesi + ' mesi' : (cap.durata_giorni ? cap.durata_giorni + ' giorni' : '\u2014');
+  var fatIniziale = cap.fatturato_iniziale || cap.fatturato_anno_1;
+  var fatFinale = cap.fatturato_finale || cap.fatturato_anno_1;
+  var deltaCol = cap.delta_pct > 0 ? 'rgb(25,100,60)' : cap.delta_pct < 0 ? 'rgba(170,50,40,0.8)' : 'var(--text)';
+
+  var html = '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px">' +
+    '<div style="background:rgba(0,0,0,0.03);border-radius:10px;padding:10px;text-align:center">' +
+      '<div style="font-size:9px;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Durata</div>' +
+      '<div style="font-size:16px;font-weight:700;color:var(--text)">' + durataStr + '</div>' +
+    '</div>' +
+    '<div style="background:rgba(0,0,0,0.03);border-radius:10px;padding:10px;text-align:center">' +
+      '<div style="font-size:9px;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Fatturato</div>' +
+      '<div style="font-size:14px;font-weight:700;color:var(--text)">' + (fatIniziale ? fmtF(fatIniziale) : '\u2014') + ' \u2192 ' + (fatFinale ? fmtF(fatFinale) : '\u2014') + '\u20AC</div>' +
+      (cap.delta_pct !== null ? '<div style="font-size:11px;font-weight:600;color:' + deltaCol + '">' + (cap.delta_pct >= 0 ? '+' : '') + cap.delta_pct + '%</div>' : '') +
+    '</div>' +
+    '<div style="background:rgba(0,0,0,0.03);border-radius:10px;padding:10px;text-align:center">' +
+      '<div style="font-size:9px;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Score finale</div>' +
+      '<div style="font-size:16px;font-weight:700;color:var(--text)">' + (cap.score_finale || '\u2014') + '/100</div>' +
+    '</div>' +
   '</div>' +
-  '<div style="font-size:11px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Dimensioni</div>' +
-  dimsHtml +
-  (historyHtml ? '<div style="margin-top:12px;font-size:11px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Ultime attività</div>' + historyHtml : '');
+
+  // Dimensioni con date completamento
+  '<div style="font-size:10px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Dimensioni</div>' +
+  (function() {
+    var sc = cap.step_completamenti || {};
+    return DIMS_IDS.map(function(id) {
+      var d = cap.dims[id] || 0;
+      var t = cap.targets[id] || 0;
+      var di = cap.dims_iniziali ? (cap.dims_iniziali[id] || 0) : 0;
+      var raggiunto = d >= t && t > 0;
+      var label = typeof getDimLabel === 'function' ? getDimLabel(settore, id) : id;
+      var dataComp = '';
+      if (sc[id]) {
+        var ultime = Object.values(sc[id]).sort();
+        if (ultime.length > 0) dataComp = new Date(ultime[ultime.length-1]).toLocaleDateString('it-IT', {day:'2-digit', month:'short', year:'numeric'});
+      }
+      return '<div style="display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border)">' +
+        '<div style="font-size:12px;color:var(--text)">' + label + '</div>' +
+        '<div style="display:flex;align-items:center;gap:8px">' +
+          (dataComp ? '<span style="font-size:10px;color:var(--gray)">' + dataComp + '</span>' : '') +
+          '<span style="font-size:12px;font-weight:600;color:' + (raggiunto ? 'rgba(40,120,70,0.8)' : 'var(--text)') + '">' +
+            di + ' \u2192 ' + d + '/5' + (raggiunto ? ' \u2713' : '') +
+          '</span>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  })() +
+
+  // Timeline attività
+  (historyHtml ? '<div style="margin-top:14px;font-size:10px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Attività</div>' + historyHtml : '');
 
   document.getElementById('detail-overlay-title').textContent = p.nome + ' \u2014 ' + cap.periodo;
   document.getElementById('detail-overlay-subtitle').textContent = 'Capitolo archiviato (sola lettura)';
