@@ -18,6 +18,7 @@
   --border: rgba(0,0,0,0.06);
   --border2: rgba(0,0,0,0.1);
   --red: rgba(180,60,60,0.75);
+  --green: rgba(40,130,80,0.75);
 }
 * { box-sizing:border-box; margin:0; padding:0 }
 body {
@@ -36,7 +37,7 @@ body {
   border-radius:16px;
   padding:40px 36px;
   width:100%;
-  max-width:380px;
+  max-width:400px;
   backdrop-filter:blur(12px);
   box-shadow:0 4px 24px rgba(0,0,0,0.06);
 }
@@ -101,19 +102,39 @@ body {
 }
 .login-btn:hover { opacity:0.85 }
 .login-btn:disabled { opacity:0.5; cursor:not-allowed }
-.login-error {
-  color:var(--red);
+.login-msg {
   font-size:12px;
   text-align:center;
   min-height:18px;
   margin-top:10px;
 }
+.login-msg.error { color:var(--red) }
+.login-msg.success { color:var(--green) }
+.login-toggle {
+  text-align:center;
+  margin-top:18px;
+  font-size:12px;
+  color:var(--gray2);
+}
+.login-toggle a {
+  color:var(--gold);
+  text-decoration:none;
+  font-weight:600;
+  cursor:pointer;
+}
+.login-toggle a:hover { text-decoration:underline }
 .login-footer {
   text-align:center;
   margin-top:20px;
   font-size:10px;
   color:var(--gray2);
 }
+.form-row {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+#register-form { display:none }
 </style>
 </head>
 <body>
@@ -123,6 +144,8 @@ body {
     <h1>Fractional CSO</h1>
     <p>CRM & Market Intelligence</p>
   </div>
+
+  <!-- LOGIN FORM -->
   <form id="login-form">
     <div class="login-field">
       <label>Email</label>
@@ -133,8 +156,43 @@ body {
       <input type="password" id="login-password" placeholder="Password" required autocomplete="current-password">
     </div>
     <button type="submit" class="login-btn" id="login-btn">Accedi</button>
-    <div class="login-error" id="login-error"></div>
+    <div class="login-msg" id="login-msg"></div>
+    <div class="login-toggle">Non hai un account? <a onclick="showRegister()">Registrati</a></div>
   </form>
+
+  <!-- REGISTER FORM -->
+  <form id="register-form">
+    <div class="form-row">
+      <div class="login-field">
+        <label>Nome</label>
+        <input type="text" id="reg-nome" placeholder="Mario" required>
+      </div>
+      <div class="login-field">
+        <label>Cognome</label>
+        <input type="text" id="reg-cognome" placeholder="Rossi" required>
+      </div>
+    </div>
+    <div class="login-field">
+      <label>Email</label>
+      <input type="email" id="reg-email" placeholder="nome@azienda.it" required autocomplete="email">
+    </div>
+    <div class="login-field">
+      <label>Telefono</label>
+      <input type="tel" id="reg-telefono" placeholder="+39 333 1234567">
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <input type="password" id="reg-password" placeholder="Minimo 8 caratteri" required autocomplete="new-password" minlength="8">
+    </div>
+    <div class="login-field">
+      <label>Conferma password</label>
+      <input type="password" id="reg-password2" placeholder="Ripeti la password" required autocomplete="new-password" minlength="8">
+    </div>
+    <button type="submit" class="login-btn" id="reg-btn">Crea account</button>
+    <div class="login-msg" id="reg-msg"></div>
+    <div class="login-toggle">Hai gia un account? <a onclick="showLogin()">Accedi</a></div>
+  </form>
+
   <div class="login-footer">Powered by Supabase</div>
 </div>
 
@@ -151,25 +209,104 @@ const sb = createClient(
   if (session) window.location.href = '/index.html';
 })();
 
+// Toggle login/register
+function showRegister() {
+  document.getElementById('login-form').style.display = 'none';
+  document.getElementById('register-form').style.display = 'block';
+  document.getElementById('reg-msg').textContent = '';
+  document.getElementById('reg-msg').className = 'login-msg';
+}
+function showLogin() {
+  document.getElementById('register-form').style.display = 'none';
+  document.getElementById('login-form').style.display = 'block';
+  document.getElementById('login-msg').textContent = '';
+  document.getElementById('login-msg').className = 'login-msg';
+}
+
+// LOGIN
 document.getElementById('login-form').addEventListener('submit', async function(e) {
   e.preventDefault();
   const btn = document.getElementById('login-btn');
-  const err = document.getElementById('login-error');
+  const msg = document.getElementById('login-msg');
   const email = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password').value;
 
   btn.disabled = true;
   btn.textContent = 'Accesso in corso...';
-  err.textContent = '';
+  msg.textContent = '';
+  msg.className = 'login-msg';
 
   const { error } = await sb.auth.signInWithPassword({ email, password });
 
   if (error) {
-    err.textContent = 'Email o password non validi';
+    msg.textContent = 'Email o password non validi';
+    msg.className = 'login-msg error';
     btn.disabled = false;
     btn.textContent = 'Accedi';
   } else {
     window.location.href = '/index.html';
+  }
+});
+
+// REGISTRAZIONE
+document.getElementById('register-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('reg-btn');
+  const msg = document.getElementById('reg-msg');
+  const nome = document.getElementById('reg-nome').value.trim();
+  const cognome = document.getElementById('reg-cognome').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const telefono = document.getElementById('reg-telefono').value.trim();
+  const password = document.getElementById('reg-password').value;
+  const password2 = document.getElementById('reg-password2').value;
+
+  msg.textContent = '';
+  msg.className = 'login-msg';
+
+  if (!nome || !cognome) {
+    msg.textContent = 'Nome e cognome sono obbligatori';
+    msg.className = 'login-msg error';
+    return;
+  }
+  if (password !== password2) {
+    msg.textContent = 'Le password non coincidono';
+    msg.className = 'login-msg error';
+    return;
+  }
+  if (password.length < 8) {
+    msg.textContent = 'La password deve avere almeno 8 caratteri';
+    msg.className = 'login-msg error';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Registrazione in corso...';
+
+  const { data, error } = await sb.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        nome: nome,
+        cognome: cognome,
+        telefono: telefono,
+        nome_completo: nome + ' ' + cognome
+      }
+    }
+  });
+
+  if (error) {
+    msg.textContent = error.message === 'User already registered'
+      ? 'Questa email e gia registrata'
+      : 'Errore: ' + error.message;
+    msg.className = 'login-msg error';
+    btn.disabled = false;
+    btn.textContent = 'Crea account';
+  } else {
+    // Supabase signUp con autoconfirm logga automaticamente
+    msg.textContent = 'Account creato! Accesso in corso...';
+    msg.className = 'login-msg success';
+    setTimeout(function() { window.location.href = '/index.html'; }, 1000);
   }
 });
 </script>
