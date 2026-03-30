@@ -55,20 +55,20 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '3': { cosa:'CRM automotive con lead dai marketplace integrati', tempo_mesi:1, moduli:[
         { id:'crm', nome:'CRM automotive', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'auto', nome:'CRM specifico auto (eMotor/GestionaleAuto)', costo_mensile:200, costo_setup:800, impatto:1.0, note:'Lead da AutoScout/Subito integrati, stock, trattative, appuntamenti' },
+          { id:'auto', nome:'CRM specifico auto', costo_mensile:200, costo_setup:800, impatto:1.0, note:'Lead da AutoScout/Subito integrati, stock, trattative, appuntamenti' },
           { id:'generico', nome:'CRM generico (Pipedrive/HubSpot)', costo_mensile:50, costo_setup:300, impatto:0.6, note:'Pipeline lead, meno specifico per automotive' },
         ]},
       ]},
       '4': { cosa:'CRM integrato con sito, marketplace, WhatsApp e finanziarie', tempo_mesi:2, moduli:[
         { id:'crm_avanzato', nome:'CRM automotive avanzato', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'dms', nome:'DMS con CRM integrato (eMotor Pro/AutoManager)', costo_mensile:500, costo_setup:1500, impatto:1.0, note:'Lead multicanale, stock sync, WhatsApp Business, proposta finanziamento' },
+          { id:'dms', nome:'DMS con CRM integrato', costo_mensile:500, costo_setup:1500, impatto:1.0, note:'Lead multicanale, stock sync, WhatsApp Business, proposta finanziamento' },
           { id:'crm_plus', nome:'CRM + integrazioni via API', costo_mensile:300, costo_setup:800, impatto:0.65, note:'CRM + plugin marketplace + WhatsApp, meno integrato' },
         ]},
       ]},
       '5': { cosa:'DMS completo integrato con contabilita, stock, CRM e BI', tempo_mesi:3, moduli:[
         { id:'dms', nome:'DMS dealer completo', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'DMS enterprise (eMotor/Infinity/CDKR)', costo_mensile:1200, costo_setup:3000, impatto:1.0, note:'CRM, stock, pratiche, contabilita, finanziarie, BI — tutto in uno' },
-          { id:'mid', nome:'DMS mid-market', costo_mensile:600, costo_setup:1500, impatto:0.6, note:'Core features, meno BI e automazioni' },
+          { id:'enterprise', nome:'DMS premium (gestione completa)', costo_mensile:1200, costo_setup:3000, impatto:1.0, note:'CRM, stock, pratiche, contabilita, finanziarie, BI — tutto in uno' },
+          { id:'mid', nome:'DMS standard', costo_mensile:600, costo_setup:1500, impatto:0.6, note:'Core features, meno BI e automazioni' },
         ]},
       ]},
     },
@@ -113,7 +113,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '4': { cosa:'Gestionale pratiche auto, finanziamenti e garanzie', tempo_mesi:2, moduli:[
         { id:'gestionale', nome:'Gestionale pratiche auto', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'dms', nome:'DMS pratiche (eMotor/GestAuto)', costo_mensile:300, costo_setup:1000, impatto:1.0, note:'PRA, passaggi, finanziarie, garanzie, bolli — tutto automatizzato' },
+          { id:'dms', nome:'DMS pratiche auto', costo_mensile:300, costo_setup:1000, impatto:1.0, note:'PRA, passaggi, finanziarie, garanzie, bolli — tutto automatizzato' },
           { id:'manuale', nome:'Gestione manuale + agenzia pratiche', costo_mensile:100, costo_setup:200, impatto:0.5, note:'Agenzia pratiche esterna + gestione interna base' },
         ]},
       ]},
@@ -181,7 +181,7 @@ const STEP_DETAIL_BY_SETTORE = {
       '2': { cosa:'Sito base con stock aggiornato, foto e contatti', tempo_mesi:1, moduli:[
         { id:'sito', nome:'Sito dealer usato', tipo:'scelta', obbligatorio:true, varianti:[
           { id:'custom', nome:'Sito custom WordPress + plugin stock', costo_mensile:50, costo_setup:1500, impatto:1.0, note:'Stock auto con filtri, foto gallery, scheda veicolo, form contatto' },
-          { id:'template', nome:'Sito da piattaforma (AutoManager/DealerSocket)', costo_mensile:80, costo_setup:500, impatto:0.6, note:'Template dealer, inserimento auto veloce' },
+          { id:'template', nome:'Sito da piattaforma dealer', costo_mensile:80, costo_setup:500, impatto:0.6, note:'Template dealer, inserimento auto veloce' },
         ]},
       ]},
       '3': { cosa:'Stock real-time + form contatto + valutazione permuta online', tempo_mesi:2, moduli:[
@@ -196,7 +196,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'Sito integrato DMS — stock real-time, CRM, finanziamenti, analytics', tempo_mesi:3, moduli:[
         { id:'piattaforma', nome:'Piattaforma web dealer', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'Sito integrato DMS (eMotor Web/custom)', costo_mensile:500, costo_setup:5000, impatto:1.0, note:'Stock live da DMS, CRM automatico, finanziamento online, analytics' },
+          { id:'enterprise', nome:'Sito integrato con DMS', costo_mensile:500, costo_setup:5000, impatto:1.0, note:'Stock live da DMS, CRM automatico, finanziamento online, analytics' },
           { id:'mid', nome:'Sito avanzato + integrazioni API', costo_mensile:200, costo_setup:2000, impatto:0.55, note:'WordPress + API gestionale, meno integrato' },
         ]},
       ]},
@@ -266,26 +266,26 @@ const STEP_DETAIL_BY_SETTORE = {
       '1': { chi:'DMS standard', cosa:'DMS casa madre base — gestione ordini e stock obbligatorio', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
       '2': { cosa:'CRM attivo con follow-up sistematico su lead e scadenze', tempo_mesi:1, moduli:[
         { id:'crm', nome:'CRM dealer', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'specifico', nome:'CRM automotive (Salesforce Auto Cloud/eMotor CRM)', costo_mensile:500, costo_setup:1500, impatto:1.0, note:'Lead multicanale, follow-up, appuntamenti, test drive, scadenze auto' },
+          { id:'specifico', nome:'DMS con CRM integrato (premium)', costo_mensile:500, costo_setup:1500, impatto:1.0, note:'Lead multicanale, follow-up, appuntamenti, test drive, scadenze auto' },
           { id:'generico', nome:'CRM generico integrato con DMS', costo_mensile:200, costo_setup:800, impatto:0.6, note:'HubSpot/Zoho + connettore DMS' },
         ]},
       ]},
       '3': { cosa:'Marketing automation — nurturing, remarketing, eventi, lifecycle', tempo_mesi:2, moduli:[
         { id:'automation', nome:'Marketing automation dealer', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'CRM + automation enterprise (Salesforce + Pardot)', costo_mensile:1500, costo_setup:3000, impatto:1.0, note:'Nurturing lead, remarketing scadenze, eventi, email lifecycle' },
+          { id:'enterprise', nome:'CRM + marketing automation (HubSpot Marketing Pro)', costo_mensile:800, costo_setup:2000, impatto:1.0, note:'Nurturing lead, remarketing scadenze, eventi, email lifecycle' },
           { id:'mid', nome:'CRM + automation mid (HubSpot Pro)', costo_mensile:500, costo_setup:1500, impatto:0.65, note:'Automazioni base, email, workflow' },
         ]},
       ]},
       '4': { cosa:'Integrazione completa DMS + CRM + marketing con analytics avanzati', tempo_mesi:3, moduli:[
         { id:'integrazione', nome:'Piattaforma integrata dealer', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'full', nome:'DMS + CRM + marketing fully integrated', costo_mensile:2500, costo_setup:5000, impatto:1.0, note:'Vista unica cliente: vendita, service, marketing, finanziario — tutto collegato' },
-          { id:'api', nome:'Sistemi collegati via API/middleware', costo_mensile:1200, costo_setup:3000, impatto:0.6, note:'DMS + CRM + marketing separati ma sincronizzati' },
+          { id:'full', nome:'DMS + CRM + marketing integrati', costo_mensile:1200, costo_setup:3000, impatto:1.0, note:'Vista unica cliente: vendita, service, marketing, finanziario — tutto collegato' },
+          { id:'api', nome:'Sistemi collegati via API/middleware', costo_mensile:600, costo_setup:1500, impatto:0.6, note:'DMS + CRM + marketing separati ma sincronizzati' },
         ]},
       ]},
       '5': { cosa:'Predictive analytics — scoring lead, propensione riacquisto, churn', tempo_mesi:4, moduli:[
         { id:'analytics', nome:'Predictive analytics dealer', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'ai', nome:'Piattaforma AI/predictive (UrbanScience/Accenture)', costo_mensile:3000, costo_setup:8000, impatto:1.0, note:'Lead scoring AI, propensione riacquisto, conquest, retention prediction' },
-          { id:'bi', nome:'BI avanzata (Power BI/Tableau + dati DMS)', costo_mensile:1000, costo_setup:3000, impatto:0.5, note:'Report avanzati, trend, segmentazione, meno predittivo' },
+          { id:'ai', nome:'BI avanzata con scoring (Power BI + modello custom)', costo_mensile:300, costo_setup:2000, impatto:1.0, note:'Lead scoring AI, propensione riacquisto, conquest, retention prediction' },
+          { id:'bi', nome:'BI avanzata (Power BI + dati DMS)', costo_mensile:400, costo_setup:1500, impatto:0.5, note:'Report avanzati, trend, segmentazione, meno predittivo' },
         ]},
       ]},
     },
@@ -484,7 +484,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '3': { cosa:'CRM con gestione offerte complesse e ciclo vendita lungo', tempo_mesi:1, moduli:[
         { id:'crm_pro', nome:'CRM professionale', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'salesforce', nome:'Salesforce/Zoho CRM', costo_mensile:60, costo_setup:400, impatto:1.0, note:'Pipeline, offerte, contratti quadro, forecast' },
+          { id:'salesforce', nome:'Zoho CRM/HubSpot', costo_mensile:60, costo_setup:400, impatto:1.0, note:'Pipeline, offerte, contratti quadro, forecast' },
           { id:'pipedrive', nome:'Pipedrive', costo_mensile:30, costo_setup:200, impatto:0.65, note:'Pipeline visuale' },
         ]},
       ]},
@@ -496,7 +496,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'ERP completo + MES + monitoraggio macchine + BI', tempo_mesi:4, moduli:[
         { id:'erp_full', nome:'ERP + MES enterprise', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'ERP + MES (SAP B1/Mago4 + MES)', costo_mensile:800, costo_setup:5000, impatto:1.0, note:'MRP, produzione, MES con OEE macchine, qualita, logistica, BI' },
+          { id:'enterprise', nome:'ERP + MES (Mago4/TeamSystem + MES)', costo_mensile:500, costo_setup:3500, impatto:1.0, note:'MRP, produzione, MES con OEE macchine, qualita, logistica, BI' },
           { id:'mid', nome:'ERP mid-market avanzato', costo_mensile:400, costo_setup:2500, impatto:0.6, note:'Core features senza MES IoT' },
         ]},
       ]},
@@ -681,7 +681,7 @@ const STEP_DETAIL_BY_SETTORE = {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
       '2': { cosa:'CRM per RFQ, offerte e contratti annuali OEM', tempo_mesi:1, moduli:[
         { id:'crm', nome:'CRM B2B automotive', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'salesforce', nome:'Salesforce/Zoho CRM', costo_mensile:60, costo_setup:400, impatto:1.0, note:'Pipeline RFQ, offerte, contratti, PPAP tracking' },
+          { id:'salesforce', nome:'Zoho CRM/HubSpot', costo_mensile:60, costo_setup:400, impatto:1.0, note:'Pipeline RFQ, offerte, contratti, PPAP tracking' },
           { id:'hubspot', nome:'HubSpot CRM', costo_mensile:0, costo_setup:200, impatto:0.7, note:'Pipeline base + storico' },
         ]},
       ]},
@@ -693,13 +693,13 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '4': { cosa:'ERP automotive — commesse, produzione, qualita IATF, logistica', tempo_mesi:2, moduli:[
         { id:'erp', nome:'ERP automotive', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'ERP automotive (SAP B1/Mago4 + modulo IATF)', costo_mensile:600, costo_setup:3000, impatto:1.0, note:'Commesse, MRP, produzione, qualita IATF 16949, logistica JIT' },
+          { id:'enterprise', nome:'ERP automotive (Mago4/TeamSystem + modulo IATF)', costo_mensile:600, costo_setup:3000, impatto:1.0, note:'Commesse, MRP, produzione, qualita IATF 16949, logistica JIT' },
           { id:'mid', nome:'ERP manifatturiero + moduli qualita', costo_mensile:300, costo_setup:1500, impatto:0.6, note:'Core + PPAP gestione base' },
         ]},
       ]},
       '5': { cosa:'ERP completo + EDI con OEM + MES + BI', tempo_mesi:4, moduli:[
         { id:'erp_full', nome:'ERP automotive enterprise', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'ERP + EDI + MES (SAP/Mago4 + EDI)', costo_mensile:1000, costo_setup:6000, impatto:1.0, note:'EDI ordini OEM, MES, tracciabilita, IATF, logistica JIT/kanban, BI' },
+          { id:'enterprise', nome:'ERP + EDI + MES (Mago4/TeamSystem + EDI)', costo_mensile:600, costo_setup:4000, impatto:1.0, note:'EDI ordini OEM, MES, tracciabilita, IATF, logistica JIT/kanban, BI' },
           { id:'mid', nome:'ERP avanzato senza EDI', costo_mensile:500, costo_setup:3000, impatto:0.55, note:'Core features, ordini manuali' },
         ]},
       ]},
@@ -888,7 +888,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '3': { cosa:'CRM con gestione campionature e cicli approvazione', tempo_mesi:1, moduli:[
         { id:'crm_pro', nome:'CRM professionale', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'salesforce', nome:'Salesforce/Zoho CRM', costo_mensile:60, costo_setup:400, impatto:1.0, note:'Pipeline, campionature, approvazioni, contratti' },
+          { id:'salesforce', nome:'Zoho CRM/HubSpot', costo_mensile:60, costo_setup:400, impatto:1.0, note:'Pipeline, campionature, approvazioni, contratti' },
           { id:'pipedrive', nome:'Pipedrive', costo_mensile:30, costo_setup:200, impatto:0.65, note:'Pipeline visuale' },
         ]},
       ]},
@@ -900,7 +900,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'ERP completo + MES + workflow approvazione + BI', tempo_mesi:4, moduli:[
         { id:'erp_full', nome:'ERP packaging enterprise', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'ERP + MES packaging (EFI/custom)', costo_mensile:800, costo_setup:5000, impatto:1.0, note:'Produzione, stampa, converting, qualita, MES, logistica, BI' },
+          { id:'enterprise', nome:'ERP + MES packaging (EFI/custom)', costo_mensile:500, costo_setup:3500, impatto:1.0, note:'Produzione, stampa, converting, qualita, MES, logistica, BI' },
           { id:'mid', nome:'ERP mid-market + moduli', costo_mensile:400, costo_setup:2500, impatto:0.6, note:'Core features' },
         ]},
       ]},
@@ -1092,7 +1092,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '3': { cosa:'CRM B2B con gestione offerte e ciclo vendita lungo', tempo_mesi:1, moduli:[
         { id:'crm', nome:'CRM B2B manifatturiero', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'b2b', nome:'CRM B2B (Salesforce/Zoho CRM)', costo_mensile:60, costo_setup:400, impatto:1.0, note:'Pipeline, offerte, contratti quadro, forecast' },
+          { id:'b2b', nome:'CRM B2B (Zoho CRM/HubSpot)', costo_mensile:60, costo_setup:400, impatto:1.0, note:'Pipeline, offerte, contratti quadro, forecast' },
           { id:'generico', nome:'CRM leggero (Pipedrive)', costo_mensile:30, costo_setup:200, impatto:0.65, note:'Pipeline base' },
         ]},
       ]},
@@ -1104,7 +1104,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'ERP manifatturiero completo con MES e BI', tempo_mesi:4, moduli:[
         { id:'erp_full', nome:'ERP manifatturiero enterprise', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'ERP + MES (SAP B1/Mago4 Manufacturing)', costo_mensile:800, costo_setup:5000, impatto:1.0, note:'Offerte, commesse, MRP, produzione, qualita, logistica, BI' },
+          { id:'enterprise', nome:'ERP + MES (Mago4/TeamSystem Manufacturing)', costo_mensile:500, costo_setup:3500, impatto:1.0, note:'Offerte, commesse, MRP, produzione, qualita, logistica, BI' },
           { id:'mid', nome:'ERP mid-market', costo_mensile:400, costo_setup:2500, impatto:0.6, note:'Core features' },
         ]},
       ]},
@@ -1300,7 +1300,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '3': { cosa:'CRM con gestione offerte complesse e contratti quadro', tempo_mesi:1, moduli:[
         { id:'crm_pro', nome:'CRM professionale', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'salesforce', nome:'Salesforce/Zoho CRM', costo_mensile:60, costo_setup:400, impatto:1.0, note:'Pipeline, offerte multi-fase, contratti, forecast' },
+          { id:'salesforce', nome:'Zoho CRM/HubSpot', costo_mensile:60, costo_setup:400, impatto:1.0, note:'Pipeline, offerte multi-fase, contratti, forecast' },
           { id:'pipedrive', nome:'Pipedrive', costo_mensile:30, costo_setup:200, impatto:0.65, note:'Pipeline visuale' },
         ]},
       ]},
@@ -1312,7 +1312,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'ERP completo con MRP, configuratore prodotto e BI', tempo_mesi:4, moduli:[
         { id:'erp_full', nome:'ERP enterprise', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'ERP + MRP (SAP B1/Mago4 Manufacturing)', costo_mensile:800, costo_setup:5000, impatto:1.0, note:'MRP, distinte multilivello, commesse, qualita, logistica, BI' },
+          { id:'enterprise', nome:'ERP + MRP (Mago4/TeamSystem Manufacturing)', costo_mensile:500, costo_setup:3500, impatto:1.0, note:'MRP, distinte multilivello, commesse, qualita, logistica, BI' },
           { id:'mid', nome:'ERP mid-market', costo_mensile:400, costo_setup:2500, impatto:0.6, note:'Core features' },
         ]},
       ]},
@@ -1505,7 +1505,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '3': { cosa:'CRM tessile con gestione campionature e ordini per stagione', tempo_mesi:1, moduli:[
         { id:'crm', nome:'CRM tessile', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'b2b', nome:'CRM B2B (Salesforce/Zoho)', costo_mensile:60, costo_setup:400, impatto:1.0, note:'Pipeline per campagna, campionature, ordini, forecast' },
+          { id:'b2b', nome:'CRM B2B (Zoho CRM/HubSpot)', costo_mensile:60, costo_setup:400, impatto:1.0, note:'Pipeline per campagna, campionature, ordini, forecast' },
           { id:'generico', nome:'CRM leggero (Pipedrive)', costo_mensile:30, costo_setup:200, impatto:0.6, note:'Pipeline base' },
         ]},
       ]},
@@ -1517,7 +1517,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'ERP tessile completo con pianificazione produzione e BI', tempo_mesi:4, moduli:[
         { id:'erp_full', nome:'ERP tessile enterprise', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'ERP tessile enterprise (Datatex/SAP)', costo_mensile:1000, costo_setup:5000, impatto:1.0, note:'Pianificazione, produzione, qualita, logistica, BI, export' },
+          { id:'enterprise', nome:'ERP tessile enterprise (Datatex/Cybertex)', costo_mensile:500, costo_setup:3500, impatto:1.0, note:'Pianificazione, produzione, qualita, logistica, BI, export' },
           { id:'mid', nome:'Gestionale tessile mid-market', costo_mensile:500, costo_setup:2500, impatto:0.6, note:'Core features' },
         ]},
       ]},
@@ -1571,7 +1571,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'ERP tessile completo + laboratorio qualita + BI', tempo_mesi:4, moduli:[
         { id:'erp', nome:'ERP tessile + qualita', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'ERP tessile enterprise', costo_mensile:800, costo_setup:5000, impatto:1.0, note:'Produzione, qualita lab, tracciabilita lotto, logistica, BI' },
+          { id:'enterprise', nome:'ERP tessile enterprise', costo_mensile:500, costo_setup:3500, impatto:1.0, note:'Produzione, qualita lab, tracciabilita lotto, logistica, BI' },
           { id:'mid', nome:'Gestionale tessile avanzato', costo_mensile:400, costo_setup:2500, impatto:0.55, note:'Core features' },
         ]},
       ]},
@@ -1727,7 +1727,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'ERP moda — dalla campagna vendita alla produzione alla spedizione', tempo_mesi:3, moduli:[
         { id:'erp', nome:'ERP moda integrato', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'erp_full', nome:'ERP moda enterprise (Centric PLM, Infor Fashion)', costo_mensile:900, costo_setup:5000, impatto:1.0, note:'End-to-end: design - produzione - spedizione' },
+          { id:'erp_full', nome:'ERP moda enterprise (Tex Design/Esse Solutions)', costo_mensile:900, costo_setup:5000, impatto:1.0, note:'End-to-end: design - produzione - spedizione' },
           { id:'erp_mid', nome:'ERP moda mid-range (Tex Design, Esse Solutions)', costo_mensile:500, costo_setup:3000, impatto:0.75, note:'Buon compromesso costi/funzioni' },
         ]},
         { id:'b2b_ordini', nome:'Portale ordini B2B per agenti', tipo:'flag', obbligatorio:false, costo_mensile:100, costo_setup:500, impatto:0.15, note:'Agenti inseriscono ordini da tablet' },
@@ -2172,7 +2172,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '3': { cosa:'CRM per pipeline corporate + scadenze fondi interprofessionali', tempo_mesi:1, moduli:[
         { id:'crm', nome:'CRM formazione', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'crm_formazione', nome:'CRM con modulo formazione (Salesforce, Zoho)', costo_mensile:80, costo_setup:300, impatto:1.0, note:'Pipeline + scadenze fondi + gestione piani formativi' },
+          { id:'crm_formazione', nome:'CRM con modulo formazione (Zoho CRM/HubSpot)', costo_mensile:80, costo_setup:300, impatto:1.0, note:'Pipeline + scadenze fondi + gestione piani formativi' },
           { id:'crm_light', nome:'CRM leggero (Pipedrive)', costo_mensile:50, costo_setup:200, impatto:0.75, note:'Solo pipeline, scadenze manuali' },
         ]},
       ]},
@@ -2402,7 +2402,7 @@ const STEP_DETAIL_BY_SETTORE = {
             tipo: 'scelta',
             obbligatorio: true,
             varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:800, costo_setup:5000, impatto:1, note:'Area riservata con materiali, attestati e storico formazione' },
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:500, costo_setup:3500, impatto:1, note:'Area riservata con materiali, attestati e storico formazione' },
               { id:'economica', nome:'Soluzione economica', costo_mensile:320, costo_setup:2000, impatto:0.65, note:'Template/base, meno personalizzazione' }
             ]
           }
@@ -2418,7 +2418,7 @@ const STEP_DETAIL_BY_SETTORE = {
             tipo: 'scelta',
             obbligatorio: true,
             varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:2000, costo_setup:12000, impatto:1, note:'Piattaforma e-learning integrata con e-commerce corsi' },
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:2000, costo_setup:6000, impatto:1, note:'Piattaforma e-learning integrata con e-commerce corsi' },
               { id:'economica', nome:'Soluzione economica', costo_mensile:800, costo_setup:4800, impatto:0.65, note:'Template/base, meno personalizzazione' }
             ]
           }
@@ -3158,19 +3158,19 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '3': { cosa:'CRM con alert riordini automatici e follow-up clienti dormienti', tempo_mesi:1, moduli:[
         { id:'crm', nome:'CRM distribuzione', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'b2b', nome:'CRM B2B (Salesforce Essentials/Zoho CRM)', costo_mensile:80, costo_setup:300, impatto:1.0, note:'Pipeline, alert riordino, segmentazione clienti, report vendite' },
+          { id:'b2b', nome:'CRM B2B (Zoho CRM Plus/HubSpot Sales Pro)', costo_mensile:80, costo_setup:300, impatto:1.0, note:'Pipeline, alert riordino, segmentazione clienti, report vendite' },
           { id:'generico', nome:'CRM leggero (Pipedrive/Freshsales)', costo_mensile:40, costo_setup:200, impatto:0.7, note:'Pipeline base + automazioni email' },
         ]},
       ]},
       '4': { cosa:'CRM integrato con ERP — stock, prezzi, storico ordini in tempo reale', tempo_mesi:2, moduli:[
         { id:'integrazione', nome:'Integrazione CRM-ERP', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'nativa', nome:'ERP con CRM integrato (SAP B1/TeamSystem)', costo_mensile:400, costo_setup:2000, impatto:1.0, note:'Giacenze live, prezzi per cliente, storico ordini, tutto in un sistema' },
+          { id:'nativa', nome:'ERP con CRM integrato (TeamSystem/Mago4)', costo_mensile:400, costo_setup:2000, impatto:1.0, note:'Giacenze live, prezzi per cliente, storico ordini, tutto in un sistema' },
           { id:'api', nome:'CRM + ERP connessi via API/Zapier', costo_mensile:250, costo_setup:1200, impatto:0.7, note:'Sistemi separati ma sincronizzati, piu flessibile' },
         ]},
       ]},
       '5': { cosa:'ERP completo — clienti, acquisti, magazzino, logistica, BI', tempo_mesi:3, moduli:[
         { id:'erp', nome:'ERP distribuzione industriale', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'ERP enterprise (SAP B1/Microsoft Dynamics)', costo_mensile:800, costo_setup:5000, impatto:1.0, note:'Gestione completa: vendite, acquisti, magazzino, logistica, contabilita, BI' },
+          { id:'enterprise', nome:'ERP enterprise (TeamSystem Enterprise/Mago4)', costo_mensile:500, costo_setup:3500, impatto:1.0, note:'Gestione completa: vendite, acquisti, magazzino, logistica, contabilita, BI' },
           { id:'mid', nome:'ERP mid-market (TeamSystem/Mago4)', costo_mensile:400, costo_setup:3000, impatto:0.7, note:'Funzionalita core, costo inferiore, meno personalizzabile' },
         ]},
       ]},
@@ -3219,7 +3219,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '4': { cosa:'ERP con listini per cliente, condizioni commerciali, ordini urgenti', tempo_mesi:2, moduli:[
         { id:'erp', nome:'ERP con gestione listini', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'completo', nome:'ERP distribuzione (SAP B1/Mago4)', costo_mensile:500, costo_setup:3000, impatto:1.0, note:'Listini per cliente, sconti a cascata, condizioni pagamento, ordini urgenti' },
+          { id:'completo', nome:'ERP distribuzione (Mago4/TeamSystem)', costo_mensile:500, costo_setup:3000, impatto:1.0, note:'Listini per cliente, sconti a cascata, condizioni pagamento, ordini urgenti' },
           { id:'leggero', nome:'Gestionale leggero + Excel listini', costo_mensile:200, costo_setup:1000, impatto:0.55, note:'Gestionale per ordini/fatture + listini gestiti a parte' },
         ]},
       ]},
@@ -3298,7 +3298,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'Portale B2B completo — ordini online, tracking, fatturazione elettronica', tempo_mesi:3, moduli:[
         { id:'portale', nome:'Portale e-commerce B2B', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'Portale B2B enterprise (Magento B2B/OroCommerce)', costo_mensile:800, costo_setup:10000, impatto:1.0, note:'Ordini online, prezzi per cliente, tracking spedizioni, fatturazione, riordino rapido' },
+          { id:'enterprise', nome:'Portale B2B enterprise (PrestaShop B2B/WooCommerce B2B)', costo_mensile:400, costo_setup:5000, impatto:1.0, note:'Ordini online, prezzi per cliente, tracking spedizioni, fatturazione, riordino rapido' },
           { id:'mid', nome:'WooCommerce B2B / PrestaShop B2B', costo_mensile:300, costo_setup:4000, impatto:0.6, note:'E-commerce B2B piu semplice, meno integrazioni' },
         ]},
       ]},
@@ -3388,7 +3388,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'ERP alimentare completo — ordini, magazzino, tracciabilita, logistica, BI', tempo_mesi:3, moduli:[
         { id:'erp', nome:'ERP alimentare completo', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'ERP food enterprise (SAP Food/Sage X3)', costo_mensile:1000, costo_setup:6000, impatto:1.0, note:'Ordini, magazzino FIFO, tracciabilita lotti, logistica, contabilita, BI' },
+          { id:'enterprise', nome:'ERP food enterprise (CSB-System/Argo Food)', costo_mensile:600, costo_setup:4000, impatto:1.0, note:'Ordini, magazzino FIFO, tracciabilita lotti, logistica, contabilita, BI' },
           { id:'mid', nome:'ERP mid-market (Argo/TeamSystem food)', costo_mensile:500, costo_setup:3000, impatto:0.65, note:'Funzionalita core food, costo inferiore' },
         ]},
       ]},
@@ -3527,7 +3527,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'Piattaforma B2B completa — ordini, tracking consegne, fatturazione', tempo_mesi:3, moduli:[
         { id:'piattaforma', nome:'Piattaforma B2B food', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'Portale B2B enterprise (Magento B2B/custom)', costo_mensile:800, costo_setup:10000, impatto:1.0, note:'Ordini, listini per cliente, tracking consegne GPS, fatturazione, riordino rapido' },
+          { id:'enterprise', nome:'Portale B2B enterprise (PrestaShop B2B/WooCommerce B2B)', costo_mensile:400, costo_setup:5000, impatto:1.0, note:'Ordini, listini per cliente, tracking consegne GPS, fatturazione, riordino rapido' },
           { id:'mid', nome:'WooCommerce B2B avanzato', costo_mensile:300, costo_setup:4000, impatto:0.6, note:'E-commerce B2B con plugin avanzati, meno integrazioni' },
         ]},
       ]},
@@ -3599,7 +3599,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '3': { cosa:'CRM per follow-up preventivi e gestione clienti imprese', tempo_mesi:1, moduli:[
         { id:'crm', nome:'CRM rivendita edile', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'b2b', nome:'CRM B2B (Salesforce Essentials/Zoho CRM)', costo_mensile:60, costo_setup:300, impatto:1.0, note:'Pipeline preventivi imprese, follow-up, segmentazione per canale' },
+          { id:'b2b', nome:'CRM B2B (Zoho CRM Plus/HubSpot Sales Pro)', costo_mensile:60, costo_setup:300, impatto:1.0, note:'Pipeline preventivi imprese, follow-up, segmentazione per canale' },
           { id:'generico', nome:'CRM leggero (Pipedrive/Freshsales)', costo_mensile:30, costo_setup:200, impatto:0.65, note:'Pipeline base, reminder, storico' },
         ]},
       ]},
@@ -3611,7 +3611,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'ERP completo — ordini, magazzino, logistica consegne, fatturazione, BI', tempo_mesi:3, moduli:[
         { id:'erp', nome:'ERP rivendita edile', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'ERP distribuzione (SAP B1/Mago4)', costo_mensile:800, costo_setup:5000, impatto:1.0, note:'Gestione completa: vendite, acquisti, magazzino, logistica, contabilita, BI' },
+          { id:'enterprise', nome:'ERP distribuzione (Mago4/TeamSystem)', costo_mensile:500, costo_setup:3500, impatto:1.0, note:'Gestione completa: vendite, acquisti, magazzino, logistica, contabilita, BI' },
           { id:'mid', nome:'ERP mid-market (TeamSystem/Danea Enterprise)', costo_mensile:400, costo_setup:2500, impatto:0.65, note:'Funzionalita core, costo inferiore' },
         ]},
       ]},
@@ -3667,7 +3667,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'ERP integrato + showroom management + consegne pianificate', tempo_mesi:4, moduli:[
         { id:'erp', nome:'ERP integrato rivendita', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'completo', nome:'ERP completo (SAP B1/TeamSystem)', costo_mensile:800, costo_setup:5000, impatto:1.0, note:'Vendite, acquisti, magazzino, showroom, logistica, contabilita, tutto integrato' },
+          { id:'completo', nome:'ERP completo (TeamSystem/Mago4)', costo_mensile:500, costo_setup:3500, impatto:1.0, note:'Vendite, acquisti, magazzino, showroom, logistica, contabilita, tutto integrato' },
           { id:'modulare', nome:'Moduli separati integrati via API', costo_mensile:400, costo_setup:2500, impatto:0.6, note:'CRM + magazzino + fatturazione collegati, meno integrato' },
         ]},
       ]},
@@ -3820,7 +3820,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'ERP ricambi completo — ordini, magazzino, TecDoc, logistica, fatturazione', tempo_mesi:3, moduli:[
         { id:'erp', nome:'ERP ricambi auto', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'ERP aftermarket (Sicipart Enterprise/PartsPoint)', costo_mensile:800, costo_setup:5000, impatto:1.0, note:'TecDoc, magazzino, ordini multi-fornitore, logistica, e-commerce B2B, BI' },
+          { id:'enterprise', nome:'ERP aftermarket (Sicipart Enterprise/PartsPoint)', costo_mensile:500, costo_setup:3500, impatto:1.0, note:'TecDoc, magazzino, ordini multi-fornitore, logistica, e-commerce B2B, BI' },
           { id:'mid', nome:'ERP mid-market + modulo TecDoc', costo_mensile:400, costo_setup:2500, impatto:0.6, note:'TeamSystem/Danea + plugin TecDoc, meno specifico' },
         ]},
       ]},
@@ -3949,7 +3949,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'Piattaforma B2B/B2C completa — ordini, tracking, resi, fatturazione', tempo_mesi:4, moduli:[
         { id:'piattaforma', nome:'Piattaforma ricambi completa', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'Piattaforma aftermarket enterprise', costo_mensile:1200, costo_setup:12000, impatto:1.0, note:'B2B + B2C, TecDoc integrato, ordini, tracking spedizioni, resi, fatturazione, app mobile' },
+          { id:'enterprise', nome:'Piattaforma aftermarket enterprise', costo_mensile:1200, costo_setup:6000, impatto:1.0, note:'B2B + B2C, TecDoc integrato, ordini, tracking spedizioni, resi, fatturazione, app mobile' },
           { id:'mid', nome:'E-commerce avanzato (PrestaShop/Magento)', costo_mensile:500, costo_setup:5000, impatto:0.55, note:'E-commerce multi-canale, meno specifico per aftermarket' },
         ]},
       ]},
@@ -4244,7 +4244,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '3': { cosa:'CRM con lead B2B, preventivi automatici, storico per cliente', tempo_mesi:1, moduli:[
         { id:'crm', nome:'CRM per rivendita IT', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'b2b', nome:'CRM B2B (Salesforce Essentials/Zoho CRM)', costo_mensile:60, costo_setup:300, impatto:1.0, note:'Pipeline preventivi, lead B2B/PA, storico, automazioni follow-up' },
+          { id:'b2b', nome:'CRM B2B (Zoho CRM Plus/HubSpot Sales Pro)', costo_mensile:60, costo_setup:300, impatto:1.0, note:'Pipeline preventivi, lead B2B/PA, storico, automazioni follow-up' },
           { id:'generico', nome:'CRM leggero (Pipedrive/Freshsales)', costo_mensile:30, costo_setup:200, impatto:0.65, note:'Pipeline base, reminder, storico' },
         ]},
       ]},
@@ -4256,7 +4256,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'ERP completo — ordini, stock, pricing dinamico, margini real-time, BI', tempo_mesi:3, moduli:[
         { id:'erp', nome:'ERP rivendita elettronica', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'ERP IT distribution (SAP B1/Mago4 + modulo IT)', costo_mensile:1000, costo_setup:5000, impatto:1.0, note:'Ordini multi-distributore, stock, pricing dinamico, margini, e-commerce, BI' },
+          { id:'enterprise', nome:'ERP IT distribution (Mago4/TeamSystem + modulo IT)', costo_mensile:500, costo_setup:3500, impatto:1.0, note:'Ordini multi-distributore, stock, pricing dinamico, margini, e-commerce, BI' },
           { id:'mid', nome:'Gestionale mid-market + integrazioni', costo_mensile:500, costo_setup:2500, impatto:0.6, note:'TeamSystem/Danea + API distributori' },
         ]},
       ]},
@@ -4309,7 +4309,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'ERP con BI — analisi margini per categoria, rotazione, trend, pricing dinamico', tempo_mesi:3, moduli:[
         { id:'erp', nome:'ERP con Business Intelligence', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'completo', nome:'ERP + BI (SAP B1/Mago4 + Power BI)', costo_mensile:700, costo_setup:4000, impatto:1.0, note:'Analisi margini per SKU, rotazione, trend, pricing dinamico, previsione domanda' },
+          { id:'completo', nome:'ERP + BI (Mago4/TeamSystem con report avanzati)', costo_mensile:700, costo_setup:4000, impatto:1.0, note:'Analisi margini per SKU, rotazione, trend, pricing dinamico, previsione domanda' },
           { id:'leggero', nome:'Gestionale + report avanzati', costo_mensile:300, costo_setup:1500, impatto:0.5, note:'Report su margini e rotazione, meno previsionale' },
         ]},
       ]},
@@ -4380,7 +4380,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'Piattaforma omnicanale — B2C + B2B + marketplace + click and collect', tempo_mesi:4, moduli:[
         { id:'piattaforma', nome:'Piattaforma omnicanale', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'E-commerce enterprise (Magento/custom)', costo_mensile:1200, costo_setup:12000, impatto:1.0, note:'B2C + B2B con listini, marketplace (Amazon/eBay), click&collect, app mobile' },
+          { id:'enterprise', nome:'E-commerce enterprise (Magento/custom)', costo_mensile:1200, costo_setup:6000, impatto:1.0, note:'B2C + B2B con listini, marketplace (Amazon/eBay), click&collect, app mobile' },
           { id:'mid', nome:'WooCommerce avanzato + integrazioni marketplace', costo_mensile:500, costo_setup:5000, impatto:0.55, note:'E-commerce + plugin Amazon/eBay, meno personalizzazione' },
         ]},
       ]},
@@ -4523,7 +4523,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'Sistema KPI avanzato — vendite per m2, rotazione, sell-through, benchmark', tempo_mesi:3, moduli:[
         { id:'analytics', nome:'Analytics retail avanzato', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'completo', nome:'BI retail (Power BI/Tableau + dati POS)', costo_mensile:200, costo_setup:1500, impatto:1.0, note:'KPI per m2, sell-through per brand, rotazione, margine per categoria, benchmark' },
+          { id:'completo', nome:'BI retail (Power BI + dati POS)', costo_mensile:200, costo_setup:1500, impatto:1.0, note:'KPI per m2, sell-through per brand, rotazione, margine per categoria, benchmark' },
           { id:'base', nome:'Report avanzati dal POS', costo_mensile:50, costo_setup:500, impatto:0.5, note:'Report settimanali automatici, meno personalizzazione' },
         ]},
       ]},
@@ -4597,7 +4597,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'Piattaforma omnicanale — stock unico negozio/web, click and collect', tempo_mesi:4, moduli:[
         { id:'omnicanale', nome:'Piattaforma omnicanale moda', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'Shopify Plus / Centra / custom', costo_mensile:500, costo_setup:8000, impatto:1.0, note:'Stock unico negozio+web, click&collect, reso cross-canale, clienteling digitale' },
+          { id:'enterprise', nome:'Shopify Advanced / WooCommerce custom', costo_mensile:500, costo_setup:8000, impatto:1.0, note:'Stock unico negozio+web, click&collect, reso cross-canale, clienteling digitale' },
           { id:'mid', nome:'Shopify + POS integrato', costo_mensile:200, costo_setup:3000, impatto:0.55, note:'Stock sincronizzato, click&collect base, meno personalizzazione' },
         ]},
       ]},
@@ -4685,7 +4685,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'Piattaforma clienteling luxury 360 gradi — vista unica cliente', tempo_mesi:3, moduli:[
         { id:'clienteling', nome:'Piattaforma clienteling luxury', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'Clienteling luxury (Salesforce/ClientBook Pro)', costo_mensile:500, costo_setup:3000, impatto:1.0, note:'Vista 360: storico, wish list, certificati, eventi, social, preferenze, famiglia' },
+          { id:'enterprise', nome:'Clienteling luxury (HubSpot/ClientBook Pro)', costo_mensile:500, costo_setup:3000, impatto:1.0, note:'Vista 360: storico, wish list, certificati, eventi, social, preferenze, famiglia' },
           { id:'mid', nome:'CRM avanzato + integrazioni', costo_mensile:200, costo_setup:1500, impatto:0.55, note:'CRM + email + social collegati, meno specifico luxury' },
         ]},
       ]},
@@ -4807,13 +4807,13 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '4': { cosa:'E-commerce luxury — foto HD, zoom pietre, certificati, spedizione assicurata', tempo_mesi:3, moduli:[
         { id:'ecommerce', nome:'E-commerce gioielli luxury', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'custom', nome:'E-commerce luxury custom (Shopify Plus/custom)', costo_mensile:400, costo_setup:8000, impatto:1.0, note:'Foto HD macro, video 360, certificati scaricabili, spedizione assicurata, reso 30gg' },
+          { id:'custom', nome:'E-commerce luxury custom (Shopify Advanced/WooCommerce)', costo_mensile:400, costo_setup:8000, impatto:1.0, note:'Foto HD macro, video 360, certificati scaricabili, spedizione assicurata, reso 30gg' },
           { id:'shopify', nome:'Shopify + tema jewelry', costo_mensile:100, costo_setup:3000, impatto:0.55, note:'Template gioielli, funzionalita base, meno personalizzazione' },
         ]},
       ]},
       '5': { cosa:'Piattaforma integrata — e-commerce, CRM, stock unico, wish list VIP', tempo_mesi:4, moduli:[
         { id:'piattaforma', nome:'Piattaforma omnicanale luxury', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'Piattaforma luxury enterprise (Shopify Plus + CRM)', costo_mensile:800, costo_setup:15000, impatto:1.0, note:'E-commerce + CRM + stock unico + wish list VIP + clienteling digitale + app' },
+          { id:'enterprise', nome:'Piattaforma luxury enterprise (Shopify Advanced + CRM)', costo_mensile:500, costo_setup:8000, impatto:1.0, note:'E-commerce + CRM + stock unico + wish list VIP + clienteling digitale + app' },
           { id:'mid', nome:'Shopify + CRM collegato', costo_mensile:300, costo_setup:5000, impatto:0.5, note:'E-commerce + CRM sincronizzati, meno features luxury' },
         ]},
       ]},
@@ -4895,19 +4895,19 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '3': { cosa:'CRM food con buyer GDO, contratti annuali, promozioni pianificate', tempo_mesi:1, moduli:[
         { id:'crm', nome:'CRM food industry', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'specifico', nome:'CRM food/FMCG (Salesforce/Zoho CRM)', costo_mensile:80, costo_setup:500, impatto:1.0, note:'Pipeline buyer, contratti annuali, piano promo, performance per insegna' },
+          { id:'specifico', nome:'CRM food/FMCG (Zoho CRM/HubSpot)', costo_mensile:80, costo_setup:500, impatto:1.0, note:'Pipeline buyer, contratti annuali, piano promo, performance per insegna' },
           { id:'generico', nome:'CRM leggero (Pipedrive/Freshsales)', costo_mensile:40, costo_setup:300, impatto:0.6, note:'Pipeline base, storico, meno specifico per food trade' },
         ]},
       ]},
       '4': { cosa:'CRM integrato con gestionale produzione e logistica', tempo_mesi:2, moduli:[
         { id:'integrazione', nome:'Gestionale food integrato', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'erp_food', nome:'ERP food (CSB-System/Sage X3 Food)', costo_mensile:600, costo_setup:2000, impatto:1.0, note:'Ordini, produzione, lotti, tracciabilita, logistica, fatturazione' },
+          { id:'erp_food', nome:'ERP food (CSB-System/Argo Food)', costo_mensile:600, costo_setup:2000, impatto:1.0, note:'Ordini, produzione, lotti, tracciabilita, logistica, fatturazione' },
           { id:'modulare', nome:'CRM + gestionale produzione separati', costo_mensile:300, costo_setup:1000, impatto:0.6, note:'Sistemi collegati via API, meno integrato' },
         ]},
       ]},
       '5': { cosa:'ERP food completo — ordini, produzione, lotti, tracciabilita, BI', tempo_mesi:4, moduli:[
         { id:'erp', nome:'ERP food enterprise', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'ERP food enterprise (CSB/SAP Food/Infor M3)', costo_mensile:1200, costo_setup:6000, impatto:1.0, note:'Ordini, ricette, produzione, lotti, tracciabilita, qualita, logistica, BI' },
+          { id:'enterprise', nome:'ERP food enterprise (CSB-System/Argo Food)', costo_mensile:600, costo_setup:4000, impatto:1.0, note:'Ordini, ricette, produzione, lotti, tracciabilita, qualita, logistica, BI' },
           { id:'mid', nome:'ERP food mid-market (Argo Food/TeamSystem)', costo_mensile:600, costo_setup:3000, impatto:0.6, note:'Funzionalita core food, costo inferiore' },
         ]},
       ]},
@@ -4962,7 +4962,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'ERP produzione con MES + automazione linee + BI per efficienza', tempo_mesi:4, moduli:[
         { id:'erp_prod', nome:'ERP produzione food', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'ERP + MES food (CSB/SAP PP)', costo_mensile:1000, costo_setup:8000, impatto:1.0, note:'Pianificazione produzione, MES, OEE, tracciabilita completa, BI efficienza' },
+          { id:'enterprise', nome:'ERP + MES food (CSB-System con MES)', costo_mensile:600, costo_setup:5000, impatto:1.0, note:'Pianificazione produzione, MES, OEE, tracciabilita completa, BI efficienza' },
           { id:'mid', nome:'Gestionale produzione mid-market', costo_mensile:500, costo_setup:4000, impatto:0.55, note:'Funzionalita core, meno automazione e BI' },
         ]},
       ]},
@@ -5038,7 +5038,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'Piattaforma B2B/DTC integrata con ERP, ordini e tracciabilita lotto', tempo_mesi:4, moduli:[
         { id:'piattaforma', nome:'Piattaforma food omnicanale', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'Piattaforma integrata ERP (B2B + DTC)', costo_mensile:800, costo_setup:10000, impatto:1.0, note:'E-commerce DTC + portale B2B + ERP, ordini, tracciabilita lotto, fatturazione' },
+          { id:'enterprise', nome:'Piattaforma integrata ERP (B2B + DTC)', costo_mensile:400, costo_setup:5000, impatto:1.0, note:'E-commerce DTC + portale B2B + ERP, ordini, tracciabilita lotto, fatturazione' },
           { id:'mid', nome:'Shopify + area B2B separata', costo_mensile:300, costo_setup:4000, impatto:0.5, note:'E-commerce DTC + portale B2B base, meno integrato' },
         ]},
       ]},
@@ -5125,7 +5125,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'ERP wine completo — produzione, stock, ordini, accise, export docs', tempo_mesi:4, moduli:[
         { id:'erp', nome:'ERP cantina completo', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'ERP wine (Enologia Pro/SAP Wine)', costo_mensile:800, costo_setup:5000, impatto:1.0, note:'Vendemmia, vinificazione, imbottigliamento, stock, accise, ordini, export, BI' },
+          { id:'enterprise', nome:'ERP wine (Enologia Pro/WinERP)', costo_mensile:500, costo_setup:3500, impatto:1.0, note:'Vendemmia, vinificazione, imbottigliamento, stock, accise, ordini, export, BI' },
           { id:'mid', nome:'Gestionale cantina mid-market', costo_mensile:400, costo_setup:2500, impatto:0.6, note:'Funzionalita core, meno automazione' },
         ]},
       ]},
@@ -5338,7 +5338,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'ERP completo — ordini, produzione, HACCP, consegne, fatturazione, BI', tempo_mesi:3, moduli:[
         { id:'erp_full', nome:'ERP panificio completo', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'ERP food enterprise', costo_mensile:800, costo_setup:5000, impatto:1.0, note:'Ordini, ricette, produzione, HACCP, consegne, accise, fatturazione, BI' },
+          { id:'enterprise', nome:'ERP food enterprise', costo_mensile:500, costo_setup:3500, impatto:1.0, note:'Ordini, ricette, produzione, HACCP, consegne, accise, fatturazione, BI' },
           { id:'mid', nome:'ERP mid-market food', costo_mensile:400, costo_setup:2500, impatto:0.6, note:'Funzionalita core' },
         ]},
       ]},
@@ -5537,7 +5537,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '3': { cosa:'CRM food con buyer GDO, contratti annuali, promozioni', tempo_mesi:1, moduli:[
         { id:'crm', nome:'CRM food/FMCG', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'b2b', nome:'CRM B2B food (Salesforce/Zoho)', costo_mensile:80, costo_setup:500, impatto:1.0, note:'Pipeline buyer, contratti annuali, piano promo, performance' },
+          { id:'b2b', nome:'CRM B2B food (Zoho CRM/HubSpot)', costo_mensile:80, costo_setup:500, impatto:1.0, note:'Pipeline buyer, contratti annuali, piano promo, performance' },
           { id:'generico', nome:'CRM leggero (Pipedrive)', costo_mensile:40, costo_setup:300, impatto:0.6, note:'Pipeline base' },
         ]},
       ]},
@@ -5549,7 +5549,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'ERP food completo con BI — produzione, qualita, commerciale', tempo_mesi:4, moduli:[
         { id:'erp_full', nome:'ERP food enterprise', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'ERP food enterprise (CSB/SAP Food)', costo_mensile:1200, costo_setup:6000, impatto:1.0, note:'Ordini, ricette, produzione batch, lotti, BRC/IFS, logistica, BI' },
+          { id:'enterprise', nome:'ERP food enterprise (CSB-System/Argo Food)', costo_mensile:600, costo_setup:4000, impatto:1.0, note:'Ordini, ricette, produzione batch, lotti, BRC/IFS, logistica, BI' },
           { id:'mid', nome:'ERP food mid-market', costo_mensile:600, costo_setup:3000, impatto:0.6, note:'Funzionalita core' },
         ]},
       ]},
@@ -5603,7 +5603,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'ERP produzione + automazione linee confezionamento + BI', tempo_mesi:4, moduli:[
         { id:'erp', nome:'ERP produzione conserviero', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'ERP + MES food (CSB/SAP PP)', costo_mensile:1000, costo_setup:8000, impatto:1.0, note:'Pianificazione, produzione batch, sterilizzazione, confezionamento, BI' },
+          { id:'enterprise', nome:'ERP + MES food (CSB-System con MES)', costo_mensile:600, costo_setup:5000, impatto:1.0, note:'Pianificazione, produzione batch, sterilizzazione, confezionamento, BI' },
           { id:'mid', nome:'Gestionale produzione mid-market', costo_mensile:500, costo_setup:4000, impatto:0.55, note:'Core features' },
         ]},
       ]},
@@ -5676,7 +5676,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'Piattaforma B2B/DTC integrata con ERP e tracciabilita', tempo_mesi:4, moduli:[
         { id:'piattaforma', nome:'Piattaforma food omnicanale', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'Piattaforma integrata ERP', costo_mensile:800, costo_setup:10000, impatto:1.0, note:'DTC + B2B + ERP, ordini, tracciabilita lotto, fatturazione' },
+          { id:'enterprise', nome:'Piattaforma integrata ERP', costo_mensile:400, costo_setup:5000, impatto:1.0, note:'DTC + B2B + ERP, ordini, tracciabilita lotto, fatturazione' },
           { id:'mid', nome:'Shopify + area B2B', costo_mensile:300, costo_setup:4000, impatto:0.5, note:'DTC + B2B base' },
         ]},
       ]},
@@ -5745,7 +5745,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '3': { cosa:'CRM B2B con contratti annuali e gestione campionature', tempo_mesi:1, moduli:[
         { id:'crm', nome:'CRM B2B ingredienti', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'b2b', nome:'CRM B2B (Salesforce/Zoho)', costo_mensile:80, costo_setup:500, impatto:1.0, note:'Pipeline, contratti annuali, campionature, schede tecniche' },
+          { id:'b2b', nome:'CRM B2B (Zoho CRM/HubSpot)', costo_mensile:80, costo_setup:500, impatto:1.0, note:'Pipeline, contratti annuali, campionature, schede tecniche' },
           { id:'generico', nome:'CRM leggero (Pipedrive)', costo_mensile:40, costo_setup:300, impatto:0.6, note:'Pipeline base' },
         ]},
       ]},
@@ -5757,7 +5757,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'ERP completo — ordini, stock, R&D, tracciabilita, export docs, BI', tempo_mesi:4, moduli:[
         { id:'erp_full', nome:'ERP ingredienti enterprise', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'ERP food enterprise (SAP/CSB)', costo_mensile:1200, costo_setup:6000, impatto:1.0, note:'Ordini, stock, formulazioni R&D, tracciabilita, qualita, export, BI' },
+          { id:'enterprise', nome:'ERP food enterprise (CSB-System/Argo Food)', costo_mensile:600, costo_setup:4000, impatto:1.0, note:'Ordini, stock, formulazioni R&D, tracciabilita, qualita, export, BI' },
           { id:'mid', nome:'ERP mid-market food', costo_mensile:600, costo_setup:3000, impatto:0.6, note:'Funzionalita core' },
         ]},
       ]},
@@ -5808,7 +5808,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'ERP con R&D management + tracciabilita completa + BI', tempo_mesi:4, moduli:[
         { id:'erp', nome:'ERP ingredienti + R&D', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'ERP con modulo R&D (SAP/CSB)', costo_mensile:1000, costo_setup:8000, impatto:1.0, note:'Formulazioni, test, tracciabilita vigna-piatto, qualita, BI' },
+          { id:'enterprise', nome:'ERP con modulo R&D (CSB-System/Argo Food)', costo_mensile:600, costo_setup:5000, impatto:1.0, note:'Formulazioni, test, tracciabilita vigna-piatto, qualita, BI' },
           { id:'mid', nome:'Gestionale + software R&D separato', costo_mensile:500, costo_setup:4000, impatto:0.55, note:'ERP base + tool R&D/formulazione' },
         ]},
       ]},
@@ -5878,7 +5878,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'Piattaforma B2B completa — ordini, R&D collaboration, tracciabilita', tempo_mesi:4, moduli:[
         { id:'piattaforma', nome:'Piattaforma B2B ingredienti', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'Portale enterprise con R&D hub', costo_mensile:800, costo_setup:10000, impatto:1.0, note:'Ordini, R&D collaboration, formulazioni condivise, tracciabilita, BI' },
+          { id:'enterprise', nome:'Portale enterprise con R&D hub', costo_mensile:400, costo_setup:5000, impatto:1.0, note:'Ordini, R&D collaboration, formulazioni condivise, tracciabilita, BI' },
           { id:'mid', nome:'Portale B2B avanzato', costo_mensile:300, costo_setup:4000, impatto:0.5, note:'Ordini + area documentale, senza R&D hub' },
         ]},
       ]},
@@ -5960,7 +5960,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'ERP birrificio completo — produzione, qualita, distribuzione, e-commerce, BI', tempo_mesi:4, moduli:[
         { id:'erp_full', nome:'ERP birrificio enterprise', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'Breww Enterprise / custom', costo_mensile:800, costo_setup:5000, impatto:1.0, note:'Produzione, qualita, accise, distribuzione, e-commerce, taproom POS, BI' },
+          { id:'enterprise', nome:'Breww Enterprise / custom', costo_mensile:500, costo_setup:3500, impatto:1.0, note:'Produzione, qualita, accise, distribuzione, e-commerce, taproom POS, BI' },
           { id:'mid', nome:'Gestionale birrificio avanzato', costo_mensile:400, costo_setup:2500, impatto:0.6, note:'Core features' },
         ]},
       ]},
@@ -6691,7 +6691,7 @@ const STEP_DETAIL_BY_SETTORE = {
             tipo: 'scelta',
             obbligatorio: true,
             varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:1000, costo_setup:8000, impatto:1, note:'Sito + app center + marketplace integrazioni + community' },
+              { id:'premium', nome:'Soluzione professionale', costo_mensile:600, costo_setup:5000, impatto:1, note:'Sito + app center + marketplace integrazioni + community' },
               { id:'economica', nome:'Soluzione economica', costo_mensile:400, costo_setup:3200, impatto:0.65, note:'Template/base, meno personalizzazione' }
             ]
           }
@@ -6814,7 +6814,7 @@ const STEP_DETAIL_BY_SETTORE = {
       '3': { cosa:'CRM con gestione proposte, contratti e retainer', tempo_mesi:1, moduli:[
         { id:'crm_pro', nome:'CRM professionale', tipo:'scelta', obbligatorio:true, varianti:[
           { id:'hubspot_pro', nome:'HubSpot Sales Pro', costo_mensile:80, costo_setup:500, impatto:1.0, note:'Pipeline, proposte, contratti, automazioni, forecast' },
-          { id:'salesforce', nome:'Salesforce Essentials', costo_mensile:60, costo_setup:400, impatto:0.75, note:'CRM enterprise, piu complesso' },
+          { id:'salesforce', nome:'Zoho CRM Plus', costo_mensile:60, costo_setup:400, impatto:0.75, note:'CRM enterprise, piu complesso' },
         ]},
       ]},
       '4': { cosa:'CRM integrato con project management e timesheet', tempo_mesi:2, moduli:[
@@ -7022,14 +7022,14 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '3': { cosa:'CRM con gestione offerte, contratti e SLA', tempo_mesi:1, moduli:[
         { id:'crm_pro', nome:'CRM professionale IT', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'salesforce', nome:'Salesforce Essentials/Professional', costo_mensile:100, costo_setup:800, impatto:1.0, note:'Pipeline, offerte, contratti, SLA, forecast avanzato' },
+          { id:'salesforce', nome:'Zoho CRM/HubSpot Sales Pro', costo_mensile:100, costo_setup:800, impatto:1.0, note:'Pipeline, offerte, contratti, SLA, forecast avanzato' },
           { id:'hubspot_pro', nome:'HubSpot Sales Pro', costo_mensile:80, costo_setup:500, impatto:0.8, note:'Pipeline, sequenze, documenti, forecast' },
         ]},
       ]},
       '4': { cosa:'CRM integrato con PSA (project accounting) e helpdesk', tempo_mesi:2, moduli:[
         { id:'psa', nome:'PSA (Professional Services Automation)', tipo:'scelta', obbligatorio:true, varianti:[
           { id:'completo', nome:'PSA completo (ConnectWise/Autotask)', costo_mensile:300, costo_setup:2000, impatto:1.0, note:'CRM + progetti + timesheet + ticketing + fatturazione, tutto integrato' },
-          { id:'modulare', nome:'CRM + project management separati', costo_mensile:150, costo_setup:800, impatto:0.6, note:'Salesforce + Asana/Monday, meno integrazione' },
+          { id:'modulare', nome:'CRM + project management separati', costo_mensile:150, costo_setup:800, impatto:0.6, note:'HubSpot/Zoho + Asana/Monday, meno integrazione' },
         ]},
       ]},
       '5': { cosa:'Piattaforma gestione completa — CRM, PSA, helpdesk, BI', tempo_mesi:4, moduli:[
@@ -7231,19 +7231,19 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '3': { cosa:'CRM con gestione offerte complesse e ciclo vendita lungo', tempo_mesi:1, moduli:[
         { id:'crm_pro', nome:'CRM professionale B2B', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'salesforce', nome:'Salesforce Professional', costo_mensile:80, costo_setup:600, impatto:1.0, note:'Pipeline, offerte multi-fase, forecast, report per account' },
+          { id:'salesforce', nome:'Zoho CRM Plus', costo_mensile:80, costo_setup:600, impatto:1.0, note:'Pipeline, offerte multi-fase, forecast, report per account' },
           { id:'hubspot_pro', nome:'HubSpot Sales Pro', costo_mensile:60, costo_setup:400, impatto:0.75, note:'Pipeline, sequenze, documenti, quote' },
         ]},
       ]},
       '4': { cosa:'CRM integrato con project management e produzione', tempo_mesi:2, moduli:[
         { id:'integrazione', nome:'CRM + Project Management', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'integrato', nome:'CRM + PM integrati (Salesforce + Jira)', costo_mensile:200, costo_setup:1500, impatto:1.0, note:'Dal deal al progetto, risorse, milestone, margine — vista unificata' },
+          { id:'integrato', nome:'CRM + PM integrati (HubSpot/Zoho + Jira)', costo_mensile:200, costo_setup:1500, impatto:1.0, note:'Dal deal al progetto, risorse, milestone, margine — vista unificata' },
           { id:'separato', nome:'CRM + PM separati', costo_mensile:100, costo_setup:600, impatto:0.6, note:'Tool separati, aggiornamento manuale' },
         ]},
       ]},
       '5': { cosa:'ERP industriale — commesse, produzione, acquisti, service', tempo_mesi:4, moduli:[
         { id:'erp', nome:'ERP per automazione industriale', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'ERP commesse (SAP B1/TeamSystem Manufacturing)', costo_mensile:800, costo_setup:5000, impatto:1.0, note:'Offerte, commesse, progettazione, acquisti, produzione, collaudo, service' },
+          { id:'enterprise', nome:'ERP commesse (TeamSystem/Mago4 Manufacturing)', costo_mensile:500, costo_setup:3500, impatto:1.0, note:'Offerte, commesse, progettazione, acquisti, produzione, collaudo, service' },
           { id:'mid', nome:'Gestionale commesse mid-market', costo_mensile:400, costo_setup:2500, impatto:0.6, note:'Core features commesse + fatturazione' },
         ]},
       ]},
@@ -7295,7 +7295,7 @@ const STEP_DETAIL_BY_SETTORE = {
       ]},
       '5': { cosa:'ERP commesse + PLM + service management strutturato', tempo_mesi:4, moduli:[
         { id:'erp', nome:'ERP commesse automazione', tipo:'scelta', obbligatorio:true, varianti:[
-          { id:'enterprise', nome:'ERP commesse (SAP B1/Mago4 Manufacturing)', costo_mensile:800, costo_setup:6000, impatto:1.0, note:'Offerte, commesse, acquisti, produzione, collaudo, service, BI' },
+          { id:'enterprise', nome:'ERP commesse (Mago4/TeamSystem Manufacturing)', costo_mensile:500, costo_setup:4000, impatto:1.0, note:'Offerte, commesse, acquisti, produzione, collaudo, service, BI' },
           { id:'mid', nome:'Gestionale commesse mid-market', costo_mensile:400, costo_setup:3000, impatto:0.55, note:'Core features + fatturazione' },
         ]},
       ]},
