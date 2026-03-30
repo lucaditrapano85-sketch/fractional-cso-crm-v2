@@ -1935,7 +1935,7 @@ function _buildReportHTML(p) {
         <div style="font-size:9px;opacity:.6">/100</div>
       </div>
       <div style="flex:1">
-        <div style="font-size:17px;font-weight:700;color:#1A1A1A;font-family:'DM Serif Display',serif">${verdictText}</div>
+        <div style="font-size:17px;font-weight:700;color:#1A1A1A;font-family:'Plus Jakarta Sans',sans-serif">${verdictText}</div>
         <div style="font-size:12px;color:#666;margin-top:5px;line-height:1.5">${verdictDesc}</div>
       </div>
     </div>
@@ -2090,18 +2090,18 @@ function printReport() {
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
     <style>
       * { box-sizing: border-box; margin: 0; padding: 0; }
-      body { font-family: 'DM Sans', sans-serif; background: #FAFAF7; padding: 32px; }
+      body { font-family: 'Plus Jakarta Sans', sans-serif; background: #FAFAF7; padding: 32px; }
       @media print {
         body { padding: 0; background: white; }
         @page { margin: 18mm 20mm; size: A4; }
       }
-      .report-preview { background: #FAFAF7; color: #1A1A1A; max-width: 720px; margin: 0 auto; font-family: 'DM Sans', sans-serif; }
+      .report-preview { background: #FAFAF7; color: #1A1A1A; max-width: 720px; margin: 0 auto; font-family: 'Plus Jakarta Sans', sans-serif; }
       .rp-header { border-bottom: 2px solid #C9973A; padding-bottom: 16px; margin-bottom: 20px; }
-      .rp-company { font-size: 24px; font-family: 'DM Serif Display', serif; color: #1A1A1A; }
+      .rp-company { font-size: 24px; font-family: 'Plus Jakarta Sans', sans-serif; color: #1A1A1A; }
       .rp-sub { font-size: 12px; color: #888; margin-top: 4px; }
       .rp-score-row { display: flex; align-items: center; gap: 20px; margin-bottom: 20px; background: #F0EDE6; border-radius: 10px; padding: 16px 20px; }
       .rp-circle { width: 72px; height: 72px; border-radius: 50%; border: 3px solid; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
-      .rp-num { font-size: 28px; font-family: 'DM Serif Display', serif; font-weight: 700; line-height: 1; }
+      .rp-num { font-size: 28px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; line-height: 1; }
       .rp-section-title { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: #999; margin-bottom: 12px; font-weight: 700; }
       .rp-dim-row { position: relative; }
       .rp-dim-label { font-size: 11px; color: #444; }
@@ -2112,7 +2112,7 @@ function printReport() {
       .rp-crit-text { font-size: 11px; color: #666; margin-top: 3px; line-height: 1.5; }
       .rp-bench { display: flex; justify-content: space-between; align-items: center; }
       .rp-footer { margin-top: 20px; padding-top: 14px; border-top: 1px solid #E8E4DC; font-size: 10px; color: #999; display: flex; justify-content: space-between; gap: 12px; }
-      h1, h2, h3 { font-family: 'DM Serif Display', serif; font-weight: 400; }
+      h1, h2, h3 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 400; }
     </style>
   </head><body>${html}
   <script>window.onload = () => { setTimeout(() => window.print(), 800); }<\/script>
@@ -2525,7 +2525,7 @@ function renderMyBenchSection(subKey, subData) {
         I miei dati di campo
         ${saved ? '\x3cspan class="my-bench-badge">AGGIORNATO\x3c/span>' : '\x3cspan style="font-size:10px;color:var(--gray);font-weight:400">nessun dato ancora\x3c/span>'}
       \x3c/div>
-      \x3cbutton onclick="toggleMyBenchForm('${subKey}')" style="background:none;border:1px solid var(--border2);color:var(--gray);border-radius:4px;padding:3px 10px;font-size:10px;cursor:pointer;font-family:'DM Sans',sans-serif" id="toggle-bench-${subKey}">
+      \x3cbutton onclick="toggleMyBenchForm('${subKey}')" style="background:none;border:1px solid var(--border2);color:var(--gray);border-radius:4px;padding:3px 10px;font-size:10px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif" id="toggle-bench-${subKey}">
         ${saved ? 'Modifica' : '+ Aggiungi'}
       \x3c/button>
     \x3c/div>
@@ -3556,7 +3556,7 @@ function drawRadar(dims_vals, targets_vals, settore) {
     const lineH = 9;
     const startY = ly - ((lines.length - 1) * lineH / 2);
     lines.forEach((line, li) => {
-      html += `\x3ctext x="${lx}" y="${startY + li * lineH}" text-anchor="${anchor}" font-size="8" fill="var(--gray)" font-family="DM Sans,sans-serif" font-weight="500">${line}\x3c/text>`;
+      html += `\x3ctext x="${lx}" y="${startY + li * lineH}" text-anchor="${anchor}" font-size="8" fill="var(--gray)" font-family="Plus Jakarta Sans,sans-serif" font-weight="500">${line}\x3c/text>`;
     });
   });
 
@@ -6236,7 +6236,7 @@ function renderTimelineUnificata(p, calls) {
       var scoreHtml = '';
       if (e.score != null) {
         var sCol = e.score >= 70 ? 'rgba(35,100,40,0.8)' : e.score >= 45 ? 'rgba(140,100,25,0.8)' : 'rgba(170,30,30,0.8)';
-        scoreHtml = '<div style="font-size:16px;font-weight:700;font-family:\'DM Serif Display\',serif;color:' + sCol + '">' + e.score + '<span style="font-size:10px;color:var(--gray)">/100</span></div>';
+        scoreHtml = '<div style="font-size:16px;font-weight:700;font-family:\'Plus Jakarta Sans\',serif;color:' + sCol + '">' + e.score + '<span style="font-size:10px;color:var(--gray)">/100</span></div>';
       }
 
       // Dettaglio step con barra
@@ -6988,7 +6988,7 @@ function _buildCronistoria(p) {
     html += '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:7px 10px">';
     html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px">';
     html += '<div style="font-size:10px;font-weight:700;color:' + col + '">' + snap.evento + '</div>';
-    html += '<div style="font-size:18px;font-weight:700;font-family:\'DM Serif Display\',serif;color:' + col + '">' + snap.score + '<span style="font-size:10px;color:var(--gray)">/100</span></div>';
+    html += '<div style="font-size:18px;font-weight:700;font-family:\'Plus Jakarta Sans\',serif;color:' + col + '">' + snap.score + '<span style="font-size:10px;color:var(--gray)">/100</span></div>';
     html += '</div>';
     html += '<div style="font-size:9px;color:var(--gray)">' + fmt(snap.data) + (snap.nota ? ' · ' + snap.nota : '') + '</div>';
     if (snap.score_base && snap.score_base !== snap.score) {
@@ -7698,7 +7698,7 @@ function buildFinField(f, val) {
         \x3cbutton type="button" onclick="autoCalcEbitda()" style="
           background:var(--gold);color:#fff;border:none;
           border-radius:4px;padding:6px 14px;font-size:11px;font-weight:600;cursor:pointer;
-          font-family:'DM Sans',sans-serif;width:100%">
+          font-family:'Plus Jakarta Sans',sans-serif;width:100%">
           Calcola EBITDA
         \x3c/button>
       \x3c/div>
@@ -7755,24 +7755,24 @@ function buildFinField(f, val) {
         \x3cdiv style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px">
           \x3cdiv style="background:var(--bg2);border-radius:var(--rs);padding:10px;text-align:center;border:1px solid var(--border)">
             \x3cdiv style="font-size:9px;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Margine lordo\x3c/div>
-            \x3cdiv style="font-size:18px;font-family:'DM Serif Display',serif" id="calc-margine-lordo">--\x3c/div>
+            \x3cdiv style="font-size:18px;font-family:'Plus Jakarta Sans',sans-serif" id="calc-margine-lordo">--\x3c/div>
             \x3cdiv style="font-size:9px;color:var(--gray2);margin-top:2px">(Fatt. - Costi fissi) / Fatt.\x3c/div>
           \x3c/div>
           \x3cdiv style="background:var(--bg2);border-radius:var(--rs);padding:10px;text-align:center;border:1px solid var(--border)">
             \x3cdiv style="font-size:9px;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Margine EBITDA\x3c/div>
-            \x3cdiv style="font-size:18px;font-family:'DM Serif Display',serif" id="calc-margine-ebitda">--\x3c/div>
+            \x3cdiv style="font-size:18px;font-family:'Plus Jakarta Sans',sans-serif" id="calc-margine-ebitda">--\x3c/div>
             \x3cdiv style="font-size:9px;color:var(--gray2);margin-top:2px">EBITDA / Fatturato\x3c/div>
           \x3c/div>
           \x3cdiv style="background:var(--bg2);border-radius:var(--rs);padding:10px;text-align:center;border:1px solid var(--border)">
             \x3cdiv style="font-size:9px;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Margine netto\x3c/div>
-            \x3cdiv style="font-size:18px;font-family:'DM Serif Display',serif" id="calc-margine-netto">--\x3c/div>
+            \x3cdiv style="font-size:18px;font-family:'Plus Jakarta Sans',sans-serif" id="calc-margine-netto">--\x3c/div>
             \x3cdiv style="font-size:9px;color:var(--gray2);margin-top:2px">Utile netto / Fatturato\x3c/div>
           \x3c/div>
         \x3c/div>
         \x3cbutton type="button" onclick="usaMargineCalcolato()" style="
           background:var(--amber-bg);border:1px solid var(--gold-dim);color:var(--gold);
           border-radius:4px;padding:4px 12px;font-size:10px;font-weight:600;cursor:pointer;
-          font-family:'DM Sans',sans-serif">
+          font-family:'Plus Jakarta Sans',sans-serif">
           v Usa margine netto come valore dichiarato
         \x3c/button>
       \x3c/div>
