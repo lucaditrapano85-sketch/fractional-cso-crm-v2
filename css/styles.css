@@ -43,7 +43,7 @@ h1,h2,h3{font-family:'DM Serif Display',serif;font-weight:400}
 .sidebar-logo .sub{font-size:9px;color:rgba(255,255,255,0.5);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
 .nav-item{display:flex;align-items:center;gap:8px;padding:8px 14px;font-size:14px;color:rgba(255,255,255,0.7);cursor:pointer;transition:all .2s;margin:1px 8px;border-radius:8px}
 .nav-item:hover{color:#fff;background:rgba(255,255,255,0.08)}
-.nav-item.active{color:#fff;background:var(--leva-blue)}
+.nav-item.active{color:#fff;background:rgba(26,26,46,0.5)}
 .nav-item svg{width:15px;height:15px;flex-shrink:0}
 .sidebar-section-label{font-size:9px;color:rgba(255,255,255,0.35);letter-spacing:.1em;text-transform:uppercase;padding:12px 14px 6px}
 .prospect-item{padding:8px 20px;cursor:pointer;transition:background .1s;border-left:2px solid transparent}
@@ -702,7 +702,7 @@ body{background:linear-gradient(145deg,#d8dbe2 0%,#cfd2da 50%,#d8dbe2 100%);colo
 .sidebar-logo .sub{color:var(--gold)}
 .nav-item{color:var(--white);border-radius:7px}
 .nav-item:hover{background:rgba(0,0,0,0.04);color:var(--white)}
-.nav-item.active{background:var(--amber-bg);color:var(--gold);border-left:2px solid var(--gold)}
+.nav-item.active{background:rgba(26,26,46,0.5);color:#fff;border-left:2px solid rgba(26,26,46,0.7)}
 .main,.view{background:transparent}
 .card,.radar-card{
   background:linear-gradient(165deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.25) 40%, rgba(240,242,248,0.15) 100%);
