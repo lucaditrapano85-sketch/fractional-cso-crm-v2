@@ -3923,666 +3923,215 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   alimentare_vini: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Titolare vende in cantina', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Visite enoteche e ristoranti zona',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'supporto', nome:'Titolare + agente', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: '1 agente HORECA/enoteche (~2.000€)',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2000, costo_setup:500, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1100, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:900, costo_setup:500, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Agente + export manager (~3.000€)',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'resp',
-            nome: 'Responsabile commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2000, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
-              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1100, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          },
-          {
-            id: 'team',
-            nome: 'Figure commerciali',
-            tipo: 'multi',
-            obbligatorio: true,
-            min: 2,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1000, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:750, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Dir. commerciale + agenti + wine club',
-        tempo_mesi: 6,
-        moduli: [
-          {
-            id: 'resp',
-            nome: 'Responsabile commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:3200, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
-              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1760, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          },
-          {
-            id: 'team',
-            nome: 'Figure commerciali',
-            tipo: 'multi',
-            obbligatorio: true,
-            min: 2,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1600, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1200, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare', cosa:'Titolare vende in cantina e a pochi clienti storici', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Visite proattive a enoteche, ristoranti e wine bar zona', tempo_mesi:2, moduli:[
+        { id:'degustazioni', nome:'Kit degustazione per visite', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.6, note:'Campioni vino, schede tecniche, listino HORECA — visite a ristoranti e enoteche' },
+        { id:'wine_list', nome:'Proposta inserimento in carta vini', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.3, note:'Scheda vino per sommelier: abbinamenti, note degustazione, premi' },
+      ]},
+      '3': { cosa:'Agente vini per HORECA/enoteche della regione', tempo_mesi:3, moduli:[
+        { id:'agente', nome:'Agente vini', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'plurimandatario', nome:'Agente plurimandatario vini', costo_mensile:800, costo_setup:500, impatto:1.0, note:'Provvigione 8-12%, porta portafoglio ristoranti/enoteche, gestisce ordini' },
+          { id:'dip', nome:'Commerciale wine dipendente', costo_mensile:2200, costo_setup:0, impatto:0.8, note:'Fisso + auto + incentivi, fidelizzato alla cantina' },
+          { id:'distributore', nome:'Accordo con distributore vini locale', costo_mensile:0, costo_setup:500, impatto:0.6, note:'Il distributore gestisce logistica e vendita, margine inferiore' },
+        ]},
+      ]},
+      '4': { cosa:'Rete agenti regionale + sviluppo export o GDO', tempo_mesi:4, moduli:[
+        { id:'rete', nome:'Rete agenti vini', tipo:'multi', obbligatorio:true, min:2, varianti:[
+          { id:'agente', nome:'Agente HORECA/enoteche', costo_mensile:800, costo_setup:0, impatto:0.3, note:'Per zona/regione' },
+          { id:'dip', nome:'Commerciale dipendente', costo_mensile:2200, costo_setup:0, impatto:0.25, note:'Per zona ad alto potenziale' },
+        ]},
+        { id:'export', nome:'Sviluppo export', tipo:'scelta', obbligatorio:false, varianti:[
+          { id:'manager', nome:'Export manager vini dedicato', costo_mensile:2500, costo_setup:0, impatto:0.2, note:'Fiere internazionali, importatori, certificazioni export' },
+          { id:'tem', nome:'Temporary export manager', costo_mensile:1000, costo_setup:500, impatto:0.1, note:'Supporto bandi ICE/SIMEST, contatti importatori' },
+        ]},
+      ]},
+      '5': { cosa:'Dir. commerciale + rete agenti nazionale + export strutturato', tempo_mesi:6, moduli:[
+        { id:'resp', nome:'Direttore commerciale vini', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Dir. commerciale wine dipendente', costo_mensile:3500, costo_setup:0, impatto:0.5, note:'Coordinamento agenti, rapporti GDO, pricing, export' },
+          { id:'fractional', nome:'Dir. commerciale fractional', costo_mensile:1800, costo_setup:0, impatto:0.35, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini a voce e WhatsApp', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Excel con clienti, ordini per etichetta e pagamenti',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'agenda_buyer',
-        nome: 'Agenda contatti buyer/importatori',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 0,
-        impatto: 0.15,
-        note: 'Database ristoranti, enoteche, importatori con note preferenze'
-}
-      ]
-      },
-      '3': {
-        cosa: 'CRM con ristoranti, enoteche, importatori e preferenze',
-        tempo_mesi: 1,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM con ristoranti, enoteche, importatori e preferenze', costo_mensile:300, costo_setup:500, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:150, costo_setup:300, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'CRM integrato con gestionale cantina e magazzino vini',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM integrato con gestionale cantina e magazzino vini', costo_mensile:600, costo_setup:1500, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:300, costo_setup:900, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'ERP vitivinicolo — vigna, cantina, vendite, compliance, export',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'ERP vitivinicolo', costo_mensile:1200, costo_setup:5000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:600, costo_setup:3000, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Excel con clienti HORECA, ordini, pagamenti e preferenze', tempo_mesi:1, moduli:[
+        { id:'strumento', nome:'Strumento tracciamento', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'excel', nome:'Excel/Fogli Google strutturato', costo_mensile:0, costo_setup:100, impatto:0.7, note:'Cliente, tipo (ristorante/enoteca/privato), ordini, vini preferiti' },
+          { id:'crm_free', nome:'CRM gratuito (HubSpot Free/Zoho)', costo_mensile:0, costo_setup:200, impatto:0.85, note:'Pipeline + storico ordini + reminder riordino' },
+        ]},
+      ]},
+      '3': { cosa:'CRM vini con gestione clienti HORECA, contratti e promozioni', tempo_mesi:1, moduli:[
+        { id:'crm', nome:'CRM wine/HORECA', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'CRM wine (VinCRM/Vin65)', costo_mensile:80, costo_setup:500, impatto:1.0, note:'Gestione clienti HORECA, wine club, ordini per etichetta, storico' },
+          { id:'generico', nome:'CRM generico (Pipedrive/Zoho)', costo_mensile:40, costo_setup:300, impatto:0.6, note:'Pipeline vendita, meno specifico per vino' },
+        ]},
+      ]},
+      '4': { cosa:'Gestionale cantina integrato — ordini, stock bottiglie, spedizioni', tempo_mesi:2, moduli:[
+        { id:'gestionale', nome:'Gestionale cantina', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'wine', nome:'Gestionale cantina (Enologia/WineDirect)', costo_mensile:300, costo_setup:1500, impatto:1.0, note:'Stock per etichetta/annata, ordini, spedizioni, compliance accise' },
+          { id:'generico', nome:'Gestionale generico + foglio stock', costo_mensile:100, costo_setup:600, impatto:0.55, note:'Danea/FiC + Excel per stock bottiglie' },
+        ]},
+      ]},
+      '5': { cosa:'ERP wine completo — produzione, stock, ordini, accise, export docs', tempo_mesi:4, moduli:[
+        { id:'erp', nome:'ERP cantina completo', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'ERP wine (Enologia Pro/SAP Wine)', costo_mensile:800, costo_setup:5000, impatto:1.0, note:'Vendemmia, vinificazione, imbottigliamento, stock, accise, ordini, export, BI' },
+          { id:'mid', nome:'Gestionale cantina mid-market', costo_mensile:400, costo_setup:2500, impatto:0.6, note:'Funzionalita core, meno automazione' },
+        ]},
+      ]},
     },
     team: {
-      '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Ruoli cantina/vendita/enoturismo definiti',
-        tempo_mesi: 1,
-        moduli: [
-      {
-            id: 'ruoli',
-            nome: 'Organigramma cantina',
-            tipo: 'flag',
-            obbligatorio: true,
-            costo_mensile: 0,
-            costo_setup: 200,
-            impatto: 0.7,
-            note: 'Chi fa cantina, chi vende, chi accoglie in cantina'
-      }
-,
-{
-        id: 'accoglienza',
-        nome: 'Standard accoglienza visitatori cantina',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 100,
-        impatto: 0.15,
-        note: 'Come accogliere, cosa far assaggiare, come vendere'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Enologo consulente + pianificazione vendemmia/produzione',
-        tempo_mesi: 2,
-        moduli: [
-      {
-            id: 'enologo',
-            nome: 'Supporto enologico',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-                  {
-                        id: 'consulente',
-                        nome: 'Enologo consulente esterno',
-                        costo_mensile: 300,
-                        costo_setup: 0,
-                        impatto: 1,
-                        note: 'Vinificazione, blend, qualità — visite periodiche'
-                  },
-                  {
-                        id: 'interno',
-                        nome: 'Cantiniere formato con delega',
-                        costo_mensile: 200,
-                        costo_setup: 500,
-                        impatto: 0.7,
-                        note: 'Formazione enologica base, segue le indicazioni'
-                  }
-            ]
-      }
-]
-      },
-      '4': {
-        cosa: 'KPI cantina + gestione qualità DOC/DOCG',
-        tempo_mesi: 3,
-        moduli: [
-      {
-            id: 'kpi',
-            nome: 'KPI produzione e qualità',
-            tipo: 'flag',
-            obbligatorio: true,
-            costo_mensile: 0,
-            costo_setup: 500,
-            impatto: 0.5,
-            note: 'Resa per ettaro, costi per bottiglia, qualità per annata'
-      },
-      {
-            id: 'doc',
-            nome: 'Gestione disciplinare DOC/DOCG',
-            tipo: 'flag',
-            obbligatorio: true,
-            costo_mensile: 0,
-            costo_setup: 500,
-            impatto: 0.3,
-            note: 'Rispetto disciplinare, documentazione, controlli'
-      },
-      {
-            id: 'consulente',
-            nome: 'Consulente gestione cantina',
-            tipo: 'flag',
-            obbligatorio: false,
-            costo_mensile: 400,
-            costo_setup: 0,
-            impatto: 0.2
-      }
-]
-      },
-      '5': {
-        cosa: 'Governance enologo + commerciale strutturata',
-        tempo_mesi: 4,
-        moduli: [
-      {
-            id: 'manager',
-            nome: 'Direttore di cantina',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-                  {
-                        id: 'dip',
-                        nome: 'Direttore cantina dipendente',
-                        costo_mensile: 3000,
-                        costo_setup: 0,
-                        impatto: 1,
-                        note: 'Produzione + commerciale + enoturismo + qualità'
-                  },
-                  {
-                        id: 'fractional',
-                        nome: 'Wine manager fractional',
-                        costo_mensile: 1500,
-                        costo_setup: 0,
-                        impatto: 0.65,
-                        note: '2-3 giorni/settimana + vendemmia'
-                  }
-            ]
-      }
-]
-      },
+      '1': { chi:'Titolare', cosa:'Nessuna organizzazione — titolare fa tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Ruoli cantina/vendita separati — mansionario', tempo_mesi:1, moduli:[
+        { id:'organigramma', nome:'Organigramma cantina + commerciale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.7, note:'Enologo/cantina, vendita/accoglienza, amministrazione — chi fa cosa' },
+      ]},
+      '3': { cosa:'Enologo/responsabile cantina + addetto accoglienza/vendita', tempo_mesi:2, moduli:[
+        { id:'enologo', nome:'Enologo/responsabile cantina', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Enologo dipendente', costo_mensile:2500, costo_setup:0, impatto:0.7, note:'Gestione vinificazione, qualita, blend, imbottigliamento' },
+          { id:'consulente', nome:'Enologo consulente', costo_mensile:800, costo_setup:0, impatto:0.5, note:'Visite periodiche, analisi, consigli vendemmia e vinificazione' },
+        ]},
+        { id:'accoglienza', nome:'Addetto wine tasting/vendita diretta', tipo:'scelta', obbligatorio:false, varianti:[
+          { id:'dip', nome:'Addetto accoglienza dipendente', costo_mensile:1600, costo_setup:0, impatto:0.2, note:'Degustazioni, visite cantina, vendita diretta, wine club' },
+          { id:'stagionale', nome:'Addetto stagionale (primavera-autunno)', costo_mensile:1200, costo_setup:0, impatto:0.15, note:'Solo stagione alta: aprile-ottobre' },
+        ]},
+      ]},
+      '4': { cosa:'KPI cantina/vendita + responsabile commerciale', tempo_mesi:3, moduli:[
+        { id:'resp_comm', nome:'Responsabile commerciale vini', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2800, costo_setup:0, impatto:1.0, note:'Coordinamento agenti, rapporti HORECA, pricing, export' },
+          { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1400, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' },
+        ]},
+        { id:'kpi', nome:'Dashboard KPI cantina', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.15, note:'Vendite per etichetta, margine, rotazione, export vs Italia' },
+      ]},
+      '5': { cosa:'Management completo — titolare solo strategia e brand', tempo_mesi:5, moduli:[
+        { id:'manager', nome:'Direttore operativo cantina', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Dir. operativo dipendente', costo_mensile:3500, costo_setup:0, impatto:1.0, note:'Cantina, vendite, logistica, personale — il titolare fa brand e relazioni' },
+          { id:'fractional', nome:'Operations manager fractional', costo_mensile:1500, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
       _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Processi artigianali — nessuna formalizzazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Schede tecniche vini + gestione lotti e annate',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'processo', nome:'Schede tecniche vini + gestione lotti e annate', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:300, impatto:0.8 }
-        ,
-{
-        id: 'registro_cantina',
-        nome: 'Registro cantina digitale (lotti, analisi)',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Registro vinificazione, analisi, travasi — obbligatorio ICQRF'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Gestionale cantina — vinificazione, imbottigliamento, lotti',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Gestionale cantina',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:300, costo_setup:1500, impatto:1, note:'Gestionale cantina — vinificazione, imbottigliamento, lotti' },
-              { id:'base', nome:'Soluzione base', costo_mensile:150, costo_setup:750, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Documentazione export — accise, certificati, compliance DOC/DOCG',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Documentazione export',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:500, costo_setup:2000, impatto:1, note:'Documentazione export — accise, certificati, compliance DOC/DOCG' },
-              { id:'base', nome:'Soluzione base', costo_mensile:250, costo_setup:1000, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'ERP completo — vigna-to-glass, tracciabilità, analisi costi',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'ERP completo',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:1000, costo_setup:5000, impatto:1, note:'ERP completo — vigna-to-glass, tracciabilità, analisi costi' },
-              { id:'base', nome:'Soluzione base', costo_mensile:500, costo_setup:2500, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Schede vino strutturate + gestione registro cantina/accise', tempo_mesi:1, moduli:[
+        { id:'registro', nome:'Registro cantina e accise digitale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.7, note:'Registro carico/scarico, accise, documenti di trasporto e-AD' },
+        { id:'schede', nome:'Schede tecniche vini', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.2, note:'Scheda per etichetta: vitigno, vinificazione, analisi, note degustazione, abbinamenti' },
+      ]},
+      '3': { cosa:'Software gestione cantina con vinificazione e tracciabilita', tempo_mesi:2, moduli:[
+        { id:'software', nome:'Software gestione cantina', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'Gestionale cantina (Enologia/WineGest)', costo_mensile:200, costo_setup:1500, impatto:1.0, note:'Vinificazione, vasche, analisi, imbottigliamento, lotti, accise automatiche' },
+          { id:'base', nome:'Foglio Excel avanzato + registro cartaceo', costo_mensile:0, costo_setup:500, impatto:0.4, note:'Gestione manuale strutturata' },
+        ]},
+      ]},
+      '4': { cosa:'Certificazioni qualita (DOC/DOCG/BIO) + processo qualita strutturato', tempo_mesi:3, moduli:[
+        { id:'certificazioni', nome:'Gestione certificazioni vino', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'doc_bio', nome:'DOC/DOCG + certificazione biologica', costo_mensile:200, costo_setup:2000, impatto:1.0, note:'Documentazione DOC/DOCG, eventuale conversione bio, audit annuali' },
+          { id:'doc', nome:'Solo DOC/DOCG (senza bio)', costo_mensile:100, costo_setup:1000, impatto:0.6, note:'Gestione disciplinare, analisi, documentazione per consorzio' },
+        ]},
+      ]},
+      '5': { cosa:'ERP cantina + tracciabilita completa vigna-bottiglia + BI', tempo_mesi:4, moduli:[
+        { id:'erp', nome:'ERP cantina completo', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'ERP wine (Enologia Pro/Custom)', costo_mensile:700, costo_setup:5000, impatto:1.0, note:'Vigna, vendemmia, vinificazione, imbottigliamento, stock, accise, vendite, BI' },
+          { id:'mid', nome:'Gestionale cantina avanzato', costo_mensile:350, costo_setup:2500, impatto:0.55, note:'Funzionalita core, meno BI' },
+        ]},
+      ]},
     },
     ricavi: {
-      '1': { chi:'Titolare', cosa:'Prezzo a bottiglia fisso — nessuna segmentazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Pricing differenziato — cantina, HORECA, enoteca, export',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'ricavi', nome:'Pricing differenziato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'prezzi_canale',
-        nome: 'Listino per canale (cantina, HORECA, export)',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 0,
-        impatto: 0.15,
-        note: 'Prezzo diverso per vendita diretta, ristorante, importatore'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Degustazioni a pagamento + esperienze in vigna',
-        tempo_mesi: 2,
-        moduli: [
-      {
-            id: 'enoturismo',
-            nome: 'Enoturismo strutturato',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-                  {
-                        id: 'base',
-                        nome: 'Degustazioni in cantina',
-                        costo_mensile: 0,
-                        costo_setup: 500,
-                        impatto: 0.7,
-                        note: '15-25€ a persona, 2-3 degustazioni/giorno'
-                  },
-                  {
-                        id: 'premium',
-                        nome: 'Esperienze premium (vigna + pranzo + degustazione)',
-                        costo_mensile: 0,
-                        costo_setup: 1000,
-                        impatto: 1,
-                        note: '50-100€ a persona, margine altissimo'
-                  }
-            ]
-      }
-]
-      },
-      '4': {
-        cosa: 'Wine club con abbonamento + verticali annate premium',
-        tempo_mesi: 2,
-        moduli: [
-      {
-            id: 'wine_club',
-            nome: 'Wine club/abbonamento',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-                  {
-                        id: 'fisico',
-                        nome: 'Wine club con spedizione trimestrale',
-                        costo_mensile: 100,
-                        costo_setup: 500,
-                        impatto: 0.7,
-                        note: 'Box 3-6 bottiglie/trimestre — ricavo ricorrente, DTC'
-                  },
-                  {
-                        id: 'digitale',
-                        nome: 'Membership digitale + accesso prioritario',
-                        costo_mensile: 50,
-                        costo_setup: 300,
-                        impatto: 0.5,
-                        note: 'Anteprime, sconti, eventi riservati — fidelizzazione'
-                  }
-            ]
-      },
-      {
-            id: 'verticali',
-            nome: 'Verticali annate premium',
-            tipo: 'flag',
-            obbligatorio: false,
-            costo_mensile: 0,
-            costo_setup: 500,
-            impatto: 0.2,
-            note: 'Selezione annate vecchie — margine altissimo per intenditori'
-      }
-]
-      },
-      '5': {
-        cosa: 'Mix ricavi — HORECA, export, DTC, enoturismo, eventi privati',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'ricavi',
-            nome: 'Mix ricavi',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:700, costo_setup:2000, impatto:1, note:'Mix ricavi — HORECA, export, DTC, enoturismo, eventi privati' },
-              { id:'graduale', nome:'Implementazione graduale', costo_mensile:350, costo_setup:1000, impatto:0.65, note:'Avvio parziale, si espande' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare', cosa:'Prezzo unico per tutti — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Pricing differenziato per canale: HORECA, enoteca, privato, export', tempo_mesi:1, moduli:[
+        { id:'pricing', nome:'Listini per canale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.7, note:'Prezzo diverso per ristorante, enoteca, privato, distributore, export' },
+        { id:'analisi', nome:'Analisi margini per etichetta/canale', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:0, impatto:0.15, note:'Quale vino rende di piu, quale canale e piu profittevole' },
+      ]},
+      '3': { cosa:'Wine tasting in cantina + vendita diretta a privati', tempo_mesi:2, moduli:[
+        { id:'tasting', nome:'Wine tasting experience', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'strutturato', nome:'Degustazione strutturata a pagamento', costo_mensile:0, costo_setup:500, impatto:0.6, note:'Percorso degustazione, abbinamento cibo, tour cantina — conversion vendita 80%+' },
+          { id:'gratuito', nome:'Degustazione gratuita per gruppi/visitatori', costo_mensile:100, costo_setup:200, impatto:0.35, note:'Degustazione base per attrarre visitatori, vendita al calice' },
+        ]},
+        { id:'wine_club', nome:'Wine club/abbonamento', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:300, impatto:0.2, note:'Abbonamento trimestrale/semestrale con selezione vini, eventi riservati' },
+      ]},
+      '4': { cosa:'Linea premium/riserva + eventi in cantina come revenue', tempo_mesi:2, moduli:[
+        { id:'premium', nome:'Linea premium/riserva/cru', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.6, note:'Selezione top, invecchiamento, packaging premium — margine 3-5x vs base' },
+        { id:'eventi', nome:'Eventi in cantina (cene, matrimoni, corporate)', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.2, note:'Affitto spazi + catering + vini propri — revenue aggiuntivo' },
+      ]},
+      '5': { cosa:'Mix ricavi ottimizzato — HORECA, export, DTC, wine club, eventi', tempo_mesi:3, moduli:[
+        { id:'mix', nome:'Ottimizzazione mix ricavi', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'Mix completo (HORECA + export + DTC + eventi)', costo_mensile:500, costo_setup:2000, impatto:1.0, note:'Diversificazione canali per massimizzare margine e ridurre rischio' },
+          { id:'focus', nome:'Focus su 2 canali principali', costo_mensile:200, costo_setup:800, impatto:0.55, note:'Concentrazione su HORECA Italia + 1 canale secondario' },
+        ]},
+      ]},
     },
     marketing: {
-      '1': { chi:'Nessuno', cosa:'Nessuno — solo passaparola e guide vini', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Instagram con foto vigna, cantina e degustazioni',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'marketing', nome:'Instagram con foto vigna, cantina e degustazioni', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'wine_press',
-        nome: 'Invio campioni a giornalisti/guide vini',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 300,
-        impatto: 0.15,
-        note: 'Gambero Rosso, Slow Wine, Veronelli — punteggi = vendite'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Social curato + PR enogastronomiche + guide (Gambero Rosso)',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'marketing', nome:'Social curato + PR enogastronomiche + guide (Gambero Rosso)', tipo:'flag', obbligatorio:true, costo_mensile:600, costo_setup:2000, impatto:0.8 }
-        ,
-{
-        id: 'enoturismo_mkt',
-        nome: 'Promozione enoturismo (portali, TripAdvisor)',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 100,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Winedering, Airbnb Experiences, TripAdvisor — turisti in cantina'
-}
-      ]
-      },
-      '4': {
-        cosa: 'Wine events + fiere (Vinitaly, ProWein) + influencer wine',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'Wine events + fiere (Vinitaly, ProWein) + influencer wine',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1500, costo_setup:5000, impatto:1, note:'Wine events + fiere (Vinitaly, ProWein) + influencer wine' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:600, costo_setup:2500, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Piano marketing — brand storytelling, export promo, enoturismo',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'Piano marketing',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:3000, costo_setup:6000, impatto:1, note:'Piano marketing — brand storytelling, export promo, enoturismo' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:1200, costo_setup:3000, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo etichetta e passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Instagram con foto vigneto/cantina + Google My Business', tempo_mesi:1, moduli:[
+        { id:'social', nome:'Social media cantina', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.5, note:'Instagram con foto vigneto, cantina, vendemmia, degustazioni' },
+        { id:'gmb', nome:'Google My Business cantina', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.3, note:'Scheda con orari, foto, recensioni, prenotazione degustazione' },
+      ]},
+      '3': { cosa:'Fiere vino (Vinitaly, Prowein) + guide (Gambero Rosso, Slow Wine)', tempo_mesi:2, moduli:[
+        { id:'fiere', nome:'Partecipazione fiere vino', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'stand', nome:'Stand a Vinitaly/Prowein', costo_mensile:300, costo_setup:5000, impatto:1.0, note:'Stand, campionatura, 1-2 fiere/anno, contatto diretto importatori e buyer' },
+          { id:'collettivo', nome:'Partecipazione collettiva con consorzio', costo_mensile:150, costo_setup:1500, impatto:0.5, note:'Spazio condiviso con consorzio, costi ridotti' },
+        ]},
+        { id:'guide', nome:'Iscrizione guide vino', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.2, note:'Gambero Rosso, Slow Wine, Bibenda — invio campioni, visite degustatori' },
+      ]},
+      '4': { cosa:'PR wine + enoturismo strutturato + collaborazioni chef', tempo_mesi:2, moduli:[
+        { id:'pr', nome:'PR e comunicazione vino', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia PR wine specializzata', costo_mensile:1000, costo_setup:2000, impatto:1.0, note:'Ufficio stampa, recensioni, eventi stampa, influencer wine' },
+          { id:'freelance', nome:'PR freelance + social', costo_mensile:500, costo_setup:500, impatto:0.5, note:'1 professionista, focus stampa locale e social' },
+        ]},
+        { id:'enoturismo', nome:'Pacchetti enoturismo', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.2, note:'Accordi con agriturismi, tour operator, piattaforme (Winedering, Airbnb Experiences)' },
+      ]},
+      '5': { cosa:'Piano marketing wine completo — brand, fiere internazionali, digital, enoturismo', tempo_mesi:4, moduli:[
+        { id:'piano', nome:'Piano marketing wine', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia marketing wine/food', costo_mensile:2000, costo_setup:4000, impatto:1.0, note:'Brand positioning, fiere internazionali, digital, PR, enoturismo' },
+          { id:'interno', nome:'Marketing manager wine interno', costo_mensile:1000, costo_setup:500, impatto:0.6, note:'1 risorsa dedicata' },
+        ]},
+      ]},
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Sito vetrina con storia, vini, contatti cantina',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'sito', nome:'Sito vetrina con storia, vini, contatti cantina', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:1000, impatto:0.8 }
-        ,
-{
-        id: 'booking',
-        nome: 'Form prenotazione visita/degustazione',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Prenotazione online per enoturismo'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Sito con catalogo vini, schede tecniche, prenotazione visite',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Sito con catalogo vini, schede tecniche, prenotazione visite',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:300, costo_setup:2500, impatto:1, note:'Sito con catalogo vini, schede tecniche, prenotazione visite' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:120, costo_setup:1000, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'E-commerce DTC — vendita diretta, wine club, gift box',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'E-commerce DTC',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:600, costo_setup:5000, impatto:1, note:'E-commerce DTC — vendita diretta, wine club, gift box' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:240, costo_setup:2000, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Piattaforma DTC + B2B + enoturismo + CRM integrato',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Piattaforma DTC',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:1200, costo_setup:10000, impatto:1, note:'Piattaforma DTC + B2B + enoturismo + CRM integrato' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:480, costo_setup:4000, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Sito cantina con storia, vini, territorio e contatti', tempo_mesi:1, moduli:[
+        { id:'sito', nome:'Sito cantina', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'custom', nome:'Sito custom (design wine)', costo_mensile:30, costo_setup:2000, impatto:1.0, note:'Storytelling, gallery vini, territorio, prenotazione degustazione' },
+          { id:'template', nome:'Sito da template (Squarespace/Wix)', costo_mensile:20, costo_setup:600, impatto:0.5, note:'Template wine, meno personalizzabile' },
+        ]},
+      ]},
+      '3': { cosa:'Catalogo vini online con schede tecniche + prenotazione degustazione', tempo_mesi:2, moduli:[
+        { id:'catalogo', nome:'Catalogo vini online', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:1000, impatto:0.5, note:'Scheda per vino: foto, vitigno, vinificazione, note degustazione, premi' },
+        { id:'booking', nome:'Prenotazione degustazione online', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.4, note:'Calendly/form per prenotare visita e degustazione in cantina' },
+      ]},
+      '4': { cosa:'E-commerce DTC per vendita diretta + wine club online', tempo_mesi:3, moduli:[
+        { id:'ecommerce', nome:'E-commerce wine DTC', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'shopify', nome:'Shopify + tema wine', costo_mensile:100, costo_setup:3000, impatto:1.0, note:'Vendita diretta, box regalo, abbonamento wine club, spedizione' },
+          { id:'woocommerce', nome:'WooCommerce + plugin wine', costo_mensile:50, costo_setup:2000, impatto:0.6, note:'Piu personalizzabile, gestione eta minima, temperatura spedizione' },
+        ]},
+      ]},
+      '5': { cosa:'Piattaforma integrata — DTC + B2B + wine club + enoturismo', tempo_mesi:4, moduli:[
+        { id:'piattaforma', nome:'Piattaforma wine omnicanale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'Piattaforma wine enterprise (WineDirect/custom)', costo_mensile:500, costo_setup:8000, impatto:1.0, note:'E-commerce DTC + portale B2B + wine club + prenotazione esperienze + CRM' },
+          { id:'mid', nome:'Shopify + area B2B + plugin wine club', costo_mensile:200, costo_setup:3000, impatto:0.5, note:'E-commerce + gestione base wine club e B2B' },
+        ]},
+      ]},
     },
     ecommerce: {
-      '1': { chi:'Titolare', cosa:'Vigna propria + acquisto uve da conferitori abituali', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Selezione conferitori — analisi uve, contratti annuali',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'canale', nome:'Selezione conferitori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
-        ,
-{
-        id: 'analisi_uve',
-        nome: 'Analisi qualità uve per fornitore',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 100,
-        impatto: 0.15,
-        note: 'Zuccheri, acidità, stato sanitario — selezione obiettiva'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Agronomo per vigna + accordi pluriennali conferitori',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Agronomo per vigna + accordi pluriennali conferitori',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:500, costo_setup:500, impatto:1, note:'Agronomo per vigna + accordi pluriennali conferitori' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:250, costo_setup:200, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Buyer per acquisto uve selezionate e packaging premium',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Buyer per acquisto uve selezionate e packaging premium',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:1500, costo_setup:1000, impatto:1, note:'Buyer per acquisto uve selezionate e packaging premium' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:750, costo_setup:400, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Resp. acquisti — vigna, uve, packaging, tappi, bottiglie, export',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Resp. acquisti',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:3000, costo_setup:2000, impatto:1, note:'Resp. acquisti — vigna, uve, packaging, tappi, bottiglie, export' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:1500, costo_setup:800, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
       _label: 'Approvvigionamento e vigna',
+      '1': { chi:'Titolare', cosa:'Vigna propria e acquisto uve da 1-2 conferitori', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Selezione fornitori — uve, tappi, bottiglie, etichette', tempo_mesi:1, moduli:[
+        { id:'fornitori', nome:'Database fornitori cantina', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.7, note:'Scheda per fornitore: uve (vitigno, zona, qualita), vetro, tappi, etichette, cartoni' },
+      ]},
+      '3': { cosa:'Accordi con conferitori uve + fornitori packaging selezionati', tempo_mesi:2, moduli:[
+        { id:'uve', nome:'Accordi conferitori uve', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.6, note:'Contratti con 2-3 viticoltori: vitigno, resa max, prezzo, tempistica vendemmia' },
+        { id:'packaging', nome:'Fornitori packaging qualita', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:200, impatto:0.15, note:'Bottiglie, tappi sughero/sintetico, etichette, capsule — qualita per posizionamento' },
+      ]},
+      '4': { cosa:'Enologo consulente per blend + gestione vigna strutturata', tempo_mesi:3, moduli:[
+        { id:'vigna', nome:'Gestione vigna/agronomo', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agronomo', nome:'Agronomo/consulente viticolo', costo_mensile:500, costo_setup:0, impatto:1.0, note:'Gestione fitosanitaria, potatura, vendemmia, conversione bio' },
+          { id:'autonomo', nome:'Gestione autonoma con formazione', costo_mensile:0, costo_setup:500, impatto:0.5, note:'Il titolare gestisce con supporto formativo periodico' },
+        ]},
+      ]},
+      '5': { cosa:'Resp. produzione — vigna, cantina, qualita, packaging, logistica', tempo_mesi:4, moduli:[
+        { id:'resp', nome:'Responsabile produzione cantina', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Enologo/resp. produzione dipendente', costo_mensile:3000, costo_setup:0, impatto:1.0, note:'Vigna, vinificazione, qualita, imbottigliamento, accise, logistica' },
+          { id:'fractional', nome:'Enologo consulente avanzato', costo_mensile:1200, costo_setup:0, impatto:0.6, note:'2-3 giorni/settimana, periodi critici full-time (vendemmia)' },
+        ]},
+      ]},
     }
   },
 
