@@ -230,13 +230,38 @@ function showLogin() {
   document.getElementById('login-msg').className = 'login-msg';
 }
 
-// LOGIN
+// LOGIN — brute force protection
+const MAX_ATTEMPTS = 5;
+const LOCKOUT_MS = 5 * 60 * 1000;
+let loginAttempts = 0;
+let lockoutTimer = null;
+
+function startLockout(btn, msg) {
+  btn.disabled = true;
+  let remaining = LOCKOUT_MS / 1000;
+  msg.className = 'login-msg error';
+  lockoutTimer = setInterval(() => {
+    remaining--;
+    msg.textContent = `Troppi tentativi. Riprova tra ${remaining}s`;
+    if (remaining <= 0) {
+      clearInterval(lockoutTimer);
+      loginAttempts = 0;
+      btn.disabled = false;
+      btn.textContent = 'Accedi';
+      msg.textContent = '';
+      msg.className = 'login-msg';
+    }
+  }, 1000);
+}
+
 document.getElementById('login-form').addEventListener('submit', async function(e) {
   e.preventDefault();
   const btn = document.getElementById('login-btn');
   const msg = document.getElementById('login-msg');
   const email = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password').value;
+
+  if (btn.disabled) return;
 
   btn.disabled = true;
   btn.textContent = 'Accesso in corso...';
@@ -246,10 +271,15 @@ document.getElementById('login-form').addEventListener('submit', async function(
   const { error } = await sb.auth.signInWithPassword({ email, password });
 
   if (error) {
-    msg.textContent = 'Email o password non validi';
-    msg.className = 'login-msg error';
-    btn.disabled = false;
-    btn.textContent = 'Accedi';
+    loginAttempts++;
+    if (loginAttempts >= MAX_ATTEMPTS) {
+      startLockout(btn, msg);
+    } else {
+      msg.textContent = `Email o password non validi (${loginAttempts}/${MAX_ATTEMPTS} tentativi)`;
+      msg.className = 'login-msg error';
+      btn.disabled = false;
+      btn.textContent = 'Accedi';
+    }
   } else {
     window.location.href = '/index.html';
   }
