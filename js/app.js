@@ -10,6 +10,23 @@ async function logout() {
   window.location.href = '/login.html';
 }
 
+// -- INACTIVITY TIMEOUT (3 ore) ----------------------------
+(function() {
+  const TIMEOUT_MS = 3 * 60 * 60 * 1000;
+  let timer;
+  function reset() {
+    clearTimeout(timer);
+    timer = setTimeout(async () => {
+      await sb.auth.signOut();
+      window.location.href = '/login.html';
+    }, TIMEOUT_MS);
+  }
+  ['mousemove','keydown','click','scroll','touchstart'].forEach(e =>
+    document.addEventListener(e, reset, { passive: true })
+  );
+  reset();
+})();
+
 // -- ADMIN -------------------------------------------------
 async function renderAdminPanel() {
   // Nascondi tutto e mostra il pannello admin
