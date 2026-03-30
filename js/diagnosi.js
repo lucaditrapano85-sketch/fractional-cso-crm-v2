@@ -378,16 +378,38 @@ async function init() {
   const { data: { session } } = await sb.auth.getSession();
   if (!session) { window.location.href = '/login.html'; return; }
   window._currentUserId = session.user.id;
+  window._viewAsUserId = null; // admin: se impostato, filtra per questo utente
+
+  // Carica profilo per check admin
+  const { data: profile } = await sb.from('profiles').select('*').eq('id', session.user.id).single();
+  window._isAdmin = profile?.is_admin === true;
+  window._currentProfile = profile;
 
   document.getElementById('dash-date').textContent=new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  const {data,error}=await sb.from('prospects').select('*').order('created_at',{ascending:false});
-  if(error){showToast('Errore connessione database','error');console.error(error);return;}
-  prospects=data||[];
-  window._allProspects = prospects;
+
+  await _loadProspectsData();
   await loadEventi();
   await loadBenchmarkCustom();
   renderSidebar();
   renderDashboard();
+
+  // Mostra pulsante admin se admin
+  if (window._isAdmin) {
+    const adminBtn = document.getElementById('admin-btn');
+    if (adminBtn) adminBtn.style.display = '';
+  }
+}
+
+async function _loadProspectsData() {
+  let query = sb.from('prospects').select('*').order('created_at',{ascending:false});
+  // Se admin sta visualizzando un utente specifico, filtra per user_id
+  if (window._viewAsUserId) {
+    query = query.eq('user_id', window._viewAsUserId);
+  }
+  const {data,error} = await query;
+  if(error){showToast('Errore connessione database','error');console.error(error);return;}
+  prospects=data||[];
+  window._allProspects = prospects;
 }
 
 init();

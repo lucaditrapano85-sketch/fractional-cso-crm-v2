@@ -10,6 +10,99 @@ async function logout() {
   window.location.href = '/login.html';
 }
 
+// -- ADMIN -------------------------------------------------
+async function renderAdminPanel() {
+  // Nascondi tutto e mostra il pannello admin
+  document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
+  const main = document.getElementById('main');
+  if (!main) return;
+
+  // Carica tutti i profili
+  const { data: users, error } = await sb.from('profiles').select('*').order('created_at', { ascending: false });
+  if (error) { showToast('Errore caricamento utenti', 'error'); return; }
+
+  // Se stiamo visualizzando come un utente, mostra banner
+  const viewingAs = window._viewAsUserId;
+  const viewingUser = viewingAs ? users.find(u => u.id === viewingAs) : null;
+
+  let html = '<div class="view" id="view-admin" style="display:block;padding:20px">';
+
+  // Banner "stai visualizzando come"
+  if (viewingUser) {
+    html += '<div class="admin-viewing-banner">' +
+      '<span>Stai visualizzando come: <strong>' + (viewingUser.nome || '') + ' ' + (viewingUser.cognome || '') + '</strong> (' + viewingUser.email + ')</span>' +
+      '<button onclick="adminExitViewAs()" class="admin-exit-btn">Torna alla vista admin</button>' +
+    '</div>';
+  }
+
+  html += '<div class="det-header"><h2 style="font-size:20px">Gestione Utenti</h2>' +
+    '<p style="color:var(--gray2);font-size:12px;margin-top:4px">' + users.length + ' utenti registrati</p></div>';
+
+  html += '<div class="admin-users-grid">';
+  users.forEach(function(u) {
+    const isCurrentView = viewingAs === u.id;
+    const isSelf = u.id === window._currentUserId;
+    const nome = (u.nome || '') + ' ' + (u.cognome || '');
+    const initials = ((u.nome || '?')[0] + (u.cognome || '?')[0]).toUpperCase();
+
+    // Conta prospect di questo utente
+    const prospectCount = (window._isAdmin && window._allUsersProspectCounts)
+      ? (window._allUsersProspectCounts[u.id] || 0) : '—';
+
+    html += '<div class="admin-user-card' + (isCurrentView ? ' active' : '') + (isSelf ? ' self' : '') + '" onclick="adminViewAs(\'' + u.id + '\')">' +
+      '<div class="admin-user-avatar">' + initials + '</div>' +
+      '<div class="admin-user-info">' +
+        '<div class="admin-user-name">' + nome.trim() + (u.is_admin ? ' <span class="admin-badge">ADMIN</span>' : '') + '</div>' +
+        '<div class="admin-user-email">' + u.email + '</div>' +
+        '<div class="admin-user-meta">ID: ' + u.id.substring(0, 8) + '...' +
+          (u.telefono ? ' &middot; ' + u.telefono : '') +
+          ' &middot; Registrato: ' + new Date(u.created_at).toLocaleDateString('it-IT') +
+        '</div>' +
+      '</div>' +
+      '<div class="admin-user-arrow">&#8250;</div>' +
+    '</div>';
+  });
+  html += '</div></div>';
+
+  // Rimuovi vecchio pannello admin se esiste
+  const old = document.getElementById('view-admin');
+  if (old) old.remove();
+
+  main.insertAdjacentHTML('beforeend', html);
+}
+
+async function adminViewAs(userId) {
+  if (userId === window._currentUserId && !window._viewAsUserId) {
+    // Clicca su se stesso senza viewing → non fare nulla
+    return;
+  }
+  window._viewAsUserId = (userId === window._currentUserId) ? null : userId;
+
+  // Ricarica i dati filtrati per quell'utente
+  await _loadProspectsData();
+  await loadEventi();
+  await loadBenchmarkCustom();
+  renderSidebar();
+
+  if (window._viewAsUserId) {
+    // Mostra la dashboard del CSO selezionato
+    renderDashboard();
+    showToast('Visualizzazione come utente selezionato');
+  } else {
+    renderDashboard();
+    showToast('Tornato alla tua vista');
+  }
+}
+
+async function adminExitViewAs() {
+  window._viewAsUserId = null;
+  await _loadProspectsData();
+  await loadEventi();
+  await loadBenchmarkCustom();
+  renderSidebar();
+  renderAdminPanel();
+}
+
 // -- UTILS -------------------------------------------------
 
 // Controlla se gli obiettivi sono REALMENTE raggiunti (con sessioni fatte, non solo diagnosi = target)
