@@ -5624,1291 +5624,210 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   tech_system_integrator: {
     vendite: {
-      '1': { chi:'Founder/partner', cosa:'Founder/partner vende', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Networking + eventi vendor',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:500, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: '1 account manager (~3.000€)',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:3000, costo_setup:500, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1650, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1350, costo_setup:500, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Account + pre-sales (~3.200€)',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'resp',
-            nome: 'Responsabile commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2480, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
-              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1364, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          },
-          {
-            id: 'team',
-            nome: 'Figure commerciali',
-            tipo: 'multi',
-            obbligatorio: true,
-            min: 2,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1240, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:930, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Sales manager + team',
-        tempo_mesi: 6,
-        moduli: [
-          {
-            id: 'resp',
-            nome: 'Responsabile commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:4000, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
-              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:2200, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          },
-          {
-            id: 'team',
-            nome: 'Figure commerciali',
-            tipo: 'multi',
-            obbligatorio: true,
-            min: 2,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2000, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1500, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Founder/partner', cosa:'Founder/partner vende tramite network personale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Networking strutturato + eventi vendor (Microsoft, SAP, Oracle)', tempo_mesi:2, moduli:[
+        { id:'networking', nome:'Piano networking e eventi vendor', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.6, note:'Partecipazione eventi Microsoft/SAP/Oracle partner, community IT manager' },
+        { id:'partnership', nome:'Partnership con vendor tecnologici', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.3, note:'Certificazione partner Microsoft/SAP/Oracle, accesso a lead vendor' },
+      ]},
+      '3': { cosa:'Account manager dedicato per sviluppo nuovi clienti', tempo_mesi:3, moduli:[
+        { id:'account', nome:'Account manager IT', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'senior', nome:'Account manager senior (esperienza IT)', costo_mensile:3000, costo_setup:0, impatto:1.0, note:'Conosce il mercato, ha network, gestisce vendite complesse' },
+          { id:'junior', nome:'Account manager junior + mentoring', costo_mensile:2000, costo_setup:500, impatto:0.6, note:'Da formare, il founder fa mentoring' },
+        ]},
+      ]},
+      '4': { cosa:'Account manager + pre-sales tecnico per demo e POC', tempo_mesi:4, moduli:[
+        { id:'presales', nome:'Pre-sales/solution architect', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Solution architect dipendente', costo_mensile:3500, costo_setup:0, impatto:0.5, note:'Demo, POC, architettura soluzioni, supporto vendita tecnica' },
+          { id:'parttime', nome:'Pre-sales a progetto/fractional', costo_mensile:1500, costo_setup:0, impatto:0.3, note:'Interviene su deal complessi, supporta account manager' },
+        ]},
+        { id:'account2', nome:'Secondo account manager', tipo:'scelta', obbligatorio:false, varianti:[
+          { id:'senior', nome:'Account manager senior', costo_mensile:3000, costo_setup:0, impatto:0.25, note:'Per settore/zona diversa dal primo' },
+          { id:'inside', nome:'Inside sales/lead generation', costo_mensile:1800, costo_setup:0, impatto:0.15, note:'Qualificazione lead, appuntamenti, follow-up' },
+        ]},
+      ]},
+      '5': { cosa:'Dir. commerciale + team account + pre-sales + partner channel', tempo_mesi:6, moduli:[
+        { id:'resp', nome:'Direttore commerciale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Dir. commerciale IT dipendente', costo_mensile:4000, costo_setup:0, impatto:0.5, note:'Strategia, pipeline, pricing, partner management, grandi deal' },
+          { id:'fractional', nome:'Dir. commerciale fractional', costo_mensile:2000, costo_setup:0, impatto:0.35, note:'2-3 giorni/settimana' },
+        ]},
+        { id:'team', nome:'Team vendita', tipo:'multi', obbligatorio:true, min:2, varianti:[
+          { id:'account', nome:'Account manager', costo_mensile:3000, costo_setup:0, impatto:0.2, note:'Per vertical/zona' },
+          { id:'inside', nome:'Inside sales/SDR', costo_mensile:1800, costo_setup:0, impatto:0.12, note:'Lead gen, qualificazione, appuntamenti' },
+        ]},
+      ]},
     },
     pipeline: {
-      '1': { chi:'Titolare', cosa:'Nessun CRM — progetti gestiti via email', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'CRM base con opportunità, preventivi e follow-up',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:50, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'forecast',
-        nome: 'Forecast pipeline trimestrale',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 0,
-        impatto: 0.15,
-        note: 'Previsione chiusure e revenue per trimestre'
-}
-      ]
-      },
-      '3': {
-        cosa: 'CRM + PSA (Professional Services Automation) per progetti',
-        tempo_mesi: 1,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM + PSA (Professional Services Automation) per progetti', costo_mensile:400, costo_setup:1000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:200, costo_setup:600, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'CRM con forecast, pipeline pesata e integrazione vendor',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM con forecast, pipeline pesata e integrazione vendor', costo_mensile:800, costo_setup:2000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:400, costo_setup:1200, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Stack completo — CRM, PSA, timesheet, margini progetto',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Stack completo', costo_mensile:1500, costo_setup:5000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:750, costo_setup:3000, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Founder', cosa:'Nessun tracciamento — deal a memoria', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'CRM base per tracciare opportunita, deal e forecast', tempo_mesi:1, moduli:[
+        { id:'crm', nome:'CRM per vendita IT', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'hubspot', nome:'HubSpot CRM (free/starter)', costo_mensile:0, costo_setup:200, impatto:0.85, note:'Pipeline, deal tracking, email tracking, forecast base' },
+          { id:'pipedrive', nome:'Pipedrive', costo_mensile:30, costo_setup:200, impatto:0.7, note:'Pipeline visuale, automazioni, integrazioni' },
+        ]},
+      ]},
+      '3': { cosa:'CRM con gestione offerte, contratti e SLA', tempo_mesi:1, moduli:[
+        { id:'crm_pro', nome:'CRM professionale IT', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'salesforce', nome:'Salesforce Essentials/Professional', costo_mensile:100, costo_setup:800, impatto:1.0, note:'Pipeline, offerte, contratti, SLA, forecast avanzato' },
+          { id:'hubspot_pro', nome:'HubSpot Sales Pro', costo_mensile:80, costo_setup:500, impatto:0.8, note:'Pipeline, sequenze, documenti, forecast' },
+        ]},
+      ]},
+      '4': { cosa:'CRM integrato con PSA (project accounting) e helpdesk', tempo_mesi:2, moduli:[
+        { id:'psa', nome:'PSA (Professional Services Automation)', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'PSA completo (ConnectWise/Autotask)', costo_mensile:300, costo_setup:2000, impatto:1.0, note:'CRM + progetti + timesheet + ticketing + fatturazione, tutto integrato' },
+          { id:'modulare', nome:'CRM + project management separati', costo_mensile:150, costo_setup:800, impatto:0.6, note:'Salesforce + Asana/Monday, meno integrazione' },
+        ]},
+      ]},
+      '5': { cosa:'Piattaforma gestione completa — CRM, PSA, helpdesk, BI', tempo_mesi:4, moduli:[
+        { id:'piattaforma', nome:'Piattaforma IT services', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'ConnectWise/Autotask + BI', costo_mensile:600, costo_setup:5000, impatto:1.0, note:'CRM, PSA, helpdesk, RMM, fatturazione, BI — tutto integrato' },
+          { id:'mid', nome:'CRM Pro + PSA base', costo_mensile:300, costo_setup:2500, impatto:0.6, note:'Meno integrato' },
+        ]},
+      ]},
     },
     team: {
-      '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Ruoli tecnico/commerciale/PM definiti',
-        tempo_mesi: 1,
-        moduli: [
-      {
-            id: 'ruoli',
-            nome: 'Organigramma per competenze',
-            tipo: 'flag',
-            obbligatorio: true,
-            costo_mensile: 0,
-            costo_setup: 200,
-            impatto: 0.7,
-            note: 'Tecnici per specializzazione, PM, commerciale — chi fa cosa'
-      }
-,
-{
-        id: 'knowledge_base',
-        nome: 'Knowledge base procedure interne',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Wiki con procedure, configurazioni, troubleshooting'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Team lead tecnico + processi di progetto strutturati',
-        tempo_mesi: 2,
-        moduli: [
-      {
-            id: 'team_lead',
-            nome: 'Team lead tecnico',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-                  {
-                        id: 'promozione',
-                        nome: 'Promozione senior engineer',
-                        costo_mensile: 300,
-                        costo_setup: 500,
-                        impatto: 0.85,
-                        note: 'Coordinamento tecnici, code review, standard'
-                  },
-                  {
-                        id: 'esterno',
-                        nome: 'Technical manager esterno',
-                        costo_mensile: 3000,
-                        costo_setup: 0,
-                        impatto: 1,
-                        note: 'Esperienza da SI più strutturato'
-                  }
-            ]
-      }
-]
-      },
-      '4': {
-        cosa: 'PM dedicati + KPI per progetto + certificazioni team',
-        tempo_mesi: 3,
-        moduli: [
-      {
-            id: 'pm',
-            nome: 'Project manager dedicato',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-                  {
-                        id: 'dip',
-                        nome: 'PM dipendente certificato (PMP/Prince2)',
-                        costo_mensile: 2800,
-                        costo_setup: 0,
-                        impatto: 0.5,
-                        note: 'Gestione progetti, clienti, delivery'
-                  },
-                  {
-                        id: 'freelance',
-                        nome: 'PM freelance a progetto',
-                        costo_mensile: 1500,
-                        costo_setup: 0,
-                        impatto: 0.35,
-                        note: 'Solo su progetti grandi'
-                  }
-            ]
-      },
-      {
-            id: 'certificazioni',
-            nome: 'Piano certificazioni team (MS, AWS, Cisco)',
-            tipo: 'flag',
-            obbligatorio: false,
-            costo_mensile: 200,
-            costo_setup: 500,
-            impatto: 0.2,
-            note: 'Budget annuo per certificazioni — punti nelle gare'
-      }
-]
-      },
-      '5': {
-        cosa: 'Governance completa — founder solo strategia e relazioni',
-        tempo_mesi: 4,
-        moduli: [
-      {
-            id: 'cto',
-            nome: 'CTO / Direttore tecnico',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-                  {
-                        id: 'dip',
-                        nome: 'CTO dipendente',
-                        costo_mensile: 4000,
-                        costo_setup: 0,
-                        impatto: 1,
-                        note: 'Architettura, standard, team, vendor relationship'
-                  },
-                  {
-                        id: 'fractional',
-                        nome: 'CTO fractional',
-                        costo_mensile: 2000,
-                        costo_setup: 0,
-                        impatto: 0.65,
-                        note: '2-3 giorni/settimana + review'
-                  }
-            ]
-      }
-]
-      },
+      '1': { chi:'Founder', cosa:'Founder fa tutto — vendita, delivery, admin', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Separazione vendita/delivery — organigramma base', tempo_mesi:1, moduli:[
+        { id:'organigramma', nome:'Organigramma IT company', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.7, note:'Vendita, delivery/progetti, supporto, admin — chi fa cosa' },
+      ]},
+      '3': { cosa:'PM dedicato + team tecnico strutturato', tempo_mesi:2, moduli:[
+        { id:'pm', nome:'Project manager IT', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'PM dipendente certificato (PMP/Prince2)', costo_mensile:3000, costo_setup:0, impatto:0.7, note:'Gestione progetti, risorse, budget, SLA, rapporto cliente' },
+          { id:'promozione', nome:'Promozione tecnico senior a PM', costo_mensile:300, costo_setup:500, impatto:0.5, note:'Formazione PM + delega, conosce gia i progetti' },
+        ]},
+      ]},
+      '4': { cosa:'KPI per team + delivery manager + practice lead', tempo_mesi:3, moduli:[
+        { id:'delivery_mgr', nome:'Delivery manager', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Delivery manager dipendente', costo_mensile:3500, costo_setup:0, impatto:1.0, note:'Supervisione tutti i progetti, risorse, qualita, escalation' },
+          { id:'fractional', nome:'Delivery manager fractional', costo_mensile:1800, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' },
+        ]},
+        { id:'kpi', nome:'Dashboard KPI delivery', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.15, note:'Margine per progetto, utilization rate, on-time delivery, CSAT' },
+      ]},
+      '5': { cosa:'Management completo — founder solo strategia e grandi clienti', tempo_mesi:5, moduli:[
+        { id:'coo', nome:'COO/Direttore operativo', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'COO dipendente', costo_mensile:4500, costo_setup:0, impatto:1.0, note:'Delivery, HR, operations, finance — il founder fa strategia e BD' },
+          { id:'fractional', nome:'COO fractional', costo_mensile:2200, costo_setup:0, impatto:0.65, note:'3 giorni/settimana' },
+        ]},
+      ]},
       _label: 'Organizzazione',
     },
     processi: {
-      '1': { chi:'Titolare', cosa:'Nessun processo — ogni progetto è diverso e ad hoc', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Template preventivo + checklist installazione standard',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'processo', nome:'Template preventivo + checklist installazione standard', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
-        ,
-{
-        id: 'sla_template',
-        nome: 'Template SLA standard per clienti',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 100,
-        impatto: 0.15,
-        note: 'Livelli di servizio, tempi risposta, escalation'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Project management base — Gantt, timesheet, documentazione',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Project management base',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:300, costo_setup:1000, impatto:1, note:'Project management base — Gantt, timesheet, documentazione' },
-              { id:'base', nome:'Soluzione base', costo_mensile:150, costo_setup:500, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Framework ITIL per servizi + PM strutturato per progetti',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Framework ITIL per servizi',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:600, costo_setup:3000, impatto:1, note:'Framework ITIL per servizi + PM strutturato per progetti' },
-              { id:'base', nome:'Soluzione base', costo_mensile:300, costo_setup:1500, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'PMO strutturato + ITIL + knowledge base + automazioni',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'PMO strutturato',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:1000, costo_setup:5000, impatto:1, note:'PMO strutturato + ITIL + knowledge base + automazioni' },
-              { id:'base', nome:'Soluzione base', costo_mensile:500, costo_setup:2500, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Founder', cosa:'Nessun processo — ogni progetto gestito ad hoc', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Template proposta/offerta + processo vendita definito', tempo_mesi:1, moduli:[
+        { id:'template', nome:'Template offerta/SOW strutturato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.6, note:'Scope of Work, timeline, deliverables, pricing, T&C — riutilizzabile' },
+        { id:'processo_vendita', nome:'Processo vendita step-by-step', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.25, note:'Lead, qualificazione, demo, POC, proposta, negoziazione, close' },
+      ]},
+      '3': { cosa:'Metodologia progetti + timesheet + gestione risorse', tempo_mesi:2, moduli:[
+        { id:'metodologia', nome:'Metodologia delivery progetti', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agile', nome:'Framework Agile/Scrum per delivery', costo_mensile:0, costo_setup:500, impatto:1.0, note:'Sprint, backlog, daily standup, review, retrospective — con tool (Jira/Azure DevOps)' },
+          { id:'waterfall', nome:'Metodologia waterfall strutturata', costo_mensile:0, costo_setup:300, impatto:0.6, note:'Fasi, milestone, deliverables, sign-off — per progetti piu tradizionali' },
+        ]},
+        { id:'timesheet', nome:'Sistema timesheet/resource planning', tipo:'flag', obbligatorio:true, costo_mensile:50, costo_setup:300, impatto:0.2, note:'Tracking ore per progetto/task, utilization rate, capacity planning' },
+      ]},
+      '4': { cosa:'PSA completo + SLA strutturati + knowledge base', tempo_mesi:3, moduli:[
+        { id:'psa', nome:'Professional Services Automation', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'PSA completo (ConnectWise/Autotask)', costo_mensile:250, costo_setup:2000, impatto:1.0, note:'Progetti, risorse, timesheet, ticketing, SLA, fatturazione automatica' },
+          { id:'leggero', nome:'PM tool + helpdesk separati (Jira + Freshdesk)', costo_mensile:100, costo_setup:800, impatto:0.55, note:'Meno integrato, piu flessibile' },
+        ]},
+      ]},
+      '5': { cosa:'ITIL/ISO 20000 + governance IT + BI per margini e delivery', tempo_mesi:4, moduli:[
+        { id:'framework', nome:'Framework ITIL/governance', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'itil', nome:'ITIL + ISO 20000 con consulente', costo_mensile:200, costo_setup:5000, impatto:1.0, note:'Service management strutturato, prerequisito per grandi clienti/PA' },
+          { id:'interno', nome:'Governance interna senza certificazione', costo_mensile:0, costo_setup:1500, impatto:0.5, note:'Processi documentati ma senza ente terzo' },
+        ]},
+      ]},
     },
     ricavi: {
-      '1': { chi:'Titolare', cosa:'Fatturazione a progetto — prezzo su preventivo', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Contratti assistenza ricorrenti — canone mensile/annuale',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'ricavi', nome:'Contratti assistenza ricorrenti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'manutenzione',
-        nome: 'Contratti manutenzione annuali',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 0,
-        impatto: 0.15,
-        note: 'Da intervento a chiamata a canone fisso — MRR'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Managed services — monitoraggio, backup, supporto proattivo',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'ricavi', nome:'Managed services', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.8 }
-        ,
-{
-        id: 'managed_svc',
-        nome: 'Managed services (monitoraggio + manutenzione)',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 300,
-        impatto: 0.15,
-        note: 'Tu gestisci infrastruttura del cliente — margine 40-60%'
-}
-      ]
-      },
-      '4': {
-        cosa: 'Mix progetto + managed services + licensing = ricavi prevedibili',
-        tempo_mesi: 3,
-        moduli: [
-          { id:'ricavi', nome:'Mix progetto + managed services + licensing = ricavi prevedibili', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:1500, impatto:0.8 }
-        ,
-{
-        id: 'cloud_migration',
-        nome: 'Revenue da migrazione cloud',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Migrazione + licenze cloud — progetto + ricorrente'
-}
-      ]
-      },
-      '5': {
-        cosa: 'Revenue model — MSP, cloud managed, consulting premium, SLA',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'ricavi',
-            nome: 'Revenue model',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:800, costo_setup:2500, impatto:1, note:'Revenue model — MSP, cloud managed, consulting premium, SLA' },
-              { id:'graduale', nome:'Implementazione graduale', costo_mensile:400, costo_setup:1250, impatto:0.65, note:'Avvio parziale, si espande' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Founder', cosa:'Revenue solo da progetti T&M — nessun ricavo ricorrente', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Pricing strutturato — daily rate per seniority + fixed price per servizi standard', tempo_mesi:1, moduli:[
+        { id:'pricing', nome:'Rate card strutturata', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.7, note:'Daily rate per junior/mid/senior/architect, fixed price per servizi standard' },
+      ]},
+      '3': { cosa:'Contratti managed services + supporto ricorrente', tempo_mesi:2, moduli:[
+        { id:'managed', nome:'Contratti managed services', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.6, note:'Supporto IT ricorrente, monitoring, manutenzione — MRR prevedibile' },
+        { id:'sla', nome:'SLA premium a pagamento', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:300, impatto:0.2, note:'SLA con tempo di risposta garantito, on-site, 24/7 — upsell' },
+      ]},
+      '4': { cosa:'Revenue mix: progetti + managed services + licensing/reselling', tempo_mesi:3, moduli:[
+        { id:'licensing', nome:'Reselling licenze software', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.5, note:'Reselling Microsoft 365/Azure, licenze ERP/CRM — revenue ricorrente + margine' },
+        { id:'training', nome:'Servizi formazione/training', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:300, impatto:0.15, note:'Training utenti, certificazioni, change management — margine 70%+' },
+      ]},
+      '5': { cosa:'Revenue scalabile: IP propria, prodotti + servizi, canale partner', tempo_mesi:4, moduli:[
+        { id:'ip', nome:'Sviluppo IP/prodotto proprio', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'prodotto', nome:'Software/tool proprietario (SaaS add-on)', costo_mensile:500, costo_setup:5000, impatto:1.0, note:'Vertical add-on su piattaforma vendor, licensing proprio, margine alto' },
+          { id:'framework', nome:'Framework/accelerator riutilizzabile', costo_mensile:200, costo_setup:2000, impatto:0.5, note:'Template, script, connettori riutilizzabili — delivery piu veloce, margine superiore' },
+        ]},
+      ]},
     },
     marketing: {
-      '1': { chi:'Nessuno', cosa:'Nessuno — solo passaparola e referral', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'LinkedIn + case study + certificazioni vendor in evidenza',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'marketing', nome:'LinkedIn + case study + certificazioni vendor in evidenza', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'referenze',
-        nome: 'Case study clienti sul sito + LinkedIn',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Problema → soluzione → risultato — credibilità per prospect'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Google Ads IT + LinkedIn Ads + webinar tecnici',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'marketing', nome:'Google Ads IT + LinkedIn Ads + webinar tecnici', tipo:'flag', obbligatorio:true, costo_mensile:800, costo_setup:1500, impatto:0.8 }
-        ,
-{
-        id: 'vendor_mkt',
-        nome: 'Co-marketing con vendor (Microsoft, Cisco)',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 300,
-        impatto: 0.15,
-        note: 'Fondi MDF, eventi congiunti, lead sharing'
-}
-      ]
-      },
-      '4': {
-        cosa: 'Content marketing tecnico + eventi vendor + partner program',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'Content marketing tecnico + eventi vendor + partner program',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1500, costo_setup:3000, impatto:1, note:'Content marketing tecnico + eventi vendor + partner program' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:600, costo_setup:1500, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Piano marketing B2B — thought leadership, eventi, partner co-mktg',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'Piano marketing B2B',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:3000, costo_setup:5000, impatto:1, note:'Piano marketing B2B — thought leadership, eventi, partner co-mktg' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:1200, costo_setup:2500, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo network personale founder', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'LinkedIn aziendale attivo + case study pubblicati', tempo_mesi:1, moduli:[
+        { id:'linkedin', nome:'LinkedIn aziendale professionale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.5, note:'Post settimanali: case study, insights, team, eventi vendor' },
+        { id:'case_study', nome:'Case study strutturati', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.3, note:'2-3 case study con problema, soluzione, risultati — social proof' },
+      ]},
+      '3': { cosa:'Content marketing tecnico + eventi/webinar + vendor co-marketing', tempo_mesi:2, moduli:[
+        { id:'content', nome:'Content marketing B2B IT', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia content B2B tech', costo_mensile:800, costo_setup:500, impatto:1.0, note:'Blog tecnico, white paper, webinar, LinkedIn Ads, newsletter' },
+          { id:'interno', nome:'Content interno + tool', costo_mensile:300, costo_setup:200, impatto:0.5, note:'Founder/tecnici scrivono, tool per distribuzione' },
+        ]},
+        { id:'vendor', nome:'Co-marketing con vendor', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:200, impatto:0.2, note:'MDF vendor (Microsoft/SAP), eventi congiunti, lead sharing' },
+      ]},
+      '4': { cosa:'LinkedIn Ads su CIO/IT manager + account-based marketing', tempo_mesi:2, moduli:[
+        { id:'abm', nome:'Account-based marketing', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'strutturato', nome:'ABM con tool dedicato (Demandbase/6sense)', costo_mensile:800, costo_setup:1000, impatto:1.0, note:'Target account list, personalized outreach, intent data' },
+          { id:'manuale', nome:'ABM manuale (LinkedIn + email sequenze)', costo_mensile:300, costo_setup:300, impatto:0.5, note:'LinkedIn Sales Navigator + email outreach manuale' },
+        ]},
+      ]},
+      '5': { cosa:'Piano marketing B2B completo — brand, ABM, content, partner, eventi', tempo_mesi:4, moduli:[
+        { id:'piano', nome:'Piano marketing B2B IT', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia marketing B2B tech', costo_mensile:2500, costo_setup:4000, impatto:1.0, note:'Brand, ABM, content, LinkedIn, eventi, PR tech, analyst relations' },
+          { id:'interno', nome:'Marketing manager B2B interno', costo_mensile:1200, costo_setup:500, impatto:0.6, note:'1 risorsa dedicata' },
+        ]},
+      ]},
     },
     sitoweb: {
-      '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Sito vetrina con servizi, competenze e certificazioni',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'sito', nome:'Sito vetrina con servizi, competenze e certificazioni', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:800, impatto:0.8 }
-        ,
-{
-        id: 'case_study',
-        nome: '2-3 case study clienti sul sito',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Problema → soluzione → risultato — credibilità'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Sito con case study, blog tecnico, richiesta preventivo',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Sito con case study, blog tecnico, richiesta preventivo',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:300, costo_setup:2500, impatto:1, note:'Sito con case study, blog tecnico, richiesta preventivo' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:120, costo_setup:1000, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Portale clienti — ticket, monitoring dashboard, documentazione',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Portale clienti',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:600, costo_setup:5000, impatto:1, note:'Portale clienti — ticket, monitoring dashboard, documentazione' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:240, costo_setup:2000, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Piattaforma clienti completa — portale, SLA, report, knowledge',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Piattaforma clienti completa',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:1200, costo_setup:10000, impatto:1, note:'Piattaforma clienti completa — portale, SLA, report, knowledge' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:480, costo_setup:4000, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Nessuno', cosa:'Nessun sito o pagina base', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Sito professionale con servizi, competenze, certificazioni vendor', tempo_mesi:1, moduli:[
+        { id:'sito', nome:'Sito system integrator', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'custom', nome:'Sito custom WordPress/Next.js', costo_mensile:30, costo_setup:2500, impatto:1.0, note:'Servizi, tecnologie, certificazioni partner, team, case study' },
+          { id:'template', nome:'Sito da template tech', costo_mensile:20, costo_setup:800, impatto:0.5, note:'Template B2B tech' },
+        ]},
+      ]},
+      '3': { cosa:'Sito con case study, blog tecnico, risorse scaricabili', tempo_mesi:2, moduli:[
+        { id:'content_hub', nome:'Content hub tecnico', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:1500, impatto:0.5, note:'Case study, blog, white paper, video demo — lead generation' },
+        { id:'form', nome:'Form contatto/richiesta consulenza', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.4, note:'Form qualificato: azienda, ruolo, esigenza, budget, timeline' },
+      ]},
+      '4': { cosa:'Sito con portale clienti, ticketing, knowledge base', tempo_mesi:3, moduli:[
+        { id:'portale', nome:'Portale clienti/helpdesk', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'integrato', nome:'Portale integrato con PSA/helpdesk', costo_mensile:200, costo_setup:3000, impatto:1.0, note:'Ticketing, SLA tracking, knowledge base, documentazione progetto' },
+          { id:'standalone', nome:'Helpdesk standalone (Freshdesk/Zendesk)', costo_mensile:100, costo_setup:1000, impatto:0.55, note:'Ticketing + KB, meno integrato con sito' },
+        ]},
+      ]},
+      '5': { cosa:'Piattaforma digitale completa — sito, portale clienti, automazioni, BI', tempo_mesi:4, moduli:[
+        { id:'piattaforma', nome:'Piattaforma digitale SI', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'Piattaforma enterprise (custom/HubSpot CMS)', costo_mensile:500, costo_setup:8000, impatto:1.0, note:'Sito, portale clienti, chatbot, automazioni marketing, BI, CRM integrato' },
+          { id:'mid', nome:'Sito avanzato + portale base', costo_mensile:200, costo_setup:3000, impatto:0.5, note:'WordPress + Freshdesk + integrazioni' },
+        ]},
+      ]},
     },
     ecommerce: {
-      '1': { chi:'Titolare', cosa:'Acquisto HW e licenze su ordine cliente — markup fisso', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Confronto distributori (Esprinet, Ingram, TD SYNNEX)',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'canale', nome:'Confronto distributori (Esprinet, Ingram, TD SYNNEX)', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'vendor_tier',
-        nome: 'Upgrade tier partnership vendor',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Da Silver a Gold/Platinum — sconti migliori, più lead'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Accordi con distributori — rebate, deal registration vendor',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'canale', nome:'Accordi con distributori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.8 }
-        ,
-{
-        id: 'demo_lab',
-        nome: 'Lab interno per demo/POC',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 100,
-        costo_setup: 500,
-        impatto: 0.15,
-        note: 'Ambiente di test per mostrare soluzioni ai prospect'
-}
-      ]
-      },
-      '4': {
-        cosa: 'Buyer IT dedicato — ottimizzazione licensing, cloud brokering',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Buyer IT dedicato',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:1800, costo_setup:500, impatto:1, note:'Buyer IT dedicato — ottimizzazione licensing, cloud brokering' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:900, costo_setup:200, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Resp. acquisti — CSP/LSP, hardware staging, vendor management',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Resp. acquisti',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:3500, costo_setup:2000, impatto:1, note:'Resp. acquisti — CSP/LSP, hardware staging, vendor management' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:1750, costo_setup:800, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
-      _label: 'Approvvigionamento licenze e HW',
-    }
-  },
-
-  // ═══════════════════════════════════════════════════════════════════════════
-  // TECH DIGITAL AGENCY
-  // ═══════════════════════════════════════════════════════════════════════════
-  tech_digital_agency: {
-    vendite: {
-      '1': { chi:'Founder', cosa:'Founder/creative director vende', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Portfolio + case study come strumento',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'supporto', nome:'Founder', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:300, impatto:0.8 }
-        ,
-{
-        id: 'portfolio',
-        nome: 'Portfolio progetti strutturato',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 300,
-        impatto: 0.15,
-        note: 'Case study con metriche: +X% conversioni, +Y% traffico'
-}
-      ]
-      },
-      '3': {
-        cosa: '1 account/business developer (~2.800€)',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2800, costo_setup:500, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1540, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1260, costo_setup:500, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: '2 account per segmento',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'resp',
-            nome: 'Responsabile commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2240, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
-              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1232, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          },
-          {
-            id: 'team',
-            nome: 'Figure commerciali',
-            tipo: 'multi',
-            obbligatorio: true,
-            min: 2,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1120, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:840, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Dir. commerciale + rete partnership',
-        tempo_mesi: 5,
-        moduli: [
-          {
-            id: 'resp',
-            nome: 'Responsabile commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:3400, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
-              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1870, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          },
-          {
-            id: 'team',
-            nome: 'Figure commerciali',
-            tipo: 'multi',
-            obbligatorio: true,
-            min: 2,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1700, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1275, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
-            ]
-          }
-        ]
-      },
-    },
-    pipeline: {
-      '1': { chi:'Founder', cosa:'Nessun CRM — progetti su email e documenti', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'CRM base con opportunità, preventivi e stato progetti',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'strumento', nome:'Founder', tipo:'flag', obbligatorio:true, costo_mensile:50, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'brief_template',
-        nome: 'Template brief + proposta strutturata',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Brief standard, proposta con scope/tempi/costi/KPI'
-}
-      ]
-      },
-      '3': {
-        cosa: 'CRM + project management tool integrato (Asana, Monday)',
-        tempo_mesi: 1,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM + project management tool integrato (Asana, Monday)', costo_mensile:300, costo_setup:500, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:150, costo_setup:300, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'CRM con automazioni — lead nurturing, proposal, follow-up',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM con automazioni', costo_mensile:500, costo_setup:1000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:250, costo_setup:600, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Stack completo — CRM, PM, timesheet, profittabilità progetto',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Stack completo', costo_mensile:1000, costo_setup:3000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:500, costo_setup:1800, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-    },
-    team: {
-      '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Ruoli creativi/tecnici/account definiti',
-        tempo_mesi: 1,
-        moduli: [
-      {
-            id: 'ruoli',
-            nome: 'Organigramma per competenze creative/tech',
-            tipo: 'flag',
-            obbligatorio: true,
-            costo_mensile: 0,
-            costo_setup: 200,
-            impatto: 0.7,
-            note: 'Designer, developer, copywriter, account — chi fa cosa'
-      }
-,
-{
-        id: 'standup',
-        nome: 'Daily standup + retrospettive',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 0,
-        impatto: 0.15,
-        note: 'Allineamento quotidiano, retrospettiva fine progetto'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Art director/creative lead + processo creativo strutturato',
-        tempo_mesi: 2,
-        moduli: [
-      {
-            id: 'creative',
-            nome: 'Creative lead',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-                  {
-                        id: 'dip',
-                        nome: 'Art director dipendente',
-                        costo_mensile: 2800,
-                        costo_setup: 0,
-                        impatto: 1,
-                        note: 'Direzione creativa, standard qualità, team design'
-                  },
-                  {
-                        id: 'freelance',
-                        nome: 'Art director freelance senior',
-                        costo_mensile: 1500,
-                        costo_setup: 0,
-                        impatto: 0.7,
-                        note: '2-3 giorni/settimana + supervisione'
-                  }
-            ]
-      }
-]
-      },
-      '4': {
-        cosa: 'Account director + PM + KPI per progetto',
-        tempo_mesi: 3,
-        moduli: [
-      {
-            id: 'account_dir',
-            nome: 'Account director',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-                  {
-                        id: 'dip',
-                        nome: 'Account director dipendente',
-                        costo_mensile: 3000,
-                        costo_setup: 0,
-                        impatto: 0.5,
-                        note: 'Gestione clienti key, upsell, retention'
-                  },
-                  {
-                        id: 'promozione',
-                        nome: 'Promozione account senior',
-                        costo_mensile: 500,
-                        costo_setup: 500,
-                        impatto: 0.35,
-                        note: 'Bonus responsabilità + formazione management'
-                  }
-            ]
-      },
-      {
-            id: 'kpi',
-            nome: 'KPI per progetto e per account',
-            tipo: 'flag',
-            obbligatorio: true,
-            costo_mensile: 0,
-            costo_setup: 500,
-            impatto: 0.3,
-            note: 'Margine per progetto, NPS, delivery on time, lifetime value'
-      }
-]
-      },
-      '5': {
-        cosa: 'Management completo — founder solo strategia e new business',
-        tempo_mesi: 4,
-        moduli: [
-      {
-            id: 'md',
-            nome: 'Managing director / COO',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-                  {
-                        id: 'dip',
-                        nome: 'Managing director dipendente',
-                        costo_mensile: 4000,
-                        costo_setup: 0,
-                        impatto: 1,
-                        note: 'Team, processi, P&L, delivery, cultura'
-                  },
-                  {
-                        id: 'fractional',
-                        nome: 'COO fractional',
-                        costo_mensile: 2000,
-                        costo_setup: 0,
-                        impatto: 0.65,
-                        note: '2-3 giorni/settimana'
-                  }
-            ]
-      }
-]
-      },
-      _label: 'Organizzazione',
-    },
-    processi: {
-      '1': { chi:'Founder', cosa:'Nessun processo — ogni progetto gestito diversamente', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Template brief, preventivo e contratto standardizzati',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'processo', nome:'Template brief, preventivo e contratto standardizzati', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
-        ,
-{
-        id: 'workflow',
-        nome: 'Workflow progetto standardizzato (brief→design→dev→QA→live)',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 300,
-        impatto: 0.15,
-        note: 'Ogni progetto segue lo stesso flusso — meno errori, più velocità'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Processo progetto — brief, wireframe, sviluppo, test, lancio',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'processo', nome:'Processo progetto', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:800, impatto:0.8 }
-        ,
-{
-        id: 'time_tracking',
-        nome: 'Time tracking per progetto (Harvest, Toggl)',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 50,
-        costo_setup: 100,
-        impatto: 0.15,
-        note: 'Sai quanto tempo dedichi a ogni cliente — margine reale'
-}
-      ]
-      },
-      '4': {
-        cosa: 'Metodologia agile + processi retainer con reporting mensile',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Metodologia agile',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:400, costo_setup:1500, impatto:1, note:'Metodologia agile + processi retainer con reporting mensile' },
-              { id:'base', nome:'Soluzione base', costo_mensile:200, costo_setup:750, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Operations completo — PM, QA, delivery, capacity planning',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Operations completo',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:800, costo_setup:3000, impatto:1, note:'Operations completo — PM, QA, delivery, capacity planning' },
-              { id:'base', nome:'Soluzione base', costo_mensile:400, costo_setup:1500, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-    },
-    ricavi: {
-      '1': { chi:'Founder', cosa:'Fatturazione a progetto — preventivo fisso', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Contratti retainer mensili per manutenzione e supporto',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'ricavi', nome:'Contratti retainer mensili per manutenzione e supporto', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'retainer',
-        nome: 'Modello retainer mensile vs progetto',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 0,
-        impatto: 0.15,
-        note: 'Sposta clienti da progetto singolo a retainer mensile — MRR'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Strategia 50% retainer + 50% progetti per stabilità',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'ricavi', nome:'Strategia 50% retainer + 50% progetti per stabilità', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
-        ,
-{
-        id: 'upsell_servizi',
-        nome: 'Upsell servizi ricorrenti (SEO, social, manutenzione)',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Dopo il sito, vendi SEO/social/manutenzione — revenue ricorrente'
-}
-      ]
-      },
-      '4': {
-        cosa: 'Servizi ricorrenti — hosting, SEO, social, email marketing',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'ricavi', nome:'Servizi ricorrenti', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
-        ,
-{
-        id: 'performance',
-        nome: 'Fee basata su performance (% revenue, lead gen)',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 300,
-        impatto: 0.15,
-        note: 'Il cliente paga in base ai risultati — margine potenzialmente infinito'
-}
-      ]
-      },
-      '5': {
-        cosa: 'Revenue model — retainer, progetti, SaaS proprio, formazione',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'ricavi',
-            nome: 'Revenue model',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:600, costo_setup:1500, impatto:1, note:'Revenue model — retainer, progetti, SaaS proprio, formazione' },
-              { id:'graduale', nome:'Implementazione graduale', costo_mensile:300, costo_setup:750, impatto:0.65, note:'Avvio parziale, si espande' }
-            ]
-          }
-        ]
-      },
-    },
-    marketing: {
-      '1': { chi:'Founder', cosa:'Solo passaparola e portfolio personale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Sito portfolio + case study + LinkedIn attivo',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'marketing', nome:'Sito portfolio + case study + LinkedIn attivo', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'clutch',
-        nome: 'Profilo su piattaforme agency (Clutch, GoodFirms)',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 0,
-        impatto: 0.15,
-        note: 'Recensioni verificate — i prospect cercano qui'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Blog + SEO + webinar + lead magnet per generare lead',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'marketing', nome:'Blog + SEO + webinar + lead magnet per generare lead', tipo:'flag', obbligatorio:true, costo_mensile:600, costo_setup:1000, impatto:0.8 }
-        ,
-{
-        id: 'award',
-        nome: 'Partecipazione a contest/award digitali',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 300,
-        impatto: 0.15,
-        note: 'Awwwards, CSS Design Awards — portfolio + credibilità'
-}
-      ]
-      },
-      '4': {
-        cosa: 'Content premium + PR + speaking + awards + partnership',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'Content premium + PR + speaking + awards + partnership',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1500, costo_setup:2500, impatto:1, note:'Content premium + PR + speaking + awards + partnership' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:600, costo_setup:1250, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Piano marketing — thought leadership, community, referral program',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'Piano marketing',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:3000, costo_setup:4000, impatto:1, note:'Piano marketing — thought leadership, community, referral program' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:1200, costo_setup:2000, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
-    },
-    sitoweb: {
-      '1': { chi:'Founder', cosa:'Portfolio personale o pagina LinkedIn', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Sito agency con portfolio, servizi e contatti',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'sito', nome:'Sito agency con portfolio, servizi e contatti', tipo:'flag', obbligatorio:true, costo_mensile:50, costo_setup:500, impatto:0.8 }
-        ,
-{
-        id: 'portfolio_web',
-        nome: 'Portfolio interattivo con filtri',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 300,
-        impatto: 0.15,
-        note: 'Filtri per settore, tipo progetto, risultati — social proof'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Sito con case study dettagliati, blog, richiesta preventivo',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Sito con case study dettagliati, blog, richiesta preventivo',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:200, costo_setup:2000, impatto:1, note:'Sito con case study dettagliati, blog, richiesta preventivo' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:80, costo_setup:800, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Sito con risorse gratuite, tool, calcolatori — lead generation',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Sito con risorse gratuite, tool, calcolatori',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:400, costo_setup:4000, impatto:1, note:'Sito con risorse gratuite, tool, calcolatori — lead generation' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:160, costo_setup:1600, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Piattaforma con portale clienti, report automatici, knowledge',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Piattaforma con portale clienti, report automatici, knowledge',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:800, costo_setup:8000, impatto:1, note:'Piattaforma con portale clienti, report automatici, knowledge' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:320, costo_setup:3200, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-    },
-    ecommerce: {
-      '1': { chi:'Founder', cosa:'Freelance trovati su passaparola — tool gratuiti', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Network freelance verificati + stack tool professionale',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'canale', nome:'Network freelance verificati + stack tool professionale', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'contratti_freelance',
-        nome: 'Template contratto collaborazione freelance',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 100,
-        impatto: 0.15,
-        note: 'NDA, cessione diritti, tariffe, SLA — standard per tutti'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Pool freelance contrattualizzati + licenze tool centralizzate',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Pool freelance contrattualizzati + licenze tool centralizzate',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:500, costo_setup:500, impatto:1, note:'Pool freelance contrattualizzati + licenze tool centralizzate' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:250, costo_setup:200, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Gestione fornitori strutturata — SLA, qualità, backup',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Gestione fornitori strutturata',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:1200, costo_setup:1000, impatto:1, note:'Gestione fornitori strutturata — SLA, qualità, backup' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:600, costo_setup:400, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Procurement strategico — nearshore team, partnership tool, white label',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Procurement strategico',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:2500, costo_setup:2000, impatto:1, note:'Procurement strategico — nearshore team, partnership tool, white label' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:1250, costo_setup:800, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
       _label: 'Approvvigionamento freelance e tool',
+      '1': { chi:'Founder', cosa:'Team interno fisso — nessuna strategia risorse esterne', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Network freelance/contractor per picchi di lavoro', tempo_mesi:1, moduli:[
+        { id:'freelance', nome:'Database freelance/contractor IT', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.7, note:'Rete di specialisti per competenze mancanti o picchi: dev, infra, security' },
+      ]},
+      '3': { cosa:'Accordi con societa di body rental + partnership tecnologiche', tempo_mesi:2, moduli:[
+        { id:'body_rental', nome:'Accordi body rental/nearshore', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.6, note:'Accordi con fornitori risorse IT per scale-up rapido' },
+        { id:'tool', nome:'Stack tool ottimizzato', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:300, impatto:0.15, note:'Negoziazione licenze tool interni: Jira, Confluence, Azure DevOps, monitoring' },
+      ]},
+      '4': { cosa:'Team nearshore/offshore per delivery + ottimizzazione costi', tempo_mesi:3, moduli:[
+        { id:'nearshore', nome:'Team nearshore/offshore', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'nearshore', nome:'Team nearshore (Est Europa/Portogallo)', costo_mensile:0, costo_setup:2000, impatto:1.0, note:'Developer/tester nearshore, fuso orario compatibile, costo -40%' },
+          { id:'freelance_team', nome:'Team freelance strutturato', costo_mensile:0, costo_setup:500, impatto:0.6, note:'Freelance italiani/EU fidelizzati, costo variabile ma qualita' },
+        ]},
+      ]},
+      '5': { cosa:'Resp. delivery/operations — gestione risorse, vendor, margini', tempo_mesi:4, moduli:[
+        { id:'resp', nome:'Resp. delivery/resource management', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Delivery/resource manager dipendente', costo_mensile:3500, costo_setup:0, impatto:1.0, note:'Gestione team, staffing progetti, vendor management, margini' },
+          { id:'fractional', nome:'Operations manager fractional', costo_mensile:1800, costo_setup:0, impatto:0.6, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
     }
   },
 
