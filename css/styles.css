@@ -697,14 +697,14 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 .tl-proj-footer{display:flex;justify-content:space-between;font-size:11px;color:var(--gray);padding:4px 8px 0}
 .tl-proj-footer b{color:var(--white)}
 
-/* ── LIGHT GLASS OVERRIDES ─────────────────────────── */
-body{background:linear-gradient(145deg,#d8dbe2 0%,#cfd2da 50%,#d8dbe2 100%);color:var(--text)}
-.sidebar{background:rgba(255,255,255,0.35);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-right:1px solid rgba(255,255,255,0.3)}
-.sidebar-logo .wordmark{color:var(--gold)}
-.sidebar-logo .sub{color:var(--gold)}
-.nav-item{color:var(--white);border-radius:7px}
-.nav-item:hover{background:rgba(0,0,0,0.04);color:var(--white)}
-.nav-item.active{background:rgba(26,26,46,0.5);color:#fff;border-left:2px solid rgba(26,26,46,0.7)}
+/* ── GLASS OVERRIDES ─────────────────────────── */
+body{background:linear-gradient(135deg,#dde3f5 0%,#d6e4f7 25%,#ddeef8 50%,#e8e0f5 75%,#dde3f5 100%) fixed;background-attachment:fixed;color:var(--text)}
+.sidebar{background:#1a1a2e;backdrop-filter:none;-webkit-backdrop-filter:none;border-right:none}
+.sidebar-logo .wordmark{color:#fff}
+.sidebar-logo .sub{color:rgba(255,255,255,0.5)}
+.nav-item{color:rgba(255,255,255,0.7);border-radius:8px}
+.nav-item:hover{background:rgba(255,255,255,0.08);color:#fff}
+.nav-item.active{background:rgba(61,90,254,0.25);color:#fff;border-left:none}
 .main,.view{background:transparent}
 .card,.radar-card{
   background:linear-gradient(165deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.25) 40%, rgba(240,242,248,0.15) 100%);
@@ -856,8 +856,7 @@ label{color:var(--gray2)}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.1);border-radius:2px}
 ::-webkit-scrollbar-thumb:hover{background:#4A6180}
-.sidebar-logo::before{content:'';display:block;width:3px;height:24px;background:var(--gold);border-radius:2px;position:absolute;left:12px;top:14px}
-.sidebar-logo{position:relative;padding-left:24px!important}.tl-sess-evento{color:#F0F4F8!important}
+.sidebar-logo{position:relative}.tl-sess-evento{color:#F0F4F8!important}
 .tl-sess-meta{color:rgba(80,100,130,0.7)!important}
 .tl-sess-nota{color:rgba(80,100,130,0.7)!important}
 .tl-chip-eq{color:rgba(80,100,130,0.7)!important;background:rgba(0,0,0,0.05)!important;border-color:rgba(0,0,0,0.1)!important}
