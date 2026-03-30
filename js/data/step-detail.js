@@ -5836,638 +5836,206 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   tech_automazione: {
     vendite: {
-      '1': { chi:'Titolare/fondatore', cosa:'Titolare/fondatore vende', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Visite a uffici tecnici industriali',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: '1 tecnico commerciale (~3.000€)',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:3000, costo_setup:500, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1650, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1350, costo_setup:500, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: '2 commerciali per settore',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'resp',
-            nome: 'Responsabile commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2400, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
-              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1320, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          },
-          {
-            id: 'team',
-            nome: 'Figure commerciali',
-            tipo: 'multi',
-            obbligatorio: true,
-            min: 2,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1200, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:900, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Dir. commerciale + export',
-        tempo_mesi: 6,
-        moduli: [
-          {
-            id: 'resp',
-            nome: 'Responsabile commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:3600, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
-              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1980, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          },
-          {
-            id: 'team',
-            nome: 'Figure commerciali',
-            tipo: 'multi',
-            obbligatorio: true,
-            min: 2,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1800, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1350, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare/fondatore', cosa:'Titolare/fondatore vende tramite network industriale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Networking a fiere industriali (SPS, MECSPE) + visite stabilimenti', tempo_mesi:2, moduli:[
+        { id:'fiere', nome:'Partecipazione fiere automazione', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.6, note:'SPS, MECSPE, A&T — stand o visita, contatto con resp. produzione' },
+        { id:'visite', nome:'Visite stabilimenti prospect', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.3, note:'Audit gratuito linee produttive, proposta miglioramento' },
+      ]},
+      '3': { cosa:'Tecnico-commerciale per vendita soluzioni automazione', tempo_mesi:3, moduli:[
+        { id:'tecnico_comm', nome:'Tecnico-commerciale automazione', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'senior', nome:'Tecnico-commerciale senior (esperienza PLC/robot)', costo_mensile:3000, costo_setup:0, impatto:1.0, note:'Competenza tecnica + vendita, progetta soluzioni, gestisce clienti' },
+          { id:'junior', nome:'Tecnico-commerciale junior + mentoring', costo_mensile:2000, costo_setup:500, impatto:0.6, note:'Laurea ing. meccanica/automazione, formazione interna' },
+        ]},
+      ]},
+      '4': { cosa:'Account industriale + application engineer per progetti complessi', tempo_mesi:4, moduli:[
+        { id:'account', nome:'Account manager industriale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Account manager dipendente', costo_mensile:3000, costo_setup:0, impatto:0.5, note:'Gestisce portafoglio clienti, identifica opportunita, negozia' },
+          { id:'agente', nome:'Agente industriale ENASARCO', costo_mensile:1200, costo_setup:500, impatto:0.35, note:'Provvigione su commesse, porta contatti nel settore' },
+        ]},
+        { id:'app_eng', nome:'Application engineer', tipo:'scelta', obbligatorio:false, varianti:[
+          { id:'dip', nome:'Application engineer dipendente', costo_mensile:3000, costo_setup:0, impatto:0.3, note:'Progettazione tecnica, pre-sales, POC, demo' },
+          { id:'progetto', nome:'Ing. a progetto/freelance', costo_mensile:1500, costo_setup:0, impatto:0.2, note:'Per deal complessi' },
+        ]},
+      ]},
+      '5': { cosa:'Dir. commerciale + team vendita + partnership OEM/integratori', tempo_mesi:6, moduli:[
+        { id:'resp', nome:'Direttore commerciale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Dir. commerciale automazione dipendente', costo_mensile:4000, costo_setup:0, impatto:0.5, note:'Strategia, grandi commesse, partnership OEM, pricing' },
+          { id:'fractional', nome:'Dir. commerciale fractional', costo_mensile:2000, costo_setup:0, impatto:0.35, note:'2-3 giorni/settimana' },
+        ]},
+        { id:'partner', nome:'Programma partner/integratori', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:1000, impatto:0.2, note:'Rete integratori/OEM che propongono le nostre soluzioni' },
+      ]},
     },
     pipeline: {
-      '1': { chi:'Titolare', cosa:'Nessun CRM — progetti via email e preventivi Word', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'CRM base con opportunità, preventivi e stato commesse',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:50, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'database_stabilimenti',
-        nome: 'Database stabilimenti industriali target',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Lista aziende manifatturiere con impianti da modernizzare'
-}
-      ]
-      },
-      '3': {
-        cosa: 'CRM integrato con gestione commesse e preventivazione',
-        tempo_mesi: 1,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM integrato con gestione commesse e preventivazione', costo_mensile:400, costo_setup:1000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:200, costo_setup:600, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'CRM con ERP — commesse, costi, margini, tempistiche',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM con ERP', costo_mensile:800, costo_setup:2500, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:400, costo_setup:1500, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'ERP industriale completo — CRM, commesse, produzione, service',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'ERP industriale completo', costo_mensile:1500, costo_setup:6000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:750, costo_setup:3600, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — commesse a memoria', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'CRM base per tracciare commesse e offerte', tempo_mesi:1, moduli:[
+        { id:'crm', nome:'CRM per vendita industriale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'hubspot', nome:'HubSpot CRM (free/starter)', costo_mensile:0, costo_setup:200, impatto:0.85, note:'Pipeline commesse, offerte, forecast' },
+          { id:'pipedrive', nome:'Pipedrive', costo_mensile:30, costo_setup:200, impatto:0.7, note:'Pipeline visuale, deal complessi' },
+        ]},
+      ]},
+      '3': { cosa:'CRM con gestione offerte complesse e ciclo vendita lungo', tempo_mesi:1, moduli:[
+        { id:'crm_pro', nome:'CRM professionale B2B', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'salesforce', nome:'Salesforce Professional', costo_mensile:80, costo_setup:600, impatto:1.0, note:'Pipeline, offerte multi-fase, forecast, report per account' },
+          { id:'hubspot_pro', nome:'HubSpot Sales Pro', costo_mensile:60, costo_setup:400, impatto:0.75, note:'Pipeline, sequenze, documenti, quote' },
+        ]},
+      ]},
+      '4': { cosa:'CRM integrato con project management e produzione', tempo_mesi:2, moduli:[
+        { id:'integrazione', nome:'CRM + Project Management', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'integrato', nome:'CRM + PM integrati (Salesforce + Jira)', costo_mensile:200, costo_setup:1500, impatto:1.0, note:'Dal deal al progetto, risorse, milestone, margine — vista unificata' },
+          { id:'separato', nome:'CRM + PM separati', costo_mensile:100, costo_setup:600, impatto:0.6, note:'Tool separati, aggiornamento manuale' },
+        ]},
+      ]},
+      '5': { cosa:'ERP industriale — commesse, produzione, acquisti, service', tempo_mesi:4, moduli:[
+        { id:'erp', nome:'ERP per automazione industriale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'ERP commesse (SAP B1/TeamSystem Manufacturing)', costo_mensile:800, costo_setup:5000, impatto:1.0, note:'Offerte, commesse, progettazione, acquisti, produzione, collaudo, service' },
+          { id:'mid', nome:'Gestionale commesse mid-market', costo_mensile:400, costo_setup:2500, impatto:0.6, note:'Core features commesse + fatturazione' },
+        ]},
+      ]},
     },
     team: {
-      '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Ruoli progettazione/produzione/commerciale definiti',
-        tempo_mesi: 1,
-        moduli: [
-      {
-            id: 'ruoli',
-            nome: 'Organigramma per funzione',
-            tipo: 'flag',
-            obbligatorio: true,
-            costo_mensile: 0,
-            costo_setup: 200,
-            impatto: 0.7,
-            note: 'Progettazione, assemblaggio, collaudo, commerciale — mansionario'
-      }
-,
-{
-        id: 'documentazione',
-        nome: 'Documentazione tecnica per ruolo',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Schemi, procedure assemblaggio, collaudo per ogni mansione'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Resp. produzione/collaudo + procedure assembly strutturate',
-        tempo_mesi: 2,
-        moduli: [
-      {
-            id: 'resp',
-            nome: 'Responsabile tecnico/produzione',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-                  {
-                        id: 'promozione',
-                        nome: 'Promozione senior engineer',
-                        costo_mensile: 300,
-                        costo_setup: 500,
-                        impatto: 0.85,
-                        note: 'Già conosce i sistemi, gestisce assemblaggio e collaudo'
-                  },
-                  {
-                        id: 'esterno',
-                        nome: 'Resp. produzione automazione esterno',
-                        costo_mensile: 3000,
-                        costo_setup: 0,
-                        impatto: 1,
-                        note: 'Esperienza da altro integratore, nuovi metodi'
-                  }
-            ]
-      }
-]
-      },
-      '4': {
-        cosa: 'KPI per progetto + PM dedicato + certificazioni',
-        tempo_mesi: 3,
-        moduli: [
-      {
-            id: 'pm',
-            nome: 'Project manager tecnico',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-                  {
-                        id: 'dip',
-                        nome: 'PM/application engineer dipendente',
-                        costo_mensile: 3000,
-                        costo_setup: 0,
-                        impatto: 0.5,
-                        note: 'Gestione progetti, clienti, FAT/SAT'
-                  },
-                  {
-                        id: 'freelance',
-                        nome: 'PM freelance a commessa',
-                        costo_mensile: 1500,
-                        costo_setup: 0,
-                        impatto: 0.35,
-                        note: 'Solo su progetti grandi'
-                  }
-            ]
-      },
-      {
-            id: 'kpi',
-            nome: 'KPI per commessa (margine, tempi, reclami)',
-            tipo: 'flag',
-            obbligatorio: true,
-            costo_mensile: 0,
-            costo_setup: 500,
-            impatto: 0.3
-      }
-]
-      },
-      '5': {
-        cosa: 'Governance completa — fondatore solo R&D e strategia',
-        tempo_mesi: 4,
-        moduli: [
-      {
-            id: 'cto',
-            nome: 'CTO / Direttore tecnico automazione',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-                  {
-                        id: 'dip',
-                        nome: 'Direttore tecnico dipendente',
-                        costo_mensile: 4000,
-                        costo_setup: 0,
-                        impatto: 1,
-                        note: 'R&D, standard, team, commesse chiave'
-                  },
-                  {
-                        id: 'fractional',
-                        nome: 'CTO fractional',
-                        costo_mensile: 2000,
-                        costo_setup: 0,
-                        impatto: 0.65,
-                        note: '2-3 giorni/settimana'
-                  }
-            ]
-      }
-]
-      },
+      '1': { chi:'Titolare', cosa:'Titolare fa tutto — vendita, progettazione, installazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Separazione commerciale/tecnico/installazione', tempo_mesi:1, moduli:[
+        { id:'organigramma', nome:'Organigramma aziendale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.7, note:'Commerciale, progettazione, montaggio/installazione, service, admin' },
+      ]},
+      '3': { cosa:'Resp. tecnico/progettazione + team installazione strutturato', tempo_mesi:2, moduli:[
+        { id:'resp_tecnico', nome:'Responsabile tecnico/progettazione', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Ing. progettista senior dipendente', costo_mensile:3000, costo_setup:0, impatto:0.7, note:'Progettazione PLC, robot, HMI, quadri — supervisione tecnica' },
+          { id:'promozione', nome:'Promozione tecnico esperto interno', costo_mensile:300, costo_setup:500, impatto:0.55, note:'Gia conosce i sistemi, formazione su gestione progetti' },
+        ]},
+      ]},
+      '4': { cosa:'KPI per commessa + PM dedicato + team in crescita', tempo_mesi:3, moduli:[
+        { id:'pm', nome:'Project manager commesse', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'PM industriale dipendente', costo_mensile:3000, costo_setup:0, impatto:1.0, note:'Gestione commesse, timeline, budget, risorse, collaudo' },
+          { id:'fractional', nome:'PM fractional/a progetto', costo_mensile:1500, costo_setup:0, impatto:0.6, note:'Per commesse grandi' },
+        ]},
+        { id:'kpi', nome:'KPI commesse e delivery', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.15, note:'Margine per commessa, on-time delivery, ore vs preventivo, rework' },
+      ]},
+      '5': { cosa:'Management completo — titolare solo strategia e grandi clienti', tempo_mesi:5, moduli:[
+        { id:'coo', nome:'Direttore operativo', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Dir. operativo/tecnico dipendente', costo_mensile:4000, costo_setup:0, impatto:1.0, note:'Progetti, team tecnico, installazione, service — il titolare fa BD e strategia' },
+          { id:'fractional', nome:'Operations manager fractional', costo_mensile:2000, costo_setup:0, impatto:0.65, note:'3 giorni/settimana' },
+        ]},
+      ]},
       _label: 'Organizzazione',
     },
     processi: {
-      '1': { chi:'Titolare', cosa:'Nessun processo — ogni impianto è un pezzo unico', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Template offerta tecnica + documentazione impianto standard',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'processo', nome:'Template offerta tecnica + documentazione impianto standard', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.8 }
-        ,
-{
-        id: 'collaudo_checklist',
-        nome: 'Checklist collaudo FAT standard',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 100,
-        impatto: 0.15,
-        note: 'Test funzionale pre-consegna per ogni macchina/linea'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Project management — Gantt, milestone, collaudo, documentazione',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Project management',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:300, costo_setup:1500, impatto:1, note:'Project management — Gantt, milestone, collaudo, documentazione' },
-              { id:'base', nome:'Soluzione base', costo_mensile:150, costo_setup:750, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Processo ingegneria — design review, FAT, SAT, as-built',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Processo ingegneria',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:600, costo_setup:3000, impatto:1, note:'Processo ingegneria — design review, FAT, SAT, as-built' },
-              { id:'base', nome:'Soluzione base', costo_mensile:300, costo_setup:1500, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'PMO + sistema qualità ISO 9001 + standard IEC per safety',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'PMO',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:1000, costo_setup:5000, impatto:1, note:'PMO + sistema qualità ISO 9001 + standard IEC per safety' },
-              { id:'base', nome:'Soluzione base', costo_mensile:500, costo_setup:2500, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare', cosa:'Nessun processo — ogni commessa gestita ad hoc', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Template offerta tecnica + processo vendita definito', tempo_mesi:1, moduli:[
+        { id:'template', nome:'Template offerta tecnica', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.6, note:'Scope, specifiche tecniche, timeline, condizioni — riutilizzabile' },
+        { id:'processo', nome:'Processo vendita step-by-step', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.25, note:'Primo contatto, sopralluogo, offerta, negoziazione, ordine, kick-off' },
+      ]},
+      '3': { cosa:'Gestione commesse strutturata — Gantt, milestone, collaudo', tempo_mesi:2, moduli:[
+        { id:'commesse', nome:'Software gestione commesse', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'pm_tool', nome:'Project management (Microsoft Project/Primavera)', costo_mensile:50, costo_setup:500, impatto:1.0, note:'Gantt, milestone, risorse, dipendenze, tracking avanzamento' },
+          { id:'agile', nome:'Kanban + milestone (Asana/Monday)', costo_mensile:30, costo_setup:300, impatto:0.6, note:'Board visuale, meno formale, buono per commesse brevi' },
+        ]},
+      ]},
+      '4': { cosa:'Certificazioni (CE, sicurezza macchine) + documentazione tecnica strutturata', tempo_mesi:3, moduli:[
+        { id:'certificazioni', nome:'Gestione certificazioni CE/sicurezza', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'consulente', nome:'Consulente sicurezza macchine', costo_mensile:200, costo_setup:1000, impatto:1.0, note:'Analisi rischi, Direttiva Macchine 2006/42/CE, documentazione CE' },
+          { id:'interno', nome:'Formazione interna + template', costo_mensile:0, costo_setup:500, impatto:0.5, note:'Il tecnico prepara documentazione con template e checklist' },
+        ]},
+        { id:'documentazione', nome:'Documentazione tecnica strutturata', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.2, note:'Schemi elettrici, programmi PLC, manuali uso/manutenzione, as-built' },
+      ]},
+      '5': { cosa:'ERP commesse + PLM + service management strutturato', tempo_mesi:4, moduli:[
+        { id:'erp', nome:'ERP commesse automazione', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'ERP commesse (SAP B1/Mago4 Manufacturing)', costo_mensile:800, costo_setup:6000, impatto:1.0, note:'Offerte, commesse, acquisti, produzione, collaudo, service, BI' },
+          { id:'mid', nome:'Gestionale commesse mid-market', costo_mensile:400, costo_setup:3000, impatto:0.55, note:'Core features + fatturazione' },
+        ]},
+      ]},
     },
     ricavi: {
-      '1': { chi:'Titolare', cosa:'Fatturazione a progetto — prezzo su preventivo', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Contratti assistenza post-vendita annuali',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'ricavi', nome:'Contratti assistenza post-vendita annuali', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'service_contract',
-        nome: 'Contratti service/manutenzione impianti',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 0,
-        impatto: 0.15,
-        note: 'Manutenzione programmata — ricorrente, margine 50%+'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Service ricorrente — manutenzione programmata, teleassistenza',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'ricavi', nome:'Service ricorrente', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.8 }
-        ,
-{
-        id: 'retrofit',
-        nome: 'Retrofit e upgrade impianti esistenti',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Modernizzazione impianti vecchi — mercato enorme, margine alto'
-}
-      ]
-      },
-      '4': {
-        cosa: 'Servizi Industry 4.0 — IoT, analytics, digital twin as-a-service',
-        tempo_mesi: 3,
-        moduli: [
-          { id:'ricavi', nome:'Servizi Industry 4.0', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:2000, impatto:0.8 }
-        ,
-{
-        id: 'ricambi',
-        nome: 'Vendita ricambi e consumabili',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Ricambi proprietari — lock-in + margine alto'
-}
-      ]
-      },
-      '5': {
-        cosa: 'Revenue mix — progetti, service, retrofit, training, SaaS IoT',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'ricavi',
-            nome: 'Revenue mix',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:800, costo_setup:3000, impatto:1, note:'Revenue mix — progetti, service, retrofit, training, SaaS IoT' },
-              { id:'graduale', nome:'Implementazione graduale', costo_mensile:400, costo_setup:1500, impatto:0.65, note:'Avvio parziale, si espande' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare', cosa:'Revenue solo da commesse — nessun ricavo ricorrente', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Pricing strutturato — listino ore + materiali + margine commessa', tempo_mesi:1, moduli:[
+        { id:'pricing', nome:'Struttura pricing commesse', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.7, note:'Tariffa ora per ruolo, margine materiali, costi trasferta — preventivo preciso' },
+      ]},
+      '3': { cosa:'Contratti assistenza/manutenzione impianti — ricavo ricorrente', tempo_mesi:2, moduli:[
+        { id:'service', nome:'Contratti service/manutenzione', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.6, note:'Manutenzione programmata, assistenza remota, pronto intervento — MRR' },
+        { id:'ricambi', nome:'Vendita ricambi e upgrade', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:300, impatto:0.2, note:'Stock ricambi critici, proposta upgrade software/hardware — margine alto' },
+      ]},
+      '4': { cosa:'Retrofit + upgrade impianti esistenti + formazione operatori', tempo_mesi:3, moduli:[
+        { id:'retrofit', nome:'Servizio retrofit/upgrade', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.6, note:'Aggiornamento PLC, HMI, robot su impianti esistenti — commessa ricorrente' },
+        { id:'training', nome:'Formazione operatori/manutentori', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:300, impatto:0.15, note:'Corsi per operatori e manutentori del cliente — margine 70%+' },
+      ]},
+      '5': { cosa:'Revenue scalabile: prodotto standard + service + consulenza Industry 4.0', tempo_mesi:4, moduli:[
+        { id:'prodotto', nome:'Prodotto/soluzione standard ripetibile', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'standard', nome:'Macchina/cella standard configurabile', costo_mensile:500, costo_setup:5000, impatto:1.0, note:'Soluzione pre-ingegnerizzata personalizzabile — margine superiore, delivery veloce' },
+          { id:'moduli', nome:'Moduli software riutilizzabili', costo_mensile:200, costo_setup:2000, impatto:0.5, note:'Librerie PLC, HMI template, connettori — riuso su commesse' },
+        ]},
+      ]},
     },
     marketing: {
-      '1': { chi:'Nessuno', cosa:'Nessuno — solo fiere industriali e referral', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'LinkedIn aziendale + case study impianti realizzati',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'marketing', nome:'LinkedIn aziendale + case study impianti realizzati', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'linkedin_tecnico',
-        nome: 'LinkedIn con contenuti tecnici Industry 4.0',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 0,
-        impatto: 0.15,
-        note: 'Post su automazione, casi studio, trend — reach su decision maker'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Fiere industriali (SPS, MECSPE) + Google Ads + LinkedIn Ads',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'marketing', nome:'Fiere industriali (SPS, MECSPE) + Google Ads + LinkedIn Ads', tipo:'flag', obbligatorio:true, costo_mensile:800, costo_setup:2000, impatto:0.8 }
-        ,
-{
-        id: 'fiere_sps',
-        nome: 'Stand a fiere automazione (SPS, MECSPE)',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 500,
-        impatto: 0.15,
-        note: 'Demo macchine, networking, lead qualificati'
-}
-      ]
-      },
-      '4': {
-        cosa: 'White paper tecnici + webinar Industry 4.0 + demo center',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'White paper tecnici + webinar Industry 4.0 + demo center',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1500, costo_setup:4000, impatto:1, note:'White paper tecnici + webinar Industry 4.0 + demo center' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:600, costo_setup:2000, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Piano marketing industriale — thought leadership, fiere, partner',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'Piano marketing industriale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:3000, costo_setup:6000, impatto:1, note:'Piano marketing industriale — thought leadership, fiere, partner' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:1200, costo_setup:3000, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo network personale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'LinkedIn aziendale + video impianti realizzati', tempo_mesi:1, moduli:[
+        { id:'linkedin', nome:'LinkedIn aziendale professionale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.5, note:'Post: impianti realizzati, video funzionamento, case study tecnici' },
+        { id:'video', nome:'Video impianti/installazioni', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.3, note:'Video brevi degli impianti in funzione — il miglior biglietto da visita' },
+      ]},
+      '3': { cosa:'Fiere automazione (SPS, MECSPE) + content tecnico', tempo_mesi:2, moduli:[
+        { id:'fiere_mkt', nome:'Stand fiere automazione', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'stand', nome:'Stand SPS/MECSPE con demo', costo_mensile:300, costo_setup:5000, impatto:1.0, note:'Stand con demo live impianto, 1-2 fiere/anno' },
+          { id:'visitatore', nome:'Visita + networking eventi', costo_mensile:100, costo_setup:500, impatto:0.4, note:'Visitatore VIP, workshop, networking' },
+        ]},
+      ]},
+      '4': { cosa:'LinkedIn Ads su resp. produzione + webinar tecnici + PR', tempo_mesi:2, moduli:[
+        { id:'digital', nome:'Marketing digitale B2B industriale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia marketing B2B industriale', costo_mensile:800, costo_setup:500, impatto:1.0, note:'LinkedIn Ads, content tecnico, webinar, case study, PR su riviste' },
+          { id:'interno', nome:'Marketing interno + tool', costo_mensile:300, costo_setup:200, impatto:0.5, note:'Post tecnici + budget ads LinkedIn' },
+        ]},
+      ]},
+      '5': { cosa:'Piano marketing completo — brand, fiere, content, partner, ABM', tempo_mesi:4, moduli:[
+        { id:'piano', nome:'Piano marketing automazione B2B', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia marketing B2B industriale', costo_mensile:2000, costo_setup:4000, impatto:1.0, note:'Brand positioning, fiere internazionali, ABM, content, PR tech' },
+          { id:'interno', nome:'Marketing manager B2B interno', costo_mensile:1000, costo_setup:500, impatto:0.6, note:'1 risorsa dedicata' },
+        ]},
+      ]},
     },
     sitoweb: {
-      '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Sito vetrina con competenze, settori e impianti realizzati',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'sito', nome:'Sito vetrina con competenze, settori e impianti realizzati', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:800, impatto:0.8 }
-        ,
-{
-        id: 'video_impianti',
-        nome: 'Video impianti realizzati',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 300,
-        impatto: 0.15,
-        note: 'Video delle macchine in funzione — convincente per buyer tecnici'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Sito con case study, video impianti, richiesta preventivo',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Sito con case study, video impianti, richiesta preventivo',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:300, costo_setup:2500, impatto:1, note:'Sito con case study, video impianti, richiesta preventivo' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:120, costo_setup:1000, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Portale clienti — documentazione, ticket, teleassistenza',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Portale clienti',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:600, costo_setup:5000, impatto:1, note:'Portale clienti — documentazione, ticket, teleassistenza' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:240, costo_setup:2000, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Piattaforma clienti — IoT dashboard, service, knowledge base',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Piattaforma clienti',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:1200, costo_setup:10000, impatto:1, note:'Piattaforma clienti — IoT dashboard, service, knowledge base' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:480, costo_setup:4000, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Nessuno', cosa:'Nessun sito o pagina base', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Sito con soluzioni, settori serviti, video impianti', tempo_mesi:1, moduli:[
+        { id:'sito', nome:'Sito automazione industriale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'custom', nome:'Sito custom WordPress/Next.js', costo_mensile:30, costo_setup:2500, impatto:1.0, note:'Soluzioni per settore, video impianti, case study, team, certificazioni' },
+          { id:'template', nome:'Sito da template industriale', costo_mensile:20, costo_setup:800, impatto:0.5, note:'Template B2B industriale' },
+        ]},
+      ]},
+      '3': { cosa:'Case study dettagliati + blog tecnico + form contatto qualificato', tempo_mesi:2, moduli:[
+        { id:'content', nome:'Content hub industriale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:1500, impatto:0.5, note:'Case study con foto/video, blog su Industry 4.0, white paper' },
+        { id:'form', nome:'Form contatto qualificato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.4, note:'Settore, esigenza, volume produzione, timeline, budget indicativo' },
+      ]},
+      '4': { cosa:'Portale clienti con documentazione tecnica e richiesta assistenza', tempo_mesi:3, moduli:[
+        { id:'portale', nome:'Portale clienti/service', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'integrato', nome:'Portale integrato con ticketing', costo_mensile:200, costo_setup:3000, impatto:1.0, note:'Documentazione impianto, manuali, richiesta assistenza, storico interventi' },
+          { id:'base', nome:'Area riservata base + form assistenza', costo_mensile:50, costo_setup:1000, impatto:0.5, note:'Documentazione scaricabile + form richiesta assistenza' },
+        ]},
+      ]},
+      '5': { cosa:'Piattaforma digitale — sito, portale clienti, configuratore soluzioni', tempo_mesi:4, moduli:[
+        { id:'piattaforma', nome:'Piattaforma digitale automazione', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'Piattaforma enterprise con configuratore', costo_mensile:500, costo_setup:8000, impatto:1.0, note:'Sito, portale clienti, configuratore soluzioni, chatbot tecnico, CRM integrato' },
+          { id:'mid', nome:'Sito avanzato + portale clienti', costo_mensile:200, costo_setup:3000, impatto:0.5, note:'WordPress + ticketing + documentazione' },
+        ]},
+      ]},
     },
     ecommerce: {
-      '1': { chi:'Titolare', cosa:'Acquisto PLC e componenti da distributore abituale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Confronto distributori — Siemens, ABB, Schneider, Omron',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'canale', nome:'Confronto distributori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'componentistica',
-        nome: 'Database fornitori componentistica',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'PLC, sensori, motori — confronto prezzi e tempi per marca'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Accordi quadro con vendor — sconti volume, priorità consegna',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'canale', nome:'Accordi quadro con vendor', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.8 }
-        ,
-{
-        id: 'partnership_plc',
-        nome: 'Partnership con produttori PLC (Siemens, Allen-Bradley)',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 300,
-        impatto: 0.15,
-        note: 'Sconti, formazione, supporto tecnico, co-marketing'
-}
-      ]
-      },
-      '4': {
-        cosa: 'Buyer tecnico — ottimizzazione BOM, alternative, lead time',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Buyer tecnico',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:2000, costo_setup:800, impatto:1, note:'Buyer tecnico — ottimizzazione BOM, alternative, lead time' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:1000, costo_setup:320, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Resp. acquisti — vendor management, dual sourcing, stock strategy',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Resp. acquisti',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:3500, costo_setup:2000, impatto:1, note:'Resp. acquisti — vendor management, dual sourcing, stock strategy' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:1750, costo_setup:800, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
       _label: 'Approvvigionamento componenti',
+      '1': { chi:'Titolare', cosa:'Acquisto componenti da distributori abituali', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Confronto distributori — Siemens, ABB, Schneider, Fanuc, Kuka', tempo_mesi:1, moduli:[
+        { id:'fornitori', nome:'Database distributori componenti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.7, note:'Scheda: distributore, brand (Siemens/ABB/Schneider), listini, tempi, sconti' },
+      ]},
+      '3': { cosa:'Accordi quadro con distributori + programmi partner vendor', tempo_mesi:2, moduli:[
+        { id:'accordi', nome:'Accordi distributori componenti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.6, note:'Sconti volume, priorita consegna, supporto tecnico vendor' },
+        { id:'partner', nome:'Programmi partner vendor (Siemens/ABB)', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:300, impatto:0.15, note:'Certificazione partner, sconti aggiuntivi, formazione, lead sharing' },
+      ]},
+      '4': { cosa:'Buyer dedicato — ottimizzazione acquisti per commessa, dual sourcing', tempo_mesi:3, moduli:[
+        { id:'buyer', nome:'Buyer componenti industriali', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Buyer industriale dipendente', costo_mensile:2200, costo_setup:0, impatto:1.0, note:'Ottimizzazione acquisti per commessa, negoziazione, dual sourcing' },
+          { id:'parttime', nome:'Admin con delega acquisti', costo_mensile:900, costo_setup:0, impatto:0.6, note:'Gestisce riordini, confronto prezzi, rapporto distributori' },
+        ]},
+      ]},
+      '5': { cosa:'Supply chain manager — vendor management, dual sourcing, stock strategy', tempo_mesi:4, moduli:[
+        { id:'supply', nome:'Resp. supply chain automazione', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Supply chain manager dipendente', costo_mensile:3500, costo_setup:0, impatto:1.0, note:'Vendor management, dual sourcing, stock componenti critici, import' },
+          { id:'fractional', nome:'Supply chain manager fractional', costo_mensile:1800, costo_setup:0, impatto:0.6, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
     }
   }
 
