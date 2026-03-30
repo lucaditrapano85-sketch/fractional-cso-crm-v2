@@ -313,9 +313,9 @@ async function salvaScoreSnapshot(p, evento, nota) {
 }
 
 function scoreColor(s) {
-  if(s>=70) return {text:'rgba(35,120,70,0.8)',bg:'rgba(40,130,80,0.08)',border:'rgba(35,120,70,0.4)',label:'Buona base'};
-  if(s>=45) return {text:'rgba(150,110,20,0.8)',bg:'rgba(160,120,30,0.08)',border:'rgba(150,110,20,0.4)',label:'Da sviluppare'};
-  return {text:'rgba(170,50,50,0.8)',bg:'rgba(180,60,60,0.08)',border:'rgba(170,50,50,0.4)',label:'Critica'};
+  if(s>=70) return {text:'#00C896',bg:'rgba(0,200,150,0.08)',border:'rgba(0,200,150,0.35)',label:'Buona base'};
+  if(s>=45) return {text:'#3D5AFE',bg:'rgba(61,90,254,0.08)',border:'rgba(61,90,254,0.35)',label:'Da sviluppare'};
+  return {text:'#E53935',bg:'rgba(229,57,53,0.08)',border:'rgba(229,57,53,0.35)',label:'Critica'};
 }
 
 function showToast(msg, type='success') {
@@ -882,7 +882,7 @@ async function eliminaPreventivo(id) {
 function renderPreventivi(p) {
   var container = document.getElementById('preventivi-container');
   if (!container) return;
-  var STATO_COLOR = {bozza:'#4A6180',inviato:'#4E9FE6',accettato:'rgb(25,100,60)',rifiutato:'#E05555'};
+  var STATO_COLOR = {bozza:'#4A6180',inviato:'#4E9FE6',accettato:'#00C896',rifiutato:'#E05555'};
   var STATO_LABEL = {bozza:'Bozza',inviato:'Inviato',accettato:'Accettato',rifiutato:'Rifiutato'};
 
   // Capitolo chiuso (all targets reached) o archivio → blocca preventivi
@@ -1073,10 +1073,10 @@ function renderDashboard() {
   });
   scadenze.sort(function(a,b) { return a.giorni - b.giorni; });
   if (scadenze.length > 0) {
-    alertHtml = '<div style="margin-bottom:16px;padding:12px 16px;background:rgba(170,50,40,0.06);border:1px solid rgba(170,50,40,0.15);border-radius:12px">' +
-      '<div style="font-size:11px;font-weight:700;color:rgba(170,50,40,0.8);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">\u26A0 Scadenze in avvicinamento (' + scadenze.length + ')</div>' +
+    alertHtml = '<div style="margin-bottom:16px;padding:12px 16px;background:rgba(229,57,53,0.06);border:1px solid rgba(229,57,53,0.15);border-radius:12px">' +
+      '<div style="font-size:11px;font-weight:700;color:rgba(229,57,53,0.8);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">\u26A0 Scadenze in avvicinamento (' + scadenze.length + ')</div>' +
       scadenze.slice(0, 5).map(function(s) {
-        var col = s.scaduto ? 'rgba(170,50,40,0.8)' : s.giorni <= 7 ? 'rgba(170,50,40,0.7)' : 'rgba(150,110,30,0.7)';
+        var col = s.scaduto ? 'rgba(229,57,53,0.8)' : s.giorni <= 7 ? 'rgba(229,57,53,0.7)' : 'rgba(61,90,254,0.7)';
         var label = s.scaduto ? 'Scaduto' : s.giorni + ' giorni';
         return '<div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;cursor:pointer" onclick="openProspect(\'' + s.id + '\')">' +
           '<div style="font-size:12px;color:var(--text)"><strong>' + s.nome + '</strong> \u00B7 ' + s.dim + '</div>' +
@@ -1375,7 +1375,7 @@ async function renderProspectDetail(id) {
   document.getElementById('det-dims').innerHTML=DIMS.map(d=>{
     const v=p.dims?.[d.id]||0, pct=(v/5)*100;
     const t=p.targets?.[d.id];
-    const col=pct>=60?'rgba(40,120,70,0.75)':pct>=35?'rgba(150,110,30,0.75)':'rgba(170,50,40,0.75)';
+    const col=pct>=60?'rgba(0,200,150,0.75)':pct>=35?'rgba(61,90,254,0.75)':'rgba(229,57,53,0.75)';
     const _curStep = Math.max(v, 1);
     const desc = _getStepDesc(p.settore || '', d.id, _curStep);
     return `\x3cdiv class="dim-row" style="margin-bottom:10px">
@@ -1948,7 +1948,7 @@ function _buildReportHTML(p) {
           const v = p.dims?.[d.id] || 0;
           const tgt = targets[d.id] || 0;
           const pct = v > 0 ? (v/5)*100 : 0;
-          const col = v >= 4 ? 'rgba(40,120,70,0.75)' : v >= 3 ? 'rgba(150,110,30,0.75)' : v >= 1 ? 'rgba(170,50,40,0.75)' : '#CCC';
+          const col = v >= 4 ? 'rgba(0,200,150,0.75)' : v >= 3 ? 'rgba(61,90,254,0.75)' : v >= 1 ? 'rgba(229,57,53,0.75)' : '#CCC';
           const hasTgt = tgt > v;
           return `<div class="rp-dim-row" style="margin-bottom:10px">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
@@ -1967,7 +1967,7 @@ function _buildReportHTML(p) {
         <div class="rp-section-title">Aree critiche prioritarie</div>
         ${crits.map((d, i) => {
           const v = p.dims?.[d.id] || 1;
-          const colors = ['rgba(170,50,40,0.75)','rgba(150,110,30,0.75)','#8A6AC9'];
+          const colors = ['rgba(229,57,53,0.75)','rgba(61,90,254,0.75)','#8A6AC9'];
           return `<div class="rp-crit" style="border-left-color:${colors[i]};margin-bottom:10px">
             <div class="rp-crit-title">${getDimLabel(p.settore, d.id)} <span style="font-weight:400;color:#999;font-size:11px">livello ${v}/5</span></div>
             <div class="rp-crit-text">${DIM_DESC[d.id]?.[v-1] || ''}</div>
@@ -1993,7 +1993,7 @@ function _buildReportHTML(p) {
           <div style="flex:1">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;flex-wrap:wrap">
               <div style="font-size:10px;color:#B8842E;letter-spacing:.06em;text-transform:uppercase;font-weight:600">${a.dim} &nbsp;${a.cur}/5 → ${a.cur+1}/5</div>
-               ${a.costo ? '<div style="font-size:10px;color:#4A9A6A;background:rgba(50,130,80,0.08);border-radius:20px;padding:1px 8px;font-weight:600">≈ ' + _formatEur(a.costo.r) + '€/mese' + (a.costo.u > 0 ? ' + ' + _formatEur(a.costo.u) + '€ setup' : '') + '</div>' : ''}
+               ${a.costo ? '<div style="font-size:10px;color:#00C896;background:rgba(0,200,150,0.08);border-radius:20px;padding:1px 8px;font-weight:600">≈ ' + _formatEur(a.costo.r) + '€/mese' + (a.costo.u > 0 ? ' + ' + _formatEur(a.costo.u) + '€ setup' : '') + '</div>' : ''}
               ${a.scad ? '<div style="font-size:10px;color:#666;background:#F0EDE6;border-radius:20px;padding:1px 8px">entro '+new Date(a.scad).toLocaleDateString("it-IT",{day:"2-digit",month:"short",year:"numeric"})+'</div>' : ''}
             </div>
             ${a.impatto ? (()=>{
@@ -2064,7 +2064,7 @@ function _buildReportHTML(p) {
           <div style="font-size:12px;color:#444">${m.label}</div>
           <div style="display:flex;gap:20px">
             <span style="font-size:11px;color:#999">Media: ${m.media}</span>
-            <span style="font-size:11px;color:#4A9A6A;font-weight:600">Top: ${m.top}</span>
+            <span style="font-size:11px;color:#00C896;font-weight:600">Top: ${m.top}</span>
           </div>
         </div>`).join('')}
       </div>
@@ -3516,13 +3516,13 @@ function drawRadar(dims_vals, targets_vals, settore) {
       const v = targets_vals[d.id] || 0;
       return pt(v, angles[i]).join(',');
     }).join(' ');
-    html += `\x3cpolygon points="${tpts}" fill="rgba(201,151,58,.08)" stroke="rgba(150,110,30,0.75)" stroke-width="1.5" stroke-dasharray="5,3"/>`;
+    html += `\x3cpolygon points="${tpts}" fill="rgba(61,90,254,0.08)" stroke="rgba(61,90,254,0.75)" stroke-width="1.5" stroke-dasharray="5,3"/>`;
     // Target dots
     DIMS.forEach((d, i) => {
       const v = targets_vals[d.id] || 0;
       if (!v) return;
       const [x, y] = pt(v, angles[i]);
-      html += `\x3ccircle cx="${x}" cy="${y}" r="4" fill="rgba(150,110,30,0.75)" stroke="var(--bg2)" stroke-width="1.5"/>`;
+      html += `\x3ccircle cx="${x}" cy="${y}" r="4" fill="rgba(61,90,254,0.75)" stroke="var(--bg2)" stroke-width="1.5"/>`;
     });
   }
 
@@ -3531,12 +3531,12 @@ function drawRadar(dims_vals, targets_vals, settore) {
     const v = dims_vals[d.id] || 0;
     return pt(v, angles[i]).join(',');
   }).join(' ');
-  html += `\x3cpolygon points="${cpts}" fill="rgba(74,154,106,.25)" stroke="rgba(40,120,70,0.75)" stroke-width="2"/>`;
+  html += `\x3cpolygon points="${cpts}" fill="rgba(0,200,150,0.25)" stroke="rgba(0,200,150,0.75)" stroke-width="2"/>`;
   // Current dots
   DIMS.forEach((d, i) => {
     const v = dims_vals[d.id] || 0;
     const [x, y] = pt(v, angles[i]);
-    html += `\x3ccircle cx="${x}" cy="${y}" r="4" fill="rgba(40,120,70,0.75)" stroke="var(--bg2)" stroke-width="1.5"/>`;
+    html += `\x3ccircle cx="${x}" cy="${y}" r="4" fill="rgba(0,200,150,0.75)" stroke="var(--bg2)" stroke-width="1.5"/>`;
   });
 
   // Labels ? split long labels on 2 lines, font-size 8
@@ -5155,7 +5155,7 @@ function _abilitaModificaScheda() {
   var btn = document.getElementById('scheda-btn-edit');
   if (btn) {
     btn.textContent = 'Salva';
-    btn.style.background = 'rgb(25,100,60)';
+    btn.style.background = '#00C896';
     btn.style.border = 'none';
     btn.style.color = '#fff';
     btn.onclick = function() { _salvaSchedaTab(); };
@@ -5599,7 +5599,7 @@ function apriCapitoliOverlay(idxIniziale) {
   if (hasDims) {
     var isAttuale = idxIniziale === -1 || (idxIniziale === undefined && capitoli.length === 0);
     tabsHtml += '<div onclick="switchCapitolo(-1)" style="padding:5px 12px;font-size:11px;border-radius:8px;cursor:pointer;white-space:nowrap;' +
-      (isAttuale ? 'background:rgba(40,120,70,0.15);border:1px solid rgba(40,120,70,0.3);color:rgba(40,120,70,0.9);font-weight:600' : 'background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.06);color:var(--gray);font-weight:500') +
+      (isAttuale ? 'background:rgba(0,200,150,0.15);border:1px solid rgba(0,200,150,0.3);color:rgba(0,200,150,0.9);font-weight:600' : 'background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.06);color:var(--gray);font-weight:500') +
       '">Attuale</div>';
   }
 
@@ -5625,9 +5625,9 @@ function switchCapitolo(idx) {
     for (var i = 0; i < children.length; i++) {
       var isThis = (i < capitoli.length && i === idx) || (i === children.length - 1 && idx === -1);
       if (isThis) {
-        children[i].style.background = idx === -1 ? 'rgba(40,120,70,0.15)' : 'rgba(70,100,200,0.15)';
-        children[i].style.borderColor = idx === -1 ? 'rgba(40,120,70,0.3)' : 'rgba(70,100,200,0.3)';
-        children[i].style.color = idx === -1 ? 'rgba(40,120,70,0.9)' : 'rgba(70,100,200,0.9)';
+        children[i].style.background = idx === -1 ? 'rgba(0,200,150,0.15)' : 'rgba(70,100,200,0.15)';
+        children[i].style.borderColor = idx === -1 ? 'rgba(0,200,150,0.3)' : 'rgba(70,100,200,0.3)';
+        children[i].style.color = idx === -1 ? 'rgba(0,200,150,0.9)' : 'rgba(70,100,200,0.9)';
         children[i].style.fontWeight = '600';
       } else {
         children[i].style.background = 'rgba(0,0,0,0.04)';
@@ -5688,7 +5688,7 @@ function _renderCapitoloContent(p, idx) {
   var durataStr = cap.durata_mesi ? cap.durata_mesi + ' mesi' : (cap.durata_giorni ? cap.durata_giorni + ' giorni' : '\u2014');
   var fatIniziale = cap.fatturato_iniziale || cap.fatturato_anno_1;
   var fatFinale = cap.fatturato_finale || cap.fatturato_anno_1;
-  var deltaCol = cap.delta_pct > 0 ? 'rgb(25,100,60)' : cap.delta_pct < 0 ? 'rgba(170,50,40,0.8)' : 'var(--text)';
+  var deltaCol = cap.delta_pct > 0 ? '#00C896' : cap.delta_pct < 0 ? 'rgba(229,57,53,0.8)' : 'var(--text)';
 
   var dimsHtml = (function() {
     var sc = cap.step_completamenti || {};
@@ -5709,7 +5709,7 @@ function _renderCapitoloContent(p, idx) {
           '<div style="font-size:12px;font-weight:600;color:var(--text)">' + label + '</div>' +
           '<div style="display:flex;align-items:center;gap:8px">' +
             (dataComp ? '<span style="font-size:10px;color:var(--gray)">' + dataComp + '</span>' : '') +
-            '<span style="font-size:12px;font-weight:600;color:' + (raggiunto ? 'rgba(40,120,70,0.8)' : 'var(--text)') + '">' +
+            '<span style="font-size:12px;font-weight:600;color:' + (raggiunto ? 'rgba(0,200,150,0.8)' : 'var(--text)') + '">' +
               di + ' \u2192 ' + d + '/5' + (raggiunto ? ' \u2713' : '') +
             '</span>' +
           '</div>' +
@@ -5764,7 +5764,7 @@ function apriCapitolo(idx) {
     var label = typeof getDimLabel === 'function' ? getDimLabel(settore, id) : id;
     return '<div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border)">' +
       '<div style="font-size:12px;color:var(--text)">' + label + '</div>' +
-      '<div style="font-size:12px;font-weight:600;color:' + (raggiunto ? 'rgba(40,120,70,0.8)' : 'var(--text)') + '">' +
+      '<div style="font-size:12px;font-weight:600;color:' + (raggiunto ? 'rgba(0,200,150,0.8)' : 'var(--text)') + '">' +
         d + '/5' + (t > 0 ? ' (target ' + t + ')' : '') + (raggiunto ? ' \u2713' : '') +
       '</div>' +
     '</div>';
@@ -5780,7 +5780,7 @@ function apriCapitolo(idx) {
   var durataStr = cap.durata_mesi ? cap.durata_mesi + ' mesi' : (cap.durata_giorni ? cap.durata_giorni + ' giorni' : '\u2014');
   var fatIniziale = cap.fatturato_iniziale || cap.fatturato_anno_1;
   var fatFinale = cap.fatturato_finale || cap.fatturato_anno_1;
-  var deltaCol = cap.delta_pct > 0 ? 'rgb(25,100,60)' : cap.delta_pct < 0 ? 'rgba(170,50,40,0.8)' : 'var(--text)';
+  var deltaCol = cap.delta_pct > 0 ? '#00C896' : cap.delta_pct < 0 ? 'rgba(229,57,53,0.8)' : 'var(--text)';
 
   var html = '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px">' +
     '<div style="background:rgba(0,0,0,0.03);border-radius:10px;padding:10px;text-align:center">' +
@@ -5817,7 +5817,7 @@ function apriCapitolo(idx) {
         '<div style="font-size:12px;color:var(--text)">' + label + '</div>' +
         '<div style="display:flex;align-items:center;gap:8px">' +
           (dataComp ? '<span style="font-size:10px;color:var(--gray)">' + dataComp + '</span>' : '') +
-          '<span style="font-size:12px;font-weight:600;color:' + (raggiunto ? 'rgba(40,120,70,0.8)' : 'var(--text)') + '">' +
+          '<span style="font-size:12px;font-weight:600;color:' + (raggiunto ? 'rgba(0,200,150,0.8)' : 'var(--text)') + '">' +
             di + ' \u2192 ' + d + '/5' + (raggiunto ? ' \u2713' : '') +
           '</span>' +
         '</div>' +
@@ -5907,13 +5907,13 @@ function apriMultiScenario() {
       '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
         '<div><div style="font-size:13px;font-weight:700;color:var(--text)">' + sc.nome + '</div>' +
         '<div style="font-size:11px;color:var(--gray)">' + sc.desc + '</div></div>' +
-        (sostenibile ? '<span style="font-size:9px;padding:3px 8px;border-radius:10px;background:rgba(40,120,70,0.1);color:rgba(40,120,70,0.8);font-weight:600">Sostenibile</span>'
-          : '<span style="font-size:9px;padding:3px 8px;border-radius:10px;background:rgba(170,50,40,0.08);color:rgba(170,50,40,0.8);font-weight:600">' + pctFat + '% fatturato</span>') +
+        (sostenibile ? '<span style="font-size:9px;padding:3px 8px;border-radius:10px;background:rgba(0,200,150,0.1);color:rgba(0,200,150,0.8);font-weight:600">Sostenibile</span>'
+          : '<span style="font-size:9px;padding:3px 8px;border-radius:10px;background:rgba(229,57,53,0.08);color:rgba(229,57,53,0.8);font-weight:600">' + pctFat + '% fatturato</span>') +
       '</div>' +
       '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">' +
-        '<div style="text-align:center"><div style="font-size:10px;color:var(--gray)">Fatturato 12m</div><div style="font-size:14px;font-weight:700;color:var(--text)">' + fmtF(fat12[1]) + '\u20AC</div><div style="font-size:10px;color:rgb(25,100,60)">+' + pctCrescita + '%</div></div>' +
+        '<div style="text-align:center"><div style="font-size:10px;color:var(--gray)">Fatturato 12m</div><div style="font-size:14px;font-weight:700;color:var(--text)">' + fmtF(fat12[1]) + '\u20AC</div><div style="font-size:10px;color:#00C896">+' + pctCrescita + '%</div></div>' +
         '<div style="text-align:center"><div style="font-size:10px;color:var(--gray)">Costo/anno</div><div style="font-size:14px;font-weight:700;color:rgb(40,75,160)">' + fmtF(costoAnno) + '\u20AC</div><div style="font-size:10px;color:var(--gray)">' + fmtF(costo) + '/mese</div></div>' +
-        '<div style="text-align:center"><div style="font-size:10px;color:var(--gray)">ROI 12m</div><div style="font-size:14px;font-weight:700;color:' + (crescita > costoAnno ? 'rgb(25,100,60)' : 'rgba(170,50,40,0.8)') + '">' + (costoAnno > 0 ? (crescita/costoAnno).toFixed(1) + 'x' : '\u2014') + '</div></div>' +
+        '<div style="text-align:center"><div style="font-size:10px;color:var(--gray)">ROI 12m</div><div style="font-size:14px;font-weight:700;color:' + (crescita > costoAnno ? '#00C896' : 'rgba(229,57,53,0.8)') + '">' + (costoAnno > 0 ? (crescita/costoAnno).toFixed(1) + 'x' : '\u2014') + '</div></div>' +
       '</div>' +
     '</div>';
   }).join('');
@@ -5975,7 +5975,7 @@ function apriControlloFatturato() {
     if (hasActual && proj) {
       var inRange = actual >= proj[0] * 0.9 && actual <= proj[1] * 1.1;
       var sopra = actual > proj[1] * 1.1;
-      var col = sopra ? 'rgb(25,100,60)' : inRange ? 'rgba(150,110,30,0.8)' : 'rgba(170,50,40,0.8)';
+      var col = sopra ? '#00C896' : inRange ? 'rgba(61,90,254,0.8)' : 'rgba(229,57,53,0.8)';
       var label = sopra ? '\u2191 Sopra' : inRange ? '\u2248 In linea' : '\u2193 Sotto';
       statusHtml = '<span style="font-size:10px;font-weight:600;color:' + col + '">' + label + '</span>';
     }
@@ -6057,12 +6057,12 @@ function apriDettaglioRoi() {
 
     var roiAnnoMin = a.costoAnno > 0 ? (beneficioAnnoMin / a.costoAnno).toFixed(1) : '\u2014';
     var roiAnnoMax = a.costoAnno > 0 ? (beneficioAnnoMax / a.costoAnno).toFixed(1) : '\u2014';
-    var roiCol = roiAnnoMax >= 1.5 ? 'rgb(25,100,60)' : roiAnnoMax >= 1 ? 'rgba(150,110,30,0.75)' : 'rgba(170,50,40,0.75)';
+    var roiCol = roiAnnoMax >= 1.5 ? '#00C896' : roiAnnoMax >= 1 ? 'rgba(61,90,254,0.75)' : 'rgba(229,57,53,0.75)';
 
     return '<div style="display:grid;grid-template-columns:70px 1fr 1fr 1fr 80px;gap:8px;padding:10px 0;border-bottom:1px solid var(--border);align-items:center">' +
       '<div style="font-size:12px;font-weight:700;color:var(--white)">' + a.label + '</div>' +
       '<div style="text-align:center"><div style="font-size:10px;color:var(--gray)">Fatturato</div><div style="font-size:12px;font-weight:600;color:var(--white)">' + fmtF(fatMin) + '\u2013' + fmtF(fatMax) + '\u20AC</div></div>' +
-      '<div style="text-align:center"><div style="font-size:10px;color:var(--gray)">Crescita anno</div><div style="font-size:12px;font-weight:600;color:rgb(25,100,60)">+' + fmtF(crescitaMin) + '\u2013' + fmtF(crescitaMax) + '\u20AC</div></div>' +
+      '<div style="text-align:center"><div style="font-size:10px;color:var(--gray)">Crescita anno</div><div style="font-size:12px;font-weight:600;color:#00C896">+' + fmtF(crescitaMin) + '\u2013' + fmtF(crescitaMax) + '\u20AC</div></div>' +
       '<div style="text-align:center"><div style="font-size:10px;color:var(--gray)">Costo anno</div><div style="font-size:12px;font-weight:600;color:rgb(40,75,160)">' + fmtF(a.costoAnno) + '\u20AC</div></div>' +
       '<div style="text-align:center"><div style="font-size:10px;color:var(--gray)">ROI anno</div><div style="font-size:13px;font-weight:700;color:' + roiCol + '">' + roiAnnoMin + '\u2013' + roiAnnoMax + 'x</div></div>' +
     '</div>';
@@ -6073,7 +6073,7 @@ function apriDettaglioRoi() {
   var totCrescitaMax = (anni[anni.length-1]?.fat?.[1] || fat) - fat;
   var totRoiMin = investitoCumul > 0 ? (totCrescitaMin * anni.length / investitoCumul).toFixed(1) : '\u2014';
   var totRoiMax = investitoCumul > 0 ? (totCrescitaMax * anni.length / investitoCumul).toFixed(1) : '\u2014';
-  var totRoiCol = totRoiMax >= 1.5 ? 'rgb(25,100,60)' : totRoiMax >= 1 ? 'rgba(150,110,30,0.75)' : 'rgba(170,50,40,0.75)';
+  var totRoiCol = totRoiMax >= 1.5 ? '#00C896' : totRoiMax >= 1 ? 'rgba(61,90,254,0.75)' : 'rgba(229,57,53,0.75)';
 
   rows += '<div style="display:grid;grid-template-columns:70px 1fr 1fr 1fr 80px;gap:8px;padding:12px 0;border-top:2px solid var(--border);align-items:center;margin-top:4px">' +
     '<div style="font-size:12px;font-weight:700;color:var(--white)">Totale</div>' +
@@ -6209,11 +6209,11 @@ function renderTimelineUnificata(p, calls) {
 
   var TIPO_CONFIG = {
     diagnosi:   {icon:'\uD83C\uDFAF', color:'rgba(110,80,170,0.75)',  bg:'rgba(110,80,170,0.06)'},
-    sessione:   {icon:'\u2705',       color:'rgba(40,120,70,0.75)',   bg:'rgba(40,120,70,0.06)'},
+    sessione:   {icon:'\u2705',       color:'rgba(0,200,150,0.75)',   bg:'rgba(0,200,150,0.06)'},
     step:       {icon:'\uD83D\uDCC8', color:'rgba(70,100,200,0.75)',  bg:'rgba(70,100,200,0.06)'},
     call:       {icon:'\uD83D\uDCDE', color:'rgba(60,110,170,0.75)',  bg:'rgba(60,110,170,0.06)'},
-    target:     {icon:'\uD83C\uDFF9', color:'rgba(150,110,30,0.75)',  bg:'rgba(150,110,30,0.06)'},
-    checkpoint: {icon:'\uD83D\uDCB0', color:'rgba(170,50,40,0.75)',   bg:'rgba(170,50,40,0.06)'}
+    target:     {icon:'\uD83C\uDFF9', color:'rgba(61,90,254,0.75)',  bg:'rgba(61,90,254,0.06)'},
+    checkpoint: {icon:'\uD83D\uDCB0', color:'rgba(229,57,53,0.75)',   bg:'rgba(229,57,53,0.06)'}
   };
 
   // Raggruppa per mese
@@ -6254,7 +6254,7 @@ function renderTimelineUnificata(p, calls) {
       // Esito call colorato
       var callEsitoHtml = '';
       if (e.tipo === 'call' && e.esito) {
-        var esitoCol = e.esito === 'positivo' ? 'rgba(40,120,70,0.7)' : e.esito === 'negativo' ? 'rgba(170,50,40,0.7)' : 'rgba(150,110,30,0.7)';
+        var esitoCol = e.esito === 'positivo' ? 'rgba(0,200,150,0.7)' : e.esito === 'negativo' ? 'rgba(229,57,53,0.7)' : 'rgba(61,90,254,0.7)';
         callEsitoHtml = '<span style="width:8px;height:8px;border-radius:50%;background:' + esitoCol + ';display:inline-block;margin-right:4px;vertical-align:middle"></span>';
       }
 
@@ -6297,7 +6297,7 @@ function _buildGraficoTimeline(p) {
 
   var completedBanner = '';
   if (allReached) {
-    completedBanner = '<div style="text-align:center;padding:20px;margin-bottom:16px;background:rgba(40,130,80,0.08);border:1px solid rgba(40,130,80,0.2);border-radius:12px">' +
+    completedBanner = '<div style="text-align:center;padding:20px;margin-bottom:16px;background:rgba(0,200,150,0.08);border:1px solid rgba(0,200,150,0.2);border-radius:12px">' +
       '<div style="font-size:20px;margin-bottom:6px">\u2705</div>' +
       '<div style="font-size:14px;font-weight:700;color:var(--text)">Piano completato!</div>' +
       '<div style="font-size:12px;color:var(--gray)">Obiettivi raggiunti. Imposta nuovi target per continuare la crescita.</div>' +
@@ -6405,7 +6405,7 @@ function _buildGraficoTimeline(p) {
       const detail = typeof getStepDetail === 'function' ? getStepDetail(settore, d, stepKey) : null;
       const desc = detail ? detail.cosa : '';
       const costoStr = detail ? (detail.costo_mensile > 0 ? '\u2248' + detail.costo_mensile.toLocaleString('it-IT') + '\u20AC/mese' : 'Nessun costo') + ' \u00B7 Operativo in ~' + detail.tempo_mesi + ' ' + (detail.tempo_mesi === 1 ? 'mese' : 'mesi') : '';
-      const colors = {vendite:'rgb(40,75,160)',pipeline:'rgb(25,100,60)',ecommerce:'#BA7517',marketing:'#BA7517',team:'rgb(40,75,160)',processi:'#888780',ricavi:'rgb(25,100,60)',sitoweb:'#888780'};
+      const colors = {vendite:'rgb(40,75,160)',pipeline:'#00C896',ecommerce:'#BA7517',marketing:'#BA7517',team:'rgb(40,75,160)',processi:'#888780',ricavi:'#00C896',sitoweb:'#888780'};
       const col = colors[d] || '#888780';
       return '<div class="tl-azione-row">' +
         '<div class="tl-azione-dot" style="background:' + col + '"></div>' +
@@ -6435,7 +6435,7 @@ function _buildGraficoTimeline(p) {
           var proiMax12 = snap.fat12 ? snap.fat12[1] : 0;
           var inRange = fat >= proiMin12 * 0.9 && fat <= proiMax12 * 1.1;
           var sopra = fat > proiMax12 * 1.1;
-          var statusCol = sopra ? 'rgb(25,100,60)' : inRange ? 'rgba(150,110,30,0.8)' : 'rgba(170,50,40,0.8)';
+          var statusCol = sopra ? '#00C896' : inRange ? 'rgba(61,90,254,0.8)' : 'rgba(229,57,53,0.8)';
           var statusLabel = sopra ? '\u2191 Sopra le previsioni' : inRange ? '\u2248 In linea' : '\u2193 Sotto le previsioni';
           fatSub = '<span style="color:' + statusCol + ';font-weight:600">' + (delta >= 0 ? '+' : '') + deltaPct + '% da ' + snapDate + '</span> \u00B7 <span style="color:' + statusCol + '">' + statusLabel + '</span>';
         }
@@ -6461,9 +6461,9 @@ function _buildGraficoTimeline(p) {
       }
 
       var livello = pctFatturato > 30 ? 'critico' : 'alto';
-      var col = livello === 'critico' ? 'rgba(170,50,40,0.8)' : 'rgba(150,110,30,0.8)';
-      var bgCol = livello === 'critico' ? 'rgba(170,50,40,0.06)' : 'rgba(150,110,30,0.06)';
-      var borderCol = livello === 'critico' ? 'rgba(170,50,40,0.2)' : 'rgba(150,110,30,0.2)';
+      var col = livello === 'critico' ? 'rgba(229,57,53,0.8)' : 'rgba(61,90,254,0.8)';
+      var bgCol = livello === 'critico' ? 'rgba(229,57,53,0.06)' : 'rgba(61,90,254,0.06)';
+      var borderCol = livello === 'critico' ? 'rgba(229,57,53,0.2)' : 'rgba(61,90,254,0.2)';
       var icon = livello === 'critico' ? '\u26D4' : '\u26A0';
 
       // Suggerisci priorità: ordina dimensioni per impatto/costo e suggerisci quelle da fare prima
@@ -6539,10 +6539,10 @@ function _buildGraficoTimeline(p) {
       var entries = Object.entries(penDim).filter(function(e){ return e[1] > 0.05; }).sort(function(a,b){ return b[1]-a[1]; });
       if (entries.length === 0) return '';
       var media = entries.reduce(function(s,e){ return s+e[1]; }, 0) / entries.length;
-      var mediaCol = media >= 0.40 ? 'rgba(170,50,40,0.75)' : media >= 0.20 ? 'rgba(150,110,30,0.75)' : 'rgba(40,120,70,0.75)';
+      var mediaCol = media >= 0.40 ? 'rgba(229,57,53,0.75)' : media >= 0.20 ? 'rgba(61,90,254,0.75)' : 'rgba(0,200,150,0.75)';
       var rows = entries.map(function(e) {
         var id = e[0]; var pct = Math.round(e[1]*100);
-        var col = pct >= 40 ? 'rgba(170,50,40,0.75)' : pct >= 20 ? 'rgba(150,110,30,0.75)' : 'rgba(150,110,30,0.75)';
+        var col = pct >= 40 ? 'rgba(229,57,53,0.75)' : pct >= 20 ? 'rgba(61,90,254,0.75)' : 'rgba(61,90,254,0.75)';
         var livDim = Math.max((targets[id]||1), (dims[id]||1));
         // Trova le dipendenze basse e suggerisci il livello target
         var deps = _getDipendenze(settore, id);
@@ -6589,7 +6589,7 @@ function _buildGraficoTimeline(p) {
     '<div class="tl-legend">' +
       '<span class="tl-leg-item"><span class="tl-leg-dot" style="background:#B4B2A9"></span>Base attuale</span>' +
       '<span class="tl-leg-item"><span class="tl-leg-dot" style="background:#85B7EB"></span>Scenario minimo</span>' +
-      '<span class="tl-leg-item"><span class="tl-leg-dot" style="background:rgb(25,100,60)"></span>Scenario massimo</span>' +
+      '<span class="tl-leg-item"><span class="tl-leg-dot" style="background:#00C896"></span>Scenario massimo</span>' +
       (idealPath ? '<span class="tl-leg-item"><span class="tl-leg-dot" style="background:rgba(180,140,40,0.6);border:1px dashed rgba(180,140,40,0.8)"></span>Percorso ideale</span>' : '') +
     '</div>' +
     '<div class="tl-chart-wrap"><canvas id="' + chartId + '"></canvas></div>' +
@@ -6640,11 +6640,11 @@ function _buildGraficoTimeline(p) {
           {
             label: 'Scenario massimo',
             data: pts.max,
-            borderColor: 'rgb(25,100,60)',
+            borderColor: '#00C896',
             backgroundColor: 'rgba(28,184,137,0.08)',
             borderWidth: 2,
             pointRadius: 3,
-            pointBackgroundColor: 'rgb(25,100,60)',
+            pointBackgroundColor: '#00C896',
             fill: '-1',
             tension: 0.35,
           }
@@ -7379,7 +7379,7 @@ function aggiornaAzioni(dimId) {
       var customMods = (stepSel._custom || []);
       customMods.forEach(function(cm, ci) {
         var impLabel = cm.impatto >= 0.7 ? 'Alto' : cm.impatto >= 0.4 ? 'Medio' : 'Basso';
-        html += '<div class="moduli-item" style="background:rgba(150,110,30,0.04);border-radius:6px;padding:6px 8px;margin-top:4px">' +
+        html += '<div class="moduli-item" style="background:rgba(61,90,254,0.04);border-radius:6px;padding:6px 8px;margin-top:4px">' +
           '<div style="display:flex;align-items:center;justify-content:space-between">' +
             '<span class="moduli-item-nome">' + (cm.nome || 'Custom') + '</span>' +
             '<span style="font-size:9px;color:var(--gray)">' + fmtC(cm.costo_mensile || 0) + '/mese · Impatto: ' + impLabel + '</span>' +
