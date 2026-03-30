@@ -1,60 +1,64 @@
 :root {
-  --bg:        #d8dbe2;
-  --bg2:       rgba(255,255,255,0.55);
-  --bg3:       rgba(255,255,255,0.35);
-  --bg4:       rgba(255,255,255,0.2);
+  --bg:        #F5F4F0;
+  --bg2:       rgba(255,255,255,0.65);
+  --bg3:       rgba(255,255,255,0.45);
+  --bg4:       rgba(255,255,255,0.25);
   --border:    rgba(0,0,0,0.06);
   --border2:   rgba(0,0,0,0.1);
-  --white:     #111118;
+  --white:     #1a1a2e;
   --gray:      #3a3a4a;
   --gray2:     #7a7a90;
-  --gold:      rgba(140,110,50,0.75);
-  --gold2:     rgba(120,90,40,0.65);
-  --gold-dim:  rgba(140,110,50,0.08);
-  --green:     rgba(40,130,80,0.75);
-  --green-bg:  rgba(40,130,80,0.06);
-  --amber-bg:  rgba(140,110,50,0.06);
+  --gold:      #3D5AFE;
+  --gold2:     #2a47e0;
+  --gold-dim:  rgba(61,90,254,0.08);
+  --green:     #00C896;
+  --green-bg:  rgba(0,200,150,0.06);
+  --amber-bg:  rgba(61,90,254,0.06);
   --red:       rgba(180,60,60,0.75);
   --red-bg:    rgba(180,60,60,0.05);
-  --blue:      rgba(70,100,200,0.75);
-  --blue-bg:   rgba(70,100,200,0.06);
+  --blue:      #3D5AFE;
+  --blue-bg:   rgba(61,90,254,0.06);
   --r:         16px;
   --rs:        10px;
-  --text:      #111118;
+  --text:      #1a1a2e;
   --text-muted:#3a3a4a;
-  --accent:    rgba(70,100,200,0.35);
+  --accent:    rgba(61,90,254,0.35);
+  --leva-navy: #1a1a2e;
+  --leva-blue: #3D5AFE;
+  --leva-green:#00C896;
+  --leva-warm: #F5F4F0;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',sans-serif;background:linear-gradient(145deg,#d8dbe2 0%,#cfd2da 50%,#d8dbe2 100%);color:var(--white);min-height:100vh;-webkit-font-smoothing:antialiased}
+body{font-family:'DM Sans',sans-serif;background:#F5F4F0;color:var(--white);min-height:100vh;-webkit-font-smoothing:antialiased}
 h1,h2,h3{font-family:'DM Serif Display',serif;font-weight:400}
 
 .app{display:flex;height:100vh;overflow:hidden}
-.sidebar{width:210px;background:var(--bg2);border-right:1px solid rgba(0,0,0,0.08);display:flex;flex-direction:column;flex-shrink:0;box-shadow:2px 0 12px rgba(0,0,0,.04)}
+.sidebar{width:210px;background:#1a1a2e;border-right:none;display:flex;flex-direction:column;flex-shrink:0;box-shadow:2px 0 16px rgba(0,0,0,.12)}
 .main{flex:1;overflow-y:auto;background:var(--bg)}
 
-.sidebar-logo{padding:16px 16px 12px;border-bottom:1px solid rgba(255,255,255,0.55);background:transparent}
-.wordmark{font-family:'DM Serif Display',serif;font-size:15px;color:var(--gold)}
-.sidebar-logo .sub{font-size:9px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
-.nav-item{display:flex;align-items:center;gap:8px;padding:8px 14px;font-size:14px;color:var(--white);cursor:pointer;transition:all .2s;margin:1px 8px;border-radius:8px}
-.nav-item:hover{color:var(--white);background:rgba(255,255,255,0.55)}
-.nav-item.active{color:var(--gold);background:var(--amber-bg)}
+.sidebar-logo{padding:16px 16px 12px;border-bottom:1px solid rgba(255,255,255,0.08);background:transparent}
+.wordmark{font-family:'DM Serif Display',serif;font-size:15px;color:#fff}
+.sidebar-logo .sub{font-size:9px;color:rgba(255,255,255,0.5);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+.nav-item{display:flex;align-items:center;gap:8px;padding:8px 14px;font-size:14px;color:rgba(255,255,255,0.7);cursor:pointer;transition:all .2s;margin:1px 8px;border-radius:8px}
+.nav-item:hover{color:#fff;background:rgba(255,255,255,0.08)}
+.nav-item.active{color:#fff;background:var(--leva-blue)}
 .nav-item svg{width:15px;height:15px;flex-shrink:0}
-.sidebar-section-label{font-size:9px;color:var(--gray2);letter-spacing:.1em;text-transform:uppercase;padding:12px 14px 6px}
+.sidebar-section-label{font-size:9px;color:rgba(255,255,255,0.35);letter-spacing:.1em;text-transform:uppercase;padding:12px 14px 6px}
 .prospect-item{padding:8px 20px;cursor:pointer;transition:background .1s;border-left:2px solid transparent}
-.prospect-item:hover{background:var(--bg3)}
-.prospect-item.active{background:var(--bg4);border-left-color:var(--gold)}
-.p-name{font-size:13px;color:var(--white);font-weight:500}
-.p-meta{font-size:11px;color:var(--gray);margin-top:2px;display:flex;align-items:center;gap:6px}
+.prospect-item:hover{background:rgba(255,255,255,0.06)}
+.prospect-item.active{background:rgba(61,90,254,0.15);border-left-color:var(--leva-blue)}
+.p-name{font-size:13px;color:rgba(255,255,255,0.9);font-weight:500}
+.p-meta{font-size:11px;color:rgba(255,255,255,0.45);margin-top:2px;display:flex;align-items:center;gap:6px}
 .status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 .sidebar-prospects{flex:1;overflow-y:auto}
-.btn-new{margin:8px 8px;padding:9px;background:var(--gold);color:#FFFFFF;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;border:none;border-radius:8px;cursor:pointer;width:calc(100% - 16px);transition:all .2s}
+.btn-new{margin:8px 8px;padding:9px;background:var(--leva-blue);color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;border:none;border-radius:8px;cursor:pointer;width:calc(100% - 16px);transition:all .2s}
 .btn-new:hover{background:var(--gold2)}
 .sidebar-prospects .btn-new{display:none!important}
-.sidebar-logout{padding:8px;border-top:1px solid var(--border);margin-top:auto}
-.btn-logout{width:100%;padding:7px;background:transparent;border:1px solid var(--border2);color:var(--gray2);border-radius:8px;cursor:pointer;font-size:11px;font-family:'DM Sans',sans-serif;transition:all .2s}
+.sidebar-logout{padding:8px;border-top:1px solid rgba(255,255,255,0.08);margin-top:auto}
+.btn-logout{width:100%;padding:7px;background:transparent;border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.5);border-radius:8px;cursor:pointer;font-size:11px;font-family:'DM Sans',sans-serif;transition:all .2s}
 .btn-logout:hover{border-color:var(--red);color:var(--red)}
-.btn-admin{width:100%;padding:7px;background:var(--gold-dim);border:1px solid var(--gold);color:var(--gold);border-radius:8px;cursor:pointer;font-size:11px;font-family:'DM Sans',sans-serif;font-weight:600;transition:all .2s;margin-bottom:6px}
-.btn-admin:hover{background:var(--gold);color:#fff}
+.btn-admin{width:100%;padding:7px;background:rgba(61,90,254,0.15);border:1px solid rgba(61,90,254,0.3);color:rgba(61,90,254,0.9);border-radius:8px;cursor:pointer;font-size:11px;font-family:'DM Sans',sans-serif;font-weight:600;transition:all .2s;margin-bottom:6px}
+.btn-admin:hover{background:var(--leva-blue);color:#fff}
 .admin-header{margin-bottom:20px}
 .admin-header-top{display:flex;align-items:baseline;gap:12px;margin-bottom:14px}
 .admin-title{font-family:'DM Serif Display',serif;font-size:24px;font-weight:400;color:var(--white)}
