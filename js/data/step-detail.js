@@ -2412,390 +2412,206 @@ const STEP_DETAIL_BY_SETTORE = {
   commercio_materiali_edili: {
     vendite: {
       '1': { chi:'Titolare', cosa:'Titolare al banco — chi viene compra', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Visite imprese edili/posatori della zona',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Sviluppo showroom — appuntamenti privati',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'supporto', nome:'Titolare strutturato', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:500, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: '1 agente esterno imprese/cantieri',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1800, costo_setup:500, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:990, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:810, costo_setup:500, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Gare pubbliche + accordi quadro costruttori',
-        tempo_mesi: 6,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:3000, costo_setup:2000, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1650, costo_setup:2000, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1350, costo_setup:2000, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Visite proattive a imprese edili, posatori e artigiani zona', tempo_mesi:1, moduli:[
+        { id:'analisi', nome:'Analisi clienti imprese/artigiani', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.6, note:'Mappatura imprese edili, posatori, idraulici, elettricisti nel raggio di consegna' },
+        { id:'visite', nome:'Piano visite cantieri e imprese', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.3, note:'1-2 giorni/settimana fuori dal punto vendita' },
+      ]},
+      '3': { cosa:'Showroom professionale + consulenza progetto per privati e architetti', tempo_mesi:2, moduli:[
+        { id:'showroom', nome:'Addetto showroom/consulente', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Consulente showroom dipendente', costo_mensile:2000, costo_setup:0, impatto:1.0, note:'Accoglienza, consulenza materiali, progetto bagno/pavimenti, preventivi' },
+          { id:'parttime', nome:'Consulente part-time (weekend + 2 gg)', costo_mensile:1100, costo_setup:0, impatto:0.6, note:'Copre sabato + 2 giorni, il resto il titolare' },
+        ]},
+        { id:'progettazione', nome:'Software progettazione 3D ambienti', tipo:'flag', obbligatorio:false, costo_mensile:50, costo_setup:500, impatto:0.2, note:'Rendering bagno/cucina/pavimenti per mostrare al cliente il risultato' },
+      ]},
+      '4': { cosa:'Agente esterno per cantieri e imprese edili', tempo_mesi:3, moduli:[
+        { id:'agente', nome:'Figura commerciale B2B', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agente', nome:'Agente plurimandatario edilizia', costo_mensile:800, costo_setup:500, impatto:1.0, note:'Provvigione 3-5%, visita cantieri, rapporti con capocantiere e geometri' },
+          { id:'dip', nome:'Commerciale esterno dipendente', costo_mensile:2200, costo_setup:0, impatto:0.8, note:'Stipendio + auto, fidelizzato, dedica tutto il tempo alla rivendita' },
+          { id:'parttime', nome:'Commerciale part-time', costo_mensile:1000, costo_setup:0, impatto:0.5, note:'Mattina visite cantieri, pomeriggio in showroom' },
+        ]},
+      ]},
+      '5': { cosa:'Gare pubbliche MEPA + accordi quadro con costruttori/GC', tempo_mesi:6, moduli:[
+        { id:'resp', nome:'Resp. grandi clienti e gare', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Resp. commerciale B2B dipendente', costo_mensile:3000, costo_setup:0, impatto:0.5, note:'Gare MEPA, capitolati, accordi quadro costruttori, rapporti studi' },
+          { id:'fractional', nome:'Business developer fractional', costo_mensile:1500, costo_setup:0, impatto:0.35, note:'2-3 giorni/settimana, focus grandi commesse' },
+        ]},
+        { id:'gare', nome:'Preparazione gare pubbliche', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:1000, impatto:0.2, note:'Iscrizione MEPA, documentazione, qualificazione albo fornitori PA' },
+      ]},
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — vendite al banco senza storico', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Excel con clienti principali, frequenza acquisti, volumi',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:100, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'CRM per follow-up preventivi e gestione clienti imprese',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'strumento', nome:'CRM base', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:300, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'CRM + gestionale magazzino — stock, prezzi, listini cliente',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM + gestionale magazzino', costo_mensile:500, costo_setup:2000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:250, costo_setup:1200, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'ERP — ordini, magazzino, logistica consegne, fatturazione',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'ERP', costo_mensile:1000, costo_setup:5000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:500, costo_setup:3000, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Excel con clienti principali, frequenza acquisti, volumi per categoria', tempo_mesi:1, moduli:[
+        { id:'strumento', nome:'Strumento tracciamento', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'excel', nome:'Excel/Fogli Google strutturato', costo_mensile:0, costo_setup:100, impatto:0.7, note:'Cliente, tipo (impresa/privato/artigiano), ultimo acquisto, valore, prodotti top' },
+          { id:'crm_free', nome:'CRM gratuito (HubSpot Free/Zoho)', costo_mensile:0, costo_setup:200, impatto:0.85, note:'Pipeline preventivi + storico acquisti + reminder' },
+        ]},
+      ]},
+      '3': { cosa:'CRM per follow-up preventivi e gestione clienti imprese', tempo_mesi:1, moduli:[
+        { id:'crm', nome:'CRM rivendita edile', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'b2b', nome:'CRM B2B (Salesforce Essentials/Zoho CRM)', costo_mensile:60, costo_setup:300, impatto:1.0, note:'Pipeline preventivi imprese, follow-up, segmentazione per canale' },
+          { id:'generico', nome:'CRM leggero (Pipedrive/Freshsales)', costo_mensile:30, costo_setup:200, impatto:0.65, note:'Pipeline base, reminder, storico' },
+        ]},
+      ]},
+      '4': { cosa:'CRM + gestionale magazzino — stock, prezzi, listini per cliente', tempo_mesi:2, moduli:[
+        { id:'integrazione', nome:'Gestionale integrato', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'erp_edile', nome:'Gestionale rivendita edile (Danea/TeamSystem)', costo_mensile:400, costo_setup:2000, impatto:1.0, note:'Magazzino, listini per cliente, DDT, fatturazione, stock live' },
+          { id:'modulare', nome:'CRM + gestionale separati', costo_mensile:200, costo_setup:1000, impatto:0.65, note:'CRM per vendite + Danea/Fatture in Cloud per magazzino/fatture' },
+        ]},
+      ]},
+      '5': { cosa:'ERP completo — ordini, magazzino, logistica consegne, fatturazione, BI', tempo_mesi:3, moduli:[
+        { id:'erp', nome:'ERP rivendita edile', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'ERP distribuzione (SAP B1/Mago4)', costo_mensile:800, costo_setup:5000, impatto:1.0, note:'Gestione completa: vendite, acquisti, magazzino, logistica, contabilita, BI' },
+          { id:'mid', nome:'ERP mid-market (TeamSystem/Danea Enterprise)', costo_mensile:400, costo_setup:2500, impatto:0.65, note:'Funzionalita core, costo inferiore' },
+        ]},
+      ]},
     },
     team: {
       '1': { chi:'Titolare', cosa:'Nessuna organizzazione — il titolare decide tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Ruoli banco/magazzino/showroom definiti — chi fa cosa è chiaro',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'organizzazione', nome:'Ruoli banco/magazzino/showroom definiti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Procedure ordini e consegne formalizzate',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'organizzazione', nome:'Procedure ordini e consegne formalizzate', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'KPI + deleghe operative',
-        tempo_mesi: 3,
-        moduli: [
-          { id:'organizzazione', nome:'KPI + deleghe operative', tipo:'flag', obbligatorio:true, costo_mensile:500, costo_setup:1000, impatto:0.8 }
-        ]
-      },
-      '5': {
-        cosa: 'Management commerciale + logistica strutturato',
-        tempo_mesi: 5,
-        moduli: [
-          {
-            id: 'manager',
-            nome: 'Figura manageriale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Management dipendente', costo_mensile:1500, costo_setup:1500, impatto:1, note:'Full-time' },
-              { id:'fractional', nome:'Management fractional', costo_mensile:750, costo_setup:1500, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Ruoli banco/magazzino/showroom separati con mansionario', tempo_mesi:1, moduli:[
+        { id:'organigramma', nome:'Organigramma e mansionario', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.7, note:'Banco vendita, magazzino/piazzale, showroom, consegne, admin — chi fa cosa' },
+        { id:'resp_mag', nome:'Responsabile magazzino/piazzale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'promozione', nome:'Promozione interna', costo_mensile:0, costo_setup:200, impatto:1.0, note:'Magazziniere esperto promosso, conosce giacenze e prodotti' },
+          { id:'esterno', nome:'Assunzione esterna', costo_mensile:300, costo_setup:0, impatto:0.8, note:'Esperienza in logistica edile' },
+        ]},
+      ]},
+      '3': { cosa:'Addetti showroom + back-office ordini/fatturazione', tempo_mesi:2, moduli:[
+        { id:'admin', nome:'Impiegata amministrativa/ordini', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Impiegata dipendente', costo_mensile:1800, costo_setup:0, impatto:0.7, note:'Ordini, DDT, fatture, rapporto fornitori, gestione crediti' },
+          { id:'parttime', nome:'Impiegata part-time', costo_mensile:900, costo_setup:0, impatto:0.5, note:'4h/giorno' },
+        ]},
+      ]},
+      '4': { cosa:'Responsabile commerciale + KPI per reparto', tempo_mesi:3, moduli:[
+        { id:'resp_comm', nome:'Responsabile commerciale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2800, costo_setup:0, impatto:1.0, note:'Coordinamento vendite banco/showroom/esterno, pricing, target' },
+          { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1400, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' },
+        ]},
+        { id:'kpi', nome:'Dashboard KPI per reparto', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.15, note:'Fatturato banco/showroom/esterno, margine per linea, rotazione scorte' },
+      ]},
+      '5': { cosa:'Management completo — il titolare fa solo strategia e sviluppo', tempo_mesi:5, moduli:[
+        { id:'manager', nome:'Store/Operations manager', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Store manager dipendente', costo_mensile:3000, costo_setup:0, impatto:1.0, note:'Gestione totale: personale, magazzino, showroom, consegne, clienti' },
+          { id:'fractional', nome:'Operations manager fractional', costo_mensile:1500, costo_setup:0, impatto:0.65, note:'3 giorni/settimana' },
+        ]},
+      ]},
       _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — magazzino gestito a vista', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Gestione ordini strutturata — conferma, tempi consegna',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'processo', nome:'Gestione ordini strutturata', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Gestionale magazzino — giacenze, riordino, inventario',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Gestionale magazzino',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:300, costo_setup:1500, impatto:1, note:'Gestionale magazzino — giacenze, riordino, inventario' },
-              { id:'base', nome:'Soluzione base', costo_mensile:150, costo_setup:750, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Logistica consegne ottimizzata — route planning, mezzi',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Logistica consegne ottimizzata',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:600, costo_setup:2500, impatto:1, note:'Logistica consegne ottimizzata — route planning, mezzi' },
-              { id:'base', nome:'Soluzione base', costo_mensile:300, costo_setup:1250, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'ERP integrato + gestione showroom + consegne pianificate',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'ERP integrato',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:1000, costo_setup:5000, impatto:1, note:'ERP integrato + gestione showroom + consegne pianificate' },
-              { id:'base', nome:'Soluzione base', costo_mensile:500, costo_setup:2500, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Gestione ordini strutturata — conferma, tempi, consegna cantiere', tempo_mesi:1, moduli:[
+        { id:'ordini', nome:'Processo ordini e preventivi', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.7, note:'Flusso: preventivo, conferma, picking magazzino, DDT, consegna/ritiro' },
+        { id:'consegne', nome:'Procedura consegne in cantiere', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.2, note:'Orari consegna, scarico con gru/muletto, firma DDT, foto scarico' },
+      ]},
+      '3': { cosa:'Gestionale magazzino con giacenze, sotto-scorta e riordino', tempo_mesi:2, moduli:[
+        { id:'wms', nome:'Software gestione magazzino', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dedicato', nome:'WMS per rivendita edile (Danea/Odoo)', costo_mensile:200, costo_setup:1500, impatto:1.0, note:'Giacenze per ubicazione (magazzino/piazzale/showroom), sotto-scorta, riordino' },
+          { id:'base', nome:'Gestione magazzino base (Excel avanzato)', costo_mensile:0, costo_setup:500, impatto:0.5, note:'Foglio con giacenze e alert, aggiornamento manuale' },
+        ]},
+      ]},
+      '4': { cosa:'Logistica consegne ottimizzata + gestione piazzale/scoperto', tempo_mesi:2, moduli:[
+        { id:'logistica', nome:'Ottimizzazione consegne', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'software', nome:'Route planning + tracking consegne', costo_mensile:200, costo_setup:1000, impatto:1.0, note:'Pianificazione giri, tracking GPS mezzi, conferma consegna digitale' },
+          { id:'manuale', nome:'Pianificazione manuale strutturata', costo_mensile:0, costo_setup:300, impatto:0.5, note:'Tabellone consegne settimanale, priorita per cantiere' },
+        ]},
+        { id:'piazzale', nome:'Gestione piazzale/scoperto', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:300, impatto:0.15, note:'Mappatura ubicazioni, rotazione materiali pesanti, safety zone' },
+      ]},
+      '5': { cosa:'ERP integrato + showroom management + consegne pianificate', tempo_mesi:4, moduli:[
+        { id:'erp', nome:'ERP integrato rivendita', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'ERP completo (SAP B1/TeamSystem)', costo_mensile:800, costo_setup:5000, impatto:1.0, note:'Vendite, acquisti, magazzino, showroom, logistica, contabilita, tutto integrato' },
+          { id:'modulare', nome:'Moduli separati integrati via API', costo_mensile:400, costo_setup:2500, impatto:0.6, note:'CRM + magazzino + fatturazione collegati, meno integrato' },
+        ]},
+      ]},
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Margine fisso da listino fornitore — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Pricing differenziato — imprese vs privati vs cantieri',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'ricavi', nome:'Pricing differenziato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Upsell showroom — finiture, accessori, posa consigliata',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'ricavi', nome:'Upsell showroom', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Servizio consegna in cantiere come voce a margine',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'ricavi', nome:'Servizio consegna in cantiere come voce a margine', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
-        ]
-      },
-      '5': {
-        cosa: 'Contratti quadro con costruttori + private label su linee base',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'ricavi',
-            nome: 'Contratti quadro con costruttori + private label su linee base',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:700, costo_setup:1500, impatto:1, note:'Contratti quadro con costruttori + private label su linee base' },
-              { id:'graduale', nome:'Implementazione graduale', costo_mensile:350, costo_setup:750, impatto:0.65, note:'Avvio parziale, si espande' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Pricing differenziato per canale: imprese, artigiani, privati', tempo_mesi:1, moduli:[
+        { id:'pricing', nome:'Listini per canale cliente', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8, note:'Prezzo diverso per impresa edile, artigiano, privato — margini ottimizzati' },
+      ]},
+      '3': { cosa:'Upsell showroom: finiture premium, accessori, posa consigliata', tempo_mesi:1, moduli:[
+        { id:'upsell', nome:'Programma upsell showroom', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.6, note:'Checklist per venditori: proporre finiture superiori, battiscopa, sigillanti, posa' },
+        { id:'posa', nome:'Servizio posa con artigiani convenzionati', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:300, impatto:0.2, note:'Rete posatori convenzionati, il cliente compra materiale + posa da noi' },
+      ]},
+      '4': { cosa:'Servizio consegna in cantiere a pagamento + noleggio attrezzature', tempo_mesi:2, moduli:[
+        { id:'consegna', nome:'Consegna cantiere premium', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.6, note:'Consegna con gru, scarico al piano, orario concordato — servizio a pagamento' },
+        { id:'noleggio', nome:'Noleggio attrezzature edili', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:1000, impatto:0.2, note:'Betoniere, ponteggi, tagliatrici — margine 30-40% sul noleggio' },
+      ]},
+      '5': { cosa:'Contratti quadro con costruttori + private label su linee base', tempo_mesi:3, moduli:[
+        { id:'contratti', nome:'Accordi quadro costruttori', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'strutturato', nome:'Accordi quadro con 3-5 costruttori', costo_mensile:0, costo_setup:500, impatto:1.0, note:'Listino dedicato, priorita consegna, volumi garantiti, pagamento a 60gg' },
+          { id:'spot', nome:'Forniture spot su richiesta', costo_mensile:0, costo_setup:0, impatto:0.4, note:'Preventivi caso per caso' },
+        ]},
+        { id:'pl', nome:'Private label su linee base', tipo:'flag', obbligatorio:false, costo_mensile:200, costo_setup:1000, impatto:0.2, note:'Cemento, malte, impermeabilizzanti con marchio proprio — margine +15-20%' },
+      ]},
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo posizione e insegna', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Google My Business + foto showroom e magazzino',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'marketing', nome:'Google My Business + foto showroom e magazzino', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Google Ads locali su "materiali edili + città"',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'marketing', nome:'Google Ads locali su "materiali edili + città"', tipo:'flag', obbligatorio:true, costo_mensile:500, costo_setup:800, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Campagne social con progetti realizzati + promozioni stagionali',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'marketing', nome:'Campagne social con progetti realizzati + promozioni stagionali', tipo:'flag', obbligatorio:true, costo_mensile:900, costo_setup:1500, impatto:0.8 }
-        ]
-      },
-      '5': {
-        cosa: 'Piano marketing — eventi showroom, partnership progettisti',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'Piano marketing',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:2000, costo_setup:2500, impatto:1, note:'Piano marketing — eventi showroom, partnership progettisti' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:800, costo_setup:1250, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Google My Business + foto showroom, piazzale, consegne', tempo_mesi:1, moduli:[
+        { id:'gmb', nome:'Google My Business ottimizzato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.6, note:'Foto showroom/piazzale/consegne, orari, risposte recensioni' },
+        { id:'recensioni', nome:'Raccolta recensioni clienti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.3, note:'Richiesta recensione post-acquisto a imprese e privati soddisfatti' },
+      ]},
+      '3': { cosa:'Google Ads locali + portali edilizia (Edilportale)', tempo_mesi:2, moduli:[
+        { id:'ads', nome:'Google Ads locali', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:500, impatto:0.5, note:'Campagne su "materiali edili + citta", "ceramiche + zona", "rivendita edile"' },
+        { id:'portali', nome:'Portali edilizia (Edilportale/EdilPRO)', tipo:'flag', obbligatorio:false, costo_mensile:100, costo_setup:0, impatto:0.2, note:'Profilo aziendale, catalogo prodotti, richieste preventivo' },
+      ]},
+      '4': { cosa:'Social media: progetti realizzati, promozioni stagionali, video showroom', tempo_mesi:2, moduli:[
+        { id:'social', nome:'Gestione social media', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Social media manager/agenzia', costo_mensile:700, costo_setup:500, impatto:1.0, note:'Piano editoriale: lavori realizzati, promo stagionali, novita showroom, reel' },
+          { id:'interno', nome:'Social autogestiti', costo_mensile:200, costo_setup:200, impatto:0.4, note:'Il titolare/addetto pubblica 2-3 post/settimana' },
+        ]},
+      ]},
+      '5': { cosa:'Piano marketing completo — eventi showroom, partnership architetti e progettisti', tempo_mesi:3, moduli:[
+        { id:'piano', nome:'Piano marketing strutturato', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia marketing edilizia', costo_mensile:1800, costo_setup:2000, impatto:1.0, note:'Strategia: eventi showroom, partnership studi, fiere locali, digital' },
+          { id:'freelance', nome:'Freelance marketing + tool', costo_mensile:800, costo_setup:500, impatto:0.6, note:'1 professionista, focus lead generation e contenuti' },
+        ]},
+      ]},
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Sito con catalogo prodotti, showroom, zona consegna',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'sito', nome:'Sito con catalogo prodotti, showroom, zona consegna', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:1000, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Catalogo ceramiche online + richiesta preventivo',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Catalogo ceramiche online',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:300, costo_setup:2500, impatto:1, note:'Catalogo ceramiche online + richiesta preventivo' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:120, costo_setup:1000, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Simulatore ambienti + disponibilità stock online',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Simulatore ambienti',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:600, costo_setup:5000, impatto:1, note:'Simulatore ambienti + disponibilità stock online' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:240, costo_setup:2000, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Portale B2B — ordini imprese, listini riservati, tracking',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Portale B2B',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:1000, costo_setup:8000, impatto:1, note:'Portale B2B — ordini imprese, listini riservati, tracking' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:400, costo_setup:3200, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Sito con catalogo prodotti, showroom virtuale, zona consegna', tempo_mesi:1, moduli:[
+        { id:'sito', nome:'Sito rivendita edile', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'custom', nome:'Sito custom WordPress + catalogo', costo_mensile:30, costo_setup:2000, impatto:1.0, note:'Catalogo per categoria, foto showroom, zona consegna, form preventivo' },
+          { id:'template', nome:'Sito da template', costo_mensile:20, costo_setup:600, impatto:0.55, note:'Template edilizia, meno personalizzabile' },
+        ]},
+      ]},
+      '3': { cosa:'Catalogo ceramiche/finiture online + form preventivo dettagliato', tempo_mesi:2, moduli:[
+        { id:'catalogo', nome:'Catalogo online con filtri', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:1500, impatto:0.5, note:'Catalogo navigabile per tipo/marca/prezzo, schede con foto HD e specifiche' },
+        { id:'form', nome:'Form preventivo dettagliato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.4, note:'Form con tipo lavoro, materiali, metratura, urgenza — lead qualificato' },
+      ]},
+      '4': { cosa:'Simulatore ambienti 3D + disponibilita stock online', tempo_mesi:2, moduli:[
+        { id:'simulatore', nome:'Simulatore ambienti', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'custom', nome:'Simulatore 3D custom/integrato', costo_mensile:200, costo_setup:5000, impatto:1.0, note:'Il cliente carica foto stanza e prova ceramiche/pavimenti in ambiente reale' },
+          { id:'saas', nome:'Tool SaaS (Tilesview/Roomvo)', costo_mensile:100, costo_setup:1000, impatto:0.55, note:'Plugin integrabile, libreria prodotti da caricare' },
+        ]},
+      ]},
+      '5': { cosa:'Portale B2B — ordini imprese online, listini riservati, tracking consegne', tempo_mesi:3, moduli:[
+        { id:'portale', nome:'Portale B2B imprese', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'Portale B2B custom/Magento', costo_mensile:600, costo_setup:8000, impatto:1.0, note:'Ordini online, listini per cliente, stock live, tracking consegne, fatture' },
+          { id:'mid', nome:'WooCommerce B2B', costo_mensile:200, costo_setup:3000, impatto:0.55, note:'E-commerce B2B con plugin, meno personalizzazione' },
+        ]},
+      ]},
     },
     ecommerce: {
-      '1': { chi:'Titolare', cosa:'Acquisto da 1-2 produttori abituali — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Confronto fornitori su prodotti principali — prezzi e tempi',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'canale', nome:'Confronto fornitori su prodotti principali', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Accordi quadro con produttori ceramiche e cemento',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'canale', nome:'Accordi quadro con produttori ceramiche e cemento', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Buyer dedicato — diversificazione fornitori, import diretto',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Buyer dedicato',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:1500, costo_setup:500, impatto:1, note:'Buyer dedicato — diversificazione fornitori, import diretto' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:750, costo_setup:200, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Resp. acquisti — contratti volume, stoccaggio strategico',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Resp. acquisti',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:3000, costo_setup:1500, impatto:1, note:'Resp. acquisti — contratti volume, stoccaggio strategico' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:1500, costo_setup:600, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
       _label: 'Approvvigionamento materiali',
+      '1': { chi:'Titolare', cosa:'Acquisto da 1-2 produttori abituali — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Confronto fornitori su prodotti principali: ceramiche, cemento, laterizi', tempo_mesi:1, moduli:[
+        { id:'fornitori', nome:'Database fornitori materiali edili', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.7, note:'Scheda per produttore: listino, MOQ, tempi consegna, resa, qualita' },
+      ]},
+      '3': { cosa:'Accordi quadro con produttori ceramiche, cemento e laterizi', tempo_mesi:2, moduli:[
+        { id:'accordi', nome:'Accordi quadro produttori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.6, note:'Prezzi bloccati con Marazzi/Keope/Buzzi/laterifici locali' },
+        { id:'campionario', nome:'Campionario showroom aggiornato', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.15, note:'Campioni ceramiche/pavimenti/rivestimenti aggiornati da ogni produttore' },
+      ]},
+      '4': { cosa:'Buyer dedicato — diversificazione fornitori, import diretto', tempo_mesi:2, moduli:[
+        { id:'buyer', nome:'Buyer materiali edili', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Buyer dipendente', costo_mensile:2200, costo_setup:0, impatto:1.0, note:'Negoziazione produttori, import ceramiche, gestione scorte, qualita' },
+          { id:'parttime', nome:'Buyer part-time/admin con delega', costo_mensile:1000, costo_setup:0, impatto:0.6, note:'Gestisce riordini, confronto listini, rapporto fornitori' },
+        ]},
+      ]},
+      '5': { cosa:'Resp. acquisti — contratti volume, stoccaggio strategico, import diretto', tempo_mesi:4, moduli:[
+        { id:'supply', nome:'Responsabile supply chain', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Supply chain manager dipendente', costo_mensile:3000, costo_setup:0, impatto:1.0, note:'Strategia acquisti, import diretto ceramiche (Spagna/Turchia), stoccaggio, logistica' },
+          { id:'fractional', nome:'Supply chain manager fractional', costo_mensile:1500, costo_setup:0, impatto:0.6, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
     }
   },
 
