@@ -4,6 +4,12 @@ let currentId = null;
 let editingId = null;
 let currentCalls = [];
 
+// -- AUTH --------------------------------------------------
+async function logout() {
+  await sb.auth.signOut();
+  window.location.href = '/login.html';
+}
+
 // -- UTILS -------------------------------------------------
 
 // Controlla se gli obiettivi sono REALMENTE raggiunti (con sessioni fatte, non solo diagnosi = target)

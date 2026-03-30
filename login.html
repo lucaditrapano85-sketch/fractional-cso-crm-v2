@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fractional CSO — Accedi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --bg: #d8dbe2;
+  --white: #111118;
+  --gray: #3a3a4a;
+  --gray2: #7a7a90;
+  --gold: rgba(140,110,50,0.75);
+  --gold2: rgba(120,90,40,0.65);
+  --border: rgba(0,0,0,0.06);
+  --border2: rgba(0,0,0,0.1);
+  --red: rgba(180,60,60,0.75);
+}
+* { box-sizing:border-box; margin:0; padding:0 }
+body {
+  font-family:'DM Sans',sans-serif;
+  background:linear-gradient(145deg,#d8dbe2 0%,#cfd2da 50%,#d8dbe2 100%);
+  color:var(--white);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  -webkit-font-smoothing:antialiased;
+}
+.login-card {
+  background:rgba(255,255,255,0.55);
+  border:1px solid var(--border2);
+  border-radius:16px;
+  padding:40px 36px;
+  width:100%;
+  max-width:380px;
+  backdrop-filter:blur(12px);
+  box-shadow:0 4px 24px rgba(0,0,0,0.06);
+}
+.login-logo {
+  text-align:center;
+  margin-bottom:28px;
+}
+.login-logo h1 {
+  font-family:'DM Serif Display',serif;
+  font-weight:400;
+  font-size:22px;
+  color:var(--white);
+  letter-spacing:-0.5px;
+}
+.login-logo p {
+  font-size:11px;
+  color:var(--gray2);
+  margin-top:4px;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+}
+.login-field {
+  margin-bottom:14px;
+}
+.login-field label {
+  display:block;
+  font-size:11px;
+  font-weight:600;
+  color:var(--gray);
+  margin-bottom:5px;
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+}
+.login-field input {
+  width:100%;
+  padding:10px 12px;
+  border:1px solid var(--border2);
+  border-radius:8px;
+  background:rgba(255,255,255,0.6);
+  font-family:'DM Sans',sans-serif;
+  font-size:14px;
+  color:var(--white);
+  outline:none;
+  transition:border-color 0.2s;
+}
+.login-field input:focus {
+  border-color:var(--gold);
+}
+.login-btn {
+  width:100%;
+  padding:11px;
+  background:var(--gold);
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  font-family:'DM Sans',sans-serif;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  margin-top:6px;
+  transition:opacity 0.2s;
+}
+.login-btn:hover { opacity:0.85 }
+.login-btn:disabled { opacity:0.5; cursor:not-allowed }
+.login-error {
+  color:var(--red);
+  font-size:12px;
+  text-align:center;
+  min-height:18px;
+  margin-top:10px;
+}
+.login-footer {
+  text-align:center;
+  margin-top:20px;
+  font-size:10px;
+  color:var(--gray2);
+}
+</style>
+</head>
+<body>
+
+<div class="login-card">
+  <div class="login-logo">
+    <h1>Fractional CSO</h1>
+    <p>CRM & Market Intelligence</p>
+  </div>
+  <form id="login-form">
+    <div class="login-field">
+      <label>Email</label>
+      <input type="email" id="login-email" placeholder="nome@azienda.it" required autocomplete="email">
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <input type="password" id="login-password" placeholder="Password" required autocomplete="current-password">
+    </div>
+    <button type="submit" class="login-btn" id="login-btn">Accedi</button>
+    <div class="login-error" id="login-error"></div>
+  </form>
+  <div class="login-footer">Powered by Supabase</div>
+</div>
+
+<script>
+const { createClient } = supabase;
+const sb = createClient(
+  'https://glxwvvtdybzkxtobsiin.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdseHd2dnRkeWJ6a3h0b2JzaWluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0MzYxNzIsImV4cCI6MjA4OTAxMjE3Mn0.FvL3LTPaHC43WXzWn6Z_eXo3nly_Gz3QvvTT_S2QNIY'
+);
+
+// Se gia loggato, vai all'app
+(async function() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) window.location.href = '/index.html';
+})();
+
+document.getElementById('login-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('login-btn');
+  const err = document.getElementById('login-error');
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+
+  btn.disabled = true;
+  btn.textContent = 'Accesso in corso...';
+  err.textContent = '';
+
+  const { error } = await sb.auth.signInWithPassword({ email, password });
+
+  if (error) {
+    err.textContent = 'Email o password non validi';
+    btn.disabled = false;
+    btn.textContent = 'Accedi';
+  } else {
+    window.location.href = '/index.html';
+  }
+});
+</script>
+</body>
+</html>

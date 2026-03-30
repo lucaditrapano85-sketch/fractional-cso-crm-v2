@@ -74,10 +74,13 @@ async function resetDiagnosi() {
   var p = prospects.find(function(x){ return x.id === currentId; });
   if (!p) return;
   try {
-    await sb.from('prospects').update({ dims: {}, dims_answers: {} }).eq('id', currentId);
+    await sb.from('prospects').update({ dims: {}, dims_answers: {}, step_completamenti: {}, targets: {}, score_history: [] }).eq('id', currentId);
     var i = prospects.findIndex(function(x){ return x.id === currentId; });
     prospects[i].dims = {};
     prospects[i].dims_answers = {};
+    prospects[i].step_completamenti = {};
+    prospects[i].targets = {};
+    prospects[i].score_history = [];
     _diagRisposte = {};
     showToast('Diagnosi azzerata');
     drawRadar({}, prospects[i].targets || {});
@@ -103,9 +106,11 @@ function apriDiagnosi() {
     p.dims_answers = {};
     p.targets = {};
     p.score_history = [];
+    p.step_completamenti = {};
+    p.azioni_completate = {};
     _diagRisposte = {};
     // Salva su DB in background
-    try { sb.from('prospects').update({ dims: {}, dims_answers: {}, targets: {}, score_history: [] }).eq('id', p.id); } catch(e) {}
+    try { sb.from('prospects').update({ dims: {}, dims_answers: {}, targets: {}, score_history: [], step_completamenti: {}, azioni_completate: {} }).eq('id', p.id); } catch(e) {}
     // Forza re-render della pagina dietro
     drawRadar({}, {});
     renderProspectDetail(p.id);
@@ -369,6 +374,11 @@ function mostraRisultatoDiagnosi(dims) {
 
 // -- INIT --------------------------------------------------
 async function init() {
+  // Auth guard: redirect to login if not authenticated
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { window.location.href = '/login.html'; return; }
+  window._currentUserId = session.user.id;
+
   document.getElementById('dash-date').textContent=new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
   const {data,error}=await sb.from('prospects').select('*').order('created_at',{ascending:false});
   if(error){showToast('Errore connessione database','error');console.error(error);return;}

@@ -50,6 +50,9 @@ h1,h2,h3{font-family:'DM Serif Display',serif;font-weight:400}
 .btn-new{margin:8px 8px;padding:9px;background:var(--gold);color:#FFFFFF;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;border:none;border-radius:8px;cursor:pointer;width:calc(100% - 16px);transition:all .2s}
 .btn-new:hover{background:var(--gold2)}
 .sidebar-prospects .btn-new{display:none!important}
+.sidebar-logout{padding:8px;border-top:1px solid var(--border);margin-top:auto}
+.btn-logout{width:100%;padding:7px;background:transparent;border:1px solid var(--border2);color:var(--gray2);border-radius:8px;cursor:pointer;font-size:11px;font-family:'DM Sans',sans-serif;transition:all .2s}
+.btn-logout:hover{border-color:var(--red);color:var(--red)}
 
 .view{padding:32px 36px;display:none}
 .view.active{display:block}
