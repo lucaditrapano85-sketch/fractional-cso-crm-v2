@@ -7397,4 +7397,7 @@ const STEP_DETAIL_BY_SETTORE = {
 
 };
 
+// Alias per settori con nome diverso in market.js
+STEP_DETAIL_BY_SETTORE.edilizia_ristrutturazioni = STEP_DETAIL_BY_SETTORE.edilizia_residenziale;
+
 window.STEP_DETAIL_BY_SETTORE = STEP_DETAIL_BY_SETTORE;

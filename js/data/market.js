@@ -68,15 +68,26 @@ const MARKET = {
       {label:'Clienti persi/anno',media:'14%',top:'6%'},
     ]
   },
-  manifatturiero_tessile: {
-    label:'Tessile & abbigliamento (produzione)', parent:'manifatturiero',
+  manifatturiero_tessile_tessuti: {
+    label:'Tessile — tessuti e filati (produzione)', parent:'manifatturiero',
     metrics:[
       {label:'Tasso di chiusura medio',media:'20%',top:'36%'},
       {label:'Fatturato/commerciale',media:'380k EUR/anno',top:'620k EUR/anno'},
       {label:'Ciclo vendita medio',media:'50 gg',top:'28 gg'},
-      {label:'Lead gen principale',media:'Fiere, agenti moda',top:'Showroom + B2B digital'},
-      {label:'Uso CRM',media:'24%',top:'60%'},
+      {label:'Lead gen principale',media:'Fiere tessili, agenti',top:'Showroom + Premiere Vision'},
+      {label:'Uso CRM',media:'22%',top:'58%'},
       {label:'Clienti persi/anno',media:'22%',top:'10%'},
+    ]
+  },
+  manifatturiero_tessile_capi: {
+    label:'Tessile — confezione capi (produzione)', parent:'manifatturiero',
+    metrics:[
+      {label:'Tasso di chiusura medio',media:'22%',top:'38%'},
+      {label:'Fatturato/commerciale',media:'400k EUR/anno',top:'650k EUR/anno'},
+      {label:'Ciclo vendita medio',media:'45 gg',top:'25 gg'},
+      {label:'Lead gen principale',media:'Agenti moda, fiere',top:'Showroom + brand partnerships'},
+      {label:'Uso CRM',media:'26%',top:'62%'},
+      {label:'Clienti persi/anno',media:'20%',top:'8%'},
     ]
   },
 
@@ -182,6 +193,28 @@ const MARKET = {
       {label:'Lead gen principale',media:'Agenti, catalogo',top:'E-commerce + agenti'},
       {label:'Uso CRM',media:'38%',top:'80%'},
       {label:'Clienti persi/anno',media:'20%',top:'10%'},
+    ]
+  },
+  commercio_auto_moto_usato: {
+    label:'Auto e moto usato', parent:'commercio',
+    metrics:[
+      {label:'Tasso di chiusura medio',media:'25%',top:'42%'},
+      {label:'Fatturato/commerciale',media:'550k EUR/anno',top:'950k EUR/anno'},
+      {label:'Ciclo vendita medio',media:'8 gg',top:'3 gg'},
+      {label:'Lead gen principale',media:'Marketplace (AutoScout, Subito)',top:'Multi-marketplace + Google Ads'},
+      {label:'Uso CRM',media:'18%',top:'65%'},
+      {label:'Clienti persi/anno',media:'N/A (one-shot)',top:'30% referral'},
+    ]
+  },
+  commercio_auto_moto_nuovo: {
+    label:'Concessionaria auto nuovo', parent:'commercio',
+    metrics:[
+      {label:'Tasso di chiusura medio',media:'22%',top:'38%'},
+      {label:'Fatturato/commerciale',media:'1.2M EUR/anno',top:'2.5M EUR/anno'},
+      {label:'Ciclo vendita medio',media:'21 gg',top:'10 gg'},
+      {label:'Lead gen principale',media:'Showroom + casa madre',top:'Digital + showroom + fleet'},
+      {label:'Uso CRM',media:'45%',top:'90%'},
+      {label:'Clienti persi/anno',media:'35%',top:'15%'},
     ]
   },
   commercio_distribuzione_industriale: {
@@ -338,6 +371,17 @@ const MARKET = {
       {label:'Lead gen principale',media:'Fiere, agenti tecnici',top:'Fiere + key account'},
       {label:'Uso CRM',media:'30%',top:'70%'},
       {label:'Clienti persi/anno',media:'10%',top:'4%'},
+    ]
+  },
+  alimentare_birra: {
+    label:'Birrificio artigianale', parent:'alimentare',
+    metrics:[
+      {label:'Tasso di chiusura medio',media:'30%',top:'50%'},
+      {label:'Fatturato/commerciale',media:'180k EUR/anno',top:'400k EUR/anno'},
+      {label:'Ciclo vendita medio',media:'14 gg',top:'5 gg'},
+      {label:'Lead gen principale',media:'Festival, taproom',top:'Distributore + social + e-commerce'},
+      {label:'Uso CRM',media:'12%',top:'50%'},
+      {label:'Clienti persi/anno',media:'25%',top:'10%'},
     ]
   },
 
@@ -585,39 +629,73 @@ const MARKET_DETAIL = {
     ],
   },
 
-  manifatturiero_tessile: {
+  manifatturiero_tessile_tessuti: {
     ciclo_fasi: [
-      { fase: 'Showroom / campionario', durata: '1-3 sett.', note: 'Il catalogo stagionale e il cuore della vendita.' },
-      { fase: 'Campione di produzione', durata: '2-4 sett.', note: 'Il cliente valuta qualita, colore, finissaggio.' },
-      { fase: 'Offerta su ordine stagionale', durata: '1 sett.', note: 'Prezzi stagionali con sconti su volume.' },
+      { fase: 'Showroom / campionario tessuti', durata: '1-3 sett.', note: 'Il catalogo stagionale con cartella colori e campioni.' },
+      { fase: 'Campione tessuto per test', durata: '2-4 sett.', note: 'Il confezionista valuta mano, colore, finissaggio.' },
+      { fase: 'Offerta su ordine stagionale', durata: '1 sett.', note: 'Prezzi stagionali con sconti su metratura.' },
       { fase: 'Conferma ordine', durata: '1-2 sett.', note: 'Spesso a inizio stagione (feb e ago).' },
-      { fase: 'Consegna e reorder', durata: 'Stagionale', note: 'I reorder veloci fanno la differenza.' },
+      { fase: 'Produzione e consegna', durata: '3-6 sett.', note: 'I reorder veloci fanno la differenza.' },
     ],
-    struttura_commerciale: 'Agenti monomandatari o plurimandatari di zona. Il responsabile commerciale gestisce i buyer dei grandi clienti. La relazione personale e centrale.',
+    struttura_commerciale: 'Agenti plurimandatari tessili di zona. Il rapporto con lo stilista/buyer e personale. Fiere (Premiere Vision, Milano Unica) sono il momento chiave.',
     obiezioni: [
-      '"Il prezzo non e competitivo con l\'Asia" -- il differenziale deve essere qualita, velocita e flessibilita.',
-      '"I MOQ sono troppo alti" -- blocco tipico per i clienti piccoli.',
-      '"I colori non sono nelle tendenze richieste" -- il color forecasting e critico.',
+      '"Il prezzo non e competitivo con Asia" -- il differenziale e qualita, velocita e flessibilita.',
+      '"I MOQ sono troppo alti" -- blocco per brand piccoli.',
+      '"I colori non sono nelle tendenze" -- il color forecasting e critico.',
     ],
     canali: [
-      { nome: 'Fiere (Premiere Vision, Milano Unica, Texworld)', efficacia: 92 },
-      { nome: 'Showroom monomarca', efficacia: 80 },
-      { nome: 'Agenti moda di zona', efficacia: 75 },
-      { nome: 'LinkedIn (buyer, product manager)', efficacia: 48 },
-      { nome: 'B2B digital (NuOrder, Joor)', efficacia: 40 },
+      { nome: 'Fiere (Premiere Vision, Milano Unica)', efficacia: 92 },
+      { nome: 'Showroom con agenti', efficacia: 80 },
+      { nome: 'Agenti tessili di zona', efficacia: 75 },
+      { nome: 'LinkedIn (buyer, product manager)', efficacia: 45 },
     ],
-    stagionalita: 'Due stagioni nette: SS (collezione presentata a luglio-agosto, ordini settembre-ottobre) e AW (presentata febbraio-marzo, ordini aprile-maggio). Fuori stagione: campagne flash.',
+    stagionalita: 'Due stagioni: SS e AW. Campioni presentati 12-18 mesi prima della vendita al pubblico.',
     kpi: [
-      { nome: 'Ordine medio per cliente', benchmark: '5k-50k EUR/stagione' },
-      { nome: 'Tasso reorder sulla stagione', benchmark: '25-40% del venduto' },
-      { nome: 'Numero agenti attivi', benchmark: '1 ogni 500k EUR di fatturato' },
+      { nome: 'Ordine medio per cliente', benchmark: '5k-30k EUR/stagione' },
+      { nome: 'Tasso reorder', benchmark: '25-40% del venduto' },
+      { nome: 'Numero agenti attivi', benchmark: '1 ogni 400k EUR di fatturato' },
     ],
-    valore_cliente: '15k-150k EUR/anno per buyer consolidato',
+    valore_cliente: '10k-80k EUR/anno per confezionista/brand',
     maturita: [
-      'Portale B2B digitale per ordini e reorder online',
-      'Color service con palette allineata ai trend internazionali',
-      'Agenti formati su vendita consultiva, non solo catalogo',
+      'Cartella colori allineata ai trend internazionali',
+      'Campionatura rapida (5-7 gg vs 3-4 settimane standard)',
+      'Certificazioni OEKO-TEX/GOTS per brand sostenibili',
       'CRM con storico ordini per stagione e previsione reorder',
+    ],
+  },
+  manifatturiero_tessile_capi: {
+    ciclo_fasi: [
+      { fase: 'Presentazione campionario stagionale', durata: '2-4 sett.', note: 'Lookbook + campioni fisici per buyer.' },
+      { fase: 'Selezione modelli e taglie', durata: '1-2 sett.', note: 'Il buyer sceglie i modelli per il suo negozio.' },
+      { fase: 'Ordine per campagna (SS/FW)', durata: '1 sett.', note: 'Ordine con griglia taglie/colori.' },
+      { fase: 'Produzione', durata: '4-8 sett.', note: 'Tempi legati a tessuti e lavorazioni.' },
+      { fase: 'Consegna e riassortimento', durata: 'Stagionale', note: 'Il pronto moda per riassortimenti in stagione.' },
+    ],
+    struttura_commerciale: 'Agenti moda plurimandatari o monomandatari. Showroom multibrand in citta chiave (Milano, Firenze). Il buyer viene allo showroom o alla fiera.',
+    obiezioni: [
+      '"Il prezzo e troppo alto per il mio target" -- posizionamento e fondamentale.',
+      '"Non conosco il vostro brand" -- investire in visibilita trade.',
+      '"I tempi di consegna sono lunghi" -- pronto moda per riassortimenti.',
+    ],
+    canali: [
+      { nome: 'Fiere moda (Pitti, White, MICAM)', efficacia: 90 },
+      { nome: 'Showroom multibrand', efficacia: 82 },
+      { nome: 'Agenti moda di zona', efficacia: 78 },
+      { nome: 'Instagram B2B con lookbook', efficacia: 55 },
+      { nome: 'Piattaforme wholesale (NuOrder, Joor)', efficacia: 40 },
+    ],
+    stagionalita: 'Due campagne vendita: SS (gen-mar) e FW (giu-ago). Pronto moda tutto anno.',
+    kpi: [
+      { nome: 'Ordine medio per buyer', benchmark: '3k-30k EUR/stagione' },
+      { nome: 'Sell-through rate', benchmark: '65-85%' },
+      { nome: 'Tasso riacquisto buyer', benchmark: '70-90% per brand consolidati' },
+    ],
+    valore_cliente: '8k-100k EUR/anno per buyer/negozio',
+    maturita: [
+      'Lookbook professionale (foto + video) per ogni stagione',
+      'Piattaforma wholesale B2B per ordini digitali',
+      'Pronto moda per riassortimenti rapidi in stagione',
+      'CRM con profilo buyer, preferenze e storico ordini',
     ],
   },
 
@@ -849,6 +927,78 @@ const MARKET_DETAIL = {
   // COMMERCIO
   // =======================================================
 
+  commercio_auto_moto_usato: {
+    ciclo_fasi: [
+      { fase: 'Lead da marketplace/walk-in', durata: 'Immediata', note: 'AutoScout, Subito, Facebook, passaggio — il cliente ha gia scelto il veicolo.' },
+      { fase: 'Test drive e trattativa', durata: '1-3 gg', note: 'Il test drive chiude il 40% delle vendite. La trattativa e sul prezzo e sulla permuta.' },
+      { fase: 'Valutazione permuta', durata: '30 min', note: 'Momento critico: se la valutazione piace, la vendita e quasi chiusa.' },
+      { fase: 'Proposta finanziamento', durata: '30 min', note: 'Il finanziamento e un prodotto — va proposto sempre.' },
+      { fase: 'Consegna veicolo', durata: '3-7 gg', note: 'Preparazione, pratiche PRA, consegna con cerimonia.' },
+    ],
+    struttura_commerciale: 'Venditori al salone + marketplace online come lead generation. La permuta e il vero motore del business — chi compra bene, vende bene.',
+    obiezioni: [
+      '"Lo trovo a meno su AutoScout" -- il prezzo non e tutto: garanzia, preparazione, assistenza.',
+      '"Mi date poco per la mia auto" -- la valutazione della permuta e il punto di rottura.',
+      '"Non mi fido delle auto usate" -- garanzia, storico tagliandi, certificazione.',
+    ],
+    canali: [
+      { nome: 'AutoScout24 / Subito.it', efficacia: 90 },
+      { nome: 'Facebook Marketplace', efficacia: 65 },
+      { nome: 'Google Ads locali', efficacia: 60 },
+      { nome: 'Passaparola / referral', efficacia: 55 },
+      { nome: 'Instagram con foto stock', efficacia: 40 },
+    ],
+    stagionalita: 'Marzo-giugno picco (bonus, incentivi, bella stagione). Settembre secondo picco. Agosto e dicembre bassi.',
+    kpi: [
+      { nome: 'Auto vendute / mese / venditore', benchmark: '8-15 unita' },
+      { nome: 'Margine medio per auto', benchmark: '1.500-3.000 EUR' },
+      { nome: 'Giorni medi in stock', benchmark: '45-75 gg (target < 60)' },
+      { nome: 'Tasso conversione lead', benchmark: '15-25%' },
+    ],
+    valore_cliente: '15k-35k EUR (singola transazione, referral vale 3x)',
+    maturita: [
+      'CRM automotive con lead tracking da marketplace',
+      'Foto professionali e video per ogni veicolo',
+      'Proposta finanziamento e garanzia su ogni vendita',
+      'Gestione stock con rotazione < 60 giorni',
+    ],
+  },
+  commercio_auto_moto_nuovo: {
+    ciclo_fasi: [
+      { fase: 'Lead da showroom/digital/brand', durata: '1 gg', note: 'Walk-in, sito, configuratore, lead casa madre.' },
+      { fase: 'Consulenza e configurazione', durata: '1-3 gg', note: 'Il venditore guida nella scelta modello/allestimento.' },
+      { fase: 'Test drive', durata: '1 gg', note: 'Fondamentale per chiudere — va proposto sempre.' },
+      { fase: 'Proposta commerciale + F&I', durata: '1-3 gg', note: 'Prezzo, permuta, finanziamento, accessori — pacchetto completo.' },
+      { fase: 'Ordine e attesa consegna', durata: '2-12 sett.', note: 'Tempi casa madre. Lo stock disponibile accelera.' },
+    ],
+    struttura_commerciale: 'Team vendita formati dalla casa madre. Specialista fleet per B2B. Il DMS del brand e obbligatorio. Margine unitario basso — il volume e i servizi F&I fanno il profitto.',
+    obiezioni: [
+      '"Il listino e troppo alto" -- focus su costo mensile con finanziamento/NLT.',
+      '"Aspetto il nuovo modello" -- proposta km0 o pronta consegna con condizioni speciali.',
+      '"Online trovo offerte migliori" -- il servizio, la garanzia e il rapporto fanno la differenza.',
+    ],
+    canali: [
+      { nome: 'Showroom (walk-in)', efficacia: 85 },
+      { nome: 'Sito brand + configuratore', efficacia: 75 },
+      { nome: 'Google Ads locali', efficacia: 65 },
+      { nome: 'Lead casa madre', efficacia: 60 },
+      { nome: 'Social media (Instagram, Facebook)', efficacia: 50 },
+    ],
+    stagionalita: 'Marzo-giugno (incentivi + bella stagione). Settembre (rientro + nuovi modelli). Fine anno: push target annuali.',
+    kpi: [
+      { nome: 'Auto nuove vendute / mese', benchmark: '15-40 per sede' },
+      { nome: 'Penetrazione F&I', benchmark: '40-70% delle vendite' },
+      { nome: 'NPS cliente', benchmark: '> 50 (target casa madre)' },
+      { nome: 'Fatturato service / auto venduta', benchmark: '800-1.500 EUR/anno per 3 anni' },
+    ],
+    valore_cliente: '25k-50k EUR (acquisto) + 3k-5k EUR/anno (service)',
+    maturita: [
+      'DMS integrato con CRM e marketing automation',
+      'Proposta F&I sistematica su ogni trattativa',
+      'After sales come centro profitto autonomo',
+      'Customer lifecycle management (acquisto → service → riacquisto)',
+    ],
+  },
   commercio_distribuzione_industriale: {
     ciclo_fasi: [
       { fase: 'Visita agente / cold call', durata: '1-2 sett.', note: 'L\'agente porta il catalogo. Il cliente chiede prezzi.' },
@@ -1318,6 +1468,42 @@ const MARKET_DETAIL = {
       'Application specialist dedicato per i top 10 clienti',
       'White paper e webinar tecnici per positioning da expert',
       'Co-sviluppo prodotti con i key account per lock-in strategico',
+    ],
+  },
+
+  alimentare_birra: {
+    ciclo_fasi: [
+      { fase: 'Contatto locale/distributore', durata: '1 sett.', note: 'Visita con campioni, degustazione in loco.' },
+      { fase: 'Degustazione e valutazione', durata: '1-2 sett.', note: 'Il gestore del locale assaggia e decide.' },
+      { fase: 'Ordine primo fusto/cartone', durata: '1 sett.', note: 'Test in carta birre del locale.' },
+      { fase: 'Feedback e riordino', durata: '2-4 sett.', note: 'Se la birra piace ai clienti del locale, diventa fissa.' },
+    ],
+    struttura_commerciale: 'Titolare/birraio + distributore per copertura regionale. Taproom come vetrina e vendita diretta. Festival birra come brand building.',
+    obiezioni: [
+      '"Ho gia troppe spine" -- proposta di rotazione stagionale, non sostituzione.',
+      '"Costa troppo rispetto alla birra industriale" -- posizionamento, storytelling, margine al calice.',
+      '"Non la conosce nessuno" -- festival, social, degustazioni gratuite per far provare.',
+    ],
+    canali: [
+      { nome: 'Taproom / vendita diretta', efficacia: 90 },
+      { nome: 'Distributore birra artigianale', efficacia: 80 },
+      { nome: 'Festival birra (Italia Beer Festival, Eurhop)', efficacia: 75 },
+      { nome: 'Instagram + Untappd', efficacia: 60 },
+      { nome: 'E-commerce DTC', efficacia: 40 },
+    ],
+    stagionalita: 'Estate: picco vendite (festival, taproom, turismo). Natale: box regalo. Inverno: birre scure, stagionali. Primavera: lancio nuove ricette.',
+    kpi: [
+      { nome: 'Ettolitri/anno', benchmark: '200-2.000 hl per microbirrificio' },
+      { nome: 'Prezzo medio al litro', benchmark: '6-12 EUR (vs 2-4 industriale)' },
+      { nome: 'Numero locali serviti', benchmark: '20-100 per birrificio' },
+      { nome: 'Vendita diretta taproom', benchmark: '15-30% del fatturato' },
+    ],
+    valore_cliente: '2k-15k EUR/anno per locale fidelizzato',
+    maturita: [
+      'Taproom come experience center e vetrina del brand',
+      'Beer club/abbonamento per ricavo ricorrente DTC',
+      'Distribuzione tramite distributore specializzato per scala',
+      'Festival e collab brew per visibilita e community',
     ],
   },
 
