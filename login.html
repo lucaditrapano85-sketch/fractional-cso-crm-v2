@@ -281,6 +281,8 @@ document.getElementById('login-form').addEventListener('submit', async function(
       btn.textContent = 'Accedi';
     }
   } else {
+    const { data: { user } } = await sb.auth.getUser();
+    await sb.from('access_logs').insert({ user_id: user.id, email: user.email, action: 'login' });
     window.location.href = '/index.html';
   }
 });

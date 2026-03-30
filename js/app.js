@@ -6,6 +6,8 @@ let currentCalls = [];
 
 // -- AUTH --------------------------------------------------
 async function logout() {
+  const { data: { user } } = await sb.auth.getUser();
+  if (user) await sb.from('access_logs').insert({ user_id: user.id, email: user.email, action: 'logout' });
   await sb.auth.signOut();
   window.location.href = '/login.html';
 }
