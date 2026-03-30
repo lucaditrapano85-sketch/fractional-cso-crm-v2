@@ -3481,458 +3481,217 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   commercio_orologi_gioielli: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Solo titolare in boutique', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: '1 addetto clienteling — accoglienza e follow-up',
-        tempo_mesi: 1,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2200, costo_setup:500, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1210, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:990, costo_setup:500, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
-      '3': {
-        cosa: '2 addetti vendita specializzati — gemmologia e luxury',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:4500, costo_setup:1000, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:2475, costo_setup:1000, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:2025, costo_setup:1000, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Team vendita + gemmologa dedicata',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'resp',
-            nome: 'Responsabile commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2800, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
-              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1540, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          },
-          {
-            id: 'team',
-            nome: 'Figure commerciali',
-            tipo: 'multi',
-            obbligatorio: true,
-            min: 2,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1400, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1050, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Store manager + team clienteling VIP',
-        tempo_mesi: 5,
-        moduli: [
-          {
-            id: 'resp',
-            nome: 'Responsabile commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:4000, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
-              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:2200, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          },
-          {
-            id: 'team',
-            nome: 'Figure commerciali',
-            tipo: 'multi',
-            obbligatorio: true,
-            min: 2,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2000, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1500, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare', cosa:'Solo titolare in boutique — clientela storica', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Addetto/a clienteling — accoglienza, follow-up, WhatsApp VIP', tempo_mesi:1, moduli:[
+        { id:'addetto', nome:'Addetto/a vendita luxury', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'esperto', nome:'Venditore/trice con esperienza gioielleria', costo_mensile:2200, costo_setup:0, impatto:1.0, note:'Conosce pietre, orologi, sa gestire clientela alto-spendente' },
+          { id:'formabile', nome:'Addetto/a da formare', costo_mensile:1600, costo_setup:500, impatto:0.6, note:'Buona presenza e comunicazione, formazione interna su prodotto' },
+        ]},
+      ]},
+      '3': { cosa:'2 addetti vendita specializzati: gioielleria + orologeria', tempo_mesi:2, moduli:[
+        { id:'team', nome:'Addetti vendita specializzati', tipo:'multi', obbligatorio:true, min:2, varianti:[
+          { id:'gioielli', nome:'Consulente gioielleria', costo_mensile:2200, costo_setup:0, impatto:0.4, note:'Esperto pietre, metalli, gioielli su misura, cerimonie' },
+          { id:'orologi', nome:'Consulente orologeria', costo_mensile:2200, costo_setup:0, impatto:0.35, note:'Conosce movimenti, brand, manutenzione, mercato pre-owned' },
+        ]},
+      ]},
+      '4': { cosa:'Team vendita + gemmologa/o per consulenze personalizzate', tempo_mesi:3, moduli:[
+        { id:'gemmologo', nome:'Gemmologo/a per consulenze', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Gemmologo/a dipendente (IGI/GIA)', costo_mensile:2500, costo_setup:0, impatto:0.5, note:'Certificazioni pietre, consulenze sposi, perizie, valutazioni' },
+          { id:'consulente', nome:'Gemmologo/a a consulenza', costo_mensile:500, costo_setup:0, impatto:0.3, note:'Su appuntamento, per vendite importanti e perizie' },
+        ]},
+        { id:'clienteling', nome:'Responsabile clienteling VIP', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.2, note:'Gestione lista VIP, auguri, anteprime, inviti eventi, gift personali' },
+      ]},
+      '5': { cosa:'Store manager + team clienteling VIP + eventi esclusivi', tempo_mesi:5, moduli:[
+        { id:'store_mgr', nome:'Store manager luxury', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Store manager esperto gioielleria', costo_mensile:3500, costo_setup:0, impatto:0.5, note:'Gestione boutique, team, clienti VIP, eventi, acquisti, brand relations' },
+          { id:'titolare', nome:'Titolare come store manager + coaching', costo_mensile:0, costo_setup:1000, impatto:0.35, note:'Formazione su management luxury, KPI, delega operativa' },
+        ]},
+        { id:'team', nome:'Team vendita specializzato', tipo:'multi', obbligatorio:true, min:2, varianti:[
+          { id:'consulente', nome:'Consulente luxury', costo_mensile:2200, costo_setup:0, impatto:0.2, note:'Vendita assistita, clienteling, eventi' },
+          { id:'junior', nome:'Addetto/a vendita junior', costo_mensile:1600, costo_setup:0, impatto:0.12, note:'Supporto vendita, cassa, esposizione' },
+        ]},
+      ]},
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — clienti a memoria e rubrica', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Rubrica clienti con ricorrenze, gusti e storico acquisti',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'CRM con profilo clienti, anniversari, wish list',
-        tempo_mesi: 1,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM con profilo clienti, anniversari, wish list', costo_mensile:300, costo_setup:800, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:150, costo_setup:480, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'CRM con automazioni — auguri, inviti eventi, nuove collezioni',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM con automazioni', costo_mensile:500, costo_setup:1500, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:250, costo_setup:900, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Piattaforma clienteling completa — 360° vista cliente luxury',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Piattaforma clienteling completa', costo_mensile:1000, costo_setup:4000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:500, costo_setup:2400, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Rubrica clienti VIP con ricorrenze, gusti e storico acquisti', tempo_mesi:1, moduli:[
+        { id:'rubrica', nome:'Rubrica clienti luxury strutturata', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'digitale', nome:'App clienteling (WhatsApp Business + note)', costo_mensile:0, costo_setup:0, impatto:0.7, note:'Etichette VIP, anniversari, compleanni, stile preferito, storico regali' },
+          { id:'excel', nome:'Excel/Fogli Google con anagrafica VIP', costo_mensile:0, costo_setup:100, impatto:0.6, note:'Scheda cliente: ricorrenze, acquisti, budget, partner, figli' },
+        ]},
+      ]},
+      '3': { cosa:'CRM gioielleria con profilo cliente, anniversari, wish list, certificati', tempo_mesi:1, moduli:[
+        { id:'crm', nome:'CRM luxury/gioielleria', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'CRM gioielleria (Jeweler/ClientBook)', costo_mensile:100, costo_setup:500, impatto:1.0, note:'Profilo VIP, wish list, anniversari, certificati associati, storico completo' },
+          { id:'generico', nome:'CRM generico (HubSpot/Zoho)', costo_mensile:50, costo_setup:300, impatto:0.6, note:'Pipeline clienti, storico, meno specifico per gioielleria' },
+        ]},
+      ]},
+      '4': { cosa:'CRM con automazioni — auguri personalizzati, inviti eventi, novita', tempo_mesi:2, moduli:[
+        { id:'automazioni', nome:'Automazioni clienteling', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'avanzato', nome:'CRM + automation (Klaviyo/ActiveCampaign)', costo_mensile:200, costo_setup:1000, impatto:1.0, note:'Auguri automatici, inviti trunk show, novita brand preferito, follow-up post-acquisto' },
+          { id:'base', nome:'CRM + reminder manuali', costo_mensile:50, costo_setup:300, impatto:0.5, note:'Alert anniversari, titolare gestisce contatto personale' },
+        ]},
+      ]},
+      '5': { cosa:'Piattaforma clienteling luxury 360 gradi — vista unica cliente', tempo_mesi:3, moduli:[
+        { id:'clienteling', nome:'Piattaforma clienteling luxury', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'Clienteling luxury (Salesforce/ClientBook Pro)', costo_mensile:500, costo_setup:3000, impatto:1.0, note:'Vista 360: storico, wish list, certificati, eventi, social, preferenze, famiglia' },
+          { id:'mid', nome:'CRM avanzato + integrazioni', costo_mensile:200, costo_setup:1500, impatto:0.55, note:'CRM + email + social collegati, meno specifico luxury' },
+        ]},
+      ]},
     },
     team: {
       '1': { chi:'Titolare', cosa:'Nessuna organizzazione — il titolare decide tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Procedure accoglienza e clienteling definite',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'organizzazione', nome:'Procedure accoglienza e clienteling definite', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'CRM clienti VIP + follow-up strutturato',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'organizzazione', nome:'CRM clienti VIP + follow-up strutturato', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'KPI per addetto + obiettivi vendita',
-        tempo_mesi: 3,
-        moduli: [
-          { id:'organizzazione', nome:'KPI per addetto + obiettivi vendita', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:1000, impatto:0.8 }
-        ]
-      },
-      '5': {
-        cosa: 'Governance + gestione eventi trunk show',
-        tempo_mesi: 5,
-        moduli: [
-          {
-            id: 'manager',
-            nome: 'Figura manageriale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Management dipendente', costo_mensile:1500, costo_setup:2000, impatto:1, note:'Full-time' },
-              { id:'fractional', nome:'Management fractional', costo_mensile:750, costo_setup:2000, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Procedure accoglienza luxury e clienteling definite', tempo_mesi:1, moduli:[
+        { id:'procedure', nome:'Protocollo accoglienza boutique', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.7, note:'Accoglienza, proposta, storytelling pezzo, chiusura, confezionamento, follow-up' },
+      ]},
+      '3': { cosa:'Formazione vendita luxury + obiettivi per addetto', tempo_mesi:2, moduli:[
+        { id:'formazione', nome:'Formazione vendita luxury/gemmologia', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'corso', nome:'Corso vendita luxury con formatore esterno', costo_mensile:0, costo_setup:800, impatto:0.7, note:'1-2 giornate su clienteling luxury, gestione obiezioni, upsell, storytelling' },
+          { id:'brand', nome:'Formazione tramite brand partner', costo_mensile:0, costo_setup:200, impatto:0.5, note:'Training dei brand (Rolex, Cartier, ecc.) sul prodotto specifico' },
+        ]},
+        { id:'obiettivi', nome:'Target vendita per addetto', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.2, note:'Obiettivo mensile, scontrino medio, clienti nuovi, richiami VIP' },
+      ]},
+      '4': { cosa:'KPI boutique + incentivi + responsabile clienteling', tempo_mesi:3, moduli:[
+        { id:'kpi', nome:'Dashboard KPI boutique luxury', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.5, note:'Conversion rate, scontrino medio, clienti VIP attivi, retention, referral' },
+        { id:'incentivi', nome:'Piano incentivi venditori', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:200, impatto:0.2, note:'Bonus su scontrino medio, clienti nuovi, referral — non solo fatturato' },
+      ]},
+      '5': { cosa:'Governance boutique — store manager + eventi trunk show + multi-punto', tempo_mesi:5, moduli:[
+        { id:'governance', nome:'Store manager/Brand ambassador', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Store manager luxury dipendente', costo_mensile:3500, costo_setup:0, impatto:1.0, note:'Gestione boutique, team, clienti VIP, eventi, rapporti brand, il titolare sviluppa' },
+          { id:'fractional', nome:'Retail consultant fractional', costo_mensile:1500, costo_setup:0, impatto:0.6, note:'2-3 giorni/settimana, focus eventi, clienteling, KPI' },
+        ]},
+      ]},
       _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — esperienza e relazione personale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Registro pezzi con certificati e garanzie digitalizzati',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'processo', nome:'Registro pezzi con certificati e garanzie digitalizzati', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Gestionale con inventario, certificati, perizie, riparazioni',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'processo', nome:'Gestionale con inventario, certificati, perizie, riparazioni', tipo:'flag', obbligatorio:true, costo_mensile:250, costo_setup:1000, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Processo di vendita luxury — accoglienza, storytelling, packaging',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Processo di vendita luxury',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:300, costo_setup:1500, impatto:1, note:'Processo di vendita luxury — accoglienza, storytelling, packaging' },
-              { id:'base', nome:'Soluzione base', costo_mensile:150, costo_setup:750, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'KPI boutique — conversion rate, scontrino medio, clienti VIP',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'KPI boutique',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:600, costo_setup:2500, impatto:1, note:'KPI boutique — conversion rate, scontrino medio, clienti VIP' },
-              { id:'base', nome:'Soluzione base', costo_mensile:300, costo_setup:1250, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Registro pezzi con certificati GIA/IGI e garanzie digitalizzati', tempo_mesi:1, moduli:[
+        { id:'registro', nome:'Registro inventario con certificati', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.7, note:'Scheda per pezzo: foto, certificato GIA/IGI, prezzo, garanzia, ubicazione vetrina' },
+        { id:'assicurazione', nome:'Gestione polizza assicurativa inventario', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.2, note:'Inventario aggiornato per assicurazione, documentazione furto/smarrimento' },
+      ]},
+      '3': { cosa:'Gestionale gioielleria — inventario, certificati, perizie, riparazioni', tempo_mesi:2, moduli:[
+        { id:'gestionale', nome:'Gestionale gioielleria', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'Software gioielleria (Jeweler Pro/GoldPro)', costo_mensile:150, costo_setup:1000, impatto:1.0, note:'Inventario per categoria, certificati associati, storico perizie, lab riparazioni' },
+          { id:'generico', nome:'Gestionale retail + personalizzazione', costo_mensile:80, costo_setup:500, impatto:0.55, note:'Lightspeed/Danea con campi personalizzati per certificati e pietre' },
+        ]},
+      ]},
+      '4': { cosa:'Processo vendita luxury completo: accoglienza, storytelling, packaging, follow-up', tempo_mesi:2, moduli:[
+        { id:'vendita_luxury', nome:'Manuale vendita luxury', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.5, note:'Protocollo: accoglienza, scoperta esigenze, presentazione con storia, prova, packaging premium, follow-up 7gg' },
+        { id:'packaging', nome:'Packaging e confezionamento premium', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'brandizzato', nome:'Packaging brandizzato personalizzato', costo_mensile:100, costo_setup:500, impatto:0.4, note:'Scatole, sacchetti, biglietti con logo boutique — esperienza unboxing' },
+          { id:'standard', nome:'Packaging standard dei brand', costo_mensile:0, costo_setup:0, impatto:0.2, note:'Si usa il packaging fornito dai brand, senza personalizzazione' },
+        ]},
+      ]},
+      '5': { cosa:'KPI boutique avanzati + gestione certificazioni + antifrode', tempo_mesi:3, moduli:[
+        { id:'analytics', nome:'Analytics boutique luxury', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'BI luxury (conversion, LTV, referral, VIP score)', costo_mensile:200, costo_setup:2000, impatto:1.0, note:'Conversion rate, lifetime value cliente, VIP scoring, margine per categoria' },
+          { id:'base', nome:'Report avanzati dal gestionale', costo_mensile:50, costo_setup:500, impatto:0.5, note:'Report settimanali su vendite, margini, inventario' },
+        ]},
+      ]},
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Margine tradizionale da ricarico — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Servizi aggiuntivi — incisioni, packaging regalo, pulizia',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'ricavi', nome:'Servizi aggiuntivi', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Upsell gioielli su misura + servizio riparazione e restyling',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'ricavi', nome:'Upsell gioielli su misura + servizio riparazione e restyling', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Programma VIP — anteprime, eventi privati, sconti anniversario',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'ricavi', nome:'Programma VIP', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:1000, impatto:0.8 }
-        ]
-      },
-      '5': {
-        cosa: 'Mix ricavi — vendita, riparazione, usato certificato, eventi',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'ricavi',
-            nome: 'Mix ricavi',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:700, costo_setup:2000, impatto:1, note:'Mix ricavi — vendita, riparazione, usato certificato, eventi' },
-              { id:'graduale', nome:'Implementazione graduale', costo_mensile:350, costo_setup:1000, impatto:0.65, note:'Avvio parziale, si espande' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Servizi aggiuntivi: incisioni, packaging regalo, pulizia professionale', tempo_mesi:1, moduli:[
+        { id:'servizi', nome:'Servizi a valore aggiunto', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.7, note:'Incisioni, pulizia ultrasuoni, lucidatura, confezionamento regalo — margine puro' },
+        { id:'manutenzione', nome:'Servizio manutenzione orologi', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:300, impatto:0.2, note:'Cambio batteria, regolazione, invio a centro assistenza brand — margine servizio' },
+      ]},
+      '3': { cosa:'Gioielli su misura + servizio riparazione e restyling', tempo_mesi:2, moduli:[
+        { id:'su_misura', nome:'Servizio gioielli su misura', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'laboratorio', nome:'Con laboratorio orafo convenzionato', costo_mensile:0, costo_setup:500, impatto:0.7, note:'Il cliente sceglie pietre e design, noi gestiamo la realizzazione — margine 50-70%' },
+          { id:'partner', nome:'Partnership con orafo artigiano', costo_mensile:0, costo_setup:200, impatto:0.5, note:'Referral a orafo di fiducia, commissione su realizzazione' },
+        ]},
+        { id:'restyling', nome:'Servizio restyling gioielli vecchi', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:200, impatto:0.15, note:'Il cliente porta oro/pietre vecchie, noi trasformiamo in pezzo nuovo' },
+      ]},
+      '4': { cosa:'Programma VIP — anteprime, eventi privati, sconti anniversario', tempo_mesi:2, moduli:[
+        { id:'vip', nome:'Programma VIP clienti', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'strutturato', nome:'Club VIP con livelli (Silver/Gold/Platinum)', costo_mensile:100, costo_setup:800, impatto:1.0, note:'Anteprime collezioni, eventi privati, sconto anniversario, regalo compleanno' },
+          { id:'informale', nome:'Trattamento VIP informale', costo_mensile:50, costo_setup:200, impatto:0.5, note:'Il titolare gestisce personalmente i top client con attenzioni dedicate' },
+        ]},
+      ]},
+      '5': { cosa:'Mix ricavi: vendita, su misura, pre-owned certificato, eventi, noleggio', tempo_mesi:3, moduli:[
+        { id:'preowned', nome:'Canale pre-owned certificato', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'strutturato', nome:'Servizio acquisto/vendita usato certificato', costo_mensile:200, costo_setup:1500, impatto:0.6, note:'Valutazione, certificazione, garanzia propria, vendita usato — margine 25-40%' },
+          { id:'intermediazione', nome:'Intermediazione conto vendita', costo_mensile:0, costo_setup:500, impatto:0.3, note:'Il cliente lascia il pezzo, noi lo vendiamo e tratteniamo commissione' },
+        ]},
+        { id:'eventi', nome:'Eventi esclusivi in boutique', tipo:'flag', obbligatorio:false, costo_mensile:200, costo_setup:500, impatto:0.2, note:'Trunk show brand, serate private, presentazione collezioni — vendite in evento' },
+      ]},
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo vetrina e passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Instagram con foto gioielli e storytelling artigianale',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'marketing', nome:'Instagram con foto gioielli e storytelling artigianale', tipo:'flag', obbligatorio:true, costo_mensile:150, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Social curato + PR locale + collaborazioni wedding planner',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'marketing', nome:'Social curato + PR locale + collaborazioni wedding planner', tipo:'flag', obbligatorio:true, costo_mensile:700, costo_setup:1500, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Agenzia specializzata luxury — shooting, video, influencer',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'Agenzia specializzata luxury',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1500, costo_setup:3000, impatto:1, note:'Agenzia specializzata luxury — shooting, video, influencer' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:600, costo_setup:1500, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Piano marketing luxury — brand awareness, eventi esclusivi, PR',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'Piano marketing luxury',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:3000, costo_setup:5000, impatto:1, note:'Piano marketing luxury — brand awareness, eventi esclusivi, PR' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:1200, costo_setup:2500, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Instagram curato con foto gioielli professionali e storytelling', tempo_mesi:1, moduli:[
+        { id:'instagram', nome:'Profilo Instagram luxury curato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.6, note:'Foto professionali gioielli, macro dettagli, storie artigianali, indossato' },
+        { id:'whatsapp', nome:'WhatsApp VIP per clienti top', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.3, note:'Novita esclusive, anteprime, auguri personalizzati alle clienti migliori' },
+      ]},
+      '3': { cosa:'Social curato + PR locale + partnership wedding planner/eventi', tempo_mesi:2, moduli:[
+        { id:'social', nome:'Social media professionale luxury', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'fotografo', nome:'Fotografo gioielli + SMM', costo_mensile:500, costo_setup:500, impatto:1.0, note:'Shooting mensile still-life + indossato, piano editoriale, stories, reel' },
+          { id:'interno', nome:'Foto interne + grafica freelance', costo_mensile:200, costo_setup:200, impatto:0.5, note:'Foto con smartphone + luce, grafica esterna per post curati' },
+        ]},
+        { id:'wedding', nome:'Partnership wedding planner', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:200, impatto:0.25, note:'Accordi con wedding planner e location: fedi, gioielli sposa, regali testimoni' },
+      ]},
+      '4': { cosa:'Agenzia luxury — shooting video, influencer gioielli, PR', tempo_mesi:2, moduli:[
+        { id:'luxury_mkt', nome:'Marketing luxury professionale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia specializzata luxury/gioielli', costo_mensile:1200, costo_setup:2000, impatto:1.0, note:'Shooting editoriali, video gioielli, influencer gioielli/moda, PR su riviste' },
+          { id:'freelance', nome:'Team freelance (fotografo + SMM + PR)', costo_mensile:600, costo_setup:1000, impatto:0.6, note:'Professionisti singoli coordinati, costo piu contenuto' },
+        ]},
+      ]},
+      '5': { cosa:'Piano marketing luxury completo — brand awareness, eventi esclusivi, PR', tempo_mesi:4, moduli:[
+        { id:'piano', nome:'Piano marketing luxury boutique', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia marketing luxury', costo_mensile:2500, costo_setup:4000, impatto:1.0, note:'Brand positioning, PR su riviste luxury, eventi VIP, influencer, digital strategy' },
+          { id:'interno', nome:'Marketing coordinator interno', costo_mensile:1200, costo_setup:500, impatto:0.6, note:'1 risorsa dedicata a marketing, eventi, social, CRM' },
+        ]},
+      ]},
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Sito vetrina elegante con collezioni e contatti boutique',
-        tempo_mesi: 1,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Sito vetrina elegante con collezioni e contatti boutique',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:100, costo_setup:1500, impatto:1, note:'Sito vetrina elegante con collezioni e contatti boutique' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:40, costo_setup:600, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '3': {
-        cosa: 'Sito con catalogo dettagliato, certificati, prenotazione visita',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Sito con catalogo dettagliato, certificati, prenotazione visita',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:400, costo_setup:4000, impatto:1, note:'Sito con catalogo dettagliato, certificati, prenotazione visita' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:160, costo_setup:1600, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'E-commerce luxury con foto HD, zoom, certificati, reso assicurato',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'E-commerce luxury con foto HD, zoom, certificati, reso assicurato',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:800, costo_setup:8000, impatto:1, note:'E-commerce luxury con foto HD, zoom, certificati, reso assicurato' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:320, costo_setup:3200, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Piattaforma integrata — e-commerce, CRM, stock unico, wish list',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Piattaforma integrata',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:1500, costo_setup:15000, impatto:1, note:'Piattaforma integrata — e-commerce, CRM, stock unico, wish list' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:600, costo_setup:6000, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Sito vetrina elegante con collezioni, boutique e prenotazione visita', tempo_mesi:1, moduli:[
+        { id:'sito', nome:'Sito boutique luxury', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'custom', nome:'Sito custom (design luxury)', costo_mensile:30, costo_setup:2500, impatto:1.0, note:'Design elegante, gallery collezioni, storia boutique, prenotazione appuntamento' },
+          { id:'template', nome:'Sito da template (Squarespace luxury)', costo_mensile:20, costo_setup:800, impatto:0.5, note:'Template elegante, meno personalizzazione' },
+        ]},
+      ]},
+      '3': { cosa:'Catalogo online dettagliato con certificati GIA/IGI e prenotazione visita', tempo_mesi:2, moduli:[
+        { id:'catalogo', nome:'Catalogo online gioielli', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:2000, impatto:0.5, note:'Ogni pezzo con foto HD, dettagli pietre, certificato, prezzo su richiesta' },
+        { id:'booking', nome:'Prenotazione appuntamento online', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.4, note:'Calendly/form per prenotare visita privata in boutique' },
+      ]},
+      '4': { cosa:'E-commerce luxury — foto HD, zoom pietre, certificati, spedizione assicurata', tempo_mesi:3, moduli:[
+        { id:'ecommerce', nome:'E-commerce gioielli luxury', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'custom', nome:'E-commerce luxury custom (Shopify Plus/custom)', costo_mensile:400, costo_setup:8000, impatto:1.0, note:'Foto HD macro, video 360, certificati scaricabili, spedizione assicurata, reso 30gg' },
+          { id:'shopify', nome:'Shopify + tema jewelry', costo_mensile:100, costo_setup:3000, impatto:0.55, note:'Template gioielli, funzionalita base, meno personalizzazione' },
+        ]},
+      ]},
+      '5': { cosa:'Piattaforma integrata — e-commerce, CRM, stock unico, wish list VIP', tempo_mesi:4, moduli:[
+        { id:'piattaforma', nome:'Piattaforma omnicanale luxury', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'Piattaforma luxury enterprise (Shopify Plus + CRM)', costo_mensile:800, costo_setup:15000, impatto:1.0, note:'E-commerce + CRM + stock unico + wish list VIP + clienteling digitale + app' },
+          { id:'mid', nome:'Shopify + CRM collegato', costo_mensile:300, costo_setup:5000, impatto:0.5, note:'E-commerce + CRM sincronizzati, meno features luxury' },
+        ]},
+      ]},
     },
     ecommerce: {
-      '1': { chi:'Titolare', cosa:'Acquisto da 1-2 rappresentanti brand abituali', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Scouting brand a fiere (VicenzaOro, Baselworld)',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'canale', nome:'Scouting brand a fiere (VicenzaOro, Baselworld)', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:800, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Buyer dedicato — selezione pietre, fornitori orafi, brand',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Buyer dedicato',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:1200, costo_setup:500, impatto:1, note:'Buyer dedicato — selezione pietre, fornitori orafi, brand' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:600, costo_setup:200, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Import pietre diretto + laboratorio orafo per pezzi unici',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Import pietre diretto + laboratorio orafo per pezzi unici',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:2500, costo_setup:2000, impatto:1, note:'Import pietre diretto + laboratorio orafo per pezzi unici' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:1250, costo_setup:800, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Resp. acquisti — accordi brand, pietre certificate, private label',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Resp. acquisti',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:3500, costo_setup:3000, impatto:1, note:'Resp. acquisti — accordi brand, pietre certificate, private label' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:1750, costo_setup:1200, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
       _label: 'Approvvigionamento e fornitori',
+      '1': { chi:'Titolare', cosa:'Acquisto da 1-2 rappresentanti brand abituali', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Scouting brand e fornitori a fiere (VicenzaOro, Baselworld, HK)', tempo_mesi:1, moduli:[
+        { id:'fiere', nome:'Visita fiere gioielleria/orologeria', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:800, impatto:0.7, note:'VicenzaOro, Baselworld/Watches&Wonders, HK Jewellery Show — scouting e ordini' },
+      ]},
+      '3': { cosa:'Buyer/consulente per selezione pietre, fornitori orafi e brand', tempo_mesi:2, moduli:[
+        { id:'buyer', nome:'Buyer gioielleria', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'consulente', nome:'Buyer/consulente esterno esperto', costo_mensile:500, costo_setup:500, impatto:1.0, note:'Seleziona pietre, negozia con fornitori, consiglia brand, gestisce budget' },
+          { id:'autonomo', nome:'Acquisti autonomi con metodo', costo_mensile:0, costo_setup:300, impatto:0.5, note:'Il titolare acquista con budget strutturato e analisi sell-through' },
+        ]},
+      ]},
+      '4': { cosa:'Import pietre diretto + partnership laboratorio orafo per pezzi unici', tempo_mesi:3, moduli:[
+        { id:'import', nome:'Import pietre diretto', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'broker', nome:'Broker diamanti/pietre (Anversa/Mumbai)', costo_mensile:0, costo_setup:2000, impatto:1.0, note:'Acquisto diretto pietre certificate GIA/IGI, margine superiore' },
+          { id:'grossista', nome:'Grossista pietre Italia (Valenza/Arezzo)', costo_mensile:0, costo_setup:500, impatto:0.6, note:'Fornitore italiano, meno margine ma meno rischio e logistica' },
+        ]},
+        { id:'laboratorio', nome:'Partnership laboratorio orafo', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.2, note:'Orafo di fiducia per pezzi su misura, restyling, riparazioni complesse' },
+      ]},
+      '5': { cosa:'Resp. acquisti — accordi brand premium, pietre certificate, linea propria', tempo_mesi:4, moduli:[
+        { id:'resp', nome:'Responsabile acquisti gioielleria', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Buyer/product manager dipendente', costo_mensile:3000, costo_setup:0, impatto:1.0, note:'Strategia acquisti, rapporti brand (Rolex, Cartier...), import pietre, sviluppo linea propria' },
+          { id:'fractional', nome:'Buyer fractional/consulente senior', costo_mensile:1500, costo_setup:0, impatto:0.6, note:'2-3 giorni/settimana, focus campagne acquisto e brand relations' },
+        ]},
+      ]},
     }
   },
 
