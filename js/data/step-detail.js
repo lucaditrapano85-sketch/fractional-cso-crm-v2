@@ -538,62 +538,207 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   manifatturiero_elettromeccanica: {
     vendite: {
-      '1': { chi:'Titolare solo', cosa:'Titolare gestisce i clienti — nessun venditore', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Visite a costruttori macchine — solo trasferte', costo_mensile:300, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'1 agente', cosa:'1 agente tecnico-commerciale — provvigioni ~1.500€/mese', costo_mensile:1500, costo_setup:0, tempo_mesi:2 },
-      '4': { chi:'1 commerciale', cosa:'1 commerciale offerte complesse — lordo azienda ~3.200€', costo_mensile:3200, costo_setup:0, tempo_mesi:3 },
-      '5': { chi:'Dir. commerciale + export', cosa:'Dir. commerciale + export OEM', costo_mensile:7500, costo_setup:0, tempo_mesi:6 },
+      '1': { chi:'Titolare solo', cosa:'Titolare gestisce clienti — nessun venditore', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Visite a costruttori macchine e OEM — proposta componenti/assiemi', tempo_mesi:1, moduli:[
+        { id:'visite', nome:'Piano visite OEM/costruttori', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:0, impatto:0.6, note:'Visite a costruttori macchine, quadristi, impiantisti della zona' },
+        { id:'campioni', nome:'Campionatura componenti per test', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.3, note:'Prototipi e campioni per qualifica presso OEM' },
+      ]},
+      '3': { cosa:'Tecnico-commerciale per sviluppo nuovi OEM', tempo_mesi:2, moduli:[
+        { id:'commerciale', nome:'Tecnico-commerciale elettromeccanica', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Tecnico-commerciale dipendente', costo_mensile:2800, costo_setup:0, impatto:1.0, note:'Competenza tecnica (schemi, componenti) + vendita' },
+          { id:'agente', nome:'Agente B2B industriale', costo_mensile:1200, costo_setup:500, impatto:0.7, note:'Provvigione su commesse, porta contatti OEM' },
+        ]},
+      ]},
+      '4': { cosa:'Account manager OEM + inside sales per riordini', tempo_mesi:3, moduli:[
+        { id:'account', nome:'Account manager OEM', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Account OEM dipendente', costo_mensile:3000, costo_setup:0, impatto:0.5, note:'Gestisce top 10 OEM, sviluppo co-design, pricing' },
+          { id:'fractional', nome:'Account fractional', costo_mensile:1500, costo_setup:0, impatto:0.35, note:'2-3 giorni/settimana' },
+        ]},
+        { id:'inside', nome:'Inside sales/ordini', tipo:'scelta', obbligatorio:false, varianti:[
+          { id:'dip', nome:'Inside sales dipendente', costo_mensile:1800, costo_setup:0, impatto:0.2, note:'Gestione riordini, preventivi standard, follow-up' },
+          { id:'parttime', nome:'Inside sales part-time', costo_mensile:900, costo_setup:0, impatto:0.12, note:'4h/giorno' },
+        ]},
+      ]},
+      '5': { cosa:'Dir. commerciale + sviluppo export + partnership OEM internazionali', tempo_mesi:6, moduli:[
+        { id:'resp', nome:'Direttore commerciale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Dir. commerciale dipendente', costo_mensile:3500, costo_setup:0, impatto:0.5, note:'Coordinamento vendite, pricing, grandi OEM, export' },
+          { id:'fractional', nome:'Dir. commerciale fractional', costo_mensile:1800, costo_setup:0, impatto:0.35, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
     },
     pipeline: {
-      '1': { chi:'Titolare', cosa:'Nessun tracciamento — offerte su email e carta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Excel strutturato — progetto, cliente, valore, stato, tempi', costo_mensile:0, costo_setup:100, tempo_mesi:1 },
-      '3': { chi:'CRM base', cosa:'CRM per offerte, commesse e follow-up post-vendita', costo_mensile:80, costo_setup:300, tempo_mesi:1 },
-      '4': { chi:'CRM + gestionale', cosa:'CRM integrato con gestionale — da offerta a produzione quadro', costo_mensile:350, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'ERP integrato', cosa:'ERP completo — preventivazione, distinte base, produzione, collaudo', costo_mensile:700, costo_setup:4000, tempo_mesi:3 },
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'CRM base per pipeline offerte e commesse', tempo_mesi:1, moduli:[
+        { id:'crm', nome:'CRM B2B', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'hubspot', nome:'HubSpot Free/Starter', costo_mensile:0, costo_setup:200, impatto:0.85, note:'Pipeline offerte + storico + reminder' },
+          { id:'excel', nome:'Excel strutturato', costo_mensile:0, costo_setup:100, impatto:0.7, note:'Foglio offerte e commesse' },
+        ]},
+      ]},
+      '3': { cosa:'CRM con gestione offerte complesse e contratti quadro', tempo_mesi:1, moduli:[
+        { id:'crm_pro', nome:'CRM professionale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'salesforce', nome:'Salesforce/Zoho CRM', costo_mensile:60, costo_setup:400, impatto:1.0, note:'Pipeline, offerte multi-fase, contratti, forecast' },
+          { id:'pipedrive', nome:'Pipedrive', costo_mensile:30, costo_setup:200, impatto:0.65, note:'Pipeline visuale' },
+        ]},
+      ]},
+      '4': { cosa:'Gestionale integrato — offerte, commesse, produzione, acquisti', tempo_mesi:2, moduli:[
+        { id:'erp', nome:'ERP elettromeccanico', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'erp', nome:'ERP manifatturiero (TeamSystem/Mago4)', costo_mensile:400, costo_setup:2000, impatto:1.0, note:'Offerte, commesse, distinte base, produzione, acquisti, fatturazione' },
+          { id:'base', nome:'Gestionale + moduli', costo_mensile:150, costo_setup:800, impatto:0.55, note:'Fatturazione + Excel commesse' },
+        ]},
+      ]},
+      '5': { cosa:'ERP completo con MRP, configuratore prodotto e BI', tempo_mesi:4, moduli:[
+        { id:'erp_full', nome:'ERP enterprise', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'ERP + MRP (SAP B1/Mago4 Manufacturing)', costo_mensile:800, costo_setup:5000, impatto:1.0, note:'MRP, distinte multilivello, commesse, qualita, logistica, BI' },
+          { id:'mid', nome:'ERP mid-market', costo_mensile:400, costo_setup:2500, impatto:0.6, note:'Core features' },
+        ]},
+      ]},
     },
     team: {
-      '1': { chi:'Titolare', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Capo officina gestisce quotidiano', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Titolare', cosa:'Ruoli progettazione/produzione separati', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Consulente', cosa:'KPI + project management', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Management', cosa:'Management tecnico + commerciale', costo_mensile:1500, costo_setup:2000, tempo_mesi:5 },
+      '1': { chi:'Titolare', cosa:'Titolare in officina — decide tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Capo officina + separazione ruoli produzione/collaudo', tempo_mesi:1, moduli:[
+        { id:'capo', nome:'Capo officina/produzione', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'promozione', nome:'Promozione interna', costo_mensile:0, costo_setup:300, impatto:1.0, note:'Conosce macchine e prodotti' },
+          { id:'esterno', nome:'Assunzione esterna', costo_mensile:300, costo_setup:0, impatto:0.8, note:'Esperienza da altro elettromeccanico' },
+        ]},
+      ]},
+      '3': { cosa:'Impiegata tecnica + progettista/disegnatore', tempo_mesi:2, moduli:[
+        { id:'progettista', nome:'Progettista elettromeccanico', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Progettista CAD/CAE dipendente', costo_mensile:2500, costo_setup:0, impatto:0.7, note:'Schemi elettrici, 3D meccanica, distinte base, prototipi' },
+          { id:'freelance', nome:'Progettista freelance', costo_mensile:1200, costo_setup:0, impatto:0.5, note:'A progetto, per picchi di lavoro' },
+        ]},
+      ]},
+      '4': { cosa:'KPI produzione + resp. qualita + certificazioni', tempo_mesi:3, moduli:[
+        { id:'qualita', nome:'Responsabile qualita', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'interno', nome:'Addetto qualita formato', costo_mensile:200, costo_setup:500, impatto:0.4, note:'Collaudo, certificati, ISO 9001, gestione NC' },
+          { id:'consulente', nome:'Consulente qualita', costo_mensile:400, costo_setup:0, impatto:0.5, note:'ISO 9001, audit, metrologia, certificazioni CE' },
+        ]},
+        { id:'kpi', nome:'Dashboard KPI produzione', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.15, note:'OEE, scarti, tempi ciclo, on-time delivery' },
+      ]},
+      '5': { cosa:'Management completo — titolare solo R&D e strategia', tempo_mesi:5, moduli:[
+        { id:'manager', nome:'Direttore operativo', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Dir. operativo dipendente', costo_mensile:3500, costo_setup:0, impatto:1.0, note:'Produzione, qualita, personale, logistica' },
+          { id:'fractional', nome:'Operations manager fractional', costo_mensile:1800, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
       _label: 'Organizzazione',
     },
     processi: {
-      '1': { chi:'Titolare', cosa:'Nessun processo — ogni quadro è un progetto a sé', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Template preventivo standard — distinta base + ore montaggio', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'SW progettazione', cosa:'Software progettazione elettrica (EPLAN, SEE Electrical)', costo_mensile:300, costo_setup:2000, tempo_mesi:2 },
-      '4': { chi:'ERP + collaudo', cosa:'Gestionale con distinte base, collaudo e certificazione CE', costo_mensile:600, costo_setup:2500, tempo_mesi:3 },
-      '5': { chi:'Quality manager', cosa:'ISO 9001 + procedure collaudo FAT/SAT + lean production', costo_mensile:1200, costo_setup:7000, tempo_mesi:4 },
+      '1': { chi:'Titolare', cosa:'Nessun processo — produzione artigianale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Distinte base strutturate + schemi elettrici + collaudo', tempo_mesi:1, moduli:[
+        { id:'distinte', nome:'Distinte base e documentazione tecnica', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.6, note:'BOM, schemi elettrici, disegni meccanici, procedure collaudo' },
+        { id:'collaudo', nome:'Procedura collaudo strutturata', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.25, note:'Checklist collaudo elettrico e meccanico, registrazione risultati' },
+      ]},
+      '3': { cosa:'Gestionale produzione + pianificazione commesse', tempo_mesi:2, moduli:[
+        { id:'gestionale', nome:'Software gestione produzione', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'ERP manifatturiero (Mago4/Fluentis)', costo_mensile:200, costo_setup:1500, impatto:1.0, note:'Commesse, distinte, cicli, MRP base, acquisti' },
+          { id:'base', nome:'Excel + gestionale base', costo_mensile:0, costo_setup:500, impatto:0.45, note:'Foglio commesse + fatturazione' },
+        ]},
+      ]},
+      '4': { cosa:'ISO 9001 + marcatura CE + gestione configurazioni', tempo_mesi:3, moduli:[
+        { id:'iso', nome:'ISO 9001', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'consulente', nome:'ISO 9001 con consulente + ente', costo_mensile:150, costo_setup:4000, impatto:1.0, note:'Prerequisito per OEM e mercato industriale' },
+          { id:'interno', nome:'Sistema qualita senza certificazione', costo_mensile:0, costo_setup:1000, impatto:0.45, note:'Processi documentati' },
+        ]},
+        { id:'ce', nome:'Marcatura CE strutturata', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.15, note:'Direttiva Bassa Tensione, EMC, documentazione tecnica CE' },
+      ]},
+      '5': { cosa:'ERP + PDM/PLM + MES per tracciabilita completa', tempo_mesi:4, moduli:[
+        { id:'plm', nome:'PDM/PLM + MES', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'ERP + PDM + MES integrati', costo_mensile:600, costo_setup:5000, impatto:1.0, note:'Gestione configurazioni, versioni, tracciabilita, OEE' },
+          { id:'base', nome:'ERP avanzato senza PLM', costo_mensile:300, costo_setup:2500, impatto:0.55, note:'Commesse avanzate, senza PDM/PLM' },
+        ]},
+      ]},
     },
     ricavi: {
-      '1': { chi:'Titolare', cosa:'Nessun controllo margini — prezzi a esperienza', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Calcolo costi reali — componenti + ore progettazione + montaggio', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Upsell tecnico', cosa:'Servizi a valore aggiunto — progettazione, retrofit, assistenza', costo_mensile:200, costo_setup:300, tempo_mesi:1 },
-      '4': { chi:'Contratti ricorrenti', cosa:'Contratti manutenzione quadri e impianti installati', costo_mensile:400, costo_setup:500, tempo_mesi:2 },
-      '5': { chi:'Revenue manager', cosa:'Contratti quadro OEM + revenue da ricambi e service', costo_mensile:900, costo_setup:1500, tempo_mesi:3 },
+      '1': { chi:'Titolare', cosa:'Prezzo a preventivo — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Calcolo costi reali per componente/assieme', tempo_mesi:1, moduli:[
+        { id:'costing', nome:'Sistema costing prodotti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8, note:'Costo materiale + lavorazione + assemblaggio + collaudo — margine reale' },
+      ]},
+      '3': { cosa:'Contratti quadro OEM + servizi di co-design', tempo_mesi:1, moduli:[
+        { id:'contratti', nome:'Contratti quadro OEM', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.6, note:'Volume annuo, prezzo bloccato, consegna programmata' },
+        { id:'codesign', nome:'Servizio co-design componenti', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.2, note:'Progettazione congiunta con OEM — margine engineering' },
+      ]},
+      '4': { cosa:'Prodotto standard configurabile + service post-vendita', tempo_mesi:2, moduli:[
+        { id:'standard', nome:'Prodotto standard a catalogo', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:1000, impatto:0.6, note:'Componenti/assiemi standard configurabili — margine superiore, delivery veloce' },
+        { id:'service', nome:'Service e ricambi post-vendita', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:300, impatto:0.2, note:'Ricambi, riparazioni, upgrade — ricavo ricorrente' },
+      ]},
+      '5': { cosa:'IP proprietaria + prodotto finito + export', tempo_mesi:3, moduli:[
+        { id:'ip', nome:'Prodotto/IP proprietaria', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'prodotto', nome:'Prodotto finito con brand proprio', costo_mensile:500, costo_setup:3000, impatto:1.0, note:'Da terzista a produttore: prodotto proprio, margine pieno, brand' },
+          { id:'oem', nome:'Prodotto OEM white label', costo_mensile:200, costo_setup:1000, impatto:0.5, note:'Prodotto proprio venduto con marchio OEM — volume senza marketing' },
+        ]},
+      ]},
     },
     marketing: {
-      '1': { chi:'Nessuno', cosa:'Nessuno — solo passaparola nel distretto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'LinkedIn con foto quadri realizzati e certificazioni', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Fiere', cosa:'Fiere automazione (SPS Italia, MECSPE) — stand e demo', costo_mensile:500, costo_setup:5000, tempo_mesi:2 },
-      '4': { chi:'Agenzia digital', cosa:'Campagne LinkedIn su uffici tecnici e resp. produzione', costo_mensile:1000, costo_setup:1200, tempo_mesi:2 },
-      '5': { chi:'Marketing manager', cosa:'Piano marketing — fiere + content tecnico + partnership vendor', costo_mensile:2500, costo_setup:3000, tempo_mesi:3 },
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'LinkedIn aziendale + foto prodotti e processi', tempo_mesi:1, moduli:[
+        { id:'linkedin', nome:'LinkedIn aziendale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.5, note:'Post: prodotti, assemblaggio, collaudo, team' },
+        { id:'video', nome:'Video prodotti/processi', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.3, note:'Video brevi produzione e collaudo' },
+      ]},
+      '3': { cosa:'Fiere industriali (SPS, MECSPE) + portali B2B', tempo_mesi:2, moduli:[
+        { id:'fiere', nome:'Fiere industriali', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'stand', nome:'Stand SPS/MECSPE', costo_mensile:200, costo_setup:3000, impatto:1.0, note:'Stand con campioni, 1 fiera/anno' },
+          { id:'visitatore', nome:'Visita come operatore', costo_mensile:100, costo_setup:500, impatto:0.4, note:'Networking' },
+        ]},
+      ]},
+      '4': { cosa:'LinkedIn Ads + content tecnico + case study', tempo_mesi:2, moduli:[
+        { id:'digital', nome:'Marketing digitale B2B', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia B2B industriale', costo_mensile:600, costo_setup:500, impatto:1.0, note:'LinkedIn Ads, content, case study, video' },
+          { id:'interno', nome:'Autogestito + ads', costo_mensile:200, costo_setup:200, impatto:0.5, note:'Post + budget ads' },
+        ]},
+      ]},
+      '5': { cosa:'Piano marketing B2B — brand, fiere, digital, partnership OEM', tempo_mesi:3, moduli:[
+        { id:'piano', nome:'Piano marketing B2B', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia marketing B2B', costo_mensile:1500, costo_setup:3000, impatto:1.0, note:'Brand, fiere, LinkedIn, content, PR' },
+          { id:'interno', nome:'Marketing coordinator', costo_mensile:800, costo_setup:500, impatto:0.6, note:'1 risorsa' },
+        ]},
+      ]},
     },
     sitoweb: {
-      '1': { chi:'Nessuno', cosa:'Nessun sito o sito datato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito con tipologie quadri, certificazioni, settori serviti', costo_mensile:80, costo_setup:1000, tempo_mesi:1 },
-      '3': { chi:'Sito professionale', cosa:'Portfolio realizzazioni + video collaudo + richiesta preventivo', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
-      '4': { chi:'Agenzia SEO', cosa:'SEO su parole chiave (quadri elettrici, automazione + zona)', costo_mensile:550, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'Sito avanzato', cosa:'Area riservata clienti — schemi, certificati CE, manuali', costo_mensile:900, costo_setup:7000, tempo_mesi:3 },
+      '1': { chi:'Nessuno', cosa:'Nessun sito', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Sito con prodotti, capacita, certificazioni', tempo_mesi:1, moduli:[
+        { id:'sito', nome:'Sito B2B elettromeccanica', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'custom', nome:'Sito custom', costo_mensile:30, costo_setup:2000, impatto:1.0, note:'Prodotti, capacita, certificazioni, gallery, form RFQ' },
+          { id:'template', nome:'Sito template', costo_mensile:20, costo_setup:600, impatto:0.5, note:'Template industriale' },
+        ]},
+      ]},
+      '3': { cosa:'Catalogo prodotti con schede tecniche + configuratore base', tempo_mesi:2, moduli:[
+        { id:'catalogo', nome:'Catalogo prodotti tecnico', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:1500, impatto:0.5, note:'Schede prodotto con specifiche, disegni, datasheet scaricabili' },
+        { id:'rfq', nome:'Form RFQ online', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.4, note:'Richiesta offerta con specifiche tecniche' },
+      ]},
+      '4': { cosa:'Portale clienti con tracking ordini e documentazione', tempo_mesi:3, moduli:[
+        { id:'portale', nome:'Portale clienti OEM', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'integrato', nome:'Portale integrato ERP', costo_mensile:200, costo_setup:3000, impatto:1.0, note:'Stato ordini, certificati, disegni, test report' },
+          { id:'base', nome:'Area riservata base', costo_mensile:50, costo_setup:1000, impatto:0.5, note:'Documentazione + form' },
+        ]},
+      ]},
+      '5': { cosa:'Piattaforma digitale con configuratore prodotto e BI', tempo_mesi:4, moduli:[
+        { id:'piattaforma', nome:'Piattaforma digitale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'Piattaforma con configuratore', costo_mensile:500, costo_setup:8000, impatto:1.0, note:'Configuratore prodotto online, portale clienti, BI' },
+          { id:'mid', nome:'Sito + portale', costo_mensile:200, costo_setup:3000, impatto:0.5, note:'WordPress + area clienti' },
+        ]},
+      ]},
     },
     ecommerce: {
-      '1': { chi:'Nessuno', cosa:'Nessuna presenza digitale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Portali B2B automazione e impiantistica', costo_mensile:30, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Configuratore', cosa:'Configuratore base per quadri standard e componenti', costo_mensile:250, costo_setup:3500, tempo_mesi:2 },
-      '4': { chi:'E-commerce ricambi', cosa:'E-commerce ricambi e componenti per clienti esistenti', costo_mensile:500, costo_setup:4000, tempo_mesi:3 },
-      '5': { chi:'Piattaforma integrata', cosa:'Portale clienti — ordini ricorrenti, documentazione, assistenza', costo_mensile:900, costo_setup:8000, tempo_mesi:4 },
-      _label: 'Canale digitale B2B',
+      _label: 'Approvvigionamento componenti',
+      '1': { chi:'Titolare', cosa:'Acquisto da distributori abituali', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Confronto distributori componenti elettromeccanici', tempo_mesi:1, moduli:[
+        { id:'fornitori', nome:'Database fornitori componenti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.7, note:'Distributori: RS, Farnell, TME, produttori diretti — listini, tempi, MOQ' },
+      ]},
+      '3': { cosa:'Accordi quadro con distributori + produttori componenti', tempo_mesi:2, moduli:[
+        { id:'accordi', nome:'Accordi quadro fornitori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.6, note:'Sconti volume, consegna rapida, supporto tecnico' },
+      ]},
+      '4': { cosa:'Buyer dedicato — dual sourcing, import, gestione obsolescenza', tempo_mesi:3, moduli:[
+        { id:'buyer', nome:'Buyer componenti', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Buyer tecnico dipendente', costo_mensile:2000, costo_setup:0, impatto:1.0, note:'Negoziazione, dual sourcing, gestione obsolescenza, import' },
+          { id:'parttime', nome:'Admin con delega acquisti', costo_mensile:900, costo_setup:0, impatto:0.6, note:'Gestisce riordini e confronto prezzi' },
+        ]},
+      ]},
+      '5': { cosa:'Supply chain manager — vendor management, stock strategy, import', tempo_mesi:4, moduli:[
+        { id:'supply', nome:'Resp. supply chain', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Supply chain manager', costo_mensile:3000, costo_setup:0, impatto:1.0, note:'Vendor management, dual sourcing, stock componenti critici' },
+          { id:'fractional', nome:'SCM fractional', costo_mensile:1500, costo_setup:0, impatto:0.6, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
     }
   },
 
@@ -602,62 +747,200 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   manifatturiero_tessile_tessuti: {
     vendite: {
-      '1': { chi:'Titolare solo', cosa:'Titolare gestisce clienti storici — nessun venditore', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Campionatura proattiva verso confezionisti e brand', costo_mensile:400, costo_setup:500, tempo_mesi:1 },
-      '3': { chi:'1 agente', cosa:'1 agente moda/arredamento — provvigioni ~1.500€/mese', costo_mensile:1500, costo_setup:0, tempo_mesi:2 },
-      '4': { chi:'1 commerciale + showroom', cosa:'1 commerciale + showroom campionari', costo_mensile:3500, costo_setup:2000, tempo_mesi:3 },
-      '5': { chi:'Dir. commerciale + agenti', cosa:'Dir. commerciale + agenti Italia/estero', costo_mensile:8000, costo_setup:3000, tempo_mesi:6 },
+      '1': { chi:'Titolare solo', cosa:'Titolare gestisce clienti storici (confezionisti e brand)', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Campionatura proattiva verso confezionisti e brand nuovi', tempo_mesi:1, moduli:[
+        { id:'campionatura', nome:'Servizio campionatura strutturato', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:500, impatto:0.6, note:'Cartella colori, campioni tessuto, schede tecniche — invio a stilisti e buyer' },
+        { id:'fiere', nome:'Partecipazione fiere tessili', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.2, note:'Premiere Vision, Milano Unica — presentazione collezioni tessuto' },
+      ]},
+      '3': { cosa:'Agente tessile per confezionisti e brand moda', tempo_mesi:2, moduli:[
+        { id:'agente', nome:'Agente tessile', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'plurimandatario', nome:'Agente tessile plurimandatario', costo_mensile:800, costo_setup:500, impatto:1.0, note:'Provvigione 5-8%, porta portafoglio confezionisti e brand' },
+          { id:'dip', nome:'Commerciale tessile dipendente', costo_mensile:2500, costo_setup:0, impatto:0.8, note:'Fisso + incentivi, dedica tutto il tempo al tessitore' },
+        ]},
+      ]},
+      '4': { cosa:'Rete agenti + sviluppo brand moda internazionali', tempo_mesi:3, moduli:[
+        { id:'rete', nome:'Rete agenti tessile', tipo:'multi', obbligatorio:true, min:2, varianti:[
+          { id:'agente', nome:'Agente tessile per zona/segmento', costo_mensile:800, costo_setup:0, impatto:0.3, note:'Italia o estero' },
+          { id:'dip', nome:'Commerciale dipendente', costo_mensile:2500, costo_setup:0, impatto:0.25, note:'Per zona ad alto potenziale' },
+        ]},
+      ]},
+      '5': { cosa:'Dir. commerciale + rete agenti + export + showroom', tempo_mesi:6, moduli:[
+        { id:'resp', nome:'Direttore commerciale tessile', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Dir. commerciale dipendente', costo_mensile:3500, costo_setup:0, impatto:0.5, note:'Coordinamento agenti, brand moda, pricing, export' },
+          { id:'fractional', nome:'Dir. commerciale fractional', costo_mensile:1800, costo_setup:0, impatto:0.35, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
     },
     pipeline: {
-      '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini per telefono e email', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Excel con clienti, campionature inviate, ordini in corso', costo_mensile:0, costo_setup:100, tempo_mesi:1 },
-      '3': { chi:'CRM base', cosa:'CRM per campionature, riordini stagionali e follow-up', costo_mensile:80, costo_setup:300, tempo_mesi:1 },
-      '4': { chi:'CRM + gestionale', cosa:'CRM + gestionale produzione — capacità telai e tempi consegna', costo_mensile:400, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'ERP tessile', cosa:'ERP tessile integrato — ordini, pianificazione, qualità, spedizioni', costo_mensile:800, costo_setup:5000, tempo_mesi:3 },
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Excel con clienti, campioni inviati, ordini stagionali', tempo_mesi:1, moduli:[
+        { id:'strumento', nome:'Tracciamento clienti/campioni', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'excel', nome:'Excel strutturato', costo_mensile:0, costo_setup:100, impatto:0.7, note:'Cliente, campioni inviati, ordini SS/FW, metratura, pagamenti' },
+          { id:'crm', nome:'CRM gratuito', costo_mensile:0, costo_setup:200, impatto:0.85, note:'Pipeline + storico + campionature' },
+        ]},
+      ]},
+      '3': { cosa:'CRM tessile con gestione campionature e ordini per stagione', tempo_mesi:1, moduli:[
+        { id:'crm', nome:'CRM tessile', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'b2b', nome:'CRM B2B (Salesforce/Zoho)', costo_mensile:60, costo_setup:400, impatto:1.0, note:'Pipeline per campagna, campionature, ordini, forecast' },
+          { id:'generico', nome:'CRM leggero (Pipedrive)', costo_mensile:30, costo_setup:200, impatto:0.6, note:'Pipeline base' },
+        ]},
+      ]},
+      '4': { cosa:'Gestionale tessile integrato — ordini, produzione, magazzino', tempo_mesi:2, moduli:[
+        { id:'erp', nome:'Gestionale tessile', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'ERP tessile (Datatex/Cybertex)', costo_mensile:500, costo_setup:2000, impatto:1.0, note:'Ordini, ricette tessuto, produzione, tintoria, magazzino, fatturazione' },
+          { id:'generico', nome:'ERP generico + Excel produzione', costo_mensile:200, costo_setup:800, impatto:0.55, note:'Meno specifico per tessile' },
+        ]},
+      ]},
+      '5': { cosa:'ERP tessile completo con pianificazione produzione e BI', tempo_mesi:4, moduli:[
+        { id:'erp_full', nome:'ERP tessile enterprise', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'ERP tessile enterprise (Datatex/SAP)', costo_mensile:1000, costo_setup:5000, impatto:1.0, note:'Pianificazione, produzione, qualita, logistica, BI, export' },
+          { id:'mid', nome:'Gestionale tessile mid-market', costo_mensile:500, costo_setup:2500, impatto:0.6, note:'Core features' },
+        ]},
+      ]},
     },
     team: {
-      '1': { chi:'Titolare', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Ruoli telaio/finissaggio definiti', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Titolare', cosa:'Resp. tecnico sviluppo tessuti', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Consulente', cosa:'KPI produzione + qualità', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Management', cosa:'Management produzione/commerciale', costo_mensile:1500, costo_setup:2000, tempo_mesi:5 },
+      '1': { chi:'Titolare', cosa:'Titolare al telaio — decide tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Capo produzione + separazione tessitura/finissaggio/confezionamento', tempo_mesi:1, moduli:[
+        { id:'capo', nome:'Capo produzione tessile', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'promozione', nome:'Promozione interna tessitore esperto', costo_mensile:0, costo_setup:300, impatto:1.0, note:'Conosce telai e processi' },
+          { id:'esterno', nome:'Capo produzione esterno', costo_mensile:300, costo_setup:0, impatto:0.8, note:'Esperienza da altro tessitore' },
+        ]},
+      ]},
+      '3': { cosa:'Stilista/product developer + impiegata commerciale', tempo_mesi:2, moduli:[
+        { id:'stilista', nome:'Product developer/stilista tessuti', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Product developer dipendente', costo_mensile:2500, costo_setup:0, impatto:0.7, note:'Sviluppo collezione tessuti, trend, campionature, rapporto stilisti' },
+          { id:'freelance', nome:'Stilista tessile freelance', costo_mensile:1000, costo_setup:0, impatto:0.5, note:'A progetto, per collezione SS/FW' },
+        ]},
+      ]},
+      '4': { cosa:'KPI produzione + responsabile qualita tessile', tempo_mesi:3, moduli:[
+        { id:'qualita', nome:'Resp. qualita tessile', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'interno', nome:'Addetto qualita formato', costo_mensile:200, costo_setup:500, impatto:0.4, note:'Controllo metratura, peso, solidita colore, difetti' },
+          { id:'consulente', nome:'Consulente qualita tessile', costo_mensile:400, costo_setup:0, impatto:0.5, note:'ISO 9001, OEKO-TEX, audit, laboratorio' },
+        ]},
+        { id:'kpi', nome:'KPI produzione tessile', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.15, note:'Resa telaio, scarti, tempi produzione, on-time delivery' },
+      ]},
+      '5': { cosa:'Management completo — titolare solo R&D e strategia', tempo_mesi:5, moduli:[
+        { id:'manager', nome:'Direttore operativo tessile', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Dir. operativo dipendente', costo_mensile:3500, costo_setup:0, impatto:1.0, note:'Produzione, qualita, personale, logistica' },
+          { id:'fractional', nome:'Operations manager fractional', costo_mensile:1800, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
       _label: 'Organizzazione',
     },
     processi: {
-      '1': { chi:'Titolare', cosa:'Nessun processo — produzione a esperienza del titolare', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Scheda tecnica per articolo — composizione, peso, resa, colori', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Software gestionale', cosa:'Gestionale produzione con pianificazione telai e tintoria', costo_mensile:400, costo_setup:1500, tempo_mesi:2 },
-      '4': { chi:'Consulente + audit', cosa:'Certificazioni tessili (OEKO-TEX, GOTS, GRS per riciclato)', costo_mensile:700, costo_setup:5000, tempo_mesi:4 },
-      '5': { chi:'Quality manager', cosa:'Controllo qualità statistico + tracciabilità lotto completa', costo_mensile:1300, costo_setup:3000, tempo_mesi:4 },
+      '1': { chi:'Titolare', cosa:'Produzione artigianale — tutto a esperienza', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Schede tessuto standardizzate + controllo qualita base', tempo_mesi:1, moduli:[
+        { id:'schede', nome:'Schede tecniche tessuto', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.6, note:'Composizione, peso, altezza, resa tintoria, lavaggio, istruzioni' },
+        { id:'controllo', nome:'Controllo qualita base', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.25, note:'Ispezione visiva, peso, metratura, solidita colore' },
+      ]},
+      '3': { cosa:'Gestionale produzione tessile + pianificazione telai', tempo_mesi:2, moduli:[
+        { id:'gestionale', nome:'Software produzione tessile', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'Gestionale tessile (Datatex/Cybertex)', costo_mensile:250, costo_setup:1500, impatto:1.0, note:'Ricette tessuto, pianificazione telai, orditi, tintoria, finissaggio' },
+          { id:'base', nome:'Excel avanzato + gestionale base', costo_mensile:0, costo_setup:500, impatto:0.45, note:'Foglio produzione + fatturazione' },
+        ]},
+      ]},
+      '4': { cosa:'Certificazioni (OEKO-TEX, GOTS/BIO, ISO 9001)', tempo_mesi:3, moduli:[
+        { id:'certificazioni', nome:'Certificazioni tessile', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'oekotex_gots', nome:'OEKO-TEX + GOTS (sostenibilita)', costo_mensile:200, costo_setup:3000, impatto:1.0, note:'Richieste da brand moda, prerequisito per molti clienti' },
+          { id:'oekotex', nome:'Solo OEKO-TEX Standard 100', costo_mensile:100, costo_setup:1500, impatto:0.6, note:'Certificazione base sostanze nocive' },
+        ]},
+      ]},
+      '5': { cosa:'ERP tessile completo + laboratorio qualita + BI', tempo_mesi:4, moduli:[
+        { id:'erp', nome:'ERP tessile + qualita', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'ERP tessile enterprise', costo_mensile:800, costo_setup:5000, impatto:1.0, note:'Produzione, qualita lab, tracciabilita lotto, logistica, BI' },
+          { id:'mid', nome:'Gestionale tessile avanzato', costo_mensile:400, costo_setup:2500, impatto:0.55, note:'Core features' },
+        ]},
+      ]},
     },
     ricavi: {
-      '1': { chi:'Titolare', cosa:'Prezzi a metro fissi — nessuna differenziazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Calcolo costo reale per articolo — filato, energia, ore telaio', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Pricing strutturato', cosa:'Pricing differenziato — metrature minime, urgenze, colori speciali', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '4': { chi:'Prodotto a valore', cosa:'Sviluppo tessuti esclusivi per brand — margini premium', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
-      '5': { chi:'Revenue manager', cosa:'Contratti stagionali con brand + revenue da sviluppo campionari', costo_mensile:800, costo_setup:1500, tempo_mesi:3 },
+      '1': { chi:'Titolare', cosa:'Prezzo al metro — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Calcolo costo reale per articolo tessuto', tempo_mesi:1, moduli:[
+        { id:'costing', nome:'Costing per articolo', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8, note:'Filato + orditura + tessitura + finissaggio + tintoria — margine per articolo' },
+      ]},
+      '3': { cosa:'Collezione propria di tessuti + servizio campionatura rapida', tempo_mesi:2, moduli:[
+        { id:'collezione', nome:'Collezione tessuti propria', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.6, note:'Cartella SS/FW con tessuti a stock — vendita rapida senza attesa produzione' },
+        { id:'campionatura', nome:'Servizio campionatura rapida', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:300, impatto:0.2, note:'Campione in 5-7gg vs 3-4 settimane standard — premium price' },
+      ]},
+      '4': { cosa:'Tessuti tecnici/funzionali + servizi a valore (tintoria, finissaggio)', tempo_mesi:2, moduli:[
+        { id:'tecnici', nome:'Tessuti tecnici/funzionali', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:1000, impatto:0.6, note:'Tessuti performance, antimacchia, ignifughi, stretch — margine 2-3x' },
+        { id:'servizi', nome:'Servizi tintoria/finissaggio conto terzi', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.2, note:'Tintoria e finissaggio anche per altri tessitori — utilizzo capacita' },
+      ]},
+      '5': { cosa:'Co-development con brand + tessuti sostenibili + export premium', tempo_mesi:3, moduli:[
+        { id:'codev', nome:'Co-development tessuti per brand', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'Sviluppo tessuto esclusivo per brand', costo_mensile:500, costo_setup:2000, impatto:1.0, note:'R&D congiunta, tessuto in esclusiva, margine engineering + produzione' },
+          { id:'parziale', nome:'Personalizzazione tessuti esistenti', costo_mensile:200, costo_setup:500, impatto:0.5, note:'Varianti colore/finissaggio su base esistente' },
+        ]},
+      ]},
     },
     marketing: {
-      '1': { chi:'Nessuno', cosa:'Nessuno — solo passaparola nel distretto tessile', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'LinkedIn + foto campionari e impianti', costo_mensile:100, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Fiere', cosa:'Fiere tessili (Milano Unica, Première Vision) — stand campionari', costo_mensile:600, costo_setup:6000, tempo_mesi:2 },
-      '4': { chi:'Agenzia digital', cosa:'Campagne digitali verso brand e studi di design', costo_mensile:1000, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'Marketing manager', cosa:'Piano marketing — fiere internazionali + lookbook digitale + PR', costo_mensile:2500, costo_setup:4000, tempo_mesi:3 },
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo relazione diretta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'LinkedIn + Instagram con foto tessuti e lavorazioni', tempo_mesi:1, moduli:[
+        { id:'social', nome:'Social media tessile', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.5, note:'Foto tessuti, macro dettagli, telai in funzione, processi' },
+      ]},
+      '3': { cosa:'Fiere tessili (Premiere Vision, Milano Unica) + cartella campioni', tempo_mesi:2, moduli:[
+        { id:'fiere', nome:'Fiere tessili', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'stand', nome:'Stand Premiere Vision/Milano Unica', costo_mensile:300, costo_setup:5000, impatto:1.0, note:'Stand con campionatura, contatto diretto buyer e stilisti' },
+          { id:'visitatore', nome:'Visita come operatore', costo_mensile:100, costo_setup:500, impatto:0.4, note:'Networking, scouting trend' },
+        ]},
+      ]},
+      '4': { cosa:'PR moda + partnership con stilisti/brand + content', tempo_mesi:2, moduli:[
+        { id:'pr', nome:'PR e comunicazione tessile', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia PR tessile/moda', costo_mensile:1000, costo_setup:1000, impatto:1.0, note:'PR su riviste textile (Textile Research Journal, Tessile e Salute), partnership' },
+          { id:'freelance', nome:'PR freelance + LinkedIn', costo_mensile:500, costo_setup:300, impatto:0.5, note:'Focus LinkedIn e riviste trade' },
+        ]},
+      ]},
+      '5': { cosa:'Piano marketing tessile — brand, fiere internazionali, sostenibilita', tempo_mesi:4, moduli:[
+        { id:'piano', nome:'Piano marketing tessile', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia marketing tessile/moda', costo_mensile:2000, costo_setup:4000, impatto:1.0, note:'Brand positioning Made in Italy, fiere internazionali, sostenibilita, PR' },
+          { id:'interno', nome:'Marketing coordinator', costo_mensile:1000, costo_setup:500, impatto:0.6, note:'1 risorsa' },
+        ]},
+      ]},
     },
     sitoweb: {
-      '1': { chi:'Nessuno', cosa:'Nessun sito o sito datato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito con catalogo tessuti, composizioni e certificazioni', costo_mensile:80, costo_setup:1000, tempo_mesi:1 },
-      '3': { chi:'Sito professionale', cosa:'Lookbook digitale + richiesta campioni online', costo_mensile:300, costo_setup:2500, tempo_mesi:2 },
-      '4': { chi:'Sito avanzato', cosa:'Area riservata con cartelle colore e disponibilità metrature', costo_mensile:600, costo_setup:4000, tempo_mesi:2 },
-      '5': { chi:'Piattaforma B2B', cosa:'Portale B2B — ordini, tracking produzione, riordini stagionali', costo_mensile:1000, costo_setup:8000, tempo_mesi:3 },
+      '1': { chi:'Nessuno', cosa:'Nessun sito', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Sito con collezione tessuti, capacita, certificazioni', tempo_mesi:1, moduli:[
+        { id:'sito', nome:'Sito tessitore', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'custom', nome:'Sito custom (design tessile)', costo_mensile:30, costo_setup:2000, impatto:1.0, note:'Collezione, macro foto tessuti, processi, certificazioni, contatti' },
+          { id:'template', nome:'Sito template', costo_mensile:20, costo_setup:600, impatto:0.5, note:'Template B2B' },
+        ]},
+      ]},
+      '3': { cosa:'Catalogo tessuti online con filtri, campioni richiedibili', tempo_mesi:2, moduli:[
+        { id:'catalogo', nome:'Catalogo tessuti online', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:1500, impatto:0.5, note:'Tessuti per composizione/peso/uso, foto macro, richiesta campione online' },
+      ]},
+      '4': { cosa:'Portale B2B con ordini e tracking produzione', tempo_mesi:3, moduli:[
+        { id:'portale', nome:'Portale B2B tessile', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'integrato', nome:'Portale integrato ERP', costo_mensile:300, costo_setup:4000, impatto:1.0, note:'Ordini online, tracking produzione, documentazione, fatture' },
+          { id:'base', nome:'Area ordini base', costo_mensile:100, costo_setup:1500, impatto:0.5, note:'Form ordini + area documenti' },
+        ]},
+      ]},
+      '5': { cosa:'Piattaforma digitale con configuratore tessuto e tracciabilita', tempo_mesi:4, moduli:[
+        { id:'piattaforma', nome:'Piattaforma digitale tessile', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'Piattaforma con configuratore tessuto', costo_mensile:500, costo_setup:8000, impatto:1.0, note:'Configuratore tessuto online, tracciabilita lotto, portale B2B, BI' },
+          { id:'mid', nome:'Portale B2B avanzato', costo_mensile:200, costo_setup:3000, impatto:0.5, note:'Ordini + catalogo + tracking' },
+        ]},
+      ]},
     },
     ecommerce: {
-      '1': { chi:'Titolare', cosa:'Acquisto filato dal solito fornitore — nessuna diversificazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Mappatura fornitori alternativi — confronto prezzi e qualità', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Buyer part-time', cosa:'3-4 fornitori attivi con accordi di prezzo stagionali', costo_mensile:500, costo_setup:300, tempo_mesi:2 },
-      '4': { chi:'Buyer dedicato', cosa:'Buyer dedicato — negoziazione volumi, stoccaggio strategico', costo_mensile:2000, costo_setup:500, tempo_mesi:3 },
-      '5': { chi:'Resp. acquisti', cosa:'Strategia acquisti strutturata — hedging, contratti quadro, import', costo_mensile:3500, costo_setup:1500, tempo_mesi:4 },
       _label: 'Approvvigionamento filati',
+      '1': { chi:'Titolare', cosa:'Acquisto filati da 1-2 filature', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Confronto filature — qualita, titolazione, colori, prezzi', tempo_mesi:1, moduli:[
+        { id:'fornitori', nome:'Database filature e fornitori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.7, note:'Filatura, tipo filato, titolazione, colori disponibili, prezzi, MOQ' },
+      ]},
+      '3': { cosa:'Accordi con filature + fornitori ausiliari (tintoria, finissaggio)', tempo_mesi:2, moduli:[
+        { id:'accordi', nome:'Accordi quadro filature', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.6, note:'Contratti con 2-3 filature: prezzi campagna, colori, consegna' },
+      ]},
+      '4': { cosa:'Buyer dedicato — diversificazione filati, import, sostenibilita', tempo_mesi:3, moduli:[
+        { id:'buyer', nome:'Buyer filati/materie prime', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Buyer tessile dipendente', costo_mensile:2200, costo_setup:0, impatto:1.0, note:'Sourcing filati, negoziazione, qualita, import, filati sostenibili' },
+          { id:'parttime', nome:'Buyer part-time', costo_mensile:1000, costo_setup:0, impatto:0.6, note:'Gestisce riordini e confronto prezzi' },
+        ]},
+      ]},
+      '5': { cosa:'Supply chain tessile — hedging cotone, filati sostenibili, import diretto', tempo_mesi:4, moduli:[
+        { id:'supply', nome:'Resp. supply chain tessile', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Supply chain manager tessile', costo_mensile:3000, costo_setup:0, impatto:1.0, note:'Hedging materie prime, filati riciclati/bio, import diretto, tracciabilita' },
+          { id:'fractional', nome:'SCM fractional', costo_mensile:1500, costo_setup:0, impatto:0.6, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
     }
   },
 
