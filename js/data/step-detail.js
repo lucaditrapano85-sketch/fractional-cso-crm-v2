@@ -11,61 +11,222 @@ const STEP_DETAIL_BY_SETTORE = {
   commercio_auto_moto_usato: {
     vendite: {
       '1': { chi:'Titolare solo', cosa:'Solo il titolare vende — nessun supporto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+1 venditore', cosa:'Titolare + 1 persona che affianca nelle vendite', costo_mensile:2200, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'+1 venditore (tot 2)', cosa:'2 persone dedicate alla vendita oltre al titolare', costo_mensile:5000, costo_setup:500, tempo_mesi:3 },
-      '4': { chi:'+1-2 venditori (tot 3-4)', cosa:'3-4 venditori con il titolare che supervisiona', costo_mensile:9000, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Resp. vendite + team', cosa:'Team vendita autonomo — il titolare non vende più', costo_mensile:14000, costo_setup:2000, tempo_mesi:6 },
+      '2': { cosa:'Titolare + 1 venditore che affianca nelle vendite', tempo_mesi:1, moduli:[
+        { id:'venditore', nome:'Venditore auto', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'esperto', nome:'Venditore con esperienza auto', costo_mensile:2200, costo_setup:0, impatto:1.0, note:'Sa trattare, conosce il prodotto, gestisce il cliente fino alla consegna' },
+          { id:'junior', nome:'Venditore junior da formare', costo_mensile:1600, costo_setup:0, impatto:0.6, note:'Da affiancare al titolare per 2-3 mesi' },
+        ]},
+      ]},
+      '3': { cosa:'2 venditori dedicati + titolare supervisiona', tempo_mesi:3, moduli:[
+        { id:'team', nome:'Team vendita', tipo:'multi', obbligatorio:true, min:2, varianti:[
+          { id:'esperto', nome:'Venditore esperto auto', costo_mensile:2200, costo_setup:0, impatto:0.4, note:'Autonomo, chiude da solo' },
+          { id:'junior', nome:'Venditore junior', costo_mensile:1600, costo_setup:0, impatto:0.25, note:'In formazione' },
+        ]},
+        { id:'incentivi', nome:'Piano incentivi venditori', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:200, impatto:0.15, note:'Bonus per auto venduta, per margine, per finanziamento piazzato' },
+      ]},
+      '4': { cosa:'3-4 venditori + responsabile vendite', tempo_mesi:3, moduli:[
+        { id:'resp', nome:'Responsabile vendite', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Resp. vendite dipendente', costo_mensile:2800, costo_setup:0, impatto:0.5, note:'Coordina venditori, gestisce trattative difficili, pricing' },
+          { id:'promozione', nome:'Promozione miglior venditore', costo_mensile:300, costo_setup:500, impatto:0.35, note:'Delta costo, conosce gia clienti e stock' },
+        ]},
+        { id:'team', nome:'Venditori', tipo:'multi', obbligatorio:true, min:2, varianti:[
+          { id:'esperto', nome:'Venditore esperto', costo_mensile:2200, costo_setup:0, impatto:0.2, note:'Autonomo' },
+          { id:'junior', nome:'Venditore junior', costo_mensile:1600, costo_setup:0, impatto:0.12, note:'In crescita' },
+        ]},
+      ]},
+      '5': { cosa:'Team vendita autonomo — il titolare non vende piu', tempo_mesi:6, moduli:[
+        { id:'direttore', nome:'Direttore commerciale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Dir. commerciale auto dipendente', costo_mensile:3500, costo_setup:0, impatto:0.5, note:'Gestione team, pricing, promozioni, target, il titolare fa strategia' },
+          { id:'fractional', nome:'Dir. commerciale fractional', costo_mensile:1800, costo_setup:0, impatto:0.35, note:'2-3 giorni/settimana' },
+        ]},
+        { id:'team', nome:'Team vendita', tipo:'multi', obbligatorio:true, min:3, varianti:[
+          { id:'esperto', nome:'Venditore senior', costo_mensile:2200, costo_setup:0, impatto:0.15, note:'Autonomo, clienti fidelizzati' },
+          { id:'junior', nome:'Venditore junior', costo_mensile:1600, costo_setup:0, impatto:0.1, note:'In crescita' },
+        ]},
+      ]},
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — trattative a memoria', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Excel/Google Sheet per tracciare lead e follow-up', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'CRM base', cosa:'CRM automotive con lead dai marketplace', costo_mensile:400, costo_setup:800, tempo_mesi:1 },
-      '4': { chi:'CRM avanzato', cosa:'CRM integrato con sito, marketplace e WhatsApp', costo_mensile:800, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'DMS completo', cosa:'DMS integrato con contabilità, stock e CRM', costo_mensile:1500, costo_setup:3000, tempo_mesi:3 },
+      '2': { cosa:'Excel/Google Sheet per tracciare lead e follow-up', tempo_mesi:1, moduli:[
+        { id:'strumento', nome:'Strumento tracciamento lead', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'excel', nome:'Excel/Fogli Google strutturato', costo_mensile:0, costo_setup:0, impatto:0.7, note:'Lead, fonte, veicolo interesse, stato trattativa, follow-up' },
+          { id:'crm_free', nome:'CRM gratuito (HubSpot Free)', costo_mensile:0, costo_setup:200, impatto:0.85, note:'Pipeline lead + reminder follow-up + email tracking' },
+        ]},
+      ]},
+      '3': { cosa:'CRM automotive con lead dai marketplace integrati', tempo_mesi:1, moduli:[
+        { id:'crm', nome:'CRM automotive', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'auto', nome:'CRM specifico auto (eMotor/GestionaleAuto)', costo_mensile:200, costo_setup:800, impatto:1.0, note:'Lead da AutoScout/Subito integrati, stock, trattative, appuntamenti' },
+          { id:'generico', nome:'CRM generico (Pipedrive/HubSpot)', costo_mensile:50, costo_setup:300, impatto:0.6, note:'Pipeline lead, meno specifico per automotive' },
+        ]},
+      ]},
+      '4': { cosa:'CRM integrato con sito, marketplace, WhatsApp e finanziarie', tempo_mesi:2, moduli:[
+        { id:'crm_avanzato', nome:'CRM automotive avanzato', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dms', nome:'DMS con CRM integrato (eMotor Pro/AutoManager)', costo_mensile:500, costo_setup:1500, impatto:1.0, note:'Lead multicanale, stock sync, WhatsApp Business, proposta finanziamento' },
+          { id:'crm_plus', nome:'CRM + integrazioni via API', costo_mensile:300, costo_setup:800, impatto:0.65, note:'CRM + plugin marketplace + WhatsApp, meno integrato' },
+        ]},
+      ]},
+      '5': { cosa:'DMS completo integrato con contabilita, stock, CRM e BI', tempo_mesi:3, moduli:[
+        { id:'dms', nome:'DMS dealer completo', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'DMS enterprise (eMotor/Infinity/CDKR)', costo_mensile:1200, costo_setup:3000, impatto:1.0, note:'CRM, stock, pratiche, contabilita, finanziarie, BI — tutto in uno' },
+          { id:'mid', nome:'DMS mid-market', costo_mensile:600, costo_setup:1500, impatto:0.6, note:'Core features, meno BI e automazioni' },
+        ]},
+      ]},
     },
     team: {
       '1': { chi:'Titolare', cosa:'Nessuna organizzazione — il titolare decide tutto al momento', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Ruoli base definiti — chi fa cosa è chiaro', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Titolare', cosa:'Riunione settimanale + obiettivi misurabili per ruolo', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Consulente + titolare', cosa:'KPI individuali + processi decisionali delegati', costo_mensile:500, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Manager operativo', cosa:'Governance strutturata — il titolare fa solo strategia', costo_mensile:1500, costo_setup:2000, tempo_mesi:6 },
+      '2': { cosa:'Ruoli base definiti — vendita, admin, preparazione auto', tempo_mesi:1, moduli:[
+        { id:'organigramma', nome:'Organigramma e mansionario', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.7, note:'Vendita, admin/pratiche, preparazione/ricondizionamento, consegna' },
+      ]},
+      '3': { cosa:'Riunione settimanale + obiettivi misurabili per venditore', tempo_mesi:2, moduli:[
+        { id:'obiettivi', nome:'Target vendita e KPI per persona', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.6, note:'Auto vendute, margine medio, finanziamenti piazzati, test drive' },
+        { id:'admin', nome:'Impiegata pratiche/amministrazione', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Impiegata pratiche dipendente', costo_mensile:1800, costo_setup:0, impatto:0.3, note:'PRA, passaggi, finanziarie, assicurazioni, fatture' },
+          { id:'parttime', nome:'Impiegata part-time', costo_mensile:900, costo_setup:0, impatto:0.2, note:'4h/giorno' },
+        ]},
+      ]},
+      '4': { cosa:'KPI individuali + processi decisionali delegati', tempo_mesi:3, moduli:[
+        { id:'kpi', nome:'Dashboard KPI concessionaria', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.5, note:'Auto vendute, margine, giorni in stock, tasso conversione lead, NPS' },
+        { id:'preparatore', nome:'Preparatore/ricondizionatore auto', tipo:'scelta', obbligatorio:false, varianti:[
+          { id:'dip', nome:'Preparatore auto dipendente', costo_mensile:1600, costo_setup:0, impatto:0.2, note:'Lavaggio, lucidatura, piccoli ritocchi, foto, consegna' },
+          { id:'esterno', nome:'Carrozzeria/detailer convenzionato', costo_mensile:0, costo_setup:300, impatto:0.12, note:'Paga a pezzo, nessun fisso' },
+        ]},
+      ]},
+      '5': { cosa:'Governance strutturata — il titolare fa solo strategia', tempo_mesi:6, moduli:[
+        { id:'manager', nome:'Store/General manager', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'General manager concessionaria', costo_mensile:3000, costo_setup:0, impatto:1.0, note:'Gestione totale: vendite, admin, stock, personale, KPI' },
+          { id:'fractional', nome:'Operations manager fractional', costo_mensile:1500, costo_setup:0, impatto:0.65, note:'3 giorni/settimana' },
+        ]},
+      ]},
       _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo formalizzato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Check-list valutazione permute e consegna veicoli', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Consulente + strumenti', cosa:'Contratti standard, valutazione permute con Eurotax e CRM', costo_mensile:300, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Software gestionale', cosa:'Gestionale pratiche auto, finanziamenti e garanzie', costo_mensile:600, costo_setup:1000, tempo_mesi:2 },
-      '5': { chi:'DMS + automazione', cosa:'Processi automatizzati — firma digitale, pratiche online', costo_mensile:1000, costo_setup:2000, tempo_mesi:3 },
+      '2': { cosa:'Check-list valutazione permute + consegna veicoli strutturata', tempo_mesi:1, moduli:[
+        { id:'checklist', nome:'Checklist valutazione e consegna', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.7, note:'Checklist perizia usato, foto danni, valutazione, consegna con firma' },
+      ]},
+      '3': { cosa:'Contratti standard + valutazione permute con Eurotax/DAT + CRM', tempo_mesi:2, moduli:[
+        { id:'valutazione', nome:'Tool valutazione usato', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'eurotax', nome:'EurotaxGlass/DAT (licenza)', costo_mensile:200, costo_setup:0, impatto:0.7, note:'Valutazione professionale per acquisto e pricing vendita' },
+          { id:'online', nome:'Tool gratuiti (AutoUncle/Indicata)', costo_mensile:0, costo_setup:0, impatto:0.4, note:'Valutazione indicativa, meno precisa' },
+        ]},
+        { id:'contratti', nome:'Contrattualistica standard', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.2, note:'Contratto vendita, garanzia legale, privacy, permuta — template legali' },
+      ]},
+      '4': { cosa:'Gestionale pratiche auto, finanziamenti e garanzie', tempo_mesi:2, moduli:[
+        { id:'gestionale', nome:'Gestionale pratiche auto', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dms', nome:'DMS pratiche (eMotor/GestAuto)', costo_mensile:300, costo_setup:1000, impatto:1.0, note:'PRA, passaggi, finanziarie, garanzie, bolli — tutto automatizzato' },
+          { id:'manuale', nome:'Gestione manuale + agenzia pratiche', costo_mensile:100, costo_setup:200, impatto:0.5, note:'Agenzia pratiche esterna + gestione interna base' },
+        ]},
+      ]},
+      '5': { cosa:'Processi automatizzati — firma digitale, pratiche online, workflow', tempo_mesi:3, moduli:[
+        { id:'automazione', nome:'Automazione processi dealer', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'DMS + firma digitale + pratiche online', costo_mensile:500, costo_setup:2000, impatto:1.0, note:'Firma digitale contratti, pratiche PRA online, workflow automatico' },
+          { id:'parziale', nome:'DMS base + firma cartacea', costo_mensile:300, costo_setup:800, impatto:0.55, note:'Gestionale ma senza firma digitale e automazione completa' },
+        ]},
+      ]},
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Nessuna strategia di pricing — prezzi a sensazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Pricing assertivo — valori di mercato reali', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Strumenti pricing', cosa:'Tool pricing (EurotaxGlass, DAT) per valutazione stock', costo_mensile:300, costo_setup:0, tempo_mesi:1 },
-      '4': { chi:'Prodotti finanziari', cosa:'Accordi finanziarie — proposta sistematica ogni vendita', costo_mensile:600, costo_setup:1000, tempo_mesi:2 },
-      '5': { chi:'Revenue management', cosa:'Ottimizzazione margini, fleet pricing, garanzie estese', costo_mensile:1200, costo_setup:2000, tempo_mesi:3 },
+      '2': { cosa:'Pricing basato su dati di mercato reali', tempo_mesi:1, moduli:[
+        { id:'pricing', nome:'Pricing data-driven', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8, note:'Prezzi basati su AutoScout/Subito/EurotaxGlass, non a sensazione' },
+      ]},
+      '3': { cosa:'Tool pricing professionale + garanzie estese come upsell', tempo_mesi:1, moduli:[
+        { id:'tool', nome:'Tool pricing professionale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'eurotax', nome:'EurotaxGlass/DAT + Indicata', costo_mensile:200, costo_setup:0, impatto:0.6, note:'Valutazione stock, pricing ottimale, giorni in piazzale target' },
+          { id:'base', nome:'Analisi manuale mercato online', costo_mensile:0, costo_setup:0, impatto:0.35, note:'Confronto manuale su marketplace' },
+        ]},
+        { id:'garanzie', nome:'Garanzie estese come prodotto', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.2, note:'Accordo con fornitore garanzie: margine 40-60% su ogni polizza' },
+      ]},
+      '4': { cosa:'Accordi finanziarie + proposta sistematica su ogni vendita', tempo_mesi:2, moduli:[
+        { id:'finanziarie', nome:'Partnership finanziarie', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'multi', nome:'3+ finanziarie convenzionate (Agos, Compass, Santander)', costo_mensile:0, costo_setup:500, impatto:1.0, note:'Proposta finanziamento su OGNI vendita — retrocessione 1-3% sul finanziato' },
+          { id:'singola', nome:'1 finanziaria convenzionata', costo_mensile:0, costo_setup:200, impatto:0.5, note:'Meno scelta per il cliente, meno leva negoziale' },
+        ]},
+      ]},
+      '5': { cosa:'Revenue management completo — margini, fleet, garanzie, accessori', tempo_mesi:3, moduli:[
+        { id:'revenue', nome:'Revenue management dealer', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'Revenue management strutturato', costo_mensile:500, costo_setup:2000, impatto:1.0, note:'Pricing dinamico, fleet/B2B, garanzie, accessori, finanziamenti — margine ottimizzato' },
+          { id:'base', nome:'Pricing + finanziamenti base', costo_mensile:200, costo_setup:500, impatto:0.5, note:'Pricing data-driven + 1-2 prodotti accessori' },
+        ]},
+      ]},
     },
     marketing: {
       '1': { chi:'Titolare', cosa:'Nessuna presenza online — solo passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'AutoScout24 e Subito con foto professionali', costo_mensile:200, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Social + portali', cosa:'3+ marketplace + Facebook/Instagram post settimanali', costo_mensile:600, costo_setup:1000, tempo_mesi:2 },
-      '4': { chi:'Agenzia digital', cosa:'Google Ads, remarketing e gestione recensioni', costo_mensile:1200, costo_setup:2000, tempo_mesi:2 },
-      '5': { chi:'Marketing manager', cosa:'Responsabile marketing — brand awareness locale', costo_mensile:2500, costo_setup:4000, tempo_mesi:3 },
+      '2': { cosa:'AutoScout24 + Subito.it con foto professionali e descrizioni', tempo_mesi:1, moduli:[
+        { id:'marketplace', nome:'Marketplace auto principali', tipo:'flag', obbligatorio:true, costo_mensile:150, costo_setup:300, impatto:0.6, note:'AutoScout24 + Subito.it con abbonamento, foto professionali, descrizioni complete' },
+        { id:'gmb', nome:'Google My Business ottimizzato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.2, note:'Scheda completa, foto, recensioni, orari' },
+      ]},
+      '3': { cosa:'3+ marketplace + social media attivi settimanalmente', tempo_mesi:2, moduli:[
+        { id:'multi_mp', nome:'Multi-marketplace (3+)', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:500, impatto:0.5, note:'AutoScout + Subito + Automobile.it + Facebook Marketplace' },
+        { id:'social', nome:'Social media attivi', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'gestiti', nome:'Social gestiti da agenzia/SMM', costo_mensile:300, costo_setup:500, impatto:0.4, note:'Facebook + Instagram: post auto, stories, reel, gestione commenti' },
+          { id:'interni', nome:'Social autogestiti', costo_mensile:0, costo_setup:200, impatto:0.2, note:'Il venditore pubblica 3-4 post/settimana con smartphone' },
+        ]},
+      ]},
+      '4': { cosa:'Google Ads locali + remarketing + gestione recensioni', tempo_mesi:2, moduli:[
+        { id:'ads', nome:'Google/Meta Ads + remarketing', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Gestione ads con agenzia automotive', costo_mensile:800, costo_setup:1000, impatto:1.0, note:'Google Ads "auto usate + citta", Meta remarketing, landing stock' },
+          { id:'interno', nome:'Ads autogestiti + tool', costo_mensile:400, costo_setup:300, impatto:0.5, note:'Budget ads diretto, gestione interna' },
+        ]},
+        { id:'recensioni', nome:'Gestione recensioni strutturata', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:200, impatto:0.15, note:'Richiesta post-vendita, risposta a tutte, gestione negative' },
+      ]},
+      '5': { cosa:'Marketing manager + brand awareness locale + video content', tempo_mesi:3, moduli:[
+        { id:'piano', nome:'Piano marketing dealer', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia marketing automotive', costo_mensile:2000, costo_setup:3000, impatto:1.0, note:'Strategia completa: marketplace, ads, social, video, brand locale' },
+          { id:'interno', nome:'Marketing coordinator interno', costo_mensile:1000, costo_setup:500, impatto:0.6, note:'1 risorsa che gestisce tutto il marketing' },
+        ]},
+      ]},
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito o sito vetrina abbandonato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito base con stock aggiornato e contatti', costo_mensile:100, costo_setup:500, tempo_mesi:1 },
-      '3': { chi:'Sito professionale', cosa:'Stock real-time, form contatto, valutazione permuta', costo_mensile:300, costo_setup:2000, tempo_mesi:2 },
-      '4': { chi:'Sito avanzato', cosa:'Chat, test drive, finanziamento online, tracking lead', costo_mensile:600, costo_setup:4000, tempo_mesi:2 },
-      '5': { chi:'Sito integrato', cosa:'Sito integrato DMS — stock real-time, CRM automatico', costo_mensile:1000, costo_setup:6000, tempo_mesi:3 },
+      '2': { cosa:'Sito base con stock aggiornato, foto e contatti', tempo_mesi:1, moduli:[
+        { id:'sito', nome:'Sito dealer usato', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'custom', nome:'Sito custom WordPress + plugin stock', costo_mensile:50, costo_setup:1500, impatto:1.0, note:'Stock auto con filtri, foto gallery, scheda veicolo, form contatto' },
+          { id:'template', nome:'Sito da piattaforma (AutoManager/DealerSocket)', costo_mensile:80, costo_setup:500, impatto:0.6, note:'Template dealer, inserimento auto veloce' },
+        ]},
+      ]},
+      '3': { cosa:'Stock real-time + form contatto + valutazione permuta online', tempo_mesi:2, moduli:[
+        { id:'stock_live', nome:'Stock sincronizzato real-time', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.5, note:'Auto pubblicate e rimosse automaticamente dal gestionale' },
+        { id:'permuta', nome:'Valutazione permuta online', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.4, note:'Il cliente inserisce la sua auto e riceve valutazione indicativa' },
+      ]},
+      '4': { cosa:'Chat, prenotazione test drive, simulazione finanziamento online', tempo_mesi:2, moduli:[
+        { id:'avanzato', nome:'Funzionalita sito avanzate', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'Chat + test drive + finanziamento online', costo_mensile:200, costo_setup:2000, impatto:1.0, note:'Chat live/WhatsApp, booking test drive, simulatore rata, tracking lead' },
+          { id:'base', nome:'Form contatto avanzato + WhatsApp', costo_mensile:50, costo_setup:500, impatto:0.5, note:'Form per auto + WhatsApp click-to-chat' },
+        ]},
+      ]},
+      '5': { cosa:'Sito integrato DMS — stock real-time, CRM, finanziamenti, analytics', tempo_mesi:3, moduli:[
+        { id:'piattaforma', nome:'Piattaforma web dealer', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'Sito integrato DMS (eMotor Web/custom)', costo_mensile:500, costo_setup:5000, impatto:1.0, note:'Stock live da DMS, CRM automatico, finanziamento online, analytics' },
+          { id:'mid', nome:'Sito avanzato + integrazioni API', costo_mensile:200, costo_setup:2000, impatto:0.55, note:'WordPress + API gestionale, meno integrato' },
+        ]},
+      ]},
     },
     ecommerce: {
-      '1': { chi:'Titolare', cosa:'Solo permute — nessun acquisto attivo', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Aste online base (BCA, Autorola)', costo_mensile:300, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Buyer part-time', cosa:'Aste online + accordi privati + acquisto da aziende', costo_mensile:800, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Buyer dedicato', cosa:'Buyer full-time — aste fisiche, fleet, rientri leasing', costo_mensile:2800, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Strategia acquisti', cosa:'Team acquisti KPI, partnership noleggiatori e leasing', costo_mensile:4500, costo_setup:2000, tempo_mesi:4 },
       _label: 'Approvvigionamento',
+      '1': { chi:'Titolare', cosa:'Solo permute — nessun acquisto attivo', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Aste online base (BCA, Autorola) per acquisto stock', tempo_mesi:1, moduli:[
+        { id:'aste', nome:'Piattaforme aste auto online', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.7, note:'BCA, Autorola, ALD Remarketing — acquisto veicoli ex-flotta e rientri' },
+      ]},
+      '3': { cosa:'Aste online + accordi privati + acquisto da aziende/flotte', tempo_mesi:2, moduli:[
+        { id:'canali', nome:'Multi-canale acquisto', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:300, impatto:0.6, note:'Aste online + privati (permute attive) + aziende/partita IVA' },
+        { id:'buyer_pt', nome:'Buyer part-time', tipo:'scelta', obbligatorio:false, varianti:[
+          { id:'dip', nome:'Buyer part-time dipendente', costo_mensile:1200, costo_setup:0, impatto:0.25, note:'Dedica 50% del tempo ad acquisto stock' },
+          { id:'esterno', nome:'Procacciatore auto esterno', costo_mensile:0, costo_setup:0, impatto:0.15, note:'Fee per auto procurata e acquistata' },
+        ]},
+      ]},
+      '4': { cosa:'Buyer full-time — aste fisiche, fleet, rientri leasing, import', tempo_mesi:3, moduli:[
+        { id:'buyer', nome:'Buyer auto dedicato', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Buyer auto dipendente', costo_mensile:2500, costo_setup:0, impatto:1.0, note:'Aste fisiche (Manheim), fleet dismissals, rientri leasing, import' },
+          { id:'parttime', nome:'Buyer part-time esperto', costo_mensile:1500, costo_setup:0, impatto:0.6, note:'3-4 giorni/settimana' },
+        ]},
+      ]},
+      '5': { cosa:'Team acquisti con KPI + partnership noleggiatori e leasing', tempo_mesi:4, moduli:[
+        { id:'resp', nome:'Resp. acquisti/stock manager', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Stock manager dipendente', costo_mensile:3000, costo_setup:0, impatto:0.5, note:'Strategia acquisti, mix stock, rotazione, partnership NLT/leasing' },
+          { id:'fractional', nome:'Stock consultant fractional', costo_mensile:1500, costo_setup:0, impatto:0.35, note:'2-3 giorni/settimana' },
+        ]},
+        { id:'partnership', nome:'Partnership noleggiatori/leasing', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:1000, impatto:0.2, note:'Accordi con ALD, Arval, Leasys per rientri a prezzo concordato' },
+      ]},
     }
   },
 
