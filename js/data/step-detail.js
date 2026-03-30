@@ -235,62 +235,209 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   commercio_auto_moto_nuovo: {
     vendite: {
-      '1': { chi:'2-3 venditori', cosa:'Team vendita base brand standard — 2-3 venditori formati casa madre', costo_mensile:7500, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'+ 1 specialista fleet', cosa:'+1 venditore specialista fleet — segmentazione privati vs aziende', costo_mensile:10000, costo_setup:0, tempo_mesi:2 },
-      '3': { chi:'+ 1 KAM fleet', cosa:'+1 KAM fleet + noleggio lungo termine — sviluppo B2B', costo_mensile:13500, costo_setup:0, tempo_mesi:3 },
-      '4': { chi:'5-6 venditori', cosa:'Multi-sede con 5-6 venditori e responsabile commerciale', costo_mensile:18000, costo_setup:0, tempo_mesi:4 },
-      '5': { chi:'Dir. commerciale + team', cosa:'Direttore commerciale + team vendita completo e autonomo', costo_mensile:25000, costo_setup:0, tempo_mesi:6 },
+      '1': { chi:'2-3 venditori', cosa:'Team vendita base brand standard — 2-3 venditori formati casa madre', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'+ specialista fleet — segmentazione privati vs aziende', tempo_mesi:2, moduli:[
+        { id:'fleet', nome:'Venditore specialista fleet/B2B', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Specialista fleet dipendente', costo_mensile:2500, costo_setup:0, impatto:1.0, note:'Dedicato a flotte aziendali, NLT, PA — portfolio B2B' },
+          { id:'formazione', nome:'Formazione venditore esistente su fleet', costo_mensile:0, costo_setup:500, impatto:0.5, note:'Un venditore senior si specializza in B2B/fleet' },
+        ]},
+      ]},
+      '3': { cosa:'+ KAM fleet + noleggio lungo termine — sviluppo B2B strutturato', tempo_mesi:3, moduli:[
+        { id:'kam', nome:'KAM fleet/NLT dedicato', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'KAM fleet dipendente', costo_mensile:3000, costo_setup:0, impatto:0.5, note:'Gestisce top account flotte, NLT, PA, convenzioni aziendali' },
+          { id:'agente', nome:'Agente fleet ENASARCO', costo_mensile:1500, costo_setup:500, impatto:0.35, note:'Provvigione su contratti fleet/NLT' },
+        ]},
+        { id:'nlt', nome:'Partnership NLT strutturata', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.15, note:'Accordi con Arval, ALD, Leasys per proposte NLT a privati e aziende' },
+      ]},
+      '4': { cosa:'5-6 venditori multi-sede + responsabile commerciale', tempo_mesi:4, moduli:[
+        { id:'resp', nome:'Responsabile commerciale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:3500, costo_setup:0, impatto:0.5, note:'Coordinamento venditori, pricing, target, rapporti casa madre' },
+          { id:'promozione', nome:'Promozione miglior venditore', costo_mensile:500, costo_setup:500, impatto:0.35, note:'Delta costo, conosce team e clienti' },
+        ]},
+      ]},
+      '5': { cosa:'Direttore commerciale + team vendita completo e autonomo', tempo_mesi:6, moduli:[
+        { id:'direttore', nome:'Direttore commerciale concessionaria', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Dir. commerciale dipendente', costo_mensile:4500, costo_setup:0, impatto:0.5, note:'Strategia, mix nuovo/usato/km0, fleet, marketing, budget' },
+          { id:'fractional', nome:'Dir. commerciale fractional', costo_mensile:2200, costo_setup:0, impatto:0.35, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
     },
     pipeline: {
-      '1': { chi:'DMS standard', cosa:'DMS casa madre base — gestione ordini e stock obbligatorio', costo_mensile:1500, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'CRM + DMS', cosa:'CRM attivo con follow-up sistematico su lead e scadenze', costo_mensile:2200, costo_setup:1500, tempo_mesi:1 },
-      '3': { chi:'Automation + CRM + DMS', cosa:'Marketing automation — nurturing, remarketing, eventi', costo_mensile:3500, costo_setup:3000, tempo_mesi:2 },
-      '4': { chi:'CRM enterprise + DMS', cosa:'Integrazione completa DMS + CRM + marketing con analytics', costo_mensile:5000, costo_setup:5000, tempo_mesi:3 },
-      '5': { chi:'Data analyst + piattaforma', cosa:'Predictive analytics — scoring lead, propensione riacquisto', costo_mensile:7000, costo_setup:8000, tempo_mesi:4 },
+      '1': { chi:'DMS standard', cosa:'DMS casa madre base — gestione ordini e stock obbligatorio', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'CRM attivo con follow-up sistematico su lead e scadenze', tempo_mesi:1, moduli:[
+        { id:'crm', nome:'CRM dealer', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'CRM automotive (Salesforce Auto Cloud/eMotor CRM)', costo_mensile:500, costo_setup:1500, impatto:1.0, note:'Lead multicanale, follow-up, appuntamenti, test drive, scadenze auto' },
+          { id:'generico', nome:'CRM generico integrato con DMS', costo_mensile:200, costo_setup:800, impatto:0.6, note:'HubSpot/Zoho + connettore DMS' },
+        ]},
+      ]},
+      '3': { cosa:'Marketing automation — nurturing, remarketing, eventi, lifecycle', tempo_mesi:2, moduli:[
+        { id:'automation', nome:'Marketing automation dealer', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'CRM + automation enterprise (Salesforce + Pardot)', costo_mensile:1500, costo_setup:3000, impatto:1.0, note:'Nurturing lead, remarketing scadenze, eventi, email lifecycle' },
+          { id:'mid', nome:'CRM + automation mid (HubSpot Pro)', costo_mensile:500, costo_setup:1500, impatto:0.65, note:'Automazioni base, email, workflow' },
+        ]},
+      ]},
+      '4': { cosa:'Integrazione completa DMS + CRM + marketing con analytics avanzati', tempo_mesi:3, moduli:[
+        { id:'integrazione', nome:'Piattaforma integrata dealer', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'full', nome:'DMS + CRM + marketing fully integrated', costo_mensile:2500, costo_setup:5000, impatto:1.0, note:'Vista unica cliente: vendita, service, marketing, finanziario — tutto collegato' },
+          { id:'api', nome:'Sistemi collegati via API/middleware', costo_mensile:1200, costo_setup:3000, impatto:0.6, note:'DMS + CRM + marketing separati ma sincronizzati' },
+        ]},
+      ]},
+      '5': { cosa:'Predictive analytics — scoring lead, propensione riacquisto, churn', tempo_mesi:4, moduli:[
+        { id:'analytics', nome:'Predictive analytics dealer', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'ai', nome:'Piattaforma AI/predictive (UrbanScience/Accenture)', costo_mensile:3000, costo_setup:8000, impatto:1.0, note:'Lead scoring AI, propensione riacquisto, conquest, retention prediction' },
+          { id:'bi', nome:'BI avanzata (Power BI/Tableau + dati DMS)', costo_mensile:1000, costo_setup:3000, impatto:0.5, note:'Report avanzati, trend, segmentazione, meno predittivo' },
+        ]},
+      ]},
     },
     team: {
       '1': { chi:'Casa madre', cosa:'Team minimo brand — ruoli base da casa madre', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Consulente', cosa:'KPI individuali e piano incentivi strutturato', costo_mensile:0, costo_setup:500, tempo_mesi:1 },
-      '3': { chi:'Formatore', cosa:'Formazione continua + certificazioni brand', costo_mensile:300, costo_setup:1000, tempo_mesi:2 },
-      '4': { chi:'Middle management', cosa:'Middle management — capo vendite, capo service', costo_mensile:800, costo_setup:1500, tempo_mesi:3 },
-      '5': { chi:'General manager', cosa:'General manager + governance completa', costo_mensile:2000, costo_setup:3000, tempo_mesi:6 },
+      '2': { cosa:'KPI individuali e piano incentivi strutturato per venditore', tempo_mesi:1, moduli:[
+        { id:'kpi', nome:'Piano KPI e incentivi venditori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.7, note:'Target vendita, margine, F&I, NPS, conversion rate — bonus mensile' },
+      ]},
+      '3': { cosa:'Formazione continua + certificazioni brand avanzate', tempo_mesi:2, moduli:[
+        { id:'formazione', nome:'Piano formazione team', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'brand', nome:'Formazione brand + consulente vendita', costo_mensile:300, costo_setup:1000, impatto:0.7, note:'Certificazioni casa madre + formazione vendita consulenziale esterna' },
+          { id:'interna', nome:'Solo formazione casa madre standard', costo_mensile:0, costo_setup:0, impatto:0.4, note:'Corsi obbligatori brand, nessun extra' },
+        ]},
+      ]},
+      '4': { cosa:'Middle management — capo vendite + capo service separati', tempo_mesi:3, moduli:[
+        { id:'middle', nome:'Middle management', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'entrambi', nome:'Capo vendite + capo service (2 figure)', costo_mensile:1500, costo_setup:0, impatto:1.0, note:'Ognuno gestisce il suo reparto con KPI e budget' },
+          { id:'unico', nome:'Resp. operativo unico', costo_mensile:800, costo_setup:0, impatto:0.6, note:'1 persona supervisiona vendite e service' },
+        ]},
+      ]},
+      '5': { cosa:'General manager + governance completa concessionaria', tempo_mesi:6, moduli:[
+        { id:'gm', nome:'General manager concessionaria', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'GM dipendente (esperienza dealer)', costo_mensile:5000, costo_setup:0, impatto:1.0, note:'P&L completo, tutti i reparti, rapporti casa madre, strategia' },
+          { id:'fractional', nome:'GM fractional/consulente dealer', costo_mensile:2500, costo_setup:0, impatto:0.65, note:'3 giorni/settimana' },
+        ]},
+      ]},
       _label: 'Organizzazione',
     },
     processi: {
-      '1': { chi:'Standard brand', cosa:'Processi base imposti dalla casa madre', costo_mensile:300, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Standard + procedure', cosa:'Customer journey documentato dalla lead alla consegna', costo_mensile:300, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Consulente qualità', cosa:'NPS sistematico + gestione reclami + mystery shopping', costo_mensile:700, costo_setup:800, tempo_mesi:2 },
-      '4': { chi:'DMS + automazione', cosa:'Digitalizzazione completa — firma digitale, pratiche online', costo_mensile:1100, costo_setup:2000, tempo_mesi:2 },
-      '5': { chi:'Quality manager', cosa:'Lean management + certificazione qualità + audit interni', costo_mensile:1800, costo_setup:3000, tempo_mesi:4 },
+      '1': { chi:'Standard brand', cosa:'Processi base imposti dalla casa madre', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Customer journey documentato: dalla lead alla consegna', tempo_mesi:1, moduli:[
+        { id:'journey', nome:'Customer journey map', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.7, note:'Ogni touchpoint documentato: lead, contatto, appuntamento, test drive, offerta, consegna, follow-up' },
+      ]},
+      '3': { cosa:'NPS sistematico + gestione reclami + mystery shopping', tempo_mesi:2, moduli:[
+        { id:'nps', nome:'Sistema NPS/soddisfazione cliente', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'strutturato', nome:'NPS + mystery shopping + gestione reclami', costo_mensile:400, costo_setup:800, impatto:1.0, note:'Survey post-vendita/service, mystery shopping trimestrale, workflow reclami' },
+          { id:'base', nome:'Survey post-vendita base', costo_mensile:100, costo_setup:300, impatto:0.5, note:'Email/SMS post-vendita con rating, senza mystery shopping' },
+        ]},
+      ]},
+      '4': { cosa:'Digitalizzazione completa — firma digitale, pratiche online, workflow', tempo_mesi:2, moduli:[
+        { id:'digital', nome:'Digitalizzazione processi dealer', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'Firma digitale + pratiche online + DMS avanzato', costo_mensile:500, costo_setup:2000, impatto:1.0, note:'Contratti digitali, PRA online, finanziarie digitali, zero carta' },
+          { id:'parziale', nome:'DMS standard + alcuni processi digitali', costo_mensile:200, costo_setup:800, impatto:0.5, note:'Alcune pratiche digitali, firma ancora cartacea' },
+        ]},
+      ]},
+      '5': { cosa:'Lean management + certificazione qualita + audit interni strutturati', tempo_mesi:4, moduli:[
+        { id:'lean', nome:'Lean/quality management dealer', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'Lean + ISO 9001 + audit interni', costo_mensile:500, costo_setup:3000, impatto:1.0, note:'Lean management processi, certificazione qualita, audit trimestrali' },
+          { id:'base', nome:'Standard qualita brand + miglioramenti interni', costo_mensile:200, costo_setup:1000, impatto:0.5, note:'Ottimizzazione processi senza certificazione esterna' },
+        ]},
+      ]},
     },
     ricavi: {
       '1': { chi:'Standard', cosa:'Vendita auto + finanziamento base da casa madre', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Venditore formato', cosa:'Proposta sistematica F&I su ogni trattativa', costo_mensile:0, costo_setup:500, tempo_mesi:1 },
-      '3': { chi:'Resp. usato', cosa:'Usato garantito + accessori + protezione carrozzeria', costo_mensile:1000, costo_setup:1000, tempo_mesi:2 },
-      '4': { chi:'Service manager', cosa:'After sales come centro profitto — ricambi, tagliandi, carrozzeria', costo_mensile:1500, costo_setup:2000, tempo_mesi:3 },
-      '5': { chi:'Revenue manager', cosa:'Revenue management — mix nuovo/usato/km0, fleet, noleggio', costo_mensile:2500, costo_setup:3000, tempo_mesi:4 },
+      '2': { cosa:'Proposta sistematica F&I (finanziamento e assicurazione) su ogni trattativa', tempo_mesi:1, moduli:[
+        { id:'fi', nome:'F&I strutturato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.8, note:'Proposta finanziamento + assicurazione + garanzia estesa su OGNI vendita' },
+      ]},
+      '3': { cosa:'Usato garantito + accessori + protezione carrozzeria come profit center', tempo_mesi:2, moduli:[
+        { id:'usato', nome:'Reparto usato strutturato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:1000, impatto:0.5, note:'Usato garantito brand, ricondizionamento, pricing, stock mix' },
+        { id:'accessori', nome:'Vendita accessori e protezioni', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.3, note:'Accessori originali, protezione carrozzeria, tappetini, barre — proposta sistematica' },
+      ]},
+      '4': { cosa:'After sales come centro profitto — ricambi, tagliandi, carrozzeria', tempo_mesi:3, moduli:[
+        { id:'service', nome:'Service come profit center', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'strutturato', nome:'Service manager + obiettivi fatturato service', costo_mensile:500, costo_setup:1000, impatto:1.0, note:'Tagliandi, richiami, ricambi, carrozzeria — ognuno con target e margine' },
+          { id:'base', nome:'Service reattivo con upsell base', costo_mensile:200, costo_setup:500, impatto:0.5, note:'Service standard + proposta base su lavori aggiuntivi' },
+        ]},
+      ]},
+      '5': { cosa:'Revenue management — mix nuovo/usato/km0, fleet, NLT, digital', tempo_mesi:4, moduli:[
+        { id:'revenue', nome:'Revenue management concessionaria', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'Revenue manager + BI margini', costo_mensile:1500, costo_setup:3000, impatto:1.0, note:'Mix ottimizzato: nuovo, usato, km0, fleet, NLT, service, F&I, accessori' },
+          { id:'base', nome:'Analisi margini periodica', costo_mensile:500, costo_setup:1000, impatto:0.5, note:'Report mensile margini per reparto, senza ottimizzazione attiva' },
+        ]},
+      ]},
     },
     marketing: {
-      '1': { chi:'Casa madre', cosa:'Marketing casa madre — co-op advertising base', costo_mensile:500, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Interno', cosa:'Presenza social attiva + Google My Business ottimizzato', costo_mensile:800, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Agenzia digital', cosa:'Campagne digitali locali — Google Ads, Meta, remarketing', costo_mensile:1700, costo_setup:1500, tempo_mesi:2 },
-      '4': { chi:'Marketing specialist', cosa:'CRM marketing — email personalizzate per lifecycle cliente', costo_mensile:2500, costo_setup:2500, tempo_mesi:2 },
-      '5': { chi:'Marketing manager', cosa:'Brand building locale — eventi, partnership, community', costo_mensile:4000, costo_setup:5000, tempo_mesi:3 },
+      '1': { chi:'Casa madre', cosa:'Marketing casa madre — co-op advertising base', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Presenza social attiva + Google My Business ottimizzato', tempo_mesi:1, moduli:[
+        { id:'social', nome:'Social media dealer', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:300, impatto:0.6, note:'Facebook, Instagram, Google My Business — post stock, promo, team, eventi' },
+        { id:'recensioni', nome:'Gestione recensioni strutturata', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.25, note:'Richiesta post-vendita, risposta a tutte, gestione negative' },
+      ]},
+      '3': { cosa:'Campagne digitali locali — Google Ads, Meta, remarketing', tempo_mesi:2, moduli:[
+        { id:'ads', nome:'Campagne digitali locali', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia digital automotive', costo_mensile:1200, costo_setup:1500, impatto:1.0, note:'Google Ads, Meta, remarketing, landing per modello, lead gen' },
+          { id:'interno', nome:'Ads autogestiti + co-op brand', costo_mensile:500, costo_setup:500, impatto:0.5, note:'Budget ads + materiali casa madre, gestione interna' },
+        ]},
+      ]},
+      '4': { cosa:'CRM marketing — email lifecycle personalizzate per ogni fase', tempo_mesi:2, moduli:[
+        { id:'lifecycle', nome:'CRM lifecycle marketing', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'avanzato', nome:'Marketing automation lifecycle completo', costo_mensile:800, costo_setup:2000, impatto:1.0, note:'Email/SMS personalizzati: benvenuto, 1 anno, scadenza tagliando, riacquisto, referral' },
+          { id:'base', nome:'Email marketing base + reminder service', costo_mensile:300, costo_setup:500, impatto:0.5, note:'Newsletter + reminder tagliando/revisione' },
+        ]},
+      ]},
+      '5': { cosa:'Brand building locale — eventi, partnership, community, PR', tempo_mesi:3, moduli:[
+        { id:'piano', nome:'Piano marketing concessionaria', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'Marketing manager + agenzia + eventi', costo_mensile:2500, costo_setup:4000, impatto:1.0, note:'Brand locale: eventi presentazione modelli, test drive day, partnership locali, PR' },
+          { id:'base', nome:'Marketing coordinator + co-op brand', costo_mensile:1200, costo_setup:1500, impatto:0.55, note:'1 risorsa + massimo uso fondi co-op casa madre' },
+        ]},
+      ]},
     },
     sitoweb: {
-      '1': { chi:'Casa madre', cosa:'Sito brand standard fornito dalla casa madre', costo_mensile:200, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Contenuti locali — stock usato, promo, team, recensioni', costo_mensile:400, costo_setup:1000, tempo_mesi:1 },
-      '3': { chi:'Sito avanzato', cosa:'Configuratore + preventivo online + prenotazione test drive', costo_mensile:700, costo_setup:3000, tempo_mesi:2 },
-      '4': { chi:'Sito e-commerce', cosa:'E-commerce accessori + prenotazione service online', costo_mensile:1000, costo_setup:5000, tempo_mesi:2 },
-      '5': { chi:'Piattaforma digitale', cosa:'Virtual showroom, acquisto online, firma digitale', costo_mensile:1700, costo_setup:10000, tempo_mesi:4 },
+      '1': { chi:'Casa madre', cosa:'Sito brand standard fornito dalla casa madre', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Contenuti locali: stock usato, promozioni, team, recensioni', tempo_mesi:1, moduli:[
+        { id:'contenuti', nome:'Contenuti locali su sito brand', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:500, impatto:0.7, note:'Pagine stock usato, promo locali, team, recensioni — dentro sito brand' },
+        { id:'landing', nome:'Landing page promozioni locali', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.2, note:'Landing dedicate per promozioni stagionali, modelli specifici' },
+      ]},
+      '3': { cosa:'Configuratore + preventivo online + prenotazione test drive', tempo_mesi:2, moduli:[
+        { id:'configuratore', nome:'Strumenti sito avanzati', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'Configuratore + preventivo + booking test drive', costo_mensile:300, costo_setup:3000, impatto:1.0, note:'Il cliente configura, chiede preventivo e prenota test drive online' },
+          { id:'base', nome:'Form preventivo + Calendly test drive', costo_mensile:50, costo_setup:500, impatto:0.45, note:'Form contatto avanzato + prenotazione test drive' },
+        ]},
+      ]},
+      '4': { cosa:'E-commerce accessori + prenotazione service online', tempo_mesi:2, moduli:[
+        { id:'ecommerce', nome:'E-commerce dealer', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'E-commerce accessori + booking service online', costo_mensile:500, costo_setup:5000, impatto:1.0, note:'Vendita accessori, prenotazione tagliando/service, pagamento online' },
+          { id:'base', nome:'Catalogo accessori + form prenotazione', costo_mensile:100, costo_setup:1500, impatto:0.5, note:'Catalogo sfogliabile + form prenotazione service' },
+        ]},
+      ]},
+      '5': { cosa:'Virtual showroom + acquisto online + firma digitale', tempo_mesi:4, moduli:[
+        { id:'virtual', nome:'Digital retail dealer', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'Virtual showroom + acquisto full online', costo_mensile:1200, costo_setup:10000, impatto:1.0, note:'Tour virtuale, configurazione, preventivo, finanziamento, firma — tutto online' },
+          { id:'mid', nome:'Sito avanzato + video call + firma digitale', costo_mensile:500, costo_setup:3000, impatto:0.5, note:'Video consulenza, preventivo online, firma digitale contratto' },
+        ]},
+      ]},
     },
     ecommerce: {
-      '1': { chi:'Service base', cosa:'Service standard — tagliandi e garanzia come da brand', costo_mensile:3000, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Service advisor', cosa:'Richiamo proattivo clienti per tagliandi e scadenze', costo_mensile:3500, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Service advisor senior', cosa:'Service advisor dedicato + upsell attivo su ogni passaggio', costo_mensile:5000, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Resp. after sales', cosa:'Carrozzeria + ricambi + accessori come centro profitto', costo_mensile:7500, costo_setup:2000, tempo_mesi:3 },
-      '5': { chi:'After sales manager', cosa:'Contratti manutenzione, fleet management, fidelizzazione', costo_mensile:10000, costo_setup:3000, tempo_mesi:4 },
       _label: 'Post-vendita / Service',
+      '1': { chi:'Service base', cosa:'Service standard — tagliandi e garanzia come da brand', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Richiamo proattivo clienti per tagliandi e scadenze', tempo_mesi:1, moduli:[
+        { id:'richiamo', nome:'Sistema richiamo proattivo', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'automatico', nome:'Richiamo automatico da DMS (email/SMS)', costo_mensile:200, costo_setup:500, impatto:1.0, note:'Alert automatici per tagliando, revisione, scadenza garanzia, pneumatici' },
+          { id:'manuale', nome:'Richiamo manuale da service advisor', costo_mensile:0, costo_setup:200, impatto:0.5, note:'Lista clienti in scadenza, chiamata manuale' },
+        ]},
+      ]},
+      '3': { cosa:'Service advisor dedicato + upsell attivo su ogni passaggio', tempo_mesi:2, moduli:[
+        { id:'advisor', nome:'Service advisor professionale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'formato', nome:'Service advisor formato su upsell', costo_mensile:0, costo_setup:500, impatto:1.0, note:'Formazione su vendita consulenziale: proposta lavori aggiuntivi, accessori, check-up' },
+          { id:'base', nome:'Service advisor standard', costo_mensile:0, costo_setup:0, impatto:0.5, note:'Accettazione e restituzione, upsell occasionale' },
+        ]},
+        { id:'checklist', nome:'Check-up multi-point gratuito', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:200, impatto:0.2, note:'Controllo 30 punti ad ogni ingresso — genera lavori aggiuntivi accettati' },
+      ]},
+      '4': { cosa:'Carrozzeria + ricambi + accessori come centro profitto autonomo', tempo_mesi:3, moduli:[
+        { id:'aftersales', nome:'After sales strutturato', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'resp', nome:'Resp. after sales con P&L dedicato', costo_mensile:500, costo_setup:1000, impatto:1.0, note:'Carrozzeria, ricambi, accessori — ognuno con budget e margine target' },
+          { id:'service_mgr', nome:'Service manager con obiettivi base', costo_mensile:300, costo_setup:500, impatto:0.6, note:'Gestione service con target fatturato, senza P&L per reparto' },
+        ]},
+      ]},
+      '5': { cosa:'Contratti manutenzione, fleet management, fidelizzazione totale', tempo_mesi:4, moduli:[
+        { id:'contratti', nome:'Programmi service avanzati', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'Contratti manutenzione + fleet + fidelizzazione', costo_mensile:500, costo_setup:2000, impatto:1.0, note:'Piani manutenzione prepagati, gestione flotte, programma loyalty service' },
+          { id:'base', nome:'Piani manutenzione prepagati base', costo_mensile:200, costo_setup:800, impatto:0.5, note:'Pacchetti tagliando prepagato, senza fleet management' },
+        ]},
+      ]},
     }
   },
 
