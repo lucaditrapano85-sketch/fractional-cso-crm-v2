@@ -1,5 +1,5 @@
 -- ============================================================================
--- SETUP RLS (Row Level Security) per Fractional CSO CRM
+-- SETUP RLS (Row Level Security) per Leva CRM
 -- Eseguire nel Supabase SQL Editor (Dashboard > SQL Editor)
 -- ============================================================================
 

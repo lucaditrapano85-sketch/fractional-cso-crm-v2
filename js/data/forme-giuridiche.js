@@ -279,7 +279,7 @@ const FORME_GIURIDICHE = {
       'Obbligo revisore legale o collegio sindacale',
       'Complessita normativa e gestionale',
     ],
-    note_cso: 'Raro nel target PMI del Fractional CSO. Se un cliente e una SpA, ha gia una struttura commerciale di un certo livello.',
+    note_cso: 'Raro nel target PMI del Leva. Se un cliente e una SpA, ha gia una struttura commerciale di un certo livello.',
   },
 
   sapa: {
@@ -330,7 +330,7 @@ const FORME_GIURIDICHE = {
       'Distribuzione utili limitata ai soci',
       'Non adatta a logiche di profitto puro',
     ],
-    note_cso: 'Target atipico per il Fractional CSO commerciale puro. Se lavori con cooperative, focalizzati su sviluppo soci/clienti, non su logiche profit tradizionali.',
+    note_cso: 'Target atipico per il Leva commerciale puro. Se lavori con cooperative, focalizzati su sviluppo soci/clienti, non su logiche profit tradizionali.',
   },
 
   // -- ALTRI ENTI -----------------------------------------------------------
