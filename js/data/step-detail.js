@@ -2834,437 +2834,215 @@ const STEP_DETAIL_BY_SETTORE = {
   commercio_abbigliamento_ingrosso: {
     vendite: {
       '1': { chi:'Titolare', cosa:'Titolare vende direttamente — showroom e fiere', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Campionario stagionale proattivo ai buyer',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:500, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: '1 agente con portafoglio zona',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1500, costo_setup:500, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:825, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:675, costo_setup:500, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: '2-3 agenti per zona — copertura regionale',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:4000, costo_setup:1000, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:2200, costo_setup:1000, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1800, costo_setup:1000, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Rete agenti + showroom permanente',
-        tempo_mesi: 6,
-        moduli: [
-          {
-            id: 'resp',
-            nome: 'Responsabile commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2800, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
-              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1540, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          },
-          {
-            id: 'team',
-            nome: 'Figure commerciali',
-            tipo: 'multi',
-            obbligatorio: true,
-            min: 2,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1400, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1050, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Campionario stagionale proattivo inviato ai buyer dei negozi', tempo_mesi:1, moduli:[
+        { id:'campionario', nome:'Kit campionario stagionale', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.6, note:'Campionatura SS/FW preparata e inviata a lista buyer selezionati' },
+        { id:'lookbook', nome:'Lookbook fotografico professionale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.3, note:'Foto still-life + indossato per ogni modello, PDF + Instagram' },
+      ]},
+      '3': { cosa:'Agente moda plurimandatario con portafoglio negozi zona', tempo_mesi:2, moduli:[
+        { id:'agente', nome:'Agente moda', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'plurimandatario', nome:'Agente ENASARCO plurimandatario moda', costo_mensile:800, costo_setup:500, impatto:1.0, note:'Provvigione 8-12%, porta portafoglio negozi/boutique della zona' },
+          { id:'monomandatario', nome:'Agente monomandatario', costo_mensile:1500, costo_setup:0, impatto:0.8, note:'Fisso + provvigione, dedicato solo al nostro brand' },
+          { id:'showroom', nome:'Showroom multibrand (affitto spazio)', costo_mensile:600, costo_setup:1000, impatto:0.6, note:'Spazio in showroom condiviso, i buyer vengono da soli' },
+        ]},
+      ]},
+      '4': { cosa:'2-3 agenti per macro-zona + copertura regionale/nazionale', tempo_mesi:3, moduli:[
+        { id:'rete', nome:'Rete agenti zonale', tipo:'multi', obbligatorio:true, min:2, varianti:[
+          { id:'plurimandatario', nome:'Agente plurimandatario moda', costo_mensile:800, costo_setup:500, impatto:0.3, note:'Per zona: Nord-Ovest, Nord-Est, Centro, Sud' },
+          { id:'monomandatario', nome:'Agente monomandatario', costo_mensile:1500, costo_setup:0, impatto:0.25, note:'Dedicato, per zone ad alto potenziale' },
+        ]},
+      ]},
+      '5': { cosa:'Dir. commerciale + rete agenti nazionale + showroom permanente', tempo_mesi:6, moduli:[
+        { id:'resp', nome:'Direttore commerciale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Dir. commerciale dipendente', costo_mensile:3000, costo_setup:0, impatto:0.5, note:'Coordinamento agenti, campagne vendita, pricing, sviluppo estero' },
+          { id:'fractional', nome:'Dir. commerciale fractional', costo_mensile:1500, costo_setup:0, impatto:0.35, note:'2-3 giorni/settimana, focus strategia e campagne' },
+        ]},
+        { id:'showroom', nome:'Showroom permanente', tipo:'scelta', obbligatorio:false, varianti:[
+          { id:'proprio', nome:'Showroom proprio (affitto + allestimento)', costo_mensile:1500, costo_setup:5000, impatto:0.2, note:'Spazio dedicato per campagne vendita e visite buyer' },
+          { id:'condiviso', nome:'Spazio in showroom multibrand', costo_mensile:600, costo_setup:1000, impatto:0.1, note:'Corner in showroom condiviso, costi ridotti' },
+        ]},
+      ]},
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini su carta e telefono', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Excel con clienti, ordini stagionali e pagamenti',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'CRM con anagrafica buyer, storico ordini, preferenze',
-        tempo_mesi: 1,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM con anagrafica buyer, storico ordini, preferenze', costo_mensile:300, costo_setup:500, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:150, costo_setup:300, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'CRM integrato con gestionale ordini e magazzino',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM integrato con gestionale ordini e magazzino', costo_mensile:600, costo_setup:1500, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:300, costo_setup:900, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'ERP fashion — ordini, campionario, spedizioni, fatturazione',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'ERP fashion', costo_mensile:1200, costo_setup:4000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:600, costo_setup:2400, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Excel con buyer, ordini stagionali, pagamenti e preferenze', tempo_mesi:1, moduli:[
+        { id:'strumento', nome:'Strumento tracciamento buyer', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'excel', nome:'Excel/Fogli Google strutturato', costo_mensile:0, costo_setup:100, impatto:0.7, note:'Buyer, negozio, zona, ordine SS/FW, valore, pagamenti, preferenze taglie/colori' },
+          { id:'crm_free', nome:'CRM gratuito (HubSpot Free/Zoho)', costo_mensile:0, costo_setup:200, impatto:0.85, note:'Pipeline campagna vendita + storico ordini + reminder' },
+        ]},
+      ]},
+      '3': { cosa:'CRM moda con anagrafica buyer, storico ordini, preferenze stile', tempo_mesi:1, moduli:[
+        { id:'crm', nome:'CRM fashion wholesale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'CRM/gestionale moda (NuOrder/Joor lite)', costo_mensile:200, costo_setup:500, impatto:1.0, note:'Anagrafica buyer, lookbook digitale, ordini per campagna, storico' },
+          { id:'generico', nome:'CRM generico (Pipedrive/Zoho CRM)', costo_mensile:50, costo_setup:300, impatto:0.6, note:'Pipeline vendita, meno specifico per fashion' },
+        ]},
+      ]},
+      '4': { cosa:'Gestionale ordini moda integrato — campionario, taglie, consegne', tempo_mesi:2, moduli:[
+        { id:'gestionale', nome:'Gestionale ordini fashion', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'fashion', nome:'Gestionale moda (Gest.Fashion/Cegid Y2)', costo_mensile:500, costo_setup:1500, impatto:1.0, note:'Ordini per campagna, griglia taglie/colori, magazzino, spedizioni, fatturazione' },
+          { id:'generico', nome:'Gestionale generico + foglio taglie', costo_mensile:200, costo_setup:800, impatto:0.55, note:'Danea/FiC con gestione manuale griglia taglie' },
+        ]},
+      ]},
+      '5': { cosa:'ERP fashion completo — ordini, campionario, magazzino, spedizioni, BI', tempo_mesi:3, moduli:[
+        { id:'erp', nome:'ERP fashion wholesale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'ERP moda (Cegid Y2/Stealth/K3 Fashion)', costo_mensile:1000, costo_setup:4000, impatto:1.0, note:'Ordini, griglia taglie, magazzino, produzione, spedizioni, fatturazione, BI' },
+          { id:'mid', nome:'Gestionale moda mid-market', costo_mensile:500, costo_setup:2000, impatto:0.6, note:'Funzionalita core fashion, meno personalizzabile' },
+        ]},
+      ]},
     },
     team: {
       '1': { chi:'Titolare', cosa:'Nessuna organizzazione — il titolare decide tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Pianificazione campagne vendita stagionali',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'organizzazione', nome:'Pianificazione campagne vendita stagionali', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Ruoli magazzino/spedizioni formalizzati',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'organizzazione', nome:'Ruoli magazzino/spedizioni formalizzati', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'KPI per agente + obiettivi stagione',
-        tempo_mesi: 3,
-        moduli: [
-          { id:'organizzazione', nome:'KPI per agente + obiettivi stagione', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:1000, impatto:0.8 }
-        ]
-      },
-      '5': {
-        cosa: 'Management coordinamento rete agenti',
-        tempo_mesi: 5,
-        moduli: [
-          {
-            id: 'manager',
-            nome: 'Figura manageriale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Management dipendente', costo_mensile:1500, costo_setup:1500, impatto:1, note:'Full-time' },
-              { id:'fractional', nome:'Management fractional', costo_mensile:750, costo_setup:1500, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Pianificazione campagne vendita stagionali SS/FW', tempo_mesi:1, moduli:[
+        { id:'calendario', nome:'Calendario campagne vendita', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.7, note:'Timeline: sviluppo collezione, campionario, campagna vendita, produzione, consegna' },
+        { id:'showroom_mgr', nome:'Addetto showroom/campionario', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Addetto showroom dipendente', costo_mensile:1800, costo_setup:0, impatto:0.8, note:'Gestione campionario, accoglienza buyer, preparazione ordini' },
+          { id:'stagionale', nome:'Addetto stagionale (campagne)', costo_mensile:1200, costo_setup:0, impatto:0.5, note:'Solo durante campagne vendita (4-5 mesi/anno)' },
+        ]},
+      ]},
+      '3': { cosa:'Magazziniere/spedizioniere + back-office ordini', tempo_mesi:2, moduli:[
+        { id:'magazzino', nome:'Magazziniere/spedizioniere', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Magazziniere dipendente', costo_mensile:1600, costo_setup:0, impatto:0.7, note:'Picking, packing, spedizioni, inventario, resi' },
+          { id:'parttime', nome:'Magazziniere part-time', costo_mensile:800, costo_setup:0, impatto:0.5, note:'Durante picchi di spedizione (post-campagna)' },
+        ]},
+        { id:'admin', nome:'Impiegata ordini/amministrazione', tipo:'scelta', obbligatorio:false, varianti:[
+          { id:'dip', nome:'Impiegata dipendente', costo_mensile:1800, costo_setup:0, impatto:0.2, note:'Conferme ordine, fatture, gestione crediti, rapporto agenti' },
+          { id:'parttime', nome:'Impiegata part-time', costo_mensile:900, costo_setup:0, impatto:0.15, note:'4h/giorno' },
+        ]},
+      ]},
+      '4': { cosa:'KPI per agente + obiettivi stagione + responsabile vendite', tempo_mesi:3, moduli:[
+        { id:'resp_vendite', nome:'Responsabile vendite', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Sales manager dipendente', costo_mensile:2800, costo_setup:0, impatto:1.0, note:'Coordinamento agenti, campagne vendita, pricing, analisi sell-through' },
+          { id:'fractional', nome:'Sales manager fractional', costo_mensile:1400, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana, focus campagne e agenti' },
+        ]},
+        { id:'kpi', nome:'Dashboard KPI agenti/campagna', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.15, note:'Ordini per agente, per zona, per campagna, sell-through, resi' },
+      ]},
+      '5': { cosa:'Management completo — il titolare fa solo sviluppo prodotto e brand', tempo_mesi:5, moduli:[
+        { id:'manager', nome:'Direttore operativo', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'COO/Dir. operativo dipendente', costo_mensile:3500, costo_setup:0, impatto:1.0, note:'Gestione totale: vendite, produzione, logistica, il titolare fa brand e prodotto' },
+          { id:'fractional', nome:'COO fractional', costo_mensile:1800, costo_setup:0, impatto:0.65, note:'3 giorni/settimana' },
+        ]},
+      ]},
       _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — ordini gestiti a voce e su carta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Catalogo digitale PDF + listino prezzi strutturato',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'processo', nome:'Catalogo digitale PDF + listino prezzi strutturato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Gestionale ordini con conferma automatica e tracking',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Gestionale ordini con conferma automatica e tracking',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:300, costo_setup:1000, impatto:1, note:'Gestionale ordini con conferma automatica e tracking' },
-              { id:'base', nome:'Soluzione base', costo_mensile:150, costo_setup:500, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Campionario digitale + ordini agenti su tablet in showroom',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Campionario digitale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:500, costo_setup:2000, impatto:1, note:'Campionario digitale + ordini agenti su tablet in showroom' },
-              { id:'base', nome:'Soluzione base', costo_mensile:250, costo_setup:1000, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'ERP completo — ordini, magazzino, spedizioni, resi automatici',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'ERP completo',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:900, costo_setup:4000, impatto:1, note:'ERP completo — ordini, magazzino, spedizioni, resi automatici' },
-              { id:'base', nome:'Soluzione base', costo_mensile:450, costo_setup:2000, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Catalogo digitale PDF + listino prezzi con griglia taglie/colori', tempo_mesi:1, moduli:[
+        { id:'catalogo', nome:'Catalogo e listino digitale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.7, note:'PDF con foto, codici, prezzi, griglia taglie disponibili per modello' },
+        { id:'ordine', nome:'Modulo ordine strutturato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.2, note:'Modulo con griglia taglie/colori, condizioni, consegna prevista' },
+      ]},
+      '3': { cosa:'Gestionale ordini fashion con conferma automatica e tracking spedizione', tempo_mesi:2, moduli:[
+        { id:'gestionale', nome:'Gestionale ordini moda', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'fashion', nome:'Gestionale moda (Gest.Fashion/Tekla)', costo_mensile:250, costo_setup:1000, impatto:1.0, note:'Ordini per campagna, griglia taglie, conferma auto, tracking, resi' },
+          { id:'generico', nome:'Gestionale generico + Excel griglia', costo_mensile:100, costo_setup:500, impatto:0.5, note:'Fatture in Cloud/Danea + fogli Excel per griglia taglie' },
+        ]},
+      ]},
+      '4': { cosa:'Campionario digitale su tablet + ordini agenti in tempo reale', tempo_mesi:2, moduli:[
+        { id:'campionario_dig', nome:'App campionario digitale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'App wholesale (NuOrder/Joor/Ordre)', costo_mensile:400, costo_setup:2000, impatto:1.0, note:'Agente mostra collezione su tablet, buyer ordina in tempo reale, stock live' },
+          { id:'pdf', nome:'Lookbook PDF interattivo + form ordine', costo_mensile:50, costo_setup:500, impatto:0.4, note:'PDF sfogliabile con link a form ordine, meno integrato' },
+        ]},
+      ]},
+      '5': { cosa:'ERP fashion completo — ordini, produzione, magazzino, spedizioni, resi', tempo_mesi:3, moduli:[
+        { id:'erp', nome:'ERP fashion wholesale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'ERP moda (Cegid Y2/K3 Fashion)', costo_mensile:800, costo_setup:4000, impatto:1.0, note:'Ordini campagna, griglia taglie, produzione, magazzino, spedizioni, resi, BI' },
+          { id:'mid', nome:'Gestionale moda mid-market', costo_mensile:400, costo_setup:2000, impatto:0.55, note:'Core fashion features, meno reporting avanzato' },
+        ]},
+      ]},
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Margine fisso su listino — nessuna strategia pricing', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Sconti volume differenziati per fasce ordine',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'ricavi', nome:'Sconti volume differenziati per fasce ordine', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Linea pronto moda con margini superiori per riordini rapidi',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'ricavi', nome:'Linea pronto moda con margini superiori per riordini rapidi', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Mix prodotto ottimizzato — campionario, pronto, fine serie',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'ricavi', nome:'Mix prodotto ottimizzato', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:1000, impatto:0.8 }
-        ]
-      },
-      '5': {
-        cosa: 'Private label + accordi GDO + dynamic pricing per stagione',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'ricavi',
-            nome: 'Private label + accordi GDO + dynamic pricing per stagione',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:800, costo_setup:2000, impatto:1, note:'Private label + accordi GDO + dynamic pricing per stagione' },
-              { id:'graduale', nome:'Implementazione graduale', costo_mensile:400, costo_setup:1000, impatto:0.65, note:'Avvio parziale, si espande' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Sconti volume differenziati per fasce ordine e fidelizzazione', tempo_mesi:1, moduli:[
+        { id:'pricing', nome:'Matrice sconti per fascia/fidelizzazione', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8, note:'Sconti per volume ordine, per fidelizzazione (nuovo vs storico), per pagamento anticipato' },
+      ]},
+      '3': { cosa:'Linea pronto moda per riordini rapidi a margine superiore', tempo_mesi:2, moduli:[
+        { id:'pronto', nome:'Linea pronto moda/continuativo', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.7, note:'Capi basici/best-seller sempre disponibili a magazzino, margine +15-20% vs campionario' },
+        { id:'flash', nome:'Flash collection (capsule fuori stagione)', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:300, impatto:0.15, note:'Mini-collezioni intermedie per generare riordini tra una campagna e altra' },
+      ]},
+      '4': { cosa:'Mix prodotto ottimizzato: campionario + pronto + fine serie + outlet', tempo_mesi:2, moduli:[
+        { id:'mix', nome:'Ottimizzazione mix prodotto', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.6, note:'Analisi sell-through per categoria, ottimizzazione campionario vs pronto vs fine serie' },
+        { id:'outlet', nome:'Canale outlet/stock per fine serie', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:300, impatto:0.2, note:'Vendita stock a stockisti/outlet online, libera magazzino, recupera margine' },
+      ]},
+      '5': { cosa:'Private label per catene + dynamic pricing per fase stagione', tempo_mesi:4, moduli:[
+        { id:'pl', nome:'Sviluppo private label', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completa', nome:'Linea PL per catene/gruppi acquisto', costo_mensile:500, costo_setup:2000, impatto:1.0, note:'Produzione con marchio del cliente, margine inferiore ma volumi garantiti' },
+          { id:'capsule', nome:'Capsule PL per 1-2 clienti top', costo_mensile:200, costo_setup:800, impatto:0.5, note:'Test con clienti migliori, volumi ridotti' },
+        ]},
+      ]},
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo fiere e passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Profilo Instagram B2B con foto collezioni',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'marketing', nome:'Profilo Instagram B2B con foto collezioni', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Social professionale + partecipazione fiere settore',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'marketing', nome:'Social professionale + partecipazione fiere settore', tipo:'flag', obbligatorio:true, costo_mensile:500, costo_setup:2000, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Lookbook digitale + campagne email per buyer + eventi showroom',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'Lookbook digitale + campagne email per buyer + eventi showroom',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1000, costo_setup:2500, impatto:1, note:'Lookbook digitale + campagne email per buyer + eventi showroom' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:400, costo_setup:1250, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Piano marketing B2B — brand positioning, PR, fiere internazionali',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'Piano marketing B2B',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:2500, costo_setup:5000, impatto:1, note:'Piano marketing B2B — brand positioning, PR, fiere internazionali' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:1000, costo_setup:2500, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Instagram B2B con foto collezioni + WhatsApp broadcast per buyer', tempo_mesi:1, moduli:[
+        { id:'instagram', nome:'Profilo Instagram B2B', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.5, note:'Foto still-life e indossato, stories showroom, tag buyer' },
+        { id:'whatsapp', nome:'WhatsApp broadcast per buyer', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.3, note:'Novita collezione, disponibilita pronto moda, promozioni fine stagione' },
+      ]},
+      '3': { cosa:'Fiere moda (Pitti, MICAM, White, TheOne) + social professionale', tempo_mesi:2, moduli:[
+        { id:'fiere', nome:'Partecipazione fiere moda', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'stand', nome:'Stand espositivo (Pitti/White/MICAM)', costo_mensile:300, costo_setup:5000, impatto:1.0, note:'Stand 12-24 mq, allestimento, campionario, 1-2 fiere/anno' },
+          { id:'visitatore', nome:'Visita come operatore + networking', costo_mensile:100, costo_setup:1000, impatto:0.4, note:'Biglietti, eventi B2B, contatto buyer, niente stand' },
+        ]},
+      ]},
+      '4': { cosa:'Lookbook digitale + email marketing buyer + eventi showroom stagionali', tempo_mesi:2, moduli:[
+        { id:'lookbook', nome:'Produzione lookbook professionale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'pro', nome:'Lookbook con fotografo/agenzia', costo_mensile:500, costo_setup:2000, impatto:1.0, note:'Shooting SS/FW, still-life + indossato, video, distribuzione digitale' },
+          { id:'base', nome:'Lookbook foto interne + grafica', costo_mensile:200, costo_setup:500, impatto:0.5, note:'Foto in showroom, grafica freelance, PDF + social' },
+        ]},
+        { id:'email', nome:'Email marketing per buyer', tipo:'flag', obbligatorio:false, costo_mensile:50, costo_setup:200, impatto:0.2, note:'Newsletter stagionale, novita pronto moda, inviti eventi — Mailchimp/Brevo' },
+      ]},
+      '5': { cosa:'Piano marketing B2B completo — brand positioning, PR moda, fiere internazionali', tempo_mesi:4, moduli:[
+        { id:'piano', nome:'Piano marketing fashion B2B', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Ufficio stampa/agenzia PR moda', costo_mensile:2000, costo_setup:3000, impatto:1.0, note:'PR su riviste trade, influencer B2B, eventi, fiere internazionali (Premium Berlin, Who is Next)' },
+          { id:'interno', nome:'Marketing manager moda interno', costo_mensile:1000, costo_setup:500, impatto:0.6, note:'1 risorsa dedicata a marketing, social, fiere, lookbook' },
+        ]},
+      ]},
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito o pagina vetrina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Sito vetrina con collezioni, showroom, contatti',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'sito', nome:'Sito vetrina con collezioni, showroom, contatti', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:800, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Catalogo online con lookbook e richiesta campionario',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Catalogo online con lookbook e richiesta campionario',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:300, costo_setup:2500, impatto:1, note:'Catalogo online con lookbook e richiesta campionario' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:120, costo_setup:1000, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Portale B2B con ordini online, listini riservati, disponibilità',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Portale B2B con ordini online, listini riservati, disponibilità',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:700, costo_setup:5000, impatto:1, note:'Portale B2B con ordini online, listini riservati, disponibilità' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:280, costo_setup:2000, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Piattaforma wholesale — preordini, riassortimenti, tracking',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Piattaforma wholesale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:1300, costo_setup:10000, impatto:1, note:'Piattaforma wholesale — preordini, riassortimenti, tracking' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:520, costo_setup:4000, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Sito vetrina con collezioni, showroom, brand story', tempo_mesi:1, moduli:[
+        { id:'sito', nome:'Sito brand moda', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'custom', nome:'Sito custom WordPress (design moda)', costo_mensile:30, costo_setup:2000, impatto:1.0, note:'Design editoriale, gallery collezioni, brand story, contatti agenti' },
+          { id:'template', nome:'Sito da template fashion (Squarespace/Cargo)', costo_mensile:20, costo_setup:600, impatto:0.55, note:'Template moda, meno personalizzabile' },
+        ]},
+      ]},
+      '3': { cosa:'Lookbook online interattivo + richiesta campionario/login buyer', tempo_mesi:2, moduli:[
+        { id:'lookbook_online', nome:'Lookbook online interattivo', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:1500, impatto:0.5, note:'Collezione sfogliabile online, zoom dettagli, download schede prodotto' },
+        { id:'form_buyer', nome:'Area buyer con richiesta campionario', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.4, note:'Form per buyer: richiesta appuntamento showroom, campionario, listino' },
+      ]},
+      '4': { cosa:'Portale B2B wholesale — ordini online con griglia taglie/colori', tempo_mesi:3, moduli:[
+        { id:'b2b', nome:'Portale wholesale B2B', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'Piattaforma wholesale (NuOrder/Joor/Centra)', costo_mensile:500, costo_setup:5000, impatto:1.0, note:'Ordini per campagna, griglia taglie/colori, listini per buyer, stock live' },
+          { id:'woocommerce', nome:'WooCommerce B2B + plugin moda', costo_mensile:200, costo_setup:2000, impatto:0.5, note:'E-commerce con login buyer, prezzi dedicati, meno specifico fashion' },
+        ]},
+      ]},
+      '5': { cosa:'Piattaforma wholesale completa — preordini, riassortimenti, tracking, analytics', tempo_mesi:4, moduli:[
+        { id:'piattaforma', nome:'Piattaforma wholesale enterprise', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'NuOrder/Joor/Ordre Enterprise', costo_mensile:1000, costo_setup:10000, impatto:1.0, note:'Preordini campagna, riassortimenti pronto moda, tracking spedizioni, sell-through analytics' },
+          { id:'custom', nome:'Portale B2B custom', costo_mensile:500, costo_setup:5000, impatto:0.55, note:'Sviluppo ad hoc, meno features standard ma piu personalizzato' },
+        ]},
+      ]},
     },
     ecommerce: {
-      '1': { chi:'Titolare', cosa:'Acquisto da 1-2 fornitori abituali a fiera', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Scouting fornitori a fiere — confronto prezzi e MOQ',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'canale', nome:'Scouting fornitori a fiere', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Buyer dedicato — sourcing Italia e Turchia, campionature',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Buyer dedicato',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:1500, costo_setup:500, impatto:1, note:'Buyer dedicato — sourcing Italia e Turchia, campionature' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:750, costo_setup:200, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Import diretto — Cina, Bangladesh — controllo qualità',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Import diretto',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:2500, costo_setup:2000, impatto:1, note:'Import diretto — Cina, Bangladesh — controllo qualità' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:1250, costo_setup:800, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Resp. acquisti — diversificazione fornitori, private label',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Resp. acquisti',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:3500, costo_setup:3000, impatto:1, note:'Resp. acquisti — diversificazione fornitori, private label' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:1750, costo_setup:1200, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
       _label: 'Approvvigionamento collezioni',
+      '1': { chi:'Titolare', cosa:'Acquisto da 1-2 fornitori abituali a fiera', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Scouting fornitori a fiere moda — confronto prezzi, MOQ, qualita', tempo_mesi:1, moduli:[
+        { id:'scouting', nome:'Scouting fornitori fiere', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.7, note:'Visita Premiere Vision, Texworld, fiere filati — campionature, listini, MOQ' },
+      ]},
+      '3': { cosa:'Buyer/product manager — sourcing Italia, Turchia, Portogallo', tempo_mesi:2, moduli:[
+        { id:'buyer', nome:'Buyer moda', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Buyer/product manager dipendente', costo_mensile:2200, costo_setup:0, impatto:1.0, note:'Sourcing tessuti/produzione, campionature, controllo qualita, trend analysis' },
+          { id:'freelance', nome:'Buyer freelance/consulente', costo_mensile:1000, costo_setup:0, impatto:0.6, note:'A progetto, per campagna, esperto del segmento' },
+        ]},
+      ]},
+      '4': { cosa:'Import diretto — Cina, Bangladesh, Turchia — con controllo qualita', tempo_mesi:3, moduli:[
+        { id:'import', nome:'Canale import diretto', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agente', nome:'Agente di acquisto in loco (sourcing agent)', costo_mensile:1500, costo_setup:2000, impatto:1.0, note:'Agente in Cina/Bangladesh, controllo qualita, gestione produzione, spedizione' },
+          { id:'diretto', nome:'Import diretto con viaggi periodici', costo_mensile:500, costo_setup:1000, impatto:0.6, note:'2-3 viaggi/anno, contatto diretto fabbriche, rischio qualita maggiore' },
+        ]},
+      ]},
+      '5': { cosa:'Resp. supply chain — diversificazione fornitori, PL, near-shoring', tempo_mesi:4, moduli:[
+        { id:'supply', nome:'Responsabile supply chain moda', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Supply chain manager moda dipendente', costo_mensile:3500, costo_setup:0, impatto:1.0, note:'Strategia sourcing, mix Italia/estero, sviluppo PL, sostenibilita, near-shoring' },
+          { id:'fractional', nome:'Supply chain manager fractional', costo_mensile:1800, costo_setup:0, impatto:0.6, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
     }
   },
 
