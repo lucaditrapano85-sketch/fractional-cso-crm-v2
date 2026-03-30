@@ -14,7 +14,7 @@ async function logout() {
 async function renderAdminPanel() {
   // Nascondi tutto e mostra il pannello admin
   document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
-  const main = document.getElementById('main');
+  const main = document.querySelector('.main');
   if (!main) return;
 
   // Carica tutti i profili
