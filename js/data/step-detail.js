@@ -750,430 +750,227 @@ const STEP_DETAIL_BY_SETTORE = {
   servizi_it: {
     vendite: {
       '1': { chi:'Titolare solo', cosa:'Solo il titolare vende — assistenza e vendita insieme', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Mappatura PMI zona con IT datato — visite dirette',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: '1 account manager dedicato — sviluppa portafoglio e rinnovi',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2500, costo_setup:500, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1375, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1125, costo_setup:500, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Account + tecnico pre-sales per gare e clienti strutturati',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'resp',
-            nome: 'Responsabile commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2120, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
-              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1166, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          },
-          {
-            id: 'team',
-            nome: 'Figure commerciali',
-            tipo: 'multi',
-            obbligatorio: true,
-            min: 2,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1060, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:795, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Sales manager + account per verticale + business developer',
-        tempo_mesi: 6,
-        moduli: [
-          {
-            id: 'resp',
-            nome: 'Responsabile commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:3200, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
-              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1760, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          },
-          {
-            id: 'team',
-            nome: 'Figure commerciali',
-            tipo: 'multi',
-            obbligatorio: true,
-            min: 2,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1600, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1200, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Mappatura PMI zona con IT datato — visite e demo dirette', tempo_mesi:1, moduli:[
+        { id:'mappatura', nome:'Database PMI target zona', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.5, note:'Lista PMI 10-50 dip con infrastruttura >5 anni' },
+        { id:'trasferte', nome:'Budget trasferte visite e demo', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.4, note:'Visite on-site con assessment gratuito' },
+      ]},
+      '3': { cosa:'Account manager dedicato — sviluppa portafoglio e rinnovi', tempo_mesi:3, moduli:[
+        { id:'account', nome:'Account manager', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Account manager dipendente', costo_mensile:2500, costo_setup:0, impatto:1.0, note:'Lordo azienda, gestione portafoglio + new business' },
+          { id:'agente', nome:'Agente IT ENASARCO', costo_mensile:1500, costo_setup:0, impatto:0.7, note:'Provvigioni su nuovi contratti + rinnovi' },
+          { id:'parttime', nome:'Commerciale part-time', costo_mensile:1200, costo_setup:0, impatto:0.5, note:'20h/sett, focus rinnovi e upsell' },
+        ]},
+        { id:'crm_comm', nome:'CRM commerciale dedicato', tipo:'flag', obbligatorio:false, costo_mensile:50, costo_setup:500, impatto:0.1, note:'Pipeline, scadenze contratti, forecast' },
+      ]},
+      '4': { cosa:'Account + tecnico pre-sales per gare e clienti strutturati', tempo_mesi:3, moduli:[
+        { id:'account', nome:'Account manager senior', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Account manager dipendente', costo_mensile:2800, costo_setup:0, impatto:0.5, note:'Gestione clienti top + gare' },
+          { id:'agente', nome:'Agente IT senior', costo_mensile:1800, costo_setup:0, impatto:0.35, note:'Rete propria, clienti strutturati' },
+        ]},
+        { id:'presales', nome:'Tecnico pre-sales', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip_presales', nome:'Pre-sales engineer dipendente', costo_mensile:2500, costo_setup:0, impatto:0.4, note:'Demo, POC, risposte a bandi' },
+          { id:'freelance_presales', nome:'Pre-sales freelance a progetto', costo_mensile:1500, costo_setup:0, impatto:0.25, note:'Solo su gare specifiche' },
+        ]},
+      ]},
+      '5': { cosa:'Sales manager + account per verticale + business developer', tempo_mesi:6, moduli:[
+        { id:'sales_mgr', nome:'Sales manager', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Sales manager dipendente', costo_mensile:3500, costo_setup:0, impatto:0.45, note:'Coordinamento team, KPI, forecast' },
+          { id:'fractional', nome:'Sales director fractional', costo_mensile:2000, costo_setup:0, impatto:0.3, note:'2-3 giorni/settimana + review mensile' },
+        ]},
+        { id:'team_vendita', nome:'Team commerciale', tipo:'multi', obbligatorio:true, min:2, varianti:[
+          { id:'account_vert', nome:'Account per verticale (PA, sanita, manifatturiero)', costo_mensile:2500, costo_setup:0, impatto:0.2, note:'Specialista di settore' },
+          { id:'biz_dev', nome:'Business developer new logo', costo_mensile:2000, costo_setup:0, impatto:0.15, note:'Solo acquisizione nuovi clienti' },
+        ]},
+      ]},
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — ticket e vendite confusi insieme', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Excel con trattative aperte e scadenze contratti esistenti',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:100, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'CRM con pipeline + alert scadenza contratti — il rinnovo è oro',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'strumento', nome:'CRM base', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:300, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'CRM integrato con ticketing — visione dal contratto al supporto',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM integrato con ticketing', costo_mensile:300, costo_setup:1000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:150, costo_setup:600, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'CRM + PSA (Professional Services Automation) completo',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM + PSA (Professional Services Automation) completo', costo_mensile:700, costo_setup:3000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:350, costo_setup:1800, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Excel trattative aperte + scadenze contratti esistenti', tempo_mesi:1, moduli:[
+        { id:'strumento', nome:'Tracciamento pipeline', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'excel', nome:'Excel/Google Sheet con template MSP', costo_mensile:0, costo_setup:0, impatto:0.6, note:'Pipeline + scadenze contratti' },
+          { id:'crm_free', nome:'CRM gratuito (HubSpot Free)', costo_mensile:0, costo_setup:100, impatto:0.85, note:'Pipeline + reminder rinnovi' },
+        ]},
+      ]},
+      '3': { cosa:'CRM con pipeline + alert scadenza contratti', tempo_mesi:1, moduli:[
+        { id:'crm', nome:'CRM per MSP/IT', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'crm_msp', nome:'CRM specifico MSP (ConnectWise Sell, Datto Commerce)', costo_mensile:80, costo_setup:300, impatto:1.0, note:'Pipeline + quoting + scadenze integrato' },
+          { id:'crm_gen', nome:'CRM generico (Pipedrive, HubSpot Starter)', costo_mensile:50, costo_setup:200, impatto:0.75, note:'Piu flessibile, meno specifico IT' },
+        ]},
+      ]},
+      '4': { cosa:'CRM integrato con ticketing — visione dal contratto al supporto', tempo_mesi:2, moduli:[
+        { id:'integrazione', nome:'CRM + Ticketing integrato', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'connectwise', nome:'ConnectWise suite (Sell + Manage)', costo_mensile:300, costo_setup:1000, impatto:1.0, note:'Nativo MSP, tutto integrato' },
+          { id:'mix', nome:'CRM + ticketing separati con integrazione', costo_mensile:200, costo_setup:800, impatto:0.8, note:'Es. HubSpot + Freshdesk via Zapier' },
+        ]},
+      ]},
+      '5': { cosa:'CRM + PSA (Professional Services Automation) completo', tempo_mesi:3, moduli:[
+        { id:'psa', nome:'Piattaforma PSA', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'psa_full', nome:'PSA enterprise (ConnectWise, Autotask/Datto)', costo_mensile:500, costo_setup:2000, impatto:1.0, note:'Progetto + tempo + fatturazione + ticketing' },
+          { id:'psa_light', nome:'PSA leggera (HaloPSA, Atera)', costo_mensile:300, costo_setup:1000, impatto:0.75, note:'Piu economica, meno integrazioni native' },
+        ]},
+        { id:'forecast', nome:'Forecast MRR/ARR automatico', tipo:'flag', obbligatorio:false, costo_mensile:100, costo_setup:500, impatto:0.15, note:'Dashboard ricavi ricorrenti da CRM' },
+      ]},
     },
     team: {
-      '1': { chi:'Titolare', cosa:'Tutto dipende dal titolare — nessuna delega', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Know-how documentato — non dipende da una sola persona',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'organizzazione', nome:'Know-how documentato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Ruoli definiti per specializzazione (cloud, security, network)',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'organizzazione', nome:'Ruoli definiti per specializzazione (cloud, security, network)', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Processi decisionali autonomi per team',
-        tempo_mesi: 3,
-        moduli: [
-          { id:'organizzazione', nome:'Processi decisionali autonomi per team', tipo:'flag', obbligatorio:true, costo_mensile:500, costo_setup:1000, impatto:0.8 }
-        ]
-      },
-      '5': {
-        cosa: 'Governance con delega completa — titolare solo strategia',
-        tempo_mesi: 6,
-        moduli: [
-          {
-            id: 'manager',
-            nome: 'Figura manageriale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Manager operativo dipendente', costo_mensile:1500, costo_setup:2000, impatto:1, note:'Full-time' },
-              { id:'fractional', nome:'Manager operativo fractional', costo_mensile:750, costo_setup:2000, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          }
-        ]
-      },
       _label: 'Organizzazione',
+      '1': { chi:'Titolare', cosa:'Tutto dipende dal titolare — nessuna delega', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Knowledge base interna — know-how non dipende da una persona', tempo_mesi:1, moduli:[
+        { id:'kb', nome:'Knowledge base documentata', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'wiki', nome:'Wiki interna (Notion, Confluence)', costo_mensile:0, costo_setup:300, impatto:0.85, note:'Procedure, configurazioni, troubleshooting' },
+          { id:'docs', nome:'Documentazione su cartelle condivise', costo_mensile:0, costo_setup:100, impatto:0.6, note:'Google Drive/SharePoint strutturato' },
+        ]},
+      ]},
+      '3': { cosa:'Ruoli definiti per specializzazione (cloud, security, network)', tempo_mesi:2, moduli:[
+        { id:'specializzazione', nome:'Definizione ruoli e specializzazioni', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.6 },
+        { id:'certificazioni', nome:'Piano certificazioni tecniche', tipo:'flag', obbligatorio:false, costo_mensile:200, costo_setup:500, impatto:0.25, note:'Microsoft, Cisco, AWS — budget annuo per esami' },
+      ]},
+      '4': { cosa:'Team lead tecnici con delega decisionale', tempo_mesi:3, moduli:[
+        { id:'team_lead', nome:'Team lead tecnico', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'promozione', nome:'Promozione interna tecnico senior', costo_mensile:300, costo_setup:500, impatto:0.85, note:'Bonus responsabilita + formazione leadership' },
+          { id:'esterno', nome:'Technical manager esterno', costo_mensile:2500, costo_setup:0, impatto:1.0, note:'Esperienza da MSP piu strutturato' },
+        ]},
+        { id:'kpi_tecnici', nome:'KPI per team (SLA, tempo risoluzione, CSAT)', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.15 },
+      ]},
+      '5': { cosa:'Governance completa — titolare solo strategia e relazioni', tempo_mesi:6, moduli:[
+        { id:'cto', nome:'CTO / Direttore tecnico', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'CTO dipendente', costo_mensile:3500, costo_setup:0, impatto:1.0, note:'Full-time, architettura + team + vendor' },
+          { id:'fractional', nome:'CTO fractional', costo_mensile:1500, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana + on-call' },
+        ]},
+      ]},
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — si risponde quando il cliente chiama', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Contratti di servizio standard — SLA, tempi risposta, escalation',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'processo', nome:'Contratti di servizio standard', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Sistema ticketing (Freshdesk, Zendesk) per gestione richieste',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'processo', nome:'Sistema ticketing (Freshdesk, Zendesk) per gestione richieste', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:500, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Monitoraggio proattivo — avvisare il cliente prima del problema',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Monitoraggio proattivo',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:500, costo_setup:1500, impatto:1, note:'Monitoraggio proattivo — avvisare il cliente prima del problema' },
-              { id:'base', nome:'Soluzione base', costo_mensile:250, costo_setup:750, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'ISO 27001 + procedure incident response + audit periodici',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'ISO 27001',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:1200, costo_setup:6000, impatto:1, note:'ISO 27001 + procedure incident response + audit periodici' },
-              { id:'base', nome:'Soluzione base', costo_mensile:600, costo_setup:3000, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Contratti di servizio standard — SLA, tempi risposta, escalation', tempo_mesi:1, moduli:[
+        { id:'sla', nome:'Template SLA e contratti assistenza', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.7, note:'Livelli di servizio, tempi risposta, penali' },
+        { id:'onboarding', nome:'Procedura onboarding nuovo cliente', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:100, impatto:0.15 },
+      ]},
+      '3': { cosa:'Sistema ticketing per gestione richieste strutturata', tempo_mesi:1, moduli:[
+        { id:'ticketing', nome:'Piattaforma ticketing', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'freshdesk', nome:'Freshdesk / Zendesk', costo_mensile:60, costo_setup:300, impatto:0.85, note:'SaaS, facile, buon rapporto costi' },
+          { id:'connectwise', nome:'ConnectWise Manage', costo_mensile:100, costo_setup:500, impatto:1.0, note:'Specifico MSP, piu completo' },
+          { id:'open', nome:'Ticketing open source (osTicket, Zammad)', costo_mensile:0, costo_setup:500, impatto:0.6, note:'Gratis ma serve manutenzione' },
+        ]},
+      ]},
+      '4': { cosa:'Monitoraggio proattivo — avvisare il cliente prima del problema', tempo_mesi:2, moduli:[
+        { id:'rmm', nome:'Piattaforma RMM (Remote Monitoring)', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'rmm_pro', nome:'RMM professionale (Datto RMM, ConnectWise Automate)', costo_mensile:400, costo_setup:1000, impatto:1.0, note:'Monitoraggio + patch + automazione alert' },
+          { id:'rmm_light', nome:'RMM leggero (NinjaRMM, Atera)', costo_mensile:200, costo_setup:500, impatto:0.75, note:'Piu economico, meno automazione' },
+        ]},
+        { id:'backup_monitoring', nome:'Monitoraggio backup proattivo', tipo:'flag', obbligatorio:false, costo_mensile:100, costo_setup:200, impatto:0.15 },
+      ]},
+      '5': { cosa:'ISO 27001 + procedure incident response + audit periodici', tempo_mesi:4, moduli:[
+        { id:'iso27001', nome:'Certificazione ISO 27001', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:5000, impatto:0.5, note:'Security management — differenzia dai concorrenti' },
+        { id:'incident', nome:'Procedura incident response documentata', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.2 },
+        { id:'audit', nome:'Audit interni periodici', tipo:'scelta', obbligatorio:false, varianti:[
+          { id:'interno', nome:'Audit interni con checklist', costo_mensile:0, costo_setup:300, impatto:0.15, note:'Trimestrale, autogestito' },
+          { id:'esterno', nome:'Audit esterno annuale', costo_mensile:200, costo_setup:0, impatto:0.25, note:'Consulente sicurezza, piu credibile' },
+        ]},
+      ]},
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Interventi a chiamata — fatturato imprevedibile', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Contratti manutenzione mensili — stabilizza il ricavo',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'ricavi', nome:'Contratti manutenzione mensili', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Upsell cloud — migrazione M365/Azure per recurring revenue',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'ricavi', nome:'Upsell cloud', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:500, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Divisione cybersecurity — servizi ad alto margine',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'ricavi',
-            nome: 'Divisione cybersecurity',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:800, costo_setup:1500, impatto:1, note:'Divisione cybersecurity — servizi ad alto margine' },
-              { id:'graduale', nome:'Implementazione graduale', costo_mensile:400, costo_setup:750, impatto:0.65, note:'Avvio parziale, si espande' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'MSSP (Managed Security Services) — ricorrente margini >50%',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'ricavi',
-            nome: 'MSSP (Managed Security Services)',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:1500, costo_setup:3000, impatto:1, note:'MSSP (Managed Security Services) — ricorrente margini >50%' },
-              { id:'graduale', nome:'Implementazione graduale', costo_mensile:750, costo_setup:1500, impatto:0.65, note:'Avvio parziale, si espande' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Contratti manutenzione mensili — stabilizza il ricavo', tempo_mesi:1, moduli:[
+        { id:'contratti_mnt', nome:'Template contratti manutenzione', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.7, note:'Da intervento a chiamata a canone fisso — MRR' },
+        { id:'listino', nome:'Listino servizi strutturato', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:0, impatto:0.15, note:'Prezzo chiaro per ogni tipo di intervento' },
+      ]},
+      '3': { cosa:'Upsell cloud — migrazione M365/Azure per recurring revenue', tempo_mesi:2, moduli:[
+        { id:'cloud', nome:'Offerta cloud/CSP', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'m365', nome:'Microsoft 365 + Azure CSP', costo_mensile:200, costo_setup:500, impatto:1.0, note:'Margine 15-20% su licenze + servizi migrazione' },
+          { id:'google', nome:'Google Workspace', costo_mensile:100, costo_setup:300, impatto:0.7, note:'Alternativa per clienti non-Microsoft' },
+        ]},
+      ]},
+      '4': { cosa:'Divisione cybersecurity — servizi ad alto margine', tempo_mesi:3, moduli:[
+        { id:'cyber', nome:'Servizio cybersecurity', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'soc_proprio', nome:'SOC/servizi gestiti internamente', costo_mensile:800, costo_setup:1500, impatto:1.0, note:'Vulnerability assessment, firewall gestiti, EDR' },
+          { id:'soc_partner', nome:'SOC in partnership (white label)', costo_mensile:400, costo_setup:500, impatto:0.7, note:'Rivendi servizi SOC di un partner, meno investimento' },
+        ]},
+      ]},
+      '5': { cosa:'MSSP (Managed Security Services Provider) — ricorrente margini >50%', tempo_mesi:4, moduli:[
+        { id:'mssp', nome:'Piattaforma MSSP', tipo:'flag', obbligatorio:true, costo_mensile:1000, costo_setup:2000, impatto:0.6, note:'SIEM, SOC 24/7, incident response — margini altissimi' },
+        { id:'compliance', nome:'Servizio compliance (GDPR, NIS2)', tipo:'flag', obbligatorio:false, costo_mensile:300, costo_setup:500, impatto:0.2, note:'Consulenza + tool — molto richiesto da PMI' },
+      ]},
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo passaparola tra clienti', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Google My Business ottimizzato + referenze portali locali',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'marketing', nome:'Google My Business ottimizzato + referenze portali locali', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Partnership vendor (Microsoft, Cisco) — lead da directory',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'marketing', nome:'Partnership vendor (Microsoft, Cisco)', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:1000, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Content marketing su cybersecurity e cloud per PMI',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'Content marketing su cybersecurity e cloud per PMI',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1000, costo_setup:1500, impatto:1, note:'Content marketing su cybersecurity e cloud per PMI' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:400, costo_setup:750, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Account based marketing sulle 100 PMI target della zona',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'Account based marketing sulle 100 PMI target della zona',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:2500, costo_setup:3000, impatto:1, note:'Account based marketing sulle 100 PMI target della zona' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:1000, costo_setup:1500, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Google My Business + referenze su portali IT locali', tempo_mesi:1, moduli:[
+        { id:'gmb', nome:'Google My Business ottimizzato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.5 },
+        { id:'referenze', nome:'Referenze su portali (Clutch, GoodFirms)', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:0, impatto:0.2 },
+        { id:'linkedin', nome:'LinkedIn aziendale con case study', tipo:'flag', obbligatorio:false, costo_mensile:100, costo_setup:0, impatto:0.2 },
+      ]},
+      '3': { cosa:'Partnership vendor — lead da directory Microsoft/Cisco', tempo_mesi:2, moduli:[
+        { id:'partnership', nome:'Partnership vendor', tipo:'multi', obbligatorio:true, min:1, varianti:[
+          { id:'microsoft', nome:'Microsoft Partner Network (Silver/Gold)', costo_mensile:200, costo_setup:500, impatto:0.4, note:'Lead da directory, co-selling, fondi marketing' },
+          { id:'cisco', nome:'Cisco Partner Program', costo_mensile:100, costo_setup:300, impatto:0.25, note:'Deal registration, lead, formazione' },
+          { id:'altri', nome:'Altri vendor (Fortinet, Sophos, VMware)', costo_mensile:100, costo_setup:200, impatto:0.2, note:'Lead e co-marketing' },
+        ]},
+      ]},
+      '4': { cosa:'Content marketing su cybersecurity e cloud per PMI', tempo_mesi:2, moduli:[
+        { id:'content', nome:'Content marketing IT', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia content B2B specializzata IT', costo_mensile:800, costo_setup:1000, impatto:1.0, note:'Blog + white paper + webinar su cyber/cloud' },
+          { id:'inhouse', nome:'Content in-house (tecnico che scrive)', costo_mensile:300, costo_setup:500, impatto:0.6, note:'Il tecnico migliore scrive 2 post/mese' },
+        ]},
+        { id:'webinar', nome:'Webinar mensile per PMI', tipo:'flag', obbligatorio:false, costo_mensile:100, costo_setup:300, impatto:0.15, note:'Lead generation + posizionamento esperto' },
+      ]},
+      '5': { cosa:'Account based marketing sulle 100 PMI target della zona', tempo_mesi:3, moduli:[
+        { id:'abm', nome:'Account Based Marketing', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia_abm', nome:'Agenzia ABM specializzata', costo_mensile:2000, costo_setup:2000, impatto:1.0, note:'Targeting, personalizzazione, nurturing su top 100 PMI' },
+          { id:'inhouse_abm', nome:'ABM in-house con tool', costo_mensile:800, costo_setup:1000, impatto:0.6, note:'LinkedIn Sales Navigator + email personalizzate' },
+        ]},
+      ]},
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito o sito datato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Sito con servizi, certificazioni e case study PMI',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'sito', nome:'Sito con servizi, certificazioni e case study PMI', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:1000, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Blog su cybersecurity e digital transformation per PMI',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Blog su cybersecurity e digital transformation per PMI',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:300, costo_setup:2000, impatto:1, note:'Blog su cybersecurity e digital transformation per PMI' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:120, costo_setup:800, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Assessment tool — "Quanto è sicura la tua infrastruttura?"',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Assessment tool',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:600, costo_setup:4000, impatto:1, note:'Assessment tool — "Quanto è sicura la tua infrastruttura?"' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:240, costo_setup:1600, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Portale clienti con dashboard servizi, SLA e ticket',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Portale clienti con dashboard servizi, SLA e ticket',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:1000, costo_setup:7000, impatto:1, note:'Portale clienti con dashboard servizi, SLA e ticket' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:400, costo_setup:2800, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Sito con servizi, certificazioni e case study PMI', tempo_mesi:1, moduli:[
+        { id:'sito', nome:'Sito web IT', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'template', nome:'Sito da template IT (WordPress/Starter)', costo_mensile:30, costo_setup:500, impatto:0.7, note:'Template settore IT, veloce da lanciare' },
+          { id:'custom', nome:'Sito custom web agency', costo_mensile:80, costo_setup:1500, impatto:1.0, note:'Design professionale, case study integrati' },
+        ]},
+      ]},
+      '3': { cosa:'Blog tecnico su cybersecurity e digital transformation', tempo_mesi:2, moduli:[
+        { id:'blog', nome:'Blog tecnico', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:500, impatto:0.6, note:'2-4 articoli/mese su trend IT per PMI' },
+        { id:'seo', nome:'SEO locale IT', tipo:'flag', obbligatorio:false, costo_mensile:200, costo_setup:500, impatto:0.2, note:'Keyword: assistenza informatica + citta, cybersecurity PMI' },
+      ]},
+      '4': { cosa:'Assessment tool online — quanto e sicura la tua infrastruttura', tempo_mesi:2, moduli:[
+        { id:'assessment', nome:'Tool assessment online', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'custom', nome:'Assessment custom (sviluppo ad hoc)', costo_mensile:200, costo_setup:3000, impatto:1.0, note:'Quiz interattivo - report - contatto commerciale' },
+          { id:'saas', nome:'Tool SaaS assessment (Typeform + automazione)', costo_mensile:100, costo_setup:500, impatto:0.7, note:'Piu semplice, meno personalizzabile' },
+        ]},
+      ]},
+      '5': { cosa:'Portale clienti con dashboard servizi, SLA e ticket', tempo_mesi:3, moduli:[
+        { id:'portale', nome:'Portale clienti', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'integrato', nome:'Portale integrato con PSA (ConnectWise, Autotask)', costo_mensile:500, costo_setup:3000, impatto:1.0, note:'Dashboard SLA, ticket, fatture, asset' },
+          { id:'custom', nome:'Portale custom (sviluppo interno)', costo_mensile:300, costo_setup:5000, impatto:0.8, note:'Piu flessibile ma costoso da mantenere' },
+        ]},
+      ]},
     },
     ecommerce: {
-      '1': { chi:'Titolare', cosa:'Acquisto HW e licenze dal solito distributore — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Accordi con 2-3 distributori (Ingram, Esprinet) — confronto prezzi',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'canale', nome:'Accordi con 2-3 distributori (Ingram, Esprinet)', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'CSP Microsoft attivo — rivendita licenze M365/Azure con margine',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'canale', nome:'CSP Microsoft attivo', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:1000, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Buyer dedicato + accordi volume con vendor e distributori',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Buyer dedicato + accordi volume con vendor e distributori',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:800, costo_setup:500, impatto:1, note:'Buyer dedicato + accordi volume con vendor e distributori' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:400, costo_setup:200, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Strategia licensing + portale rivendita + contratti quadro vendor',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Strategia licensing + portale rivendita + contratti quadro vendor',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:1500, costo_setup:3000, impatto:1, note:'Strategia licensing + portale rivendita + contratti quadro vendor' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:750, costo_setup:1200, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
       _label: 'Approvvigionamento IT + Licensing',
-    }
+      '1': { chi:'Titolare', cosa:'Acquisto HW e licenze dal solito distributore', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Accordi con 2-3 distributori — confronto prezzi', tempo_mesi:1, moduli:[
+        { id:'distributori', nome:'Network distributori', tipo:'multi', obbligatorio:true, min:2, varianti:[
+          { id:'ingram', nome:'Ingram Micro', costo_mensile:0, costo_setup:0, impatto:0.35, note:'Leader, catalogo vastissimo' },
+          { id:'esprinet', nome:'Esprinet', costo_mensile:0, costo_setup:0, impatto:0.3, note:'Forte in Italia, buon supporto' },
+          { id:'td_synnex', nome:'TD Synnex', costo_mensile:0, costo_setup:0, impatto:0.25, note:'Focus enterprise e cloud' },
+        ]},
+      ]},
+      '3': { cosa:'CSP Microsoft attivo — rivendita licenze con margine', tempo_mesi:2, moduli:[
+        { id:'csp', nome:'Programma CSP', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'csp_diretto', nome:'CSP diretto Microsoft', costo_mensile:100, costo_setup:500, impatto:1.0, note:'Margine pieno, gestione diretta clienti' },
+          { id:'csp_indiretto', nome:'CSP indiretto (via distributore)', costo_mensile:50, costo_setup:200, impatto:0.7, note:'Meno margine, piu semplice da gestire' },
+        ]},
+      ]},
+      '4': { cosa:'Buyer IT dedicato + accordi volume con vendor', tempo_mesi:2, moduli:[
+        { id:'buyer', nome:'Buyer IT', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Buyer IT dipendente', costo_mensile:2000, costo_setup:0, impatto:1.0, note:'Negoziazione, confronto prezzi, stock' },
+          { id:'parttime', nome:'Buyer part-time/admin con delega', costo_mensile:800, costo_setup:0, impatto:0.65, note:'Admin che gestisce anche acquisti' },
+        ]},
+      ]},
+      '5': { cosa:'Strategia licensing + portale rivendita + contratti quadro', tempo_mesi:4, moduli:[
+        { id:'licensing_mgr', nome:'Licensing manager', tipo:'flag', obbligatorio:true, costo_mensile:500, costo_setup:0, impatto:0.4, note:'Ottimizzazione licensing clienti = revenue ricorrente' },
+        { id:'portale_rivend', nome:'Portale rivendita licenze/servizi', tipo:'flag', obbligatorio:true, costo_mensile:500, costo_setup:2000, impatto:0.35, note:'Clienti acquistano licenze in self-service' },
+        { id:'contratti_vendor', nome:'Contratti quadro vendor (Microsoft, Cisco, Fortinet)', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.15, note:'Sconti volume, rebate, co-marketing' },
+      ]},
+    },
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
