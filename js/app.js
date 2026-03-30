@@ -52,10 +52,32 @@ async function renderAdminPanel() {
     const nome = (u.nome || '') + ' ' + (u.cognome || '');
     const initials = ((u.nome || '?')[0] + (u.cognome || '?')[0]).toUpperCase();
 
-    html += '<div class="admin-user-card' + (isCurrentView ? ' active' : '') + (isSelf ? ' self' : '') + '" onclick="adminViewAs(\'' + u.id + '\')" data-search="' + (nome + ' ' + u.email + ' ' + u.id).toLowerCase() + '">' +
+    var statusTag = '';
+    if (u.is_admin) {
+      statusTag = '<span class="admin-badge">ADMIN</span>';
+    } else if (u.approved) {
+      statusTag = '<span class="admin-status-ok">ATTIVO</span>';
+    } else {
+      statusTag = '<span class="admin-status-pending">IN ATTESA</span>';
+    }
+
+    var actionBtns = '';
+    if (!isSelf) {
+      if (!u.approved) {
+        actionBtns = '<div class="admin-user-actions">' +
+          '<button class="admin-approve-btn" onclick="event.stopPropagation();adminApprove(\'' + u.id + '\',true)">Approva</button>' +
+          '</div>';
+      } else if (!u.is_admin) {
+        actionBtns = '<div class="admin-user-actions">' +
+          '<button class="admin-revoke-btn" onclick="event.stopPropagation();adminApprove(\'' + u.id + '\',false)">Revoca</button>' +
+          '</div>';
+      }
+    }
+
+    html += '<div class="admin-user-card' + (isCurrentView ? ' active' : '') + (isSelf ? ' self' : '') + (!u.approved && !u.is_admin ? ' pending' : '') + '" onclick="adminViewAs(\'' + u.id + '\')" data-search="' + (nome + ' ' + u.email + ' ' + u.id).toLowerCase() + '">' +
       '<div class="admin-user-avatar">' + initials + '</div>' +
       '<div class="admin-user-info">' +
-        '<div class="admin-user-name">' + nome.trim() + (u.is_admin ? ' <span class="admin-badge">ADMIN</span>' : '') + '</div>' +
+        '<div class="admin-user-name">' + nome.trim() + ' ' + statusTag + '</div>' +
         '<div class="admin-user-email">' + u.email + '</div>' +
         '<div class="admin-user-id">ID: ' + u.id + '</div>' +
         '<div class="admin-user-meta">' +
@@ -63,6 +85,7 @@ async function renderAdminPanel() {
           'Registrato il ' + new Date(u.created_at).toLocaleDateString('it-IT', {day:'numeric', month:'long', year:'numeric'}) +
         '</div>' +
       '</div>' +
+      actionBtns +
       '<div class="admin-user-arrow">&#8250;</div>' +
     '</div>';
   });
@@ -73,6 +96,16 @@ async function renderAdminPanel() {
   if (old) old.remove();
 
   main.insertAdjacentHTML('beforeend', html);
+}
+
+async function adminApprove(userId, approve) {
+  const { error } = await sb.from('profiles').update({ approved: approve }).eq('id', userId);
+  if (error) {
+    showToast('Errore: ' + error.message, 'error');
+    return;
+  }
+  showToast(approve ? 'Utente approvato' : 'Accesso revocato');
+  renderAdminPanel();
 }
 
 function adminFilterUsers() {

@@ -380,10 +380,16 @@ async function init() {
   window._currentUserId = session.user.id;
   window._viewAsUserId = null; // admin: se impostato, filtra per questo utente
 
-  // Carica profilo per check admin
+  // Carica profilo per check admin e approvazione
   const { data: profile } = await sb.from('profiles').select('*').eq('id', session.user.id).single();
   window._isAdmin = profile?.is_admin === true;
   window._currentProfile = profile;
+
+  // Blocca accesso se non approvato (admin passa sempre)
+  if (!profile?.approved && !profile?.is_admin) {
+    window.location.href = '/pending.html';
+    return;
+  }
 
   document.getElementById('dash-date').textContent=new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 

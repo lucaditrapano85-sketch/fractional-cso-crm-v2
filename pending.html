@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fractional CSO — In attesa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --bg: #d8dbe2;
+  --white: #111118;
+  --gray: #3a3a4a;
+  --gray2: #7a7a90;
+  --gold: rgba(140,110,50,0.75);
+  --border2: rgba(0,0,0,0.1);
+  --amber-bg: rgba(140,110,50,0.06);
+}
+* { box-sizing:border-box; margin:0; padding:0 }
+body {
+  font-family:'DM Sans',sans-serif;
+  background:linear-gradient(145deg,#d8dbe2 0%,#cfd2da 50%,#d8dbe2 100%);
+  color:var(--white);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  -webkit-font-smoothing:antialiased;
+}
+.pending-card {
+  background:rgba(255,255,255,0.55);
+  border:1px solid var(--border2);
+  border-radius:16px;
+  padding:48px 40px;
+  width:100%;
+  max-width:440px;
+  backdrop-filter:blur(12px);
+  box-shadow:0 4px 24px rgba(0,0,0,0.06);
+  text-align:center;
+}
+.pending-icon {
+  font-size:48px;
+  margin-bottom:16px;
+}
+h1 {
+  font-family:'DM Serif Display',serif;
+  font-weight:400;
+  font-size:22px;
+  color:var(--white);
+  margin-bottom:8px;
+}
+.pending-text {
+  font-size:14px;
+  color:var(--gray);
+  line-height:1.6;
+  margin-bottom:24px;
+}
+.pending-email {
+  display:inline-block;
+  background:var(--amber-bg);
+  border:1px solid rgba(140,110,50,0.15);
+  border-radius:8px;
+  padding:8px 16px;
+  font-size:13px;
+  color:var(--gold);
+  font-weight:600;
+  margin-bottom:24px;
+}
+.pending-actions {
+  display:flex;
+  gap:10px;
+  justify-content:center;
+}
+.btn-retry {
+  padding:10px 20px;
+  background:var(--gold);
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  font-family:'DM Sans',sans-serif;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  transition:opacity .2s;
+}
+.btn-retry:hover { opacity:0.85 }
+.btn-logout {
+  padding:10px 20px;
+  background:transparent;
+  border:1px solid var(--border2);
+  color:var(--gray2);
+  border-radius:8px;
+  font-family:'DM Sans',sans-serif;
+  font-size:13px;
+  cursor:pointer;
+  transition:all .2s;
+}
+.btn-logout:hover { border-color:var(--gray); color:var(--gray) }
+.pending-footer {
+  margin-top:28px;
+  font-size:10px;
+  color:var(--gray2);
+}
+</style>
+</head>
+<body>
+
+<div class="pending-card">
+  <div class="pending-icon">&#9203;</div>
+  <h1>Account in attesa di approvazione</h1>
+  <p class="pending-text">
+    La tua registrazione e stata ricevuta. Un amministratore dovra approvare il tuo account prima che tu possa accedere alla piattaforma.
+  </p>
+  <div class="pending-email" id="pending-email"></div>
+  <div class="pending-actions">
+    <button class="btn-retry" onclick="location.href='/index.html'">Riprova</button>
+    <button class="btn-logout" onclick="doLogout()">Esci</button>
+  </div>
+  <div class="pending-footer">Fractional CSO &middot; CRM & Market Intelligence</div>
+</div>
+
+<script>
+const { createClient } = supabase;
+const sb = createClient(
+  'https://glxwvvtdybzkxtobsiin.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdseHd2dnRkeWJ6a3h0b2JzaWluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0MzYxNzIsImV4cCI6MjA4OTAxMjE3Mn0.FvL3LTPaHC43WXzWn6Z_eXo3nly_Gz3QvvTT_S2QNIY'
+);
+
+(async function() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { window.location.href = '/login.html'; return; }
+  document.getElementById('pending-email').textContent = session.user.email;
+
+  // Check se nel frattempo e stato approvato
+  const { data: profile } = await sb.from('profiles').select('approved, is_admin').eq('id', session.user.id).single();
+  if (profile?.approved || profile?.is_admin) {
+    window.location.href = '/index.html';
+  }
+})();
+
+async function doLogout() {
+  await sb.auth.signOut();
+  window.location.href = '/login.html';
+}
+</script>
+</body>
+</html>
