@@ -1329,373 +1329,207 @@ const STEP_DETAIL_BY_SETTORE = {
   edilizia_residenziale: {
     vendite: {
       '1': { chi:'Titolare solo', cosa:'Titolare trova lavori tramite passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Rapporti con geometri e architetti della zona',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:150, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Preventivi professionali + sopralluoghi proattivi',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'supporto', nome:'Titolare strutturato', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:300, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: '1 commerciale condomini/studi tecnici/enti',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2500, costo_setup:500, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1375, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1125, costo_setup:500, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Gare pubbliche SOA + rete segnalatori',
-        tempo_mesi: 6,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:3000, costo_setup:2000, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1650, costo_setup:2000, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1350, costo_setup:2000, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Rapporti strutturati con geometri e architetti della zona', tempo_mesi:1, moduli:[
+        { id:'rete_tecnici', nome:'Network studi tecnici', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.6, note:'Database geometri/architetti zona, visite periodiche' },
+        { id:'trasferte', nome:'Pranzi/eventi con professionisti', tipo:'flag', obbligatorio:true, costo_mensile:150, costo_setup:0, impatto:0.3, note:'Relazione diretta, passaparola qualificato' },
+      ]},
+      '3': { cosa:'Preventivi professionali + sopralluoghi proattivi', tempo_mesi:2, moduli:[
+        { id:'preventivazione', nome:'Sistema preventivazione professionale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'software', nome:'Software computo metrico (PriMus, STR)', costo_mensile:100, costo_setup:300, impatto:1.0, note:'Preventivi dettagliati, professionali, veloci' },
+          { id:'template', nome:'Template Excel strutturato', costo_mensile:0, costo_setup:200, impatto:0.6, note:'Manuale ma professionale' },
+        ]},
+        { id:'sopralluoghi', nome:'Sopralluoghi proattivi condomini', tipo:'flag', obbligatorio:false, costo_mensile:200, costo_setup:0, impatto:0.2, note:'Visita condomini zona per proposte manutenzione' },
+      ]},
+      '4': { cosa:'Commerciale dedicato condomini/studi tecnici/enti', tempo_mesi:3, moduli:[
+        { id:'commerciale', nome:'Figura commerciale edilizia', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Commerciale dipendente', costo_mensile:2500, costo_setup:0, impatto:1.0, note:'Visite studi, condomini, imprese, enti pubblici' },
+          { id:'agente', nome:'Procacciatore di affari', costo_mensile:1200, costo_setup:0, impatto:0.7, note:'Fee su lavori acquisiti, rete propria' },
+          { id:'segnalatore', nome:'Rete segnalatori (amministratori, geometri)', costo_mensile:500, costo_setup:300, impatto:0.5, note:'Fee su segnalazioni convertite' },
+        ]},
+      ]},
+      '5': { cosa:'Gare pubbliche SOA + rete segnalatori strutturata', tempo_mesi:6, moduli:[
+        { id:'resp', nome:'Responsabile sviluppo business', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:3000, costo_setup:0, impatto:0.5, note:'Gare, studi tecnici, enti, condomini' },
+          { id:'fractional', nome:'Business developer fractional', costo_mensile:1500, costo_setup:0, impatto:0.35, note:'2-3 giorni/settimana, focus gare' },
+        ]},
+        { id:'gare', nome:'Specialista gare pubbliche', tipo:'flag', obbligatorio:false, costo_mensile:500, costo_setup:1000, impatto:0.2, note:'Preparazione documentazione, MEPA, qualificazione SOA' },
+      ]},
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — preventivi fatti e dimenticati', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Excel con preventivi aperti, sopralluoghi fatti, follow-up',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:100, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'CRM per gestire preventivi, cantieri e referenze clienti',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'strumento', nome:'CRM base', tipo:'flag', obbligatorio:true, costo_mensile:50, costo_setup:200, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'CRM + gestionale cantieri — margini, avanzamento, SAL',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM + gestionale cantieri', costo_mensile:300, costo_setup:1200, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:150, costo_setup:720, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'ERP edile — preventivazione, contabilità cantiere, fatturazione',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'ERP edile', costo_mensile:600, costo_setup:3000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:300, costo_setup:1800, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Registro preventivi e sopralluoghi su Excel', tempo_mesi:1, moduli:[
+        { id:'strumento', nome:'Tracciamento preventivi', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'excel', nome:'Excel/Google Sheet con template cantieri', costo_mensile:0, costo_setup:0, impatto:0.6, note:'Preventivo, importo, stato, follow-up' },
+          { id:'crm_free', nome:'CRM gratuito (HubSpot Free)', costo_mensile:0, costo_setup:100, impatto:0.85, note:'Pipeline automatica + reminder' },
+        ]},
+      ]},
+      '3': { cosa:'CRM per gestire preventivi, cantieri e referenze', tempo_mesi:1, moduli:[
+        { id:'crm', nome:'CRM edilizia', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'crm_edile', nome:'CRM specifico edilizia (Edilconnect, Buildertrend)', costo_mensile:50, costo_setup:200, impatto:1.0, note:'Pipeline + cantieri + referenze' },
+          { id:'crm_gen', nome:'CRM generico (Pipedrive)', costo_mensile:30, costo_setup:100, impatto:0.7, note:'Piu semplice, meno specifico' },
+        ]},
+      ]},
+      '4': { cosa:'CRM + gestionale cantieri — margini, avanzamento, SAL', tempo_mesi:2, moduli:[
+        { id:'gestionale', nome:'Gestionale cantiere', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'Software cantiere (STR Vision, TeamSystem CPM)', costo_mensile:300, costo_setup:1200, impatto:1.0, note:'SAL, avanzamento, margini, contabilita cantiere' },
+          { id:'generico', nome:'Gestionale generico + Excel cantiere', costo_mensile:150, costo_setup:500, impatto:0.65, note:'Meno integrato, piu manuale' },
+        ]},
+      ]},
+      '5': { cosa:'ERP edile — preventivazione, contabilita cantiere, fatturazione', tempo_mesi:3, moduli:[
+        { id:'erp', nome:'ERP edile integrato', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'erp_full', nome:'ERP edile completo (TeamSystem CPM, STR Vision)', costo_mensile:600, costo_setup:3000, impatto:1.0, note:'End-to-end: preventivo - cantiere - fattura' },
+          { id:'erp_cloud', nome:'ERP cloud edile (Edilconnect Pro)', costo_mensile:350, costo_setup:1500, impatto:0.75, note:'Piu leggero, accessibile da cantiere' },
+        ]},
+      ]},
     },
     team: {
-      '1': { chi:'Titolare', cosa:'Titolare sempre in cantiere — decide tutto al momento', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Capo cantiere gestisce — il titolare esce dal cantiere',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'organizzazione', nome:'Capo cantiere gestisce', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Ruoli definiti cantiere/ufficio — deleghe operative',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'organizzazione', nome:'Ruoli definiti cantiere/ufficio', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'KPI commessa + processi decisionali delegati',
-        tempo_mesi: 3,
-        moduli: [
-          { id:'organizzazione', nome:'KPI commessa + processi decisionali delegati', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:1000, impatto:0.8 }
-        ]
-      },
-      '5': {
-        cosa: 'Management — titolare solo strategia e clienti top',
-        tempo_mesi: 5,
-        moduli: [
-          {
-            id: 'manager',
-            nome: 'Figura manageriale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Manager operativo dipendente', costo_mensile:1500, costo_setup:1500, impatto:1, note:'Full-time' },
-              { id:'fractional', nome:'Manager operativo fractional', costo_mensile:750, costo_setup:1500, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          }
-        ]
-      },
       _label: 'Organizzazione',
+      '1': { chi:'Titolare', cosa:'Titolare sempre in cantiere — decide tutto al momento', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Capo cantiere autonomo — il titolare esce dal cantiere', tempo_mesi:1, moduli:[
+        { id:'capo_cantiere', nome:'Capo cantiere con delega', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'promozione', nome:'Promozione operaio senior a capo cantiere', costo_mensile:0, costo_setup:300, impatto:0.85, note:'Bonus responsabilita + formazione sicurezza' },
+          { id:'esterno', nome:'Assunzione capo cantiere esperto', costo_mensile:2500, costo_setup:0, impatto:1.0, note:'Esperienza da altre imprese' },
+        ]},
+      ]},
+      '3': { cosa:'Ruoli definiti cantiere/ufficio — deleghe operative', tempo_mesi:2, moduli:[
+        { id:'ruoli', nome:'Organigramma cantiere/ufficio', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.5 },
+        { id:'admin', nome:'Figura amministrativa/segreteria', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Segretaria/admin dipendente', costo_mensile:1500, costo_setup:0, impatto:0.35, note:'Preventivi, fatture, documenti, telefono' },
+          { id:'parttime', nome:'Admin part-time', costo_mensile:800, costo_setup:0, impatto:0.2, note:'3 mattine/settimana' },
+        ]},
+      ]},
+      '4': { cosa:'KPI per commessa + processi decisionali delegati', tempo_mesi:3, moduli:[
+        { id:'kpi', nome:'Sistema KPI per cantiere', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.5, note:'Margine per cantiere, tempi vs preventivo, scarti' },
+        { id:'riunione', nome:'Riunione settimanale cantieri', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.2 },
+        { id:'consulente', nome:'Consulente organizzativo edile', tipo:'flag', obbligatorio:false, costo_mensile:400, costo_setup:500, impatto:0.25 },
+      ]},
+      '5': { cosa:'Management — titolare solo strategia e clienti top', tempo_mesi:5, moduli:[
+        { id:'direttore', nome:'Direttore tecnico/operativo', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Direttore tecnico dipendente', costo_mensile:3500, costo_setup:0, impatto:1.0, note:'Gestione quotidiana cantieri, personale, sicurezza' },
+          { id:'fractional', nome:'Direttore tecnico fractional', costo_mensile:1500, costo_setup:0, impatto:0.65, note:'3 giorni/settimana + reperibilita' },
+        ]},
+      ]},
     },
     processi: {
-      '1': { chi:'Titolare', cosa:'Nessun processo — ogni cantiere è diverso', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Computo metrico standard + template preventivo professionale',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'processo', nome:'Computo metrico standard + template preventivo professionale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Gestionale cantiere — pianificazione lavori e controllo costi',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'processo', nome:'Gestionale cantiere', tipo:'flag', obbligatorio:true, costo_mensile:250, costo_setup:1000, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Gestione bonus fiscali — pratiche, asseverazioni, cessioni',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Gestione bonus fiscali',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:500, costo_setup:1500, impatto:1, note:'Gestione bonus fiscali — pratiche, asseverazioni, cessioni' },
-              { id:'base', nome:'Soluzione base', costo_mensile:250, costo_setup:750, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'SOA + certificazioni + sistema qualità cantiere',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'SOA',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:1000, costo_setup:6000, impatto:1, note:'SOA + certificazioni + sistema qualità cantiere' },
-              { id:'base', nome:'Soluzione base', costo_mensile:500, costo_setup:3000, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare', cosa:'Nessun processo — ogni cantiere e diverso', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Computo metrico standard + template preventivo professionale', tempo_mesi:1, moduli:[
+        { id:'computo', nome:'Software computo metrico', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'primus', nome:'PriMus (ACCA Software)', costo_mensile:0, costo_setup:300, impatto:1.0, note:'Standard italiano, aggiornamento prezziari' },
+          { id:'excel', nome:'Template Excel strutturato', costo_mensile:0, costo_setup:100, impatto:0.6, note:'Manuale ma funzionale per piccoli lavori' },
+        ]},
+      ]},
+      '3': { cosa:'Gestionale cantiere — pianificazione lavori e controllo costi', tempo_mesi:2, moduli:[
+        { id:'gestionale_cantiere', nome:'Software gestione cantiere', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'Gestionale cantiere (Regolo, Cantieri+)', costo_mensile:200, costo_setup:800, impatto:1.0, note:'Gantt, avanzamento, contabilita lavori' },
+          { id:'project', nome:'Project management generico (Monday, Asana)', costo_mensile:100, costo_setup:300, impatto:0.65, note:'Meno specifico ma piu versatile' },
+        ]},
+      ]},
+      '4': { cosa:'Gestione bonus fiscali — pratiche, asseverazioni, cessioni', tempo_mesi:2, moduli:[
+        { id:'bonus', nome:'Gestione bonus edilizi', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'interno', nome:'Gestione interna con software (ACCA, Blumatica)', costo_mensile:200, costo_setup:500, impatto:0.85, note:'APE, asseverazioni, pratica ENEA' },
+          { id:'studio', nome:'Partnership con studio tecnico', costo_mensile:0, costo_setup:500, impatto:1.0, note:'Lo studio fa le pratiche, tu porti i lavori' },
+        ]},
+      ]},
+      '5': { cosa:'Certificazione SOA + sistema qualita cantiere', tempo_mesi:4, moduli:[
+        { id:'soa', nome:'Qualificazione SOA', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:4000, impatto:0.5, note:'Accesso gare pubbliche, credibilita' },
+        { id:'iso', nome:'Certificazione ISO 9001', tipo:'flag', obbligatorio:false, costo_mensile:100, costo_setup:3000, impatto:0.2, note:'Sistema qualita — punti extra nelle gare' },
+      ]},
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Prezzi al ribasso per prendere i lavori — margini minimi', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Calcolo costi reali per cantiere — materiali, ore, subappalti',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'ricavi', nome:'Calcolo costi reali per cantiere', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Preventivi con voci separate — upsell su finiture e varianti',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'ricavi', nome:'Preventivi con voci separate', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Contratti manutenzione post-cantiere — ricavo ricorrente',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'ricavi', nome:'Contratti manutenzione post-cantiere', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
-        ]
-      },
-      '5': {
-        cosa: 'General contractor — gestione completa con margine su subappalti',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'ricavi',
-            nome: 'General contractor',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:600, costo_setup:1000, impatto:1, note:'General contractor — gestione completa con margine su subappalti' },
-              { id:'graduale', nome:'Implementazione graduale', costo_mensile:300, costo_setup:500, impatto:0.65, note:'Avvio parziale, si espande' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Calcolo costi reali per cantiere — materiali, ore, subappalti', tempo_mesi:1, moduli:[
+        { id:'costing', nome:'Sistema calcolo costi cantiere', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'software', nome:'Software analisi costi (STR, PriMus)', costo_mensile:0, costo_setup:0, impatto:1.0, note:'Costo reale per lavorazione: materiale + ore + sub' },
+          { id:'excel', nome:'Foglio costi strutturato', costo_mensile:0, costo_setup:0, impatto:0.6, note:'Template per analisi margini per cantiere' },
+        ]},
+      ]},
+      '3': { cosa:'Preventivi con voci separate — upsell su finiture e varianti', tempo_mesi:1, moduli:[
+        { id:'upsell', nome:'Strategia upsell finiture', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.6, note:'Pacchetti standard/premium/luxury per finiture' },
+        { id:'varianti', nome:'Gestione varianti in corso opera', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:100, impatto:0.15, note:'Template per varianti con approvazione scritta' },
+      ]},
+      '4': { cosa:'Contratti manutenzione post-cantiere — ricavo ricorrente', tempo_mesi:2, moduli:[
+        { id:'manutenzione', nome:'Programma manutenzione post-lavori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.6, note:'Contratto annuale per manutenzione ordinaria' },
+        { id:'admin_cond', nome:'Servizio per amministratori condominio', tipo:'flag', obbligatorio:false, costo_mensile:200, costo_setup:0, impatto:0.15, note:'Manutenzione programmata condomini — lavori ricorrenti' },
+      ]},
+      '5': { cosa:'General contractor — gestione completa con margine su subappalti', tempo_mesi:3, moduli:[
+        { id:'gc', nome:'Modello general contractor', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'full', nome:'GC completo (progetto + esecuzione + pratiche)', costo_mensile:500, costo_setup:1000, impatto:1.0, note:'Chiavi in mano — margine 15-25% su tutto' },
+          { id:'partial', nome:'GC parziale (solo coordinamento lavori)', costo_mensile:200, costo_setup:500, impatto:0.65, note:'Coordini i sub, il cliente gestisce il progetto' },
+        ]},
+      ]},
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo passaparola nel quartiere', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Google My Business con foto cantieri prima/dopo + recensioni',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'marketing', nome:'Google My Business con foto cantieri prima/dopo + recensioni', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Presenza su portali ristrutturazione (Houzz, Habitissimo)',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'marketing', nome:'Presenza su portali ristrutturazione (Houzz, Habitissimo)', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:500, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Google Ads locali + campagne social prima/dopo lavori',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'marketing', nome:'Google Ads locali + campagne social prima/dopo lavori', tipo:'flag', obbligatorio:true, costo_mensile:800, costo_setup:1200, impatto:0.8 }
-        ]
-      },
-      '5': {
-        cosa: 'Piano marketing — portfolio, partnership architetti, eventi locali',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'Piano marketing',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:2000, costo_setup:2500, impatto:1, note:'Piano marketing — portfolio, partnership architetti, eventi locali' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:800, costo_setup:1250, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Google My Business + foto cantieri prima/dopo + recensioni', tempo_mesi:1, moduli:[
+        { id:'gmb', nome:'Google My Business ottimizzato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.5, note:'Foto prima/dopo, risposte recensioni, post settimanali' },
+        { id:'recensioni', nome:'Strategia raccolta recensioni', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:0, impatto:0.15, note:'Richiesta sistematica a fine lavoro' },
+      ]},
+      '3': { cosa:'Presenza su portali ristrutturazione + social', tempo_mesi:2, moduli:[
+        { id:'portali', nome:'Portali ristrutturazione', tipo:'multi', obbligatorio:true, min:1, varianti:[
+          { id:'houzz', nome:'Houzz Italia', costo_mensile:150, costo_setup:200, impatto:0.35, note:'Portfolio, contatti qualificati' },
+          { id:'habitissimo', nome:'Habitissimo', costo_mensile:100, costo_setup:0, impatto:0.25, note:'Richieste preventivo dirette' },
+          { id:'instapro', nome:'Instapro', costo_mensile:100, costo_setup:0, impatto:0.2, note:'Lead locali' },
+        ]},
+      ]},
+      '4': { cosa:'Google Ads locali + campagne social prima/dopo', tempo_mesi:2, moduli:[
+        { id:'adv', nome:'Advertising locale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia digital locale', costo_mensile:600, costo_setup:800, impatto:1.0, note:'Google Ads + Meta Ads + remarketing locale' },
+          { id:'inhouse', nome:'Google Ads in-house', costo_mensile:300, costo_setup:400, impatto:0.6, note:'Solo Google Ads, gestione interna' },
+        ]},
+      ]},
+      '5': { cosa:'Piano marketing — portfolio, partnership architetti, eventi', tempo_mesi:3, moduli:[
+        { id:'mkt_mgr', nome:'Referente marketing', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia marketing edile', costo_mensile:1500, costo_setup:1500, impatto:1.0, note:'Portfolio + ads + eventi + PR locale' },
+          { id:'freelance', nome:'Marketing freelance', costo_mensile:800, costo_setup:500, impatto:0.65, note:'Social + content + ads, 2-3 giorni/sett' },
+        ]},
+      ]},
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito — solo pagina Facebook', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Sito con portfolio lavori, servizi e zona operativa',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'sito', nome:'Sito con portfolio lavori, servizi e zona operativa', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:800, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Gallery prima/dopo + preventivo online + recensioni',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Gallery prima/dopo',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:250, costo_setup:2000, impatto:1, note:'Gallery prima/dopo + preventivo online + recensioni' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:100, costo_setup:800, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Blog su bonus fiscali e ristrutturazione + SEO locale',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Blog su bonus fiscali e ristrutturazione',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:500, costo_setup:1500, impatto:1, note:'Blog su bonus fiscali e ristrutturazione + SEO locale' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:200, costo_setup:600, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Configuratore preventivo online per ristrutturazioni standard',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Configuratore preventivo online per ristrutturazioni standard',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:800, costo_setup:5000, impatto:1, note:'Configuratore preventivo online per ristrutturazioni standard' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:320, costo_setup:2000, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Sito con portfolio lavori, servizi e zona operativa', tempo_mesi:1, moduli:[
+        { id:'sito', nome:'Sito web edile', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'template', nome:'Sito da template (WordPress/Wix)', costo_mensile:30, costo_setup:400, impatto:0.7, note:'Gallery cantieri, servizi, contatti' },
+          { id:'custom', nome:'Sito custom con fotografo', costo_mensile:80, costo_setup:1200, impatto:1.0, note:'Design su misura, foto professionali' },
+        ]},
+      ]},
+      '3': { cosa:'Gallery prima/dopo + richiesta preventivo online', tempo_mesi:2, moduli:[
+        { id:'gallery', nome:'Gallery interattiva prima/dopo', tipo:'flag', obbligatorio:true, costo_mensile:50, costo_setup:800, impatto:0.6, note:'Slider comparativo per ogni lavoro' },
+        { id:'form_prev', nome:'Form preventivo strutturato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.25, note:'Tipo lavoro, metratura, budget — lead qualificati' },
+      ]},
+      '4': { cosa:'Blog su bonus fiscali e ristrutturazione + SEO locale', tempo_mesi:2, moduli:[
+        { id:'blog', nome:'Blog bonus/ristrutturazione', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'copywriter', nome:'Content con copywriter specializzato', costo_mensile:400, costo_setup:500, impatto:1.0, note:'2-4 articoli/mese su bonus, tendenze, consigli' },
+          { id:'interno', nome:'Blog autogestito', costo_mensile:0, costo_setup:300, impatto:0.5, note:'Il titolare scrive 1 articolo/mese' },
+        ]},
+      ]},
+      '5': { cosa:'Configuratore preventivo online per ristrutturazioni standard', tempo_mesi:3, moduli:[
+        { id:'configuratore', nome:'Configuratore preventivo', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'custom', nome:'Configuratore custom (sviluppo ad hoc)', costo_mensile:300, costo_setup:4000, impatto:1.0, note:'Il cliente configura la ristrutturazione e ha un prezzo indicativo' },
+          { id:'saas', nome:'Tool SaaS (Typeform + logica prezzi)', costo_mensile:100, costo_setup:1000, impatto:0.65, note:'Piu semplice, meno preciso' },
+        ]},
+      ]},
     },
     ecommerce: {
-      '1': { chi:'Titolare', cosa:'Acquisto materiali dal solito magazzino edile — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Confronto prezzi tra 2-3 fornitori per ogni cantiere',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'canale', nome:'Confronto prezzi tra 2-3 fornitori per ogni cantiere', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Accordi quadro con fornitori materiali — prezzi riservati',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'canale', nome:'Accordi quadro con fornitori materiali', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Rete subappaltatori qualificati con tariffe concordate',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'canale', nome:'Rete subappaltatori qualificati con tariffe concordate', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:500, impatto:0.8 }
-        ]
-      },
-      '5': {
-        cosa: 'Resp. acquisti — negoziazione volumi, stoccaggio, import diretto',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Resp. acquisti',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:1500, costo_setup:1000, impatto:1, note:'Resp. acquisti — negoziazione volumi, stoccaggio, import diretto' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:750, costo_setup:400, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
       _label: 'Approvvigionamento materiali e subappalti',
-    }
+      '1': { chi:'Titolare', cosa:'Acquisto materiali dal solito magazzino edile', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Confronto prezzi tra 2-3 fornitori per ogni cantiere', tempo_mesi:1, moduli:[
+        { id:'fornitori', nome:'Database fornitori materiali', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.7, note:'Scheda per fornitore: prezzi, tempi, affidabilita, MOQ' },
+      ]},
+      '3': { cosa:'Accordi quadro con fornitori materiali — prezzi riservati', tempo_mesi:2, moduli:[
+        { id:'accordi', nome:'Accordi quadro fornitori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.6, note:'Prezzi bloccati con 2-3 magazzini edili principali' },
+        { id:'online', nome:'Acquisti online materiali (ManoMano Pro, Wurth)', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:0, impatto:0.15, note:'Confronto prezzi e consegna in cantiere' },
+      ]},
+      '4': { cosa:'Rete subappaltatori qualificati con tariffe concordate', tempo_mesi:2, moduli:[
+        { id:'sub', nome:'Albo subappaltatori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.6, note:'Database sub: elettricista, idraulico, cartongessista — qualificati' },
+        { id:'contratti_sub', nome:'Contratti quadro subappalto', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.25, note:'Tariffe concordate, tempi garantiti, penali' },
+      ]},
+      '5': { cosa:'Responsabile acquisti — negoziazione volumi, stoccaggio', tempo_mesi:4, moduli:[
+        { id:'buyer', nome:'Responsabile acquisti', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Buyer edile dipendente', costo_mensile:2000, costo_setup:0, impatto:1.0, note:'Negoziazione, logistica cantiere, controllo qualita materiali' },
+          { id:'parttime', nome:'Buyer part-time/admin con delega', costo_mensile:800, costo_setup:0, impatto:0.6, note:'Gestisce ordini e confronto prezzi' },
+        ]},
+      ]},
+    },
   },
 
   // ═══════════════════════════════════════════════════════════════════════════
