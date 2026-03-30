@@ -5,6 +5,33 @@ let editingId = null;
 let currentCalls = [];
 
 // -- UTILS -------------------------------------------------
+
+// Controlla se gli obiettivi sono REALMENTE raggiunti (con sessioni fatte, non solo diagnosi = target)
+function _isAllTargetsReached(p) {
+  var DIMS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+  var targets = p.targets || {};
+  var dims = p.dims || {};
+  var sc = p.step_completamenti || {};
+
+  // Trova le dimensioni con target attivo (target > 1)
+  var dimsConTarget = DIMS.filter(function(id) { return (targets[id] || 0) > 1; });
+  if (dimsConTarget.length === 0) return false;
+
+  // Tutte le dimensioni con target devono avere dims >= target
+  var tuttiAlLivello = dimsConTarget.every(function(id) { return (dims[id] || 0) >= targets[id]; });
+  if (!tuttiAlLivello) return false;
+
+  // Per OGNI dimensione con target, devono esserci step_completamenti che coprono fino al target
+  var tuttiCompletati = dimsConTarget.every(function(id) {
+    var dimSc = sc[id];
+    if (!dimSc || Object.keys(dimSc).length === 0) return false;
+    // Lo step del target deve essere registrato nei completamenti
+    return dimSc[String(targets[id])] != null;
+  });
+
+  return tuttiCompletati;
+}
+
 function calcScore(p) {
   if (!p.dims || !Object.keys(p.dims).length) return 0;
   const w = {vendite:18,pipeline:18,team:14,processi:12,ricavi:14,marketing:12,sitoweb:6,ecommerce:6};
@@ -116,7 +143,9 @@ function openSessioneModal() {
   var dimsHtml = DIMS_S.map(function(d) {
     var livelloAttuale = p.dims?.[d] || 1;
     var targetDim = p.targets?.[d] || livelloAttuale;
-    var giaAlTarget = p.targets?.[d] && livelloAttuale >= targetDim;
+    var scDim = (p.step_completamenti || {})[d];
+    var haCompletamenti = scDim && Object.keys(scDim).length > 0;
+    var giaAlTarget = p.targets?.[d] && livelloAttuale >= targetDim && haCompletamenti;
     var opzioni = '';
     for (var i = livelloAttuale + 1; i <= 5; i++) opzioni += '<option value="'+i+'">'+i+'</option>';
     return '<div class="sess-upgrade-row'+(giaAlTarget?' sess-upgrade-disabled':'')+'" id="sess-row-'+d+'">' +
@@ -212,7 +241,7 @@ async function saveSessione() {
 
 function renderListinoServizi(settore) {
   var sd = typeof STEP_DETAIL_BY_SETTORE !== 'undefined' ? STEP_DETAIL_BY_SETTORE : {};
-  var keys = Object.keys(sd);
+  var keys = Object.keys(sd).filter(k => !k.startsWith('_'));
   if (!settore && keys.length > 0) settore = keys[0];
   // Render tabs
   var tabsEl = document.getElementById('ls-macro-tabs');
@@ -230,6 +259,55 @@ function renderListinoServizi(settore) {
   var DIMS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
   var DIM_LABELS_DEFAULT = {vendite:'Vendite',pipeline:'Pipeline & CRM',team:'Team',processi:'Processi',ricavi:'Ricavi & Margini',marketing:'Marketing',sitoweb:'Sito Web',ecommerce:'Ecommerce'};
   var fmtV = function(v) { return v ? v.toLocaleString('it-IT') + '\u20AC' : '\u2014'; };
+
+  // Helper: calcola range costi per uno step con moduli
+  function calcStepRange(d) {
+    if (!d.moduli || !d.moduli.length) return { minR: d.costo_mensile || 0, maxR: d.costo_mensile || 0, minU: d.costo_setup || 0, maxU: d.costo_setup || 0 };
+    var minR = 0, maxR = 0, minU = 0, maxU = 0;
+    d.moduli.forEach(function(m) {
+      if (m.tipo === 'flag') {
+        if (m.obbligatorio) { minR += (m.costo_mensile||0); minU += (m.costo_setup||0); }
+        maxR += (m.costo_mensile||0); maxU += (m.costo_setup||0);
+      } else if (m.tipo === 'scelta' && m.varianti && m.varianti.length) {
+        var costs = m.varianti.map(function(v){return v.costo_mensile||0;});
+        var setups = m.varianti.map(function(v){return v.costo_setup||0;});
+        if (m.obbligatorio) { minR += Math.min.apply(null, costs); minU += Math.min.apply(null, setups); }
+        maxR += Math.max.apply(null, costs); maxU += Math.max.apply(null, setups);
+      } else if (m.tipo === 'multi' && m.varianti && m.varianti.length) {
+        var minV = m.varianti.map(function(v){return v.costo_mensile||0;});
+        var minCost = Math.min.apply(null, minV);
+        var maxCost = Math.max.apply(null, minV);
+        var mn = m.min || 1;
+        if (m.obbligatorio) { minR += minCost * mn; minU += 0; }
+        maxR += maxCost * (mn + 2); maxU += 0;
+      }
+    });
+    return { minR: minR, maxR: maxR, minU: minU, maxU: maxU };
+  }
+
+  // Helper: render moduli list for a step
+  function renderModuliList(d) {
+    if (!d.moduli || !d.moduli.length) return '';
+    return '<div class="ls-moduli-list">' + d.moduli.map(function(m) {
+      var obbTag = m.obbligatorio ? '<span class="ls-mod-obb">richiesto</span>' : '<span class="ls-mod-opt">opzionale</span>';
+      var tipoTag = m.tipo === 'flag' ? '' : m.tipo === 'scelta' ? ' <span class="ls-mod-tipo">scelta</span>' : ' <span class="ls-mod-tipo">multi</span>';
+      if (m.tipo === 'flag') {
+        var costoStr = (m.costo_mensile ? fmtV(m.costo_mensile) + '/mese' : '') + (m.costo_mensile && m.costo_setup ? ' + ' : '') + (m.costo_setup ? fmtV(m.costo_setup) + ' setup' : '');
+        return '<div class="ls-mod-item"><div class="ls-mod-head">' + obbTag + ' <span class="ls-mod-nome">' + m.nome + '</span></div>' +
+          (costoStr ? '<div class="ls-mod-costo">' + costoStr + '</div>' : '<div class="ls-mod-costo ls-cost-zero">incluso</div>') +
+          (m.note ? '<div class="ls-mod-note">' + m.note + '</div>' : '') + '</div>';
+      } else {
+        var varsHtml = (m.varianti || []).map(function(v) {
+          var vc = (v.costo_mensile ? fmtV(v.costo_mensile) + '/mese' : '') + (v.costo_mensile && v.costo_setup ? ' + ' : '') + (v.costo_setup ? fmtV(v.costo_setup) + ' setup' : '');
+          return '<div class="ls-var-row"><span class="ls-var-nome">' + v.nome + '</span><span class="ls-var-costo">' + (vc || 'incluso') + '</span></div>';
+        }).join('');
+        return '<div class="ls-mod-item"><div class="ls-mod-head">' + obbTag + tipoTag + ' <span class="ls-mod-nome">' + m.nome + '</span></div>' +
+          '<div class="ls-var-list">' + varsHtml + '</div>' +
+          (m.note ? '<div class="ls-mod-note">' + m.note + '</div>' : '') + '</div>';
+      }
+    }).join('') + '</div>';
+  }
+
   var cards = DIMS.map(function(dim) {
     var dimData = data[dim];
     if (!dimData) return '';
@@ -238,19 +316,43 @@ function renderListinoServizi(settore) {
     var stepRows = steps.map(function(s) {
       var d = dimData[s];
       if (!d) return '';
-      var desc = d.chi + ' \u2014 ' + d.cosa;
-      return '<div class="ls-step-row">' +
-        '<div class="ls-step-left">' +
-          '<div class="ls-step-badge">Step ' + s + '</div>' +
-          '<div class="ls-step-desc">' + desc + '</div>' +
-        '</div>' +
-        '<div class="ls-step-costs">' +
-          '<span class="ls-cost-item"><span class="ls-cost-label">Mensile</span><span class="ls-cost-val ' + (d.costo_mensile ? '' : 'ls-cost-zero') + '">' + (d.costo_mensile ? fmtV(d.costo_mensile) : '\u2014') + '</span></span>' +
-          '<span class="ls-cost-sep">+</span>' +
-          '<span class="ls-cost-item"><span class="ls-cost-label">Setup</span><span class="ls-cost-val ' + (d.costo_setup ? '' : 'ls-cost-zero') + '">' + (d.costo_setup ? fmtV(d.costo_setup) : '\u2014') + '</span></span>' +
-          '<span class="ls-cost-sep">&middot;</span>' +
-          '<span class="ls-cost-item"><span class="ls-cost-label">Tempo</span><span class="ls-cost-val">' + (d.tempo_mesi ? d.tempo_mesi + ' mesi' : '\u2014') + '</span></span>' +
-        '</div></div>';
+      var hasModuli = d.moduli && d.moduli.length > 0;
+      var desc = (d.chi ? d.chi + ' \u2014 ' : '') + (d.cosa || '');
+
+      if (hasModuli) {
+        var range = calcStepRange(d);
+        var rangeStr = '';
+        if (range.minR === range.maxR) {
+          rangeStr = fmtV(range.minR) + '/mese';
+        } else {
+          rangeStr = fmtV(range.minR) + ' \u2013 ' + fmtV(range.maxR) + '/mese';
+        }
+        return '<div class="ls-step-row ls-step-moduli">' +
+          '<div class="ls-step-left">' +
+            '<div class="ls-step-badge">Step ' + s + '</div>' +
+            '<div class="ls-step-desc">' + desc + '</div>' +
+          '</div>' +
+          '<div class="ls-step-costs">' +
+            '<span class="ls-cost-item"><span class="ls-cost-label">Range mensile</span><span class="ls-cost-val">' + rangeStr + '</span></span>' +
+            '<span class="ls-cost-sep">&middot;</span>' +
+            '<span class="ls-cost-item"><span class="ls-cost-label">Tempo</span><span class="ls-cost-val">' + (d.tempo_mesi ? d.tempo_mesi + ' mesi' : '\u2014') + '</span></span>' +
+          '</div>' +
+          renderModuliList(d) +
+        '</div>';
+      } else {
+        return '<div class="ls-step-row">' +
+          '<div class="ls-step-left">' +
+            '<div class="ls-step-badge">Step ' + s + '</div>' +
+            '<div class="ls-step-desc">' + desc + '</div>' +
+          '</div>' +
+          '<div class="ls-step-costs">' +
+            '<span class="ls-cost-item"><span class="ls-cost-label">Mensile</span><span class="ls-cost-val ' + (d.costo_mensile ? '' : 'ls-cost-zero') + '">' + (d.costo_mensile ? fmtV(d.costo_mensile) : '\u2014') + '</span></span>' +
+            '<span class="ls-cost-sep">+</span>' +
+            '<span class="ls-cost-item"><span class="ls-cost-label">Setup</span><span class="ls-cost-val ' + (d.costo_setup ? '' : 'ls-cost-zero') + '">' + (d.costo_setup ? fmtV(d.costo_setup) : '\u2014') + '</span></span>' +
+            '<span class="ls-cost-sep">&middot;</span>' +
+            '<span class="ls-cost-item"><span class="ls-cost-label">Tempo</span><span class="ls-cost-val">' + (d.tempo_mesi ? d.tempo_mesi + ' mesi' : '\u2014') + '</span></span>' +
+          '</div></div>';
+      }
     }).join('');
     return '<div class="ls-card">' +
       '<div class="ls-card-header"><div class="ls-card-title">' + dimLabel + '</div></div>' +
@@ -258,7 +360,7 @@ function renderListinoServizi(settore) {
   }).join('');
   container.innerHTML =
     '<div class="ls-grid">' + cards + '</div>' +
-    '<div class="ls-footer">Valori al netto IVA \u00B7 I costi variano in base alla complessit\u00E0 del cliente</div>';
+    '<div class="ls-footer">Valori al netto IVA \u00B7 I costi variano in base alla configurazione scelta dal cliente</div>';
 }
 
 function lsMacroSwitch(settore, btn) {
@@ -591,6 +693,43 @@ function renderPreventivi(p) {
   if (!container) return;
   var STATO_COLOR = {bozza:'#4A6180',inviato:'#4E9FE6',accettato:'rgb(25,100,60)',rifiutato:'#E05555'};
   var STATO_LABEL = {bozza:'Bozza',inviato:'Inviato',accettato:'Accettato',rifiutato:'Rifiutato'};
+
+  // Capitolo chiuso (all targets reached) o archivio → blocca preventivi
+  var allReached = _isAllTargetsReached(p);
+  var capitoloCompletato = allReached && !_isCapitoloReadOnly;
+
+  // Capitolo completato o archivio read-only → preventivi visibili con PDF ma senza creazione/modifica/elimina
+  var solaLettura = capitoloCompletato || _isCapitoloReadOnly;
+
+  if (solaLettura) {
+    var bannerHtml = capitoloCompletato ? '<div style="text-align:center;padding:20px 16px 16px;border-bottom:1px solid var(--border);margin-bottom:12px">' +
+      '<div style="font-size:22px;margin-bottom:6px">\u2705</div>' +
+      '<div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">Capitolo completato</div>' +
+      '<div style="font-size:11px;color:var(--gray);line-height:1.4">Obiettivi raggiunti. Apri un nuovo capitolo per continuare.</div>' +
+    '</div>' : '';
+
+    if (!_preventiviList.length) {
+      container.innerHTML = bannerHtml + '<div style="color:var(--gray);font-size:12px;padding:12px 0">Nessun preventivo in questo capitolo.</div>';
+    } else {
+      container.innerHTML = bannerHtml + _preventiviList.map(function(pv) {
+        var d = pv.dati || {};
+        return '<div class="prev-card">' +
+          '<div class="prev-card-header">' +
+            '<div>' +
+              '<div class="prev-card-title">Preventivo del ' + (d.data ? new Date(d.data).toLocaleDateString('it-IT') : '\u2014') + '</div>' +
+              '<div class="prev-card-sub">Durata: ' + (d.durata||'\u2014') + ' \u00B7 Fee: ' + (d.fee_mensile ? d.fee_mensile.toLocaleString('it-IT') : '\u2014') + '\u20AC/mese \u00B7 Una tantum: ' + (d.una_tantum ? d.una_tantum.toLocaleString('it-IT') : '\u2014') + '\u20AC</div>' +
+            '</div>' +
+            '<span class="prev-stato-badge" style="background:' + (STATO_COLOR[pv.stato]||'#4A6180') + '20;color:' + (STATO_COLOR[pv.stato]||'#4A6180') + ';border:1px solid ' + (STATO_COLOR[pv.stato]||'#4A6180') + '40">' + (STATO_LABEL[pv.stato]||pv.stato) + '</span>' +
+          '</div>' +
+          '<div class="prev-card-actions">' +
+            '<button class="btn" onclick="stampaPrev(\'' + pv.id + '\')">Scarica PDF</button>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+    return;
+  }
+
   if (!_preventiviList.length) {
     container.innerHTML = '<div class="prev-empty">Nessun preventivo ancora. <button class="btn btn-primary" style="margin-left:12px" onclick="openPreventivoModal()">+ Nuovo preventivo</button></div>';
     return;
@@ -726,9 +865,19 @@ function renderDashboard() {
       var scad = p.target_scadenze[dimId];
       var tgt = p.targets[dimId] || 0;
       var cur = (p.dims && p.dims[dimId]) || 0;
-      if (!scad || tgt <= cur) return; // no scadenza o già raggiunto
+      if (!scad || tgt <= cur) return;
       var giorni = Math.round((new Date(scad) - new Date()) / 86400000);
       if (giorni <= 30) scadenze.push({ nome: p.nome, id: p.id, dim: getDimLabel(p.settore, dimId), giorni: giorni, scaduto: giorni < 0 });
+
+      // Milestone intermedie
+      var dimMilestones = (p.target_milestones || {})[dimId] || {};
+      var sc = (p.step_completamenti || {})[dimId] || {};
+      Object.keys(dimMilestones).forEach(function(step) {
+        if (sc[step]) return; // step già completato
+        if (parseInt(step) <= cur) return;
+        var gm = Math.round((new Date(dimMilestones[step]) - new Date()) / 86400000);
+        if (gm <= 30) scadenze.push({ nome: p.nome, id: p.id, dim: getDimLabel(p.settore, dimId) + ' step ' + step, giorni: gm, scaduto: gm < 0 });
+      });
     });
   });
   scadenze.sort(function(a,b) { return a.giorni - b.giorni; });
@@ -939,6 +1088,11 @@ function renderProspects() {
 async function renderProspectDetail(id) {
   const p = prospects.find(x=>x.id===id);
   if(!p) return;
+  // Reset solo se non stiamo caricando un capitolo archiviato
+  if (!_realProspectData) {
+    _currentCapitoloView = -1;
+    _isCapitoloReadOnly = false;
+  }
   const s=calcScore(p), sc=scoreColor(s);
 
   const pCol = getProspectColor(p);
@@ -1181,27 +1335,22 @@ async function renderProspectDetail(id) {
   const {data:calls_raw,error}=await sb.from('calls').select('*').eq('prospect_id',id);
   const calls = calls_raw ? calls_raw.sort((a,b) => new Date(b.data) - new Date(a.data)) : [];
   currentCalls=calls||[];
-  document.getElementById('call-count').textContent = currentCalls.length + ' call registrate';
-  if(!currentCalls.length) {
-    document.getElementById('call-log').innerHTML='\x3cdiv style="color:var(--gray);font-size:13px;padding:8px 0">Nessuna call registrata. Premi "+ Call" per aggiungere la prima nota.\x3c/div>';
-  } else {
-    document.getElementById('call-log').innerHTML=currentCalls.map(c=>{
-      const ec=c.esito==='positivo'?'rgba(40,120,70,0.75)':c.esito==='negativo'?'rgba(170,50,40,0.75)':'rgba(150,110,30,0.75)';
-      const el=c.esito==='positivo'?'Positivo':c.esito==='negativo'?'Negativo':'Neutro';
-      return `\x3cdiv class="call-item">
-        \x3cdiv style="display:flex;align-items:center;gap:10px">
-          \x3cdiv class="call-date">${new Date(c.data).toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'})}\x3c/div>
-          \x3cspan class="tag" style="background:${ec}22;color:${ec};font-size:10px">${el}\x3c/span>
-        \x3c/div>
-        \x3cdiv class="call-note">${(c.note||'').replace(/\n/g,'\x3cbr>')}\x3c/div>
-      \x3c/div>`;
-    }).join('');
-  }
   await loadPreventivi(id);
   renderPreventivi(p);
   renderCronistoria(p);
   renderTimelineUnificata(p, currentCalls);
   renderCapitoliTabs(p);
+
+  // Read-only mode per capitoli archiviati
+  var targetBtns = document.getElementById('target-buttons-row');
+  var headerBtns = document.getElementById('header-action-buttons');
+  if (_isCapitoloReadOnly) {
+    if (targetBtns) targetBtns.style.display = 'none';
+    if (headerBtns) headerBtns.style.display = 'none';
+  } else {
+    if (targetBtns) targetBtns.style.display = '';
+    if (headerBtns) headerBtns.style.display = '';
+  }
 }
 
 // -- MARKET ------------------------------------------------
@@ -1566,7 +1715,7 @@ function _buildReportHTML(p) {
       const cur = p.dims?.[d.id] || 0;
       const tgt = targets[d.id] || 0;
       const azione = _getAzionePredefinita(settore, d.id, cur, cur + 1);
-      const costo = _getCosto(settore, d.id, cur, cur + 1);
+      const costo = _getCosto(settore, d.id, cur, cur + 1, p);
       const scad = scadenze[d.id] || null;
       const impattoRaw = _getImpatto(settore, d.id, String(cur + 1));
       const impattoCalc = _calcolaImpatto(impattoRaw, p.fatturato, p.fatturato_anno_1, p.ebitda, p.margine_pct, p.utile_netto);
@@ -3237,9 +3386,145 @@ function _getAzionePredefinita(settore, dimId, fromStep, toStep) {
   return null;
 }
 
-function _getCosto(settore, dimId, fromStep, toStep) {
+// Calcola costo di uno step dai moduli selezionati dal prospect
+function calcolaCostoModuli(settore, dimId, stepKey, moduliSelezionati) {
+  var detail = STEP_DETAIL_BY_SETTORE?.[settore]?.[dimId]?.[String(stepKey)];
+  if (!detail || !detail.moduli) return null;
+  var sel = moduliSelezionati?.[dimId]?.[String(stepKey)] || {};
+  var r = 0, u = 0;
+
+  detail.moduli.forEach(function(mod) {
+    if (mod.tipo === 'flag') {
+      // Flag: se selezionato (o obbligatorio di default)
+      if (sel[mod.id] === true || (mod.obbligatorio && sel[mod.id] !== false)) {
+        r += mod.costo_mensile || 0;
+        u += mod.costo_setup || 0;
+      }
+    } else if (mod.tipo === 'scelta') {
+      // Scelta: una variante selezionata
+      var scelta = sel[mod.id];
+      var varianteId = typeof scelta === 'object' ? scelta.variante : scelta;
+      if (!varianteId && mod.obbligatorio && mod.varianti.length > 0) {
+        varianteId = mod.varianti[0].id; // default: prima variante
+      }
+      if (varianteId) {
+        var v = mod.varianti.find(function(x) { return x.id === varianteId; });
+        if (v) { r += v.costo_mensile || 0; u += v.costo_setup || 0; }
+      }
+    } else if (mod.tipo === 'multi') {
+      // Multi: array di varianti con quantità
+      var items = sel[mod.id];
+      if (Array.isArray(items)) {
+        items.forEach(function(item) {
+          var v = mod.varianti.find(function(x) { return x.id === item.variante; });
+          if (v) {
+            var qty = item.qty || 1;
+            r += (v.costo_mensile || 0) * qty;
+            u += (v.costo_setup || 0) * qty;
+          }
+        });
+      } else if (mod.obbligatorio && mod.varianti.length > 0) {
+        // Default: min quantità della prima variante
+        var qty = mod.min || 1;
+        r += (mod.varianti[0].costo_mensile || 0) * qty;
+        u += (mod.varianti[0].costo_setup || 0) * qty;
+      }
+    }
+  });
+
+  // Custom modules
+  var customMods = sel._custom;
+  if (Array.isArray(customMods)) {
+    customMods.forEach(function(cm) {
+      if (cm.attivo !== false) {
+        r += cm.costo_mensile || 0;
+        u += cm.costo_setup || 0;
+      }
+    });
+  }
+
+  return { r: r, u: u };
+}
+
+// Calcola moltiplicatore impatto dai moduli selezionati (0-1)
+function calcolaImpattoModuli(settore, dimId, stepKey, moduliSelezionati) {
+  var detail = STEP_DETAIL_BY_SETTORE?.[settore]?.[dimId]?.[String(stepKey)];
+  if (!detail || !detail.moduli) return 1.0; // nessun modulo = impatto pieno
+  var sel = moduliSelezionati?.[dimId]?.[String(stepKey)] || {};
+  var totalImpatto = 0;
+
+  detail.moduli.forEach(function(mod) {
+    if (mod.tipo === 'flag') {
+      if (sel[mod.id] === true || (mod.obbligatorio && sel[mod.id] !== false)) {
+        totalImpatto += mod.impatto || 0;
+      }
+    } else if (mod.tipo === 'scelta') {
+      var scelta = sel[mod.id];
+      var varianteId = typeof scelta === 'object' ? scelta.variante : scelta;
+      if (!varianteId && mod.obbligatorio && mod.varianti.length > 0) varianteId = mod.varianti[0].id;
+      if (varianteId) {
+        var v = mod.varianti.find(function(x) { return x.id === varianteId; });
+        if (v) totalImpatto += v.impatto || 0;
+      }
+    } else if (mod.tipo === 'multi') {
+      var items = Array.isArray(sel[mod.id]) ? sel[mod.id] : [];
+      if (items.length === 0 && mod.obbligatorio && mod.varianti.length > 0) {
+        items = [{ variante: mod.varianti[0].id, qty: mod.min || 1 }];
+      }
+      items.forEach(function(item) {
+        var v = mod.varianti.find(function(x) { return x.id === item.variante; });
+        if (v) totalImpatto += (v.impatto || 0) * (item.qty || 1);
+      });
+    }
+  });
+
+  // Custom modules from prospect
+  var customMods = sel._custom;
+  if (Array.isArray(customMods)) {
+    customMods.forEach(function(cm) {
+      if (cm.attivo !== false) totalImpatto += cm.impatto || 0;
+    });
+  }
+
+  return Math.min(totalImpatto, 1.5); // cap a 1.5x per evitare inflazione
+}
+
+// Calcola costo default di uno step (solo moduli obbligatori, prima variante)
+function calcolaCostoModuliDefault(settore, dimId, stepKey) {
+  var detail = STEP_DETAIL_BY_SETTORE?.[settore]?.[dimId]?.[String(stepKey)];
+  if (!detail || !detail.moduli) return null;
+  var r = 0, u = 0;
+  detail.moduli.forEach(function(mod) {
+    if (!mod.obbligatorio) return;
+    if (mod.tipo === 'flag') {
+      r += mod.costo_mensile || 0;
+      u += mod.costo_setup || 0;
+    } else if (mod.tipo === 'scelta' && mod.varianti.length > 0) {
+      r += mod.varianti[0].costo_mensile || 0;
+      u += mod.varianti[0].costo_setup || 0;
+    } else if (mod.tipo === 'multi' && mod.varianti.length > 0) {
+      var qty = mod.min || 1;
+      r += (mod.varianti[0].costo_mensile || 0) * qty;
+      u += (mod.varianti[0].costo_setup || 0) * qty;
+    }
+  });
+  return { r: r, u: u };
+}
+
+function _getCosto(settore, dimId, fromStep, toStep, prospect) {
   const chiaveRange = fromStep + '-' + toStep;
   const chiaveStep = String(toStep);
+
+  // 0. Se lo step ha moduli, usa il calcolo moduli
+  const detail0 = STEP_DETAIL_BY_SETTORE?.[settore]?.[dimId]?.[chiaveStep];
+  if (detail0 && detail0.moduli) {
+    var moduliSel = prospect ? (prospect.moduli_selezionati || {}) : {};
+    var hasSel = moduliSel[dimId] && moduliSel[dimId][chiaveStep];
+    var costo = hasSel ? calcolaCostoModuli(settore, dimId, chiaveStep, moduliSel) : calcolaCostoModuliDefault(settore, dimId, chiaveStep);
+    costo.impatto = calcolaImpattoModuli(settore, dimId, chiaveStep, moduliSel);
+    return costo;
+  }
+
   // 1. STEP_DETAIL_BY_SETTORE — costi specifici per micro-settore (priorità massima)
   const detail = STEP_DETAIL_BY_SETTORE?.[settore]?.[dimId]?.[chiaveRange]
               || STEP_DETAIL_BY_SETTORE?.[settore]?.[dimId]?.[chiaveStep];
@@ -4115,7 +4400,9 @@ function _calcolaImpattoCumulativo(p) {
   const DIMS_IDS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
   const attive = DIMS_IDS.filter(id => (targets[id]||0) > (dims[id]||0));
   // Dimensioni completate: target raggiunto — i costi sono stati sostenuti
-  const completate = DIMS_IDS.filter(id => (targets[id]||0) > 0 && (dims[id]||0) >= (targets[id]||0) && (targets[id]||0) > 1);
+  // Dimensioni completate: target raggiunto E con step_completamenti registrati (sessioni fatte)
+  const sc = p.step_completamenti || {};
+  const completate = DIMS_IDS.filter(id => (targets[id]||0) > 0 && (dims[id]||0) >= (targets[id]||0) && (targets[id]||0) > 1 && sc[id] && Object.keys(sc[id]).length > 0);
   const ORGANICA_CURVA = [0,0.005,0.012,0.025,0.042,0.065];
   const ORGANICA_PESI = {
     manifatturiero:{vendite:0.32,pipeline:0.22,team:0.18,processi:0.10,ricavi:0.09,marketing:0.06,sitoweb:0.02,ecommerce:0.01},
@@ -4169,7 +4456,7 @@ function _calcolaImpattoCumulativo(p) {
     let dimR = 0, dimU = 0;
     const dimSteps = [];
     for (let step = cur; step < tgt; step++) {
-      const c = _getCosto(settore, id, step, step+1);
+      const c = _getCosto(settore, id, step, step+1, p);
       const detail = getStepDetail(settore, id, String(step+1));
       if (c) {
         dimR += c.r || 0;
@@ -4189,7 +4476,7 @@ function _calcolaImpattoCumulativo(p) {
     let dimR = 0, dimU = 0;
     const dimSteps = [];
     for (let step = startDim; step < tgt; step++) {
-      const c = _getCosto(settore, id, step, step+1);
+      const c = _getCosto(settore, id, step, step+1, p);
       const detail = getStepDetail(settore, id, String(step+1));
       if (c) {
         dimR += c.r || 0;
@@ -4201,7 +4488,33 @@ function _calcolaImpattoCumulativo(p) {
     }
     if (dimR > 0 || dimU > 0) costiPerDim[id] = { r: dimR, u: dimU, steps: dimSteps, completed: true };
   });
-  const costoMensileTot = costoRicorrenteMensile; // alias per compatibilità
+
+  // Calcolo costi BASE (stato attuale dalla diagnosi: da step 1 al livello corrente)
+  let costoBaseMensile = 0;
+  let costoBaseUnaTantum = 0;
+  const costiBase = {};
+  DIMS_IDS.forEach(id => {
+    const cur = dims[id] || 0;
+    if (cur <= 1) return; // step 1 = base, nessun costo
+    let dimR = 0, dimU = 0;
+    const dimSteps = [];
+    for (let step = 1; step < cur; step++) {
+      const c = _getCosto(settore, id, step, step+1, p);
+      const detail = getStepDetail(settore, id, String(step+1));
+      if (c) {
+        dimR += c.r || 0;
+        dimU += c.u || 0;
+      }
+      dimSteps.push({ from: step, to: step+1, r: c ? c.r : 0, u: c ? c.u : 0, desc: detail ? detail.cosa : '' });
+    }
+    if (dimR > 0 || dimU > 0) {
+      costiBase[id] = { r: dimR, u: dimU, steps: dimSteps };
+      costoBaseMensile += dimR;
+      costoBaseUnaTantum += dimU;
+    }
+  });
+
+  const costoMensileTot = costoRicorrenteMensile + costoBaseMensile; // base + piano
 
   // Calcola crescita composta con penalità
   const calcCrescitaComposta = (orizzonte) => {
@@ -4222,7 +4535,10 @@ function _calcolaImpattoCumulativo(p) {
         const imp = _calcolaImpattoUnitario(settore, id, stepKey, p) || _getImpatto(settore, id, stepKey);
         if (imp) {
           const pctArr = orizzonte === 6 ? imp.pct_6m : orizzonte === 12 ? imp.pct_12m : imp.pct_24m;
-          const midPct = (pctArr[0] + pctArr[1]) / 2 / 100;
+          let midPct = (pctArr[0] + pctArr[1]) / 2 / 100;
+          // Applica moltiplicatore impatto dai moduli selezionati
+          const costoStep = _getCosto(settore, id, step, step+1, p);
+          if (costoStep && costoStep.impatto != null) midPct *= costoStep.impatto;
           contributoTot += midPct;
         }
       }
@@ -4234,7 +4550,7 @@ function _calcolaImpattoCumulativo(p) {
     // Dimensioni completate — il lavoro è stato fatto, la crescita è reale
     completate.forEach(id => {
       if (attive.indexOf(id) >= 0) return; // già contata
-      const startStep = 1; // partenza dal livello base
+      const startStep = 1;
       const tgt = targets[id] || 0;
       let contributoTot = 0;
       for (let step = startStep; step < tgt; step++) {
@@ -4242,7 +4558,9 @@ function _calcolaImpattoCumulativo(p) {
         const imp = _calcolaImpattoUnitario(settore, id, stepKey, p) || _getImpatto(settore, id, stepKey);
         if (imp) {
           const pctArr = orizzonte === 6 ? imp.pct_6m : orizzonte === 12 ? imp.pct_12m : imp.pct_24m;
-          const midPct = (pctArr[0] + pctArr[1]) / 2 / 100;
+          let midPct = (pctArr[0] + pctArr[1]) / 2 / 100;
+          const costoStep = _getCosto(settore, id, step, step+1, p);
+          if (costoStep && costoStep.impatto != null) midPct *= costoStep.impatto;
           contributoTot += midPct;
         }
       }
@@ -4313,7 +4631,7 @@ function _calcolaImpattoCumulativo(p) {
   const ebitdaBase = p.ebitda || (ebitdaMargin ? Math.round(fat * ebitdaMargin / 1000) * 1000 : null);
 
   // Funzione costo totale per N mesi: ricorrente × N + una tantum (pagata 1 volta)
-  const costoPerMesi = (n) => Math.round((costoRicorrenteMensile * n + costoUnaTantumTot) / 1000) * 1000;
+  const costoPerMesi = (n) => Math.round((costoMensileTot * n + costoUnaTantumTot + costoBaseUnaTantum) / 1000) * 1000;
 
   // Fatturato proiettato per orizzonti estesi usando crescita composta
   // Usiamo i % di crescita calcolati e li estrapoliamo oltre 24m
@@ -4353,7 +4671,7 @@ function _calcolaImpattoCumulativo(p) {
 
   // EBITDA netto = delta EBITDA annualizzato - costo annuo ricorrente
   // (una tantum già assorbita nel calcolo del costo totale per il primo periodo)
-  const costoAnnuo = Math.round(costoRicorrenteMensile * 12 / 1000) * 1000;
+  const costoAnnuo = Math.round(costoMensileTot * 12 / 1000) * 1000;
   const netto = (dMin, dMax) => dMin !== null ? [dMin - costoAnnuo, dMax - costoAnnuo] : [null, null];
   const [ebitdaNettoMin6,  ebitdaNettoMax6]  = netto(d6min,  d6max);
   const [ebitdaNettoMin12, ebitdaNettoMax12] = netto(d12min, d12max);
@@ -4403,8 +4721,10 @@ function _calcolaImpattoCumulativo(p) {
   // Beneficio cumulativo: delta6 × 6/12 + delta12 × 6/12 + delta24 × 12/12
   const benefCumulMin24 = delta6min * 0.5 + delta12min * 0.5 + delta24min * 1.0;
   const benefCumulMax24 = delta6max * 0.5 + delta12max * 0.5 + delta24max * 1.0;
-  const roiMin24 = costoTot24upd > 0 ? Math.round((benefCumulMin24 / costoTot24upd) * 10) / 10 : null;
-  const roiMax24 = costoTot24upd > 0 ? Math.round((benefCumulMax24 / costoTot24upd) * 10) / 10 : null;
+  // ROI: costi totali (base + piano) su 24 mesi
+  const costoEffettivo24 = costoPerMesi(24);
+  const roiMin24 = costoEffettivo24 > 0 ? Math.round((benefCumulMin24 / costoEffettivo24) * 10) / 10 : null;
+  const roiMax24 = costoEffettivo24 > 0 ? Math.round((benefCumulMax24 / costoEffettivo24) * 10) / 10 : null;
 
   return {
     fat, fatBase, ebitdaMargin,
@@ -4426,8 +4746,9 @@ function _calcolaImpattoCumulativo(p) {
     deltaEbitda24min, deltaEbitda24max,
     // Costi
     costoRicorrenteMensile: Math.round(costoRicorrenteMensile/100)*100,
-    costoUnaTantumTot: Math.round(costoUnaTantumTot/100)*100,
-    costoMensileTot: Math.round(costoRicorrenteMensile/100)*100,
+    costoUnaTantumTot: Math.round((costoUnaTantumTot + costoBaseUnaTantum)/100)*100,
+    costoMensileTot: Math.round(costoMensileTot/100)*100,
+    costoPianoMensile: Math.round(costoRicorrenteMensile/100)*100,
     costoAnnuo,
     costoTot6, costoTot24: costoTot24upd,
     // ROI e sostenibilità
@@ -4436,7 +4757,11 @@ function _calcolaImpattoCumulativo(p) {
     costiPerDim,
     penalitaPerDim,
     alertSbilanciamento,
-    sostenibilita
+    sostenibilita,
+    // Costi base (stato attuale dalla diagnosi)
+    costiBase,
+    costoBaseMensile: Math.round(costoBaseMensile/100)*100,
+    costoBaseUnaTantum: Math.round(costoBaseUnaTantum/100)*100,
   };
 }
 
@@ -4719,7 +5044,10 @@ function apriDettaglioCosti() {
   var p = prospects.find(function(x){ return x.id === currentId; });
   if (!p) return;
   var ic = _calcolaImpattoCumulativo(p);
-  if (!ic) return;
+  if (!ic) {
+    showToast('Inserisci fatturato e settore per vedere i costi', 'error');
+    return;
+  }
   var settore = p.settore || '';
   var fmtV = function(v) { return v ? v.toLocaleString('it-IT') + '\u20AC' : '\u2014'; };
   var LABEL = {vendite:'Vendite',pipeline:'Pipeline',team:'Team',processi:'Processi',ricavi:'Ricavi',marketing:'Marketing',sitoweb:'Sito Web',ecommerce:'Approvv.'};
@@ -4729,26 +5057,48 @@ function apriDettaglioCosti() {
     if (lbl) LABEL[id] = lbl;
   });
 
-  var costiDim = ic.costiPerDim || {};
-  var totalR = ic.costoRicorrenteMensile || 0;
+  var hasPianoCosti = (ic.costoPianoMensile || 0) > 0;
+  var costiBase = ic.costiBase || {};
+  var costiPiano = ic.costiPerDim || {};
+  var totalR = ic.costoMensileTot || ic.costoBaseMensile || 0;
   var totalU = ic.costoUnaTantumTot || 0;
+  var titolo = hasPianoCosti ? 'Dettaglio costi totali' : 'Costi struttura commerciale attuale';
+  var sottotitolo = hasPianoCosti ? 'Struttura attuale + investimento piano' : 'Costi attuali derivanti dalla diagnosi';
 
-  var rows = Object.entries(costiDim).map(function(e) {
-    var id = e[0], data = e[1];
-    var stepsHtml = data.steps.map(function(s) {
-      return '<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border)">' +
-        '<div style="font-size:11px;color:var(--gray);flex:1">Step ' + s.to + ': ' + (s.desc || '\u2014') + '</div>' +
-        '<div style="font-size:11px;color:var(--white);white-space:nowrap;margin-left:12px">' + fmtV(s.r) + '/mese' + (s.u > 0 ? ' + ' + fmtV(s.u) + ' setup' : '') + '</div>' +
+  var _renderSezione = function(costiDim, sectionTitle) {
+    var entries = Object.entries(costiDim);
+    if (entries.length === 0) return '';
+    var sectionR = 0;
+    var rows = entries.map(function(e) {
+      var id = e[0], data = e[1];
+      sectionR += data.r || 0;
+      var stepsHtml = data.steps.map(function(s) {
+        return '<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border)">' +
+          '<div style="font-size:11px;color:var(--gray);flex:1">Step ' + s.to + ': ' + (s.desc || '\u2014') + '</div>' +
+          '<div style="font-size:11px;color:var(--white);white-space:nowrap;margin-left:12px">' + fmtV(s.r) + '/mese' + (s.u > 0 ? ' + ' + fmtV(s.u) + ' setup' : '') + '</div>' +
+        '</div>';
+      }).join('');
+      return '<div style="margin-bottom:12px">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">' +
+          '<div style="font-size:12px;font-weight:600;color:var(--white)">' + (LABEL[id]||id) + '</div>' +
+          '<div style="font-size:11px;font-weight:600;color:rgb(40,75,160)">' + fmtV(data.r) + '/mese</div>' +
+        '</div>' +
+        stepsHtml +
       '</div>';
     }).join('');
     return '<div style="margin-bottom:16px">' +
-      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">' +
-        '<div style="font-size:13px;font-weight:600;color:var(--white)">' + (LABEL[id]||id) + '</div>' +
-        '<div style="font-size:12px;font-weight:600;color:rgb(40,75,160)">' + fmtV(data.r) + '/mese</div>' +
-      '</div>' +
-      stepsHtml +
+      '<div style="font-size:10px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border)">' + sectionTitle + ' \u00B7 ' + fmtV(sectionR) + '/mese</div>' +
+      rows +
     '</div>';
-  }).join('');
+  };
+
+  var rows = '';
+  if (hasPianoCosti) {
+    rows += _renderSezione(costiBase, 'Costi struttura attuale');
+    rows += _renderSezione(costiPiano, 'Investimento piano di crescita');
+  } else {
+    rows += _renderSezione(costiBase, 'Costi struttura attuale');
+  }
 
   var html = rows +
     '<div style="border-top:2px solid var(--border);padding-top:12px;margin-top:8px;display:flex;justify-content:space-between">' +
@@ -4760,55 +5110,113 @@ function apriDettaglioCosti() {
       '</div>' +
     '</div>';
 
-  document.getElementById('detail-overlay-title').textContent = 'Dettaglio investimento piano';
-  document.getElementById('detail-overlay-subtitle').textContent = 'Costi per dimensione e per step';
+  document.getElementById('detail-overlay-title').textContent = titolo;
+  document.getElementById('detail-overlay-subtitle').textContent = sottotitolo;
   document.getElementById('detail-overlay-body').innerHTML = html;
   document.getElementById('detail-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 
 // ── SISTEMA CAPITOLI ──────────────────────────────────────────
+var _currentCapitoloView = -1; // -1 = attuale, 0+ = indice capitolo archiviato
+
 function renderCapitoliTabs(p) {
   var container = document.getElementById('capitoli-tabs');
   if (!container) return;
   var capitoli = p.capitoli || [];
   var html = '';
+  var hasDims = p.dims && Object.keys(p.dims).length > 0;
 
-  // Tab capitoli chiusi
+  // Mostra tabs se il prospect ha dimensioni (diagnosi fatta)
+  if (!hasDims && capitoli.length === 0) { container.innerHTML = ''; return; }
+
+  // Tab capitoli archiviati (folder style)
   capitoli.forEach(function(cap, idx) {
-    var label = p.nome + ' \u00B7 ' + (cap.periodo || 'Capitolo ' + (idx + 1));
-    html += '<div onclick="apriCapitoliOverlay(' + idx + ')" style="padding:4px 12px;font-size:10px;border-radius:8px;cursor:pointer;' +
-      'background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.06);color:var(--gray);font-weight:500;white-space:nowrap">' +
-      label + '</div>';
+    var label = cap.periodo || 'Cap. ' + (idx + 1);
+    var isActive = _currentCapitoloView === idx;
+    var canDelete = idx > 0; // il primo capitolo (originale) non si cancella mai
+    html += '<div class="folder-tab' + (isActive ? ' active' : '') + '" onclick="switchCapitoloView(' + idx + ')">' +
+      '<span class="tab-dot"></span>' + label +
+      (canDelete ? '<span class="folder-tab-delete" onclick="event.stopPropagation();eliminaCapitolo(' + idx + ')" title="Elimina capitolo">&times;</span>' : '') +
+      '</div>';
   });
 
-  // Tab capitolo attivo
-  var hasDims = p.dims && Object.keys(p.dims).length > 0;
+  // Tab capitolo attuale
   if (hasDims) {
-    var startDate = '';
+    var isAttuale = _currentCapitoloView === -1;
+    var startLabel = 'Attuale';
     if (capitoli.length > 0) {
       var lastCap = capitoli[capitoli.length - 1];
-      startDate = lastCap.data_fine ? new Date(lastCap.data_fine).toLocaleDateString('it-IT', {month:'short', year:'numeric'}) + ' \u2192 oggi' : 'Attuale';
-    } else {
-      startDate = 'Attuale';
+      if (lastCap.data_fine) {
+        startLabel = new Date(lastCap.data_fine).toLocaleDateString('it-IT', {month:'short', year:'numeric'}) + ' \u2192 oggi';
+      }
     }
-    html += '<div onclick="apriCapitoliOverlay(-1)" style="padding:4px 12px;font-size:10px;border-radius:8px;cursor:pointer;' +
-      'background:rgba(40,120,70,0.1);border:1px solid rgba(40,120,70,0.2);color:rgba(40,120,70,0.8);font-weight:600;white-space:nowrap">' +
-      p.nome + ' \u00B7 ' + startDate + '</div>';
+    var canDeleteAttuale = capitoli.length > 0; // cancellabile se non è il capitolo originale
+    html += '<div class="folder-tab' + (isAttuale ? ' active-green' : '') + '" onclick="switchCapitoloView(-1)">' +
+      '<span class="tab-dot"></span>' + startLabel +
+      (canDeleteAttuale ? '<span class="folder-tab-delete" onclick="event.stopPropagation();eliminaCapitoloAttuale()" title="Elimina capitolo attuale">&times;</span>' : '') +
+      '</div>';
   }
 
-  // Bottone + nuovo capitolo
-  var allReached = hasDims && p.targets && Object.keys(p.targets).length > 0 &&
-    ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'].every(function(id) {
-      return !p.targets[id] || (p.dims[id] || 0) >= p.targets[id];
-    });
-
-  if (allReached) {
-    html += '<div onclick="nuovoCapitolo()" style="padding:4px 10px;font-size:12px;border-radius:8px;cursor:pointer;' +
-      'background:rgba(70,100,200,0.1);border:1px solid rgba(70,100,200,0.2);color:rgba(70,100,200,0.8);font-weight:700;white-space:nowrap" title="Nuovo capitolo di crescita">+</div>';
-  }
+  // Bottone + sempre visibile alla destra dell'ultimo tab
+  html += '<div class="folder-tab-new" onclick="nuovoCapitolo()" title="Nuovo capitolo di crescita">+</div>';
 
   container.innerHTML = html;
+}
+
+// Dati reali del prospect, salvati quando si visualizza un capitolo archiviato
+var _realProspectData = null;
+var _isCapitoloReadOnly = false;
+
+function switchCapitoloView(idx) {
+  var p = prospects.find(function(x) { return x.id === currentId; });
+  if (!p) return;
+
+  // Se stavamo visualizzando un archivio, ripristina i dati reali prima
+  if (_realProspectData && _currentCapitoloView >= 0) {
+    Object.assign(p, _realProspectData);
+    _realProspectData = null;
+  }
+
+  _currentCapitoloView = idx;
+
+  if (idx === -1) {
+    // Torna alla vista attuale — re-render completo con dati reali
+    _isCapitoloReadOnly = false;
+    renderProspectDetail(currentId);
+    return;
+  }
+  _isCapitoloReadOnly = true;
+
+  // Visualizza capitolo archiviato
+  var capitoli = p.capitoli || [];
+  if (!capitoli[idx]) return;
+  var cap = capitoli[idx];
+
+  // Salva i dati reali
+  _realProspectData = {
+    dims: p.dims ? JSON.parse(JSON.stringify(p.dims)) : {},
+    targets: p.targets ? JSON.parse(JSON.stringify(p.targets)) : {},
+    score_history: p.score_history ? JSON.parse(JSON.stringify(p.score_history)) : [],
+    proiezione_snapshot: p.proiezione_snapshot ? JSON.parse(JSON.stringify(p.proiezione_snapshot)) : null,
+    fatturato_anno_1: p.fatturato_anno_1,
+    fatturato_checkpoints: p.fatturato_checkpoints ? JSON.parse(JSON.stringify(p.fatturato_checkpoints)) : {},
+    step_completamenti: p.step_completamenti ? JSON.parse(JSON.stringify(p.step_completamenti)) : {},
+    stato: p.stato,
+  };
+
+  // Sovrapponi i dati del capitolo archiviato
+  p.dims = cap.dims || {};
+  p.targets = cap.targets || {};
+  p.score_history = cap.score_history || [];
+  p.proiezione_snapshot = cap.proiezione_snapshot || null;
+  p.fatturato_anno_1 = cap.fatturato_finale || cap.fatturato_iniziale || p.fatturato_anno_1;
+  p.fatturato_checkpoints = cap.fatturato_checkpoints || {};
+  p.step_completamenti = cap.step_completamenti || {};
+  p.stato = cap.stato || 'chiuso';
+
+  // Re-render completo — la pagina apparirà identica a come era
+  renderProspectDetail(currentId);
 }
 
 async function nuovoCapitolo() {
@@ -4876,11 +5284,12 @@ async function nuovoCapitolo() {
     proiezione_snapshot: p.proiezione_snapshot || null,
     fatturato_checkpoints: p.fatturato_checkpoints || {},
     score_finale: calcScore(p),
+    stato: p.stato || 'chiuso',
   };
 
   capitoli.push(capitoloChiuso);
 
-  // Reset per nuovo capitolo: mantieni dims (livello raggiunto), azzera target
+  // Reset per nuovo capitolo: mantieni dims (livello raggiunto), azzera target, stato torna a contattato
   var updates = {
     capitoli: capitoli,
     targets: {},
@@ -4889,17 +5298,83 @@ async function nuovoCapitolo() {
     proiezione_snapshot: null,
     fatturato_checkpoints: {},
     step_completamenti: {},
+    stato: 'contattato',
   };
 
   try {
     await sb.from('prospects').update(updates).eq('id', p.id);
   } catch(e) {
-    // Se fallisce per campi mancanti, salva solo capitoli e targets
-    try { await sb.from('prospects').update({ capitoli: capitoli, targets: {}, target_scadenze: {} }).eq('id', p.id); } catch(e2) {}
+    // Se fallisce per campi mancanti, salva solo capitoli, targets e stato
+    try { await sb.from('prospects').update({ capitoli: capitoli, targets: {}, target_scadenze: {}, stato: 'contattato' }).eq('id', p.id); } catch(e2) {}
   }
 
   Object.assign(p, updates);
   showToast('Nuovo capitolo iniziato!');
+  renderProspectDetail(currentId);
+}
+
+async function eliminaCapitolo(idx) {
+  var p = prospects.find(function(x) { return x.id === currentId; });
+  if (!p) return;
+  var capitoli = p.capitoli || [];
+  if (!capitoli[idx]) return;
+  var label = capitoli[idx].periodo || 'Capitolo ' + (idx + 1);
+  if (!confirm('Eliminare definitivamente il capitolo "' + label + '"?\n\nQuesta azione non è reversibile.')) return;
+
+  capitoli.splice(idx, 1);
+  try {
+    await sb.from('prospects').update({ capitoli: capitoli }).eq('id', p.id);
+  } catch(e) {}
+  p.capitoli = capitoli;
+
+  // Se stavamo visualizzando il capitolo eliminato, torna ad Attuale
+  if (_currentCapitoloView === idx) {
+    _currentCapitoloView = -1;
+    _isCapitoloReadOnly = false;
+    if (_realProspectData) { Object.assign(p, _realProspectData); _realProspectData = null; }
+  } else if (_currentCapitoloView > idx) {
+    _currentCapitoloView--;
+  }
+
+  showToast('Capitolo "' + label + '" eliminato');
+  renderProspectDetail(currentId);
+}
+
+async function eliminaCapitoloAttuale() {
+  var p = prospects.find(function(x) { return x.id === currentId; });
+  if (!p) return;
+  var capitoli = p.capitoli || [];
+  if (capitoli.length === 0) { showToast('Questo è il capitolo originale, non si può eliminare', 'error'); return; }
+  if (!confirm('Eliminare il capitolo attuale e tornare al capitolo precedente?\n\nI dati del capitolo attuale andranno persi.')) return;
+
+  // Ripristina i dati dall'ultimo capitolo archiviato
+  var lastCap = capitoli[capitoli.length - 1];
+  var restore = {
+    dims: lastCap.dims || {},
+    targets: lastCap.targets || {},
+    score_history: lastCap.score_history || [],
+    proiezione_snapshot: lastCap.proiezione_snapshot || null,
+    fatturato_anno_1: lastCap.fatturato_finale || lastCap.fatturato_iniziale || p.fatturato_anno_1,
+    fatturato_checkpoints: lastCap.fatturato_checkpoints || {},
+    step_completamenti: lastCap.step_completamenti || {},
+    stato: 'chiuso', // torna allo stato del capitolo archiviato
+  };
+
+  // Rimuovi l'ultimo archivio (torna ad essere il capitolo attivo)
+  capitoli.pop();
+  restore.capitoli = capitoli;
+
+  try {
+    await sb.from('prospects').update(restore).eq('id', p.id);
+  } catch(e) {
+    try { await sb.from('prospects').update({ capitoli: capitoli }).eq('id', p.id); } catch(e2) {}
+  }
+
+  Object.assign(p, restore);
+  _currentCapitoloView = -1;
+  _isCapitoloReadOnly = false;
+  _realProspectData = null;
+  showToast('Capitolo attuale eliminato, ripristinato il precedente');
   renderProspectDetail(currentId);
 }
 
@@ -5432,34 +5907,61 @@ function apriDettaglioRoi() {
   document.body.style.overflow = 'hidden';
 }
 
+var _timelineFilter = 'tutti';
+
 function renderTimelineUnificata(p, calls) {
   var container = document.getElementById('timeline-unificata');
   if (!container) return;
+  var settore = p.settore || '';
 
   var events = [];
-  var fmt = function(d) {
-    var dt = new Date(d);
-    return dt.toLocaleDateString('it-IT', {day:'2-digit', month:'short', year:'numeric'});
-  };
+  var fmtDate = function(d) { return new Date(d).toLocaleDateString('it-IT', {day:'2-digit', month:'short', year:'numeric'}); };
+  var fmtMonth = function(d) { return new Date(d).toLocaleDateString('it-IT', {month:'long', year:'numeric'}); };
 
-  // Score history (diagnosi, sessioni, target)
+  // Score history → diagnosi, sessioni con step completati, target
   (p.score_history || []).forEach(function(s) {
-    events.push({
+    var tipo = s.evento === 'Prima valutazione' ? 'diagnosi' : s.evento.indexOf('Target') >= 0 ? 'target' : 'sessione';
+    var ev = {
       data: new Date(s.data),
-      tipo: s.evento === 'Prima valutazione' ? 'diagnosi' : s.evento.indexOf('Target') >= 0 ? 'target' : 'sessione',
+      tipo: tipo,
       label: s.evento,
-      dettaglio: s.nota || ('Score: ' + s.score + '/100'),
-      score: s.score
+      nota: s.nota || '',
+      score: s.score,
+      score_base: s.score_base,
+      upgrade: s.upgrade || null,
+      dims: s.dims || null
+    };
+    events.push(ev);
+  });
+
+  // Step completamenti → eventi separati per ogni step raggiunto
+  var sc = p.step_completamenti || {};
+  Object.keys(sc).forEach(function(dimId) {
+    var dimSteps = sc[dimId] || {};
+    var label = typeof getDimLabel === 'function' ? getDimLabel(settore, dimId) : dimId;
+    Object.keys(dimSteps).forEach(function(step) {
+      var dataStr = dimSteps[step];
+      if (!dataStr) return;
+      var desc = typeof _getStepDesc === 'function' ? _getStepDesc(settore, dimId, parseInt(step)) : '';
+      events.push({
+        data: new Date(dataStr),
+        tipo: 'step',
+        label: label + ' \u2192 Step ' + step,
+        nota: desc && desc !== '\u2014' ? desc : '',
+        dimId: dimId,
+        step: parseInt(step)
+      });
     });
   });
 
   // Call
   (calls || []).forEach(function(c) {
+    var esitoLabel = c.esito === 'positivo' ? 'Positivo' : c.esito === 'negativo' ? 'Negativo' : 'Neutro';
     events.push({
       data: new Date(c.data),
       tipo: 'call',
-      label: 'Call',
-      dettaglio: (c.note || '').substring(0, 80) + ((c.note || '').length > 80 ? '...' : ''),
+      label: 'Call \u00B7 ' + esitoLabel,
+      nota: (c.note || '').substring(0, 120) + ((c.note || '').length > 120 ? '...' : ''),
       esito: c.esito
     });
   });
@@ -5474,58 +5976,120 @@ function renderTimelineUnificata(p, calls) {
     events.push({
       data: dataCk,
       tipo: 'checkpoint',
-      label: 'Fatturato ' + m + ' mesi',
-      dettaglio: ck[m].toLocaleString('it-IT') + '\u20AC'
+      label: 'Controllo fatturato \u00B7 ' + m + ' mesi',
+      nota: ck[m].toLocaleString('it-IT') + '\u20AC'
     });
   });
+
+  // Filtra
+  if (_timelineFilter !== 'tutti') {
+    events = events.filter(function(e) { return e.tipo === _timelineFilter; });
+  }
 
   // Ordina per data (più recente prima)
   events.sort(function(a, b) { return b.data - a.data; });
 
+  // Render filtri
+  var filterBar = document.getElementById('timeline-filter-bar');
+  if (filterBar) {
+    var filtri = [
+      {id:'tutti', label:'Tutti'},
+      {id:'sessione', label:'Sessioni'},
+      {id:'step', label:'Step'},
+      {id:'call', label:'Call'},
+      {id:'diagnosi', label:'Diagnosi'},
+      {id:'checkpoint', label:'Fatturato'}
+    ];
+    filterBar.innerHTML = filtri.map(function(f) {
+      var active = _timelineFilter === f.id;
+      return '<span onclick="_timelineFilter=\'' + f.id + '\';renderTimelineUnificata(prospects.find(function(x){return x.id===currentId}),currentCalls)" ' +
+        'style="font-size:10px;padding:3px 10px;border-radius:12px;cursor:pointer;font-weight:' + (active ? '700' : '500') +
+        ';background:' + (active ? 'rgba(0,0,0,0.08)' : 'rgba(0,0,0,0.02)') +
+        ';color:' + (active ? 'var(--text)' : 'var(--gray)') +
+        ';border:1px solid ' + (active ? 'rgba(0,0,0,0.1)' : 'rgba(0,0,0,0.04)') + '">' + f.label + '</span>';
+    }).join('');
+  }
+
   if (events.length === 0) {
-    container.innerHTML = '<div style="color:var(--gray);font-size:12px;padding:12px 0">Nessuna attività registrata.</div>';
+    container.innerHTML = '<div style="color:var(--gray);font-size:12px;padding:16px 0;text-align:center">Nessuna attivit\u00E0 registrata' +
+      (_timelineFilter !== 'tutti' ? ' per questo filtro.' : '.') + '</div>';
     return;
   }
 
-  var TIPO_COLORS = {
-    diagnosi: 'rgba(110,80,170,0.7)',
-    target: 'rgba(150,110,30,0.7)',
-    sessione: 'rgba(40,120,70,0.7)',
-    call: 'rgba(60,110,170,0.7)',
-    checkpoint: 'rgba(170,50,40,0.7)'
-  };
-  var TIPO_ICONS = {
-    diagnosi: '\uD83C\uDFAF',
-    target: '\uD83C\uDFF9',
-    sessione: '\u2705',
-    call: '\uD83D\uDCDE',
-    checkpoint: '\uD83D\uDCC8'
-  };
-  var TIPO_LABELS = {
-    diagnosi: 'Diagnosi',
-    target: 'Target',
-    sessione: 'Sessione',
-    call: 'Call',
-    checkpoint: 'Checkpoint'
+  var TIPO_CONFIG = {
+    diagnosi:   {icon:'\uD83C\uDFAF', color:'rgba(110,80,170,0.75)',  bg:'rgba(110,80,170,0.06)'},
+    sessione:   {icon:'\u2705',       color:'rgba(40,120,70,0.75)',   bg:'rgba(40,120,70,0.06)'},
+    step:       {icon:'\uD83D\uDCC8', color:'rgba(70,100,200,0.75)',  bg:'rgba(70,100,200,0.06)'},
+    call:       {icon:'\uD83D\uDCDE', color:'rgba(60,110,170,0.75)',  bg:'rgba(60,110,170,0.06)'},
+    target:     {icon:'\uD83C\uDFF9', color:'rgba(150,110,30,0.75)',  bg:'rgba(150,110,30,0.06)'},
+    checkpoint: {icon:'\uD83D\uDCB0', color:'rgba(170,50,40,0.75)',   bg:'rgba(170,50,40,0.06)'}
   };
 
-  container.innerHTML = events.map(function(e) {
-    var col = TIPO_COLORS[e.tipo] || 'var(--gray)';
-    var icon = TIPO_ICONS[e.tipo] || '\u25CF';
-    return '<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">' +
-      '<div style="width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,0.04);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">' + icon + '</div>' +
-      '<div style="flex:1;min-width:0">' +
-        '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">' +
-          '<div style="font-size:12px;font-weight:600;color:var(--text)">' + e.label + '</div>' +
-          '<div style="display:flex;align-items:center;gap:6px;flex-shrink:0">' +
-            '<span style="font-size:9px;padding:2px 8px;border-radius:10px;background:rgba(0,0,0,0.04);color:' + col + ';font-weight:600">' + TIPO_LABELS[e.tipo] + '</span>' +
-            '<span style="font-size:10px;color:var(--gray)">' + fmt(e.data) + '</span>' +
+  // Raggruppa per mese
+  var grouped = {};
+  events.forEach(function(e) {
+    var key = fmtMonth(e.data);
+    if (!grouped[key]) grouped[key] = [];
+    grouped[key].push(e);
+  });
+
+  var html = '';
+  Object.keys(grouped).forEach(function(month) {
+    html += '<div style="margin-bottom:4px">';
+    html += '<div style="font-size:10px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.08em;padding:10px 0 6px;border-bottom:1px solid var(--border)">' + month + '</div>';
+
+    grouped[month].forEach(function(e) {
+      var cfg = TIPO_CONFIG[e.tipo] || TIPO_CONFIG.sessione;
+
+      // Riga score per sessioni/diagnosi
+      var scoreHtml = '';
+      if (e.score != null) {
+        var sCol = e.score >= 70 ? 'rgba(35,100,40,0.8)' : e.score >= 45 ? 'rgba(140,100,25,0.8)' : 'rgba(170,30,30,0.8)';
+        scoreHtml = '<div style="font-size:16px;font-weight:700;font-family:\'DM Serif Display\',serif;color:' + sCol + '">' + e.score + '<span style="font-size:10px;color:var(--gray)">/100</span></div>';
+      }
+
+      // Dettaglio step con barra
+      var stepHtml = '';
+      if (e.tipo === 'step') {
+        var pct = (e.step / 5 * 100);
+        stepHtml = '<div style="display:flex;align-items:center;gap:8px;margin-top:4px">' +
+          '<div style="flex:1;background:var(--border);border-radius:3px;height:5px;overflow:hidden">' +
+            '<div style="width:' + pct + '%;height:100%;background:' + cfg.color + ';border-radius:3px"></div>' +
           '</div>' +
-        '</div>' +
-        (e.dettaglio ? '<div style="font-size:11px;color:var(--gray);margin-top:2px">' + e.dettaglio + '</div>' : '') +
-      '</div>' +
-    '</div>';
-  }).join('');
+          '<span style="font-size:10px;font-weight:600;color:' + cfg.color + '">' + e.step + '/5</span>' +
+        '</div>';
+      }
+
+      // Esito call colorato
+      var callEsitoHtml = '';
+      if (e.tipo === 'call' && e.esito) {
+        var esitoCol = e.esito === 'positivo' ? 'rgba(40,120,70,0.7)' : e.esito === 'negativo' ? 'rgba(170,50,40,0.7)' : 'rgba(150,110,30,0.7)';
+        callEsitoHtml = '<span style="width:8px;height:8px;border-radius:50%;background:' + esitoCol + ';display:inline-block;margin-right:4px;vertical-align:middle"></span>';
+      }
+
+      html += '<div style="display:flex;gap:10px;padding:10px 8px;border-radius:8px;margin:4px 0;background:' + cfg.bg + '">';
+      // Icona
+      html += '<div style="width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">' + cfg.icon + '</div>';
+      // Contenuto
+      html += '<div style="flex:1;min-width:0">';
+      html += '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">';
+      html += '<div style="flex:1">';
+      html += '<div style="font-size:12px;font-weight:600;color:var(--text)">' + callEsitoHtml + e.label + '</div>';
+      if (e.nota) html += '<div style="font-size:11px;color:var(--gray);margin-top:2px;line-height:1.4">' + e.nota + '</div>';
+      html += '</div>';
+      html += '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex-shrink:0">';
+      html += '<span style="font-size:10px;color:var(--gray)">' + fmtDate(e.data) + '</span>';
+      if (scoreHtml) html += scoreHtml;
+      html += '</div>';
+      html += '</div>';
+      if (stepHtml) html += stepHtml;
+      html += '</div></div>';
+    });
+
+    html += '</div>';
+  });
+
+  container.innerHTML = html;
 }
 
 function _buildGraficoTimeline(p) {
@@ -5537,10 +6101,8 @@ function _buildGraficoTimeline(p) {
   const fat = p.fatturato_anno_1 || 0;
   if (!fat) return '<div class="tl-empty">Inserisci il fatturato per vedere le proiezioni.</div>';
 
-  // Controlla se tutti i target sono raggiunti
-  const DIMS_CHECK = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
-  const hasTargets = DIMS_CHECK.some(function(id){ return (targets[id]||0) > 0; });
-  const allReached = hasTargets && DIMS_CHECK.every(function(id){ return !targets[id] || (dims[id]||0) >= targets[id]; });
+  // Controlla se tutti i target sono raggiunti (con sessioni fatte)
+  const allReached = _isAllTargetsReached(p);
 
   var completedBanner = '';
   if (allReached) {
@@ -5562,11 +6124,14 @@ function _buildGraficoTimeline(p) {
   const fat6min  = ic.fat6  ? ic.fat6[0]  : fat;
   const fat6max  = ic.fat6  ? ic.fat6[1]  : fat;
   const costoMensile = ic.costoMensileTot || 0;
+  const costoPiano = ic.costoPianoMensile || 0;
+  const costoBase = ic.costoBaseMensile || 0;
   const breakevenStr = ic.sostenibilita?.breakevenStr || '\u2014';
   const roiMin = ic.roiMin !== null ? ic.roiMin : null;
   const roiMax = ic.roiMax !== null ? ic.roiMax : null;
   const roiStr = (roiMin !== null && roiMax !== null) ? roiMin.toFixed(1) + '\u2013' + roiMax.toFixed(1) + 'x' : '\u2014';
   const costoLabel = costoMensile > 0 ? '\u2248' + fmtF(costoMensile) + '\u20AC/mese' : '\u2014';
+  const costoLabelSub = costoPiano > 0 ? 'base + investimento piano \u00B7 clicca per dettagli' : costoBase > 0 ? 'costi struttura attuale \u00B7 clicca per dettagli' : '';
 
   const pct12min = fat ? Math.round((fat12min - fat) / fat * 100) : 0;
   const pct12max = fat ? Math.round((fat12max - fat) / fat * 100) : 0;
@@ -5578,16 +6143,58 @@ function _buildGraficoTimeline(p) {
     max:  [fat, Math.round(fat+(fat6max-fat)*0.5), fat6max, fat12max, Math.round(fat12max+(fat24max-fat12max)*0.5), fat24max],
   };
 
+  // Linea ideale: percorso previsto se gli step vengono completati nei tempi
+  var DIMS_ALL = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+  var idealPath = null;
+  try {
+    var milestones = p.target_milestones || {};
+    var hasMilestones = Object.keys(milestones).some(function(k) { return Object.keys(milestones[k] || {}).length > 0; });
+    if (hasMilestones && Object.keys(targets).some(function(k) { return (targets[k]||0) > (dims[k]||0); })) {
+      // Conta gli step totali da fare e calcola la crescita finale (midpoint min/max a 24m)
+      var totalStepsDaFare = 0;
+      DIMS_ALL.forEach(function(id) {
+        var gap = (targets[id] || 0) - (dims[id] || 0);
+        if (gap > 0) totalStepsDaFare += gap;
+      });
+      // Crescita finale = midpoint delle proiezioni a 24 mesi
+      var mid24 = ic && ic.fat24 ? (ic.fat24[0] + ic.fat24[1]) / 2 : fat;
+      var crescitaFinale24 = mid24 - fat;
+
+      var timePoints = [0, 3, 6, 12, 18, 24];
+      idealPath = timePoints.map(function(m) {
+        if (m === 0) return fat;
+        var futureDate = new Date();
+        futureDate.setMonth(futureDate.getMonth() + m);
+        // Conta quanti step dovrebbero essere completati entro questa data
+        var stepCompletati = 0;
+        DIMS_ALL.forEach(function(id) {
+          var dimMilestones = milestones[id] || {};
+          Object.keys(dimMilestones).forEach(function(step) {
+            if (new Date(dimMilestones[step]) <= futureDate) stepCompletati++;
+          });
+        });
+        // Percentuale di completamento basata su step
+        var pctStep = totalStepsDaFare > 0 ? stepCompletati / totalStepsDaFare : 0;
+        // Crescita lineare nel tempo, accelerata dagli step completati
+        // A 24 mesi con tutti gli step = crescitaFinale24
+        var pctTempo = m / 24;
+        var crescitaIdeale = crescitaFinale24 * pctTempo * (0.5 + 0.5 * pctStep);
+        return Math.round(fat + crescitaIdeale);
+      });
+    }
+  } catch(e) {}
+
   // Dimensioni con gap
-  const DIMS_IDS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+  const DIMS_IDS = DIMS_ALL;
   const _getDimLabel = typeof window.getDimLabel === 'function' ? window.getDimLabel : function(s, id){ return id; };
+  const _sc = p.step_completamenti || {};
   const dimsHtml = DIMS_IDS.map(function(d) {
     const cur = dims[d] || 1;
     const tgt = targets[d] || cur;
     const haGap = tgt > cur;
-    const curPct = Math.round((cur - 1) / 4 * 100);
-    const tgtPct = Math.round((tgt - 1) / 4 * 100);
-    const badgeClass = haGap ? 'tl-badge-gap' : 'tl-badge-ok';
+    // "ok" solo se ha completamenti per questa dimensione (sessione fatta)
+    const dimCompletata = !haGap && tgt > 1 && _sc[d] && Object.keys(_sc[d]).length > 0;
+    const badgeClass = haGap ? 'tl-badge-gap' : dimCompletata ? 'tl-badge-ok' : 'tl-badge-neutral';
     const badgeText = haGap ? (cur + ' \u2192 ' + tgt) : ('livello ' + cur);
     return '<div class="tl-dim-row">' +
       '<div class="tl-dim-header">' +
@@ -5644,7 +6251,7 @@ function _buildGraficoTimeline(p) {
         return '<div class="tl-mc" style="cursor:pointer" onclick="apriControlloFatturato()"><div class="tl-mc-label">Fatturato attuale</div><div class="tl-mc-val">' + fmtF(fat) + '\u20AC</div><div class="tl-mc-sub">' + fatSub + ' \u00B7 clicca per controllo</div></div>';
       })() +
       '<div class="tl-mc"><div class="tl-mc-label">Proiezione 12 mesi</div><div class="tl-mc-val tl-green">' + fmtF(fat12min) + '\u2013' + fmtF(fat12max) + '\u20AC</div><div class="tl-mc-sub">+' + pct12min + '\u2013' + pct12max + '%</div></div>' +
-      '<div class="tl-mc" style="cursor:pointer" onclick="apriDettaglioCosti()"><div class="tl-mc-label">Investimento piano</div><div class="tl-mc-val tl-blue">' + costoLabel + '</div><div class="tl-mc-sub">costi fissi mensili · clicca per dettagli</div></div>' +
+      '<div class="tl-mc" style="cursor:pointer" onclick="apriDettaglioCosti()"><div class="tl-mc-label">' + (costoPiano > 0 ? 'Costi totali' : 'Costi struttura') + '</div><div class="tl-mc-val tl-blue">' + costoLabel + '</div><div class="tl-mc-sub">' + costoLabelSub + '</div></div>' +
       '<div class="tl-mc" style="cursor:pointer" onclick="apriDettaglioRoi()"><div class="tl-mc-label">ROI stimato</div><div class="tl-mc-val tl-amber">' + roiStr + '</div><div class="tl-mc-sub">breakeven ' + breakevenStr + ' · clicca per dettagli</div></div>' +
     '</div>' +
 
@@ -5792,6 +6399,7 @@ function _buildGraficoTimeline(p) {
       '<span class="tl-leg-item"><span class="tl-leg-dot" style="background:#B4B2A9"></span>Base attuale</span>' +
       '<span class="tl-leg-item"><span class="tl-leg-dot" style="background:#85B7EB"></span>Scenario minimo</span>' +
       '<span class="tl-leg-item"><span class="tl-leg-dot" style="background:rgb(25,100,60)"></span>Scenario massimo</span>' +
+      (idealPath ? '<span class="tl-leg-item"><span class="tl-leg-dot" style="background:rgba(180,140,40,0.6);border:1px dashed rgba(180,140,40,0.8)"></span>Percorso ideale</span>' : '') +
     '</div>' +
     '<div class="tl-chart-wrap"><canvas id="' + chartId + '"></canvas></div>' +
 
@@ -5849,7 +6457,17 @@ function _buildGraficoTimeline(p) {
             fill: '-1',
             tension: 0.35,
           }
-        ]
+        ].concat(idealPath ? [{
+            label: 'Percorso ideale',
+            data: idealPath,
+            borderColor: 'rgba(180,140,40,0.6)',
+            backgroundColor: 'transparent',
+            borderWidth: 2,
+            borderDash: [8, 4],
+            pointRadius: 0,
+            tension: 0.35,
+            fill: false,
+          }] : [])
       },
       options: {
         responsive: true,
@@ -6235,10 +6853,20 @@ function renderTargetEditor(p) {
   if (!container) return;
   container.innerHTML = '';
 
+  // Se stiamo visualizzando un capitolo archiviato → read only
+  if (_isCapitoloReadOnly) {
+    var cap = (p.capitoli || [])[_currentCapitoloView];
+    var periodo = cap ? cap.periodo : 'Archiviato';
+    container.innerHTML = '<div style="text-align:center;padding:40px 16px;opacity:.7">' +
+      '<div style="font-size:28px;margin-bottom:10px">\uD83D\uDCC1</div>' +
+      '<div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px">Capitolo archiviato</div>' +
+      '<div style="font-size:12px;color:var(--gray);line-height:1.5">' + periodo + '<br>Questa \u00E8 una vista storica in sola lettura.</div>' +
+    '</div>';
+    return;
+  }
+
   const targets = p.targets || {};
-  const DIMS_CHECK = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
-  const hasTargets = DIMS_CHECK.some(function(id){ return (targets[id]||0) > 0; });
-  const allReached = hasTargets && DIMS_CHECK.every(function(id){ return !targets[id] || (p.dims?.[id]||0) >= targets[id]; });
+  const allReached = _isAllTargetsReached(p);
 
   if (allReached) {
     container.innerHTML = '<div style="text-align:center;padding:40px 16px">' +
@@ -6295,7 +6923,7 @@ function renderTargetEditor(p) {
           \x3cdiv id="tdesc-${d.id}" style="font-size:10px;color:${tgtCol};line-height:1.4;margin-bottom:6px">${tgtDesc}\x3c/div>
           \x3cdiv style="font-size:9px;color:var(--gray);margin-bottom:3px">Entro il\x3c/div>
           \x3cinput type="date" id="tscad-${d.id}" value="${scad}"
-            onchange="aggiornaSemaforo('${d.id}')"
+            onchange="aggiornaSemaforo('${d.id}');aggiornaAzioni('${d.id}')"
             style="width:100%;padding:3px 6px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;color:var(--white);font-size:11px;font-family:inherit">
         \x3c/div>
       \x3c/div>
@@ -6399,6 +7027,50 @@ function aggiornaSemaforo(dimId) {
   if (scEl && semEl) semEl.innerHTML = calcolaSemaforo(scEl.value, dimId);
 }
 
+// Calcola milestone intermedie basate su tempo_mesi di ogni step
+function calcolaMilestones(settore, dimId, currentStep, targetStep, finalDateStr) {
+  if (targetStep <= currentStep) return {};
+  var finalDate = new Date(finalDateStr);
+  var oggi = new Date();
+  var totalDays = Math.max(1, Math.round((finalDate - oggi) / 86400000));
+  var sd = (typeof STEP_DETAIL_BY_SETTORE !== 'undefined') ? STEP_DETAIL_BY_SETTORE : {};
+  var dimData = sd[settore] ? sd[settore][dimId] : null;
+
+  // Raccogli tempo_mesi per ogni step intermedio
+  var steps = [];
+  var totalMesi = 0;
+  for (var s = currentStep + 1; s <= targetStep; s++) {
+    var detail = dimData ? dimData[String(s)] : null;
+    var mesi = detail ? (detail.tempo_mesi || 1) : 1;
+    totalMesi += mesi;
+    steps.push({ step: s, mesi: mesi, cumMesi: totalMesi });
+  }
+
+  // Distribuisci proporzionalmente
+  var milestones = {};
+  steps.forEach(function(st) {
+    var pct = st.cumMesi / totalMesi;
+    var stepDate = new Date(oggi.getTime() + pct * totalDays * 86400000);
+    milestones[String(st.step)] = stepDate.toISOString().split('T')[0];
+  });
+  return milestones;
+}
+
+// Semaforo per singolo step (basato sulla data milestone)
+function calcolaSemaforoStep(milestoneDate, dimId) {
+  if (!milestoneDate) return '';
+  var giorni = Math.round((new Date(milestoneDate) - new Date()) / 86400000);
+  if (giorni < 0) return '<span style="color:#FF3B30;font-weight:700">\u25CF Scaduto</span>';
+  var testo;
+  if (giorni < 60) testo = giorni + ' gg';
+  else if (giorni < 90) testo = Math.round(giorni / 7) + ' sett.';
+  else testo = (giorni / 30).toFixed(1).replace('.', ',') + ' mesi';
+  // Soglie più strette per singolo step (circa metà delle soglie dimensione)
+  if (giorni <= 15) return '<span style="color:#FF3B30;font-weight:600">\u25CF ' + testo + '</span>';
+  if (giorni <= 45) return '<span style="color:#FF9500;font-weight:600">\u25CF ' + testo + '</span>';
+  return '<span style="color:#30D158;font-weight:600">\u25CF ' + testo + '</span>';
+}
+
 function aggiornaAzioni(dimId) {
   const p = prospects.find(x => x.id === currentId);
   if (!p) return;
@@ -6407,7 +7079,207 @@ function aggiornaAzioni(dimId) {
   const tgt = tgtEl ? parseInt(tgtEl.value) || 0 : 0;
   const block = document.getElementById('az-block-' + dimId);
   if (!block) return;
-  block.innerHTML = '';
+
+  // Mostra milestone + moduli configurabili se c'è gap
+  if (tgt > cur) {
+    var scEl = document.getElementById('tscad-' + dimId);
+    var finalDate = scEl ? scEl.value : '';
+    var settore = p.settore || '';
+    var sc = p.step_completamenti || {};
+    var html = '';
+
+    // Milestone timeline
+    if (finalDate) {
+      var milestones = calcolaMilestones(settore, dimId, cur, tgt, finalDate);
+      html += '<div class="milestone-timeline">';
+      Object.keys(milestones).sort(function(a,b){ return parseInt(a)-parseInt(b); }).forEach(function(step) {
+        var date = milestones[step];
+        var completed = sc[dimId] && sc[dimId][step];
+        var detail = typeof getStepDetail === 'function' ? getStepDetail(settore, dimId, step) : null;
+        var desc = detail ? detail.cosa : '';
+        var sem = completed
+          ? '<span style="color:#30D158;font-weight:700">\u2713</span>'
+          : calcolaSemaforoStep(date, dimId);
+        var fDate = new Date(date).toLocaleDateString('it-IT', {day:'numeric', month:'short'});
+        html += '<div class="milestone-row' + (completed ? ' milestone-done' : '') + '">' +
+          '<div class="milestone-dot"></div>' +
+          '<div class="milestone-content">' +
+            '<div style="display:flex;align-items:center;justify-content:space-between">' +
+              '<span class="milestone-step">Step ' + step + '</span>' +
+              '<span class="milestone-meta">' + fDate + ' ' + sem + '</span>' +
+            '</div>' +
+            (desc ? '<div class="milestone-desc">' + desc + '</div>' : '') +
+          '</div>' +
+        '</div>';
+      });
+      html += '</div>';
+    } else {
+      html += '<div style="font-size:10px;color:var(--gray);padding:4px 0;font-style:italic">Inserisci la scadenza per vedere le milestone</div>';
+    }
+
+    // Moduli configurabili per ogni step con gap
+    var moduliSel = p.moduli_selezionati || {};
+    var fmtC = function(v) { return v ? v.toLocaleString('it-IT') + '\u20AC' : '\u2014'; };
+    for (var step = cur + 1; step <= tgt; step++) {
+      var stepDetail = STEP_DETAIL_BY_SETTORE?.[settore]?.[dimId]?.[String(step)];
+      if (!stepDetail || !stepDetail.moduli) continue;
+      var stepSel = (moduliSel[dimId] || {})[String(step)] || {};
+
+      html += '<div class="moduli-step-block">';
+      html += '<div class="moduli-step-header">Step ' + step + ' \u2014 Configurazione</div>';
+
+      stepDetail.moduli.forEach(function(mod) {
+        html += '<div class="moduli-item">';
+        html += '<div class="moduli-item-header">';
+        html += '<span class="moduli-item-nome">' + mod.nome + '</span>';
+        if (mod.obbligatorio) html += '<span class="moduli-tag-req">richiesto</span>';
+        else html += '<span class="moduli-tag-opt">opzionale</span>';
+        html += '</div>';
+
+        if (mod.tipo === 'flag') {
+          var checked = stepSel[mod.id] === true || (mod.obbligatorio && stepSel[mod.id] !== false);
+          html += '<label class="moduli-flag">' +
+            '<input type="checkbox" ' + (checked ? 'checked' : '') + ' ' + (mod.obbligatorio ? 'disabled' : '') +
+            ' onchange="toggleModulo(\'' + dimId + '\',' + step + ',\'' + mod.id + '\',this.checked)">' +
+            '<span>' + fmtC(mod.costo_mensile) + '/mese' + (mod.costo_setup ? ' + ' + fmtC(mod.costo_setup) + ' setup' : '') + '</span>' +
+          '</label>';
+          if (mod.note) html += '<div class="moduli-note">' + mod.note + '</div>';
+
+        } else if (mod.tipo === 'scelta') {
+          var selVariante = typeof stepSel[mod.id] === 'object' ? stepSel[mod.id].variante : stepSel[mod.id];
+          if (!selVariante && mod.obbligatorio && mod.varianti.length) selVariante = mod.varianti[0].id;
+          mod.varianti.forEach(function(v) {
+            html += '<label class="moduli-radio">' +
+              '<input type="radio" name="mod_' + dimId + '_' + step + '_' + mod.id + '" value="' + v.id + '" ' +
+              (selVariante === v.id ? 'checked' : '') +
+              ' onchange="setModuloScelta(\'' + dimId + '\',' + step + ',\'' + mod.id + '\',\'' + v.id + '\')">' +
+              '<span class="moduli-radio-label">' + v.nome + '</span>' +
+              '<span class="moduli-radio-costo">' + fmtC(v.costo_mensile) + '/mese' + (v.costo_setup ? ' + ' + fmtC(v.costo_setup) : '') + '</span>' +
+            '</label>';
+            if (v.note) html += '<div class="moduli-note" style="padding-left:20px">' + v.note + '</div>';
+          });
+
+        } else if (mod.tipo === 'multi') {
+          var items = Array.isArray(stepSel[mod.id]) ? stepSel[mod.id] : [];
+          if (items.length === 0 && mod.obbligatorio && mod.varianti.length) {
+            items = [{ variante: mod.varianti[0].id, qty: mod.min || 1 }];
+          }
+          mod.varianti.forEach(function(v) {
+            var found = items.find(function(x) { return x.variante === v.id; });
+            var qty = found ? found.qty : 0;
+            html += '<div class="moduli-multi-row">' +
+              '<span class="moduli-multi-nome">' + v.nome + '</span>' +
+              '<span class="moduli-multi-costo">' + fmtC(v.costo_mensile) + '/cad</span>' +
+              '<div class="moduli-multi-qty">' +
+                '<button class="moduli-qty-btn" onclick="setModuloMultiQty(\'' + dimId + '\',' + step + ',\'' + mod.id + '\',\'' + v.id + '\',' + Math.max(0, qty - 1) + ')">\u2212</button>' +
+                '<span class="moduli-qty-val">' + qty + '</span>' +
+                '<button class="moduli-qty-btn" onclick="setModuloMultiQty(\'' + dimId + '\',' + step + ',\'' + mod.id + '\',\'' + v.id + '\',' + (qty + 1) + ')">+</button>' +
+              '</div>' +
+            '</div>';
+            if (v.note && qty > 0) html += '<div class="moduli-note" style="padding-left:4px">' + v.note + '</div>';
+          });
+          if (mod.min) html += '<div class="moduli-note">Minimo ' + mod.min + ' figure</div>';
+        }
+
+        html += '</div>'; // fine moduli-item
+      });
+
+      // Moduli custom del CSO per questo step
+      var customMods = (stepSel._custom || []);
+      customMods.forEach(function(cm, ci) {
+        var impLabel = cm.impatto >= 0.7 ? 'Alto' : cm.impatto >= 0.4 ? 'Medio' : 'Basso';
+        html += '<div class="moduli-item" style="background:rgba(150,110,30,0.04);border-radius:6px;padding:6px 8px;margin-top:4px">' +
+          '<div style="display:flex;align-items:center;justify-content:space-between">' +
+            '<span class="moduli-item-nome">' + (cm.nome || 'Custom') + '</span>' +
+            '<span style="font-size:9px;color:var(--gray)">' + fmtC(cm.costo_mensile || 0) + '/mese · Impatto: ' + impLabel + '</span>' +
+            '<button onclick="rimuoviModuloCustom(\'' + dimId + '\',' + step + ',' + ci + ')" style="background:none;border:none;color:var(--red);cursor:pointer;font-size:12px;padding:0 4px">&times;</button>' +
+          '</div>' +
+        '</div>';
+      });
+
+      // Bottone aggiungi custom
+      html += '<div onclick="aggiungiModuloCustom(\'' + dimId + '\',' + step + ')" ' +
+        'style="margin-top:6px;font-size:10px;color:rgba(70,100,200,0.7);cursor:pointer;font-weight:600;padding:4px 0">+ Voce personalizzata</div>';
+
+      html += '</div>'; // fine moduli-step-block
+    }
+
+    block.innerHTML = html;
+  } else {
+    block.innerHTML = '';
+  }
+}
+
+// ── MODULI HANDLERS ──────────────────────────────────────────
+
+function aggiungiModuloCustom(dimId, step) {
+  var nome = prompt('Nome della voce personalizzata:');
+  if (!nome) return;
+  var costoStr = prompt('Costo mensile (€):', '0');
+  var costoMensile = parseInt(costoStr) || 0;
+  var setupStr = prompt('Costo setup una tantum (€):', '0');
+  var costoSetup = parseInt(setupStr) || 0;
+  var impattoSel = prompt('Impatto sul fatturato:\n1 = Basso\n2 = Medio\n3 = Alto', '2');
+  var impatto = impattoSel === '3' ? 0.9 : impattoSel === '1' ? 0.3 : 0.6;
+
+  var sel = _getModuliSel();
+  var stepSel = _ensureModuliPath(sel, dimId, step);
+  if (!Array.isArray(stepSel._custom)) stepSel._custom = [];
+  stepSel._custom.push({ nome: nome, costo_mensile: costoMensile, costo_setup: costoSetup, impatto: impatto, attivo: true });
+  aggiornaAzioni(dimId);
+  previewTarget();
+}
+
+function rimuoviModuloCustom(dimId, step, idx) {
+  var sel = _getModuliSel();
+  var stepSel = (sel[dimId] || {})[String(step)];
+  if (stepSel && Array.isArray(stepSel._custom)) {
+    stepSel._custom.splice(idx, 1);
+    aggiornaAzioni(dimId);
+    previewTarget();
+  }
+}
+function _getModuliSel() {
+  var p = prospects.find(function(x) { return x.id === currentId; });
+  if (!p) return {};
+  if (!p.moduli_selezionati) p.moduli_selezionati = {};
+  return p.moduli_selezionati;
+}
+function _ensureModuliPath(sel, dimId, step) {
+  if (!sel[dimId]) sel[dimId] = {};
+  if (!sel[dimId][String(step)]) sel[dimId][String(step)] = {};
+  return sel[dimId][String(step)];
+}
+
+function toggleModulo(dimId, step, modId, checked) {
+  var sel = _getModuliSel();
+  var stepSel = _ensureModuliPath(sel, dimId, step);
+  stepSel[modId] = checked;
+  previewTarget();
+}
+
+function setModuloScelta(dimId, step, modId, varianteId) {
+  var sel = _getModuliSel();
+  var stepSel = _ensureModuliPath(sel, dimId, step);
+  stepSel[modId] = { variante: varianteId };
+  previewTarget();
+}
+
+function setModuloMultiQty(dimId, step, modId, varianteId, qty) {
+  var sel = _getModuliSel();
+  var stepSel = _ensureModuliPath(sel, dimId, step);
+  if (!Array.isArray(stepSel[modId])) stepSel[modId] = [];
+  var items = stepSel[modId];
+  var idx = items.findIndex(function(x) { return x.variante === varianteId; });
+  if (qty <= 0) {
+    if (idx >= 0) items.splice(idx, 1);
+  } else {
+    if (idx >= 0) items[idx].qty = qty;
+    else items.push({ variante: varianteId, qty: qty });
+  }
+  // Re-render il blocco per aggiornare i numeri
+  aggiornaAzioni(dimId);
+  previewTarget();
 }
 
 async function toggleAzione(key) {
@@ -6467,6 +7339,36 @@ async function saveTargets() {
     if (el) targets[d.id] = Math.min(5, Math.max(0, parseInt(el.value) || 0));
     if (scEl && scEl.value) scadenze[d.id] = scEl.value;
   });
+
+  // Validazione: data obbligatoria quando target > livello attuale
+  var missingDates = [];
+  DIMS.forEach(d => {
+    var cur = (p.dims || {})[d.id] || 0;
+    if ((targets[d.id] || 0) > cur && !scadenze[d.id]) {
+      missingDates.push(d.id);
+    }
+  });
+  if (missingDates.length > 0) {
+    var labels = missingDates.map(id => typeof getDimLabel === 'function' ? getDimLabel(p.settore, id) : id);
+    showToast('Inserisci la scadenza per: ' + labels.join(', '), 'error');
+    missingDates.forEach(id => {
+      var el = document.getElementById('tscad-' + id);
+      if (el) { el.classList.add('scad-missing'); setTimeout(function() { el.classList.remove('scad-missing'); }, 3000); }
+    });
+    var firstEl = document.getElementById('tscad-' + missingDates[0]);
+    if (firstEl) firstEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  // Calcola milestone intermedie per ogni dimensione con gap
+  var milestones = {};
+  DIMS.forEach(d => {
+    var cur = (p.dims || {})[d.id] || 0;
+    if ((targets[d.id] || 0) > cur && scadenze[d.id]) {
+      milestones[d.id] = calcolaMilestones(p.settore || '', d.id, cur, targets[d.id], scadenze[d.id]);
+    }
+  });
+
   // Salva snapshot proiezione prima di aggiornare i target
   const pTemp = {...p, targets: targets};
   const icSnap = _calcolaImpattoCumulativo(pTemp);
@@ -6480,11 +7382,13 @@ async function saveTargets() {
   } : null;
 
   // Salva target (campi sicuri)
-  const {error} = await sb.from('prospects').update({targets, target_scadenze: scadenze}).eq('id', currentId);
+  var moduliSel = p.moduli_selezionati || {};
+  const {error} = await sb.from('prospects').update({targets, target_scadenze: scadenze, target_milestones: milestones, moduli_selezionati: moduliSel}).eq('id', currentId);
   if (error) { showToast('Errore salvataggio target', 'error'); return; }
   const i = prospects.findIndex(x => x.id === currentId);
   prospects[i].targets = targets;
   prospects[i].target_scadenze = scadenze;
+  prospects[i].target_milestones = milestones;
   // Salva snapshot proiezione (campo opzionale, potrebbe non esistere in DB)
   if (proiezioneSnapshot) {
     prospects[i].proiezione_snapshot = proiezioneSnapshot;
