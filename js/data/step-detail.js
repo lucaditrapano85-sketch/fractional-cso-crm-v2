@@ -4347,639 +4347,211 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   alimentare_conserve: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Titolare gestisce GDO', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Visite buyer insegne',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: '1 agente GDO nazionale (~2.500€)',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2500, costo_setup:500, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1375, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1125, costo_setup:500, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Agente GDO + export (~2.800€)',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'resp',
-            nome: 'Responsabile commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2120, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
-              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1166, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          },
-          {
-            id: 'team',
-            nome: 'Figure commerciali',
-            tipo: 'multi',
-            obbligatorio: true,
-            min: 2,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1060, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:795, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Dir. commerciale + rete + private label',
-        tempo_mesi: 6,
-        moduli: [
-          {
-            id: 'resp',
-            nome: 'Responsabile commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:3400, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
-              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1870, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          },
-          {
-            id: 'team',
-            nome: 'Figure commerciali',
-            tipo: 'multi',
-            obbligatorio: true,
-            min: 2,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1700, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1275, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare', cosa:'Titolare gestisce clienti storici — GDO locale e dettaglio', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Visite buyer GDO locale + sviluppo canale HORECA/gastronomie', tempo_mesi:2, moduli:[
+        { id:'campionature', nome:'Kit campionature per buyer', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.6, note:'Campioni conserve + schede tecniche + listino per canale' },
+        { id:'degustazione', nome:'Degustazioni in-store/fiere', tipo:'flag', obbligatorio:false, costo_mensile:150, costo_setup:200, impatto:0.2, note:'Far assaggiare il prodotto ai buyer e al pubblico' },
+      ]},
+      '3': { cosa:'Agente food per GDO regionale o HORECA/gastronomie', tempo_mesi:3, moduli:[
+        { id:'agente', nome:'Agente conserve alimentari', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'gdo', nome:'Agente ENASARCO canale GDO', costo_mensile:1000, costo_setup:500, impatto:1.0, note:'Provvigione 3-6%, gestisce listing, promozioni, rapporti buyer' },
+          { id:'horeca', nome:'Agente HORECA/gastronomie', costo_mensile:800, costo_setup:500, impatto:0.8, note:'Ristoranti, gastronomie, negozi specializzati' },
+          { id:'dip', nome:'Commerciale dipendente multicanale', costo_mensile:2200, costo_setup:0, impatto:0.7, note:'Fisso + incentivi, gestisce tutti i canali' },
+        ]},
+      ]},
+      '4': { cosa:'2 agenti (GDO + specializzato) + sviluppo export', tempo_mesi:4, moduli:[
+        { id:'rete', nome:'Rete agenti per canale', tipo:'multi', obbligatorio:true, min:2, varianti:[
+          { id:'agente_gdo', nome:'Agente GDO', costo_mensile:1000, costo_setup:0, impatto:0.3, note:'Per insegna/zona' },
+          { id:'agente_spec', nome:'Agente specializzato/HORECA', costo_mensile:800, costo_setup:0, impatto:0.25, note:'Gastronomie, ristoranti, negozi gourmet' },
+        ]},
+        { id:'export', nome:'Sviluppo export', tipo:'scelta', obbligatorio:false, varianti:[
+          { id:'manager', nome:'Export manager dedicato', costo_mensile:2500, costo_setup:0, impatto:0.2, note:'Fiere internazionali (SIAL, Anuga), importatori, certificazioni export' },
+          { id:'tem', nome:'Temporary export manager', costo_mensile:1000, costo_setup:500, impatto:0.1, note:'Supporto bandi ICE/SIMEST' },
+        ]},
+      ]},
+      '5': { cosa:'Dir. commerciale + rete agenti nazionale + export strutturato', tempo_mesi:6, moduli:[
+        { id:'resp', nome:'Direttore commerciale food', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Dir. commerciale dipendente', costo_mensile:3500, costo_setup:0, impatto:0.5, note:'Coordinamento agenti, rapporti GDO, pricing, export' },
+          { id:'fractional', nome:'Dir. commerciale fractional', costo_mensile:1800, costo_setup:0, impatto:0.35, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
     },
     pipeline: {
-      '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini telefonici e fiere', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Excel con buyer GDO, ordini stagionali, scadenze',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'calendario_listing',
-        nome: 'Calendario aperture listing GDO',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 0,
-        impatto: 0.15,
-        note: 'Quando ogni insegna apre inserimenti nuovi prodotti'
-}
-      ]
-      },
-      '3': {
-        cosa: 'CRM con buyer GDO, contratti promo, pianificazione annuale',
-        tempo_mesi: 1,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM con buyer GDO, contratti promo, pianificazione annuale', costo_mensile:400, costo_setup:800, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:200, costo_setup:480, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'CRM integrato con produzione, stock e logistica',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM integrato con produzione, stock e logistica', costo_mensile:800, costo_setup:2000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:400, costo_setup:1200, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'ERP food — ordini, produzione, lotti, export, tracciabilità',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'ERP food', costo_mensile:1500, costo_setup:6000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:750, costo_setup:3600, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini su carta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Excel con buyer, ordini, promozioni e pagamenti', tempo_mesi:1, moduli:[
+        { id:'strumento', nome:'Strumento tracciamento', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'excel', nome:'Excel strutturato', costo_mensile:0, costo_setup:100, impatto:0.7, note:'Buyer, insegna, ordini, promozioni attive, scadenze pagamento' },
+          { id:'crm_free', nome:'CRM gratuito', costo_mensile:0, costo_setup:200, impatto:0.85, note:'Pipeline buyer + storico + reminder' },
+        ]},
+      ]},
+      '3': { cosa:'CRM food con buyer GDO, contratti annuali, promozioni', tempo_mesi:1, moduli:[
+        { id:'crm', nome:'CRM food/FMCG', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'b2b', nome:'CRM B2B food (Salesforce/Zoho)', costo_mensile:80, costo_setup:500, impatto:1.0, note:'Pipeline buyer, contratti annuali, piano promo, performance' },
+          { id:'generico', nome:'CRM leggero (Pipedrive)', costo_mensile:40, costo_setup:300, impatto:0.6, note:'Pipeline base' },
+        ]},
+      ]},
+      '4': { cosa:'Gestionale integrato — ordini, produzione, magazzino, spedizioni', tempo_mesi:2, moduli:[
+        { id:'erp', nome:'ERP conserviero', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'food', nome:'ERP food (CSB-System/Argo Food)', costo_mensile:600, costo_setup:2000, impatto:1.0, note:'Ordini, ricette, produzione batch, lotti, tracciabilita, spedizioni' },
+          { id:'generico', nome:'Gestionale + moduli separati', costo_mensile:250, costo_setup:1000, impatto:0.6, note:'Danea/TeamSystem + Excel produzione' },
+        ]},
+      ]},
+      '5': { cosa:'ERP food completo con BI — produzione, qualita, commerciale', tempo_mesi:4, moduli:[
+        { id:'erp_full', nome:'ERP food enterprise', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'ERP food enterprise (CSB/SAP Food)', costo_mensile:1200, costo_setup:6000, impatto:1.0, note:'Ordini, ricette, produzione batch, lotti, BRC/IFS, logistica, BI' },
+          { id:'mid', nome:'ERP food mid-market', costo_mensile:600, costo_setup:3000, impatto:0.6, note:'Funzionalita core' },
+        ]},
+      ]},
     },
     team: {
-      '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Ruoli produzione/qualità/commerciale definiti',
-        tempo_mesi: 1,
-        moduli: [
-      {
-            id: 'ruoli',
-            nome: 'Organigramma stabilimento',
-            tipo: 'flag',
-            obbligatorio: true,
-            costo_mensile: 0,
-            costo_setup: 200,
-            impatto: 0.7,
-            note: 'Produzione, confezionamento, qualità, vendite — mansionario'
-      }
-,
-{
-        id: 'haccp_base',
-        nome: 'Formazione HACCP per tutto il personale',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 100,
-        impatto: 0.15,
-        note: 'Obbligatoria, base per certificazioni successive'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Resp. produzione + pianificazione stagionale',
-        tempo_mesi: 2,
-        moduli: [
-      {
-            id: 'resp',
-            nome: 'Responsabile produzione',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-                  {
-                        id: 'promozione',
-                        nome: 'Promozione interna operaio senior',
-                        costo_mensile: 200,
-                        costo_setup: 500,
-                        impatto: 0.85,
-                        note: 'Conosce le linee e i processi'
-                  },
-                  {
-                        id: 'esterno',
-                        nome: 'Resp. produzione conserviero esperto',
-                        costo_mensile: 2800,
-                        costo_setup: 0,
-                        impatto: 1,
-                        note: 'Esperienza da altro conservificio'
-                  }
-            ]
-      }
-]
-      },
-      '4': {
-        cosa: 'KPI + resp. qualità + pianificazione campagne produzione',
-        tempo_mesi: 3,
-        moduli: [
-      {
-            id: 'kpi',
-            nome: 'KPI stabilimento conserviero',
-            tipo: 'flag',
-            obbligatorio: true,
-            costo_mensile: 0,
-            costo_setup: 500,
-            impatto: 0.5,
-            note: 'Resa per lotto, scarti, costi, tempi di confezionamento'
-      },
-      {
-            id: 'qualita',
-            nome: 'Responsabile qualità',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-                  {
-                        id: 'interno',
-                        nome: 'Addetto qualità formato HACCP/BRC',
-                        costo_mensile: 200,
-                        costo_setup: 500,
-                        impatto: 0.3,
-                        note: 'Controlli, documentazione, audit interni'
-                  },
-                  {
-                        id: 'consulente',
-                        nome: 'Consulente qualità food esterno',
-                        costo_mensile: 400,
-                        costo_setup: 0,
-                        impatto: 0.4,
-                        note: 'Preparazione BRC/IFS, audit, compliance'
-                  }
-            ]
-      }
-]
-      },
-      '5': {
-        cosa: 'Management strutturato — titolare solo strategia',
-        tempo_mesi: 4,
-        moduli: [
-      {
-            id: 'manager',
-            nome: 'Direttore stabilimento',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-                  {
-                        id: 'dip',
-                        nome: 'Direttore stabilimento dipendente',
-                        costo_mensile: 3500,
-                        costo_setup: 0,
-                        impatto: 1,
-                        note: 'Produzione + qualità + logistica + personale'
-                  },
-                  {
-                        id: 'fractional',
-                        nome: 'Plant manager fractional',
-                        costo_mensile: 1500,
-                        costo_setup: 0,
-                        impatto: 0.65,
-                        note: '2-3 giorni/settimana'
-                  }
-            ]
-      }
-]
-      },
+      '1': { chi:'Titolare', cosa:'Nessuna organizzazione — titolare fa tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Organigramma produzione/qualita/vendita definito', tempo_mesi:1, moduli:[
+        { id:'organigramma', nome:'Organigramma + mansionario', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.7, note:'Produzione, confezionamento, qualita, vendita, admin — chi fa cosa' },
+      ]},
+      '3': { cosa:'Resp. produzione + HACCP strutturato', tempo_mesi:2, moduli:[
+        { id:'resp_prod', nome:'Responsabile produzione', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'promozione', nome:'Promozione interna operaio senior', costo_mensile:200, costo_setup:500, impatto:0.85, note:'Conosce ricette, macchinari, stagionalita materie prime' },
+          { id:'esterno', nome:'Resp. produzione esterno', costo_mensile:2500, costo_setup:0, impatto:1.0, note:'Esperienza da altro stabilimento conserviero' },
+        ]},
+      ]},
+      '4': { cosa:'KPI produzione + responsabile qualita/R&D', tempo_mesi:3, moduli:[
+        { id:'qualita', nome:'Responsabile qualita', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'interno', nome:'Addetto qualita formato internamente', costo_mensile:200, costo_setup:500, impatto:0.4, note:'HACCP avanzato + BRC/IFS + controllo qualita' },
+          { id:'consulente', nome:'Consulente qualita esterno', costo_mensile:400, costo_setup:0, impatto:0.5, note:'Visite periodiche, audit, preparazione BRC/IFS' },
+        ]},
+        { id:'kpi', nome:'Dashboard KPI stabilimento', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.15, note:'Resa, scarti, tempi, costi per lotto, OEE linee' },
+      ]},
+      '5': { cosa:'Management completo — direttore stabilimento + titolare strategia', tempo_mesi:4, moduli:[
+        { id:'manager', nome:'Direttore stabilimento', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Direttore stabilimento dipendente', costo_mensile:3500, costo_setup:0, impatto:1.0, note:'Produzione + qualita + personale + logistica' },
+          { id:'fractional', nome:'Plant manager fractional', costo_mensile:1500, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
       _label: 'Organizzazione',
     },
     processi: {
-      '1': { chi:'Titolare', cosa:'Produzione artigianale — ricette tradizionali non codificate', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'HACCP + etichettatura a norma + schede prodotto',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'processo', nome:'HACCP + etichettatura a norma + schede prodotto', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
-        ,
-{
-        id: 'etichettatura',
-        nome: 'Compliance etichettatura (reg. UE 1169)',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Ingredienti, allergeni, valori nutrizionali — obbligatorio'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Gestionale produzione — lotti, scadenze, rese, tracciabilità',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Gestionale produzione',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:400, costo_setup:2000, impatto:1, note:'Gestionale produzione — lotti, scadenze, rese, tracciabilità' },
-              { id:'base', nome:'Soluzione base', costo_mensile:200, costo_setup:1000, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Certificazione BRC/IFS per accesso GDO e export',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Certificazione BRC/IFS per accesso GDO e export',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:600, costo_setup:5000, impatto:1, note:'Certificazione BRC/IFS per accesso GDO e export' },
-              { id:'base', nome:'Soluzione base', costo_mensile:300, costo_setup:2500, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'ERP produzione + automazione linee confezionamento',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'ERP produzione',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:1200, costo_setup:8000, impatto:1, note:'ERP produzione + automazione linee confezionamento' },
-              { id:'base', nome:'Soluzione base', costo_mensile:600, costo_setup:4000, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare', cosa:'Processi artigianali — ricette a memoria', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Ricettario standardizzato + HACCP + gestione allergeni', tempo_mesi:1, moduli:[
+        { id:'haccp', nome:'Piano HACCP conserviero', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'consulente', nome:'HACCP con consulente specializzato', costo_mensile:150, costo_setup:500, impatto:0.7, note:'CCP specifici conserve (sterilizzazione, pH, Aw), registrazioni' },
+          { id:'manuale', nome:'HACCP manuale + registri', costo_mensile:0, costo_setup:300, impatto:0.45, note:'Manuale autocontrollo, registri temperatura/pH' },
+        ]},
+        { id:'ricettario', nome:'Ricettario e distinte base', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.2, note:'Ricette con dosi, tempi sterilizzazione, parametri critici — riproducibilita' },
+      ]},
+      '3': { cosa:'Gestionale produzione batch con lotti, tracciabilita e scadenze', tempo_mesi:2, moduli:[
+        { id:'gestionale', nome:'Software gestione produzione conserve', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'MES/gestionale food (CSB lite/FoodManager)', costo_mensile:300, costo_setup:2000, impatto:1.0, note:'Produzione batch, lotti, tracciabilita, sterilizzazione, etichettatura' },
+          { id:'generico', nome:'Gestionale + Excel produzione', costo_mensile:100, costo_setup:800, impatto:0.5, note:'Fatturazione + fogli per lotti e tracciabilita' },
+        ]},
+      ]},
+      '4': { cosa:'Certificazione BRC/IFS per accesso GDO nazionale', tempo_mesi:4, moduli:[
+        { id:'certificazione', nome:'Certificazione qualita food', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'brc_ifs', nome:'BRC/IFS con consulente + ente', costo_mensile:200, costo_setup:5000, impatto:1.0, note:'Prerequisito per listing GDO nazionale e internazionale' },
+          { id:'iso22000', nome:'ISO 22000', costo_mensile:150, costo_setup:3500, impatto:0.65, note:'Alternativa per GDO locale e export' },
+        ]},
+      ]},
+      '5': { cosa:'ERP produzione + automazione linee confezionamento + BI', tempo_mesi:4, moduli:[
+        { id:'erp', nome:'ERP produzione conserviero', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'ERP + MES food (CSB/SAP PP)', costo_mensile:1000, costo_setup:8000, impatto:1.0, note:'Pianificazione, produzione batch, sterilizzazione, confezionamento, BI' },
+          { id:'mid', nome:'Gestionale produzione mid-market', costo_mensile:500, costo_setup:4000, impatto:0.55, note:'Core features' },
+        ]},
+      ]},
     },
     ricavi: {
-      '1': { chi:'Titolare', cosa:'Prezzo fisso su listino — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Pricing per canale — GDO vs specialità vs export',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'ricavi', nome:'Pricing per canale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'margini_prodotto',
-        nome: 'Analisi margine per referenza',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 0,
-        impatto: 0.15,
-        note: 'Quale conserva guadagna di più — focus sul mix migliore'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Produzione private label per GDO + brand proprio premium',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'ricavi', nome:'Produzione private label per GDO + brand proprio premium', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.8 }
-        ,
-{
-        id: 'formato_famiglia',
-        nome: 'Formato famiglia/HORECA ad alto margine',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Formati grandi per HORECA — margine unitario migliore'
-}
-      ]
-      },
-      '4': {
-        cosa: 'Linea export premium con packaging dedicato e storytelling',
-        tempo_mesi: 3,
-        moduli: [
-          { id:'ricavi', nome:'Linea export premium con packaging dedicato e storytelling', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:1500, impatto:0.8 }
-        ,
-{
-        id: 'bio_premium',
-        nome: 'Linea BIO/DOP premium',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 500,
-        impatto: 0.15,
-        note: 'Certificazione BIO — margine +30-40% sul convenzionale'
-}
-      ]
-      },
-      '5': {
-        cosa: 'Mix brand + PL + export + DTC + co-packing stagionale',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'ricavi',
-            nome: 'Mix brand + PL + export + DTC + co-packing stagionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:800, costo_setup:2500, impatto:1, note:'Mix brand + PL + export + DTC + co-packing stagionale' },
-              { id:'graduale', nome:'Implementazione graduale', costo_mensile:400, costo_setup:1250, impatto:0.65, note:'Avvio parziale, si espande' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare', cosa:'Prezzo fisso — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Pricing per canale: GDO, gastronomie, HORECA, e-commerce', tempo_mesi:1, moduli:[
+        { id:'pricing', nome:'Listini per canale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.7, note:'Prezzo diverso per GDO (volume), gastronomia (premium), HORECA, online' },
+      ]},
+      '3': { cosa:'Linea premium/artigianale + linea standard GDO', tempo_mesi:2, moduli:[
+        { id:'premium', nome:'Linea premium/artigianale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.5, note:'Packaging vetro, ingredienti selezionati, ricetta tradizionale — margine 2-3x' },
+        { id:'standard', nome:'Linea standard GDO', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.3, note:'Volume, packaging economico, pricing competitivo' },
+      ]},
+      '4': { cosa:'Private label GDO + brand posizionato + DOP/IGP', tempo_mesi:3, moduli:[
+        { id:'pl', nome:'Strategia private label/brand', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'copacker', nome:'Copacking per insegne GDO', costo_mensile:200, costo_setup:1000, impatto:0.7, note:'Volume garantito, margine base' },
+          { id:'brand', nome:'Brand proprio posizionato', costo_mensile:300, costo_setup:1500, impatto:1.0, note:'Listing + promozioni, margine e brand tuoi' },
+        ]},
+        { id:'dop', nome:'Certificazione DOP/IGP', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:1000, impatto:0.15, note:'Se il prodotto lo consente — premium price e protezione' },
+      ]},
+      '5': { cosa:'Mix ricavi: brand + PL + export + DTC + co-packing', tempo_mesi:4, moduli:[
+        { id:'mix', nome:'Diversificazione ricavi', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'Mix completo 5 canali', costo_mensile:500, costo_setup:2500, impatto:1.0, note:'Brand GDO + PL + export + e-commerce DTC + co-packing' },
+          { id:'focus', nome:'Focus su 2-3 canali', costo_mensile:200, costo_setup:1000, impatto:0.55, note:'Brand GDO + 1-2 canali secondari' },
+        ]},
+      ]},
     },
     marketing: {
-      '1': { chi:'Nessuno', cosa:'Nessuno — solo etichetta tradizionale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Social con ricette, tradizione e territorio',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'marketing', nome:'Social con ricette, tradizione e territorio', tipo:'flag', obbligatorio:true, costo_mensile:150, costo_setup:300, impatto:0.8 }
-        ,
-{
-        id: 'storytelling',
-        nome: 'Storytelling prodotto (origine, tradizione)',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'La storia dietro il prodotto — differenzia dal marchio bianco'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Branding professionale + fiere food (Cibus, Fancy Food)',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'marketing', nome:'Branding professionale + fiere food (Cibus, Fancy Food)', tipo:'flag', obbligatorio:true, costo_mensile:700, costo_setup:3000, impatto:0.8 }
-        ,
-{
-        id: 'sampling',
-        nome: 'Campagne sampling in-store',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 200,
-        costo_setup: 300,
-        impatto: 0.15,
-        note: 'Degustazione al supermercato — conversion 20-30%'
-}
-      ]
-      },
-      '4': {
-        cosa: 'Trade marketing GDO + PR food + social content professionale',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'Trade marketing GDO + PR food + social content professionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1500, costo_setup:4000, impatto:1, note:'Trade marketing GDO + PR food + social content professionale' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:600, costo_setup:2000, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Piano marketing — brand premium, export promo, storytelling',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'Piano marketing',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:3000, costo_setup:6000, impatto:1, note:'Piano marketing — brand premium, export promo, storytelling' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:1200, costo_setup:3000, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo etichetta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Social con foto prodotti/ricette + packaging come strumento vendita', tempo_mesi:1, moduli:[
+        { id:'social', nome:'Social media food', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.5, note:'Instagram/Facebook: foto prodotti, ricette, dietro le quinte produzione' },
+        { id:'packaging', nome:'Restyling packaging/etichette', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.2, note:'Design professionale, storytelling su confezione' },
+      ]},
+      '3': { cosa:'Fiere food (Cibus, TuttoFood, MARCA) + degustazioni', tempo_mesi:2, moduli:[
+        { id:'fiere', nome:'Partecipazione fiere food', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'stand', nome:'Stand espositivo (Cibus/TuttoFood)', costo_mensile:300, costo_setup:5000, impatto:1.0, note:'Stand con degustazione, contatto buyer GDO e importatori' },
+          { id:'visitatore', nome:'Visita come operatore', costo_mensile:100, costo_setup:500, impatto:0.4, note:'Networking, niente stand' },
+        ]},
+      ]},
+      '4': { cosa:'Trade marketing GDO + PR food blogger + social professionale', tempo_mesi:2, moduli:[
+        { id:'trade', nome:'Trade marketing', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia trade marketing food', costo_mensile:1200, costo_setup:2000, impatto:1.0, note:'Promozioni in-store, volantini, degustazioni, materiale POP' },
+          { id:'interno', nome:'Trade marketing interno', costo_mensile:500, costo_setup:1000, impatto:0.5, note:'Gestione diretta promo con buyer' },
+        ]},
+      ]},
+      '5': { cosa:'Piano marketing food completo — brand, trade, digital, export', tempo_mesi:4, moduli:[
+        { id:'piano', nome:'Piano marketing food', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia marketing food/FMCG', costo_mensile:2500, costo_setup:5000, impatto:1.0, note:'Brand building, trade, digital, fiere internazionali, export' },
+          { id:'interno', nome:'Marketing manager interno', costo_mensile:1200, costo_setup:500, impatto:0.6, note:'1 risorsa dedicata' },
+        ]},
+      ]},
     },
     sitoweb: {
-      '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Sito vetrina con storia, prodotti, ricette',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'sito', nome:'Sito vetrina con storia, prodotti, ricette', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:1000, impatto:0.8 }
-        ,
-{
-        id: 'ricette',
-        nome: 'Sezione ricette con i prodotti',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 100,
-        impatto: 0.15,
-        note: 'Content marketing: come usare le conserve — SEO + engagement'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Sito con catalogo, schede prodotto, area buyer',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Sito con catalogo, schede prodotto, area buyer',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:300, costo_setup:2500, impatto:1, note:'Sito con catalogo, schede prodotto, area buyer' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:120, costo_setup:1000, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'E-commerce DTC — vendita diretta, box regalo, abbonamenti',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'E-commerce DTC',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:600, costo_setup:5000, impatto:1, note:'E-commerce DTC — vendita diretta, box regalo, abbonamenti' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:240, costo_setup:2000, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Piattaforma B2B + DTC integrata con ERP e tracciabilità',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Piattaforma B2B',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:1200, costo_setup:10000, impatto:1, note:'Piattaforma B2B + DTC integrata con ERP e tracciabilità' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:480, costo_setup:4000, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Nessuno', cosa:'Nessun sito', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Sito vetrina con storia, prodotti, certificazioni, territorio', tempo_mesi:1, moduli:[
+        { id:'sito', nome:'Sito vetrina food', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'custom', nome:'Sito custom WordPress', costo_mensile:30, costo_setup:2000, impatto:1.0, note:'Storytelling territorio, gallery prodotti, certificazioni, ricette' },
+          { id:'template', nome:'Sito da template', costo_mensile:20, costo_setup:600, impatto:0.5, note:'Template food' },
+        ]},
+      ]},
+      '3': { cosa:'Catalogo prodotti con schede tecniche + area buyer', tempo_mesi:2, moduli:[
+        { id:'catalogo', nome:'Catalogo B2B online', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:1500, impatto:0.5, note:'Schede prodotto con ingredienti, allergeni, shelf life, packaging, MOQ' },
+        { id:'ricette', nome:'Sezione ricette con i prodotti', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.2, note:'Ricette HORECA e consumatori — i prodotti come ingredienti' },
+      ]},
+      '4': { cosa:'E-commerce DTC + area riservata buyer B2B', tempo_mesi:3, moduli:[
+        { id:'ecommerce', nome:'E-commerce food DTC', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'shopify', nome:'Shopify + tema food', costo_mensile:100, costo_setup:3000, impatto:1.0, note:'Vendita diretta, box regalo, abbonamento, storytelling territorio' },
+          { id:'woocommerce', nome:'WooCommerce', costo_mensile:50, costo_setup:2000, impatto:0.6, note:'Piu personalizzabile' },
+        ]},
+      ]},
+      '5': { cosa:'Piattaforma B2B/DTC integrata con ERP e tracciabilita', tempo_mesi:4, moduli:[
+        { id:'piattaforma', nome:'Piattaforma food omnicanale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'Piattaforma integrata ERP', costo_mensile:800, costo_setup:10000, impatto:1.0, note:'DTC + B2B + ERP, ordini, tracciabilita lotto, fatturazione' },
+          { id:'mid', nome:'Shopify + area B2B', costo_mensile:300, costo_setup:4000, impatto:0.5, note:'DTC + B2B base' },
+        ]},
+      ]},
     },
     ecommerce: {
-      '1': { chi:'Titolare', cosa:'Acquisto pomodori e ortaggi da agricoltori locali', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Confronto fornitori — qualità, stagionalità, certificazioni',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'canale', nome:'Confronto fornitori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'stagionalita',
-        nome: 'Pianificazione acquisti per stagionalità',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 0,
-        impatto: 0.15,
-        note: 'Pomodori in estate, olive in autunno — stock al momento giusto'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Contratti con agricoltori — volumi garantiti, prezzo fisso',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'canale', nome:'Contratti con agricoltori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.8 }
-        ,
-{
-        id: 'km0',
-        nome: 'Rete agricoltori locali per km0',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Prodotto locale = storytelling + qualità + prezzo migliore'
-}
-      ]
-      },
-      '4': {
-        cosa: 'Buyer dedicato — scouting materie prime, import pomodoro',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Buyer dedicato',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:2000, costo_setup:800, impatto:1, note:'Buyer dedicato — scouting materie prime, import pomodoro' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:1000, costo_setup:320, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Resp. acquisti — filiera controllata, contratti annuali, hedging',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Resp. acquisti',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:3500, costo_setup:2000, impatto:1, note:'Resp. acquisti — filiera controllata, contratti annuali, hedging' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:1750, costo_setup:800, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
       _label: 'Approvvigionamento materie prime',
+      '1': { chi:'Titolare', cosa:'Acquisto da produttori locali — pomodoro, ortaggi, olio', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Confronto fornitori — qualita, prezzi, stagionalita, certificazioni', tempo_mesi:1, moduli:[
+        { id:'fornitori', nome:'Database fornitori materie prime', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.7, note:'Scheda: produttore, qualita, certificazioni (bio/DOP), prezzi, campagna' },
+      ]},
+      '3': { cosa:'Contratti quadro con agricoltori — prezzi campagna, volumi', tempo_mesi:2, moduli:[
+        { id:'accordi', nome:'Accordi quadro agricoltori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.6, note:'Contratti pre-campagna: prezzo, volume, qualita, consegna' },
+        { id:'filiera', nome:'Filiera corta/km0 per linea premium', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:200, impatto:0.15, note:'Pomodoro locale, olio EVO zona — storytelling + qualita' },
+      ]},
+      '4': { cosa:'Buyer dedicato — diversificazione fornitori, scorte strategiche', tempo_mesi:3, moduli:[
+        { id:'buyer', nome:'Buyer materie prime food', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Buyer food dipendente', costo_mensile:2200, costo_setup:0, impatto:1.0, note:'Negoziazione, sourcing, controllo qualita, gestione campagna' },
+          { id:'parttime', nome:'Buyer part-time', costo_mensile:1000, costo_setup:0, impatto:0.6, note:'Gestisce riordini e rapporto fornitori' },
+        ]},
+      ]},
+      '5': { cosa:'Supply chain manager — contratti annuali, hedging, filiera certificata', tempo_mesi:4, moduli:[
+        { id:'supply', nome:'Resp. supply chain food', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Supply chain manager dipendente', costo_mensile:3500, costo_setup:0, impatto:1.0, note:'Strategia acquisti, hedging prezzi materie prime, filiera certificata' },
+          { id:'fractional', nome:'Supply chain manager fractional', costo_mensile:1800, costo_setup:0, impatto:0.6, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
     }
   },
 
