@@ -1582,7 +1582,7 @@ function renderMarket() {
         ${subs.map(([subKey, sub])=>`\x3cdiv class="sub-card">
           \x3cdiv class="sub-card-title" style="display:flex;align-items:center;justify-content:space-between">
             ${sub.label}
-            \x3cbutton onclick="openDetailPanel('${subKey}')" style="background:var(--amber-bg);border:1px solid var(--gold-dim);color:var(--gold);border-radius:4px;padding:2px 8px;font-size:10px;cursor:pointer;font-family:var(--font-sans);white-space:nowrap;flex-shrink:0;margin-left:8px">Approfondisci ->\x3c/button>
+            \x3cbutton onclick="openDetailPanel('${subKey}')" class="btn-xs btn-xs-outline" style="flex-shrink:0;margin-left:8px">Approfondisci ->\x3c/button>
           \x3c/div>
           ${sub.metrics.map(m=>`\x3cdiv style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);font-size:11px">
             \x3cspan style="color:var(--gray)">${m.label}\x3c/span>
@@ -2525,7 +2525,7 @@ function renderMyBenchSection(subKey, subData) {
         I miei dati di campo
         ${saved ? '\x3cspan class="my-bench-badge">AGGIORNATO\x3c/span>' : '\x3cspan style="font-size:10px;color:var(--gray);font-weight:400">nessun dato ancora\x3c/span>'}
       \x3c/div>
-      \x3cbutton onclick="toggleMyBenchForm('${subKey}')" style="background:none;border:1px solid var(--border2);color:var(--gray);border-radius:4px;padding:3px 10px;font-size:10px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif" id="toggle-bench-${subKey}">
+      \x3cbutton onclick="toggleMyBenchForm('${subKey}')" class="btn-xs" id="toggle-bench-${subKey}">
         ${saved ? 'Modifica' : '+ Aggiungi'}
       \x3c/button>
     \x3c/div>
@@ -7064,7 +7064,7 @@ function renderTargetEditor(p) {
       '<div style="font-size:28px;margin-bottom:10px">\u2705</div>' +
       '<div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px">Obiettivi raggiunti!</div>' +
       '<div style="font-size:12px;color:var(--gray);margin-bottom:20px;line-height:1.5">Tutti gli step target sono stati completati.<br>Apri un nuovo capitolo per continuare la crescita.</div>' +
-      '<div onclick="nuovoCapitolo()" style="display:inline-block;padding:10px 24px;background:rgba(70,100,200,0.1);border:1px solid rgba(70,100,200,0.2);color:rgba(70,100,200,0.8);border-radius:10px;font-size:13px;font-weight:600;cursor:pointer">+ Nuovo capitolo</div>' +
+      '<button onclick="nuovoCapitolo()" class="btn btn-primary" style="font-size:13px">+ Nuovo capitolo</button>' +
     '</div>';
     return;
   }

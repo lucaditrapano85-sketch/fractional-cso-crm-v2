@@ -129,10 +129,10 @@
           <div class="card-title" style="display:flex;align-items:center;justify-content:space-between">
             Score complessivo
             <div style="display:flex;gap:6px">
-              <button onclick="apriDiagnosi()" style="background:var(--orange);border:none;color:#fff;border-radius:6px;padding:3px 10px;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit">&#9673; Diagnosi</button>
-              <button onclick="openSessioneModal()" style="background:var(--green-bg);border:1px solid var(--green);color:var(--green);border-radius:6px;padding:3px 10px;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit">&#128203; Sessione</button>
-              <button onclick="resetDiagnosi()" style="background:var(--bg3);border:1px solid var(--border2);color:var(--gray);border-radius:6px;padding:3px 10px;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit">&#8635; Reset</button>
-              <button onclick="apriMultiScenario()" style="background:var(--blue-bg);border:1px solid var(--blue);color:var(--blue);border-radius:6px;padding:3px 10px;font-size:10px;font-weight:600;cursor:pointer;font-family:inherit">&#9878; Scenari</button>
+              <button onclick="apriDiagnosi()" class="btn-xs btn-xs-orange">&#9673; Diagnosi</button>
+              <button onclick="openSessioneModal()" class="btn-xs btn-xs-outline">&#128203; Sessione</button>
+              <button onclick="resetDiagnosi()" class="btn-xs">&#8635; Reset</button>
+              <button onclick="apriMultiScenario()" class="btn-xs btn-xs-outline">&#9878; Scenari</button>
             </div>
           </div>
           <div class="score-big" id="det-score">—</div>
@@ -203,7 +203,7 @@
           <div id="target-editor-content" style="overflow-y:auto;padding-right:4px;flex:1"></div>
           <div id="target-buttons-row" style="padding-top:12px;border-top:1px solid var(--border);margin-top:12px;display:flex;gap:8px">
             <button class="target-save" onclick="saveTargets()" style="flex:1">Salva obiettivi</button>
-            <button onclick="resetTargets()" style="background:transparent;border:1px solid var(--border2);color:var(--gray2);border-radius:var(--rs);padding:6px 12px;font-size:11px;font-weight:500;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;white-space:nowrap">&#8635; Reset</button>
+            <button onclick="resetTargets()" class="btn btn-secondary">&#8635; Reset</button>
           </div>
         </div>
       </div>
@@ -421,12 +421,12 @@
         <div style="font-size:15px;font-weight:700;color:var(--white)">Dati commerciali cliente</div>
         <div style="font-size:11px;color:var(--gray);margin-top:2px">Confronta con i benchmark di settore</div>
       </div>
-      <button onclick="closeBenchModal()" style="background:none;border:none;color:var(--gray);font-size:18px;cursor:pointer;padding:4px 8px">x</button>
+      <button onclick="closeBenchModal()" class="btn-close">×</button>
     </div>
     <div id="bench-modal-fields"></div>
     <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
-      <button onclick="closeBenchModal()" style="background:var(--bg3);border:1px solid var(--border);color:var(--gray);border-radius:8px;padding:8px 18px;cursor:pointer;font-size:13px">Annulla</button>
-      <button onclick="saveBenchModal()" style="background:var(--gold);border:none;color:var(--bg);border-radius:8px;padding:8px 20px;cursor:pointer;font-size:13px;font-weight:600">Salva</button>
+      <button onclick="closeBenchModal()" class="btn btn-secondary">Annulla</button>
+      <button onclick="saveBenchModal()" class="btn btn-primary">Salva</button>
     </div>
   </div>
 </div>
@@ -441,7 +441,7 @@
           <div class="diag-dim-label" id="diag-dim-name">Caricamento...</div>
           <div class="diag-dim-desc" id="diag-dim-desc"></div>
         </div>
-        <button onclick="chiudiDiagnosi()" style="background:none;border:none;color:var(--gray);font-size:20px;cursor:pointer;padding:4px 8px;line-height:1">x</button>
+        <button onclick="chiudiDiagnosi()" class="btn-close">×</button>
       </div>
       <div class="diagnosi-progress">
         <div class="diagnosi-progress-fill" id="diag-progress-fill" style="width:0%"></div>
@@ -449,9 +449,9 @@
     </div>
     <div class="diagnosi-body" id="diagnosi-body"></div>
     <div class="diagnosi-footer">
-      <button id="diag-btn-prev" onclick="diagPrev()" style="background:var(--bg3);border:1px solid var(--border);color:var(--gray);border-radius:8px;padding:8px 18px;cursor:pointer;font-size:13px;font-family:inherit">Indietro</button>
+      <button id="diag-btn-prev" onclick="diagPrev()" class="btn btn-secondary">Indietro</button>
       <div class="diag-score-preview" id="diag-score-preview"></div>
-      <button id="diag-btn-next" style="background:var(--gold);border:none;color:var(--bg);border-radius:8px;padding:8px 20px;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit">Avanti</button>
+      <button id="diag-btn-next" class="btn btn-primary">Avanti</button>
     </div>
   </div>
 </div>
@@ -464,7 +464,7 @@
           <div class="diag-dim-title" id="detail-overlay-title"></div>
           <div class="diag-dim-desc" id="detail-overlay-subtitle"></div>
         </div>
-        <button onclick="chiudiDetailOverlay()" style="background:none;border:none;color:var(--gray);font-size:20px;cursor:pointer;padding:4px 8px;line-height:1">x</button>
+        <button onclick="chiudiDetailOverlay()" class="btn-close">×</button>
       </div>
     </div>
     <div class="diagnosi-body" id="detail-overlay-body" style="padding:20px 24px"></div>
@@ -476,7 +476,7 @@
     <div class="diagnosi-header" style="flex-shrink:0;border-radius:16px 16px 0 0">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
         <div class="diag-dim-title">Scheda Finanziaria</div>
-        <button onclick="chiudiSchedaFinanziaria()" style="background:none;border:none;color:var(--gray);font-size:20px;cursor:pointer;padding:4px 8px;line-height:1">x</button>
+        <button onclick="chiudiSchedaFinanziaria()" class="btn-close">×</button>
       </div>
       <div class="fin-tabs" id="scheda-tabs" style="margin:0">
         <div class="fin-tab active" onclick="switchSchedaTab('struttura',this)">Struttura</div>
@@ -489,8 +489,8 @@
     </div>
     <div class="diagnosi-body" id="scheda-body" style="flex:1;overflow-y:auto;padding:0"></div>
     <div class="diagnosi-footer" style="flex-shrink:0;justify-content:space-between">
-      <button id="scheda-btn-prev" onclick="schedaTabPrev()" style="background:var(--bg3);border:1px solid var(--border);color:var(--gray);border-radius:8px;padding:8px 18px;cursor:pointer;font-size:13px;font-family:inherit">← Indietro</button>
-      <button id="scheda-btn-next" onclick="schedaTabNext()" style="background:var(--gold);border:none;color:var(--bg);border-radius:8px;padding:8px 20px;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit">Avanti →</button>
+      <button id="scheda-btn-prev" onclick="schedaTabPrev()" class="btn btn-secondary">← Indietro</button>
+      <button id="scheda-btn-next" onclick="schedaTabNext()" class="btn btn-primary">Avanti →</button>
     </div>
   </div>
 </div>
@@ -500,7 +500,7 @@
     <div class="diagnosi-header" style="flex-shrink:0;border-radius:20px 20px 0 0">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
         <div class="diag-dim-title" id="capitoli-overlay-title">Capitoli</div>
-        <button onclick="chiudiCapitoliOverlay()" style="background:none;border:none;color:var(--gray);font-size:20px;cursor:pointer;padding:4px 8px;line-height:1">x</button>
+        <button onclick="chiudiCapitoliOverlay()" class="btn-close">×</button>
       </div>
       <div id="capitoli-overlay-tabs" style="display:flex;gap:4px;flex-wrap:wrap"></div>
     </div>
