@@ -2,7 +2,14 @@
 const { createClient } = supabase;
 const sb = createClient(
   'https://glxwvvtdybzkxtobsiin.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdseHd2dnRkeWJ6a3h0b2JzaWluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0MzYxNzIsImV4cCI6MjA4OTAxMjE3Mn0.FvL3LTPaHC43WXzWn6Z_eXo3nly_Gz3QvvTT_S2QNIY'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdseHd2dnRkeWJ6a3h0b2JzaWluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0MzYxNzIsImV4cCI6MjA4OTAxMjE3Mn0.FvL3LTPaHC43WXzWn6Z_eXo3nly_Gz3QvvTT_S2QNIY',
+  {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: false
+    }
+  }
 );
 
 
