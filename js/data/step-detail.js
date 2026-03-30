@@ -2621,399 +2621,210 @@ const STEP_DETAIL_BY_SETTORE = {
   commercio_ricambi_auto: {
     vendite: {
       '1': { chi:'Titolare', cosa:'Titolare al banco — officine vengono quando serve', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Visite officine/carrozzerie della zona',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Sviluppo flotte e noleggiatori — contratti fornitura',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'supporto', nome:'Titolare strutturato', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:300, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: '1 agente officine fuori zona',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1800, costo_setup:500, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:990, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:810, costo_setup:500, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'E-commerce ricambi + reti officine',
-        tempo_mesi: 6,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:3000, costo_setup:2000, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1650, costo_setup:2000, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1350, costo_setup:2000, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Visite proattive a officine e carrozzerie della zona', tempo_mesi:1, moduli:[
+        { id:'analisi', nome:'Analisi officine zona', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.6, note:'Mappatura officine/carrozzerie/gommisti nel raggio consegna, classificazione A/B/C' },
+        { id:'visite', nome:'Piano visite officine', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.3, note:'1-2 giorni/settimana: presentazione gamma, novita, promozioni' },
+      ]},
+      '3': { cosa:'Sviluppo flotte aziendali e noleggiatori — contratti fornitura', tempo_mesi:2, moduli:[
+        { id:'flotte', nome:'Sviluppo canale flotte/NLT', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:300, impatto:0.7, note:'Contatto gestori flotte, noleggiatori, aziende con parco auto >10 veicoli' },
+        { id:'catalogo_flotte', nome:'Catalogo dedicato flotte', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:200, impatto:0.15, note:'Listino per manutenzione programmata: kit tagliando, freni, filtri per modello' },
+      ]},
+      '4': { cosa:'Agente dedicato officine fuori zona + inside sales telefonico', tempo_mesi:3, moduli:[
+        { id:'agente', nome:'Agente esterno officine', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agente', nome:'Agente ENASARCO aftermarket', costo_mensile:800, costo_setup:500, impatto:1.0, note:'Provvigione 3-5%, porta portafoglio officine fuori zona attuale' },
+          { id:'dip', nome:'Commerciale dipendente esterno', costo_mensile:2200, costo_setup:0, impatto:0.8, note:'Fisso + auto + incentivi, fidelizzato' },
+        ]},
+        { id:'inside', nome:'Inside sales telefonico', tipo:'scelta', obbligatorio:false, varianti:[
+          { id:'dip', nome:'Inside sales dipendente', costo_mensile:1800, costo_setup:0, impatto:0.25, note:'Telefono per riordini, follow-up, offerte settimanali a officine B/C' },
+          { id:'parttime', nome:'Inside sales part-time', costo_mensile:900, costo_setup:0, impatto:0.15, note:'4h/giorno, focus riattivazione e riordini' },
+        ]},
+      ]},
+      '5': { cosa:'Dir. commerciale + e-commerce ricambi + rete officine convenzionate', tempo_mesi:6, moduli:[
+        { id:'resp', nome:'Direttore commerciale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Dir. commerciale dipendente', costo_mensile:3000, costo_setup:0, impatto:0.5, note:'Coordinamento agenti, pricing, sviluppo e-commerce, accordi flotte' },
+          { id:'fractional', nome:'Dir. commerciale fractional', costo_mensile:1500, costo_setup:0, impatto:0.35, note:'2-3 giorni/settimana' },
+        ]},
+        { id:'rete', nome:'Programma officine convenzionate', tipo:'flag', obbligatorio:false, costo_mensile:200, costo_setup:1000, impatto:0.2, note:'Network officine con insegna/convenzione, listino dedicato, promozioni esclusive' },
+      ]},
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — vendite al banco e telefono', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Excel con officine clienti, frequenza e volumi acquisto',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:100, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Gestionale con catalogo TecDoc integrato per ricerca rapida',
-        tempo_mesi: 1,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Gestionale con catalogo TecDoc integrato per ricerca rapida', costo_mensile:200, costo_setup:800, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:100, costo_setup:480, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'CRM + gestionale — storico cliente, margini, alert riordini',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM + gestionale', costo_mensile:500, costo_setup:2000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:250, costo_setup:1200, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'ERP ricambi — ordini, magazzino, TecDoc, logistica, fatturazione',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'ERP ricambi', costo_mensile:1000, costo_setup:5000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:500, costo_setup:3000, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Excel con officine clienti, frequenza e volumi per categoria ricambio', tempo_mesi:1, moduli:[
+        { id:'strumento', nome:'Strumento tracciamento', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'excel', nome:'Excel/Fogli Google strutturato', costo_mensile:0, costo_setup:100, impatto:0.7, note:'Officina, ultimo ordine, frequenza, categorie top (freni, filtri, olio, ecc.)' },
+          { id:'crm_free', nome:'CRM gratuito (HubSpot Free/Zoho)', costo_mensile:0, costo_setup:200, impatto:0.85, note:'Pipeline + storico ordini + reminder riordino' },
+        ]},
+      ]},
+      '3': { cosa:'Gestionale ricambi con catalogo TecDoc integrato', tempo_mesi:1, moduli:[
+        { id:'gestionale', nome:'Gestionale ricambi + TecDoc', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'Gestionale ricambi (Sicipart/InforAuto/PartFinder)', costo_mensile:150, costo_setup:800, impatto:1.0, note:'Ricerca per targa/VIN, equivalenze OE/aftermarket, giacenze, ordine' },
+          { id:'tecdoc', nome:'TecDoc standalone + gestionale generico', costo_mensile:80, costo_setup:500, impatto:0.65, note:'Licenza TecDoc + Danea/FiC per fatturazione, meno integrato' },
+        ]},
+      ]},
+      '4': { cosa:'CRM + gestionale integrato — storico officina, margini, alert riordini', tempo_mesi:2, moduli:[
+        { id:'crm_gestionale', nome:'CRM + gestionale ricambi', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'integrato', nome:'Gestionale ricambi con CRM integrato (Sicipart Pro)', costo_mensile:400, costo_setup:2000, impatto:1.0, note:'TecDoc + magazzino + CRM + storico per officina + alert riordino' },
+          { id:'separato', nome:'CRM + gestionale separati via API', costo_mensile:200, costo_setup:1000, impatto:0.65, note:'Pipedrive/Zoho + gestionale ricambi collegati' },
+        ]},
+      ]},
+      '5': { cosa:'ERP ricambi completo — ordini, magazzino, TecDoc, logistica, fatturazione', tempo_mesi:3, moduli:[
+        { id:'erp', nome:'ERP ricambi auto', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'ERP aftermarket (Sicipart Enterprise/PartsPoint)', costo_mensile:800, costo_setup:5000, impatto:1.0, note:'TecDoc, magazzino, ordini multi-fornitore, logistica, e-commerce B2B, BI' },
+          { id:'mid', nome:'ERP mid-market + modulo TecDoc', costo_mensile:400, costo_setup:2500, impatto:0.6, note:'TeamSystem/Danea + plugin TecDoc, meno specifico' },
+        ]},
+      ]},
     },
     team: {
       '1': { chi:'Titolare', cosa:'Nessuna organizzazione — il titolare decide tutto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Ruoli banco/magazzino/consegne definiti',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'organizzazione', nome:'Ruoli banco/magazzino/consegne definiti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Procedure ordini urgenti formalizzate',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'organizzazione', nome:'Procedure ordini urgenti formalizzate', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'KPI evasione ordini + tempi consegna',
-        tempo_mesi: 3,
-        moduli: [
-          { id:'organizzazione', nome:'KPI evasione ordini + tempi consegna', tipo:'flag', obbligatorio:true, costo_mensile:500, costo_setup:1000, impatto:0.8 }
-        ]
-      },
-      '5': {
-        cosa: 'Management + ottimizzazione logistica',
-        tempo_mesi: 5,
-        moduli: [
-          {
-            id: 'manager',
-            nome: 'Figura manageriale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Management dipendente', costo_mensile:1500, costo_setup:1500, impatto:1, note:'Full-time' },
-              { id:'fractional', nome:'Management fractional', costo_mensile:750, costo_setup:1500, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Ruoli banco/magazzino/consegne separati con mansionario', tempo_mesi:1, moduli:[
+        { id:'organigramma', nome:'Organigramma e mansionario', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.7, note:'Bancone (ricerca + vendita), magazzino (picking + inventario), consegne, admin' },
+        { id:'resp_mag', nome:'Responsabile magazzino', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'promozione', nome:'Promozione interna magazziniere', costo_mensile:0, costo_setup:200, impatto:1.0, note:'Conosce le giacenze, i codici, le ubicazioni' },
+          { id:'esterno', nome:'Assunzione resp. magazzino', costo_mensile:300, costo_setup:0, impatto:0.8, note:'Esperienza logistica ricambi' },
+        ]},
+      ]},
+      '3': { cosa:'Procedure ordini urgenti + back-office formalizzato', tempo_mesi:2, moduli:[
+        { id:'admin', nome:'Impiegata commerciale/ordini', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Impiegata dipendente', costo_mensile:1800, costo_setup:0, impatto:0.7, note:'Ordini, DDT, fatture, resi, gestione crediti, rapporto distributori' },
+          { id:'parttime', nome:'Impiegata part-time', costo_mensile:900, costo_setup:0, impatto:0.5, note:'4h/giorno' },
+        ]},
+      ]},
+      '4': { cosa:'KPI evasione ordini + tempi consegna + responsabile operativo', tempo_mesi:3, moduli:[
+        { id:'resp_ops', nome:'Responsabile operativo', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Resp. operativo dipendente', costo_mensile:2500, costo_setup:0, impatto:1.0, note:'Gestione magazzino, logistica consegne, personale, KPI evasione' },
+          { id:'fractional', nome:'Resp. operativo fractional', costo_mensile:1200, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' },
+        ]},
+        { id:'kpi', nome:'Dashboard KPI', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.15, note:'Tempo evasione ordine, fill rate, resi, margine per officina' },
+      ]},
+      '5': { cosa:'Management completo — commerciale + operations strutturati', tempo_mesi:5, moduli:[
+        { id:'manager', nome:'Direttore operativo', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'COO/Dir. operativo dipendente', costo_mensile:3500, costo_setup:0, impatto:1.0, note:'Gestione totale day-to-day, il titolare fa sviluppo business' },
+          { id:'fractional', nome:'COO fractional', costo_mensile:1800, costo_setup:0, impatto:0.65, note:'3 giorni/settimana' },
+        ]},
+      ]},
       _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — ricerca manuale su cataloghi cartacei', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Catalogo elettronico TecDoc per ricerca per targa/VIN',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'processo', nome:'Catalogo elettronico TecDoc per ricerca per targa/VIN', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:300, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Gestionale magazzino con giacenze e riordino automatico',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Gestionale magazzino con giacenze e riordino automatico',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:300, costo_setup:1500, impatto:1, note:'Gestionale magazzino con giacenze e riordino automatico' },
-              { id:'base', nome:'Soluzione base', costo_mensile:150, costo_setup:750, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Logistica consegne ottimizzata — route planning, tracking',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Logistica consegne ottimizzata',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:500, costo_setup:2000, impatto:1, note:'Logistica consegne ottimizzata — route planning, tracking' },
-              { id:'base', nome:'Soluzione base', costo_mensile:250, costo_setup:1000, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'ERP integrato + gestione resi + garanzie ricambi',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'ERP integrato',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:900, costo_setup:4000, impatto:1, note:'ERP integrato + gestione resi + garanzie ricambi' },
-              { id:'base', nome:'Soluzione base', costo_mensile:450, costo_setup:2000, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Catalogo elettronico TecDoc per ricerca per targa/VIN + equivalenze', tempo_mesi:1, moduli:[
+        { id:'tecdoc', nome:'Licenza TecDoc/catalogo elettronico', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'tecdoc', nome:'TecDoc (licenza ufficiale)', costo_mensile:80, costo_setup:300, impatto:1.0, note:'Ricerca per targa/VIN, equivalenze OE-aftermarket, applicazioni veicolo' },
+          { id:'alternativo', nome:'Catalogo alternativo (PartsLink24/InfoRicambi)', costo_mensile:50, costo_setup:200, impatto:0.7, note:'Catalogo ricambi con ricerca veicolo, meno marchi aftermarket' },
+        ]},
+      ]},
+      '3': { cosa:'Gestionale magazzino con giacenze, sotto-scorta e riordino automatico', tempo_mesi:2, moduli:[
+        { id:'wms', nome:'Software gestione magazzino ricambi', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'WMS ricambi (Sicipart/InforAuto)', costo_mensile:200, costo_setup:1500, impatto:1.0, note:'Giacenze per ubicazione, sotto-scorta per codice, riordino automatico, inventario rotativo' },
+          { id:'generico', nome:'Gestionale generico (Danea/Odoo)', costo_mensile:100, costo_setup:800, impatto:0.6, note:'Gestione base giacenze, meno automazione specifica ricambi' },
+        ]},
+      ]},
+      '4': { cosa:'Logistica consegne express — route planning, tracking, 2 giri/giorno', tempo_mesi:2, moduli:[
+        { id:'logistica', nome:'Ottimizzazione consegne express', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'software', nome:'Route planning + tracking GPS', costo_mensile:150, costo_setup:1000, impatto:1.0, note:'Pianificazione 2 giri/giorno, tracking real-time, conferma consegna digitale' },
+          { id:'manuale', nome:'Pianificazione giri manuale strutturata', costo_mensile:0, costo_setup:300, impatto:0.5, note:'Tabellone giri mattina/pomeriggio, priorita per urgenza' },
+        ]},
+        { id:'urgenze', nome:'Procedura ordini urgenti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.15, note:'Flusso urgenze: ordine, verifica stock, eventuale richiesta a distributore, consegna entro 2h' },
+      ]},
+      '5': { cosa:'ERP integrato + gestione resi/garanzie + qualita aftermarket', tempo_mesi:3, moduli:[
+        { id:'erp', nome:'ERP ricambi integrato', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'ERP aftermarket (Sicipart Enterprise)', costo_mensile:700, costo_setup:4000, impatto:1.0, note:'Tutto integrato: TecDoc, magazzino, ordini multi-fornitore, resi, garanzie, fatturazione' },
+          { id:'modulare', nome:'Moduli separati integrati', costo_mensile:350, costo_setup:2000, impatto:0.55, note:'Gestionale + TecDoc + fatturazione collegati via API' },
+        ]},
+        { id:'resi', nome:'Procedura resi e garanzie strutturata', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:300, impatto:0.15, note:'Modulo reso, tracciamento garanzia fornitore, nota credito automatica' },
+      ]},
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Margine da listino — nessuna differenziazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Pricing differenziato — officine abituali vs occasionali',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'ricavi', nome:'Pricing differenziato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Upsell prodotti correlati — filtri, olio, pastiglie in kit',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'ricavi', nome:'Upsell prodotti correlati', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Contratti fornitura con officine — sconti volume, fidelizzazione',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'ricavi', nome:'Contratti fornitura con officine', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
-        ]
-      },
-      '5': {
-        cosa: 'Private label consumabili + revenue da consegna express',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'ricavi',
-            nome: 'Private label consumabili + revenue da consegna express',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:700, costo_setup:1500, impatto:1, note:'Private label consumabili + revenue da consegna express' },
-              { id:'graduale', nome:'Implementazione graduale', costo_mensile:350, costo_setup:750, impatto:0.65, note:'Avvio parziale, si espande' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Pricing differenziato: officine abituali, occasionali, flotte', tempo_mesi:1, moduli:[
+        { id:'pricing', nome:'Listini per tipologia cliente', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8, note:'Sconto diverso per officina abituale, occasionale, carrozzeria, flotta' },
+      ]},
+      '3': { cosa:'Upsell kit manutenzione: filtri + olio + pastiglie in pacchetto', tempo_mesi:1, moduli:[
+        { id:'kit', nome:'Kit manutenzione pre-confezionati', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.6, note:'Kit tagliando per modello: filtri + olio + candele + pastiglie — margine +15%' },
+        { id:'correlati', nome:'Suggerimento prodotti correlati (cross-selling)', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:200, impatto:0.2, note:'Al banco/online: "Per questo lavoro serve anche..." — aumento scontrino medio' },
+      ]},
+      '4': { cosa:'Contratti fornitura annuali con officine + consegna express a pagamento', tempo_mesi:2, moduli:[
+        { id:'contratti', nome:'Contratti fornitura officine', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.6, note:'Accordo annuale: sconto volume, priorita consegna, pagamento 30gg' },
+        { id:'express', nome:'Servizio consegna express premium', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:300, impatto:0.2, note:'Consegna entro 1h a pagamento (5-10 euro), servizio differenziante' },
+      ]},
+      '5': { cosa:'Private label su consumabili + revenue e-commerce B2C', tempo_mesi:3, moduli:[
+        { id:'pl', nome:'Private label consumabili', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completa', nome:'Linea PL completa (olio, filtri, pastiglie)', costo_mensile:300, costo_setup:1500, impatto:1.0, note:'Marchio proprio su consumabili ad alta rotazione, margine +20-25%' },
+          { id:'parziale', nome:'PL solo su 1-2 categorie (filtri o olio)', costo_mensile:100, costo_setup:500, impatto:0.5, note:'Inizio graduale su categoria a piu alta rotazione' },
+        ]},
+      ]},
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo posizione e insegna', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Google My Business + WhatsApp Business per ordini rapidi',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'marketing', nome:'Google My Business + WhatsApp Business per ordini rapidi', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Google Ads locali su "ricambi auto + città"',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'marketing', nome:'Google Ads locali su "ricambi auto + città"', tipo:'flag', obbligatorio:true, costo_mensile:500, costo_setup:800, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Promozioni mirate per officine — volantini, offerte stagionali',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'marketing', nome:'Promozioni mirate per officine', tipo:'flag', obbligatorio:true, costo_mensile:800, costo_setup:1000, impatto:0.8 }
-        ]
-      },
-      '5': {
-        cosa: 'Piano marketing — digitale + partnership reti officine + eventi',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'Piano marketing',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:2000, costo_setup:2500, impatto:1, note:'Piano marketing — digitale + partnership reti officine + eventi' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:800, costo_setup:1250, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Google My Business + WhatsApp Business per ordini rapidi', tempo_mesi:1, moduli:[
+        { id:'gmb', nome:'Google My Business ottimizzato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.5, note:'Foto magazzino, orari, marchi trattati, risposte recensioni' },
+        { id:'whatsapp', nome:'WhatsApp Business per ordini', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.3, note:'Catalogo WhatsApp, ordini rapidi via chat, conferma disponibilita istantanea' },
+      ]},
+      '3': { cosa:'Google Ads locali + promozioni stagionali per officine', tempo_mesi:2, moduli:[
+        { id:'ads', nome:'Google Ads locali', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:500, impatto:0.5, note:'Campagne su "ricambi auto + citta", "autoricambi + zona"' },
+        { id:'promo', nome:'Promozioni stagionali officine', tipo:'flag', obbligatorio:false, costo_mensile:200, costo_setup:200, impatto:0.3, note:'Volantino/email: promo pneumatici inverno, kit clima estate, pastiglie, ecc.' },
+      ]},
+      '4': { cosa:'Programma fidelizzazione officine + eventi/formazione tecnica', tempo_mesi:2, moduli:[
+        { id:'fidelity', nome:'Programma fidelizzazione officine', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'strutturato', nome:'Programma punti/premi per officine', costo_mensile:300, costo_setup:1000, impatto:1.0, note:'Punti su acquisti, premi (attrezzatura, formazione, viaggi), esclusiva' },
+          { id:'semplice', nome:'Sconti progressivi a volume', costo_mensile:0, costo_setup:300, impatto:0.5, note:'Fasce sconto automatiche per volume annuo raggiunto' },
+        ]},
+      ]},
+      '5': { cosa:'Piano marketing completo — digital + partnership reti officine + brand', tempo_mesi:3, moduli:[
+        { id:'piano', nome:'Piano marketing aftermarket', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia marketing automotive', costo_mensile:1500, costo_setup:2000, impatto:1.0, note:'Strategia: digital, fidelizzazione, brand, partnership, eventi' },
+          { id:'interno', nome:'Marketing manager interno + tool', costo_mensile:800, costo_setup:500, impatto:0.6, note:'1 risorsa dedicata' },
+        ]},
+      ]},
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Sito con catalogo marchi trattati, zona consegna, contatti',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'sito', nome:'Sito con catalogo marchi trattati, zona consegna, contatti', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:800, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Ricerca ricambi online per targa/VIN + preventivo',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Ricerca ricambi online per targa/VIN',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:350, costo_setup:3000, impatto:1, note:'Ricerca ricambi online per targa/VIN + preventivo' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:140, costo_setup:1200, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'E-commerce ricambi B2B — ordini online con listini officina',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'E-commerce ricambi B2B',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:800, costo_setup:6000, impatto:1, note:'E-commerce ricambi B2B — ordini online con listini officina' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:320, costo_setup:2400, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Piattaforma completa — ordini, tracking, resi, fatturazione',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Piattaforma completa',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:1500, costo_setup:12000, impatto:1, note:'Piattaforma completa — ordini, tracking, resi, fatturazione' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:600, costo_setup:4800, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Sito vetrina con marchi trattati, zona consegna, contatti', tempo_mesi:1, moduli:[
+        { id:'sito', nome:'Sito ricambi auto', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'custom', nome:'Sito custom WordPress', costo_mensile:30, costo_setup:1500, impatto:1.0, note:'Marchi, categorie, zona consegna, form richiesta rapida per targa' },
+          { id:'template', nome:'Sito da template', costo_mensile:20, costo_setup:500, impatto:0.55, note:'Template base, landing page con contatti' },
+        ]},
+      ]},
+      '3': { cosa:'Ricerca ricambi online per targa/VIN + richiesta preventivo', tempo_mesi:2, moduli:[
+        { id:'ricerca', nome:'Motore ricerca ricambi per targa', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'tecdoc_web', nome:'TecDoc Web integrato nel sito', costo_mensile:200, costo_setup:3000, impatto:1.0, note:'Ricerca per targa/VIN, risultati con equivalenze, richiesta preventivo online' },
+          { id:'form', nome:'Form richiesta per targa (manuale)', costo_mensile:0, costo_setup:500, impatto:0.4, note:'Il cliente inserisce targa e ricambio, noi rispondiamo con preventivo' },
+        ]},
+      ]},
+      '4': { cosa:'E-commerce ricambi B2B — ordini online con listini officina', tempo_mesi:2, moduli:[
+        { id:'ecommerce', nome:'E-commerce ricambi B2B', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'E-commerce aftermarket (PartsCat/custom)', costo_mensile:500, costo_setup:6000, impatto:1.0, note:'Ricerca TecDoc, listini per officina, ordine diretto, stock live, DDT automatico' },
+          { id:'generico', nome:'WooCommerce B2B + catalogo', costo_mensile:200, costo_setup:2500, impatto:0.5, note:'E-commerce con login officina, prezzi dedicati, meno integrato' },
+        ]},
+      ]},
+      '5': { cosa:'Piattaforma B2B/B2C completa — ordini, tracking, resi, fatturazione', tempo_mesi:4, moduli:[
+        { id:'piattaforma', nome:'Piattaforma ricambi completa', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'Piattaforma aftermarket enterprise', costo_mensile:1200, costo_setup:12000, impatto:1.0, note:'B2B + B2C, TecDoc integrato, ordini, tracking spedizioni, resi, fatturazione, app mobile' },
+          { id:'mid', nome:'E-commerce avanzato (PrestaShop/Magento)', costo_mensile:500, costo_setup:5000, impatto:0.55, note:'E-commerce multi-canale, meno specifico per aftermarket' },
+        ]},
+      ]},
     },
     ecommerce: {
-      '1': { chi:'Titolare', cosa:'Acquisto da 1-2 distributori abituali', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Confronto prezzi tra distributori (Rhiag, LKQ, Autodis)',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'canale', nome:'Confronto prezzi tra distributori (Rhiag, LKQ, Autodis)', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Accordi quadro con 3-4 distributori — sconti e priorità',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'canale', nome:'Accordi quadro con 3-4 distributori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Buyer dedicato — ottimizzazione stock, import aftermarket',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Buyer dedicato',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:1500, costo_setup:500, impatto:1, note:'Buyer dedicato — ottimizzazione stock, import aftermarket' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:750, costo_setup:200, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Resp. acquisti — contratti quadro, private label, import Asia',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Resp. acquisti',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:3000, costo_setup:1500, impatto:1, note:'Resp. acquisti — contratti quadro, private label, import Asia' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:1500, costo_setup:600, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
       _label: 'Approvvigionamento ricambi',
+      '1': { chi:'Titolare', cosa:'Acquisto da 1-2 distributori abituali', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Confronto prezzi tra distributori (Rhiag, LKQ, Autodis, Stahlgruber)', tempo_mesi:1, moduli:[
+        { id:'fornitori', nome:'Database distributori aftermarket', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.7, note:'Scheda per distributore: listino, sconti, tempi consegna, resi, catalogo online' },
+      ]},
+      '3': { cosa:'Accordi quadro con 3-4 distributori — sconti volume e priorita consegna', tempo_mesi:2, moduli:[
+        { id:'accordi', nome:'Accordi quadro distributori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.6, note:'Contratti con Rhiag, LKQ, Autodis: sconti per volume, 2 consegne/giorno, resi facili' },
+        { id:'multi_ordine', nome:'Piattaforma ordini multi-distributore', tipo:'flag', obbligatorio:false, costo_mensile:50, costo_setup:300, impatto:0.15, note:'Software per confrontare prezzo/disponibilita tra distributori e ordinare dal migliore' },
+      ]},
+      '4': { cosa:'Buyer dedicato — ottimizzazione stock, aftermarket alternativo, import', tempo_mesi:2, moduli:[
+        { id:'buyer', nome:'Buyer ricambi aftermarket', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Buyer aftermarket dipendente', costo_mensile:2000, costo_setup:0, impatto:1.0, note:'Ottimizzazione stock, negoziazione distributori, sourcing aftermarket alternativo' },
+          { id:'parttime', nome:'Buyer part-time/admin con delega', costo_mensile:900, costo_setup:0, impatto:0.6, note:'Gestisce riordini, confronto prezzi, rapporto distributori' },
+        ]},
+      ]},
+      '5': { cosa:'Resp. acquisti — contratti quadro, private label, import aftermarket Asia', tempo_mesi:4, moduli:[
+        { id:'supply', nome:'Responsabile supply chain aftermarket', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Supply chain manager dipendente', costo_mensile:3000, costo_setup:0, impatto:1.0, note:'Strategia acquisti, import aftermarket (Asia/Est Europa), PL, ottimizzazione stock' },
+          { id:'fractional', nome:'Supply chain manager fractional', costo_mensile:1500, costo_setup:0, impatto:0.6, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
     }
   },
 
