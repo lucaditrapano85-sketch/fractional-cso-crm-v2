@@ -979,91 +979,52 @@ const STEP_DETAIL_BY_SETTORE = {
   servizi_formazione: {
     vendite: {
       '1': { chi:'Titolare solo', cosa:'Titolare/formatore vende i propri corsi — nessun commerciale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Proposta proattiva verso HR e resp. formazione aziende zona',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: '1 commerciale dedicato — sviluppo clienti corporate e enti',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2500, costo_setup:500, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1375, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1125, costo_setup:500, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Team vendite — corporate + PA/bandi + catalogo',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'resp',
-            nome: 'Responsabile commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2000, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
-              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1100, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          },
-          {
-            id: 'team',
-            nome: 'Figure commerciali',
-            tipo: 'multi',
-            obbligatorio: true,
-            min: 2,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1000, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:750, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Rete segnalatori + partnership consulenti',
-        tempo_mesi: 6,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:3500, costo_setup:2000, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1925, costo_setup:2000, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1575, costo_setup:2000, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Proposta proattiva verso HR e resp. formazione aziende zona', tempo_mesi:1, moduli:[
+        { id:'mappatura', nome:'Database aziende target', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.5, note:'Lista HR manager e resp. formazione PMI zona' },
+        { id:'trasferte', nome:'Visite e presentazioni dirette', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.4, note:'Visite aziendali con presentazione catalogo e demo' },
+      ]},
+      '3': { cosa:'Commerciale dedicato — sviluppo clienti corporate e enti', tempo_mesi:3, moduli:[
+        { id:'commerciale', nome:'Figura commerciale formazione', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Commerciale dipendente', costo_mensile:2500, costo_setup:0, impatto:1.0, note:'Lordo azienda, visite HR + risposta bandi' },
+          { id:'agente', nome:'Agente formazione ENASARCO', costo_mensile:1500, costo_setup:0, impatto:0.7, note:'Provvigioni su contratti chiusi + ENASARCO' },
+          { id:'segnalatore', nome:'Rete segnalatori (consulenti lavoro, commercialisti)', costo_mensile:500, costo_setup:500, impatto:0.5, note:'Fee su segnalazioni convertite' },
+        ]},
+      ]},
+      '4': { cosa:'Team vendite — corporate + PA/bandi + catalogo interaziendale', tempo_mesi:3, moduli:[
+        { id:'resp', nome:'Responsabile sviluppo business', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2800, costo_setup:0, impatto:0.5, note:'Coordina commerciali, gestisce key account' },
+          { id:'fractional', nome:'Business developer fractional', costo_mensile:1500, costo_setup:0, impatto:0.35, note:'2-3 giorni/settimana' },
+        ]},
+        { id:'team', nome:'Commerciali', tipo:'multi', obbligatorio:true, min:1, varianti:[
+          { id:'corporate', nome:'Commerciale corporate', costo_mensile:2200, costo_setup:0, impatto:0.2, note:'Aziende private, piani formativi annuali' },
+          { id:'bandi', nome:'Specialista bandi/PA', costo_mensile:1800, costo_setup:0, impatto:0.15, note:'Fondi interprofessionali, bandi regionali, PNRR' },
+        ]},
+      ]},
+      '5': { cosa:'Rete segnalatori + partnership consulenti + key account', tempo_mesi:6, moduli:[
+        { id:'dir_comm', nome:'Direttore commerciale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Dir. commerciale dipendente', costo_mensile:3500, costo_setup:0, impatto:0.45, note:'Strategia + team + partnership' },
+          { id:'fractional', nome:'Dir. commerciale fractional', costo_mensile:1800, costo_setup:0, impatto:0.3, note:'3 giorni/settimana' },
+        ]},
+        { id:'rete', nome:'Rete commerciale', tipo:'multi', obbligatorio:true, min:2, varianti:[
+          { id:'commerciale', nome:'Commerciale corporate', costo_mensile:2200, costo_setup:0, impatto:0.15, note:'Vendita diretta a imprese' },
+          { id:'partner', nome:'Partnership con consulenti/studi', costo_mensile:500, costo_setup:500, impatto:0.1, note:'Commercialisti, consulenti lavoro come segnalatori' },
+        ]},
+      ]},
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — corsi venduti a richiesta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Excel con aziende contattate, proposte inviate, follow-up',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:100, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'CRM per pipeline corporate e scadenze fondi interprofessionali',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'strumento', nome:'CRM base', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:300, impatto:0.8 }
-        ]
-      },
+      '2': { cosa:'Excel con aziende contattate e proposte inviate', tempo_mesi:1, moduli:[
+        { id:'strumento', nome:'Tracciamento pipeline', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'excel', nome:'Excel/Google Sheet con template formazione', costo_mensile:0, costo_setup:0, impatto:0.6, note:'Aziende, contatti HR, proposte, follow-up' },
+          { id:'crm_free', nome:'CRM gratuito (HubSpot Free)', costo_mensile:0, costo_setup:100, impatto:0.85, note:'Pipeline + reminder automatici' },
+        ]},
+      ]},
+      '3': { cosa:'CRM per pipeline corporate + scadenze fondi interprofessionali', tempo_mesi:1, moduli:[
+        { id:'crm', nome:'CRM formazione', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'crm_formazione', nome:'CRM con modulo formazione (Salesforce, Zoho)', costo_mensile:80, costo_setup:300, impatto:1.0, note:'Pipeline + scadenze fondi + gestione piani formativi' },
+          { id:'crm_light', nome:'CRM leggero (Pipedrive)', costo_mensile:50, costo_setup:200, impatto:0.75, note:'Solo pipeline, scadenze manuali' },
+        ]},
+      ]},
       '4': {
         cosa: 'CRM + gestione bandi e fondi (Fondimpresa, Fondirigenti)',
         tempo_mesi: 2,
@@ -1098,62 +1059,41 @@ const STEP_DETAIL_BY_SETTORE = {
       },
     },
     team: {
-      '1': { chi:'Titolare', cosa:'Titolare fa tutto — nessuna organizzazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Catalogo corsi strutturato con programmi definiti',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'organizzazione', nome:'Catalogo corsi strutturato con programmi definiti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Coordinamento rete formatori freelance',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'organizzazione', nome:'Coordinamento rete formatori freelance', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'KPI per formatore + pianificazione didattica',
-        tempo_mesi: 3,
-        moduli: [
-          { id:'organizzazione', nome:'KPI per formatore + pianificazione didattica', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:1000, impatto:0.8 }
-        ]
-      },
-      '5': {
-        cosa: 'Governance didattica — titolare solo strategia',
-        tempo_mesi: 5,
-        moduli: [
-          {
-            id: 'manager',
-            nome: 'Figura manageriale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Direttore academy dipendente', costo_mensile:1500, costo_setup:2000, impatto:1, note:'Full-time' },
-              { id:'fractional', nome:'Direttore academy fractional', costo_mensile:750, costo_setup:2000, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          }
-        ]
-      },
       _label: 'Organizzazione',
+      '1': { chi:'Titolare', cosa:'Titolare fa tutto — nessuna organizzazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Catalogo corsi strutturato con programmi e prezzi definiti', tempo_mesi:1, moduli:[
+        { id:'catalogo', nome:'Catalogo corsi formalizzato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.7, note:'Schede corso: obiettivi, programma, durata, prezzo, docente' },
+        { id:'template_prop', nome:'Template proposta formativa', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:100, impatto:0.15, note:'Proposta brandizzata per le aziende' },
+      ]},
+      '3': { cosa:'Coordinamento rete formatori freelance', tempo_mesi:2, moduli:[
+        { id:'coordinamento', nome:'Coordinamento docenti', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'interno', nome:'Coordinatore interno (titolare + admin)', costo_mensile:200, costo_setup:500, impatto:0.8, note:'Agenda docenti, assegnazione corsi, feedback' },
+          { id:'tutor', nome:'Tutor didattico dedicato', costo_mensile:1500, costo_setup:0, impatto:1.0, note:'Figura dedicata al coordinamento docenti e qualita' },
+        ]},
+      ]},
+      '4': { cosa:'KPI per formatore + pianificazione didattica annuale', tempo_mesi:3, moduli:[
+        { id:'kpi', nome:'Sistema KPI formatori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.5, note:'Valutazione partecipanti, repeat rate, NPS' },
+        { id:'pianificazione', nome:'Pianificazione didattica annuale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.3, note:'Calendario corsi, assegnazione docenti, aule' },
+      ]},
+      '5': { cosa:'Governance didattica completa — titolare solo strategia', tempo_mesi:5, moduli:[
+        { id:'direttore', nome:'Direttore academy', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Direttore academy dipendente', costo_mensile:3000, costo_setup:0, impatto:1.0, note:'Full-time: docenti, qualita, innovazione didattica' },
+          { id:'fractional', nome:'Direttore didattico fractional', costo_mensile:1500, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana + supervisione' },
+        ]},
+      ]},
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — ogni corso è improvvisato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Catalogo corsi standard con programmi e durate definite',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'processo', nome:'Catalogo corsi standard con programmi e durate definite', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Processo iscrizione + materiali + valutazione apprendimento',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'processo', nome:'Processo iscrizione + materiali + valutazione apprendimento', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:800, impatto:0.8 }
-        ]
-      },
+      '2': { cosa:'Programmi corsi standard con materiali e durate definite', tempo_mesi:1, moduli:[
+        { id:'programmi', nome:'Standardizzazione programmi corsi', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.7, note:'Slide, esercitazioni, test — replicabili da qualsiasi docente' },
+        { id:'valutazione', nome:'Questionario valutazione fine corso', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:100, impatto:0.15, note:'Customer satisfaction + NPS' },
+      ]},
+      '3': { cosa:'Processo iscrizione + materiali + valutazione apprendimento', tempo_mesi:2, moduli:[
+        { id:'gestione', nome:'Sistema gestione corsi', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'saas', nome:'Piattaforma gestione corsi SaaS (Eventbrite Pro, Arlo)', costo_mensile:150, costo_setup:300, impatto:1.0, note:'Iscrizioni, pagamenti, attestati automatici' },
+          { id:'manuale', nome:'Gestione manuale strutturata (form + email)', costo_mensile:0, costo_setup:500, impatto:0.6, note:'Google Form + email automatiche + Excel' },
+        ]},
+      ]},
       '4': {
         cosa: 'LMS per e-learning + blended learning strutturato',
         tempo_mesi: 3,
@@ -1189,29 +1129,16 @@ const STEP_DETAIL_BY_SETTORE = {
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Corsi a giornata — fatturato a singhiozzo', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Pacchetti formativi annuali per aziende — ricavo prevedibile',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'ricavi', nome:'Pacchetti formativi annuali per aziende', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Formazione finanziata — fondi interprofessionali come leva',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'ricavi',
-            nome: 'Formazione finanziata',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:600, costo_setup:1000, impatto:1, note:'Formazione finanziata — fondi interprofessionali come leva' },
-              { id:'graduale', nome:'Implementazione graduale', costo_mensile:300, costo_setup:500, impatto:0.65, note:'Avvio parziale, si espande' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Pacchetti formativi annuali — ricavo prevedibile', tempo_mesi:1, moduli:[
+        { id:'pacchetti', nome:'Offerta pacchetti annuali alle aziende', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.7, note:'Da corsi singoli a piani formativi annuali — MRR' },
+        { id:'listino', nome:'Listino servizi con prezzi chiari', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:0, impatto:0.15, note:'Prezzo per giornata, per modulo, per partecipante' },
+      ]},
+      '3': { cosa:'Formazione finanziata — fondi interprofessionali come leva', tempo_mesi:2, moduli:[
+        { id:'fondi', nome:'Gestione fondi interprofessionali', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'interno', nome:'Gestione interna fondi (Fondimpresa, Fondirigenti)', costo_mensile:300, costo_setup:500, impatto:0.85, note:'Il cliente paga zero, i fondi coprono il costo' },
+          { id:'partner', nome:'Partnership con ente accreditato', costo_mensile:100, costo_setup:300, impatto:1.0, note:'Ente gestisce pratiche, tu eroghi' },
+        ]},
+      ]},
       '4': {
         cosa: 'E-learning a catalogo — ricavo passivo da corsi registrati',
         tempo_mesi: 3,
@@ -1247,20 +1174,16 @@ const STEP_DETAIL_BY_SETTORE = {
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo passaparola e contatti personali', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'LinkedIn personale del titolare con post su temi formativi',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'marketing', nome:'LinkedIn personale del titolare con post su temi formativi', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Webinar gratuiti come lead generation + newsletter',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'marketing', nome:'Webinar gratuiti come lead generation + newsletter', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:500, impatto:0.8 }
-        ]
-      },
+      '2': { cosa:'LinkedIn personale del titolare + profilo aziendale', tempo_mesi:1, moduli:[
+        { id:'linkedin', nome:'Presenza LinkedIn', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'personale', nome:'LinkedIn personale del titolare (post settimanali)', costo_mensile:0, costo_setup:0, impatto:0.7, note:'Il formatore come thought leader' },
+          { id:'ghostwriter', nome:'Ghostwriter LinkedIn', costo_mensile:300, costo_setup:0, impatto:1.0, note:'2-3 post/sett professionali + engagement' },
+        ]},
+      ]},
+      '3': { cosa:'Webinar gratuiti come lead generation + newsletter', tempo_mesi:2, moduli:[
+        { id:'webinar', nome:'Webinar lead generation', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:300, impatto:0.6, note:'1-2 webinar/mese gratuiti su temi caldi — lead capture' },
+        { id:'newsletter', nome:'Newsletter mensile formazione', tipo:'flag', obbligatorio:true, costo_mensile:50, costo_setup:200, impatto:0.3, note:'Mailchimp/Brevo, nurturing su database HR' },
+      ]},
       '4': {
         cosa: 'Campagne LinkedIn Ads verso HR e responsabili formazione',
         tempo_mesi: 2,
@@ -1296,13 +1219,12 @@ const STEP_DETAIL_BY_SETTORE = {
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito o pagina personale datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Sito con catalogo corsi, formatori, testimonianze',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'sito', nome:'Sito con catalogo corsi, formatori, testimonianze', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:1200, impatto:0.8 }
-        ]
-      },
+      '2': { cosa:'Sito con catalogo corsi, formatori e testimonianze', tempo_mesi:1, moduli:[
+        { id:'sito', nome:'Sito web formazione', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'template', nome:'Sito da template (WordPress Education)', costo_mensile:30, costo_setup:500, impatto:0.7, note:'Template settore formazione, veloce' },
+          { id:'custom', nome:'Sito custom web agency', costo_mensile:100, costo_setup:1500, impatto:1.0, note:'Design professionale, catalogo interattivo' },
+        ]},
+      ]},
       '3': {
         cosa: 'Iscrizione online + pagamento + calendario corsi',
         tempo_mesi: 2,
@@ -1354,20 +1276,17 @@ const STEP_DETAIL_BY_SETTORE = {
     },
     ecommerce: {
       '1': { chi:'Titolare', cosa:'Nessun approvvigionamento strutturato di contenuti/docenti', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Rete di 3-5 formatori freelance con tariffe concordate',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'canale', nome:'Rete di 3-5 formatori freelance con tariffe concordate', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Accordi con enti certificatori + materiali didattici licenziati',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'canale', nome:'Accordi con enti certificatori + materiali didattici licenziati', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:500, impatto:0.8 }
-        ]
-      },
+      '2': { cosa:'Rete di 3-5 formatori freelance con tariffe concordate', tempo_mesi:1, moduli:[
+        { id:'rete_docenti', nome:'Costruzione rete docenti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.7, note:'Scheda per ogni docente: competenze, tariffa, disponibilita, feedback' },
+        { id:'contratti_docenti', nome:'Contratti standard collaborazione', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:200, impatto:0.15, note:'Template contratto, NDA, cessione diritti contenuti' },
+      ]},
+      '3': { cosa:'Accordi con enti certificatori + materiali didattici', tempo_mesi:2, moduli:[
+        { id:'certificatori', nome:'Partnership enti certificatori', tipo:'multi', obbligatorio:true, min:1, varianti:[
+          { id:'ente_sicurezza', nome:'Ente sicurezza lavoro (D.Lgs 81/08)', costo_mensile:100, costo_setup:300, impatto:0.35, note:'Corsi obbligatori — domanda garantita' },
+          { id:'ente_it', nome:'Ente certificazioni IT (EIPASS, ICDL)', costo_mensile:100, costo_setup:200, impatto:0.25, note:'Certificazioni informatiche riconosciute' },
+          { id:'ente_lingua', nome:'Ente certificazioni linguistiche', costo_mensile:100, costo_setup:200, impatto:0.2, note:'Cambridge, DELF, Goethe — domanda costante' },
+        ]},
+      ]},
       '4': {
         cosa: 'Partnership piattaforme + videomaker per contenuti e-learning',
         tempo_mesi: 3,
