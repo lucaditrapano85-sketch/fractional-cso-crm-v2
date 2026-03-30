@@ -331,61 +331,205 @@ const STEP_DETAIL_BY_SETTORE = {
   manifatturiero_cterzi: {
     vendite: {
       '1': { chi:'Titolare solo', cosa:'Titolare gestisce 3-5 clienti storici — nessun venditore', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Mappatura aziende zona — visite mirate', costo_mensile:200, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'1 agente', cosa:'1 agente — provvigioni ~1.200€/mese', costo_mensile:1200, costo_setup:0, tempo_mesi:2 },
-      '4': { chi:'1 commerciale', cosa:'1 commerciale diversificazione clienti — lordo azienda ~3.000€', costo_mensile:3000, costo_setup:0, tempo_mesi:3 },
-      '5': { chi:'Resp. + agenti + export', cosa:'Resp. commerciale + agenti + export', costo_mensile:7000, costo_setup:0, tempo_mesi:6 },
+      '2': { cosa:'Mappatura aziende zona + visite proattive a uffici acquisti', tempo_mesi:1, moduli:[
+        { id:'mappatura', nome:'Mappatura prospect industriali zona', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.6, note:'Database aziende target: settore, dimensione, tipo lavorazioni richieste' },
+        { id:'visite', nome:'Piano visite uffici acquisti', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.3, note:'1-2 giorni/settimana fuori, visita prospect con campioni e listino' },
+      ]},
+      '3': { cosa:'Agente B2B industriale per diversificazione clienti', tempo_mesi:2, moduli:[
+        { id:'agente', nome:'Agente industriale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agente', nome:'Agente ENASARCO B2B industriale', costo_mensile:1000, costo_setup:500, impatto:1.0, note:'Provvigione 3-5% su commesse, porta portafoglio clienti del settore' },
+          { id:'dip', nome:'Commerciale dipendente esterno', costo_mensile:2500, costo_setup:0, impatto:0.8, note:'Fisso + auto + incentivi, fidelizzato' },
+        ]},
+      ]},
+      '4': { cosa:'Commerciale + inside sales per sviluppo e fidelizzazione', tempo_mesi:3, moduli:[
+        { id:'commerciale', nome:'Commerciale B2B esterno', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Commerciale dipendente', costo_mensile:2500, costo_setup:0, impatto:0.5, note:'Visite prospect, gestione offerte, rapporti uffici acquisti' },
+          { id:'agente', nome:'Agente ENASARCO', costo_mensile:1200, costo_setup:0, impatto:0.35, note:'Provvigione su nuovi clienti' },
+        ]},
+        { id:'inside', nome:'Inside sales/back-office commerciale', tipo:'scelta', obbligatorio:false, varianti:[
+          { id:'dip', nome:'Inside sales dipendente', costo_mensile:1800, costo_setup:0, impatto:0.2, note:'Preventivi, follow-up, gestione ordini ricorrenti' },
+          { id:'parttime', nome:'Inside sales part-time', costo_mensile:900, costo_setup:0, impatto:0.12, note:'4h/giorno' },
+        ]},
+      ]},
+      '5': { cosa:'Resp. commerciale + agenti + sviluppo export', tempo_mesi:6, moduli:[
+        { id:'resp', nome:'Responsabile commerciale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Dir. commerciale dipendente', costo_mensile:3500, costo_setup:0, impatto:0.5, note:'Coordinamento vendite, pricing, grandi clienti, export' },
+          { id:'fractional', nome:'Dir. commerciale fractional', costo_mensile:1800, costo_setup:0, impatto:0.35, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
     },
     pipeline: {
-      '1': { chi:'Titolare', cosa:'Nessun tracciamento — il cliente chiama quando serve', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Excel con offerte aperte — cliente, lavorazione, valore, stato', costo_mensile:0, costo_setup:100, tempo_mesi:1 },
-      '3': { chi:'CRM base', cosa:'CRM base per gestire offerte e scadenze contratti', costo_mensile:50, costo_setup:200, tempo_mesi:1 },
-      '4': { chi:'CRM + gestionale', cosa:'CRM + monitoraggio carico macchine e tempi di consegna', costo_mensile:300, costo_setup:1000, tempo_mesi:2 },
-      '5': { chi:'ERP completo', cosa:'ERP integrato — da preventivo a produzione a fattura', costo_mensile:600, costo_setup:3000, tempo_mesi:3 },
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini a voce e email', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Excel con clienti, commesse, offerte e scadenze', tempo_mesi:1, moduli:[
+        { id:'strumento', nome:'Strumento tracciamento', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'excel', nome:'Excel strutturato', costo_mensile:0, costo_setup:100, impatto:0.7, note:'Cliente, offerta, stato, valore, margine stimato' },
+          { id:'crm_free', nome:'CRM gratuito (HubSpot/Zoho)', costo_mensile:0, costo_setup:200, impatto:0.85, note:'Pipeline + storico + reminder' },
+        ]},
+      ]},
+      '3': { cosa:'CRM B2B con gestione offerte e ciclo vendita lungo', tempo_mesi:1, moduli:[
+        { id:'crm', nome:'CRM B2B manifatturiero', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'b2b', nome:'CRM B2B (Salesforce/Zoho CRM)', costo_mensile:60, costo_setup:400, impatto:1.0, note:'Pipeline, offerte, contratti quadro, forecast' },
+          { id:'generico', nome:'CRM leggero (Pipedrive)', costo_mensile:30, costo_setup:200, impatto:0.65, note:'Pipeline base' },
+        ]},
+      ]},
+      '4': { cosa:'CRM integrato con gestionale produzione e commesse', tempo_mesi:2, moduli:[
+        { id:'erp', nome:'Gestionale produzione cterzi', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'erp', nome:'ERP manifatturiero (TeamSystem/Mago4)', costo_mensile:400, costo_setup:2000, impatto:1.0, note:'Offerte, commesse, produzione, acquisti, consuntivo, fatturazione' },
+          { id:'base', nome:'Gestionale + Excel produzione', costo_mensile:150, costo_setup:800, impatto:0.55, note:'Fatturazione + foglio commesse' },
+        ]},
+      ]},
+      '5': { cosa:'ERP manifatturiero completo con MES e BI', tempo_mesi:4, moduli:[
+        { id:'erp_full', nome:'ERP manifatturiero enterprise', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'ERP + MES (SAP B1/Mago4 Manufacturing)', costo_mensile:800, costo_setup:5000, impatto:1.0, note:'Offerte, commesse, MRP, produzione, qualita, logistica, BI' },
+          { id:'mid', nome:'ERP mid-market', costo_mensile:400, costo_setup:2500, impatto:0.6, note:'Core features' },
+        ]},
+      ]},
     },
     team: {
-      '1': { chi:'Titolare', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Capo reparto tra operai', costo_mensile:0, costo_setup:300, tempo_mesi:1 },
-      '3': { chi:'Titolare', cosa:'Ruoli separati produzione/commerciale', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '4': { chi:'Consulente', cosa:'KPI + deleghe operative', costo_mensile:400, costo_setup:1000, tempo_mesi:3 },
-      '5': { chi:'Management', cosa:'Management strutturato', costo_mensile:1500, costo_setup:1500, tempo_mesi:5 },
+      '1': { chi:'Titolare', cosa:'Titolare decide tutto — in officina e in ufficio', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Capo officina autonomo + separazione ruoli', tempo_mesi:1, moduli:[
+        { id:'capo', nome:'Capo officina/reparto', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'promozione', nome:'Promozione interna operaio esperto', costo_mensile:0, costo_setup:300, impatto:1.0, note:'Gia conosce macchine e lavorazioni, formazione gestione' },
+          { id:'esterno', nome:'Assunzione capo reparto esterno', costo_mensile:300, costo_setup:0, impatto:0.8, note:'Esperienza da altro terzista' },
+        ]},
+      ]},
+      '3': { cosa:'Impiegata tecnica/commerciale + obiettivi per reparto', tempo_mesi:2, moduli:[
+        { id:'admin', nome:'Impiegata tecnica/commerciale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Impiegata dipendente', costo_mensile:1800, costo_setup:0, impatto:0.7, note:'Preventivi, ordini, DDT, fatture, rapporto clienti' },
+          { id:'parttime', nome:'Impiegata part-time', costo_mensile:900, costo_setup:0, impatto:0.5, note:'4h/giorno' },
+        ]},
+      ]},
+      '4': { cosa:'KPI produzione + responsabile qualita', tempo_mesi:3, moduli:[
+        { id:'kpi', nome:'Dashboard KPI officina', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.5, note:'OEE macchine, tempi ciclo, scarti, on-time delivery, margine per commessa' },
+        { id:'qualita', nome:'Responsabile qualita', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'interno', nome:'Addetto qualita formato', costo_mensile:200, costo_setup:500, impatto:0.3, note:'Controllo dimensionale, documentazione, certificati' },
+          { id:'consulente', nome:'Consulente qualita esterno', costo_mensile:400, costo_setup:0, impatto:0.4, note:'ISO 9001, audit, metrologia' },
+        ]},
+      ]},
+      '5': { cosa:'Management completo — titolare solo strategia e sviluppo', tempo_mesi:5, moduli:[
+        { id:'manager', nome:'Direttore operativo/stabilimento', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Dir. operativo dipendente', costo_mensile:3500, costo_setup:0, impatto:1.0, note:'Produzione, qualita, personale, logistica' },
+          { id:'fractional', nome:'Operations manager fractional', costo_mensile:1800, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
       _label: 'Organizzazione',
     },
     processi: {
-      '1': { chi:'Titolare', cosa:'Nessun processo — ogni commessa è gestita diversamente', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Scheda commessa standard — tempi, materiali, costi', costo_mensile:0, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Software gestionale', cosa:'Gestionale commesse — pianificazione e consuntivo automatico', costo_mensile:300, costo_setup:1200, tempo_mesi:2 },
-      '4': { chi:'Resp. qualità', cosa:'Controllo qualità formalizzato — report per cliente', costo_mensile:600, costo_setup:1500, tempo_mesi:2 },
-      '5': { chi:'Quality manager', cosa:'ISO 9001 + lean + KPI produttività per commessa', costo_mensile:1200, costo_setup:7000, tempo_mesi:4 },
+      '1': { chi:'Titolare', cosa:'Nessun processo — tutto a esperienza', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Schede di lavorazione + controllo qualita in ingresso/uscita', tempo_mesi:1, moduli:[
+        { id:'schede', nome:'Schede di lavorazione standard', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.6, note:'Scheda per commessa: disegno, materiale, lavorazioni, tempi, tolleranze' },
+        { id:'controllo', nome:'Controllo qualita base', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.25, note:'Controllo dimensionale in ingresso e uscita, registro NC' },
+      ]},
+      '3': { cosa:'Gestionale commesse + pianificazione produzione', tempo_mesi:2, moduli:[
+        { id:'gestionale', nome:'Software gestione commesse', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'Gestionale produzione (Mago4/Fluentis)', costo_mensile:200, costo_setup:1500, impatto:1.0, note:'Commesse, cicli, tempi, materiali, consuntivo automatico' },
+          { id:'base', nome:'Excel avanzato + Gantt', costo_mensile:0, costo_setup:500, impatto:0.45, note:'Foglio commesse + pianificazione manuale' },
+        ]},
+      ]},
+      '4': { cosa:'ISO 9001 + gestione strumenti di misura + SPC', tempo_mesi:3, moduli:[
+        { id:'iso', nome:'Certificazione ISO 9001', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'consulente', nome:'ISO 9001 con consulente + ente', costo_mensile:150, costo_setup:4000, impatto:1.0, note:'Prerequisito per molti clienti industriali e automotive' },
+          { id:'interno', nome:'Sistema qualita senza certificazione', costo_mensile:0, costo_setup:1000, impatto:0.45, note:'Processi documentati ma senza ente terzo' },
+        ]},
+      ]},
+      '5': { cosa:'ERP + MES + monitoraggio macchine (Industry 4.0)', tempo_mesi:4, moduli:[
+        { id:'mes', nome:'MES + monitoraggio macchine', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'MES + IoT macchine (OEE real-time)', costo_mensile:500, costo_setup:5000, impatto:1.0, note:'Tempi ciclo reali, OEE, fermi macchina, consuntivo automatico' },
+          { id:'base', nome:'ERP con modulo produzione avanzato', costo_mensile:300, costo_setup:2500, impatto:0.55, note:'Gestione commesse avanzata, senza IoT macchine' },
+        ]},
+      ]},
     },
     ricavi: {
-      '1': { chi:'Titolare', cosa:'Prezzi storici mai aggiornati — margini che si erodono', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Ricalcolo costi reali — ore macchina, setup, materiale', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Titolare', cosa:'Rinegoziazione prezzi con clienti sotto margine minimo', costo_mensile:0, costo_setup:0, tempo_mesi:1 },
-      '4': { chi:'Upsell', cosa:'Servizi aggiuntivi — assemblaggio, logistica, magazzino conto terzi', costo_mensile:200, costo_setup:500, tempo_mesi:2 },
-      '5': { chi:'Revenue manager', cosa:'Contratti annuali con volumi minimi + indicizzazione materia prima', costo_mensile:700, costo_setup:1000, tempo_mesi:3 },
+      '1': { chi:'Titolare', cosa:'Prezzo orario fisso — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Calcolo costi reali per lavorazione — margine per commessa', tempo_mesi:1, moduli:[
+        { id:'costing', nome:'Sistema calcolo costi commessa', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8, note:'Costo orario macchina + operatore + materiale + setup — margine reale' },
+      ]},
+      '3': { cosa:'Contratti quadro con clienti principali — volumi garantiti', tempo_mesi:1, moduli:[
+        { id:'contratti', nome:'Contratti quadro clienti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.7, note:'Prezzo bloccato per volume annuo, priorita, pagamento regolare' },
+      ]},
+      '4': { cosa:'Servizi a valore: trattamenti, assemblaggi, kit completi', tempo_mesi:2, moduli:[
+        { id:'servizi', nome:'Servizi a valore aggiunto', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.6, note:'Non solo lavorazione: trattamento, assemblaggio, kitting, confezionamento' },
+        { id:'logistica', nome:'Consegna just-in-time/kanban', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:300, impatto:0.2, note:'Consegna programmata, kanban, stock a magazzino per il cliente' },
+      ]},
+      '5': { cosa:'Co-design + gestione progetto completo + prodotto finito', tempo_mesi:3, moduli:[
+        { id:'codesign', nome:'Servizio co-design/engineering', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'Co-design + prodotto finito completo', costo_mensile:500, costo_setup:2000, impatto:1.0, note:'Dal disegno al prodotto finito: engineering, prototipo, produzione, assemblaggio' },
+          { id:'parziale', nome:'Supporto engineering su lavorazioni', costo_mensile:200, costo_setup:800, impatto:0.5, note:'Ottimizzazione progetto per produzione, DFM' },
+        ]},
+      ]},
     },
     marketing: {
-      '1': { chi:'Nessuno', cosa:'Nessuno — solo passaparola e clienti storici', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'LinkedIn aziendale con capacità produttive e foto reparto', costo_mensile:80, costo_setup:0, tempo_mesi:1 },
-      '3': { chi:'Portali + fiere', cosa:'Portali subfornitura (MFG.com, Europages) + fiere locali', costo_mensile:400, costo_setup:3000, tempo_mesi:2 },
-      '4': { chi:'Agenzia digital', cosa:'Campagne LinkedIn mirate su responsabili acquisti industriali', costo_mensile:900, costo_setup:1000, tempo_mesi:2 },
-      '5': { chi:'Marketing manager', cosa:'Piano marketing — fiere + digital + certificazioni come asset', costo_mensile:2000, costo_setup:2500, tempo_mesi:3 },
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo passaparola industriale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'LinkedIn aziendale + foto officina/lavorazioni', tempo_mesi:1, moduli:[
+        { id:'linkedin', nome:'LinkedIn aziendale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.5, note:'Post: lavorazioni, macchine, pezzi finiti, team — visibilita B2B' },
+        { id:'video', nome:'Video lavorazioni/macchine', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.3, note:'Video brevi CNC, fresatura, tornitura — best visual per industria' },
+      ]},
+      '3': { cosa:'Fiere subfornitura (MECSPE, Fornitore Offresi) + portali B2B', tempo_mesi:2, moduli:[
+        { id:'fiere', nome:'Fiere subfornitura', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'stand', nome:'Stand MECSPE/Fornitore Offresi', costo_mensile:200, costo_setup:3000, impatto:1.0, note:'Stand con campioni, 1 fiera/anno' },
+          { id:'visitatore', nome:'Visita come operatore', costo_mensile:100, costo_setup:500, impatto:0.4, note:'Networking, niente stand' },
+        ]},
+        { id:'portali', nome:'Portali subfornitura (MFG.com/Xometry)', tipo:'flag', obbligatorio:false, costo_mensile:100, costo_setup:0, impatto:0.2, note:'Profilo su piattaforme di sourcing industriale' },
+      ]},
+      '4': { cosa:'LinkedIn Ads su uffici acquisti + content tecnico', tempo_mesi:2, moduli:[
+        { id:'digital', nome:'Marketing digitale B2B', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia marketing B2B industriale', costo_mensile:600, costo_setup:500, impatto:1.0, note:'LinkedIn Ads, content tecnico, case study, video' },
+          { id:'interno', nome:'LinkedIn autogestito + ads base', costo_mensile:200, costo_setup:200, impatto:0.5, note:'Post + budget ads' },
+        ]},
+      ]},
+      '5': { cosa:'Piano marketing B2B — brand industriale, fiere, digital, partnership', tempo_mesi:3, moduli:[
+        { id:'piano', nome:'Piano marketing B2B cterzi', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia marketing B2B industriale', costo_mensile:1500, costo_setup:3000, impatto:1.0, note:'Brand, fiere, LinkedIn, content, portali' },
+          { id:'interno', nome:'Marketing coordinator interno', costo_mensile:800, costo_setup:500, impatto:0.6, note:'1 risorsa' },
+        ]},
+      ]},
     },
     sitoweb: {
-      '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Web agency', cosa:'Sito con lavorazioni, capacità, parco macchine, certificazioni', costo_mensile:80, costo_setup:800, tempo_mesi:1 },
-      '3': { chi:'Sito professionale', cosa:'Case study + video + modulo richiesta preventivo online', costo_mensile:250, costo_setup:2000, tempo_mesi:2 },
-      '4': { chi:'Agenzia SEO', cosa:'SEO su lavorazioni specifiche + zona geografica', costo_mensile:500, costo_setup:1200, tempo_mesi:2 },
-      '5': { chi:'Sito avanzato', cosa:'Portale clienti — tracking commesse, documenti, certificati', costo_mensile:800, costo_setup:6000, tempo_mesi:3 },
+      '1': { chi:'Nessuno', cosa:'Nessun sito', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Sito con lavorazioni, parco macchine, certificazioni, settori serviti', tempo_mesi:1, moduli:[
+        { id:'sito', nome:'Sito manifatturiero B2B', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'custom', nome:'Sito custom WordPress', costo_mensile:30, costo_setup:2000, impatto:1.0, note:'Lavorazioni, macchine, tolleranze, certificazioni, gallery, form RFQ' },
+          { id:'template', nome:'Sito da template industriale', costo_mensile:20, costo_setup:600, impatto:0.5, note:'Template B2B' },
+        ]},
+      ]},
+      '3': { cosa:'Catalogo capacita produttive + form RFQ online', tempo_mesi:2, moduli:[
+        { id:'capacita', nome:'Catalogo capacita produttive', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:1000, impatto:0.5, note:'Macchine, dimensioni max, tolleranze, materiali, certificazioni — il buyer capisce subito' },
+        { id:'rfq', nome:'Form RFQ (richiesta offerta) online', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.4, note:'Upload disegno, materiale, quantita, urgenza — lead qualificato' },
+      ]},
+      '4': { cosa:'Portale clienti con tracking commesse e documentazione', tempo_mesi:3, moduli:[
+        { id:'portale', nome:'Portale clienti', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'integrato', nome:'Portale integrato con ERP', costo_mensile:200, costo_setup:3000, impatto:1.0, note:'Stato commesse, certificati qualita, DDT, fatture — self-service' },
+          { id:'base', nome:'Area riservata base', costo_mensile:50, costo_setup:1000, impatto:0.5, note:'Documentazione + form richieste' },
+        ]},
+      ]},
+      '5': { cosa:'Piattaforma digitale — sito, portale clienti, RFQ automatizzato, BI', tempo_mesi:4, moduli:[
+        { id:'piattaforma', nome:'Piattaforma digitale manifatturiera', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'Piattaforma enterprise', costo_mensile:500, costo_setup:8000, impatto:1.0, note:'Sito, portale clienti, RFQ + quotazione automatica, tracking, BI' },
+          { id:'mid', nome:'Sito + portale base', costo_mensile:200, costo_setup:3000, impatto:0.5, note:'WordPress + area clienti + form' },
+        ]},
+      ]},
     },
     ecommerce: {
-      '1': { chi:'Nessuno', cosa:'Nessuna presenza digitale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': { chi:'Titolare', cosa:'Iscrizione portali subfornitura B2B', costo_mensile:30, costo_setup:200, tempo_mesi:1 },
-      '3': { chi:'Configuratore', cosa:'Preventivatore online per lavorazioni standard', costo_mensile:200, costo_setup:2500, tempo_mesi:2 },
-      '4': { chi:'Portale B2B', cosa:'Portale ordini ricorrenti per clienti esistenti', costo_mensile:400, costo_setup:3000, tempo_mesi:3 },
-      '5': { chi:'Integrazione digitale', cosa:'Integrazione ordini con ERP clienti principali', costo_mensile:700, costo_setup:6000, tempo_mesi:4 },
-      _label: 'Canale digitale B2B',
+      _label: 'Approvvigionamento materiali',
+      '1': { chi:'Titolare', cosa:'Acquisto da 1-2 fornitori abituali', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Confronto fornitori materiali — acciaio, alluminio, plastica', tempo_mesi:1, moduli:[
+        { id:'fornitori', nome:'Database fornitori materiali', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.7, note:'Scheda: centro servizi, tipo materiale, certificazioni, tempi, prezzi' },
+      ]},
+      '3': { cosa:'Accordi quadro con centri servizi e distributori', tempo_mesi:2, moduli:[
+        { id:'accordi', nome:'Accordi quadro fornitori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.6, note:'Prezzi bloccati, consegna rapida, certificati materiale inclusi' },
+      ]},
+      '4': { cosa:'Buyer dedicato — dual sourcing, gestione scorte, import', tempo_mesi:3, moduli:[
+        { id:'buyer', nome:'Buyer materiali', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Buyer industriale dipendente', costo_mensile:2000, costo_setup:0, impatto:1.0, note:'Negoziazione, dual sourcing, gestione scorte, import' },
+          { id:'parttime', nome:'Admin con delega acquisti', costo_mensile:900, costo_setup:0, impatto:0.6, note:'Gestisce riordini e confronto prezzi' },
+        ]},
+      ]},
+      '5': { cosa:'Supply chain manager — hedging prezzi, import diretto, stock strategy', tempo_mesi:4, moduli:[
+        { id:'supply', nome:'Resp. supply chain', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Supply chain manager dipendente', costo_mensile:3000, costo_setup:0, impatto:1.0, note:'Strategia acquisti, hedging, import, ottimizzazione scorte' },
+          { id:'fractional', nome:'Supply chain manager fractional', costo_mensile:1500, costo_setup:0, impatto:0.6, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
     }
   },
 
