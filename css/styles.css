@@ -859,9 +859,9 @@ label{color:var(--gray2)}
 .btn-primary:hover,#btn-save-prospect:hover{opacity:.88}
 .btn-orange,.btn-orange.btn{background:var(--orange)!important;border:none!important;color:#fff!important;font-weight:600}
 .btn-orange:hover{opacity:.88}
-.btn-secondary,.btn-secondary.btn{background:transparent!important;color:var(--gray)!important;border:1px solid rgba(0,0,0,0.2)!important}
-.btn-secondary:hover{border-color:rgba(0,0,0,0.4)!important;color:var(--text)!important;background:rgba(0,0,0,0.04)!important}
-.btn-danger,.btn-danger.btn{background:transparent!important;color:var(--red)!important;border:1px solid rgba(229,57,53,0.45)!important}
+.btn-secondary,.btn-secondary.btn{background:rgba(255,255,255,0.45)!important;color:#1a1a2e!important;border:1px solid rgba(255,255,255,0.7)!important;font-weight:500}
+.btn-secondary:hover{background:rgba(255,255,255,0.65)!important;border-color:rgba(255,255,255,0.9)!important;color:#1a1a2e!important}
+.btn-danger,.btn-danger.btn{background:rgba(229,57,53,0.1)!important;color:var(--red)!important;border:1px solid rgba(229,57,53,0.5)!important;font-weight:500}
 .btn-danger:hover{background:var(--red)!important;color:#fff!important;border-color:var(--red)!important}
 .modal-overlay{background:rgba(0,0,0,0.25);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .modal{background:linear-gradient(165deg, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0.4) 40%, rgba(240,242,248,0.3) 100%);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.5);border-top:1px solid rgba(255,255,255,0.7);border-radius:var(--r);box-shadow:0 16px 48px rgba(0,0,0,0.08),inset 0 1px 1px rgba(255,255,255,0.9)}
