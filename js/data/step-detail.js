@@ -4140,619 +4140,205 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   alimentare_forno: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Titolare al banco', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: '1 commesso/a (~1.600€)',
-        tempo_mesi: 1,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1600, costo_setup:0, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:880, costo_setup:0, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:720, costo_setup:0, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
-      '3': {
-        cosa: 'Sviluppo catering e consegne B2B',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'supporto', nome:'Catering + B2B', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:500, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: '2 commessi + consegne strutturate',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:3800, costo_setup:1000, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:2090, costo_setup:1000, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1710, costo_setup:1000, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Resp. vendite + team punti vendita',
-        tempo_mesi: 5,
-        moduli: [
-          {
-            id: 'resp',
-            nome: 'Responsabile commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2400, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
-              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1320, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          },
-          {
-            id: 'team',
-            nome: 'Figure commerciali',
-            tipo: 'multi',
-            obbligatorio: true,
-            min: 2,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1200, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:900, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare', cosa:'Titolare al banco — vendita diretta al pubblico', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Consegne a bar, ristoranti e hotel della zona', tempo_mesi:1, moduli:[
+        { id:'consegne', nome:'Servizio consegna HORECA zona', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.6, note:'Consegna mattutina a bar, ristoranti, hotel nel raggio 15-20 km' },
+        { id:'campionature', nome:'Kit degustazione per nuovi clienti HORECA', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.3, note:'Campioni pane speciale, dolci, focacce — lasciati in prova' },
+      ]},
+      '3': { cosa:'Agente/venditore dedicato canale HORECA + GDO locale', tempo_mesi:2, moduli:[
+        { id:'venditore', nome:'Venditore HORECA/GDO', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Venditore dipendente con furgone', costo_mensile:2000, costo_setup:0, impatto:1.0, note:'Vendita + consegna, giro clienti fisso, sviluppo nuovi' },
+          { id:'agente', nome:'Agente ENASARCO food', costo_mensile:800, costo_setup:500, impatto:0.7, note:'Provvigione su venduto, porta portafoglio bar/ristoranti' },
+        ]},
+      ]},
+      '4': { cosa:'2 venditori per zona + sviluppo GDO con listing', tempo_mesi:3, moduli:[
+        { id:'rete', nome:'Rete vendita forno', tipo:'multi', obbligatorio:true, min:2, varianti:[
+          { id:'venditore', nome:'Venditore/consegnatore', costo_mensile:2000, costo_setup:0, impatto:0.3, note:'Giro clienti fisso per zona' },
+          { id:'agente', nome:'Agente HORECA', costo_mensile:800, costo_setup:0, impatto:0.2, note:'Per zona/canale' },
+        ]},
+        { id:'gdo', nome:'Sviluppo canale GDO locale', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.15, note:'Contatto buyer GDO locale, listing prodotti confezionati' },
+      ]},
+      '5': { cosa:'Resp. commerciale + rete vendita + canale GDO strutturato', tempo_mesi:5, moduli:[
+        { id:'resp', nome:'Responsabile commerciale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2800, costo_setup:0, impatto:0.5, note:'Coordinamento venditori, rapporti GDO, pricing, sviluppo' },
+          { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1400, costo_setup:0, impatto:0.35, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
     },
     pipeline: {
-      '1': { chi:'Titolare', cosa:'Nessun tracciamento — vendite solo dal registratore', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Lista clienti HORECA con ordini ricorrenti',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'registro_B2B',
-        nome: 'Lista clienti B2B potenziali (bar, ristoranti, hotel)',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 0,
-        impatto: 0.15,
-        note: 'Mappatura locali zona per consegne giornaliere'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Gestionale con ordini, consegne programmate e fatturazione',
-        tempo_mesi: 1,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Gestionale con ordini, consegne programmate e fatturazione', costo_mensile:200, costo_setup:500, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:100, costo_setup:300, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'CRM clienti B2B + gestionale produzione e consegne',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM clienti B2B + gestionale produzione e consegne', costo_mensile:400, costo_setup:1000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:200, costo_setup:600, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'ERP panificazione — ordini, produzione, consegne, margini',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'ERP panificazione', costo_mensile:800, costo_setup:3000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:400, costo_setup:1800, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — vendite al banco e a memoria', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Excel con clienti HORECA, ordini ricorrenti, consegne', tempo_mesi:1, moduli:[
+        { id:'strumento', nome:'Strumento tracciamento', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'excel', nome:'Excel/Fogli Google strutturato', costo_mensile:0, costo_setup:100, impatto:0.7, note:'Cliente, tipo, ordine ricorrente, giorno consegna, prodotti' },
+          { id:'crm_free', nome:'CRM gratuito (HubSpot Free)', costo_mensile:0, costo_setup:200, impatto:0.85, note:'Pipeline clienti + reminder riordini' },
+        ]},
+      ]},
+      '3': { cosa:'Gestionale con ordini ricorrenti, produzione e consegne', tempo_mesi:1, moduli:[
+        { id:'gestionale', nome:'Gestionale panificio', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'Gestionale panificio/food (GestPan/FoodManager)', costo_mensile:80, costo_setup:500, impatto:1.0, note:'Ordini ricorrenti, produzione, consegne, listini per cliente' },
+          { id:'generico', nome:'Gestionale generico (Danea/FiC)', costo_mensile:40, costo_setup:300, impatto:0.6, note:'Fatturazione e ordini, meno specifico per forno' },
+        ]},
+      ]},
+      '4': { cosa:'Gestionale integrato — ordini, produzione, consegne, magazzino', tempo_mesi:2, moduli:[
+        { id:'erp', nome:'ERP panificio', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'food', nome:'ERP food con modulo produzione', costo_mensile:400, costo_setup:2000, impatto:1.0, note:'Ordini, ricette/distinte, produzione, consegne, tracciabilita' },
+          { id:'base', nome:'Gestionale + Excel produzione', costo_mensile:150, costo_setup:800, impatto:0.55, note:'Fatturazione/ordini + foglio produzione separato' },
+        ]},
+      ]},
+      '5': { cosa:'ERP completo — ordini, produzione, HACCP, consegne, fatturazione, BI', tempo_mesi:3, moduli:[
+        { id:'erp_full', nome:'ERP panificio completo', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'ERP food enterprise', costo_mensile:800, costo_setup:5000, impatto:1.0, note:'Ordini, ricette, produzione, HACCP, consegne, accise, fatturazione, BI' },
+          { id:'mid', nome:'ERP mid-market food', costo_mensile:400, costo_setup:2500, impatto:0.6, note:'Funzionalita core' },
+        ]},
+      ]},
     },
     team: {
-      '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Turni forno/banco definiti — chi produce chi vende',
-        tempo_mesi: 1,
-        moduli: [
-      {
-            id: 'turni',
-            nome: 'Organigramma forno + banco',
-            tipo: 'flag',
-            obbligatorio: true,
-            costo_mensile: 0,
-            costo_setup: 200,
-            impatto: 0.7,
-            note: 'Turni mattina presto (produzione) + mattina/pomeriggio (vendita)'
-      }
-,
-{
-        id: 'igiene',
-        nome: 'Formazione igiene e sicurezza alimentare',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 100,
-        impatto: 0.15,
-        note: 'HACCP base per tutti — obbligatorio'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Capo panettiere + procedure produzione standardizzate',
-        tempo_mesi: 2,
-        moduli: [
-      {
-            id: 'capo',
-            nome: 'Capo panettiere/fornaio',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-                  {
-                        id: 'promozione',
-                        nome: 'Promozione fornaio senior',
-                        costo_mensile: 200,
-                        costo_setup: 300,
-                        impatto: 0.85,
-                        note: 'Già conosce ricette e processi'
-                  },
-                  {
-                        id: 'esterno',
-                        nome: 'Capo panettiere esperto esterno',
-                        costo_mensile: 2500,
-                        costo_setup: 0,
-                        impatto: 1,
-                        note: 'Esperienza da altri forni, nuove ricette'
-                  }
-            ]
-      }
-]
-      },
-      '4': {
-        cosa: 'KPI produzione + gestione sprechi + pianificazione',
-        tempo_mesi: 3,
-        moduli: [
-      {
-            id: 'kpi',
-            nome: 'KPI forno (sprechi, resa, costi)',
-            tipo: 'flag',
-            obbligatorio: true,
-            costo_mensile: 0,
-            costo_setup: 500,
-            impatto: 0.5,
-            note: 'Spreco pane invenduto, resa per kg farina, costo per pezzo'
-      },
-      {
-            id: 'pianificazione',
-            nome: 'Pianificazione produzione giornaliera',
-            tipo: 'flag',
-            obbligatorio: true,
-            costo_mensile: 0,
-            costo_setup: 300,
-            impatto: 0.3,
-            note: 'Quanti pezzi per tipo basato su storico vendite per giorno'
-      }
-]
-      },
-      '5': {
-        cosa: 'Management completo — titolare solo strategia e ricette',
-        tempo_mesi: 4,
-        moduli: [
-      {
-            id: 'manager',
-            nome: 'Store/production manager',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-                  {
-                        id: 'dip',
-                        nome: 'Responsabile punto vendita dipendente',
-                        costo_mensile: 2500,
-                        costo_setup: 0,
-                        impatto: 1,
-                        note: 'Gestisce produzione + banco + personale + acquisti'
-                  },
-                  {
-                        id: 'fractional',
-                        nome: 'Consulente gestione bakery',
-                        costo_mensile: 1000,
-                        costo_setup: 0,
-                        impatto: 0.6,
-                        note: '2 giorni/settimana + setup processi'
-                  }
-            ]
-      }
-]
-      },
+      '1': { chi:'Titolare', cosa:'Titolare in laboratorio e al banco — nessuna delega', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Separazione ruoli: laboratorio, banco vendita, consegne', tempo_mesi:1, moduli:[
+        { id:'organigramma', nome:'Organigramma forno', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.7, note:'Laboratorio (produzione), banco (vendita), consegne, admin — chi fa cosa' },
+      ]},
+      '3': { cosa:'Capo panettiere + addetto banco formato', tempo_mesi:2, moduli:[
+        { id:'capo', nome:'Capo panettiere/pasticcere', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'promozione', nome:'Promozione interna operaio esperto', costo_mensile:200, costo_setup:300, impatto:0.85, note:'Gia conosce ricette e macchinari, formazione su gestione turni' },
+          { id:'esterno', nome:'Capo panettiere esterno', costo_mensile:2500, costo_setup:0, impatto:1.0, note:'Esperienza da altro laboratorio, porta ricette e competenze' },
+        ]},
+        { id:'banco', nome:'Addetto banco vendita formato', tipo:'scelta', obbligatorio:false, varianti:[
+          { id:'dip', nome:'Addetto banco dipendente', costo_mensile:1500, costo_setup:0, impatto:0.2, note:'Vendita, cassa, consiglio prodotto, ordini clienti' },
+          { id:'parttime', nome:'Addetto part-time', costo_mensile:800, costo_setup:0, impatto:0.12, note:'Copre mattina o pomeriggio' },
+        ]},
+      ]},
+      '4': { cosa:'KPI produzione + responsabile qualita/HACCP', tempo_mesi:3, moduli:[
+        { id:'kpi', nome:'KPI laboratorio/vendita', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.5, note:'Resa produttiva, scarti, scontrino medio banco, fatturato HORECA' },
+        { id:'haccp_resp', nome:'Responsabile HACCP', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'interno', nome:'Formazione interna resp. HACCP', costo_mensile:0, costo_setup:500, impatto:0.3, note:'Corso HACCP avanzato per 1 risorsa interna' },
+          { id:'consulente', nome:'Consulente HACCP esterno', costo_mensile:200, costo_setup:0, impatto:0.4, note:'Visite periodiche, audit, aggiornamento piano' },
+        ]},
+      ]},
+      '5': { cosa:'Management completo — titolare solo sviluppo e prodotto', tempo_mesi:5, moduli:[
+        { id:'manager', nome:'Responsabile operativo forno', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Resp. operativo dipendente', costo_mensile:2800, costo_setup:0, impatto:1.0, note:'Laboratorio, vendita, consegne, personale — il titolare fa sviluppo e ricette' },
+          { id:'fractional', nome:'Operations manager fractional', costo_mensile:1400, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
       _label: 'Organizzazione',
     },
     processi: {
-      '1': { chi:'Titolare', cosa:'Ricette a memoria — nessun processo standardizzato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Ricettario standardizzato + schede HACCP aggiornate',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'processo', nome:'Ricettario standardizzato + schede HACCP aggiornate', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:300, impatto:0.8 }
-        ,
-{
-        id: 'ricette_standard',
-        nome: 'Ricettario standardizzato con grammature',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 100,
-        impatto: 0.15,
-        note: 'Ogni prodotto: ingredienti, grammature, tempi, temperature — replicabile'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Gestionale produzione — pianificazione impasti, rese, scarti',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'processo', nome:'Gestionale produzione', tipo:'flag', obbligatorio:true, costo_mensile:250, costo_setup:1000, impatto:0.8 }
-        ,
-{
-        id: 'haccp_forno',
-        nome: 'HACCP specifico forno artigianale',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Temperature, contaminazione allergeni, pulizia — obbligatorio'
-}
-      ]
-      },
-      '4': {
-        cosa: 'Impastatrici programmate + porzionatrici + cicli automatici',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Impastatrici programmate',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:400, costo_setup:3000, impatto:1, note:'Impastatrici programmate + porzionatrici + cicli automatici' },
-              { id:'base', nome:'Soluzione base', costo_mensile:200, costo_setup:1500, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Produzione lean — riduzione sprechi, KPI efficienza, turni',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Produzione lean',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:700, costo_setup:4000, impatto:1, note:'Produzione lean — riduzione sprechi, KPI efficienza, turni' },
-              { id:'base', nome:'Soluzione base', costo_mensile:350, costo_setup:2000, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare', cosa:'Processi artigianali — tutto a esperienza', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Ricettario strutturato + HACCP base + gestione scadenze', tempo_mesi:1, moduli:[
+        { id:'ricettario', nome:'Ricettario standardizzato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.6, note:'Ricette con dosi precise, tempi, temperature — producibilita anche senza titolare' },
+        { id:'haccp', nome:'Piano HACCP strutturato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.25, note:'CCP, registrazioni temperature, pulizia, allergeni' },
+      ]},
+      '3': { cosa:'Gestionale produzione con pianificazione giornaliera e tracciabilita', tempo_mesi:2, moduli:[
+        { id:'gestionale', nome:'Software gestione produzione forno', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'Gestionale panificio (GestPan/BakeryPro)', costo_mensile:150, costo_setup:1000, impatto:1.0, note:'Pianificazione produzione, ricette, lotti, tracciabilita, ordini HORECA' },
+          { id:'manuale', nome:'Pianificazione manuale strutturata', costo_mensile:0, costo_setup:300, impatto:0.45, note:'Tabellone produzione + foglio ordini, aggiornamento manuale' },
+        ]},
+      ]},
+      '4': { cosa:'Certificazioni (BIO, senza glutine) + packaging confezionato per GDO', tempo_mesi:3, moduli:[
+        { id:'certificazioni', nome:'Certificazioni prodotto', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'bio', nome:'Certificazione biologica + allergeni', costo_mensile:100, costo_setup:2000, impatto:1.0, note:'Bio per linea premium, gestione allergeni, etichettatura conforme' },
+          { id:'standard', nome:'Solo HACCP avanzato + etichettatura', costo_mensile:50, costo_setup:500, impatto:0.5, note:'Etichettatura conforme reg. 1169/2011, tabella nutrizionale' },
+        ]},
+      ]},
+      '5': { cosa:'ERP forno completo + automazione linee + BI produzione', tempo_mesi:4, moduli:[
+        { id:'erp', nome:'ERP forno/food completo', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'ERP food con MES', costo_mensile:600, costo_setup:4000, impatto:1.0, note:'Pianificazione, produzione, tracciabilita, qualita, consegne, BI' },
+          { id:'mid', nome:'Gestionale avanzato', costo_mensile:300, costo_setup:2000, impatto:0.55, note:'Funzionalita core' },
+        ]},
+      ]},
     },
     ricavi: {
-      '1': { chi:'Titolare', cosa:'Prezzo al kg tradizionale — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Prodotti speciali a margine superiore (focacce, dolci)',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'ricavi', nome:'Prodotti speciali a margine superiore (focacce, dolci)', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'mix_prodotti',
-        nome: 'Analisi margine per prodotto (pane vs dolci vs focacce)',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 0,
-        impatto: 0.15,
-        note: 'I dolci marginano 3x il pane — sposta il mix'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Linea artigianale premium — lievito madre, grani antichi',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'ricavi', nome:'Linea artigianale premium', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
-        ,
-{
-        id: 'colazione_business',
-        nome: 'Servizio colazione per bar/hotel zona',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Cornetti e brioche consegnati alle 6 — ricavo B2B ricorrente'
-}
-      ]
-      },
-      '4': {
-        cosa: 'Servizio catering + torte personalizzate + eventi',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'ricavi', nome:'Servizio catering + torte personalizzate + eventi', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
-        ,
-{
-        id: 'catering',
-        nome: 'Servizio catering eventi/feste',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 300,
-        impatto: 0.15,
-        note: 'Focacce, torte, finger food — margine alto su eventi'
-}
-      ]
-      },
-      '5': {
-        cosa: 'Mix ricavi — retail, HORECA, GDO confezionato, e-commerce',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'ricavi',
-            nome: 'Mix ricavi',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:500, costo_setup:1500, impatto:1, note:'Mix ricavi — retail, HORECA, GDO confezionato, e-commerce' },
-              { id:'graduale', nome:'Implementazione graduale', costo_mensile:250, costo_setup:750, impatto:0.65, note:'Avvio parziale, si espande' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare', cosa:'Prezzo unico al banco — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Pricing differenziato: banco, HORECA, GDO, eventi', tempo_mesi:1, moduli:[
+        { id:'pricing', nome:'Listini per canale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8, note:'Prezzo diverso per banco (pieno), HORECA (volume), GDO (minimo)' },
+      ]},
+      '3': { cosa:'Linea premium (lievito madre, grani antichi) + servizio catering', tempo_mesi:2, moduli:[
+        { id:'premium', nome:'Linea premium/artigianale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.6, note:'Pane lievito madre, grani antichi, farine macinate a pietra — margine 2x' },
+        { id:'catering', nome:'Servizio catering/eventi', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:300, impatto:0.2, note:'Pane per banchetti, focacce per eventi, torte personalizzate' },
+      ]},
+      '4': { cosa:'Prodotti confezionati per GDO + linea senza glutine/BIO', tempo_mesi:2, moduli:[
+        { id:'confezionato', nome:'Linea confezionata GDO', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'brand', nome:'Linea confezionata con brand proprio', costo_mensile:200, costo_setup:1500, impatto:1.0, note:'Grissini, taralli, biscotti confezionati per GDO — margine e brand' },
+          { id:'pl', nome:'Produzione private label per insegne', costo_mensile:100, costo_setup:500, impatto:0.6, note:'Volume garantito, margine inferiore, nessun costo marketing' },
+        ]},
+      ]},
+      '5': { cosa:'Mix ricavi: banco + HORECA + GDO confezionato + e-commerce + catering', tempo_mesi:3, moduli:[
+        { id:'mix', nome:'Diversificazione canali ricavi', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'Mix completo 5 canali', costo_mensile:300, costo_setup:1500, impatto:1.0, note:'Banco, HORECA, GDO confezionato, e-commerce DTC, catering/eventi' },
+          { id:'focus', nome:'Focus su 2-3 canali', costo_mensile:100, costo_setup:500, impatto:0.55, note:'Banco + HORECA + 1 canale aggiuntivo' },
+        ]},
+      ]},
     },
     marketing: {
-      '1': { chi:'Nessuno', cosa:'Nessuno — solo profumo dal forno e passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Instagram con foto prodotti freschi e dietro le quinte',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'marketing', nome:'Instagram con foto prodotti freschi e dietro le quinte', tipo:'flag', obbligatorio:true, costo_mensile:50, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'social_pane',
-        nome: 'Foto pane/dolci appena sfornati su Instagram',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 0,
-        impatto: 0.15,
-        note: 'Stories mattutine con il pane caldo — appetizing content'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Social curato + Google Maps + promozioni stagionali',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'marketing', nome:'Social curato + Google Maps + promozioni stagionali', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:500, impatto:0.8 }
-        ,
-{
-        id: 'local_collab',
-        nome: 'Collaborazioni ristoranti/bar zona',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Fornitura pane/focacce a ristoranti — co-marketing'
-}
-      ]
-      },
-      '4': {
-        cosa: 'Brand identity + packaging professionale + degustazioni',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'marketing', nome:'Brand identity + packaging professionale + degustazioni', tipo:'flag', obbligatorio:true, costo_mensile:800, costo_setup:2000, impatto:0.8 }
-        ,
-{
-        id: 'eventi_forno',
-        nome: 'Corsi pane/pizza per clienti',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 300,
-        impatto: 0.15,
-        note: 'Workshop → fidelizzazione + social content + passaparola'
-}
-      ]
-      },
-      '5': {
-        cosa: 'Piano marketing — brand artigianale, PR food, corsi, eventi',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'Piano marketing',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:2000, costo_setup:3500, impatto:1, note:'Piano marketing — brand artigianale, PR food, corsi, eventi' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:800, costo_setup:1750, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo insegna e profumo dal forno', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Instagram con foto pane/dolci + Google My Business', tempo_mesi:1, moduli:[
+        { id:'social', nome:'Social media forno', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.5, note:'Foto pane appena sfornato, dietro le quinte, storie dal laboratorio' },
+        { id:'gmb', nome:'Google My Business + recensioni', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.3, note:'Orari, foto, recensioni, indicazioni — chi cerca "panificio vicino a me"' },
+      ]},
+      '3': { cosa:'Fiere food artigianali + collaborazioni ristoranti locali', tempo_mesi:2, moduli:[
+        { id:'fiere', nome:'Fiere food artigianali/locali', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:1000, impatto:0.5, note:'Stand a mercati, sagre, fiere artigianali — visibilita e vendita diretta' },
+        { id:'collab', nome:'Collaborazioni ristoranti/chef', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:200, impatto:0.2, note:'Il ristorante mette in carta "pane del Forno X" — co-branding' },
+      ]},
+      '4': { cosa:'Social media professionale + packaging storytelling + eventi', tempo_mesi:2, moduli:[
+        { id:'social_pro', nome:'Social media professionale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'smm', nome:'Social media manager/food photographer', costo_mensile:600, costo_setup:500, impatto:1.0, note:'Foto professionali, reel produzione, storie, piano editoriale' },
+          { id:'interno', nome:'Social autogestiti con smartphone', costo_mensile:100, costo_setup:200, impatto:0.4, note:'Il titolare filma e posta 3x/settimana' },
+        ]},
+      ]},
+      '5': { cosa:'Piano marketing completo — brand artigianale, fiere, digital, GDO', tempo_mesi:3, moduli:[
+        { id:'piano', nome:'Piano marketing forno/bakery', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia marketing food artigianale', costo_mensile:1500, costo_setup:3000, impatto:1.0, note:'Brand identity artigianale, digital, packaging, fiere, PR food' },
+          { id:'interno', nome:'Marketing coordinator interno', costo_mensile:800, costo_setup:500, impatto:0.6, note:'1 risorsa dedicata' },
+        ]},
+      ]},
     },
     sitoweb: {
-      '1': { chi:'Nessuno', cosa:'Nessun sito — solo Google Maps', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Sito vetrina con prodotti, orari, storia del forno',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'sito', nome:'Sito vetrina con prodotti, orari, storia del forno', tipo:'flag', obbligatorio:true, costo_mensile:50, costo_setup:500, impatto:0.8 }
-        ,
-{
-        id: 'orari_online',
-        nome: 'Orari e prodotti del giorno online',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 0,
-        impatto: 0.15,
-        note: 'Google My Business + social con prodotti freschi del giorno'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Sito con catalogo prodotti, ordini online per ritiro',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Sito con catalogo prodotti, ordini online per ritiro',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:200, costo_setup:1500, impatto:1, note:'Sito con catalogo prodotti, ordini online per ritiro' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:80, costo_setup:600, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'E-commerce con consegna locale + ordini personalizzati',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'E-commerce con consegna locale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:400, costo_setup:3000, impatto:1, note:'E-commerce con consegna locale + ordini personalizzati' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:160, costo_setup:1200, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Piattaforma ordini B2B + DTC + abbonamenti pane fresco',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Piattaforma ordini B2B',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:800, costo_setup:6000, impatto:1, note:'Piattaforma ordini B2B + DTC + abbonamenti pane fresco' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:320, costo_setup:2400, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Nessuno', cosa:'Nessun sito — solo social', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Sito vetrina con storia, prodotti, orari e dove trovarci', tempo_mesi:1, moduli:[
+        { id:'sito', nome:'Sito panificio', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'custom', nome:'Sito custom (design artigianale)', costo_mensile:20, costo_setup:1500, impatto:1.0, note:'Storytelling, foto prodotti, orari, mappa, prenotazione pane' },
+          { id:'template', nome:'Sito da template/landing', costo_mensile:10, costo_setup:300, impatto:0.4, note:'Pagina base con info essenziali' },
+        ]},
+      ]},
+      '3': { cosa:'Catalogo prodotti online + prenotazione ordini speciali', tempo_mesi:2, moduli:[
+        { id:'catalogo', nome:'Catalogo prodotti + ordini online', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:800, impatto:0.5, note:'Gallery prodotti, ingredienti, allergeni, form ordine per eventi/feste' },
+        { id:'prenotazione', nome:'Prenotazione pane/dolci online', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:300, impatto:0.3, note:'Il cliente prenota pane speciale per il giorno dopo — zero spreco' },
+      ]},
+      '4': { cosa:'E-commerce prodotti confezionati + box regalo + abbonamento', tempo_mesi:3, moduli:[
+        { id:'ecommerce', nome:'E-commerce bakery', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'shopify', nome:'Shopify + tema food', costo_mensile:80, costo_setup:2000, impatto:1.0, note:'Grissini, taralli, biscotti, box regalo, abbonamento mensile' },
+          { id:'woocommerce', nome:'WooCommerce', costo_mensile:40, costo_setup:1200, impatto:0.6, note:'Piu personalizzabile' },
+        ]},
+      ]},
+      '5': { cosa:'Piattaforma integrata — e-commerce + ordini B2B + prenotazione', tempo_mesi:4, moduli:[
+        { id:'piattaforma', nome:'Piattaforma omnicanale forno', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'Piattaforma integrata (DTC + B2B + prenotazione)', costo_mensile:400, costo_setup:6000, impatto:1.0, note:'E-commerce + portale ordini HORECA + prenotazione banco + ERP' },
+          { id:'base', nome:'E-commerce + area ordini B2B semplice', costo_mensile:150, costo_setup:2500, impatto:0.5, note:'E-commerce DTC + form ordini HORECA' },
+        ]},
+      ]},
     },
     ecommerce: {
-      '1': { chi:'Titolare', cosa:'Acquisto farina dal mulino della zona', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Confronto mulini — qualità farine, prezzi, consegna',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'canale', nome:'Confronto mulini', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'farine_confronto',
-        nome: 'Confronto farine tra 2-3 mulini',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 0,
-        impatto: 0.15,
-        note: 'Test farine diverse per W, assorbimento, resa — scegli la migliore'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Accordi quadro con 2-3 mulini — prezzi bloccati, mix farine',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'canale', nome:'Accordi quadro con 2-3 mulini', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
-        ,
-{
-        id: 'accordi_mulino',
-        nome: 'Accordo quadro con mulino di fiducia',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Prezzo bloccato, farina riservata, consegna programmata'
-}
-      ]
-      },
-      '4': {
-        cosa: 'Buyer per farine speciali, lieviti, semilavorati premium',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Buyer per farine speciali, lieviti, semilavorati premium',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:800, costo_setup:300, impatto:1, note:'Buyer per farine speciali, lieviti, semilavorati premium' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:400, costo_setup:120, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Resp. acquisti — filiera corta, grani antichi, import',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Resp. acquisti',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:2000, costo_setup:1000, impatto:1, note:'Resp. acquisti — filiera corta, grani antichi, import' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:1000, costo_setup:400, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
       _label: 'Approvvigionamento farine e ingredienti',
+      '1': { chi:'Titolare', cosa:'Acquisto farine dal mulino di fiducia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Confronto mulini — qualita farine, prezzi, certificazioni', tempo_mesi:1, moduli:[
+        { id:'fornitori', nome:'Database mulini e fornitori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.7, note:'Scheda per mulino: tipo farina, W, prezzi, consegna, certificazioni bio/macinata a pietra' },
+      ]},
+      '3': { cosa:'Accordi quadro con mulini + fornitori ingredienti selezionati', tempo_mesi:2, moduli:[
+        { id:'accordi', nome:'Accordi quadro mulini', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.6, note:'Contratti con 2-3 mulini: prezzo bloccato, consegna settimanale, qualita garantita' },
+        { id:'ingredienti', nome:'Fornitori ingredienti premium', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:200, impatto:0.15, note:'Lievito madre, grani antichi, frutta secca, cioccolato — qualita per linea premium' },
+      ]},
+      '4': { cosa:'Diversificazione mulini + import grani speciali', tempo_mesi:3, moduli:[
+        { id:'buyer', nome:'Buyer farine/ingredienti', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Resp. acquisti forno dipendente', costo_mensile:1800, costo_setup:0, impatto:1.0, note:'Negoziazione mulini, controllo qualita farine, gestione scorte' },
+          { id:'titolare', nome:'Titolare con metodo strutturato', costo_mensile:0, costo_setup:300, impatto:0.5, note:'Il titolare gestisce con budget e analisi costi periodica' },
+        ]},
+      ]},
+      '5': { cosa:'Supply chain forno ottimizzata — filiera corta, grani propri, packaging', tempo_mesi:4, moduli:[
+        { id:'supply', nome:'Ottimizzazione supply chain', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'filiera', nome:'Filiera corta con mulino partner', costo_mensile:200, costo_setup:1500, impatto:1.0, note:'Accordo con agricoltore + mulino: grano locale, macinazione dedicata, storytelling' },
+          { id:'standard', nome:'Ottimizzazione acquisti standard', costo_mensile:0, costo_setup:500, impatto:0.5, note:'Confronto sistematico, scorte ottimizzate, nessun accordo di filiera' },
+        ]},
+      ]},
     }
   },
 
