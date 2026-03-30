@@ -1158,7 +1158,7 @@ function renderProspects() {
 
   const STATI = ['nuovo', 'contattato', 'diagnosi', 'proposta', 'chiuso'];
   const STATI_LABEL = { nuovo: 'Nuovo', contattato: 'Contattato', diagnosi: 'Diagnosi', proposta: 'Proposta', chiuso: 'Chiuso' };
-  const STATI_COLOR = { nuovo: '#6c757d', contattato: '#3498db', diagnosi: '#9b59b6', proposta: '#e67e22', chiuso: '#27ae60' };
+  const STATI_COLOR = { nuovo: '#7a8090', contattato: '#3D5AFE', diagnosi: '#FF6B2B', proposta: '#00A873', chiuso: '#00826C' };
 
   // Filtra prospect
   let lista = prospects.filter(function(p) {

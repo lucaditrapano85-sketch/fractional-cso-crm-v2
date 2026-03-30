@@ -747,7 +747,7 @@ const DIM_DESC = {
   ],
 };
 
-const STATUS_COLORS = {nuovo:'rgba(60,110,170,0.75)',contattato:'rgba(150,110,30,0.75)',diagnosi:'rgba(110,80,170,0.75)',proposta:'rgba(150,130,30,0.75)',chiuso:'rgba(40,120,70,0.75)'};
+const STATUS_COLORS = {nuovo:'rgba(120,130,150,0.8)',contattato:'rgba(61,90,254,0.8)',diagnosi:'rgba(255,107,43,0.85)',proposta:'rgba(0,160,115,0.8)',chiuso:'rgba(0,130,95,0.75)'};
 
 // Palette colori prospect ? 12 toni premium
 const PROSPECT_PALETTE = [
