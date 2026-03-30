@@ -6844,7 +6844,7 @@ async function salvaAzioneCustom(stepKey) {
 function _getStepDesc(settore, dimId, stepNum) {
   const sd = (typeof STEP_DETAIL_BY_SETTORE !== 'undefined') ? STEP_DETAIL_BY_SETTORE : {};
   const detail = sd[settore]?.[dimId]?.[String(stepNum)];
-  if (detail) return detail.chi + ' — ' + detail.cosa;
+  if (detail) return (detail.chi ? detail.chi + ' — ' : '') + (detail.cosa || '');
   return '—';
 }
 
