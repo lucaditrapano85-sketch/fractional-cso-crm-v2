@@ -4761,635 +4761,205 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   alimentare_birra: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Titolare vende dal taproom', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Visite pub e ristoranti zona',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: '1 agente HORECA (~1.800€)',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1800, costo_setup:500, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:990, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:810, costo_setup:500, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Agente + e-commerce diretto',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:3500, costo_setup:1500, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1925, costo_setup:1500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1575, costo_setup:1500, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Team vendite + distribuzione',
-        tempo_mesi: 6,
-        moduli: [
-          {
-            id: 'resp',
-            nome: 'Responsabile commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2400, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
-              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1320, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          },
-          {
-            id: 'team',
-            nome: 'Figure commerciali',
-            tipo: 'multi',
-            obbligatorio: true,
-            min: 2,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1200, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:900, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare', cosa:'Titolare vende dal taproom e a pochi locali amici', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Visite a pub, birrerie, ristoranti e wine bar della zona', tempo_mesi:2, moduli:[
+        { id:'campionature', nome:'Kit degustazione per locali', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.6, note:'Fusti campione, schede birra, listino HORECA — visite a pub e ristoranti' },
+        { id:'taproom', nome:'Taproom/punto vendita diretto strutturato', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.2, note:'Orari fissi, degustazioni programmate, vendita asporto' },
+      ]},
+      '3': { cosa:'Agente/distributore birra artigianale per HORECA regionale', tempo_mesi:3, moduli:[
+        { id:'distribuzione', nome:'Canale distribuzione', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'distributore', nome:'Accordo con distributore birra artigianale', costo_mensile:0, costo_setup:500, impatto:1.0, note:'Il distributore gestisce logistica e vendita a locali — margine inferiore ma volume' },
+          { id:'agente', nome:'Agente HORECA dedicato', costo_mensile:800, costo_setup:500, impatto:0.8, note:'Provvigione su venduto, gestisce rapporti con pub e ristoranti' },
+          { id:'diretto', nome:'Vendita diretta con consegna propria', costo_mensile:500, costo_setup:0, impatto:0.6, note:'Il birraio consegna personalmente — margine pieno, volume limitato' },
+        ]},
+      ]},
+      '4': { cosa:'Rete distribuzione regionale + sviluppo GDO specializzata + e-commerce', tempo_mesi:4, moduli:[
+        { id:'rete', nome:'Espansione distribuzione', tipo:'multi', obbligatorio:true, min:2, varianti:[
+          { id:'distributore', nome:'Distributore birra per zona', costo_mensile:0, costo_setup:500, impatto:0.3, note:'Copertura regionale/interregionale' },
+          { id:'agente', nome:'Agente HORECA', costo_mensile:800, costo_setup:0, impatto:0.25, note:'Per zone/canali specifici' },
+        ]},
+        { id:'gdo', nome:'Sviluppo GDO specializzata/bio shop', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.15, note:'Eataly, NaturaSi, Carrefour Bio, catene gourmet — listing bottiglie' },
+      ]},
+      '5': { cosa:'Dir. commerciale + distribuzione nazionale + export + beer firm', tempo_mesi:6, moduli:[
+        { id:'resp', nome:'Responsabile commerciale birra', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:3000, costo_setup:0, impatto:0.5, note:'Coordinamento distributori, rapporti GDO, export, eventi' },
+          { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1500, costo_setup:0, impatto:0.35, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
     },
     pipeline: {
-      '1': { chi:'Titolare', cosa:'Nessun tracciamento — tutto a voce e WhatsApp', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Excel con pub, ristoranti, ordini e preferenze',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'mappa_locali',
-        nome: 'Mappa locali zona con spine disponibili',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 0,
-        impatto: 0.15,
-        note: 'Quali pub/ristoranti hanno spine libere per la tua birra'
-}
-      ]
-      },
-      '3': {
-        cosa: 'CRM con clienti HORECA, storico ordini, degustazioni',
-        tempo_mesi: 1,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM con clienti HORECA, storico ordini, degustazioni', costo_mensile:300, costo_setup:500, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:150, costo_setup:300, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'CRM integrato con gestionale birrificio e magazzino',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM integrato con gestionale birrificio e magazzino', costo_mensile:600, costo_setup:1500, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:300, costo_setup:900, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'ERP birrificio — ordini, produzione, lotti, accise, export',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'ERP birrificio', costo_mensile:1200, costo_setup:5000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:600, costo_setup:3000, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — vendite a memoria', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Excel con locali clienti, ordini, fusti/bottiglie, pagamenti', tempo_mesi:1, moduli:[
+        { id:'strumento', nome:'Strumento tracciamento', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'excel', nome:'Excel strutturato', costo_mensile:0, costo_setup:100, impatto:0.7, note:'Locale, tipo (pub/ristorante/enoteca), ordini, fusti vs bottiglie, pagamenti' },
+          { id:'crm_free', nome:'CRM gratuito', costo_mensile:0, costo_setup:200, impatto:0.85, note:'Pipeline + storico + reminder riordino' },
+        ]},
+      ]},
+      '3': { cosa:'Gestionale birrificio con ordini, produzione e stock fusti/bottiglie', tempo_mesi:1, moduli:[
+        { id:'gestionale', nome:'Gestionale birrificio', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'Gestionale birrificio (Breww/Ekos/BeerRun)', costo_mensile:100, costo_setup:500, impatto:1.0, note:'Ordini, produzione batch, stock fusti/bottiglie, accise, spedizioni' },
+          { id:'generico', nome:'Gestionale generico + Excel produzione', costo_mensile:40, costo_setup:300, impatto:0.55, note:'Danea/FiC + foglio per batch e stock' },
+        ]},
+      ]},
+      '4': { cosa:'Gestionale integrato — produzione, vendite, accise, distribuzione', tempo_mesi:2, moduli:[
+        { id:'erp', nome:'ERP birrificio', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'brewery', nome:'ERP birrificio (Breww Pro/Orchestrated Beer)', costo_mensile:400, costo_setup:2000, impatto:1.0, note:'Ricette, batch, fermentazione, packaging, accise, ordini, distribuzione' },
+          { id:'food', nome:'ERP food generico + modulo birra', costo_mensile:250, costo_setup:1000, impatto:0.6, note:'Meno specifico per birra, piu flessibile' },
+        ]},
+      ]},
+      '5': { cosa:'ERP birrificio completo — produzione, qualita, distribuzione, e-commerce, BI', tempo_mesi:4, moduli:[
+        { id:'erp_full', nome:'ERP birrificio enterprise', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'Breww Enterprise / custom', costo_mensile:800, costo_setup:5000, impatto:1.0, note:'Produzione, qualita, accise, distribuzione, e-commerce, taproom POS, BI' },
+          { id:'mid', nome:'Gestionale birrificio avanzato', costo_mensile:400, costo_setup:2500, impatto:0.6, note:'Core features' },
+        ]},
+      ]},
     },
     team: {
-      '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Ruoli birreria/taproom definiti — chi produce chi vende',
-        tempo_mesi: 1,
-        moduli: [
-      {
-            id: 'ruoli',
-            nome: 'Organigramma birrificio',
-            tipo: 'flag',
-            obbligatorio: true,
-            costo_mensile: 0,
-            costo_setup: 200,
-            impatto: 0.7,
-            note: 'Birraio, taproom, vendite, consegne — chi fa cosa'
-      }
-,
-{
-        id: 'igiene_birra',
-        nome: 'Formazione igiene e pulizia impianti',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 100,
-        impatto: 0.15,
-        note: 'CIP, sanitizzazione, controllo contaminazioni — base'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Birraio capo + pianificazione cotte e fermentazione',
-        tempo_mesi: 2,
-        moduli: [
-      {
-            id: 'birraio',
-            nome: 'Birraio capo',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-                  {
-                        id: 'promozione',
-                        nome: 'Promozione birraio senior',
-                        costo_mensile: 200,
-                        costo_setup: 300,
-                        impatto: 0.85,
-                        note: 'Già conosce ricette e impianto'
-                  },
-                  {
-                        id: 'esperto',
-                        nome: 'Mastro birraio esperto esterno',
-                        costo_mensile: 2500,
-                        costo_setup: 0,
-                        impatto: 1,
-                        note: 'Esperienza internazionale, nuove ricette'
-                  }
-            ]
-      }
-]
-      },
-      '4': {
-        cosa: 'KPI birrificio + gestione qualità + taproom management',
-        tempo_mesi: 3,
-        moduli: [
-      {
-            id: 'kpi',
-            nome: 'KPI birrificio',
-            tipo: 'flag',
-            obbligatorio: true,
-            costo_mensile: 0,
-            costo_setup: 500,
-            impatto: 0.5,
-            note: 'Resa per cotta, costo per litro, rotazione fusti, vendite taproom'
-      },
-      {
-            id: 'taproom',
-            nome: 'Responsabile taproom/eventi',
-            tipo: 'flag',
-            obbligatorio: false,
-            costo_mensile: 1500,
-            costo_setup: 0,
-            impatto: 0.3,
-            note: 'Gestisce taproom, eventi, degustazioni — libera il birraio'
-      }
-]
-      },
-      '5': {
-        cosa: 'Management strutturato — fondatore solo ricette e strategia',
-        tempo_mesi: 4,
-        moduli: [
-      {
-            id: 'manager',
-            nome: 'General manager birrificio',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-                  {
-                        id: 'dip',
-                        nome: 'GM birrificio dipendente',
-                        costo_mensile: 3000,
-                        costo_setup: 0,
-                        impatto: 1,
-                        note: 'Produzione + vendite + taproom + eventi + logistica'
-                  },
-                  {
-                        id: 'fractional',
-                        nome: 'Brewery manager fractional',
-                        costo_mensile: 1500,
-                        costo_setup: 0,
-                        impatto: 0.65,
-                        note: '2-3 giorni/settimana'
-                  }
-            ]
-      }
-]
-      },
+      '1': { chi:'Titolare', cosa:'Titolare birraio + tutto il resto', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Separazione ruoli: produzione, taproom/vendita, consegne', tempo_mesi:1, moduli:[
+        { id:'organigramma', nome:'Organigramma birrificio', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.7, note:'Produzione (cotta, fermentazione, imbottigliamento), taproom, consegne, admin' },
+      ]},
+      '3': { cosa:'Assistente birraio + addetto taproom/vendita', tempo_mesi:2, moduli:[
+        { id:'birraio', nome:'Assistente birraio', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Assistente birraio dipendente', costo_mensile:1800, costo_setup:0, impatto:0.7, note:'Supporto produzione, imbottigliamento, pulizia, fusti' },
+          { id:'stagionale', nome:'Assistente stagionale', costo_mensile:1200, costo_setup:0, impatto:0.45, note:'Rinforzo nei periodi di punta (estate, feste)' },
+        ]},
+        { id:'taproom', nome:'Addetto taproom/vendita', tipo:'scelta', obbligatorio:false, varianti:[
+          { id:'dip', nome:'Addetto taproom dipendente', costo_mensile:1500, costo_setup:0, impatto:0.2, note:'Taproom, degustazioni, vendita asporto, eventi' },
+          { id:'parttime', nome:'Addetto part-time weekend', costo_mensile:700, costo_setup:0, impatto:0.12, note:'Venerdi-sabato-domenica' },
+        ]},
+      ]},
+      '4': { cosa:'Birraio capo + KPI produzione + resp. qualita', tempo_mesi:3, moduli:[
+        { id:'head_brewer', nome:'Head brewer/birraio capo', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Head brewer dipendente', costo_mensile:2800, costo_setup:0, impatto:1.0, note:'Gestione ricette, produzione, qualita, il titolare fa business' },
+          { id:'promozione', nome:'Promozione assistente birraio', costo_mensile:300, costo_setup:500, impatto:0.7, note:'Formazione avanzata + delega produzione' },
+        ]},
+        { id:'kpi', nome:'KPI birrificio', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.15, note:'Resa batch, costi produzione, qualita, sell-through per stile' },
+      ]},
+      '5': { cosa:'Management completo — titolare solo ricette e brand', tempo_mesi:5, moduli:[
+        { id:'manager', nome:'Direttore operativo birrificio', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Dir. operativo dipendente', costo_mensile:3000, costo_setup:0, impatto:1.0, note:'Produzione, vendite, taproom, logistica — il titolare fa ricette e brand' },
+          { id:'fractional', nome:'Operations manager fractional', costo_mensile:1500, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
       _label: 'Organizzazione',
     },
     processi: {
-      '1': { chi:'Birraio', cosa:'Ricette personali — produzione artigianale senza standard', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Ricettario standardizzato + controllo fermentazione digitale',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'processo', nome:'Ricettario standardizzato + controllo fermentazione digitale', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:500, impatto:0.8 }
-        ,
-{
-        id: 'analisi_birra',
-        nome: 'Analisi birra per ogni cotta',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 100,
-        impatto: 0.15,
-        note: 'OG/FG, IBU, colore, pH — scheda per ogni batch'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Gestionale birrificio — cotte, fermentazione, imbottigliamento',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Gestionale birrificio',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:300, costo_setup:1500, impatto:1, note:'Gestionale birrificio — cotte, fermentazione, imbottigliamento' },
-              { id:'base', nome:'Soluzione base', costo_mensile:150, costo_setup:750, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Laboratorio analisi + gestione accise + tracciabilità lotti',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Laboratorio analisi',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:500, costo_setup:3000, impatto:1, note:'Laboratorio analisi + gestione accise + tracciabilità lotti' },
-              { id:'base', nome:'Soluzione base', costo_mensile:250, costo_setup:1500, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Produzione lean — pianificazione cotte, rese, KPI qualità',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Produzione lean',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:800, costo_setup:5000, impatto:1, note:'Produzione lean — pianificazione cotte, rese, KPI qualità' },
-              { id:'base', nome:'Soluzione base', costo_mensile:400, costo_setup:2500, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare', cosa:'Produzione artigianale — tutto a esperienza', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Ricettario strutturato + registro accise + HACCP base', tempo_mesi:1, moduli:[
+        { id:'ricettario', nome:'Ricettario e log produzione', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.6, note:'Ricette con dosi, tempi, temperature, densita, note — riproducibilita' },
+        { id:'accise', nome:'Registro accise digitale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.25, note:'Registro carico/scarico, telematico accise, e-DAS' },
+      ]},
+      '3': { cosa:'Software gestione birrificio — batch, fermentazione, packaging', tempo_mesi:2, moduli:[
+        { id:'software', nome:'Software birrificio', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'Brewery management (Breww/Ekos/BeerSmith Pro)', costo_mensile:100, costo_setup:800, impatto:1.0, note:'Ricette, batch, fermentazione tracking, carbonazione, packaging, accise' },
+          { id:'manuale', nome:'Foglio produzione + registro manuale', costo_mensile:0, costo_setup:300, impatto:0.4, note:'Excel/Google Sheet per batch e fermentazioni' },
+        ]},
+      ]},
+      '4': { cosa:'Controllo qualita strutturato + certificazioni (BIO, artigianale)', tempo_mesi:3, moduli:[
+        { id:'qualita', nome:'Sistema qualita birrificio', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'laboratorio', nome:'Laboratorio analisi interno/convenzionato', costo_mensile:200, costo_setup:1500, impatto:1.0, note:'Analisi microbiologiche, densita, pH, IBU — ogni batch controllato' },
+          { id:'base', nome:'Controllo qualita base (sensoriale + densimetro)', costo_mensile:0, costo_setup:500, impatto:0.5, note:'Degustazione panel, densimetro, pH-metro — no laboratorio' },
+        ]},
+        { id:'certificazioni', nome:'Certificazioni prodotto', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:1000, impatto:0.15, note:'Bio, marchio "artigianale" (L. 154/2016), certificazione indipendente' },
+      ]},
+      '5': { cosa:'ERP birrificio + automazione + BI per efficienza produttiva', tempo_mesi:4, moduli:[
+        { id:'erp', nome:'ERP birrificio completo', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'ERP brewery enterprise', costo_mensile:600, costo_setup:4000, impatto:1.0, note:'Produzione, qualita, accise, distribuzione, taproom POS, BI' },
+          { id:'mid', nome:'Gestionale birrificio avanzato', costo_mensile:300, costo_setup:2000, impatto:0.55, note:'Core features' },
+        ]},
+      ]},
     },
     ricavi: {
-      '1': { chi:'Birraio', cosa:'Prezzo a bottiglia/fusto fisso — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Pricing differenziato — taproom vs HORECA vs distribuzione',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'ricavi', nome:'Pricing differenziato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'prezzi_canale',
-        nome: 'Listino per canale (taproom, pub, negozi)',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 0,
-        impatto: 0.15,
-        note: 'Prezzo diverso per taproom (margine max) vs pub vs bottiglia'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Taproom come centro profitto + eventi degustazione',
-        tempo_mesi: 2,
-        moduli: [
-      {
-            id: 'taproom',
-            nome: 'Taproom strutturato',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-                  {
-                        id: 'completo',
-                        nome: 'Taproom con food + eventi',
-                        costo_mensile: 0,
-                        costo_setup: 500,
-                        impatto: 0.8,
-                        note: 'Birra alla spina + taglieri + eventi — margine 70%+'
-                  },
-                  {
-                        id: 'base',
-                        nome: 'Solo mescita + merchandising',
-                        costo_mensile: 0,
-                        costo_setup: 200,
-                        impatto: 0.5,
-                        note: 'Birra + gadget brandizzati'
-                  }
-            ]
-      }
-]
-      },
-      '4': {
-        cosa: 'Contratti HORECA annuali + birre stagionali/limited',
-        tempo_mesi: 2,
-        moduli: [
-      {
-            id: 'contratti',
-            nome: 'Contratti fornitura HORECA annuali',
-            tipo: 'flag',
-            obbligatorio: true,
-            costo_mensile: 0,
-            costo_setup: 500,
-            impatto: 0.5,
-            note: 'Spine in comodato, fornitura garantita, fidelizzazione'
-      },
-      {
-            id: 'limited',
-            nome: 'Birre stagionali/limited edition',
-            tipo: 'flag',
-            obbligatorio: true,
-            costo_mensile: 0,
-            costo_setup: 300,
-            impatto: 0.3,
-            note: 'Edizioni limitate — prezzo premium, FOMO, buzz social'
-      }
-]
-      },
-      '5': {
-        cosa: 'Mix ricavi — HORECA, taproom, DTC, eventi, contract brewing',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'ricavi',
-            nome: 'Mix ricavi',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:600, costo_setup:1500, impatto:1, note:'Mix ricavi — HORECA, taproom, DTC, eventi, contract brewing' },
-              { id:'graduale', nome:'Implementazione graduale', costo_mensile:300, costo_setup:750, impatto:0.65, note:'Avvio parziale, si espande' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare', cosa:'Prezzo unico — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Pricing per canale: taproom, HORECA, bottiglia, distribuzione', tempo_mesi:1, moduli:[
+        { id:'pricing', nome:'Listini per canale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.7, note:'Taproom (margine max), HORECA (fusti), bottiglia dettaglio, distributore' },
+      ]},
+      '3': { cosa:'Taproom experience + eventi degustazione + birre stagionali', tempo_mesi:2, moduli:[
+        { id:'taproom', nome:'Taproom experience strutturata', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.5, note:'Degustazioni guidate, abbinamenti cibo, tour birrificio — margine pieno' },
+        { id:'stagionali', nome:'Birre stagionali/limited edition', tipo:'flag', obbligatorio:false, costo_mensile:100, costo_setup:200, impatto:0.2, note:'Edizioni limitate per creare hype e giustificare premium price' },
+      ]},
+      '4': { cosa:'Beer club/abbonamento + private label per locali + merchandising', tempo_mesi:2, moduli:[
+        { id:'beerclub', nome:'Beer club/abbonamento mensile', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.5, note:'Box mensile con birre + gadget, ricavo ricorrente, fidelizzazione' },
+        { id:'pl', nome:'Birre private label per locali', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.2, note:'Birra con etichetta del locale/ristorante — volume garantito' },
+      ]},
+      '5': { cosa:'Mix ricavi: HORECA + taproom + e-commerce + beer firm + eventi', tempo_mesi:3, moduli:[
+        { id:'mix', nome:'Diversificazione ricavi birrificio', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'Mix completo 5 canali', costo_mensile:300, costo_setup:1500, impatto:1.0, note:'HORECA + taproom + e-commerce + beer club + eventi/festival' },
+          { id:'focus', nome:'Focus HORECA + taproom', costo_mensile:100, costo_setup:500, impatto:0.55, note:'2 canali principali ben gestiti' },
+        ]},
+      ]},
     },
     marketing: {
-      '1': { chi:'Nessuno', cosa:'Nessuno — solo taproom e passaparola birrofili', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Instagram con foto birre, brewing process, taproom',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'marketing', nome:'Instagram con foto birre, brewing process, taproom', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'tap_takeover',
-        nome: 'Tap takeover in pub partner',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Serata con tutte le tue birre in un pub — awareness + vendite'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Social curato + festival birra + collaborazioni birrifici',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'marketing', nome:'Social curato + festival birra + collaborazioni birrifici', tipo:'flag', obbligatorio:true, costo_mensile:500, costo_setup:1500, impatto:0.8 }
-        ,
-{
-        id: 'beer_community',
-        nome: 'Community online beer lovers',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Gruppo Facebook/Telegram per appassionati — eventi, anteprime'
-}
-      ]
-      },
-      '4': {
-        cosa: 'Brand identity + Untappd + PR beer blogger + tap takeover',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'Brand identity + Untappd + PR beer blogger + tap takeover',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1200, costo_setup:3000, impatto:1, note:'Brand identity + Untappd + PR beer blogger + tap takeover' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:480, costo_setup:1500, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Piano marketing — brand craft, community, eventi, export promo',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'Piano marketing',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:2500, costo_setup:5000, impatto:1, note:'Piano marketing — brand craft, community, eventi, export promo' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:1000, costo_setup:2500, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo passaparola beer geek', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Instagram con foto birre/taproom + Untappd per recensioni', tempo_mesi:1, moduli:[
+        { id:'social', nome:'Social media birrificio', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.5, note:'Instagram: foto birre, behind the scenes, brewing day, taproom' },
+        { id:'untappd', nome:'Profilo Untappd verificato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.3, note:'Birre su Untappd con descrizione, ABV, IBU — recensioni community' },
+      ]},
+      '3': { cosa:'Festival birra artigianale + collaborazioni con altri birrifici', tempo_mesi:2, moduli:[
+        { id:'festival', nome:'Partecipazione festival birra', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:1500, impatto:0.5, note:'Italia Beer Festival, Eurhop, BeerAttraction — stand con spillatura' },
+        { id:'collab', nome:'Collaborazioni brewing con altri birrifici', tipo:'flag', obbligatorio:false, costo_mensile:100, costo_setup:0, impatto:0.25, note:'Collab brew con birrifici noti — visibilita e cross-marketing' },
+      ]},
+      '4': { cosa:'Social professionale + PR beer blogger + eventi taproom', tempo_mesi:2, moduli:[
+        { id:'pr', nome:'PR e comunicazione birra', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia PR craft beer', costo_mensile:800, costo_setup:500, impatto:1.0, note:'PR su riviste beer (Fermento, Birra&Sound), blogger, influencer birra' },
+          { id:'interno', nome:'Marketing interno + tool', costo_mensile:300, costo_setup:200, impatto:0.5, note:'Social autogestiti + invio birre a blogger' },
+        ]},
+      ]},
+      '5': { cosa:'Piano marketing birrificio — brand, festival, digital, taproom events', tempo_mesi:4, moduli:[
+        { id:'piano', nome:'Piano marketing craft beer', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia marketing food/beverage', costo_mensile:1500, costo_setup:3000, impatto:1.0, note:'Brand positioning, festival, digital, taproom events, PR' },
+          { id:'interno', nome:'Marketing coordinator interno', costo_mensile:800, costo_setup:500, impatto:0.6, note:'1 risorsa dedicata' },
+        ]},
+      ]},
     },
     sitoweb: {
-      '1': { chi:'Nessuno', cosa:'Nessun sito — solo Untappd e social', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Sito vetrina con birre, storia, taproom e orari',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'sito', nome:'Sito vetrina con birre, storia, taproom e orari', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:800, impatto:0.8 }
-        ,
-{
-        id: 'taproom_info',
-        nome: 'Orari taproom + birre alla spina oggi',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 0,
-        impatto: 0.15,
-        note: 'Aggiornamento in tempo reale birre disponibili'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Sito con catalogo birre, schede, dove trovarci, eventi',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Sito con catalogo birre, schede, dove trovarci, eventi',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:250, costo_setup:2000, impatto:1, note:'Sito con catalogo birre, schede, dove trovarci, eventi' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:100, costo_setup:800, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'E-commerce DTC — box birre, abbonamenti, gift pack',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'E-commerce DTC',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:500, costo_setup:4000, impatto:1, note:'E-commerce DTC — box birre, abbonamenti, gift pack' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:200, costo_setup:1600, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Piattaforma DTC + B2B + prenotazione taproom + CRM',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Piattaforma DTC',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:1000, costo_setup:8000, impatto:1, note:'Piattaforma DTC + B2B + prenotazione taproom + CRM' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:400, costo_setup:3200, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Nessuno', cosa:'Nessun sito — solo social', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Sito birrificio con storia, birre, taproom e dove trovarci', tempo_mesi:1, moduli:[
+        { id:'sito', nome:'Sito birrificio', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'custom', nome:'Sito custom (design craft)', costo_mensile:20, costo_setup:1500, impatto:1.0, note:'Storytelling, gallery birre, taproom, mappa locali dove trovarci' },
+          { id:'template', nome:'Sito da template', costo_mensile:10, costo_setup:400, impatto:0.45, note:'Template birrificio/food' },
+        ]},
+      ]},
+      '3': { cosa:'Catalogo birre online + mappa locali + prenotazione taproom', tempo_mesi:2, moduli:[
+        { id:'catalogo', nome:'Catalogo birre online', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:800, impatto:0.5, note:'Scheda per birra: stile, ABV, IBU, malti, luppoli, abbinamenti, foto' },
+        { id:'taproom_booking', nome:'Prenotazione degustazione/taproom', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:300, impatto:0.3, note:'Calendly/form per prenotare visita e degustazione guidata' },
+      ]},
+      '4': { cosa:'E-commerce DTC — bottiglie, box, abbonamento, merchandising', tempo_mesi:3, moduli:[
+        { id:'ecommerce', nome:'E-commerce birrificio', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'shopify', nome:'Shopify + tema brewery', costo_mensile:80, costo_setup:2000, impatto:1.0, note:'Bottiglie, box degustazione, abbonamento beer club, merchandising' },
+          { id:'woocommerce', nome:'WooCommerce', costo_mensile:40, costo_setup:1200, impatto:0.6, note:'Piu personalizzabile' },
+        ]},
+      ]},
+      '5': { cosa:'Piattaforma integrata — DTC + B2B + taproom POS + beer club', tempo_mesi:4, moduli:[
+        { id:'piattaforma', nome:'Piattaforma birrificio omnicanale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'Piattaforma brewery (Breww + Shopify)', costo_mensile:400, costo_setup:5000, impatto:1.0, note:'E-commerce DTC + portale B2B + taproom POS + beer club + CRM' },
+          { id:'mid', nome:'E-commerce + gestionale base', costo_mensile:150, costo_setup:2000, impatto:0.5, note:'DTC + ordini B2B semplici' },
+        ]},
+      ]},
     },
     ecommerce: {
-      '1': { chi:'Birraio', cosa:'Acquisto malti e luppoli da rivenditore locale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Confronto fornitori — malterie europee, luppoli freschi',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'canale', nome:'Confronto fornitori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'malti_confronto',
-        nome: 'Confronto malterie e luppoli tra fornitori',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 0,
-        impatto: 0.15,
-        note: 'Qualità, prezzo, disponibilità — non dipendere da uno solo'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Accordi con malterie e hop dealer — contratti annuali',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'canale', nome:'Accordi con malterie e hop dealer', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
-        ,
-{
-        id: 'import_luppoli',
-        nome: 'Import diretto luppoli (USA, NZ, DE)',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 300,
-        impatto: 0.15,
-        note: 'Luppoli speciali non disponibili da grossisti italiani'
-}
-      ]
-      },
-      '4': {
-        cosa: 'Buyer per luppoli speciali, lieviti, import malti craft',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Buyer per luppoli speciali, lieviti, import malti craft',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:1200, costo_setup:500, impatto:1, note:'Buyer per luppoli speciali, lieviti, import malti craft' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:600, costo_setup:200, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Resp. acquisti — contratti forward luppoli, malterie premium',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Resp. acquisti',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:2500, costo_setup:1500, impatto:1, note:'Resp. acquisti — contratti forward luppoli, malterie premium' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:1250, costo_setup:600, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
       _label: 'Approvvigionamento malti e luppoli',
+      '1': { chi:'Titolare', cosa:'Acquisto malti e luppoli da 1-2 fornitori', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Confronto fornitori malti/luppoli — qualita, varieta, prezzi', tempo_mesi:1, moduli:[
+        { id:'fornitori', nome:'Database fornitori brewing', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.7, note:'Scheda: malteria/hop farm, varieta, lotti, prezzi, tempi consegna' },
+      ]},
+      '3': { cosa:'Accordi con malterie e hop farm — prezzi campagna, varieta dedicate', tempo_mesi:2, moduli:[
+        { id:'accordi', nome:'Accordi fornitori brewing', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.6, note:'Contratti con 2-3 malterie/importatori: Weyermann, Malteries Franco-Belges, hop farm' },
+        { id:'locali', nome:'Luppoli e malti italiani/locali', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:200, impatto:0.15, note:'Malterie italiane, luppolo italiano — storytelling + km0' },
+      ]},
+      '4': { cosa:'Import diretto luppoli (USA/NZ/AU) + malti speciali', tempo_mesi:3, moduli:[
+        { id:'import', nome:'Import diretto ingredienti brewing', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'diretto', nome:'Import diretto da hop farm (Yakima/NZ)', costo_mensile:200, costo_setup:1000, impatto:1.0, note:'Luppoli freschi diretti, varieta esclusive, contratti annuali' },
+          { id:'importatore', nome:'Tramite importatore specializzato', costo_mensile:0, costo_setup:300, impatto:0.6, note:'Piu semplice, meno scelta, prezzi piu alti' },
+        ]},
+      ]},
+      '5': { cosa:'Resp. acquisti — contratti annuali, hedging, luppoli esclusivi, packaging', tempo_mesi:4, moduli:[
+        { id:'supply', nome:'Resp. supply chain birrificio', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Resp. acquisti/produzione dipendente', costo_mensile:2800, costo_setup:0, impatto:1.0, note:'Malti, luppoli, lieviti, packaging, CO2, gestione scorte' },
+          { id:'fractional', nome:'Consulente acquisti brewing', costo_mensile:1000, costo_setup:0, impatto:0.6, note:'Supporto negoziazione e sourcing' },
+        ]},
+      ]},
     }
   },
 
