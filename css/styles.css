@@ -852,10 +852,17 @@ body{background:linear-gradient(145deg,#8fa8cc 0%,#8cb4cc 25%,#96bece 50%,#a4acc
 .form-input{background:var(--bg3);border:1px solid var(--border2);color:var(--text);border-radius:var(--rs)}
 .form-input:focus{border-color:var(--blue);outline:none}
 label{color:var(--gray2)}
+/* ── button overrides (must be last to win) ── */
 .btn{background:transparent;border:none;color:var(--gray);border-radius:var(--rs)}
 .btn:hover{background:rgba(0,0,0,0.06);color:var(--text)}
-.btn-primary,#btn-save-prospect{background:var(--blue);border:none;color:#fff;font-weight:600}
+.btn-primary,.btn-primary.btn,#btn-save-prospect{background:var(--blue)!important;border:none!important;color:#fff!important;font-weight:600}
 .btn-primary:hover,#btn-save-prospect:hover{opacity:.88}
+.btn-orange,.btn-orange.btn{background:var(--orange)!important;border:none!important;color:#fff!important;font-weight:600}
+.btn-orange:hover{opacity:.88}
+.btn-secondary,.btn-secondary.btn{background:transparent!important;color:var(--gray)!important;border:1px solid rgba(0,0,0,0.2)!important}
+.btn-secondary:hover{border-color:rgba(0,0,0,0.4)!important;color:var(--text)!important;background:rgba(0,0,0,0.04)!important}
+.btn-danger,.btn-danger.btn{background:transparent!important;color:var(--red)!important;border:1px solid rgba(229,57,53,0.45)!important}
+.btn-danger:hover{background:var(--red)!important;color:#fff!important;border-color:var(--red)!important}
 .modal-overlay{background:rgba(0,0,0,0.25);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .modal{background:linear-gradient(165deg, rgba(255,255,255,0.65) 0%, rgba(255,255,255,0.4) 40%, rgba(240,242,248,0.3) 100%);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.5);border-top:1px solid rgba(255,255,255,0.7);border-radius:var(--r);box-shadow:0 16px 48px rgba(0,0,0,0.08),inset 0 1px 1px rgba(255,255,255,0.9)}
 .modal-title{color:var(--text)}
