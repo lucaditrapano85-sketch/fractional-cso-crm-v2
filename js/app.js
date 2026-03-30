@@ -25,7 +25,7 @@ async function renderAdminPanel() {
   const viewingAs = window._viewAsUserId;
   const viewingUser = viewingAs ? users.find(u => u.id === viewingAs) : null;
 
-  let html = '<div class="view" id="view-admin" style="display:block;padding:20px">';
+  let html = '<div class="view" id="view-admin" style="display:block;padding:24px">';
 
   // Banner "stai visualizzando come"
   if (viewingUser) {
@@ -35,28 +35,32 @@ async function renderAdminPanel() {
     '</div>';
   }
 
-  html += '<div class="det-header"><h2 style="font-size:20px">Gestione Utenti</h2>' +
-    '<p style="color:var(--gray2);font-size:12px;margin-top:4px">' + users.length + ' utenti registrati</p></div>';
+  html += '<div class="admin-header">' +
+    '<div class="admin-header-top">' +
+      '<h2 class="admin-title">Gestione Utenti</h2>' +
+      '<span class="admin-count">' + users.length + ' utent' + (users.length === 1 ? 'e' : 'i') + '</span>' +
+    '</div>' +
+    '<div class="admin-search-wrap">' +
+      '<input type="text" id="admin-search" class="admin-search" placeholder="Cerca per nome, email o ID..." oninput="adminFilterUsers()">' +
+    '</div>' +
+  '</div>';
 
-  html += '<div class="admin-users-grid">';
+  html += '<div class="admin-users-grid" id="admin-users-grid">';
   users.forEach(function(u) {
     const isCurrentView = viewingAs === u.id;
     const isSelf = u.id === window._currentUserId;
     const nome = (u.nome || '') + ' ' + (u.cognome || '');
     const initials = ((u.nome || '?')[0] + (u.cognome || '?')[0]).toUpperCase();
 
-    // Conta prospect di questo utente
-    const prospectCount = (window._isAdmin && window._allUsersProspectCounts)
-      ? (window._allUsersProspectCounts[u.id] || 0) : '—';
-
-    html += '<div class="admin-user-card' + (isCurrentView ? ' active' : '') + (isSelf ? ' self' : '') + '" onclick="adminViewAs(\'' + u.id + '\')">' +
+    html += '<div class="admin-user-card' + (isCurrentView ? ' active' : '') + (isSelf ? ' self' : '') + '" onclick="adminViewAs(\'' + u.id + '\')" data-search="' + (nome + ' ' + u.email + ' ' + u.id).toLowerCase() + '">' +
       '<div class="admin-user-avatar">' + initials + '</div>' +
       '<div class="admin-user-info">' +
         '<div class="admin-user-name">' + nome.trim() + (u.is_admin ? ' <span class="admin-badge">ADMIN</span>' : '') + '</div>' +
         '<div class="admin-user-email">' + u.email + '</div>' +
-        '<div class="admin-user-meta">ID: ' + u.id.substring(0, 8) + '...' +
-          (u.telefono ? ' &middot; ' + u.telefono : '') +
-          ' &middot; Registrato: ' + new Date(u.created_at).toLocaleDateString('it-IT') +
+        '<div class="admin-user-id">ID: ' + u.id + '</div>' +
+        '<div class="admin-user-meta">' +
+          (u.telefono ? u.telefono + ' &middot; ' : '') +
+          'Registrato il ' + new Date(u.created_at).toLocaleDateString('it-IT', {day:'numeric', month:'long', year:'numeric'}) +
         '</div>' +
       '</div>' +
       '<div class="admin-user-arrow">&#8250;</div>' +
@@ -69,6 +73,14 @@ async function renderAdminPanel() {
   if (old) old.remove();
 
   main.insertAdjacentHTML('beforeend', html);
+}
+
+function adminFilterUsers() {
+  const q = (document.getElementById('admin-search')?.value || '').toLowerCase().trim();
+  document.querySelectorAll('.admin-user-card').forEach(function(card) {
+    const match = !q || (card.dataset.search || '').includes(q);
+    card.style.display = match ? '' : 'none';
+  });
 }
 
 async function adminViewAs(userId) {
