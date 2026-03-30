@@ -1753,410 +1753,209 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   edilizia_serramenti: {
     vendite: {
-      '1': { chi:'Titolare solo', cosa:'Titolare vende dallo showroom', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Sopralluoghi a domicilio + preventivi strutturati',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:300, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: '1 venditore showroom dedicato',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2200, costo_setup:500, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1210, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:990, costo_setup:500, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: '+ commerciale B2B imprese edili e architetti',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:4700, costo_setup:1000, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:2585, costo_setup:1000, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:2115, costo_setup:1000, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Rete posatori partner + gare ristrutturazione',
-        tempo_mesi: 6,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:3500, costo_setup:2000, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1925, costo_setup:2000, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1575, costo_setup:2000, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare solo', cosa:'Titolare vende dallo showroom — passaparola e passaggio', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Sopralluoghi a domicilio + preventivi strutturati con rendering', tempo_mesi:1, moduli:[
+        { id:'sopralluogo', nome:'Kit sopralluogo professionale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.6, note:'Laser metro, tablet con catalogo digitale, scheda rilievo misure standardizzata' },
+        { id:'rendering', nome:'Rendering 3D infissi in ambiente', tipo:'flag', obbligatorio:false, costo_mensile:50, costo_setup:500, impatto:0.3, note:'Software rendering (es. WinDoor) per mostrare al cliente il risultato finale' },
+      ]},
+      '3': { cosa:'Venditore showroom dedicato + consulente sopralluoghi', tempo_mesi:2, moduli:[
+        { id:'venditore', nome:'Venditore showroom', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Venditore dipendente showroom', costo_mensile:2200, costo_setup:0, impatto:1.0, note:'Full-time in showroom, consulenza infissi, gestione cliente fino a posa' },
+          { id:'parttime', nome:'Venditore part-time (weekend + 2 gg)', costo_mensile:1200, costo_setup:0, impatto:0.6, note:'Copre i giorni di punta: venerdi-sabato + 1-2 giorni' },
+          { id:'provvigione', nome:'Venditore solo provvigione', costo_mensile:0, costo_setup:0, impatto:0.4, note:'Provvigione 3-5% sul venduto, nessun fisso' },
+        ]},
+      ]},
+      '4': { cosa:'Commerciale B2B per imprese edili, architetti e general contractor', tempo_mesi:3, moduli:[
+        { id:'b2b', nome:'Commerciale B2B edilizia', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Commerciale B2B dipendente', costo_mensile:2500, costo_setup:0, impatto:1.0, note:'Visite cantieri, studi architettura, imprese ristrutturazione' },
+          { id:'agente', nome:'Agente plurimandatario edilizia', costo_mensile:1200, costo_setup:0, impatto:0.7, note:'Provvigione su forniture cantiere, rete propria' },
+        ]},
+      ]},
+      '5': { cosa:'Rete posatori partner + canale contract/grandi cantieri', tempo_mesi:6, moduli:[
+        { id:'resp', nome:'Responsabile canale contract', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Resp. grandi commesse dipendente', costo_mensile:3000, costo_setup:0, impatto:0.5, note:'Gestione gare, capitolati, rapporti con GC e studi progettazione' },
+          { id:'fractional', nome:'Business developer fractional', costo_mensile:1500, costo_setup:0, impatto:0.35, note:'2-3 giorni/settimana, focus grandi cantieri' },
+        ]},
+        { id:'posatori', nome:'Rete posatori certificati', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.2, note:'Albo posatori qualificati con formazione e certificazione' },
+      ]},
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — preventivi su carta e dimenticati', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Excel con preventivi, sopralluoghi, stato trattativa',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:100, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'CRM per preventivi + follow-up post-sopralluogo',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'strumento', nome:'CRM base', tipo:'flag', obbligatorio:true, costo_mensile:50, costo_setup:200, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'CRM + configuratore infissi per preventivi automatici',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM + configuratore infissi per preventivi automatici', costo_mensile:400, costo_setup:2000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:200, costo_setup:1200, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'CRM integrato con gestionale ordini e produzione/fornitori',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM integrato con gestionale ordini e produzione/fornitori', costo_mensile:700, costo_setup:3500, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:350, costo_setup:2100, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Excel/foglio con preventivi, sopralluoghi e stato trattativa', tempo_mesi:1, moduli:[
+        { id:'strumento', nome:'Strumento tracciamento', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'excel', nome:'Excel/Fogli Google strutturato', costo_mensile:0, costo_setup:100, impatto:0.7, note:'Template: cliente, misure, prodotto, stato, data posa prevista' },
+          { id:'crm_free', nome:'CRM gratuito (HubSpot Free/Zoho)', costo_mensile:0, costo_setup:200, impatto:0.85, note:'Pipeline preventivi + reminder follow-up' },
+        ]},
+      ]},
+      '3': { cosa:'CRM per gestione preventivi + follow-up post-sopralluogo', tempo_mesi:1, moduli:[
+        { id:'crm', nome:'CRM serramenti', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'CRM settore serramenti (Wintel/SerramentiCRM)', costo_mensile:60, costo_setup:300, impatto:1.0, note:'Gestione preventivi con configuratore, ordini fornitore, posa' },
+          { id:'generico', nome:'CRM generico (Pipedrive/HubSpot Starter)', costo_mensile:30, costo_setup:200, impatto:0.65, note:'Pipeline vendita, follow-up, ma senza configuratore prodotto' },
+        ]},
+      ]},
+      '4': { cosa:'CRM + configuratore infissi per preventivi automatici', tempo_mesi:2, moduli:[
+        { id:'configuratore', nome:'Configuratore preventivi infissi', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'professionale', nome:'Configuratore professionale (WinDoor/LogiKal)', costo_mensile:300, costo_setup:2000, impatto:1.0, note:'Configurazione infisso, calcolo prezzo, ordine fornitore automatico' },
+          { id:'semplice', nome:'Configuratore semplice (foglio calcolo avanzato)', costo_mensile:0, costo_setup:800, impatto:0.55, note:'Template con formule: dimensioni, materiale, accessori, prezzo' },
+        ]},
+      ]},
+      '5': { cosa:'Gestionale integrato: CRM + ordini + produzione/fornitori + posa', tempo_mesi:3, moduli:[
+        { id:'gestionale', nome:'Gestionale serramenti integrato', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'erp', nome:'ERP serramenti (Wintel Pro/SerramentiOne)', costo_mensile:600, costo_setup:3500, impatto:1.0, note:'CRM + configuratore + ordini fornitori + pianificazione posa + fatturazione' },
+          { id:'modulare', nome:'CRM + gestionale separati (Pipedrive + Danea)', costo_mensile:300, costo_setup:1500, impatto:0.6, note:'Meno integrato, piu flessibile, costo inferiore' },
+        ]},
+      ]},
     },
     team: {
-      '1': { chi:'Titolare', cosa:'Titolare gestisce tutto — showroom e posa', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Ruoli showroom/posa separati',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'organizzazione', nome:'Ruoli showroom/posa separati', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Riunioni + obiettivi per ruolo',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'organizzazione', nome:'Riunioni + obiettivi per ruolo', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'KPI + processi decisionali delegati',
-        tempo_mesi: 3,
-        moduli: [
-          { id:'organizzazione', nome:'KPI + processi decisionali delegati', tipo:'flag', obbligatorio:true, costo_mensile:500, costo_setup:1000, impatto:0.8 }
-        ]
-      },
-      '5': {
-        cosa: 'Management — titolare solo strategia',
-        tempo_mesi: 5,
-        moduli: [
-          {
-            id: 'manager',
-            nome: 'Figura manageriale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Manager operativo dipendente', costo_mensile:1500, costo_setup:1500, impatto:1, note:'Full-time' },
-              { id:'fractional', nome:'Manager operativo fractional', costo_mensile:750, costo_setup:1500, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare', cosa:'Titolare gestisce tutto — showroom, sopralluoghi e posa', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Separazione ruoli showroom e squadra posa', tempo_mesi:1, moduli:[
+        { id:'posa', nome:'Capo posatore', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'promozione', nome:'Promozione posatore esperto interno', costo_mensile:0, costo_setup:300, impatto:1.0, note:'Gia in organico, formazione su gestione squadra e rapporto cliente' },
+          { id:'esterno', nome:'Assunzione capo posatore esterno', costo_mensile:300, costo_setup:500, impatto:0.8, note:'Delta costo, porta competenze da fuori' },
+        ]},
+      ]},
+      '3': { cosa:'Addetto showroom + back-office ordini', tempo_mesi:2, moduli:[
+        { id:'backoffice', nome:'Back-office/amministrazione', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Impiegata amministrativa', costo_mensile:1800, costo_setup:0, impatto:0.7, note:'Ordini fornitori, DDT, fatture, gestione cantieri posa' },
+          { id:'parttime', nome:'Segretaria part-time', costo_mensile:900, costo_setup:0, impatto:0.5, note:'4h/giorno, gestione ordini e contabilita base' },
+        ]},
+        { id:'organigramma', nome:'Organigramma e mansionario', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.2, note:'Showroom, posa, admin, magazzino — chi fa cosa' },
+      ]},
+      '4': { cosa:'Responsabile commerciale + KPI per ruolo', tempo_mesi:3, moduli:[
+        { id:'resp_comm', nome:'Responsabile commerciale', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Direttore commerciale dipendente', costo_mensile:3000, costo_setup:0, impatto:1.0, note:'Coordina venditori, target, pricing, rapporti B2B' },
+          { id:'fractional', nome:'Direttore commerciale fractional', costo_mensile:1500, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana, strategia + coaching venditori' },
+        ]},
+        { id:'kpi', nome:'Dashboard KPI showroom', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.15, note:'Tasso chiusura preventivi, scontrino medio, tempi consegna, NPS' },
+      ]},
+      '5': { cosa:'Management completo — titolare solo strategia e sviluppo', tempo_mesi:5, moduli:[
+        { id:'manager', nome:'Store manager/Direttore operativo', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Store manager dipendente', costo_mensile:3000, costo_setup:0, impatto:1.0, note:'Gestione totale: showroom, posa, ordini, personale, clienti' },
+          { id:'fractional', nome:'Operations manager fractional', costo_mensile:1500, costo_setup:0, impatto:0.65, note:'3 giorni/settimana, il titolare si dedica a sviluppo business' },
+        ]},
+      ]},
       _label: 'Organizzazione',
     },
     processi: {
       '1': { chi:'Titolare', cosa:'Nessun processo — preventivi a mano, posa senza procedura', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Template preventivo con misure, materiali, posa e smaltimento',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'processo', nome:'Template preventivo con misure, materiali, posa e smaltimento', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Configuratore infissi per preventivi veloci e precisi',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Configuratore infissi per preventivi veloci e precisi',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:300, costo_setup:1500, impatto:1, note:'Configuratore infissi per preventivi veloci e precisi' },
-              { id:'base', nome:'Soluzione base', costo_mensile:150, costo_setup:750, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Gestionale ordini — da preventivo a ordine fornitore a posa',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Gestionale ordini',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:500, costo_setup:2000, impatto:1, note:'Gestionale ordini — da preventivo a ordine fornitore a posa' },
-              { id:'base', nome:'Soluzione base', costo_mensile:250, costo_setup:1000, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Certificazione posa qualificata + gestione garanzie + NPS',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Certificazione posa qualificata',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:900, costo_setup:4000, impatto:1, note:'Certificazione posa qualificata + gestione garanzie + NPS' },
-              { id:'base', nome:'Soluzione base', costo_mensile:450, costo_setup:2000, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Template preventivo strutturato: misure, materiali, posa, smaltimento', tempo_mesi:1, moduli:[
+        { id:'template', nome:'Template preventivo serramenti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.7, note:'Scheda con: tipo infisso, materiale, colore, vetro, accessori, posa, smaltimento vecchi' },
+        { id:'checklist_posa', nome:'Checklist pre-posa e post-posa', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.2, note:'Verifica misure, protezione ambiente, pulizia finale, collaudo apertura/chiusura' },
+      ]},
+      '3': { cosa:'Configuratore infissi per preventivi veloci e precisi', tempo_mesi:2, moduli:[
+        { id:'configuratore', nome:'Software configurazione infissi', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'professionale', nome:'Configuratore professionale (WinDoor/LogiKal)', costo_mensile:200, costo_setup:1500, impatto:1.0, note:'Configurazione completa: dimensioni, materiale, vetro, colore, accessori, prezzo' },
+          { id:'excel', nome:'Foglio di calcolo avanzato', costo_mensile:0, costo_setup:500, impatto:0.5, note:'Template Excel con formule per calcolo prezzo per tipologia' },
+        ]},
+      ]},
+      '4': { cosa:'Gestionale ordini: da preventivo a ordine fornitore a programmazione posa', tempo_mesi:2, moduli:[
+        { id:'gestionale', nome:'Gestionale ordini serramenti', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dedicato', nome:'Software gestione ordini (Wintel/Serr. One)', costo_mensile:300, costo_setup:1500, impatto:1.0, note:'Preventivo, conferma, ordine fornitore, arrivo merce, pianificazione posa' },
+          { id:'generico', nome:'Project management (Asana/Trello + spreadsheet)', costo_mensile:50, costo_setup:500, impatto:0.5, note:'Board kanban per fasi: confermato, ordinato, in magazzino, posato' },
+        ]},
+      ]},
+      '5': { cosa:'Certificazione posa qualificata + gestione garanzie + NPS', tempo_mesi:4, moduli:[
+        { id:'certificazione', nome:'Certificazione posa qualificata', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'ente', nome:'Certificazione con ente (Casa Clima/Legambiente)', costo_mensile:100, costo_setup:3000, impatto:1.0, note:'Posatori certificati, protocollo posa documentato, audit periodici' },
+          { id:'interno', nome:'Protocollo qualita interno', costo_mensile:0, costo_setup:1000, impatto:0.5, note:'Checklist qualita, foto documentazione, ma senza ente terzo' },
+        ]},
+        { id:'garanzie', nome:'Gestione garanzie e NPS', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:300, impatto:0.15, note:'Registro garanzie, follow-up 6-12 mesi, sondaggio soddisfazione' },
+      ]},
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Vendita infissi con margine base — nessun upsell', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Calcolo margini reali per prodotto — PVC vs alluminio vs legno',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'ricavi', nome:'Calcolo margini reali per prodotto', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Upsell sistematico — zanzariere, oscuranti, cassonetti, VMC',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'ricavi', nome:'Upsell sistematico', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Bonus fiscali come leva di vendita — gestione pratiche inclusa',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'ricavi', nome:'Bonus fiscali come leva di vendita', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:800, impatto:0.8 }
-        ]
-      },
-      '5': {
-        cosa: 'Contratti con imprese edili — fornitura + posa su cantieri',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'ricavi',
-            nome: 'Contratti con imprese edili',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:800, costo_setup:1500, impatto:1, note:'Contratti con imprese edili — fornitura + posa su cantieri' },
-              { id:'graduale', nome:'Implementazione graduale', costo_mensile:400, costo_setup:750, impatto:0.65, note:'Avvio parziale, si espande' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Calcolo margini reali per linea: PVC vs alluminio vs legno-alluminio', tempo_mesi:1, moduli:[
+        { id:'costing', nome:'Analisi margini per prodotto', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8, note:'Margine reale per linea (PVC, alluminio, legno-alluminio) con costi posa inclusi' },
+      ]},
+      '3': { cosa:'Upsell sistematico: zanzariere, oscuranti, cassonetti coibentati, VMC', tempo_mesi:1, moduli:[
+        { id:'upsell', nome:'Catalogo accessori per upsell', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.7, note:'Checklist upsell per ogni preventivo: zanzariere, tapparelle, cassonetti, VMC, soglie' },
+        { id:'formazione', nome:'Formazione venditori su upsell', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:300, impatto:0.2, note:'Script vendita per proporre accessori in modo naturale durante il sopralluogo' },
+      ]},
+      '4': { cosa:'Bonus fiscali come leva di vendita — gestione pratiche', tempo_mesi:2, moduli:[
+        { id:'bonus', nome:'Servizio pratiche bonus fiscali', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'interno', nome:'Gestione interna pratiche Ecobonus/50%', costo_mensile:0, costo_setup:800, impatto:1.0, note:'Formazione + software per gestione pratiche ENEA, asseverazioni, visto' },
+          { id:'partner', nome:'Partnership con studio tecnico/CAF', costo_mensile:0, costo_setup:200, impatto:0.6, note:'Lo studio gestisce le pratiche, il serramentista porta il cliente' },
+        ]},
+      ]},
+      '5': { cosa:'Contratti quadro con imprese edili — fornitura + posa su cantieri', tempo_mesi:3, moduli:[
+        { id:'contract', nome:'Canale contract imprese edili', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'strutturato', nome:'Accordi quadro con 3-5 imprese edili', costo_mensile:0, costo_setup:500, impatto:1.0, note:'Listino dedicato, priorita consegna, posa coordinata con cantiere' },
+          { id:'spot', nome:'Forniture spot su richiesta', costo_mensile:0, costo_setup:0, impatto:0.5, note:'Preventivi caso per caso, nessun accordo fisso' },
+        ]},
+        { id:'noleggio', nome:'Servizio noleggio operativo infissi (grandi cantieri)', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:1000, impatto:0.15, note:'Formula noleggio per cantieri grandi: il costruttore paga canone, noi gestiamo tutto' },
+      ]},
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo insegna showroom e passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Google My Business + foto showroom e lavori realizzati',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'marketing', nome:'Google My Business + foto showroom e lavori realizzati', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Google Ads locali su "infissi + città" + portali casa',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'marketing', nome:'Google Ads locali su "infissi + città" + portali casa', tipo:'flag', obbligatorio:true, costo_mensile:600, costo_setup:800, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Campagne social con prima/dopo + video posa + recensioni',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'Campagne social con prima/dopo + video posa + recensioni',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1000, costo_setup:1500, impatto:1, note:'Campagne social con prima/dopo + video posa + recensioni' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:400, costo_setup:750, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Piano marketing — eventi showroom, partnership architetti, PR',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'Piano marketing',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:2200, costo_setup:3000, impatto:1, note:'Piano marketing — eventi showroom, partnership architetti, PR' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:880, costo_setup:1500, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Google My Business + foto showroom e lavori prima/dopo', tempo_mesi:1, moduli:[
+        { id:'gmb', nome:'Google My Business ottimizzato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.6, note:'Foto showroom, lavori prima/dopo, orari, risposte recensioni' },
+        { id:'recensioni', nome:'Sistema raccolta recensioni post-posa', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.3, note:'Richiesta recensione dopo collaudo posa — Google + portali' },
+      ]},
+      '3': { cosa:'Google Ads locali + portali casa (Houzz, Habitissimo)', tempo_mesi:2, moduli:[
+        { id:'ads', nome:'Google Ads locali', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:500, impatto:0.5, note:'Campagne su "infissi + citta", "serramenti + zona", "sostituzione finestre"' },
+        { id:'portali', nome:'Portali casa (Houzz/Habitissimo/Instapro)', tipo:'flag', obbligatorio:false, costo_mensile:150, costo_setup:0, impatto:0.3, note:'Profilo premium con gallery lavori, preventivi online' },
+      ]},
+      '4': { cosa:'Social media: video prima/dopo, reel posa, recensioni video', tempo_mesi:2, moduli:[
+        { id:'social', nome:'Gestione social media', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Social media manager/agenzia', costo_mensile:800, costo_setup:500, impatto:1.0, note:'Piano editoriale, video prima/dopo, reel posa, storie showroom' },
+          { id:'interno', nome:'Social autogestiti', costo_mensile:200, costo_setup:200, impatto:0.4, note:'Il titolare/venditore pubblica 2-3 post/settimana con smartphone' },
+        ]},
+      ]},
+      '5': { cosa:'Piano marketing: eventi showroom, partnership architetti, PR locale', tempo_mesi:3, moduli:[
+        { id:'piano', nome:'Piano marketing strutturato', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia marketing specializzata', costo_mensile:1800, costo_setup:2000, impatto:1.0, note:'Strategia: eventi showroom, partnership studi architettura, PR, influencer casa' },
+          { id:'freelance', nome:'Freelance marketing + tool', costo_mensile:800, costo_setup:500, impatto:0.6, note:'1 professionista, focus lead generation e contenuti' },
+        ]},
+      ]},
     },
     sitoweb: {
       '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Sito con catalogo infissi, showroom, zona operativa',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'sito', nome:'Sito con catalogo infissi, showroom, zona operativa', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:1000, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Gallery lavori + preventivo online + simulatore colori',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Gallery lavori',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:300, costo_setup:2500, impatto:1, note:'Gallery lavori + preventivo online + simulatore colori' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:120, costo_setup:1000, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Configuratore infissi online — misure, materiali, prezzo indicativo',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Configuratore infissi online',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:600, costo_setup:5000, impatto:1, note:'Configuratore infissi online — misure, materiali, prezzo indicativo' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:240, costo_setup:2000, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'E-commerce accessori + prenotazione sopralluogo + area clienti',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'E-commerce accessori',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:900, costo_setup:6000, impatto:1, note:'E-commerce accessori + prenotazione sopralluogo + area clienti' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:360, costo_setup:2400, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Sito vetrina con catalogo infissi, showroom virtuale, zona operativa', tempo_mesi:1, moduli:[
+        { id:'sito', nome:'Sito vetrina serramenti', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'custom', nome:'Sito custom WordPress', costo_mensile:30, costo_setup:2000, impatto:1.0, note:'Design personalizzato, catalogo prodotti, gallery showroom, form contatto' },
+          { id:'template', nome:'Sito da template (Wix/Jimdo)', costo_mensile:20, costo_setup:600, impatto:0.55, note:'Veloce da lanciare, meno personalizzabile' },
+        ]},
+      ]},
+      '3': { cosa:'Gallery lavori prima/dopo + preventivo online + simulatore colori', tempo_mesi:2, moduli:[
+        { id:'gallery', nome:'Gallery lavori prima/dopo', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.5, note:'Foto professionali prima/dopo per ogni materiale e tipologia' },
+        { id:'form_prev', nome:'Form preventivo online', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.4, note:'Form con tipo infisso, numero finestre, materiale preferito — lead qualificato' },
+      ]},
+      '4': { cosa:'Configuratore infissi online — dimensioni, materiale, colore, prezzo indicativo', tempo_mesi:2, moduli:[
+        { id:'configuratore', nome:'Configuratore infissi online', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'custom', nome:'Configuratore custom sviluppato ad hoc', costo_mensile:200, costo_setup:5000, impatto:1.0, note:'Il cliente configura finestra/porta, sceglie materiale/colore/vetro, vede prezzo indicativo' },
+          { id:'saas', nome:'Tool SaaS (Typeform + logica prezzi)', costo_mensile:50, costo_setup:1000, impatto:0.5, note:'Form guidato con calcolo prezzo approssimativo' },
+        ]},
+      ]},
+      '5': { cosa:'E-commerce accessori + area clienti post-vendita', tempo_mesi:3, moduli:[
+        { id:'ecommerce', nome:'E-commerce accessori e ricambi', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'E-commerce WooCommerce/Shopify', costo_mensile:200, costo_setup:4000, impatto:1.0, note:'Vendita online: maniglie, guarnizioni, zanzariere, tapparelle, kit manutenzione' },
+          { id:'catalogo', nome:'Catalogo online con richiesta ordine', costo_mensile:50, costo_setup:1000, impatto:0.5, note:'Catalogo sfogliabile, il cliente chiede preventivo via form' },
+        ]},
+        { id:'area_clienti', nome:'Area clienti riservata', tipo:'flag', obbligatorio:false, costo_mensile:50, costo_setup:1500, impatto:0.2, note:'Storico ordini, garanzie, manuali manutenzione, prenotazione assistenza' },
+      ]},
     },
     ecommerce: {
-      '1': { chi:'Titolare', cosa:'Acquisto infissi da un solo produttore — nessuna alternativa', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Confronto tra 2-3 produttori — prezzi e tempi di consegna',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'canale', nome:'Confronto tra 2-3 produttori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Accordi quadro con produttori — sconti volume e priorità consegna',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'canale', nome:'Accordi quadro con produttori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Multi-fornitore strutturato — PVC da uno, alluminio da un altro',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Multi-fornitore strutturato',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:500, costo_setup:500, impatto:1, note:'Multi-fornitore strutturato — PVC da uno, alluminio da un altro' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:250, costo_setup:200, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Partnership produttori + private label + import diretto',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Partnership produttori + private label + import diretto',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:1500, costo_setup:1500, impatto:1, note:'Partnership produttori + private label + import diretto' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:750, costo_setup:600, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
       _label: 'Approvvigionamento infissi',
+      '1': { chi:'Titolare', cosa:'Acquisto infissi da un solo produttore — nessuna alternativa', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Confronto tra 2-3 produttori per materiale e fascia prezzo', tempo_mesi:1, moduli:[
+        { id:'fornitori', nome:'Database produttori infissi', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.7, note:'Scheda per produttore: listino, tempi consegna, MOQ, qualita, assistenza' },
+      ]},
+      '3': { cosa:'Accordi quadro con produttori — sconti volume e priorita consegna', tempo_mesi:2, moduli:[
+        { id:'accordi', nome:'Accordi quadro produttori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.6, note:'Prezzi bloccati con 2-3 produttori (Schuco, Internorm, Finstral, o italiani)' },
+        { id:'showroom', nome:'Campionario showroom aggiornato', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.15, note:'Campioni angolari, finiture, vetri per ogni produttore in showroom' },
+      ]},
+      '4': { cosa:'Multi-fornitore per materiale: PVC da uno, alluminio da un altro, legno-alu da un terzo', tempo_mesi:2, moduli:[
+        { id:'multi', nome:'Strategia multi-fornitore', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'strutturato', nome:'Multi-fornitore strutturato con accordi', costo_mensile:0, costo_setup:500, impatto:1.0, note:'Fornitore primario per materiale, backup per ciascuno, prezzi e tempi concordati' },
+          { id:'flessibile', nome:'Multi-fornitore flessibile', costo_mensile:0, costo_setup:200, impatto:0.6, note:'Si sceglie caso per caso il fornitore migliore per ogni commessa' },
+        ]},
+      ]},
+      '5': { cosa:'Partnership produttori + private label + import diretto', tempo_mesi:4, moduli:[
+        { id:'partnership', nome:'Partnership strategica produttori', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'premium', nome:'Partnership premium + private label', costo_mensile:500, costo_setup:3000, impatto:1.0, note:'Linea infissi con marchio proprio, produzione dedicata, esclusiva zona' },
+          { id:'import', nome:'Import diretto (Est Europa/Turchia)', costo_mensile:200, costo_setup:1500, impatto:0.65, note:'Margini maggiori, tempi piu lunghi, rischio qualita da gestire' },
+        ]},
+      ]},
     }
   },
 
