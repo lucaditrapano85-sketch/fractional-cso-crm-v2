@@ -1537,373 +1537,214 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   edilizia_impianti: {
     vendite: {
-      '1': { chi:'Titolare solo', cosa:'Titolare trova lavori tramite passaparola e imprese', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Rapporti con studi tecnici e amministratori condominio',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:150, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Preventivi + proposta efficientamento su ogni sopralluogo',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'supporto', nome:'Titolare strutturato', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:300, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: '1 commerciale condomini/industria/PA',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2500, costo_setup:500, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1375, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1125, costo_setup:500, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Rete installatori partner + gare pubbliche',
-        tempo_mesi: 6,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:3000, costo_setup:2000, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1650, costo_setup:2000, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1350, costo_setup:2000, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare solo', cosa:'Titolare trova lavori tramite passaparola e imprese edili', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Rapporti strutturati con amministratori condominio e studi tecnici', tempo_mesi:1, moduli:[
+        { id:'rete', nome:'Network amministratori e studi tecnici', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.6, note:'Database amministratori condomini, studi ingegneria, imprese edili zona' },
+        { id:'trasferte', nome:'Visite e pranzi con professionisti', tipo:'flag', obbligatorio:true, costo_mensile:150, costo_setup:0, impatto:0.3, note:'Relazione diretta, passaparola qualificato su manutenzioni' },
+      ]},
+      '3': { cosa:'Preventivi dettagliati + proposta efficientamento su ogni sopralluogo', tempo_mesi:2, moduli:[
+        { id:'preventivazione', nome:'Sistema preventivazione impianti', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'software', nome:'Software computo metrico impiantistico (Primus/Acca)', costo_mensile:80, costo_setup:300, impatto:1.0, note:'Preventivi dettagliati con computo materiali e manodopera' },
+          { id:'template', nome:'Template Excel strutturato', costo_mensile:0, costo_setup:150, impatto:0.6, note:'Manuale ma organizzato per tipologia impianto' },
+        ]},
+        { id:'efficientamento', nome:'Proposta efficientamento energetico', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:200, impatto:0.2, note:'Scheda risparmio energetico + bonus fiscali su ogni sopralluogo' },
+      ]},
+      '4': { cosa:'Commerciale dedicato condomini/industria/PA', tempo_mesi:3, moduli:[
+        { id:'commerciale', nome:'Figura commerciale impiantistica', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Commerciale dipendente', costo_mensile:2500, costo_setup:0, impatto:1.0, note:'Visita amministratori, studi, aziende, enti pubblici' },
+          { id:'agente', nome:'Procacciatore di affari', costo_mensile:1200, costo_setup:0, impatto:0.7, note:'Fee su commesse acquisite, rete propria nel territorio' },
+          { id:'parttime', nome:'Commerciale part-time', costo_mensile:1100, costo_setup:0, impatto:0.5, note:'20h/settimana, focus condomini e PMI' },
+        ]},
+      ]},
+      '5': { cosa:'Rete installatori partner + gare pubbliche MEPA', tempo_mesi:6, moduli:[
+        { id:'resp', nome:'Responsabile sviluppo business', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:3000, costo_setup:0, impatto:0.5, note:'Gare MEPA, contratti quadro PA, grandi condomini, industria' },
+          { id:'fractional', nome:'Business developer fractional', costo_mensile:1500, costo_setup:0, impatto:0.35, note:'2-3 giorni/settimana, focus gare e grandi commesse' },
+        ]},
+        { id:'gare', nome:'Specialista gare pubbliche', tipo:'flag', obbligatorio:false, costo_mensile:500, costo_setup:1000, impatto:0.2, note:'Preparazione documentazione MEPA, qualificazione, bandi' },
+      ]},
     },
     pipeline: {
       '1': { chi:'Titolare', cosa:'Nessun tracciamento — chiamate e preventivi a memoria', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Excel con preventivi, impianti installati, scadenze manutenzione',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:100, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'CRM per preventivi + scadenze contratti manutenzione',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'strumento', nome:'CRM base', tipo:'flag', obbligatorio:true, costo_mensile:50, costo_setup:200, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'CRM + gestionale interventi — programmazione e consuntivo',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM + gestionale interventi', costo_mensile:300, costo_setup:1200, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:150, costo_setup:720, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'ERP impiantistica — preventivi, commesse, magazzino, fatturazione',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'ERP impiantistica', costo_mensile:600, costo_setup:3000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:300, costo_setup:1800, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Excel con preventivi, impianti installati, scadenze manutenzione', tempo_mesi:1, moduli:[
+        { id:'strumento', nome:'Strumento tracciamento', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'excel', nome:'Excel/Fogli Google strutturato', costo_mensile:0, costo_setup:100, impatto:0.7, note:'Template con colonne: cliente, impianto, stato, scadenza manutenzione' },
+          { id:'crm_free', nome:'CRM gratuito (HubSpot Free/Zoho)', costo_mensile:0, costo_setup:200, impatto:0.85, note:'Pipeline base + reminder scadenze' },
+        ]},
+      ]},
+      '3': { cosa:'CRM con gestione contratti manutenzione e scadenze', tempo_mesi:1, moduli:[
+        { id:'crm', nome:'CRM impiantistica', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'CRM settore impianti (Syncro/Wello)', costo_mensile:50, costo_setup:300, impatto:1.0, note:'Gestione interventi, manutenzioni programmate, storico impianti' },
+          { id:'generico', nome:'CRM generico (Pipedrive/HubSpot)', costo_mensile:30, costo_setup:200, impatto:0.7, note:'Buono per vendite, meno per gestione interventi tecnici' },
+        ]},
+      ]},
+      '4': { cosa:'Gestionale interventi — programmazione, consuntivo, margini', tempo_mesi:2, moduli:[
+        { id:'gestionale', nome:'Gestionale interventi', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'erp_imp', nome:'Gestionale impiantistica (Perfetto/Syncro Pro)', costo_mensile:250, costo_setup:1200, impatto:1.0, note:'Programmazione interventi, materiali, ore, consuntivo automatico' },
+          { id:'project', nome:'Project management + CRM (Monday/Asana + CRM)', costo_mensile:150, costo_setup:600, impatto:0.7, note:'Piu flessibile, meno specifico per impiantistica' },
+        ]},
+      ]},
+      '5': { cosa:'ERP impiantistica — preventivi, commesse, magazzino, fatturazione', tempo_mesi:3, moduli:[
+        { id:'erp', nome:'ERP impiantistica', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'ERP specifico (Perfetto/ThermoPlan)', costo_mensile:500, costo_setup:3000, impatto:1.0, note:'Preventivi tecnici, commesse, magazzino ricambi, fatturazione elettronica' },
+          { id:'modulare', nome:'ERP generico + modulo commesse (Fatture in Cloud + Asana)', costo_mensile:250, costo_setup:1500, impatto:0.65, note:'Meno integrato ma piu economico' },
+        ]},
+      ]},
     },
     team: {
       '1': { chi:'Titolare', cosa:'Titolare sugli impianti — decide tutto al momento', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Capo squadra gestisce cantieri — titolare si libera',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'organizzazione', nome:'Capo squadra gestisce cantieri', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Ruoli definiti installazione/ufficio',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'organizzazione', nome:'Ruoli definiti installazione/ufficio', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:500, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'KPI + programmazione interventi delegata',
-        tempo_mesi: 3,
-        moduli: [
-          { id:'organizzazione', nome:'KPI + programmazione interventi delegata', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:1000, impatto:0.8 }
-        ]
-      },
-      '5': {
-        cosa: 'Management — deleghe complete',
-        tempo_mesi: 5,
-        moduli: [
-          {
-            id: 'manager',
-            nome: 'Figura manageriale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Manager operativo dipendente', costo_mensile:1500, costo_setup:1500, impatto:1, note:'Full-time' },
-              { id:'fractional', nome:'Manager operativo fractional', costo_mensile:750, costo_setup:1500, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Capo squadra autonomo su installazioni e manutenzioni', tempo_mesi:1, moduli:[
+        { id:'caposquadra', nome:'Capo squadra', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'promozione', nome:'Promozione interna operaio esperto', costo_mensile:0, costo_setup:300, impatto:1.0, note:'Gia in organico, formazione su gestione squadra e rapporto cliente' },
+          { id:'esterno', nome:'Assunzione capo squadra esterno', costo_mensile:300, costo_setup:500, impatto:0.8, note:'Delta costo rispetto a operaio, porta esperienza da fuori' },
+        ]},
+      ]},
+      '3': { cosa:'Ruoli definiti: installazione, manutenzione, ufficio tecnico', tempo_mesi:2, moduli:[
+        { id:'admin', nome:'Segreteria/amministrazione', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Impiegata amministrativa', costo_mensile:1800, costo_setup:0, impatto:0.7, note:'Fatture, DDT, rapportini, gestione clienti' },
+          { id:'parttime', nome:'Segretaria part-time', costo_mensile:900, costo_setup:0, impatto:0.5, note:'4h/giorno, gestione base' },
+        ]},
+        { id:'organigramma', nome:'Organigramma e mansionario', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.2, note:'Chi fa cosa: installazione, manutenzione, pronto intervento, ufficio' },
+      ]},
+      '4': { cosa:'Responsabile tecnico + KPI per squadra', tempo_mesi:3, moduli:[
+        { id:'resp_tecnico', nome:'Responsabile tecnico', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Direttore tecnico dipendente', costo_mensile:3000, costo_setup:0, impatto:1.0, note:'Supervisione tecnica, preventivi complessi, rapporti PA' },
+          { id:'fractional', nome:'Direttore tecnico fractional', costo_mensile:1500, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana, focus progetti complessi' },
+        ]},
+        { id:'kpi', nome:'Dashboard KPI squadre', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.15, note:'Interventi/giorno, tempo medio, tasso richiamo, margine per commessa' },
+      ]},
+      '5': { cosa:'Management completo — deleghe operative totali al titolare', tempo_mesi:5, moduli:[
+        { id:'manager', nome:'Direttore operativo', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Operations manager dipendente', costo_mensile:3500, costo_setup:0, impatto:1.0, note:'Gestione totale: squadre, materiali, clienti, programmazione' },
+          { id:'fractional', nome:'Operations manager fractional', costo_mensile:1800, costo_setup:0, impatto:0.65, note:'3 giorni/settimana, il titolare si dedica a sviluppo business' },
+        ]},
+      ]},
       _label: 'Organizzazione',
     },
     processi: {
-      '1': { chi:'Titolare', cosa:'Nessun processo — ogni impianto è gestito a esperienza', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Scheda impianto standard — specifiche, materiali, tempi, costi',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'processo', nome:'Scheda impianto standard', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Gestionale interventi con programmazione manutenzioni',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'processo', nome:'Gestionale interventi con programmazione manutenzioni', tipo:'flag', obbligatorio:true, costo_mensile:250, costo_setup:1000, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Certificazioni obbligatorie strutturate (DM 37/08) + sicurezza',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Certificazioni obbligatorie strutturate (DM 37/08)',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:500, costo_setup:1500, impatto:1, note:'Certificazioni obbligatorie strutturate (DM 37/08) + sicurezza' },
-              { id:'base', nome:'Soluzione base', costo_mensile:250, costo_setup:750, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'ISO 9001 + gestione garanzie + audit qualità impianti',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'ISO 9001',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:1000, costo_setup:5000, impatto:1, note:'ISO 9001 + gestione garanzie + audit qualità impianti' },
-              { id:'base', nome:'Soluzione base', costo_mensile:500, costo_setup:2500, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare', cosa:'Nessun processo — ogni impianto gestito a esperienza', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Scheda impianto standard — specifiche, materiali, tempi, costi', tempo_mesi:1, moduli:[
+        { id:'scheda', nome:'Scheda intervento standard', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.7, note:'Template per tipo impianto: materiali, ore stimate, margine target' },
+        { id:'checklist', nome:'Checklist sicurezza cantiere', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.2, note:'DPI, verifiche pre-intervento, documentazione obbligatoria' },
+      ]},
+      '3': { cosa:'Gestionale interventi + programmazione manutenzioni ricorrenti', tempo_mesi:2, moduli:[
+        { id:'gestionale', nome:'Software gestione interventi', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'Gestionale impiantistica (Syncro/ThermoClick)', costo_mensile:200, costo_setup:800, impatto:1.0, note:'Programmazione manutenzioni, rapportini digitali, storico impianti' },
+          { id:'generico', nome:'Project management (Asana/Monday)', costo_mensile:100, costo_setup:400, impatto:0.6, note:'Gestione task e scadenze, meno specifico per impiantistica' },
+        ]},
+      ]},
+      '4': { cosa:'Certificazioni DM 37/08 strutturate + sicurezza cantiere', tempo_mesi:2, moduli:[
+        { id:'certificazioni', nome:'Gestione certificazioni DM 37/08', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'digitale', nome:'Software certificazioni (CerTus/Blumatica)', costo_mensile:100, costo_setup:500, impatto:1.0, note:'DiCo, DiRi, libretti impianto digitali, scadenze automatiche' },
+          { id:'manuale', nome:'Gestione manuale strutturata', costo_mensile:0, costo_setup:300, impatto:0.6, note:'Template Word/PDF, archivio ordinato, reminder manuali' },
+        ]},
+        { id:'sicurezza', nome:'Piano sicurezza cantiere strutturato', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.15, note:'POS, DUVRI, formazione periodica squadre' },
+      ]},
+      '5': { cosa:'ISO 9001 + gestione garanzie + audit qualita impianti', tempo_mesi:4, moduli:[
+        { id:'iso', nome:'Certificazione ISO 9001', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'consulente', nome:'ISO con consulente + ente certificatore', costo_mensile:200, costo_setup:5000, impatto:1.0, note:'Certificazione completa, prerequisito per gare PA sopra soglia' },
+          { id:'interno', nome:'Sistema qualita interno (senza certificazione)', costo_mensile:0, costo_setup:1500, impatto:0.5, note:'Processi documentati ma senza ente terzo' },
+        ]},
+        { id:'garanzie', nome:'Gestione garanzie impianti', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:300, impatto:0.15, note:'Registro garanzie, scadenze, richiami proattivi pre-scadenza' },
+      ]},
     },
     ricavi: {
       '1': { chi:'Titolare', cosa:'Installazione a prezzo fisso — nessun ricavo ricorrente', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Calcolo costi reali — materiali, ore, spostamenti',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'ricavi', nome:'Calcolo costi reali', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Contratti manutenzione annuali — caldaie, condizionatori, impianti',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'ricavi', nome:'Contratti manutenzione annuali', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Upsell efficientamento energetico + bonus fiscali come leva',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'ricavi', nome:'Upsell efficientamento energetico + bonus fiscali come leva', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:500, impatto:0.8 }
-        ]
-      },
-      '5': {
-        cosa: 'Contratti full-service condomini e industria — ricavo garantito',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'ricavi',
-            nome: 'Contratti full-service condomini e industria',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:800, costo_setup:1500, impatto:1, note:'Contratti full-service condomini e industria — ricavo garantito' },
-              { id:'graduale', nome:'Implementazione graduale', costo_mensile:400, costo_setup:750, impatto:0.65, note:'Avvio parziale, si espande' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Calcolo costi reali per tipo di intervento', tempo_mesi:1, moduli:[
+        { id:'costing', nome:'Sistema calcolo costi', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'software', nome:'Foglio costi per tipo impianto (Excel avanzato)', costo_mensile:0, costo_setup:200, impatto:0.8, note:'Materiali, ore, spostamenti, margine per tipologia intervento' },
+          { id:'erp', nome:'Modulo costing da gestionale', costo_mensile:50, costo_setup:300, impatto:1.0, note:'Consuntivo automatico da rapportini e DDT' },
+        ]},
+      ]},
+      '3': { cosa:'Contratti manutenzione annuali — caldaie, clima, impianti elettrici', tempo_mesi:1, moduli:[
+        { id:'manutenzione', nome:'Contratti manutenzione programmata', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8, note:'Contratti annuali/biennali per caldaie, condizionatori, impianti elettrici' },
+        { id:'pricing', nome:'Listino manutenzioni per tipologia', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.15, note:'Prezzi standard per manutenzione ordinaria/straordinaria per tipo impianto' },
+      ]},
+      '4': { cosa:'Upsell efficientamento energetico + bonus fiscali come leva', tempo_mesi:2, moduli:[
+        { id:'efficientamento', nome:'Pacchetti efficientamento energetico', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.7, note:'Proposta sostituzione caldaia, pompa di calore, fotovoltaico con analisi risparmio' },
+        { id:'bonus', nome:'Servizio pratiche bonus fiscali', tipo:'scelta', obbligatorio:false, varianti:[
+          { id:'interno', nome:'Gestione interna pratiche', costo_mensile:0, costo_setup:500, impatto:0.2, note:'Formazione su Ecobonus, Conto Termico, detrazioni 50%' },
+          { id:'partner', nome:'Partnership con studio tecnico', costo_mensile:0, costo_setup:200, impatto:0.15, note:'Lo studio gestisce pratiche, voi portate il cliente' },
+        ]},
+      ]},
+      '5': { cosa:'Contratti full-service condomini e industria — ricavo garantito', tempo_mesi:3, moduli:[
+        { id:'fullservice', nome:'Contratti full-service', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'Global service condomini/industria', costo_mensile:500, costo_setup:1500, impatto:1.0, note:'Manutenzione totale impianti, pronto intervento, ricambio programmato' },
+          { id:'parziale', nome:'Contratti manutenzione estesi', costo_mensile:200, costo_setup:500, impatto:0.6, note:'Manutenzione programmata + pronto intervento, senza global service' },
+        ]},
+      ]},
     },
     marketing: {
       '1': { chi:'Nessuno', cosa:'Nessuno — solo passaparola', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Google My Business + foto impianti realizzati + recensioni',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'marketing', nome:'Google My Business + foto impianti realizzati + recensioni', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Portali locali (PagineGialle, Instapro) + partnership edili',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'marketing', nome:'Portali locali (PagineGialle, Instapro) + partnership edili', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:400, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Google Ads locali su manutenzione e efficientamento',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'marketing', nome:'Google Ads locali su manutenzione e efficientamento', tipo:'flag', obbligatorio:true, costo_mensile:700, costo_setup:1000, impatto:0.8 }
-        ]
-      },
-      '5': {
-        cosa: 'Piano marketing — referenze, partnership costruttori, eventi',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'Piano marketing',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1800, costo_setup:2500, impatto:1, note:'Piano marketing — referenze, partnership costruttori, eventi' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:720, costo_setup:1250, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
+      '2': { cosa:'Google My Business + foto impianti realizzati + recensioni', tempo_mesi:1, moduli:[
+        { id:'gmb', nome:'Google My Business ottimizzato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.6, note:'Scheda completa, foto prima/dopo impianti, risposte recensioni' },
+        { id:'recensioni', nome:'Sistema raccolta recensioni', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.3, note:'Richiesta recensione post-intervento via WhatsApp/email' },
+      ]},
+      '3': { cosa:'Portali locali + partnership con imprese edili', tempo_mesi:2, moduli:[
+        { id:'portali', nome:'Portali settore (Instapro/PagineGialle/Edilportale)', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.5, note:'Profilo premium, preventivi online, zona coperta' },
+        { id:'partnership', nome:'Partnership imprese edili', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:200, impatto:0.3, note:'Accordi con costruttori e ristrutturatori per subappalto impianti' },
+      ]},
+      '4': { cosa:'Google Ads locali su manutenzione e efficientamento', tempo_mesi:2, moduli:[
+        { id:'ads', nome:'Campagne Google Ads', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Gestione ads con agenzia', costo_mensile:600, costo_setup:500, impatto:1.0, note:'Campagne local su "caldaista zona", "manutenzione condizionatori", "impianto fotovoltaico"' },
+          { id:'interno', nome:'Ads autogestiti', costo_mensile:300, costo_setup:200, impatto:0.5, note:'Budget ads diretto, gestione interna con formazione base' },
+        ]},
+      ]},
+      '5': { cosa:'Piano marketing completo — referenze, partnership costruttori, eventi', tempo_mesi:3, moduli:[
+        { id:'piano', nome:'Piano marketing strutturato', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia marketing specializzata edilizia', costo_mensile:1500, costo_setup:2000, impatto:1.0, note:'Strategia completa: SEO, ads, social, eventi, partnership' },
+          { id:'freelance', nome:'Freelance marketing + tool', costo_mensile:800, costo_setup:500, impatto:0.6, note:'1 professionista, focus su lead generation e contenuti' },
+        ]},
+      ]},
     },
     sitoweb: {
-      '1': { chi:'Nessuno', cosa:'Nessun sito — solo pagina social', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Sito con servizi, zona operativa, foto impianti',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'sito', nome:'Sito con servizi, zona operativa, foto impianti', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:800, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Portfolio lavori + preventivo online + recensioni',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Portfolio lavori',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:250, costo_setup:1800, impatto:1, note:'Portfolio lavori + preventivo online + recensioni' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:100, costo_setup:720, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Blog su risparmio energetico e bonus + SEO locale',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Blog su risparmio energetico e bonus',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:450, costo_setup:1500, impatto:1, note:'Blog su risparmio energetico e bonus + SEO locale' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:180, costo_setup:600, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Area clienti — storico impianti, scadenze manutenzione, documenti',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Area clienti',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:750, costo_setup:4000, impatto:1, note:'Area clienti — storico impianti, scadenze manutenzione, documenti' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:300, costo_setup:1600, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Nessuno', cosa:'Nessun sito o pagina social base', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Sito vetrina con servizi, zona operativa, foto impianti', tempo_mesi:1, moduli:[
+        { id:'sito', nome:'Sito vetrina impiantistica', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'custom', nome:'Sito custom WordPress/Starter', costo_mensile:30, costo_setup:1500, impatto:1.0, note:'Design personalizzato, gallery lavori, form contatto' },
+          { id:'template', nome:'Sito da template (Wix/Jimdo)', costo_mensile:20, costo_setup:500, impatto:0.6, note:'Veloce da lanciare, meno personalizzabile' },
+        ]},
+      ]},
+      '3': { cosa:'Portfolio impianti realizzati + form preventivo online', tempo_mesi:2, moduli:[
+        { id:'portfolio', nome:'Gallery impianti prima/dopo', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.5, note:'Foto e descrizione lavori per tipologia: idraulico, elettrico, clima' },
+        { id:'form', nome:'Form preventivo online', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.4, note:'Form con tipo impianto, metratura, urgenza — lead qualificato' },
+      ]},
+      '4': { cosa:'Blog su risparmio energetico, bonus fiscali, manutenzione', tempo_mesi:2, moduli:[
+        { id:'blog', nome:'Blog contenuti tecnici', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'copywriter', nome:'Copywriter tecnico specializzato', costo_mensile:400, costo_setup:500, impatto:1.0, note:'2-4 articoli/mese: bonus, risparmio energetico, guide manutenzione' },
+          { id:'interno', nome:'Blog autogestito dal titolare', costo_mensile:0, costo_setup:200, impatto:0.4, note:'1 articolo/mese, il titolare scrive di casi reali' },
+        ]},
+        { id:'seo', nome:'SEO locale', tipo:'flag', obbligatorio:false, costo_mensile:200, costo_setup:500, impatto:0.25, note:'Ottimizzazione per "idraulico + citta", "manutenzione caldaia + zona"' },
+      ]},
+      '5': { cosa:'Area clienti — storico impianti, scadenze manutenzione, documenti', tempo_mesi:3, moduli:[
+        { id:'area_clienti', nome:'Area clienti riservata', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'custom', nome:'Portale clienti custom', costo_mensile:200, costo_setup:4000, impatto:1.0, note:'Storico impianti, certificazioni, scadenze, richiesta intervento online' },
+          { id:'saas', nome:'Area clienti SaaS (Freshdesk/Zendesk)', costo_mensile:100, costo_setup:1000, impatto:0.6, note:'Ticketing + knowledge base, meno personalizzato' },
+        ]},
+      ]},
     },
     ecommerce: {
-      '1': { chi:'Titolare', cosa:'Acquisto materiali dal grossista di fiducia — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Confronto prezzi tra 2-3 grossisti per ogni commessa',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'canale', nome:'Confronto prezzi tra 2-3 grossisti per ogni commessa', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: 'Accordi quadro con distributori — prezzi riservati e consegna rapida',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'canale', nome:'Accordi quadro con distributori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.8 }
-        ]
-      },
-      '4': {
-        cosa: 'Magazzino materiali ricorrenti + gestione scorte minime',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'canale', nome:'Magazzino materiali ricorrenti + gestione scorte minime', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:800, impatto:0.8 }
-        ]
-      },
-      '5': {
-        cosa: 'Resp. acquisti — accordi volume, import diretto, stoccaggio',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Resp. acquisti',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:1500, costo_setup:1000, impatto:1, note:'Resp. acquisti — accordi volume, import diretto, stoccaggio' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:750, costo_setup:400, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
       _label: 'Approvvigionamento materiali',
+      '1': { chi:'Titolare', cosa:'Acquisto materiali dal grossista di fiducia — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Confronto prezzi tra 2-3 grossisti per ogni commessa', tempo_mesi:1, moduli:[
+        { id:'fornitori', nome:'Database fornitori materiali impiantistici', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.7, note:'Scheda per grossista: prezzi tubi/cavi/caldaie, tempi consegna, MOQ' },
+      ]},
+      '3': { cosa:'Accordi quadro con distributori — prezzi riservati e consegna rapida', tempo_mesi:2, moduli:[
+        { id:'accordi', nome:'Accordi quadro grossisti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.6, note:'Prezzi bloccati con 2-3 distributori (Würth, Saint-Gobain, grossista locale)' },
+        { id:'online', nome:'Acquisti online (Würth Online/ManoMano Pro)', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:0, impatto:0.15, note:'Confronto prezzi e consegna diretta in cantiere' },
+      ]},
+      '4': { cosa:'Magazzino materiali ricorrenti + gestione scorte minime', tempo_mesi:2, moduli:[
+        { id:'magazzino', nome:'Gestione magazzino', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'software', nome:'Software gestione scorte (modulo ERP/dedicato)', costo_mensile:100, costo_setup:500, impatto:1.0, note:'Scorte minime, riordino automatico materiali ricorrenti' },
+          { id:'manuale', nome:'Gestione manuale con Excel', costo_mensile:0, costo_setup:200, impatto:0.5, note:'Inventario periodico, riordino manuale' },
+        ]},
+      ]},
+      '5': { cosa:'Responsabile acquisti — accordi volume, import diretto componenti', tempo_mesi:4, moduli:[
+        { id:'buyer', nome:'Responsabile acquisti', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Buyer impiantistico dipendente', costo_mensile:2200, costo_setup:0, impatto:1.0, note:'Negoziazione diretta produttori, import componentistica, logistica cantiere' },
+          { id:'parttime', nome:'Buyer part-time/admin con delega', costo_mensile:900, costo_setup:0, impatto:0.6, note:'Gestisce ordini, confronto prezzi, rapporto fornitori' },
+        ]},
+      ]},
     }
   },
 
