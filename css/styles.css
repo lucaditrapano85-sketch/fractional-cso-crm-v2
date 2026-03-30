@@ -705,7 +705,7 @@ body{background:linear-gradient(135deg,#dde3f5 0%,#d6e4f7 25%,#ddeef8 50%,#e8e0f
 .nav-item{color:rgba(255,255,255,0.7);border-radius:8px}
 .nav-item:hover{background:rgba(255,255,255,0.08);color:#fff}
 .nav-item.active{background:rgba(61,90,254,0.25);color:#fff;border-left:none}
-.main,.view{background:transparent}
+.main{background:linear-gradient(145deg,#c8d8f8 0%,#cce0f8 20%,#d8eef8 40%,#dde4f8 60%,#e4d8f4 80%,#c8d8f8 100%);background-attachment:local;min-height:100vh}.view{background:transparent}
 .card,.radar-card{
   background:linear-gradient(165deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.25) 40%, rgba(240,242,248,0.15) 100%);
   backdrop-filter: blur(24px);
