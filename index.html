@@ -81,23 +81,28 @@
     <!-- PROSPECT DETAIL -->
     <div class="view" id="view-prospect">
       <div class="det-header">
-        <div style="width:100%">
-          <div class="det-company-row">
-            <h1 class="det-company" id="det-company-name"></h1>
+        <!-- Riga 1: linguette capitoli integrate nell'header -->
+        <div id="capitoli-tabs" class="folder-tabs"></div>
+        <!-- Riga 2: nome azienda + info -->
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px">
+          <div style="flex:1;min-width:0">
+            <div class="det-company-row">
+              <h1 class="det-company" id="det-company-name"></h1>
+            </div>
+            <div class="det-info-labels" id="det-info-labels"></div>
           </div>
-          <div class="det-info-labels" id="det-info-labels"></div>
-          <div id="capitoli-tabs" style="display:flex;align-items:center;gap:4px;margin-top:8px;flex-wrap:wrap"></div>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px solid rgba(0,0,0,0.06)">
-            <div style="display:flex;align-items:center;gap:8px">
-              <div id="det-status-badge" class="det-status-badge"></div>
-            </div>
-            <div class="btn-group" style="display:flex;gap:6px">
-              <button class="btn btn-secondary" onclick="openAddCall()">+ Call</button>
-              <button class="btn btn-secondary" onclick="openAddEvento()">+ Evento</button>
-              <button class="btn btn-primary" onclick="apriSchedaFinanziaria()">Scheda Finanziaria</button>
-              <button class="btn btn-primary" onclick="showReport()">Genera Report</button>
-              <button class="btn btn-danger" onclick="deleteProspect()">Elimina</button>
-            </div>
+        </div>
+        <!-- Riga 3: status + bottoni -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px solid rgba(0,0,0,0.06)">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div id="det-status-badge" class="det-status-badge"></div>
+          </div>
+          <div id="header-action-buttons" class="btn-group" style="display:flex;gap:6px">
+            <button class="btn btn-secondary" onclick="openAddCall()">+ Call</button>
+            <button class="btn btn-secondary" onclick="openAddEvento()">+ Evento</button>
+            <button class="btn btn-primary" onclick="apriSchedaFinanziaria()">Scheda Finanziaria</button>
+            <button class="btn btn-primary" onclick="showReport()">Genera Report</button>
+            <button class="btn btn-danger" onclick="deleteProspect()">Elimina</button>
           </div>
         </div>
       </div>
@@ -111,6 +116,7 @@
         <div class="fin-pane" id="fin-pane-extra"><div id="fin-extra-content"></div></div>
       </div>
 
+      <div id="prospect-main-content">
       <div class="score-bench-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
         <div class="card">
           <div class="card-title" style="display:flex;align-items:center;justify-content:space-between">
@@ -188,7 +194,7 @@
           <div class="card-title" style="margin-bottom:4px">Obiettivi per dimensione</div>
           <div style="font-size:11px;color:var(--gray);margin-bottom:14px">Target personalizzati - si aggiorna in tempo reale</div>
           <div id="target-editor-content" style="overflow-y:auto;padding-right:4px;flex:1"></div>
-          <div style="padding-top:12px;border-top:1px solid var(--border);margin-top:12px;display:flex;gap:8px">
+          <div id="target-buttons-row" style="padding-top:12px;border-top:1px solid var(--border);margin-top:12px;display:flex;gap:8px">
             <button class="target-save" onclick="saveTargets()" style="flex:1">Salva obiettivi</button>
             <button onclick="resetTargets()" style="background:transparent;border:1px solid var(--border2);color:var(--gray2);border-radius:var(--rs);padding:6px 12px;font-size:11px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">&#8635; Reset</button>
           </div>
@@ -216,22 +222,20 @@
       })();
       </script>
       <div class="card" id="card-cronistoria" style="display:none">
-        <div class="card-title">Cronistoria crescita</div>
         <div id="cronistoria-content"></div>
       </div>
 
       <div class="card">
-        <div class="card-title">Timeline attività</div>
-        <div id="timeline-unificata" style="max-height:400px;overflow-y:auto"></div>
-      </div>
-
-      <div class="card">
-        <div class="card-title flex-row">Call & Note <span class="ml-auto" style="font-size:11px;color:var(--gray)" id="call-count"></span></div>
-        <div id="call-log"></div>
+        <div class="card-title" style="display:flex;align-items:center;justify-content:space-between">
+          Storico del cliente
+          <div id="timeline-filter-bar" style="display:flex;gap:4px"></div>
+        </div>
+        <div id="timeline-unificata" style="max-height:500px;overflow-y:auto"></div>
       </div>
       <div class="card" id="preventivi-card">
         <div class="card-title">Preventivi</div>
         <div id="preventivi-container"></div>
+      </div>
       </div>
     </div>
 
@@ -385,9 +389,9 @@
 <script src="js/data/market-cluster.js"></script>
 <script src="js/data/forme-giuridiche.js"></script>
 <script src="js/data/azioni-listino.js"></script>
-<script src="js/data/step-detail.js"></script>
+<script src="js/data/step-detail.js?v=2"></script>
 <script src="js/data/diagnosi-data.js"></script>
-<script src="js/app.js"></script>
+<script src="js/app.js?v=26"></script>
 <script src="js/diagnosi.js"></script>
 
 
