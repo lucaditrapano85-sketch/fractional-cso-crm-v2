@@ -4560,621 +4560,199 @@ const STEP_DETAIL_BY_SETTORE = {
   // ═══════════════════════════════════════════════════════════════════════════
   alimentare_ingredienti: {
     vendite: {
-      '1': { chi:'Titolare', cosa:'Titolare gestisce clienti', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Campionature proattive verso industria',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'supporto', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:400, costo_setup:300, impatto:0.8 }
-        ]
-      },
-      '3': {
-        cosa: '1 tecnico commerciale (~2.800€)',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'commerciale',
-            nome: 'Figura commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:2800, costo_setup:500, impatto:1, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1540, costo_setup:500, impatto:0.7, note:'Provvigioni + ENASARCO mandante' },
-              { id:'parttime', nome:'Commerciale part-time', costo_mensile:1260, costo_setup:500, impatto:0.5, note:'20h/settimana' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: '2 tecnici per segmento',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'resp',
-            nome: 'Responsabile commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:2240, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
-              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1232, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          },
-          {
-            id: 'team',
-            nome: 'Figure commerciali',
-            tipo: 'multi',
-            obbligatorio: true,
-            min: 2,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1120, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:840, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Dir. commerciale + R&D applicativo',
-        tempo_mesi: 6,
-        moduli: [
-          {
-            id: 'resp',
-            nome: 'Responsabile commerciale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'dip', nome:'Resp. commerciale dipendente', costo_mensile:3400, costo_setup:0, impatto:1, note:'Full-time, coordinamento' },
-              { id:'fractional', nome:'Resp. commerciale fractional', costo_mensile:1870, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' }
-            ]
-          },
-          {
-            id: 'team',
-            nome: 'Figure commerciali',
-            tipo: 'multi',
-            obbligatorio: true,
-            min: 2,
-            varianti: [
-              { id:'dip', nome:'Commerciale dipendente', costo_mensile:1700, costo_setup:0, impatto:0.2, note:'Lordo azienda' },
-              { id:'agente', nome:'Agente ENASARCO', costo_mensile:1275, costo_setup:0, impatto:0.15, note:'Provvigioni + ENASARCO' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare', cosa:'Titolare gestisce clienti — industria food e artigiani', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Visite proattive a laboratori food, pasticcerie, industria', tempo_mesi:2, moduli:[
+        { id:'campionature', nome:'Kit campionature ingredienti', tipo:'flag', obbligatorio:true, costo_mensile:200, costo_setup:0, impatto:0.6, note:'Campioni ingredienti + schede tecniche + applicazioni suggerite' },
+        { id:'assistenza', nome:'Assistenza tecnica applicativa', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:300, impatto:0.2, note:'Supporto R&D clienti: formulazione, dosaggi, test' },
+      ]},
+      '3': { cosa:'Agente B2B per industria alimentare e laboratori artigianali', tempo_mesi:3, moduli:[
+        { id:'agente', nome:'Agente ingredienti food', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agente', nome:'Agente ENASARCO B2B food', costo_mensile:1000, costo_setup:500, impatto:1.0, note:'Provvigione su venduto, porta portafoglio industrie food zona' },
+          { id:'dip', nome:'Tecnico-commerciale dipendente', costo_mensile:2500, costo_setup:0, impatto:0.8, note:'Competenza tecnica + vendita, visita laboratori e R&D clienti' },
+        ]},
+      ]},
+      '4': { cosa:'Rete agenti per zona + sviluppo grandi clienti industriali', tempo_mesi:4, moduli:[
+        { id:'rete', nome:'Rete agenti/tecnici-commerciali', tipo:'multi', obbligatorio:true, min:2, varianti:[
+          { id:'agente', nome:'Agente B2B food', costo_mensile:1000, costo_setup:0, impatto:0.3, note:'Per zona/settore' },
+          { id:'tecnico', nome:'Tecnico-commerciale', costo_mensile:2500, costo_setup:0, impatto:0.25, note:'Per clienti che richiedono supporto R&D' },
+        ]},
+      ]},
+      '5': { cosa:'Dir. commerciale + rete nazionale + export + key account industriali', tempo_mesi:6, moduli:[
+        { id:'resp', nome:'Direttore commerciale ingredienti', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Dir. commerciale dipendente', costo_mensile:3500, costo_setup:0, impatto:0.5, note:'Coordinamento agenti, grandi clienti, pricing, export' },
+          { id:'fractional', nome:'Dir. commerciale fractional', costo_mensile:1800, costo_setup:0, impatto:0.35, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
     },
     pipeline: {
-      '1': { chi:'Titolare', cosa:'Nessun tracciamento — rapporti personali e telefonate', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Excel con clienti, specifiche richieste e contratti',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'strumento', nome:'Titolare', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'database_rd',
-        nome: 'Database resp. R&D industrie target',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 0,
-        impatto: 0.15,
-        note: 'Contatti R&D e acquisti delle industrie alimentari target'
-}
-      ]
-      },
-      '3': {
-        cosa: 'CRM con schede tecniche, campionature, storico forniture',
-        tempo_mesi: 1,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM con schede tecniche, campionature, storico forniture', costo_mensile:400, costo_setup:800, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:200, costo_setup:480, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'CRM integrato con gestionale produzione e qualità',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'CRM integrato con gestionale produzione e qualità', costo_mensile:800, costo_setup:2000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:400, costo_setup:1200, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'ERP completo — ordini, produzione, lotti, qualità, compliance',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'crm',
-            nome: 'Piattaforma CRM/gestionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'ERP completo', costo_mensile:1500, costo_setup:6000, impatto:1, note:'Soluzione completa' },
-              { id:'base', nome:'Alternativa leggera/economica', costo_mensile:750, costo_setup:3600, impatto:0.75, note:'Più semplice, meno funzioni' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare', cosa:'Nessun tracciamento — ordini a telefono', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Excel con clienti industria, ordini ricorrenti, volumi', tempo_mesi:1, moduli:[
+        { id:'strumento', nome:'Strumento tracciamento', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'excel', nome:'Excel strutturato', costo_mensile:0, costo_setup:100, impatto:0.7, note:'Cliente, settore, volumi, frequenza, ingredienti principali' },
+          { id:'crm_free', nome:'CRM gratuito', costo_mensile:0, costo_setup:200, impatto:0.85, note:'Pipeline + storico + reminder' },
+        ]},
+      ]},
+      '3': { cosa:'CRM B2B con contratti annuali e gestione campionature', tempo_mesi:1, moduli:[
+        { id:'crm', nome:'CRM B2B ingredienti', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'b2b', nome:'CRM B2B (Salesforce/Zoho)', costo_mensile:80, costo_setup:500, impatto:1.0, note:'Pipeline, contratti annuali, campionature, schede tecniche' },
+          { id:'generico', nome:'CRM leggero (Pipedrive)', costo_mensile:40, costo_setup:300, impatto:0.6, note:'Pipeline base' },
+        ]},
+      ]},
+      '4': { cosa:'CRM integrato con gestionale — stock, lotti, ordini automatici', tempo_mesi:2, moduli:[
+        { id:'erp', nome:'ERP ingredienti food', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'food', nome:'ERP food (CSB/Argo Food)', costo_mensile:600, costo_setup:2000, impatto:1.0, note:'Ordini, stock ingredienti, lotti, tracciabilita, scadenze, logistica' },
+          { id:'generico', nome:'Gestionale + moduli', costo_mensile:250, costo_setup:1000, impatto:0.6, note:'Danea/TeamSystem + Excel stock' },
+        ]},
+      ]},
+      '5': { cosa:'ERP completo — ordini, stock, R&D, tracciabilita, export docs, BI', tempo_mesi:4, moduli:[
+        { id:'erp_full', nome:'ERP ingredienti enterprise', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'ERP food enterprise (SAP/CSB)', costo_mensile:1200, costo_setup:6000, impatto:1.0, note:'Ordini, stock, formulazioni R&D, tracciabilita, qualita, export, BI' },
+          { id:'mid', nome:'ERP mid-market food', costo_mensile:600, costo_setup:3000, impatto:0.6, note:'Funzionalita core' },
+        ]},
+      ]},
     },
     team: {
-      '1': { chi:'Nessuna', cosa:'Nessuna organizzazione strutturata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Ruoli R&D/produzione/commerciale definiti',
-        tempo_mesi: 1,
-        moduli: [
-      {
-            id: 'ruoli',
-            nome: 'Organigramma R&D + produzione',
-            tipo: 'flag',
-            obbligatorio: true,
-            costo_mensile: 0,
-            costo_setup: 200,
-            impatto: 0.7,
-            note: 'Chi fa R&D, chi produce, chi fa qualità, chi vende'
-      }
-,
-{
-        id: 'food_safety',
-        nome: 'Formazione food safety per personale',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 100,
-        impatto: 0.15,
-        note: 'HACCP + GMP base per tutti i dipendenti'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Tecnologo alimentare + procedure R&D strutturate',
-        tempo_mesi: 2,
-        moduli: [
-      {
-            id: 'tecnologo',
-            nome: 'Tecnologo alimentare',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-                  {
-                        id: 'dip',
-                        nome: 'Tecnologo alimentare dipendente',
-                        costo_mensile: 2800,
-                        costo_setup: 0,
-                        impatto: 1,
-                        note: 'R&D, schede tecniche, campionature, compliance'
-                  },
-                  {
-                        id: 'consulente',
-                        nome: 'Consulente tecnologo esterno',
-                        costo_mensile: 500,
-                        costo_setup: 300,
-                        impatto: 0.7,
-                        note: 'Visite periodiche, supporto R&D'
-                  }
-            ]
-      }
-]
-      },
-      '4': {
-        cosa: 'KPI + sistema qualità + gestione certificazioni',
-        tempo_mesi: 3,
-        moduli: [
-      {
-            id: 'kpi',
-            nome: 'KPI produzione ingredienti',
-            tipo: 'flag',
-            obbligatorio: true,
-            costo_mensile: 0,
-            costo_setup: 500,
-            impatto: 0.5,
-            note: 'Purezza, resa, contaminazioni, shelf life, costi'
-      },
-      {
-            id: 'certificazioni',
-            nome: 'Gestione certificazioni (BRC, FSSC, BIO)',
-            tipo: 'flag',
-            obbligatorio: true,
-            costo_mensile: 200,
-            costo_setup: 500,
-            impatto: 0.3,
-            note: 'Documentazione, audit, aggiornamento'
-      }
-]
-      },
-      '5': {
-        cosa: 'Management completo — titolare solo R&D e strategia',
-        tempo_mesi: 4,
-        moduli: [
-      {
-            id: 'manager',
-            nome: 'Direttore operativo',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-                  {
-                        id: 'dip',
-                        nome: 'COO/direttore operativo dipendente',
-                        costo_mensile: 3500,
-                        costo_setup: 0,
-                        impatto: 1,
-                        note: 'Produzione + qualità + R&D coordination + logistica'
-                  },
-                  {
-                        id: 'fractional',
-                        nome: 'Operations manager fractional',
-                        costo_mensile: 1500,
-                        costo_setup: 0,
-                        impatto: 0.65,
-                        note: '2-3 giorni/settimana'
-                  }
-            ]
-      }
-]
-      },
+      '1': { chi:'Titolare', cosa:'Nessuna organizzazione', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Organigramma commerciale/logistica/qualita', tempo_mesi:1, moduli:[
+        { id:'organigramma', nome:'Organigramma + mansionario', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.7, note:'Commerciale, logistica/magazzino, qualita/R&D, admin' },
+      ]},
+      '3': { cosa:'Tecnico applicativo + resp. magazzino/logistica', tempo_mesi:2, moduli:[
+        { id:'tecnico', nome:'Tecnico applicativo/R&D', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Tecnico applicativo dipendente', costo_mensile:2200, costo_setup:0, impatto:0.7, note:'Supporto formulazione clienti, test, campionature, schede tecniche' },
+          { id:'consulente', nome:'Consulente tecnologo alimentare', costo_mensile:800, costo_setup:0, impatto:0.5, note:'Su richiesta, per progetti R&D complessi' },
+        ]},
+      ]},
+      '4': { cosa:'KPI + resp. qualita/regolatorio dedicato', tempo_mesi:3, moduli:[
+        { id:'qualita', nome:'Resp. qualita/regolatorio', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'interno', nome:'Resp. qualita interno', costo_mensile:200, costo_setup:500, impatto:0.4, note:'HACCP, BRC/IFS, schede sicurezza, etichettatura, regolamenti EU' },
+          { id:'consulente', nome:'Consulente qualita esterno', costo_mensile:400, costo_setup:0, impatto:0.5, note:'Audit, certificazioni, aggiornamento normativo' },
+        ]},
+        { id:'kpi', nome:'KPI aziendali', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.15, note:'Margine per prodotto, rotazione stock, fill rate ordini' },
+      ]},
+      '5': { cosa:'Management completo — il titolare fa solo strategia', tempo_mesi:5, moduli:[
+        { id:'manager', nome:'Direttore operativo', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Dir. operativo dipendente', costo_mensile:3500, costo_setup:0, impatto:1.0, note:'Commerciale + logistica + qualita + personale' },
+          { id:'fractional', nome:'COO fractional', costo_mensile:1800, costo_setup:0, impatto:0.65, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
       _label: 'Organizzazione',
     },
     processi: {
-      '1': { chi:'Titolare', cosa:'Produzione su ricetta — nessun processo formalizzato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Schede tecniche + analisi laboratorio + certificati lotto',
-        tempo_mesi: 1,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Schede tecniche',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:300, costo_setup:500, impatto:1, note:'Schede tecniche + analisi laboratorio + certificati lotto' },
-              { id:'base', nome:'Soluzione base', costo_mensile:150, costo_setup:250, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '3': {
-        cosa: 'Sistema qualità con SPC, HACCP avanzato, audit interni',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'Sistema qualità con SPC, HACCP avanzato, audit interni',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:500, costo_setup:2000, impatto:1, note:'Sistema qualità con SPC, HACCP avanzato, audit interni' },
-              { id:'base', nome:'Soluzione base', costo_mensile:250, costo_setup:1000, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'FSSC 22000 + BRC + certificazioni Halal/Kosher',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'FSSC 22000',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:700, costo_setup:6000, impatto:1, note:'FSSC 22000 + BRC + certificazioni Halal/Kosher' },
-              { id:'base', nome:'Soluzione base', costo_mensile:350, costo_setup:3000, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'ERP con modulo R&D — formulazioni, prove, scale-up, costi',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'processo',
-            nome: 'ERP con modulo R&D',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Soluzione completa', costo_mensile:1300, costo_setup:8000, impatto:1, note:'ERP con modulo R&D — formulazioni, prove, scale-up, costi' },
-              { id:'base', nome:'Soluzione base', costo_mensile:650, costo_setup:4000, impatto:0.7, note:'Versione semplificata' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare', cosa:'Nessun processo formalizzato', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Schede tecniche ingredienti + HACCP + gestione allergeni', tempo_mesi:1, moduli:[
+        { id:'schede', nome:'Schede tecniche e sicurezza', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.6, note:'Scheda per ingrediente: composizione, allergeni, shelf life, dosaggi, applicazioni' },
+        { id:'haccp', nome:'Piano HACCP strutturato', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:300, impatto:0.25, note:'CCP, allergeni, tracciabilita lotti' },
+      ]},
+      '3': { cosa:'Gestionale con lotti, tracciabilita e scadenze ingredienti', tempo_mesi:2, moduli:[
+        { id:'gestionale', nome:'Software gestione ingredienti', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'specifico', nome:'Gestionale food/ingredienti (CSB lite)', costo_mensile:300, costo_setup:2000, impatto:1.0, note:'Lotti, tracciabilita, scadenze, formulazioni, ordini automatici' },
+          { id:'generico', nome:'Gestionale + Excel', costo_mensile:100, costo_setup:800, impatto:0.5, note:'Fatturazione + fogli per lotti e stock' },
+        ]},
+      ]},
+      '4': { cosa:'Certificazioni BRC/IFS + FSSC 22000 per grandi clienti', tempo_mesi:4, moduli:[
+        { id:'certificazione', nome:'Certificazione qualita', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'fssc', nome:'FSSC 22000 (standard ingredienti)', costo_mensile:200, costo_setup:5000, impatto:1.0, note:'Standard specifico per ingredienti, richiesto da multinazionali food' },
+          { id:'brc_ifs', nome:'BRC/IFS', costo_mensile:200, costo_setup:4500, impatto:0.8, note:'Alternativa accettata da GDO e industria food' },
+        ]},
+      ]},
+      '5': { cosa:'ERP con R&D management + tracciabilita completa + BI', tempo_mesi:4, moduli:[
+        { id:'erp', nome:'ERP ingredienti + R&D', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'ERP con modulo R&D (SAP/CSB)', costo_mensile:1000, costo_setup:8000, impatto:1.0, note:'Formulazioni, test, tracciabilita vigna-piatto, qualita, BI' },
+          { id:'mid', nome:'Gestionale + software R&D separato', costo_mensile:500, costo_setup:4000, impatto:0.55, note:'ERP base + tool R&D/formulazione' },
+        ]},
+      ]},
     },
     ricavi: {
-      '1': { chi:'Titolare', cosa:'Prezzo al kg basato su costi — nessuna strategia', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Pricing per volume e tipo di cliente industriale',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'ricavi', nome:'Pricing per volume e tipo di cliente industriale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'margini_cliente',
-        nome: 'Analisi margine per cliente/settore',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 0,
-        impatto: 0.15,
-        note: 'Quale industria paga meglio — focus sui segmenti più redditizi'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Ingredienti funzionali a margine superiore (clean label)',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'ricavi', nome:'Ingredienti funzionali a margine superiore (clean label)', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.8 }
-        ,
-{
-        id: 'custom_blend',
-        nome: 'Miscele personalizzate come servizio premium',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 300,
-        impatto: 0.15,
-        note: 'Blend su misura per il cliente — margine extra + lock-in'
-}
-      ]
-      },
-      '4': {
-        cosa: 'Servizio sviluppo formulazione per clienti — valore aggiunto',
-        tempo_mesi: 3,
-        moduli: [
-          { id:'ricavi', nome:'Servizio sviluppo formulazione per clienti', tipo:'flag', obbligatorio:true, costo_mensile:300, costo_setup:1000, impatto:0.8 }
-        ,
-{
-        id: 'consulenza_app',
-        nome: 'Consulenza applicativa come servizio',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Aiuti il cliente a usare ingrediente — fiducia + vendite'
-}
-      ]
-      },
-      '5': {
-        cosa: 'Mix commodity + specialità + R&D + tolling + export',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'ricavi',
-            nome: 'Mix commodity + specialità + R&D + tolling + export',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:800, costo_setup:2000, impatto:1, note:'Mix commodity + specialità + R&D + tolling + export' },
-              { id:'graduale', nome:'Implementazione graduale', costo_mensile:400, costo_setup:1000, impatto:0.65, note:'Avvio parziale, si espande' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Titolare', cosa:'Prezzo fisso — margine da ricarico', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Pricing per volume e tipo cliente (industria vs artigiano)', tempo_mesi:1, moduli:[
+        { id:'pricing', nome:'Listini per segmento cliente', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.7, note:'Industria (volume), artigiano (servizio), laboratorio (piccoli lotti)' },
+      ]},
+      '3': { cosa:'Servizi a valore: assistenza tecnica, formulazione, campionature', tempo_mesi:2, moduli:[
+        { id:'servizi', nome:'Servizi tecnici a valore', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.6, note:'Assistenza formulazione, test applicativi, campionature personalizzate' },
+        { id:'custom', nome:'Ingredienti custom/blend personalizzati', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:500, impatto:0.2, note:'Blend su specifica del cliente — margine superiore 30-50%' },
+      ]},
+      '4': { cosa:'Contratti annuali industria + sviluppo linee specializzate', tempo_mesi:3, moduli:[
+        { id:'contratti', nome:'Contratti fornitura annuali', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.6, note:'Contratti con industrie: volumi garantiti, prezzo bloccato, fornitura programmata' },
+        { id:'specializzati', nome:'Linee ingredienti specializzati', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:800, impatto:0.2, note:'Bio, clean label, senza glutine, funzionali — margine premium' },
+      ]},
+      '5': { cosa:'Mix ricavi: distribuzione + custom blending + consulenza R&D + export', tempo_mesi:4, moduli:[
+        { id:'mix', nome:'Diversificazione ricavi', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'completo', nome:'Distribuzione + blending + R&D + export', costo_mensile:500, costo_setup:2000, impatto:1.0, note:'Mix completo per margine e stabilita' },
+          { id:'focus', nome:'Focus distribuzione + 1 servizio', costo_mensile:200, costo_setup:800, impatto:0.55, note:'Distribuzione + custom blending o assistenza tecnica' },
+        ]},
+      ]},
     },
     marketing: {
-      '1': { chi:'Nessuno', cosa:'Nessuno — solo fiere e contatti diretti', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Schede tecniche professionali + LinkedIn aziendale',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'marketing', nome:'Schede tecniche professionali + LinkedIn aziendale', tipo:'flag', obbligatorio:true, costo_mensile:100, costo_setup:300, impatto:0.8 }
-        ,
-{
-        id: 'schede_app',
-        nome: 'Schede applicative per industria',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 300,
-        impatto: 0.15,
-        note: 'Come usare ingrediente, dosaggi, ricette industriali — valore tecnico'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Fiere food ingredients (FiE, Cibus Tec) + catalogo tecnico',
-        tempo_mesi: 2,
-        moduli: [
-          { id:'marketing', nome:'Fiere food ingredients (FiE, Cibus Tec) + catalogo tecnico', tipo:'flag', obbligatorio:true, costo_mensile:600, costo_setup:3000, impatto:0.8 }
-        ,
-{
-        id: 'webinar_tecnici',
-        nome: 'Webinar tecnici per R&D clienti',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 100,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Presentazione nuovi ingredienti/applicazioni — lead gen B2B'
-}
-      ]
-      },
-      '4': {
-        cosa: 'White paper tecnici + webinar + fiere internazionali',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'White paper tecnici + webinar + fiere internazionali',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:1200, costo_setup:4000, impatto:1, note:'White paper tecnici + webinar + fiere internazionali' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:480, costo_setup:2000, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Piano marketing B2B — thought leadership, R&D showcase, PR',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'marketing',
-            nome: 'Piano marketing B2B',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'agenzia', nome:'Con agenzia/professionista esterno', costo_mensile:2500, costo_setup:5000, impatto:1, note:'Piano marketing B2B — thought leadership, R&D showcase, PR' },
-              { id:'inhouse', nome:'Gestione interna', costo_mensile:1000, costo_setup:2500, impatto:0.6, note:'Formazione + tool, gestione interna' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Nessuno', cosa:'Nessuno — solo relazione diretta', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Catalogo digitale ingredienti + LinkedIn per B2B', tempo_mesi:1, moduli:[
+        { id:'catalogo', nome:'Catalogo ingredienti digitale', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:200, impatto:0.5, note:'PDF sfogliabile con schede ingredienti, applicazioni, certificazioni' },
+        { id:'linkedin', nome:'Profilo LinkedIn aziendale attivo', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.3, note:'Post su applicazioni, novita normative, trend ingredienti' },
+      ]},
+      '3': { cosa:'Fiere ingredienti (FI Europe, Cibus Tec) + webinar tecnici', tempo_mesi:2, moduli:[
+        { id:'fiere', nome:'Fiere ingredienti food', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'stand', nome:'Stand FI Europe/Cibus Tec', costo_mensile:300, costo_setup:5000, impatto:1.0, note:'Stand con campionature, 1-2 fiere/anno, contatto R&D e buyer industria' },
+          { id:'visitatore', nome:'Visita come operatore + networking', costo_mensile:100, costo_setup:500, impatto:0.4, note:'Biglietti, eventi B2B' },
+        ]},
+      ]},
+      '4': { cosa:'Content marketing tecnico + LinkedIn Ads su R&D manager', tempo_mesi:2, moduli:[
+        { id:'content', nome:'Content marketing B2B food', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia content B2B specializzata', costo_mensile:800, costo_setup:500, impatto:1.0, note:'White paper, case study, webinar tecnici, LinkedIn Ads' },
+          { id:'interno', nome:'Content interno + ads base', costo_mensile:300, costo_setup:200, impatto:0.5, note:'Post tecnici + budget ads LinkedIn' },
+        ]},
+      ]},
+      '5': { cosa:'Piano marketing B2B ingredienti — fiere, content, partnership, export', tempo_mesi:4, moduli:[
+        { id:'piano', nome:'Piano marketing B2B ingredienti', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'agenzia', nome:'Agenzia marketing B2B food/ingredienti', costo_mensile:2000, costo_setup:4000, impatto:1.0, note:'Fiere internazionali, content, LinkedIn, webinar, PR trade' },
+          { id:'interno', nome:'Marketing manager B2B interno', costo_mensile:1000, costo_setup:500, impatto:0.6, note:'1 risorsa dedicata' },
+        ]},
+      ]},
     },
     sitoweb: {
-      '1': { chi:'Nessuno', cosa:'Nessun sito o pagina datata', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Sito vetrina con gamma prodotti e certificazioni',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'sito', nome:'Sito vetrina con gamma prodotti e certificazioni', tipo:'flag', obbligatorio:true, costo_mensile:80, costo_setup:1000, impatto:0.8 }
-        ,
-{
-        id: 'schede_tecniche',
-        nome: 'Download schede tecniche prodotti',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 100,
-        impatto: 0.15,
-        note: 'Il buyer scarica spec sheet direttamente dal sito'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Sito con schede tecniche, download, richiesta campionature',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Sito con schede tecniche, download, richiesta campionature',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:300, costo_setup:2500, impatto:1, note:'Sito con schede tecniche, download, richiesta campionature' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:120, costo_setup:1000, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Portale B2B con ordini, specifiche personalizzate, tracking',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Portale B2B con ordini, specifiche personalizzate, tracking',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:700, costo_setup:5000, impatto:1, note:'Portale B2B con ordini, specifiche personalizzate, tracking' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:280, costo_setup:2000, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Piattaforma B2B integrata — ordini, formulazioni, compliance',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'sito',
-            nome: 'Piattaforma B2B integrata',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'premium', nome:'Soluzione professionale', costo_mensile:1300, costo_setup:10000, impatto:1, note:'Piattaforma B2B integrata — ordini, formulazioni, compliance' },
-              { id:'economica', nome:'Soluzione economica', costo_mensile:520, costo_setup:4000, impatto:0.65, note:'Template/base, meno personalizzazione' }
-            ]
-          }
-        ]
-      },
+      '1': { chi:'Nessuno', cosa:'Nessun sito', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Sito con catalogo ingredienti, certificazioni, contatti', tempo_mesi:1, moduli:[
+        { id:'sito', nome:'Sito B2B ingredienti', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'custom', nome:'Sito custom WordPress B2B', costo_mensile:30, costo_setup:2000, impatto:1.0, note:'Catalogo ingredienti, schede tecniche, certificazioni, form contatto' },
+          { id:'template', nome:'Sito da template B2B', costo_mensile:20, costo_setup:600, impatto:0.5, note:'Template industriale' },
+        ]},
+      ]},
+      '3': { cosa:'Catalogo online con schede tecniche scaricabili + area riservata', tempo_mesi:2, moduli:[
+        { id:'catalogo_online', nome:'Catalogo B2B con download', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:1500, impatto:0.5, note:'Schede tecniche, SDS, certificazioni scaricabili, filtri per applicazione' },
+        { id:'area_riservata', nome:'Area riservata clienti', tipo:'flag', obbligatorio:false, costo_mensile:0, costo_setup:800, impatto:0.3, note:'Login con listini dedicati, storico ordini, documentazione' },
+      ]},
+      '4': { cosa:'Portale B2B con ordini online e stock real-time', tempo_mesi:3, moduli:[
+        { id:'portale', nome:'Portale ordini B2B', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'integrato', nome:'Portale B2B integrato con ERP', costo_mensile:400, costo_setup:5000, impatto:1.0, note:'Ordini online, stock live, listini per cliente, schede tecniche' },
+          { id:'standalone', nome:'E-commerce B2B standalone', costo_mensile:200, costo_setup:2000, impatto:0.55, note:'Ordini online, stock periodico' },
+        ]},
+      ]},
+      '5': { cosa:'Piattaforma B2B completa — ordini, R&D collaboration, tracciabilita', tempo_mesi:4, moduli:[
+        { id:'piattaforma', nome:'Piattaforma B2B ingredienti', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'enterprise', nome:'Portale enterprise con R&D hub', costo_mensile:800, costo_setup:10000, impatto:1.0, note:'Ordini, R&D collaboration, formulazioni condivise, tracciabilita, BI' },
+          { id:'mid', nome:'Portale B2B avanzato', costo_mensile:300, costo_setup:4000, impatto:0.5, note:'Ordini + area documentale, senza R&D hub' },
+        ]},
+      ]},
     },
     ecommerce: {
-      '1': { chi:'Titolare', cosa:'Acquisto materie prime da fornitore abituale', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
-      '2': {
-        cosa: 'Confronto fornitori globali — qualità, certificazioni, prezzi',
-        tempo_mesi: 1,
-        moduli: [
-          { id:'canale', nome:'Confronto fornitori globali', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.8 }
-        ,
-{
-        id: 'audit_fornitori',
-        nome: 'Audit qualità fornitori base',
-        tipo: 'flag',
-        obbligatorio: false,
-        costo_mensile: 0,
-        costo_setup: 200,
-        impatto: 0.15,
-        note: 'Visita + checklist qualità per ogni fornitore critico'
-}
-      ]
-      },
-      '3': {
-        cosa: 'Sourcing internazionale — Europa, Asia — campionature e audit',
-        tempo_mesi: 2,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Sourcing internazionale',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:500, costo_setup:800, impatto:1, note:'Sourcing internazionale — Europa, Asia — campionature e audit' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:250, costo_setup:320, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
-      '4': {
-        cosa: 'Buyer dedicato — contratti quadro, hedging commodity, import',
-        tempo_mesi: 3,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Buyer dedicato',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:2500, costo_setup:1000, impatto:1, note:'Buyer dedicato — contratti quadro, hedging commodity, import' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:1250, costo_setup:400, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
-      '5': {
-        cosa: 'Resp. acquisti — supply chain globale, dual sourcing, contratti',
-        tempo_mesi: 4,
-        moduli: [
-          {
-            id: 'canale',
-            nome: 'Resp. acquisti',
-            tipo: 'scelta',
-            obbligatorio: true,
-            varianti: [
-              { id:'completo', nome:'Implementazione completa', costo_mensile:4000, costo_setup:2000, impatto:1, note:'Resp. acquisti — supply chain globale, dual sourcing, contratti' },
-              { id:'graduale', nome:'Avvio graduale', costo_mensile:2000, costo_setup:800, impatto:0.65, note:'Versione base, si espande' }
-            ]
-          }
-        ]
-      },
       _label: 'Approvvigionamento e sourcing',
+      '1': { chi:'Titolare', cosa:'Acquisto da 1-2 produttori/importatori', costo_mensile:0, costo_setup:0, tempo_mesi:0 },
+      '2': { cosa:'Confronto fornitori — qualita, certificazioni, prezzi, MOQ', tempo_mesi:1, moduli:[
+        { id:'fornitori', nome:'Database fornitori ingredienti', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:0, impatto:0.7, note:'Scheda: produttore, origine, certificazioni (bio, kosher, halal), prezzi, MOQ' },
+      ]},
+      '3': { cosa:'Accordi con produttori/importatori — prezzi e volumi', tempo_mesi:2, moduli:[
+        { id:'accordi', nome:'Accordi quadro fornitori', tipo:'flag', obbligatorio:true, costo_mensile:0, costo_setup:500, impatto:0.6, note:'Contratti annuali con 3-5 fornitori chiave' },
+      ]},
+      '4': { cosa:'Buyer dedicato — diversificazione, import diretto, qualita', tempo_mesi:3, moduli:[
+        { id:'buyer', nome:'Buyer ingredienti', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Buyer ingredienti dipendente', costo_mensile:2200, costo_setup:0, impatto:1.0, note:'Sourcing, negoziazione, controllo qualita, import diretto' },
+          { id:'parttime', nome:'Buyer part-time', costo_mensile:1000, costo_setup:0, impatto:0.6, note:'Gestisce riordini e rapporto fornitori' },
+        ]},
+      ]},
+      '5': { cosa:'Supply chain manager — contratti globali, hedging, certificazioni', tempo_mesi:4, moduli:[
+        { id:'supply', nome:'Resp. supply chain ingredienti', tipo:'scelta', obbligatorio:true, varianti:[
+          { id:'dip', nome:'Supply chain manager dipendente', costo_mensile:3500, costo_setup:0, impatto:1.0, note:'Sourcing globale, hedging prezzi, certificazioni origine, logistica' },
+          { id:'fractional', nome:'Supply chain manager fractional', costo_mensile:1800, costo_setup:0, impatto:0.6, note:'2-3 giorni/settimana' },
+        ]},
+      ]},
     }
   },
 
