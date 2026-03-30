@@ -36,9 +36,10 @@ async function renderAdminPanel() {
   const main = document.querySelector('.main');
   if (!main) return;
 
-  // Carica tutti i profili
+  // Carica tutti i profili e i log
   const { data: users, error } = await sb.from('profiles').select('*').order('created_at', { ascending: false });
   if (error) { showToast('Errore caricamento utenti', 'error'); return; }
+  const { data: logs } = await sb.from('access_logs').select('*').order('created_at', { ascending: false }).limit(50);
 
   // Se stiamo visualizzando come un utente, mostra banner
   const viewingAs = window._viewAsUserId;
@@ -108,7 +109,34 @@ async function renderAdminPanel() {
       '<div class="admin-user-arrow">&#8250;</div>' +
     '</div>';
   });
-  html += '</div></div>';
+  html += '</div>';
+
+  // Sezione log accessi
+  html += '<div style="margin-top:32px">' +
+    '<div class="admin-header-top" style="margin-bottom:14px">' +
+      '<h2 class="admin-title">Log Accessi</h2>' +
+      '<span class="admin-count">ultimi 50</span>' +
+    '</div>' +
+    '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden">';
+
+  if (!logs || logs.length === 0) {
+    html += '<div style="padding:20px;color:var(--gray);font-size:13px;text-align:center">Nessun accesso registrato</div>';
+  } else {
+    logs.forEach(function(log) {
+      const isLogin = log.action === 'login';
+      const color = isLogin ? 'var(--leva-green)' : 'var(--gray)';
+      const icon = isLogin ? '↓' : '↑';
+      const label = isLogin ? 'Login' : 'Logout';
+      const date = new Date(log.created_at).toLocaleString('it-IT', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+      html += '<div style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--border);font-size:13px">' +
+        '<span style="color:' + color + ';font-weight:700;width:16px;text-align:center">' + icon + '</span>' +
+        '<span style="color:' + color + ';font-weight:600;width:52px">' + label + '</span>' +
+        '<span style="color:var(--white);flex:1">' + (log.email || '—') + '</span>' +
+        '<span style="color:var(--gray);font-size:11px">' + date + '</span>' +
+      '</div>';
+    });
+  }
+  html += '</div></div></div>';
 
   // Rimuovi vecchio pannello admin se esiste
   const old = document.getElementById('view-admin');
