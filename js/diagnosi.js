@@ -401,7 +401,17 @@ async function init() {
   window.LEVA_USER_ROLE = upData?.role || 'cso';
   window._userProfileData = upData || null;
 
-  document.getElementById('dash-date').textContent=new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  // Fase 3: Router — CSO o titolare PMI
+  if (window.LEVA_USER_ROLE === 'titolare') {
+    await initPMI();
+  } else {
+    await initCSO();
+  }
+}
+
+// ── CSO (comportamento invariato rispetto all'originale) ──────────────────────
+async function initCSO() {
+  document.getElementById('dash-date').textContent = new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 
   await _loadProspectsData();
   await loadEventi();
@@ -409,13 +419,40 @@ async function init() {
   renderSidebar();
   renderDashboard();
 
-  // Mostra pulsante admin se admin
   if (window._isAdmin) {
     const adminBtn = document.getElementById('admin-btn');
     if (adminBtn) adminBtn.style.display = '';
   }
-
 }
+
+// ── PMI (Fasi 4-12) ──────────────────────────────────────────────────────────
+async function initPMI() {
+  // Nasconde l'intera interfaccia CSO
+  var csoApp = document.querySelector('.app');
+  if (csoApp) csoApp.style.display = 'none';
+
+  // Mostra il container PMI
+  var pmiApp = document.getElementById('app-pmi');
+  if (pmiApp) pmiApp.style.display = 'flex';
+
+  // Carica il prospect del titolare
+  var pid = window._userProfileData?.prospect_id || null;
+  if (pid) {
+    var { data: pData } = await sb.from('prospects').select('*').eq('id', pid).single();
+    window._pmiProspect = pData || null;
+  } else {
+    // Cerca per owner_user_id
+    var { data: pOwned } = await sb.from('prospects')
+      .select('*').eq('owner_user_id', window._currentUserId).single();
+    window._pmiProspect = pOwned || null;
+  }
+
+  // Stub: renderizza sidebar e view (Fasi 4-5 le implementeranno)
+  if (typeof renderSidebarPMI === 'function') renderSidebarPMI();
+  if (typeof renderViewPMI === 'function') renderViewPMI('home');
+}
+
+
 
 function openProfiloModal() {
   const profile = window._currentProfile || {};
