@@ -165,7 +165,7 @@ function adminFilterUsers() {
 
 async function adminViewAs(userId) {
   if (userId === window._currentUserId && !window._viewAsUserId) {
-    // Clicca su se stesso senza viewing → non fare nulla
+    openProfiloModal();
     return;
   }
   window._viewAsUserId = (userId === window._currentUserId) ? null : userId;
@@ -1013,7 +1013,10 @@ function genField(label,val) {
 
 // -- NAVIGATION --------------------------------------------
 function showView(name) {
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  // Rimuovi pannello admin se presente
+  const adminPanel = document.getElementById('view-admin');
+  if (adminPanel) adminPanel.remove();
+  document.querySelectorAll('.view').forEach(v=>{v.classList.remove('active'); v.style.display='';});
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('view-'+name).classList.add('active');
   document.querySelectorAll('.sidebar .nav-item').forEach(n=>{
@@ -1046,13 +1049,14 @@ function renderSidebar() {
 // -- DASHBOARD ---------------------------------------------
 function renderDashboard() {
   // Saluto personalizzato
-  (async function() {
-    const { data: { user } } = await sb.auth.getUser();
-    var nome = (user && user.user_metadata && (user.user_metadata.nome || user.user_metadata.nome_completo || user.user_metadata.full_name)) || '';
+  (function() {
+    var profile = window._currentProfile;
+    var nome = (profile && (profile.nome || profile.nome_completo)) || '';
+    if (!nome && profile) nome = (profile.email || '').split('@')[0];
     var ora = new Date().getHours();
     var saluto = ora < 13 ? 'Buongiorno' : ora < 18 ? 'Buon pomeriggio' : 'Buonasera';
     var h1 = document.querySelector('#view-dashboard .dash-header h1');
-    if (h1) h1.textContent = nome ? saluto + ', ' + nome.split(' ')[0] : 'Dashboard';
+    if (h1) h1.textContent = nome ? saluto + ', ' + nome.split(' ')[0] : saluto;
   })();
 
   const total=prospects.length;

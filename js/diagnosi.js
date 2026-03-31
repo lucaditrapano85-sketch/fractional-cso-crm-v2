@@ -406,6 +406,39 @@ async function init() {
     const adminBtn = document.getElementById('admin-btn');
     if (adminBtn) adminBtn.style.display = '';
   }
+
+}
+
+function openProfiloModal() {
+  const profile = window._currentProfile || {};
+  document.getElementById('profilo-nome').value = profile.nome || '';
+  document.getElementById('profilo-cognome').value = profile.cognome || '';
+  document.getElementById('profilo-telefono').value = profile.telefono || '';
+  document.getElementById('modal-profilo').style.display = 'flex';
+}
+
+async function salvaProfilo() {
+  const nome = document.getElementById('profilo-nome').value.trim();
+  const cognome = document.getElementById('profilo-cognome').value.trim();
+  const telefono = document.getElementById('profilo-telefono').value.trim();
+
+  const { error } = await sb.from('profiles').update({
+    nome, cognome, telefono, nome_completo: (nome + ' ' + cognome).trim()
+  }).eq('id', window._currentUserId);
+
+  if (error) { showToast('Errore salvataggio', 'error'); return; }
+
+  // Aggiorna stato locale
+  window._currentProfile = Object.assign({}, window._currentProfile, { nome, cognome, telefono, nome_completo: (nome + ' ' + cognome).trim() });
+
+  // Aggiorna saluto dashboard
+  const ora = new Date().getHours();
+  const saluto = ora < 13 ? 'Buongiorno' : ora < 18 ? 'Buon pomeriggio' : 'Buonasera';
+  const h1 = document.querySelector('#view-dashboard .dash-header h1');
+  if (h1 && nome) h1.textContent = saluto + ', ' + nome;
+
+  document.getElementById('modal-profilo').style.display = 'none';
+  showToast('Profilo aggiornato');
 }
 
 async function _loadProspectsData() {

@@ -529,5 +529,30 @@
     </div>
   </div>
 </div>
+<!-- MODAL PROFILO -->
+<div class="modal-overlay" id="modal-profilo" style="display:none">
+  <div class="modal-box" style="max-width:380px">
+    <h2 class="modal-title">Il tuo profilo</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+      <div>
+        <label style="display:block;font-size:11px;font-weight:600;color:var(--gray2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px">Nome</label>
+        <input type="text" id="profilo-nome" class="form-input" placeholder="Mario">
+      </div>
+      <div>
+        <label style="display:block;font-size:11px;font-weight:600;color:var(--gray2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px">Cognome</label>
+        <input type="text" id="profilo-cognome" class="form-input" placeholder="Rossi">
+      </div>
+    </div>
+    <div style="margin-bottom:12px">
+      <label style="display:block;font-size:11px;font-weight:600;color:var(--gray2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px">Telefono</label>
+      <input type="tel" id="profilo-telefono" class="form-input" placeholder="+39 333 1234567">
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="document.getElementById('modal-profilo').style.display='none'">Annulla</button>
+      <button class="btn btn-primary" onclick="salvaProfilo()">Salva</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
