@@ -720,28 +720,9 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 .tl-proj-footer{display:flex;justify-content:space-between;font-size:11px;color:var(--gray);padding:4px 8px 0}
 .tl-proj-footer b{color:var(--white)}
 
-/* ── GLASS OVERRIDES ─────────────────────────── */
-body{background:linear-gradient(145deg,#8fa8cc 0%,#8cb4cc 25%,#96bece 50%,#a4acc8 75%,#a89ec8 100%) fixed;background-attachment:fixed;color:var(--text)}
-.sidebar{background:#6d88aa;backdrop-filter:none;-webkit-backdrop-filter:none;border-right:none}
-.sidebar-logo .wordmark{color:#1a1a2e}
-.sidebar-logo .sub{color:rgba(26,26,46,0.5)}
-.nav-item{color:rgba(26,26,46,0.75);border-radius:8px}
-.nav-item:hover{background:rgba(255,255,255,0.25);color:#1a1a2e}
-.nav-item.active{background:rgba(255,255,255,0.35);color:#1a1a2e;border-left:none;font-weight:600}
-.main{background:linear-gradient(145deg,#8fa8cc 0%,#8cb4cc 25%,#96bece 50%,#a4acc8 75%,#a89ec8 100%);background-attachment:local;min-height:100vh}.view{background:transparent}
-.card,.radar-card{
-  background:linear-gradient(165deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.25) 40%, rgba(240,242,248,0.15) 100%);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border:1px solid rgba(255,255,255,0.45);
-  border-top:1px solid rgba(255,255,255,0.7);
-  border-left:1px solid rgba(255,255,255,0.6);
-  border-bottom:1px solid rgba(0,0,0,0.04);
-  border-right:1px solid rgba(0,0,0,0.03);
-  border-radius:var(--r);
-}
+.main{min-height:100vh}.view{background:transparent}
 .card-title{color:var(--gray2);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px}
-.det-header{background:linear-gradient(165deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.25) 40%, rgba(240,242,248,0.15) 100%);border-bottom:none}
+.det-header{border-bottom:none}
 
 /* ── Linguette capitoli — parte dell'header ── */
 .folder-tabs{
