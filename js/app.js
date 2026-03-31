@@ -6673,8 +6673,8 @@ function _buildGraficoTimeline(p) {
     '<div class="tl-section-label">Proiezione fatturato</div>' +
     '<div class="tl-legend">' +
       '<span class="tl-leg-item"><span class="tl-leg-dot" style="background:#B4B2A9"></span>Base attuale</span>' +
-      '<span class="tl-leg-item"><span class="tl-leg-dot" style="background:#85B7EB"></span>Scenario minimo</span>' +
-      '<span class="tl-leg-item"><span class="tl-leg-dot" style="background:#00C896"></span>Scenario massimo</span>' +
+      '<span class="tl-leg-item"><span class="tl-leg-dot" style="background:#FF6B2B"></span>Scenario minimo</span>' +
+      '<span class="tl-leg-item"><span class="tl-leg-dot" style="background:#3D5AFE"></span>Scenario massimo</span>' +
       (idealPath ? '<span class="tl-leg-item"><span class="tl-leg-dot" style="background:rgba(180,140,40,0.6);border:1px dashed rgba(180,140,40,0.8)"></span>Percorso ideale</span>' : '') +
     '</div>' +
     '<div class="tl-chart-wrap"><canvas id="' + chartId + '"></canvas></div>' +
@@ -6714,22 +6714,22 @@ function _buildGraficoTimeline(p) {
           {
             label: 'Scenario minimo',
             data: pts.min,
-            borderColor: '#85B7EB',
-            backgroundColor: 'rgba(133,183,235,0.08)',
+            borderColor: '#FF6B2B',
+            backgroundColor: 'rgba(255,107,43,0.08)',
             borderWidth: 2,
             pointRadius: 3,
-            pointBackgroundColor: '#85B7EB',
+            pointBackgroundColor: '#FF6B2B',
             fill: false,
             tension: 0.35,
           },
           {
             label: 'Scenario massimo',
             data: pts.max,
-            borderColor: '#00C896',
-            backgroundColor: 'rgba(28,184,137,0.08)',
+            borderColor: '#3D5AFE',
+            backgroundColor: 'rgba(61,90,254,0.08)',
             borderWidth: 2,
             pointRadius: 3,
-            pointBackgroundColor: '#00C896',
+            pointBackgroundColor: '#3D5AFE',
             fill: '-1',
             tension: 0.35,
           }
@@ -6749,18 +6749,23 @@ function _buildGraficoTimeline(p) {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: { display: false },
+          legend: { display: false, labels: { color: 'rgba(26,26,46,0.55)' } },
           tooltip: {
+            backgroundColor: 'rgba(255,255,255,0.9)',
+            borderColor: 'rgba(0,0,0,0.08)',
+            borderWidth: 1,
+            titleColor: '#1a1a2e',
+            bodyColor: 'rgba(26,26,46,0.55)',
             callbacks: {
               label: function(ctx) { return ctx.dataset.label + ': ' + fmtF(ctx.parsed.y) + '\u20AC'; }
             }
           }
         },
         scales: {
-          x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+          x: { grid: { display: false }, ticks: { font: { size: 11 }, color: 'rgba(26,26,46,0.45)' } },
           y: {
-            grid: { color: 'rgba(128,128,128,0.1)' },
-            ticks: { font: { size: 11 }, callback: function(v) { return fmtF(v) + '\u20AC'; } },
+            grid: { color: 'rgba(0,0,0,0.06)', lineWidth: 0.5 },
+            ticks: { font: { size: 11 }, color: 'rgba(26,26,46,0.45)', callback: function(v) { return fmtF(v) + '\u20AC'; } },
             min: Math.round(fat * 0.8 / 10000) * 10000,
           }
         }
