@@ -879,6 +879,18 @@ label{color:var(--gray2)}
 .tl-sess-dot-active{background:#4E9FE6!important}
 
 
+/* ===== PMI APP ===== */
+.pmi-nav-item{display:flex;align-items:center;gap:8px;padding:8px 14px;font-size:14px;color:rgba(255,255,255,0.6);cursor:pointer;transition:all .2s;margin:1px 8px;border-radius:8px}
+.pmi-nav-item:hover{color:#fff;background:rgba(255,255,255,0.08)}
+.pmi-nav-item.active{color:#fff;background:rgba(61,90,254,0.15);border-left:3px solid #3D5AFE;margin-left:5px;padding-left:11px}
+.pmi-nav-icon{width:15px;height:15px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.pmi-nav-icon svg{width:15px;height:15px;stroke:rgba(255,255,255,0.35)}
+.pmi-nav-item:hover .pmi-nav-icon svg{stroke:rgba(255,255,255,0.7)}
+.pmi-nav-item.active .pmi-nav-icon svg{stroke:#3D5AFE}
+.pmi-select-card{padding:16px 14px;border:1.5px solid rgba(0,0,0,0.08);border-radius:12px;cursor:pointer;background:rgba(255,255,255,0.55);transition:all .15s;user-select:none}
+.pmi-select-card:hover{border-color:rgba(61,90,254,0.35);background:rgba(255,255,255,0.8)}
+.pmi-select-card.selected{border-color:#3D5AFE;background:rgba(61,90,254,0.06);box-shadow:0 0 0 3px rgba(61,90,254,0.12)}
+
 /* ===== GLOSSARIO ===== */
 .glos-header{padding:28px 32px 20px;border-bottom:1px solid var(--border)}
 .glos-title{font-size:20px;font-weight:600;color:var(--text);margin-bottom:6px}

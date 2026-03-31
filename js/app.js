@@ -8845,3 +8845,93 @@ async function saveBenchModal() {
 }
 
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// PMI — FASE 4: Sidebar e navigazione
+// ═══════════════════════════════════════════════════════════════════════════════
+
+var _pmiCurrentView = 'home';
+
+function renderSidebarPMI() {
+  var sidebar = document.getElementById('pmi-sidebar');
+  if (!sidebar) return;
+
+  var profile = window._currentProfile || {};
+  var upData  = window._userProfileData || {};
+  var nome    = profile.nome || (profile.nome_completo || '').split(' ')[0] || '';
+  var company = upData.company_name
+    || (window._pmiProspect ? window._pmiProspect.nome : '')
+    || 'La tua azienda';
+
+  var navItems = [
+    { id:'home',    label:'Home',    svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>' },
+    { id:'score',   label:'Score',   svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' },
+    { id:'azioni',  label:'Azioni',  svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>' },
+    { id:'trend',   label:'Trend',   svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>' },
+    { id:'profilo', label:'Profilo', svg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' },
+  ];
+
+  sidebar.innerHTML =
+    // Logo
+    '<div style="padding:16px 16px 14px;border-bottom:1px solid rgba(255,255,255,0.08)">' +
+      '<div style="display:inline-flex;align-items:flex-start;gap:2px;background:#1a1a2e;border:1px solid rgba(255,255,255,0.14);border-radius:18px;padding:10px 15px 10px 10px;box-shadow:0 2px 12px rgba(0,0,0,0.35);cursor:pointer" onclick="showViewPMI(\'home\')">' +
+        '<svg width="36" height="36" viewBox="8 4 44 44" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="8" y="34" width="44" height="4.5" rx="2.25" fill="#3D5AFE"/><rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="white"/><circle cx="29.75" cy="36.25" r="6" fill="white"/><line x1="29.75" y1="36.25" x2="47" y2="22" stroke="#FF6B2B" stroke-width="3.5" stroke-linecap="round"/><circle cx="47" cy="22" r="3.5" fill="#FF6B2B"/></svg>' +
+        '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:30px;font-weight:500;color:white;line-height:1;letter-spacing:-1px">eva</span>' +
+      '</div>' +
+    '</div>' +
+    // Nav
+    '<nav style="padding:8px 0;flex:1">' +
+      navItems.map(function(item) {
+        var isActive = item.id === _pmiCurrentView;
+        return '<div class="pmi-nav-item' + (isActive ? ' active' : '') + '" data-view="' + item.id + '" onclick="showViewPMI(\'' + item.id + '\')">' +
+          '<span class="pmi-nav-icon">' + item.svg + '</span>' +
+          '<span>' + item.label + '</span>' +
+        '</div>';
+      }).join('') +
+    '</nav>' +
+    // User info + logout
+    '<div style="padding:12px 16px;border-top:1px solid rgba(255,255,255,0.08)">' +
+      '<div style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.85);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + (nome || '') + '</div>' +
+      '<div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + company + '</div>' +
+      '<button onclick="logout()" style="width:100%;padding:7px;background:rgba(229,57,53,0.15);border:1px solid rgba(229,57,53,0.3);color:rgba(229,57,53,0.85);border-radius:8px;cursor:pointer;font-size:11px;font-family:\'Plus Jakarta Sans\',sans-serif;font-weight:600;transition:opacity .2s">Esci</button>' +
+    '</div>';
+}
+
+function showViewPMI(view) {
+  _pmiCurrentView = view;
+  document.querySelectorAll('.pmi-nav-item').forEach(function(el) {
+    el.classList.toggle('active', el.dataset.view === view);
+  });
+  renderViewPMI(view);
+}
+
+function renderViewPMI(view) {
+  var main = document.getElementById('pmi-main');
+  if (!main) return;
+  switch (view) {
+    case 'home':    renderPMIHome(main);    break;
+    case 'score':   renderPMIScore(main);   break;
+    case 'azioni':  renderPMIAzioni(main);  break;
+    case 'trend':   renderPMITrend(main);   break;
+    case 'profilo': renderPMIProfilo(main); break;
+    default:        renderPMIHome(main);
+  }
+}
+
+// ── Stub sezioni (Fasi 5-9) — rimpiazzate fase per fase ──────────────────────
+function renderPMIHome(container) {
+  container.innerHTML = '<div style="padding:40px 32px"><p style="color:rgba(26,26,46,0.45);font-size:13px">Dashboard PMI — in arrivo con la Fase 5</p></div>';
+}
+function renderPMIScore(container) {
+  container.innerHTML = '<div style="padding:40px 32px"><p style="color:rgba(26,26,46,0.45);font-size:13px">Score — in arrivo con la Fase 6</p></div>';
+}
+function renderPMIAzioni(container) {
+  container.innerHTML = '<div style="padding:40px 32px"><p style="color:rgba(26,26,46,0.45);font-size:13px">Azioni — in arrivo con la Fase 7</p></div>';
+}
+function renderPMITrend(container) {
+  container.innerHTML = '<div style="padding:40px 32px"><p style="color:rgba(26,26,46,0.45);font-size:13px">Trend — in arrivo con la Fase 8</p></div>';
+}
+function renderPMIProfilo(container) {
+  container.innerHTML = '<div style="padding:40px 32px"><p style="color:rgba(26,26,46,0.45);font-size:13px">Profilo — in arrivo con la Fase 9</p></div>';
+}
+
+
