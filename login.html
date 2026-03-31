@@ -109,6 +109,43 @@ body {
   gap:10px;
 }
 #register-form { display:none }
+/* Selezione ruolo */
+.role-selector-label {
+  font-size:11px;
+  font-weight:600;
+  color:rgba(26,26,46,0.55);
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+  margin-bottom:10px;
+}
+.role-cards {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:20px;
+}
+.role-card {
+  padding:16px 12px;
+  border:1.5px solid rgba(0,0,0,0.08);
+  border-radius:12px;
+  cursor:pointer;
+  text-align:center;
+  transition:all 0.15s;
+  background:rgba(255,255,255,0.5);
+  user-select:none;
+}
+.role-card:hover {
+  border-color:rgba(61,90,254,0.35);
+  background:rgba(255,255,255,0.75);
+}
+.role-card.selected {
+  border-color:#3D5AFE;
+  background:rgba(61,90,254,0.06);
+  box-shadow:0 0 0 3px rgba(61,90,254,0.12);
+}
+.role-card-icon { font-size:24px; margin-bottom:7px; }
+.role-card-title { font-size:13px; font-weight:700; color:#1a1a2e; margin-bottom:3px; }
+.role-card-desc { font-size:11px; color:rgba(26,26,46,0.55); line-height:1.4; }
 </style>
 </head>
 <body>
@@ -141,6 +178,20 @@ body {
 
   <!-- REGISTER FORM -->
   <form id="register-form">
+    <!-- Selezione ruolo — obbligatoria -->
+    <div class="role-selector-label">Sono un…</div>
+    <div class="role-cards">
+      <div class="role-card" id="role-card-titolare" onclick="selectRole('titolare')">
+        <div class="role-card-icon">🏢</div>
+        <div class="role-card-title">Titolare</div>
+        <div class="role-card-desc">Voglio migliorare la mia azienda</div>
+      </div>
+      <div class="role-card" id="role-card-cso" onclick="selectRole('cso')">
+        <div class="role-card-icon">💼</div>
+        <div class="role-card-title">Professionista</div>
+        <div class="role-card-desc">Voglio gestire i miei clienti</div>
+      </div>
+    </div>
     <div class="form-row">
       <div class="login-field">
         <label>Nome</label>
@@ -188,8 +239,22 @@ const sb = createClient(
   if (session) window.location.href = '/index.html';
 })();
 
+// Selezione ruolo (Fase 2)
+var selectedRole = '';
+function selectRole(role) {
+  selectedRole = role;
+  document.getElementById('role-card-titolare').classList.toggle('selected', role === 'titolare');
+  document.getElementById('role-card-cso').classList.toggle('selected', role === 'cso');
+  // Pulisce eventuale errore ruolo
+  var msg = document.getElementById('reg-msg');
+  if (msg.textContent.includes('ruolo')) { msg.textContent = ''; msg.className = 'login-msg'; }
+}
+
 // Toggle login/register
 function showRegister() {
+  selectedRole = '';
+  document.getElementById('role-card-titolare').classList.remove('selected');
+  document.getElementById('role-card-cso').classList.remove('selected');
   document.getElementById('login-form').style.display = 'none';
   document.getElementById('register-form').style.display = 'block';
   document.getElementById('reg-msg').textContent = '';
@@ -274,6 +339,11 @@ document.getElementById('register-form').addEventListener('submit', async functi
   msg.textContent = '';
   msg.className = 'login-msg';
 
+  if (!selectedRole) {
+    msg.textContent = 'Scegli il tuo ruolo prima di continuare';
+    msg.className = 'login-msg error';
+    return;
+  }
   if (!nome || !cognome) {
     msg.textContent = 'Nome e cognome sono obbligatori';
     msg.className = 'login-msg error';
@@ -314,7 +384,18 @@ document.getElementById('register-form').addEventListener('submit', async functi
     btn.disabled = false;
     btn.textContent = 'Crea account';
   } else {
-    // Supabase signUp con autoconfirm logga automaticamente
+    // Crea record in user_profiles con il ruolo scelto
+    if (data.user) {
+      try {
+        await sb.from('user_profiles').upsert({
+          user_id: data.user.id,
+          role: selectedRole,
+          created_at: new Date().toISOString()
+        });
+      } catch(e) {
+        console.warn('user_profiles insert:', e.message);
+      }
+    }
     msg.textContent = 'Account creato! Accesso in corso...';
     msg.className = 'login-msg success';
     setTimeout(function() { window.location.href = '/index.html'; }, 1000);
