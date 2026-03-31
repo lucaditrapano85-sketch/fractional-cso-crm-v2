@@ -148,7 +148,12 @@ function chiudiDiagnosi() {
     }
     sb.from('prospects').update({ dims: nuoviDims, dims_answers: _diagRisposte }).eq('id', pid).catch(function(){});
   }
-  // Aggiorna sempre la scheda
+  // Fase 12: routing diverso per titolari PMI
+  if (window.LEVA_USER_ROLE === 'titolare' && typeof _dopoChiudiDiagnosiPMI === 'function') {
+    setTimeout(function() { _dopoChiudiDiagnosiPMI(pid); }, 150);
+    return;
+  }
+  // Aggiorna sempre la scheda (CSO)
   setTimeout(function() {
     var p = prospects.find(function(x){ return x.id === pid; });
     if (p) { drawRadar(p.dims || {}, p.targets || {}); renderProspectDetail(pid); }
@@ -427,27 +432,33 @@ async function initCSO() {
 
 // ── PMI (Fasi 4-12) ──────────────────────────────────────────────────────────
 async function initPMI() {
-  // Nasconde l'intera interfaccia CSO
   var csoApp = document.querySelector('.app');
   if (csoApp) csoApp.style.display = 'none';
-
-  // Mostra il container PMI
   var pmiApp = document.getElementById('app-pmi');
   if (pmiApp) pmiApp.style.display = 'flex';
 
-  // Carica il prospect del titolare
-  var pid = window._userProfileData?.prospect_id || null;
-  if (pid) {
-    var { data: pData } = await sb.from('prospects').select('*').eq('id', pid).single();
-    window._pmiProspect = pData || null;
-  } else {
-    // Cerca per owner_user_id
-    var { data: pOwned } = await sb.from('prospects')
-      .select('*').eq('owner_user_id', window._currentUserId).single();
-    window._pmiProspect = pOwned || null;
+  // Carica prospect del titolare (per owner_user_id)
+  var { data: pOwned } = await sb.from('prospects')
+    .select('*').eq('owner_user_id', window._currentUserId).maybeSingle();
+  window._pmiProspect = pOwned || null;
+
+  // Fase 12: se non ha prospect o diagnosi mai completata → primo accesso
+  var hasDiagnosi = window._pmiProspect
+    && window._pmiProspect.dims
+    && Object.keys(window._pmiProspect.dims).some(function(k) { return (window._pmiProspect.dims[k] || 0) > 0; });
+
+  if (!hasDiagnosi) {
+    if (typeof renderPrimoAccesso === 'function') renderPrimoAccesso();
+    return;
   }
 
-  // Stub: renderizza sidebar e view (Fasi 4-5 le implementeranno)
+  // Ha diagnosi → app normale
+  if (!window.prospects) window.prospects = [];
+  if (!window.prospects.find(function(x) { return x.id === window._pmiProspect.id; })) {
+    window.prospects.push(window._pmiProspect);
+  }
+  window.currentId = window._pmiProspect.id;
+
   if (typeof renderSidebarPMI === 'function') renderSidebarPMI();
   if (typeof renderViewPMI === 'function') renderViewPMI('home');
 }

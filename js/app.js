@@ -8917,6 +8917,215 @@ function renderViewPMI(view) {
   }
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// PMI — FASE 12: Primo accesso (selezione settore → diagnosi → AHA)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+var PMI_MACRO_SETTORI = [
+  { id:'manifatturiero', icon:'⚙️', label:'Manifatturiero',       desc:'Produzione, metalmeccanica, lavorazioni' },
+  { id:'servizi_b2b',    icon:'💼', label:'Servizi B2B',          desc:'Consulenza, formazione, servizi professionali' },
+  { id:'edilizia',       icon:'🏗️', label:'Edilizia / Impianti',  desc:'Costruzioni, impiantistica, ristrutturazioni' },
+  { id:'commercio',      icon:'🛒', label:'Commercio',            desc:'Distribuzione, retail, ingrosso' },
+  { id:'alimentare',     icon:'🍽️', label:'Alimentare / Food',    desc:'Produzione alimentare, bevande, ristorazione' },
+  { id:'tech',           icon:'💻', label:'Tech / Software',      desc:'SaaS, digital agency, automazione' },
+];
+
+var PMI_FASCE_FATTURATO = [
+  { id:'sotto_500k', label:'Sotto 500k€',   value:300000   },
+  { id:'500k_2m',    label:'500k€ – 2M€',   value:1000000  },
+  { id:'2m_10m',     label:'2M€ – 10M€',    value:5000000  },
+  { id:'sopra_10m',  label:'Oltre 10M€',    value:12000000 },
+];
+
+var _pmiSelectedSettore = null;
+var _pmiSelectedFascia  = null;
+
+function renderPrimoAccesso() {
+  // Sidebar minimale (niente nav — non ancora operativo)
+  var sidebar = document.getElementById('pmi-sidebar');
+  if (sidebar) {
+    sidebar.innerHTML =
+      '<div style="padding:20px 16px;border-bottom:1px solid rgba(255,255,255,0.08)">' +
+        '<div style="display:inline-flex;align-items:flex-start;gap:2px">' +
+          '<svg width="36" height="36" viewBox="8 4 44 44" fill="none"><rect x="8" y="34" width="44" height="4.5" rx="2.25" fill="#3D5AFE"/><rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="white"/><circle cx="29.75" cy="36.25" r="6" fill="white"/><line x1="29.75" y1="36.25" x2="47" y2="22" stroke="#FF6B2B" stroke-width="3.5" stroke-linecap="round"/><circle cx="47" cy="22" r="3.5" fill="#FF6B2B"/></svg>' +
+          '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:30px;font-weight:500;color:white;line-height:1;letter-spacing:-1px">eva</span>' +
+        '</div>' +
+        '<div style="margin-top:20px;font-size:11px;color:rgba(255,255,255,0.35);line-height:1.7">' +
+          '<div style="margin-bottom:8px;color:rgba(255,255,255,0.6);font-weight:600">Passo 1 di 2</div>' +
+          'Seleziona settore e fatturato, poi completa la diagnosi per sbloccare la tua dashboard.' +
+        '</div>' +
+      '</div>';
+  }
+  var main = document.getElementById('pmi-main');
+  if (main) _renderSelezioneSetting(main);
+}
+
+function _renderSelezioneSetting(container) {
+  _pmiSelectedSettore = null;
+  _pmiSelectedFascia  = null;
+
+  container.innerHTML =
+    '<div style="max-width:640px;margin:0 auto;padding:48px 28px">' +
+      '<h1 style="font-size:22px;font-weight:700;color:#1a1a2e;margin-bottom:6px">Benvenuto in Leva</h1>' +
+      '<p style="font-size:14px;color:rgba(26,26,46,0.55);margin-bottom:36px;line-height:1.5">Dicci qualcosa sulla tua azienda — la diagnosi sarà calibrata sul tuo settore.</p>' +
+
+      // Settore
+      '<div style="margin-bottom:28px">' +
+        '<div style="font-size:11px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:12px">Il tuo settore</div>' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px" id="pmi-settore-grid">' +
+          PMI_MACRO_SETTORI.map(function(s) {
+            return '<div class="pmi-select-card" id="pmi-s-' + s.id + '" onclick="pmiSelSettore(\'' + s.id + '\')">' +
+              '<div style="font-size:24px;margin-bottom:7px">' + s.icon + '</div>' +
+              '<div style="font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:3px">' + s.label + '</div>' +
+              '<div style="font-size:11px;color:rgba(26,26,46,0.5);line-height:1.4">' + s.desc + '</div>' +
+            '</div>';
+          }).join('') +
+        '</div>' +
+      '</div>' +
+
+      // Fascia fatturato
+      '<div style="margin-bottom:32px">' +
+        '<div style="font-size:11px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:12px">Fatturato annuo</div>' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="pmi-fascia-grid">' +
+          PMI_FASCE_FATTURATO.map(function(f) {
+            return '<div class="pmi-select-card" id="pmi-f-' + f.id + '" onclick="pmiSelFascia(\'' + f.id + '\')">' +
+              '<div style="font-size:15px;font-weight:700;color:#1a1a2e">' + f.label + '</div>' +
+            '</div>';
+          }).join('') +
+        '</div>' +
+      '</div>' +
+
+      '<p id="pmi-inizio-msg" style="font-size:12px;color:#E53935;min-height:18px;margin-bottom:10px"></p>' +
+      '<button onclick="pmiAvviaDiagnosi()" style="width:100%;padding:14px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .15s" onmouseover="this.style.opacity=\'0.88\'" onmouseout="this.style.opacity=\'1\'">Inizia la diagnosi →</button>' +
+    '</div>';
+}
+
+function pmiSelSettore(id) {
+  _pmiSelectedSettore = id;
+  document.querySelectorAll('#pmi-settore-grid .pmi-select-card').forEach(function(el) { el.classList.remove('selected'); });
+  var c = document.getElementById('pmi-s-' + id);
+  if (c) c.classList.add('selected');
+}
+
+function pmiSelFascia(id) {
+  _pmiSelectedFascia = id;
+  document.querySelectorAll('#pmi-fascia-grid .pmi-select-card').forEach(function(el) { el.classList.remove('selected'); });
+  var c = document.getElementById('pmi-f-' + id);
+  if (c) c.classList.add('selected');
+}
+
+async function pmiAvviaDiagnosi() {
+  var msg = document.getElementById('pmi-inizio-msg');
+  if (!_pmiSelectedSettore) { if (msg) msg.textContent = 'Scegli il settore prima di continuare.'; return; }
+  if (!_pmiSelectedFascia)  { if (msg) msg.textContent = 'Scegli la fascia di fatturato.'; return; }
+  if (msg) msg.textContent = '';
+
+  var fascia  = PMI_FASCE_FATTURATO.find(function(f){ return f.id === _pmiSelectedFascia; });
+  var profile = window._currentProfile || {};
+  var upData  = window._userProfileData || {};
+  var nomePMI = upData.company_name || profile.nome_completo || profile.nome || 'La mia azienda';
+
+  // Aggiorna user_profiles con settore e fascia scelte
+  try {
+    await sb.from('user_profiles').update({ sector: _pmiSelectedSettore, fascia_fatturato: _pmiSelectedFascia })
+      .eq('user_id', window._currentUserId);
+    window._userProfileData = Object.assign({}, window._userProfileData, { sector: _pmiSelectedSettore, fascia_fatturato: _pmiSelectedFascia });
+  } catch(e) { console.warn('user_profiles update:', e.message); }
+
+  // Crea record prospect collegato al titolare
+  var { data: nuovoP, error: errP } = await sb.from('prospects').insert({
+    nome: nomePMI,
+    settore: _pmiSelectedSettore,
+    fatturato: fascia ? String(fascia.value) : '',
+    fatturato_anno_1: fascia ? fascia.value : null,
+    stato: 'lead',
+    owner_user_id: window._currentUserId,
+    dims: {},
+    targets: {},
+  }).select().single();
+
+  if (errP || !nuovoP) {
+    if (msg) msg.textContent = 'Errore nella creazione del profilo. Riprova.';
+    console.error(errP);
+    return;
+  }
+
+  window._pmiProspect = nuovoP;
+  if (!window.prospects) window.prospects = [];
+  window.prospects.push(nuovoP);
+  window.currentId = nuovoP.id;
+
+  // Sidebar con nav ora che abbiamo il prospect
+  renderSidebarPMI();
+
+  // Lancia wizard diagnosi esistente in modalità PMI
+  window._pmiDiagnosiMode = true;
+  apriDiagnosi();
+}
+
+// Chiamata da chiudiDiagnosi() in modalità titolare
+function _dopoChiudiDiagnosiPMI(pid) {
+  var p = (window.prospects || []).find(function(x){ return x.id === pid; });
+  if (p) window._pmiProspect = p;
+  window._pmiDiagnosiMode = false;
+  var main = document.getElementById('pmi-main');
+  if (main) _renderAHAPMI(main);
+  renderSidebarPMI();
+}
+
+function _renderAHAPMI(container) {
+  var p = window._pmiProspect;
+  if (!p || !p.dims || !Object.keys(p.dims).some(function(k){ return p.dims[k] > 0; })) {
+    renderPMIHome(container);
+    return;
+  }
+
+  var s  = calcScore(p);
+  var sc = scoreColor(s);
+  var DIMS_LIST = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+
+  // Dimensione col punteggio più basso (prima azione)
+  var dimMinima = DIMS_LIST.reduce(function(min, d) {
+    return (p.dims[d] || 0) < (p.dims[min] || 0) ? d : min;
+  }, DIMS_LIST[0]);
+  var labelMin  = getDimLabel(p.settore, dimMinima);
+  var scoreMin  = p.dims[dimMinima] || 1;
+  var stepDesc  = (typeof _getStepDesc === 'function') ? _getStepDesc(p.settore, dimMinima, scoreMin) : '';
+
+  var gridHtml = DIMS_LIST.map(function(d) {
+    var v   = p.dims[d] || 0;
+    var col = dimColor(v);
+    var pct = (v / 5) * 100;
+    return '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:12px;padding:10px 12px">' +
+      '<div style="font-size:11px;font-weight:600;color:#1a1a2e;margin-bottom:6px">' + getDimLabel(p.settore, d) + '</div>' +
+      '<div style="height:5px;background:rgba(0,0,0,0.06);border-radius:3px;margin-bottom:5px"><div style="width:' + pct + '%;height:100%;background:' + col + ';border-radius:3px"></div></div>' +
+      '<div style="font-size:13px;font-weight:700;color:' + col + '">' + (v || '—') + '/5</div>' +
+    '</div>';
+  }).join('');
+
+  container.innerHTML =
+    '<div style="max-width:640px;margin:0 auto;padding:48px 28px">' +
+      // Score globale
+      '<div style="text-align:center;margin-bottom:40px">' +
+        '<div style="font-size:11px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:18px">La tua diagnosi è pronta</div>' +
+        '<div style="display:inline-flex;align-items:center;justify-content:center;width:100px;height:100px;border-radius:50%;border:3px solid ' + sc.text + ';background:' + sc.bg + ';margin-bottom:12px">' +
+          '<span style="font-size:38px;font-weight:700;color:' + sc.text + '">' + s + '</span>' +
+        '</div>' +
+        '<div style="font-size:13px;color:rgba(26,26,46,0.55)">/100 — <strong style="color:' + sc.text + '">' + sc.label + '</strong></div>' +
+      '</div>' +
+      // Griglia dimensioni
+      '<div style="font-size:11px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:12px">Le 8 dimensioni commerciali</div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:28px">' + gridHtml + '</div>' +
+      // Prima azione
+      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:18px;margin-bottom:28px;border-left:3px solid #FF6B2B">' +
+        '<div style="font-size:10px;font-weight:700;color:#FF6B2B;text-transform:uppercase;letter-spacing:0.7px;margin-bottom:6px">Prima azione — ' + labelMin + '</div>' +
+        '<div style="font-size:13px;color:#1a1a2e;line-height:1.6">' + (stepDesc && stepDesc !== '—' ? stepDesc : 'Questa è la dimensione con il maggiore potenziale: inizia da qui.') + '</div>' +
+      '</div>' +
+      // CTA
+      '<button onclick="showViewPMI(\'home\')" style="width:100%;padding:14px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .15s" onmouseover="this.style.opacity=\'0.88\'" onmouseout="this.style.opacity=\'1\'">Entra nella tua dashboard →</button>' +
+    '</div>';
+}
+
 // ── Stub sezioni (Fasi 5-9) — rimpiazzate fase per fase ──────────────────────
 function renderPMIHome(container) {
   container.innerHTML = '<div style="padding:40px 32px"><p style="color:rgba(26,26,46,0.45);font-size:13px">Dashboard PMI — in arrivo con la Fase 5</p></div>';
