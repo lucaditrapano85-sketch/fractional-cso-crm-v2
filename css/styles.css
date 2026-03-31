@@ -226,7 +226,7 @@ h1,h2,h3{font-family:'Plus Jakarta Sans',sans-serif;font-weight:600}
 .score-big{font-size:52px;font-family:'Plus Jakarta Sans',sans-serif;line-height:1;font-weight:700}
 .score-verdict{font-size:15px;font-weight:700;margin-top:6px}
 .score-desc{font-size:12px;color:var(--gray);margin-top:4px;line-height:1.5}
-.dim-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:10px;padding:10px 14px}
+.dim-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:10px 14px}
 .dim-label{font-size:12px;color:var(--gray);width:130px;flex-shrink:0}
 .dim-bar-bg{flex:1;height:6px;background:rgba(0,0,0,0.06);border-radius:3px;overflow:hidden;cursor:pointer;transition:opacity .15s}
 .dim-bar-bg:hover{opacity:0.75}
