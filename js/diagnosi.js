@@ -385,18 +385,8 @@ async function init() {
   const { data: { session } } = await sb.auth.getSession();
   if (!session) { window.location.href = '/login.html'; return; }
   window._currentUserId = session.user.id;
+  window._currentUserEmail = session.user.email;
   window._viewAsUserId = null; // admin: se impostato, filtra per questo utente
-
-  // Carica profilo per check admin e approvazione
-  const { data: profile } = await sb.from('profiles').select('*').eq('id', session.user.id).single();
-  window._isAdmin = profile?.is_admin === true;
-  window._currentProfile = profile;
-
-  // Blocca accesso se non approvato (admin passa sempre)
-  if (!profile?.approved && !profile?.is_admin) {
-    window.location.href = '/pending.html';
-    return;
-  }
 
   // Fase 1: Leggi ruolo da user_profiles (default 'cso' per retrocompatibilità)
   const { data: upData } = await sb.from('user_profiles')
@@ -405,6 +395,19 @@ async function init() {
     .single();
   window.LEVA_USER_ROLE = upData?.role || 'cso';
   window._userProfileData = upData || null;
+
+  // Carica profilo per check admin e approvazione
+  const { data: profile } = await sb.from('profiles').select('*').eq('id', session.user.id).single();
+  window._isAdmin = profile?.is_admin === true;
+  window._currentProfile = profile;
+
+  // I titolari PMI non necessitano di approvazione — solo i CSO
+  if (window.LEVA_USER_ROLE !== 'titolare') {
+    if (!profile?.approved && !profile?.is_admin) {
+      window.location.href = '/pending.html';
+      return;
+    }
+  }
 
   // Fase 3: Router — CSO o titolare PMI
   if (window.LEVA_USER_ROLE === 'titolare') {

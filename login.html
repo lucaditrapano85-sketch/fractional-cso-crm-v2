@@ -371,7 +371,8 @@ document.getElementById('register-form').addEventListener('submit', async functi
         nome: nome,
         cognome: cognome,
         telefono: telefono,
-        nome_completo: nome + ' ' + cognome
+        nome_completo: nome + ' ' + cognome,
+        role: selectedRole
       }
     }
   });
@@ -384,18 +385,7 @@ document.getElementById('register-form').addEventListener('submit', async functi
     btn.disabled = false;
     btn.textContent = 'Crea account';
   } else {
-    // Crea record in user_profiles con il ruolo scelto
-    if (data.user) {
-      try {
-        await sb.from('user_profiles').upsert({
-          user_id: data.user.id,
-          role: selectedRole,
-          created_at: new Date().toISOString()
-        });
-      } catch(e) {
-        console.warn('user_profiles insert:', e.message);
-      }
-    }
+    // user_profiles viene creato dal trigger handle_new_user() lato server
     msg.textContent = 'Account creato! Accesso in corso...';
     msg.className = 'login-msg success';
     setTimeout(function() { window.location.href = '/index.html'; }, 1000);

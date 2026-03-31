@@ -9126,21 +9126,301 @@ function _renderAHAPMI(container) {
     '</div>';
 }
 
-// ── Stub sezioni (Fasi 5-9) — rimpiazzate fase per fase ──────────────────────
+// ── Sezioni PMI (Fasi 5-9) ────────────────────────────────────────────────────
+
+var _PMI_DIMS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+
+// ── FASE 5 — Home ─────────────────────────────────────────────────────────────
 function renderPMIHome(container) {
-  container.innerHTML = '<div style="padding:40px 32px"><p style="color:rgba(26,26,46,0.45);font-size:13px">Dashboard PMI — in arrivo con la Fase 5</p></div>';
+  var p = window._pmiProspect;
+  if (!p || !p.dims || !Object.keys(p.dims).some(function(k){ return p.dims[k] > 0; })) {
+    container.innerHTML = '<div style="padding:40px 32px;max-width:640px;margin:0 auto">' +
+      '<h2 style="font-size:18px;font-weight:700;color:#1a1a2e;margin-bottom:8px">Benvenuto</h2>' +
+      '<p style="font-size:13px;color:rgba(26,26,46,0.55)">Completa la diagnosi per sbloccare la tua dashboard.</p>' +
+    '</div>';
+    return;
+  }
+
+  var s   = calcScore(p);
+  var sc  = scoreColor(s);
+  var up  = window._userProfileData || {};
+  var pro = window._currentProfile  || {};
+  var nome = pro.nome || (pro.nome_completo || '').split(' ')[0] || '';
+
+  // Prima priorità = dimensione col valore più basso
+  var dimMin = _PMI_DIMS.reduce(function(min, d) {
+    return (p.dims[d] || 0) < (p.dims[min] || 0) ? d : min;
+  }, _PMI_DIMS[0]);
+  var scoreMin = p.dims[dimMin] || 1;
+  var labelMin = getDimLabel(p.settore, dimMin);
+  var stepDesc = (typeof _getStepDesc === 'function') ? _getStepDesc(p.settore, dimMin, scoreMin) : '';
+
+  // Griglia 8 dimensioni
+  var gridHtml = _PMI_DIMS.map(function(d) {
+    var v   = p.dims[d] || 0;
+    var col = dimColor(v);
+    var pct = (v / 5) * 100;
+    var lbl = getDimLabel(p.settore, d);
+    return '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:12px;padding:10px 12px">' +
+      '<div style="font-size:10px;font-weight:600;color:rgba(26,26,46,0.5);margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + lbl + '</div>' +
+      '<div style="height:4px;background:rgba(0,0,0,0.06);border-radius:3px;margin-bottom:6px"><div style="width:' + pct + '%;height:100%;background:' + col + ';border-radius:3px;transition:width .4s"></div></div>' +
+      '<div style="font-size:14px;font-weight:700;color:' + col + '">' + (v > 0 ? v + '/5' : '—') + '</div>' +
+    '</div>';
+  }).join('');
+
+  var saluto = nome ? ('Ciao ' + nome + ' 👋') : 'La tua dashboard';
+
+  container.innerHTML =
+    '<div style="max-width:680px;margin:0 auto;padding:40px 28px">' +
+      '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:4px">' + saluto + '</h1>' +
+      '<p style="font-size:13px;color:rgba(26,26,46,0.45);margin-bottom:28px">Ecco la sintesi della tua situazione commerciale.</p>' +
+
+      // Score + dims
+      '<div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:24px;flex-wrap:wrap">' +
+        // Score circle
+        '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:16px;padding:20px 24px;display:flex;flex-direction:column;align-items:center;min-width:110px;flex-shrink:0">' +
+          '<div style="font-size:10px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:10px">Score</div>' +
+          '<div style="display:flex;align-items:center;justify-content:center;width:70px;height:70px;border-radius:50%;border:2.5px solid ' + sc.text + ';background:' + sc.bg + '">' +
+            '<span style="font-size:26px;font-weight:700;color:' + sc.text + '">' + s + '</span>' +
+          '</div>' +
+          '<div style="font-size:11px;font-weight:600;color:' + sc.text + ';margin-top:8px">' + sc.label + '</div>' +
+        '</div>' +
+        // Griglia dims
+        '<div style="flex:1;min-width:260px">' +
+          '<div style="font-size:10px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:10px">Dimensioni commerciali</div>' +
+          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">' + gridHtml + '</div>' +
+        '</div>' +
+      '</div>' +
+
+      // Prima priorità
+      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:16px 18px;border-left:3px solid #FF6B2B;margin-bottom:20px">' +
+        '<div style="font-size:10px;font-weight:700;color:#FF6B2B;text-transform:uppercase;letter-spacing:0.7px;margin-bottom:5px">Priorità — ' + labelMin + '</div>' +
+        '<div style="font-size:13px;color:#1a1a2e;line-height:1.6">' + (stepDesc && stepDesc !== '—' ? stepDesc : 'Questa è la dimensione con il margine di miglioramento maggiore.') + '</div>' +
+      '</div>' +
+
+      // CTA
+      '<div style="display:flex;gap:10px">' +
+        '<button onclick="showViewPMI(\'azioni\')" style="flex:1;padding:11px 16px;background:#3D5AFE;color:#fff;border:none;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s" onmouseover="this.style.opacity=\'0.88\'" onmouseout="this.style.opacity=\'1\'">Vedi le azioni →</button>' +
+        '<button onclick="showViewPMI(\'score\')" style="flex:1;padding:11px 16px;background:rgba(255,255,255,0.5);color:rgba(26,26,46,0.7);border:1px solid rgba(0,0,0,0.08);border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s" onmouseover="this.style.opacity=\'0.75\'" onmouseout="this.style.opacity=\'1\'">Analisi score</button>' +
+      '</div>' +
+    '</div>';
 }
+
+// ── FASE 6 — Score ────────────────────────────────────────────────────────────
 function renderPMIScore(container) {
-  container.innerHTML = '<div style="padding:40px 32px"><p style="color:rgba(26,26,46,0.45);font-size:13px">Score — in arrivo con la Fase 6</p></div>';
+  var p = window._pmiProspect;
+  if (!p || !p.dims) { renderPMIHome(container); return; }
+
+  var s  = calcScore(p);
+  var sc = scoreColor(s);
+
+  var dimsHtml = _PMI_DIMS.map(function(d) {
+    var v   = p.dims[d] || 0;
+    var col = dimColor(v);
+    var pct = (v / 5) * 100;
+    var lbl = getDimLabel(p.settore, d);
+    var stepDesc = (typeof _getStepDesc === 'function' && v > 0 && v < 5) ? _getStepDesc(p.settore, d, v) : '';
+    return '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:14px 16px;margin-bottom:10px">' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
+        '<div style="font-size:13px;font-weight:700;color:#1a1a2e">' + lbl + '</div>' +
+        '<div style="font-size:15px;font-weight:700;color:' + col + '">' + (v > 0 ? v + '/5' : '—') + '</div>' +
+      '</div>' +
+      '<div style="height:6px;background:rgba(0,0,0,0.06);border-radius:4px;margin-bottom:' + (stepDesc ? '10' : '0') + 'px">' +
+        '<div style="width:' + pct + '%;height:100%;background:' + col + ';border-radius:4px;transition:width .4s"></div>' +
+      '</div>' +
+      (stepDesc ? '<div style="font-size:11px;color:rgba(26,26,46,0.5);line-height:1.55;padding-top:2px">' + stepDesc + '</div>' : '') +
+    '</div>';
+  }).join('');
+
+  container.innerHTML =
+    '<div style="max-width:580px;margin:0 auto;padding:40px 28px">' +
+      '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:4px">Score commerciale</h1>' +
+      '<p style="font-size:13px;color:rgba(26,26,46,0.45);margin-bottom:28px">Analisi delle 8 dimensioni della tua struttura commerciale.</p>' +
+
+      // Score globale
+      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:16px;padding:22px 24px;display:flex;align-items:center;gap:20px;margin-bottom:24px">' +
+        '<div style="display:flex;align-items:center;justify-content:center;width:76px;height:76px;border-radius:50%;border:3px solid ' + sc.text + ';background:' + sc.bg + ';flex-shrink:0">' +
+          '<span style="font-size:28px;font-weight:700;color:' + sc.text + '">' + s + '</span>' +
+        '</div>' +
+        '<div>' +
+          '<div style="font-size:22px;font-weight:700;color:' + sc.text + '">' + sc.label + '</div>' +
+          '<div style="font-size:13px;color:rgba(26,26,46,0.45);margin-top:3px">Punteggio complessivo: <strong>' + s + '/100</strong></div>' +
+        '</div>' +
+      '</div>' +
+
+      // Dettaglio dimensioni
+      '<div style="font-size:10px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:12px">Dettaglio per dimensione</div>' +
+      dimsHtml +
+    '</div>';
 }
+
+// ── FASE 7 — Azioni ───────────────────────────────────────────────────────────
 function renderPMIAzioni(container) {
-  container.innerHTML = '<div style="padding:40px 32px"><p style="color:rgba(26,26,46,0.45);font-size:13px">Azioni — in arrivo con la Fase 7</p></div>';
+  var p = window._pmiProspect;
+  if (!p || !p.dims) { renderPMIHome(container); return; }
+
+  // Ordina dimensioni dal punteggio più basso al più alto
+  var dimsSorted = _PMI_DIMS.slice().sort(function(a, b) {
+    return (p.dims[a] || 0) - (p.dims[b] || 0);
+  });
+
+  var azioniHtml = dimsSorted.map(function(d) {
+    var v    = p.dims[d] || 0;
+    var col  = dimColor(v);
+    var lbl  = getDimLabel(p.settore, d);
+    var desc = (typeof _getStepDesc === 'function') ? _getStepDesc(p.settore, d, v || 1) : '';
+    var urgenza = v <= 1 ? 'Alta priorità' : v <= 3 ? 'Sviluppabile' : 'Ottimo';
+    var urgCol  = v <= 1 ? '#E53935' : v <= 3 ? 'rgba(175,125,0,0.85)' : 'rgba(0,130,95,0.85)';
+    var urgBg   = v <= 1 ? 'rgba(229,57,53,0.08)' : v <= 3 ? 'rgba(175,125,0,0.08)' : 'rgba(0,130,95,0.08)';
+    return '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:14px 16px;margin-bottom:10px">' +
+      '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px">' +
+        '<div style="font-size:13px;font-weight:700;color:#1a1a2e">' + lbl + '</div>' +
+        '<div style="display:flex;align-items:center;gap:6px;flex-shrink:0">' +
+          '<span style="font-size:10px;font-weight:700;color:' + urgCol + ';background:' + urgBg + ';padding:2px 8px;border-radius:6px;white-space:nowrap">' + urgenza + '</span>' +
+          '<span style="font-size:12px;font-weight:700;color:' + col + '">' + (v > 0 ? v + '/5' : '—') + '</span>' +
+        '</div>' +
+      '</div>' +
+      (desc && desc !== '—'
+        ? '<div style="font-size:12px;color:rgba(26,26,46,0.6);line-height:1.6;border-top:1px solid rgba(0,0,0,0.05);padding-top:8px;margin-top:4px">' + desc + '</div>'
+        : '') +
+    '</div>';
+  }).join('');
+
+  container.innerHTML =
+    '<div style="max-width:580px;margin:0 auto;padding:40px 28px">' +
+      '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:4px">Prossimi passi</h1>' +
+      '<p style="font-size:13px;color:rgba(26,26,46,0.45);margin-bottom:28px">Le azioni sono ordinate per priorità, dalla dimensione più critica.</p>' +
+      azioniHtml +
+    '</div>';
 }
+
+// ── FASE 8 — Trend ────────────────────────────────────────────────────────────
 function renderPMITrend(container) {
-  container.innerHTML = '<div style="padding:40px 32px"><p style="color:rgba(26,26,46,0.45);font-size:13px">Trend — in arrivo con la Fase 8</p></div>';
+  var p = window._pmiProspect;
+  if (!p) { renderPMIHome(container); return; }
+
+  var history = (p.score_history || []).slice();
+
+  // Aggiungi score attuale come punto finale se non già presente
+  var scoreNow = calcScore(p);
+  var oggi = new Date().toISOString();
+  if (!history.length || history[history.length - 1].score_base !== scoreNow) {
+    history.push({ data: oggi, score: scoreNow, score_base: scoreNow, evento: 'Diagnosi' });
+  }
+
+  if (history.length < 2) {
+    container.innerHTML =
+      '<div style="max-width:580px;margin:0 auto;padding:40px 28px">' +
+        '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:4px">Trend</h1>' +
+        '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:16px;padding:36px 28px;text-align:center;margin-top:24px">' +
+          '<div style="font-size:32px;margin-bottom:12px">📈</div>' +
+          '<div style="font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:6px">Dati insufficienti</div>' +
+          '<div style="font-size:13px;color:rgba(26,26,46,0.45);line-height:1.6">Il trend si sblocca dopo la seconda diagnosi.<br>Torna tra qualche settimana per vedere l\'evoluzione del tuo score.</div>' +
+        '</div>' +
+      '</div>';
+    return;
+  }
+
+  // Trova min/max score per normalizzare le barre
+  var scores = history.map(function(h) { return h.score || h.score_base || 0; });
+  var maxScore = Math.max.apply(null, scores) || 100;
+  var minScore = Math.min.apply(null, scores);
+  var range = maxScore - minScore || 1;
+
+  var barsHtml = history.map(function(h, i) {
+    var sc = h.score || h.score_base || 0;
+    var col = scoreColor(sc);
+    var pct = Math.max(8, Math.round(((sc - minScore) / range) * 60 + 40));
+    var data = new Date(h.data);
+    var dataStr = data.getDate() + '/' + (data.getMonth() + 1) + '/' + data.getFullYear();
+    var isLast = i === history.length - 1;
+    return '<div style="display:flex;align-items:center;gap:14px;padding:10px 0;border-bottom:' + (isLast ? 'none' : '1px solid rgba(0,0,0,0.04)') + '">' +
+      '<div style="width:70px;font-size:11px;color:rgba(26,26,46,0.45);flex-shrink:0">' + dataStr + '</div>' +
+      '<div style="flex:1;height:8px;background:rgba(0,0,0,0.06);border-radius:4px">' +
+        '<div style="width:' + pct + '%;height:100%;background:' + col.text + ';border-radius:4px;transition:width .5s"></div>' +
+      '</div>' +
+      '<div style="width:36px;font-size:13px;font-weight:700;color:' + col.text + ';text-align:right;flex-shrink:0">' + sc + '</div>' +
+    '</div>';
+  }).join('');
+
+  var delta = scores[scores.length - 1] - scores[0];
+  var deltaStr = (delta > 0 ? '+' : '') + delta + ' punti';
+  var deltaCol = delta > 0 ? 'rgba(0,130,95,0.85)' : delta < 0 ? '#E53935' : 'rgba(26,26,46,0.45)';
+
+  container.innerHTML =
+    '<div style="max-width:580px;margin:0 auto;padding:40px 28px">' +
+      '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:4px">Trend score</h1>' +
+      '<p style="font-size:13px;color:rgba(26,26,46,0.45);margin-bottom:28px">Evoluzione del tuo score commerciale nel tempo.</p>' +
+
+      // Delta card
+      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:16px">' +
+        '<div style="flex:1">' +
+          '<div style="font-size:10px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:4px">Variazione totale</div>' +
+          '<div style="font-size:22px;font-weight:700;color:' + deltaCol + '">' + deltaStr + '</div>' +
+        '</div>' +
+        '<div style="text-align:right">' +
+          '<div style="font-size:10px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:4px">Score attuale</div>' +
+          '<div style="font-size:22px;font-weight:700;color:' + scoreColor(scores[scores.length-1]).text + '">' + scores[scores.length-1] + '</div>' +
+        '</div>' +
+      '</div>' +
+
+      // Barre storia
+      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:16px 20px">' +
+        '<div style="font-size:10px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:12px">Storico diagnosi</div>' +
+        barsHtml +
+      '</div>' +
+    '</div>';
 }
+
+// ── FASE 9 — Profilo ──────────────────────────────────────────────────────────
 function renderPMIProfilo(container) {
-  container.innerHTML = '<div style="padding:40px 32px"><p style="color:rgba(26,26,46,0.45);font-size:13px">Profilo — in arrivo con la Fase 9</p></div>';
+  var p   = window._pmiProspect;
+  var up  = window._userProfileData || {};
+  var pro = window._currentProfile  || {};
+
+  var nomeAzienda = up.company_name || (p ? p.nome : '') || '';
+  var settoreLbl  = (function() {
+    var s = (p ? p.settore : '') || up.sector || '';
+    var found = PMI_MACRO_SETTORI.find(function(x){ return x.id === s; });
+    return found ? found.icon + ' ' + found.label : (s || '—');
+  })();
+  var fasciaLbl = (function() {
+    var f = up.fascia_fatturato || '';
+    var found = PMI_FASCE_FATTURATO.find(function(x){ return x.id === f; });
+    return found ? found.label : (f || '—');
+  })();
+  var nomeCompleto = pro.nome_completo || ((pro.nome || '') + ' ' + (pro.cognome || '')).trim() || '';
+
+  container.innerHTML =
+    '<div style="max-width:520px;margin:0 auto;padding:40px 28px">' +
+      '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:4px">Profilo</h1>' +
+      '<p style="font-size:13px;color:rgba(26,26,46,0.45);margin-bottom:28px">Le informazioni della tua azienda e del tuo account.</p>' +
+
+      // Card azienda
+      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:16px;padding:20px 22px;margin-bottom:14px">' +
+        '<div style="font-size:10px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:14px">Azienda</div>' +
+        _profiloRow('Nome azienda', nomeAzienda || '—') +
+        _profiloRow('Settore', settoreLbl) +
+        _profiloRow('Fatturato', fasciaLbl) +
+      '</div>' +
+
+      // Card utente
+      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:16px;padding:20px 22px;margin-bottom:20px">' +
+        '<div style="font-size:10px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:14px">Account</div>' +
+        _profiloRow('Nome', nomeCompleto || '—') +
+        _profiloRow('Email', pro.email || window._currentUserEmail || '—') +
+      '</div>' +
+
+      // Logout
+      '<button onclick="logout()" style="width:100%;padding:11px 16px;background:rgba(229,57,53,0.08);border:1px solid rgba(229,57,53,0.25);color:#E53935;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s" onmouseover="this.style.opacity=\'0.75\'" onmouseout="this.style.opacity=\'1\'">Esci dall\'account</button>' +
+    '</div>';
+}
+
+function _profiloRow(label, value) {
+  return '<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.05)">' +
+    '<div style="font-size:12px;color:rgba(26,26,46,0.45)">' + label + '</div>' +
+    '<div style="font-size:13px;font-weight:600;color:#1a1a2e;text-align:right;max-width:60%">' + value + '</div>' +
+  '</div>';
 }
 
 
