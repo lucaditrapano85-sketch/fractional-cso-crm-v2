@@ -1,9 +1,9 @@
 :root {
-  --bg:        transparent;
-  --bg2:       rgba(255,255,255,0.38);
-  --bg3:       rgba(255,255,255,0.22);
-  --bg4:       rgba(255,255,255,0.12);
-  --border:    rgba(255,255,255,0.55);
+  --bg:        rgba(255,255,255,0.30);
+  --bg2:       rgba(255,255,255,0.55);
+  --bg3:       rgba(255,255,255,0.40);
+  --bg4:       rgba(255,255,255,0.25);
+  --border:    rgba(255,255,255,0.70);
   --border2:   rgba(0,0,0,0.08);
   --white:     #1a1a2e;
   --gray:      #3a3a4a;
@@ -163,9 +163,9 @@ h1,h2,h3{font-family:'Plus Jakarta Sans',sans-serif;font-weight:600}
 }
 .det-company-row{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:10px}
 .det-company{font-size:26px;color:var(--white);line-height:1.2}
-.det-status-badge{display:flex;align-items:center;gap:7px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:500;color:var(--white);flex-shrink:0;white-space:nowrap}
+.det-status-badge{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.08);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:500;color:var(--white);flex-shrink:0;white-space:nowrap}
 .det-info-labels{display:flex;flex-wrap:wrap;gap:6px;padding-left:12px;margin-bottom:4px}
-.det-label{display:flex;align-items:center;gap:5px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:11px;color:var(--gray);white-space:nowrap}
+.det-label{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.08);border-radius:20px;padding:4px 10px;font-size:11px;color:var(--gray);white-space:nowrap}
 .det-label-icon{font-size:10px;opacity:.7}
 .det-label strong{color:var(--white);font-weight:500}
 .det-meta{display:none}
@@ -180,7 +180,7 @@ h1,h2,h3{font-family:'Plus Jakarta Sans',sans-serif;font-weight:600}
 .btn-orange{background:var(--orange);color:#fff;font-weight:600}
 .btn-orange:hover{opacity:.88;background:var(--orange)}
 /* OUTLINE */
-.btn-secondary{background:transparent;color:var(--gray);border:1px solid rgba(0,0,0,0.18)}
+.btn-secondary{background:rgba(255,255,255,0.5);color:rgba(26,26,46,0.55);border:1px solid rgba(0,0,0,0.08)}
 .btn-secondary:hover{border-color:var(--gray);color:var(--text);background:transparent}
 .btn-danger{background:transparent;color:var(--red);border:1px solid rgba(229,57,53,0.4)}
 .btn-danger:hover{background:var(--red);color:#fff;border-color:var(--red)}
@@ -585,7 +585,7 @@ input[type=range]{flex:1;accent-color:var(--gold)}
 
 /* Kanban */
 .prospect-kanban{display:flex;gap:12px;padding:16px 24px 24px;overflow-x:auto;align-items:flex-start}
-.pk-col{min-width:200px;flex:1;background:var(--bg2);border-radius:10px;overflow:hidden;border:1px solid var(--border)}
+.pk-col{min-width:200px;flex:1;background:rgba(255,255,255,0.35);border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.6)}
 .pk-col-wide{min-width:100%}
 .pk-col-body-grid{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;padding:10px!important}
 .pk-col-header{padding:10px 14px;font-size:13px;font-weight:700;color:#fff;display:flex;justify-content:space-between;align-items:center}
@@ -742,20 +742,20 @@ input[type=range]{flex:1;accent-color:var(--gold)}
   white-space:nowrap;
   transition:all .15s ease;
   color:var(--gray);
-  background:rgba(0,0,0,0.02);
-  border-right:2px solid rgba(0,0,0,0.08);
+  background:transparent;
+  border-right:2px solid rgba(0,0,0,0.06);
 }
 .folder-tab:last-of-type{border-right:none}
 .folder-tab:hover{
-  background:rgba(255,255,255,0.35);
+  background:rgba(255,255,255,0.3);
   color:var(--text);
 }
 .folder-tab.active{
-  background:rgba(70,100,200,0.07);
-  color:rgba(50,80,180,0.9);
+  background:rgba(255,255,255,0.55);
+  color:#1a1a2e;
   font-weight:600;
-  box-shadow:inset 0 -3px 0 rgba(70,100,200,0.6);
-  border-right:2px solid rgba(0,0,0,0.08);
+  box-shadow:inset 0 -3px 0 #3D5AFE;
+  border-right:2px solid rgba(0,0,0,0.06);
 }
 .folder-tab.active-green{
   background:rgba(0,200,150,0.07);
