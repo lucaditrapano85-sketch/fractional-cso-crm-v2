@@ -1045,11 +1045,20 @@ function renderSidebar() {
 
 // -- DASHBOARD ---------------------------------------------
 function renderDashboard() {
+  // Saluto personalizzato
+  (async function() {
+    const { data: { user } } = await sb.auth.getUser();
+    var nome = (user && user.user_metadata && (user.user_metadata.nome || user.user_metadata.nome_completo || user.user_metadata.full_name)) || '';
+    var ora = new Date().getHours();
+    var saluto = ora < 13 ? 'Buongiorno' : ora < 18 ? 'Buon pomeriggio' : 'Buonasera';
+    var h1 = document.querySelector('#view-dashboard .dash-header h1');
+    if (h1) h1.textContent = nome ? saluto + ', ' + nome.split(' ')[0] : 'Dashboard';
+  })();
+
   const total=prospects.length;
   const hot=prospects.filter(p=>calcScore(p)>=70).length;
   const prop=prospects.filter(p=>p.stato==='proposta').length;
   const closed=prospects.filter(p=>p.stato==='chiuso').length;
-  // Metriche aggregate portafoglio
   var fatTotale = 0, fatPotenziale = 0, scoreMedia = 0, conFatturato = 0;
   prospects.forEach(function(p) {
     if (p.fatturato_anno_1) { fatTotale += p.fatturato_anno_1; conFatturato++; }
@@ -1061,20 +1070,21 @@ function renderDashboard() {
   var fmtK = function(v) { return v >= 1000000 ? (v/1000000).toFixed(1) + 'M' : Math.round(v/1000) + 'k'; };
   var convRate = total > 0 ? Math.round(closed / total * 100) : 0;
 
+  var kpiBorderStyle = 'border-radius:0 14px 14px 0;';
   document.getElementById('kpi-grid').innerHTML = [
-    { label: 'Prospect totali', val: total, cls: '', filter: 'tutti' },
-    { label: 'Score alto (\u226570)', val: hot, cls: '', filter: 'score' },
-    { label: 'In proposta', val: prop, cls: '', filter: 'proposta' },
-    { label: 'Chiusi', val: closed, cls: '', filter: 'chiuso' },
-  ].map(k => `<div class="kpi-card ${k.cls}" onclick="showView('prospects');setProspectFilter('${k.filter}')" style="cursor:pointer" title="Clicca per vedere i prospect">
+    { label: 'Prospect totali', val: total, filter: 'tutti', border: '#3D5AFE' },
+    { label: 'Score alto (\u226570)', val: hot, filter: 'score', border: 'rgba(0,130,95,0.85)' },
+    { label: 'In proposta', val: prop, filter: 'proposta', border: '#FF6B2B' },
+    { label: 'Chiusi', val: closed, filter: 'chiuso', border: 'rgba(175,125,0,0.85)' },
+  ].map(k => `<div class="kpi-card" onclick="showView('prospects');setProspectFilter('${k.filter}')" style="cursor:pointer;border-left:3px solid ${k.border};${kpiBorderStyle}" title="Clicca per vedere i prospect">
     <div class="kpi-label">${k.label}</div>
     <div class="kpi-val">${k.val}</div>
   </div>`).join('') +
   '<div style="grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:14px">' +
-    '<div class="kpi-card"><div class="kpi-label">Fatturato gestito</div><div class="kpi-val" style="font-size:22px">' + fmtK(fatTotale) + '\u20AC</div><div class="kpi-sub">' + conFatturato + ' prospect con fatturato</div></div>' +
-    '<div class="kpi-card"><div class="kpi-label">Potenziale crescita 12m</div><div class="kpi-val tl-green" style="font-size:22px">+' + fmtK(fatPotenziale) + '\u20AC</div><div class="kpi-sub">somma proiezioni portafoglio</div></div>' +
-    '<div class="kpi-card"><div class="kpi-label">Score medio</div><div class="kpi-val" style="font-size:22px">' + scoreMedia + '/100</div><div class="kpi-sub">media portafoglio</div></div>' +
-    '<div class="kpi-card"><div class="kpi-label">Tasso conversione</div><div class="kpi-val" style="font-size:22px">' + convRate + '%</div><div class="kpi-sub">chiusi / totali</div></div>' +
+    '<div class="kpi-card" style="border-left:3px solid #3D5AFE;'+kpiBorderStyle+'"><div class="kpi-label">Fatturato gestito</div><div class="kpi-val" style="font-size:22px">' + fmtK(fatTotale) + '\u20AC</div><div class="kpi-sub">' + conFatturato + ' prospect con fatturato</div></div>' +
+    '<div class="kpi-card" style="border-left:3px solid rgba(0,130,95,0.85);'+kpiBorderStyle+'"><div class="kpi-label">Potenziale crescita 12m</div><div class="kpi-val tl-green" style="font-size:22px">+' + fmtK(fatPotenziale) + '\u20AC</div><div class="kpi-sub">somma proiezioni portafoglio</div></div>' +
+    '<div class="kpi-card" style="border-left:3px solid rgba(175,125,0,0.85);'+kpiBorderStyle+'"><div class="kpi-label">Score medio</div><div class="kpi-val" style="font-size:22px">' + scoreMedia + '/100</div><div class="kpi-sub">media portafoglio</div></div>' +
+    '<div class="kpi-card" style="border-left:3px solid #FF6B2B;'+kpiBorderStyle+'"><div class="kpi-label">Tasso conversione</div><div class="kpi-val" style="font-size:22px">' + convRate + '%</div><div class="kpi-sub">chiusi / totali</div></div>' +
   '</div>';
 
   // Alert scadenze in avvicinamento
@@ -1169,6 +1179,51 @@ function renderDashboard() {
       \x3cdiv class="pipe-col-scroll">${cards}\x3c/div>
     \x3c/div>`;
   }).join('');
+
+  // Sezione "Richiede Attenzione"
+  var oggi = new Date();
+  var problematici = prospects.filter(function(p) {
+    if (p.stato === 'chiuso') return false;
+    // Score critico
+    var s = calcScore(p);
+    if (s < 30 && s > 0) return true;
+    // Nessuna interazione da 30+ giorni in stato "nuovo"
+    if (p.stato === 'nuovo') {
+      var created = p.created_at ? new Date(p.created_at) : null;
+      if (created && (oggi - created) / 86400000 > 30) return true;
+    }
+    // Score in calo (score_history)
+    if (p.score_history && p.score_history.length >= 2) {
+      var last = p.score_history[p.score_history.length - 1];
+      var prev = p.score_history[p.score_history.length - 2];
+      if (last && prev && (last.score || 0) < (prev.score || 0) - 10) return true;
+    }
+    return false;
+  });
+
+  var attContainer = document.getElementById('richiede-attenzione');
+  if (attContainer) {
+    if (problematici.length === 0) {
+      attContainer.innerHTML = '';
+    } else {
+      attContainer.innerHTML = '<div class="section-title" style="margin-top:24px;margin-bottom:12px">\u26A0 Richiede attenzione (' + problematici.length + ')</div>' +
+        '<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:24px">' +
+        problematici.map(function(p) {
+          var s = calcScore(p);
+          var motivo = s < 30 && s > 0 ? 'Score critico: ' + s + '/100' :
+            p.stato === 'nuovo' ? 'Nessuna interazione da ' + Math.floor((oggi - new Date(p.created_at)) / 86400000) + ' giorni' :
+            'Score in calo';
+          return '<div onclick="openProspect(\'' + p.id + '\')" style="cursor:pointer;background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-left:3px solid #E53935;border-radius:0 12px 12px 0;padding:12px 16px;display:flex;align-items:center;justify-content:space-between">' +
+            '<div>' +
+              '<div style="font-size:13px;font-weight:600;color:#1a1a2e">' + p.nome + '</div>' +
+              '<div style="font-size:11px;color:rgba(26,26,46,0.5);margin-top:2px">' + (p.settore || '--') + '</div>' +
+            '</div>' +
+            '<div style="font-size:12px;font-weight:600;color:#E53935">' + motivo + '</div>' +
+          '</div>';
+        }).join('') +
+        '</div>';
+    }
+  }
 }
 
 // -- SEZIONE PROSPECT --------------------------------------
