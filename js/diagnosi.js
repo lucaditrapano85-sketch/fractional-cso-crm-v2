@@ -393,6 +393,14 @@ async function init() {
     return;
   }
 
+  // Fase 1: Leggi ruolo da user_profiles (default 'cso' per retrocompatibilità)
+  const { data: upData } = await sb.from('user_profiles')
+    .select('role, company_name, sector, fascia_fatturato')
+    .eq('user_id', session.user.id)
+    .single();
+  window.LEVA_USER_ROLE = upData?.role || 'cso';
+  window._userProfileData = upData || null;
+
   document.getElementById('dash-date').textContent=new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 
   await _loadProspectsData();
