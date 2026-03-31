@@ -312,11 +312,42 @@ async function salvaScoreSnapshot(p, evento, nota) {
   if (i >= 0) prospects[i].score_history = newHistory;
 }
 
-function scoreColor(s) {
-  if(s>=70) return {text:'rgba(0,130,95,0.85)',bg:'rgba(0,180,130,0.1)',border:'rgba(0,160,115,0.3)',label:'Buona base'};
-  if(s>=45) return {text:'rgba(45,75,190,0.8)',bg:'rgba(61,90,254,0.08)',border:'rgba(61,90,254,0.25)',label:'Da sviluppare'};
-  return {text:'rgba(170,40,38,0.85)',bg:'rgba(200,55,50,0.08)',border:'rgba(200,55,50,0.25)',label:'Critica'};
+function dimColor(v) {
+  if (v >= 4) return 'rgba(0,130,95,0.85)';
+  if (v >= 2) return 'rgba(175,125,0,0.85)';
+  return '#E53935';
 }
+
+function scoreColor(s) {
+  if(s>=70) return {text:'rgba(0,130,95,0.9)',bg:'rgba(0,130,95,0.1)',border:'rgba(0,130,95,0.35)',label:'Buona base'};
+  if(s>=45) return {text:'rgba(175,125,0,0.9)',bg:'rgba(175,125,0,0.1)',border:'rgba(175,125,0,0.35)',label:'Da sviluppare'};
+  return {text:'#E53935',bg:'rgba(229,57,53,0.1)',border:'rgba(229,57,53,0.4)',label:'Critica'};
+}
+
+function showDimPopup(e, label, desc, col) {
+  let popup = document.getElementById('dim-popup');
+  if (!popup) {
+    popup = document.createElement('div');
+    popup.id = 'dim-popup';
+    document.body.appendChild(popup);
+  }
+  popup.innerHTML = `<div class="dp-label" style="color:${col}">${label}</div><div class="dp-desc">${desc}</div>`;
+  popup.style.display = 'block';
+  popup.style.position = 'fixed';
+  popup.style.zIndex = '9999';
+  const rect = e.currentTarget.getBoundingClientRect();
+  const popupW = 260;
+  let left = rect.left;
+  if (left + popupW > window.innerWidth - 12) left = window.innerWidth - popupW - 12;
+  if (left < 12) left = 12;
+  popup.style.left = left + 'px';
+  popup.style.top = (rect.bottom + 6) + 'px';
+  e.stopPropagation();
+}
+document.addEventListener('click', function() {
+  const popup = document.getElementById('dim-popup');
+  if (popup) popup.style.display = 'none';
+});
 
 function showToast(msg, type='success') {
   const t = document.getElementById('toast');
@@ -1288,7 +1319,6 @@ async function renderProspectDetail(id) {
 
   const pCol = getProspectColor(p);
   document.getElementById('det-company-name').textContent = p.nome;
-  document.getElementById('det-company-name').style.borderLeftColor = pCol;
 
   // Status badge top right
   document.getElementById('det-status-badge').innerHTML =
@@ -1342,7 +1372,7 @@ async function renderProspectDetail(id) {
   if (rsl) { rsl.textContent = sLive ? scLive.label : ''; rsl.style.color = sLive ? scLive.text : 'var(--gray)'; }
   if (rsb && sLive) {
     rsb.style.borderColor = scLive.border;
-    rsb.style.background = sLive >= 70 ? '#e8f5ee' : sLive >= 45 ? '#fdf3e3' : '#fdecea';
+    rsb.style.background = scLive.bg;
   }
 
   // Barra progressione
@@ -1375,16 +1405,17 @@ async function renderProspectDetail(id) {
   document.getElementById('det-dims').innerHTML=DIMS.map(d=>{
     const v=p.dims?.[d.id]||0, pct=(v/5)*100;
     const t=p.targets?.[d.id];
-    const col=pct>=60?'rgba(0,200,150,0.75)':pct>=35?'rgba(61,90,254,0.75)':'rgba(229,57,53,0.75)';
+    const col=dimColor(v);
+    const colBg=v>=4?'rgba(0,130,95,0.1)':v>=2?'rgba(175,125,0,0.1)':'rgba(229,57,53,0.12)';
     const _curStep = Math.max(v, 1);
     const desc = _getStepDesc(p.settore || '', d.id, _curStep);
+    const label = getDimLabel(p.settore, d.id);
     return `\x3cdiv class="dim-row" style="margin-bottom:10px">
-      \x3cdiv class="dim-label" style="display:flex;align-items:center;margin-bottom:3px">${getDimLabel(p.settore, d.id)}\x3c/div>
-      \x3cdiv style="display:flex;align-items:center;gap:8px">
-        \x3cdiv class="dim-bar-bg" style="flex:1">\x3cdiv class="dim-bar-fill" style="width:${pct}%;background:${col}">\x3c/div>\x3c/div>
-        \x3cdiv class="dim-val" style="color:${col}">${v}/5\x3c/div>
+      \x3cdiv style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+        \x3cdiv class="dim-label" style="color:#1a1a2e;font-weight:600">${label}\x3c/div>
+        \x3cspan style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;background:${colBg};color:${col};border:1px solid ${col}33">${v}/5\x3c/span>
       \x3c/div>
-      \x3cdiv style="font-size:10px;color:${col};margin-top:2px;line-height:1.3">${desc}\x3c/div>
+      \x3cdiv class="dim-bar-bg" onclick="showDimPopup(event,'${label.replace(/'/g,"\\'")}','${desc.replace(/'/g,"\\'").replace(/\n/g,' ')}','${col}')">\x3cdiv class="dim-bar-fill" style="width:${pct}%;background:${col}">\x3c/div>\x3c/div>
     \x3c/div>`;
   }).join('');
 
@@ -1640,13 +1671,13 @@ function buildSliders(vals={}) {
           oninput="
             document.getElementById('sv-${d.id}').textContent=this.value;
             document.getElementById('sd-${d.id}').textContent=(DIM_DESC['${d.id}']?.[this.value-1]||'');
-            document.getElementById('sd-${d.id}').style.color=this.value>=4?'var(--green)':this.value>=3?'var(--gold)':'var(--red)';
+            document.getElementById('sd-${d.id}').style.color=dimColor(parseInt(this.value));
           ">
         \x3cdiv class="slider-val" id="sv-${d.id}">${v}\x3c/div>
       \x3c/div>
       \x3cdiv id="sd-${d.id}" style="font-size:11px;padding:3px 6px;border-radius:4px;
-        color:${v>=4?'var(--green)':v>=3?'var(--gold)':'var(--red)'};
-        background:${v>=4?'var(--green-bg)':v>=3?'var(--amber-bg)':'var(--red-bg)'};
+        color:${dimColor(v)};
+        background:${v>=4?'rgba(0,130,95,0.08)':v>=2?'rgba(175,125,0,0.08)':'rgba(229,57,53,0.08)'};
         line-height:1.4">${desc}\x3c/div>
     \x3c/div>`;
   }).join('');
@@ -3609,16 +3640,11 @@ function calcolaCostoModuli(settore, dimId, stepKey, moduliSelezionati) {
         items.forEach(function(item) {
           var v = mod.varianti.find(function(x) { return x.id === item.variante; });
           if (v) {
-            var qty = item.qty || 1;
+            var qty = item.qty != null ? item.qty : 1;
             r += (v.costo_mensile || 0) * qty;
             u += (v.costo_setup || 0) * qty;
           }
         });
-      } else if (mod.obbligatorio && mod.varianti.length > 0) {
-        // Default: min quantità della prima variante
-        var qty = mod.min || 1;
-        r += (mod.varianti[0].costo_mensile || 0) * qty;
-        u += (mod.varianti[0].costo_setup || 0) * qty;
       }
     }
   });
@@ -3659,12 +3685,9 @@ function calcolaImpattoModuli(settore, dimId, stepKey, moduliSelezionati) {
       }
     } else if (mod.tipo === 'multi') {
       var items = Array.isArray(sel[mod.id]) ? sel[mod.id] : [];
-      if (items.length === 0 && mod.obbligatorio && mod.varianti.length > 0) {
-        items = [{ variante: mod.varianti[0].id, qty: mod.min || 1 }];
-      }
       items.forEach(function(item) {
         var v = mod.varianti.find(function(x) { return x.id === item.variante; });
-        if (v) totalImpatto += (v.impatto || 0) * (item.qty || 1);
+        if (v) totalImpatto += (v.impatto || 0) * (item.qty != null ? item.qty : 0);
       });
     }
   });
@@ -3693,10 +3716,6 @@ function calcolaCostoModuliDefault(settore, dimId, stepKey) {
     } else if (mod.tipo === 'scelta' && mod.varianti.length > 0) {
       r += mod.varianti[0].costo_mensile || 0;
       u += mod.varianti[0].costo_setup || 0;
-    } else if (mod.tipo === 'multi' && mod.varianti.length > 0) {
-      var qty = mod.min || 1;
-      r += (mod.varianti[0].costo_mensile || 0) * qty;
-      u += (mod.varianti[0].costo_setup || 0) * qty;
     }
   });
   return { r: r, u: u };
@@ -6386,11 +6405,19 @@ function _buildGraficoTimeline(p) {
     // "ok" solo se ha completamenti per questa dimensione (sessione fatta)
     const dimCompletata = !haGap && tgt > 1 && _sc[d] && Object.keys(_sc[d]).length > 0;
     const badgeClass = haGap ? 'tl-badge-gap' : dimCompletata ? 'tl-badge-ok' : 'tl-badge-neutral';
-    const badgeText = haGap ? (cur + ' \u2192 ' + tgt) : ('livello ' + cur);
+    const badgeText = haGap ? (cur + ' \u2192 ' + tgt) : (dimCompletata ? '\u2713 ' + cur + '/5' : cur + '/5');
+    const barCol = dimColor(cur);
+    const tgtBarCol = dimColor(tgt);
+    const curPct = (cur/5)*100;
+    const tgtPct = (tgt/5)*100;
     return '<div class="tl-dim-row">' +
       '<div class="tl-dim-header">' +
         '<span class="tl-dim-name">' + _getDimLabel(settore, d) + '</span>' +
         '<span class="tl-dim-badge ' + badgeClass + '">' + badgeText + '</span>' +
+      '</div>' +
+      '<div style="position:relative;height:5px;background:rgba(26,26,46,0.08);border-radius:3px;overflow:visible">' +
+        '<div style="position:absolute;left:0;top:0;height:100%;width:' + curPct + '%;background:' + barCol + ';border-radius:3px"></div>' +
+        (haGap ? '<div style="position:absolute;left:' + tgtPct + '%;top:-2px;width:2px;height:9px;background:rgba(175,125,0,0.7);border-radius:1px;transform:translateX(-50%)"></div>' : '') +
       '</div>' +
     '</div>';
   }).join('');
@@ -6405,8 +6432,7 @@ function _buildGraficoTimeline(p) {
       const detail = typeof getStepDetail === 'function' ? getStepDetail(settore, d, stepKey) : null;
       const desc = detail ? detail.cosa : '';
       const costoStr = detail ? (detail.costo_mensile > 0 ? '\u2248' + detail.costo_mensile.toLocaleString('it-IT') + '\u20AC/mese' : 'Nessun costo') + ' \u00B7 Operativo in ~' + detail.tempo_mesi + ' ' + (detail.tempo_mesi === 1 ? 'mese' : 'mesi') : '';
-      const colors = {vendite:'rgb(40,75,160)',pipeline:'#00C896',ecommerce:'#BA7517',marketing:'#BA7517',team:'rgb(40,75,160)',processi:'#888780',ricavi:'#00C896',sitoweb:'#888780'};
-      const col = colors[d] || '#888780';
+      const col = dimColor(dims[d] || 1);
       return '<div class="tl-azione-row">' +
         '<div class="tl-azione-dot" style="background:' + col + '"></div>' +
         '<div>' +
@@ -7078,8 +7104,8 @@ function renderTargetEditor(p) {
     const savedTgt = (d.id in targets) ? targets[d.id] : null;
     const tgt = (savedTgt !== null && savedTgt > 0) ? savedTgt : cur;
     const scad = scadenze[d.id] || '';
-    const curCol = cur >= 4 ? 'var(--green)' : cur >= 3 ? 'var(--gold)' : 'var(--red)';
-    const tgtCol = tgt >= 4 ? 'var(--green)' : tgt >= 3 ? 'var(--gold)' : 'var(--red)';
+    const curCol = dimColor(cur);
+    const tgtCol = dimColor(tgt);
     const curLvl = Math.max(cur, 1);
     const tgtLvl = Math.max(tgt, 1);
     const curDesc = _getStepDesc(settore, d.id, Math.min(curLvl, 5));
@@ -7090,34 +7116,36 @@ function renderTargetEditor(p) {
     const warningTetto = tgt > tettoSettore
       ? `\x3cdiv class="tetto-warning">&#9888;&#65039; Obiettivo oltre il tetto strutturale (max ${tettoSettore}) — questa scelta implica un cambio di modello di business\x3c/div>`
       : '';
-    return `\x3cdiv style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--border)">
-      \x3cdiv style="font-size:12px;font-weight:600;color:var(--white);margin-bottom:6px">${getDimLabel(settore, d.id)}\x3c/div>
-      \x3cdiv style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px">
-        \x3cdiv style="background:var(--bg3);border-radius:var(--rs);padding:7px 10px">
-          \x3cdiv style="font-size:9px;color:var(--gray);letter-spacing:.05em;text-transform:uppercase;margin-bottom:3px">Stato attuale\x3c/div>
-          \x3cdiv style="font-size:13px;font-weight:600;color:${curCol}">${cur}/5\x3c/div>
-          \x3cdiv style="font-size:10px;color:${curCol};line-height:1.4;margin-top:2px">${curDesc}\x3c/div>
-        \x3c/div>
-        \x3cdiv style="background:var(--amber-bg);border:1px solid var(--gold-dim);border-radius:var(--rs);padding:7px 10px">
-          \x3cdiv style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
-            \x3cdiv style="font-size:9px;color:var(--gold);letter-spacing:.05em;text-transform:uppercase">Obiettivo finale\x3c/div>
-            \x3cspan id="tsem-${d.id}" style="font-size:12px;font-weight:700;white-space:nowrap">${scad ? calcolaSemaforo(scad, d.id) : ''}\x3c/span>
-          \x3c/div>
-          \x3cdiv class="target-input-wrap" style="margin-bottom:6px">
-            \x3cbutton class="target-btn" onclick="var e=document.getElementById('tgt-${d.id}');if(e&&parseInt(e.value)>1){e.value=parseInt(e.value)-1;previewTarget();updateTargetDesc('${d.id}');aggiornaAzioni('${d.id}')}">\u2212\x3c/button>
-            \x3cinput class="target-input" type="number" id="tgt-${d.id}" min="1" max="5" value="${tgt}"
-              onchange="previewTarget();updateTargetDesc('${d.id}');aggiornaAzioni('${d.id}')" oninput="previewTarget();updateTargetDesc('${d.id}');aggiornaAzioni('${d.id}')">
-            \x3cbutton class="target-btn" onclick="var e=document.getElementById('tgt-${d.id}');if(e&&parseInt(e.value)<5){e.value=parseInt(e.value)+1;previewTarget();updateTargetDesc('${d.id}');aggiornaAzioni('${d.id}')}">+\x3c/button>
-            \x3cspan style="font-size:10px;color:var(--gray)">/5\x3c/span>
-          \x3c/div>
-          ${warningTetto}
-          \x3cdiv id="tdesc-${d.id}" style="font-size:10px;color:${tgtCol};line-height:1.4;margin-bottom:6px">${tgtDesc}\x3c/div>
-          \x3cdiv style="font-size:9px;color:var(--gray);margin-bottom:3px">Entro il\x3c/div>
-          \x3cinput type="date" id="tscad-${d.id}" value="${scad}"
-            onchange="aggiornaSemaforo('${d.id}');aggiornaAzioni('${d.id}')"
-            style="width:100%;padding:3px 6px;background:var(--bg3);border:1px solid var(--border2);border-radius:4px;color:var(--white);font-size:11px;font-family:inherit">
-        \x3c/div>
+    const haGap = tgt > cur;
+    const chipBg = haGap ? `rgba(175,125,0,0.1)` : `rgba(0,130,95,0.1)`;
+    const chipCol = haGap ? `rgba(175,125,0,0.9)` : `rgba(0,130,95,0.85)`;
+    const chipBorder = haGap ? `rgba(175,125,0,0.25)` : `rgba(0,130,95,0.25)`;
+    const chipText = haGap ? `${cur}/5 → ${tgt}/5` : `${cur}/5 ✓`;
+    const curPct = (cur/5)*100;
+    const tgtPct = (tgt/5)*100;
+    return `\x3cdiv style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid rgba(0,0,0,0.06)">
+      \x3cdiv style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        \x3cdiv style="font-size:12px;font-weight:600;color:#1a1a2e">${getDimLabel(settore, d.id)}\x3c/div>
+        \x3cspan id="tsem-${d.id}" style="font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;background:${chipBg};color:${chipCol};border:1px solid ${chipBorder}">${chipText}${scad ? ' ' + calcolaSemaforo(scad, d.id) : ''}\x3c/span>
       \x3c/div>
+      \x3cdiv onclick="showTargetPopup(event,'${d.id}')"
+        style="position:relative;height:8px;background:rgba(26,26,46,0.08);border-radius:4px;overflow:visible;cursor:pointer;margin-bottom:10px">
+        \x3cdiv style="position:absolute;left:0;top:0;height:100%;width:${curPct}%;background:${curCol};border-radius:4px;transition:width .5s ease">\x3c/div>
+        ${haGap ? `\x3cdiv style="position:absolute;left:${tgtPct}%;top:-3px;width:3px;height:14px;background:rgba(175,125,0,0.8);border-radius:2px;transform:translateX(-50%)">\x3c/div>` : ''}
+      \x3c/div>
+      \x3cdiv style="display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center">
+        \x3cdiv class="target-input-wrap">
+          \x3cbutton class="target-btn" onclick="var e=document.getElementById('tgt-${d.id}');if(e&&parseInt(e.value)>1){e.value=parseInt(e.value)-1;previewTarget();updateTargetDesc('${d.id}');aggiornaAzioni('${d.id}')}">\u2212\x3c/button>
+          \x3cinput class="target-input" type="number" id="tgt-${d.id}" min="1" max="5" value="${tgt}"
+            onchange="previewTarget();updateTargetDesc('${d.id}');aggiornaAzioni('${d.id}')" oninput="previewTarget();updateTargetDesc('${d.id}');aggiornaAzioni('${d.id}')">
+          \x3cbutton class="target-btn" onclick="var e=document.getElementById('tgt-${d.id}');if(e&&parseInt(e.value)<5){e.value=parseInt(e.value)+1;previewTarget();updateTargetDesc('${d.id}');aggiornaAzioni('${d.id}')}">+\x3c/button>
+        \x3c/div>
+        \x3cinput type="date" id="tscad-${d.id}" value="${scad}"
+          onchange="aggiornaSemaforo('${d.id}');aggiornaAzioni('${d.id}')"
+          style="padding:4px 8px;background:rgba(255,255,255,0.6);border:1px solid rgba(26,26,46,0.15);border-radius:6px;color:#1a1a2e;font-size:11px;font-family:inherit;width:100%">
+      \x3c/div>
+      \x3cdiv id="tdesc-${d.id}" style="display:none">${tgtDesc}\x3c/div>
+      ${warningTetto}
       \x3cdiv id="az-block-${d.id}">${subObiettiviHtml}\x3c/div>
     \x3c/div>`;
   }).join('');
@@ -7157,7 +7185,7 @@ function previewTarget() {
   const barWrapEl = document.getElementById('radar-score-bar-wrap');
   if (rsnEl) { rsnEl.textContent = sLivePreview; rsnEl.style.color = scP.text; }
   if (rslEl) { rslEl.textContent = scP.label; rslEl.style.color = scP.text; }
-  if (rsbEl) { rsbEl.style.borderColor = scP.border; rsbEl.style.background = sLivePreview >= 70 ? '#e8f5ee' : sLivePreview >= 45 ? '#fdf3e3' : '#fdecea'; }
+  if (rsbEl) { rsbEl.style.borderColor = scP.border; rsbEl.style.background = scP.bg; }
   if (barWrapEl) barWrapEl.style.display = 'block';
   if (barLiveEl) { barLiveEl.style.width = sLivePreview + '%'; barLiveEl.style.background = scP.text; }
   if (barTgtEl)  barTgtEl.style.width = sPreview + '%';
@@ -7169,6 +7197,17 @@ function previewTarget() {
   if (costoEl && ic2?.costoMensileTot) {
     costoEl.textContent = ic2.costoMensileTot.toLocaleString('it-IT') + '€/mese';
   }
+}
+
+function showTargetPopup(event, dimId) {
+  const p = prospects.find(x => x.id === currentId);
+  if (!p) return;
+  const tgtEl = document.getElementById('tgt-' + dimId);
+  const tgt = tgtEl ? (parseInt(tgtEl.value) || 1) : 1;
+  const settore = p.settore || '';
+  const label = getDimLabel(settore, dimId);
+  const desc = _getStepDesc(settore, dimId, Math.min(Math.max(tgt, 1), 5));
+  showDimPopup(event, label, desc, dimColor(tgt));
 }
 
 function updateTargetDesc(dimId) {
@@ -7352,9 +7391,6 @@ function aggiornaAzioni(dimId) {
 
         } else if (mod.tipo === 'multi') {
           var items = Array.isArray(stepSel[mod.id]) ? stepSel[mod.id] : [];
-          if (items.length === 0 && mod.obbligatorio && mod.varianti.length) {
-            items = [{ variante: mod.varianti[0].id, qty: mod.min || 1 }];
-          }
           mod.varianti.forEach(function(v) {
             var found = items.find(function(x) { return x.variante === v.id; });
             var qty = found ? found.qty : 0;
@@ -7462,12 +7498,9 @@ function setModuloMultiQty(dimId, step, modId, varianteId, qty) {
   if (!Array.isArray(stepSel[modId])) stepSel[modId] = [];
   var items = stepSel[modId];
   var idx = items.findIndex(function(x) { return x.variante === varianteId; });
-  if (qty <= 0) {
-    if (idx >= 0) items.splice(idx, 1);
-  } else {
-    if (idx >= 0) items[idx].qty = qty;
-    else items.push({ variante: varianteId, qty: qty });
-  }
+  if (qty < 0) qty = 0;
+  if (idx >= 0) items[idx].qty = qty;
+  else items.push({ variante: varianteId, qty: qty });
   // Re-render il blocco per aggiornare i numeri
   aggiornaAzioni(dimId);
   previewTarget();

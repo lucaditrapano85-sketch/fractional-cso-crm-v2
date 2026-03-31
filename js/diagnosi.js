@@ -27,7 +27,21 @@ function calcolaScoreDimensione(dimId, famiglia, risposte) {
   var copertura = pesoRisposto / pesoTotale;
   var scoreBase = (punteggioTot / pesoRisposto) * 4 + 1;
   var fattoreCopertura = copertura < 0.5 ? 0.7 + (copertura * 0.6) : 1;
-  return Math.round(Math.min(5, Math.max(1, scoreBase * fattoreCopertura)));
+  var score = Math.round(Math.min(5, Math.max(1, scoreBase * fattoreCopertura)));
+
+  // Cap: lo score non può superare (livello_MC + 1).
+  // La domanda MC è l'ancoraggio principale — le YN affinano ma non saltano livello.
+  var mcDomanda = domande.find(function(d){ return d.tipo === 'mc'; });
+  if (mcDomanda) {
+    var mcVal = risposte[mcDomanda.id];
+    if (mcVal !== undefined && mcVal !== null && mcVal !== '') {
+      var mcLivello = typeof mcVal === 'number' ? mcVal : parseInt(mcVal) || 0;
+      var maxConsentito = mcLivello + 1; // opzione 0 → max 1, opzione 4 → max 5
+      score = Math.min(score, maxConsentito);
+    }
+  }
+
+  return score;
 }
 
 // ── DIAGNOSI GUIDATA — LOGICA ──────────────────────────────────────────────
@@ -74,7 +88,7 @@ async function resetDiagnosi() {
   var p = prospects.find(function(x){ return x.id === currentId; });
   if (!p) return;
   try {
-    await sb.from('prospects').update({ dims: {}, dims_answers: {}, step_completamenti: {}, targets: {}, score_history: [] }).eq('id', currentId);
+    await sb.from('prospects').update({ dims: {}, dims_answers: {}, step_completamenti: {}, azioni_completate: {}, targets: {}, score_history: [] }).eq('id', currentId);
     var i = prospects.findIndex(function(x){ return x.id === currentId; });
     prospects[i].dims = {};
     prospects[i].dims_answers = {};
@@ -97,24 +111,6 @@ function apriDiagnosi() {
     showToast('Seleziona prima il settore del prospect', 'error');
     return;
   }
-  // Se esiste già una diagnosi, chiedi conferma e resetta tutto
-  var hasDiagnosi = p.dims && typeof p.dims === 'object' && Object.keys(p.dims).length > 0 && Object.values(p.dims).some(function(v){ return v > 0; });
-  if (hasDiagnosi) {
-    if (!confirm('Esiste già una diagnosi per questo prospect.\n\nVuoi cancellarla e ricominciare da zero?\n\nVerranno azzerati: diagnosi, grafico e target.')) return;
-    // Reset completo in memoria
-    p.dims = {};
-    p.dims_answers = {};
-    p.targets = {};
-    p.score_history = [];
-    p.step_completamenti = {};
-    p.azioni_completate = {};
-    _diagRisposte = {};
-    // Salva su DB in background
-    try { sb.from('prospects').update({ dims: {}, dims_answers: {}, targets: {}, score_history: [], step_completamenti: {}, azioni_completate: {} }).eq('id', p.id); } catch(e) {}
-    // Forza re-render della pagina dietro
-    drawRadar({}, {});
-    renderProspectDetail(p.id);
-  }
   _diagProspect = p;
   var settoreBase = FAMIGLIA_SETTORE[p.settore] || 'b2b_manifatturiero';
   var isAutomotive = ['commercio_auto_moto_nuovo','commercio_auto_moto_usato'].indexOf(p.settore) >= 0;
@@ -129,10 +125,6 @@ function apriDiagnosi() {
     : {};
   document.getElementById('diagnosi-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
-  // Ripristina sempre il pulsante avanti a diagNext
-  var btn = document.getElementById('diag-btn-next');
-  btn.textContent = 'Avanti';
-  btn.setAttribute('onclick', 'diagNext()');
   document.getElementById('diag-btn-prev').style.display = '';
   renderDiagStep();
 }
@@ -273,7 +265,7 @@ function aggiornaScorePreview(dimId) {
   var score = calcolaScoreDimensione(dimId, _diagFamiglia, _diagRisposte[dimId] || {});
   var previewEl = document.getElementById('diag-score-preview');
   if (score > 0) {
-    var col = score >= 4 ? '#30D158' : score >= 3 ? '#FF9500' : '#FF3B30';
+    var col = (typeof dimColor === 'function') ? dimColor(score) : (score >= 4 ? 'rgba(0,130,95,0.85)' : score >= 2 ? 'rgba(175,125,0,0.85)' : '#E53935');
     var settore = _diagProspect ? _diagProspect.settore : '';
     var stepDesc = (typeof _getStepDesc === 'function') ? _getStepDesc(settore, dimId, score) : '';
     var descHtml = (stepDesc && stepDesc !== '\u2014') ? '\x3cdiv style="font-size:10px;color:var(--gray);margin-top:3px">' + stepDesc + '\x3c/div>' : '';
@@ -283,8 +275,16 @@ function aggiornaScorePreview(dimId) {
   }
 }
 
+async function _salvaRisposteIncrementale() {
+  if (!_diagProspect) return;
+  var i = prospects.findIndex(function(x){ return x.id === _diagProspect.id; });
+  if (i >= 0) prospects[i].dims_answers = JSON.parse(JSON.stringify(_diagRisposte));
+  try { await sb.from('prospects').update({ dims_answers: _diagRisposte }).eq('id', _diagProspect.id); } catch(e) {}
+}
+
 function diagPrev() {
   if (_diagStep > 0) {
+    _salvaRisposteIncrementale();
     _diagStep--;
     renderDiagStep();
   }
@@ -292,6 +292,7 @@ function diagPrev() {
 
 function diagNext() {
   if (_diagStep < _diagDims.length - 1) {
+    _salvaRisposteIncrementale();
     _diagStep++;
     renderDiagStep();
   } else {
@@ -349,11 +350,12 @@ function mostraRisultatoDiagnosi(dims) {
   var _settoreR = _diagProspect ? _diagProspect.settore : '';
   var gridHtml = _diagDims.map(function(dimId) {
     var score = dims[dimId] || 0;
-    var col = score >= 4 ? '#30D158' : score >= 3 ? '#FF9500' : '#FF3B30';
+    var col = (typeof dimColor === 'function') ? dimColor(score) : (score >= 4 ? 'rgba(0,130,95,0.85)' : score >= 2 ? 'rgba(175,125,0,0.85)' : '#E53935');
+    var colBg = score >= 4 ? 'rgba(0,130,95,0.1)' : score >= 2 ? 'rgba(175,125,0,0.1)' : 'rgba(229,57,53,0.1)';
     var stepDesc = (typeof _getStepDesc === 'function') ? _getStepDesc(_settoreR, dimId, Math.max(score, 1)) : '';
     return '\x3cdiv class="diag-result-item">' +
       '\x3cdiv class="diag-result-dim">' + _getDiagLabel(_settoreR, dimId) + '\x3c/div>' +
-      '\x3cdiv class="diag-result-score" style="color:' + col + '">' + (score || '--') + '/5\x3c/div>' +
+      '\x3cdiv class="diag-result-score" style="color:' + col + ';background:' + colBg + ';border-radius:6px;padding:2px 8px;display:inline-block">' + (score || '--') + '/5\x3c/div>' +
       (stepDesc && stepDesc !== '\u2014' ? '\x3cdiv style="font-size:10px;color:var(--gray);margin-top:2px">' + stepDesc + '\x3c/div>' : '') +
     '\x3c/div>';
   }).join('');
@@ -364,7 +366,7 @@ function mostraRisultatoDiagnosi(dims) {
 
   document.getElementById('diagnosi-body').innerHTML =
     '\x3cdiv class="diag-result">' +
-      '\x3cdiv style="font-size:48px;font-weight:700;color:' + (scoreFinale >= 70 ? '#30D158' : scoreFinale >= 45 ? '#FF9500' : '#FF3B30') + '">' + scoreFinale + '\x3c/div>' +
+      '\x3cdiv style="font-size:48px;font-weight:700;color:' + (scoreFinale >= 70 ? 'rgba(0,130,95,0.9)' : scoreFinale >= 45 ? 'rgba(175,125,0,0.9)' : '#E53935') + '">' + scoreFinale + '\x3c/div>' +
       '\x3cdiv style="font-size:14px;color:var(--gray);margin-bottom:4px">Score complessivo su 100\x3c/div>' +
       '\x3cdiv style="font-size:12px;color:var(--white);margin-bottom:20px">' + verdetto + '\x3c/div>' +
     '\x3c/div>' +
