@@ -32,6 +32,8 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:#d8dbe2;color:var(--white);min-height:100vh;-webkit-font-smoothing:antialiased}
+body.pmi-mode{background:#d8dbe2!important;color:#1a1a2e!important}
+body.pmi-mode #pmi-main{background:#d8dbe2!important;color:#1a1a2e}
 h1,h2,h3{font-family:'Plus Jakarta Sans',sans-serif;font-weight:600}
 
 .app{display:flex;height:100vh;overflow:hidden}

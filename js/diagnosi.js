@@ -461,6 +461,7 @@ async function initPMI() {
   var csoApp = document.querySelector('.app');
   if (csoApp) csoApp.style.display = 'none';
   if (pmiApp) pmiApp.style.display = 'grid';
+  document.body.classList.add('pmi-mode');
 
   // Carica prospect del titolare — prima tenta owner_user_id, poi fallback su ID salvato
   var { data: pOwned } = await sb.from('prospects')
