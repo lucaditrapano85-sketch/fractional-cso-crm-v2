@@ -155,7 +155,9 @@ export default async function handler(req, res) {
   // Per genera_settore: verifica che sia JSON valido prima di rispondere
   if (type === 'genera_settore') {
     try {
-      const parsed = JSON.parse(text);
+      // Rimuovi eventuali code block markdown (```json ... ```)
+      const clean = text.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/i, '').trim();
+      const parsed = JSON.parse(clean);
       return res.status(200).json({ ok: true, data: parsed });
     } catch {
       console.error('[ai.js] Risposta non JSON:', text.slice(0, 200));
