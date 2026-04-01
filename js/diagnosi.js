@@ -155,7 +155,7 @@ function chiudiDiagnosi() {
       prospects[i].dims = nuoviDims;
       prospects[i].dims_answers = _diagRisposte;
     }
-    sb.from('prospects').update({ dims: nuoviDims, dims_answers: _diagRisposte }).eq('id', pid).catch(function(){});
+    sb.from('prospects').update({ dims: nuoviDims, dims_answers: _diagRisposte }).eq('id', pid).then(function(){}).catch(function(){});
   }
   // Fase 12: routing diverso per titolari PMI
   if (window.LEVA_USER_ROLE === 'titolare' && typeof _dopoChiudiDiagnosiPMI === 'function') {
@@ -474,7 +474,7 @@ async function initPMI() {
       if (pById) {
         // Aggiorna owner_user_id se mancante
         if (!pById.owner_user_id) {
-          sb.from('prospects').update({ owner_user_id: window._currentUserId }).eq('id', savedPid).catch(function(){});
+          sb.from('prospects').update({ owner_user_id: window._currentUserId }).eq('id', savedPid).then(function(){}).catch(function(){});
         }
         pOwned = pById;
       }
