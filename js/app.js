@@ -9392,9 +9392,9 @@ function renderPMIHome(container) {
   var azFatte = Object.keys(azObj).filter(function(k){return azObj[k];}).length;
 
   container.innerHTML =
-    '<div style="display:grid;grid-template-columns:64px 1fr;min-height:100vh;">' +
-      '<div style="background:#1a1a2e;padding:14px 0;display:flex;flex-direction:column;align-items:center;gap:14px;">' +
-        '<div style="margin-bottom:4px;">' +
+    '<div style="display:grid;grid-template-columns:180px 1fr;min-height:100vh;">' +
+      '<div style="background:#1a1a2e;padding:14px 0;display:flex;flex-direction:column;gap:4px;">' +
+        '<div style="padding:0 14px 16px;display:flex;align-items:center;gap:8px;">' +
           '<svg width="22" height="22" viewBox="8 4 44 44" fill="none">' +
             '<rect x="8" y="34" width="44" height="4.5" rx="2.25" fill="#3D5AFE"/>' +
             '<rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="white"/>' +
@@ -9402,22 +9402,31 @@ function renderPMIHome(container) {
             '<line x1="29.75" y1="36.25" x2="47" y2="22" stroke="#FF6B2B" stroke-width="3.5" stroke-linecap="round"/>' +
             '<circle cx="47" cy="22" r="3.5" fill="#FF6B2B"/>' +
           '</svg>' +
+          '<span style="font-size:17px;font-weight:600;color:white;letter-spacing:-0.3px;">Leva</span>' +
         '</div>' +
-        '<div style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(61,90,254,0.15);cursor:pointer;" onclick="navigaSezione(\'home\')">' +
-          '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="#3D5AFE"/><rect x="9" y="2" width="5" height="5" rx="1" fill="#3D5AFE"/><rect x="2" y="9" width="5" height="5" rx="1" fill="#3D5AFE"/><rect x="9" y="9" width="5" height="5" rx="1" fill="#3D5AFE"/></svg>' +
+        '<div style="display:flex;align-items:center;gap:9px;padding:9px 14px;border-radius:8px;cursor:pointer;background:rgba(61,90,254,0.12);color:white;font-size:12px;margin:0 6px;" onclick="navigaSezione(\'home\')">' +
+          '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="currentColor"/><rect x="9" y="2" width="5" height="5" rx="1" fill="currentColor"/><rect x="2" y="9" width="5" height="5" rx="1" fill="currentColor"/><rect x="9" y="9" width="5" height="5" rx="1" fill="currentColor"/></svg>' +
+          'Home' +
         '</div>' +
-        '<div style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="navigaSezione(\'azioni\')">' +
-          '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+        '<div style="display:flex;align-items:center;gap:9px;padding:9px 14px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,0.45);font-size:12px;margin:0 6px;" onclick="navigaSezione(\'azioni\')">' +
+          '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+          'Azioni' +
         '</div>' +
-        '<div style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="navigaSezione(\'trend\')">' +
-          '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13l3-4 3 2 4-6" stroke="rgba(255,255,255,0.3)" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>' +
+        '<div style="display:flex;align-items:center;gap:9px;padding:9px 14px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,0.45);font-size:12px;margin:0 6px;" onclick="navigaSezione(\'trend\')">' +
+          '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13l3-4 3 2 4-6" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>' +
+          'Trend' +
         '</div>' +
-        '<div style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="navigaSezione(\'profilo\')">' +
-          '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="3" stroke="rgba(255,255,255,0.3)" stroke-width="1.2" fill="none"/><path d="M3 15c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="rgba(255,255,255,0.3)" stroke-width="1.2" fill="none"/></svg>' +
+        '<div style="display:flex;align-items:center;gap:9px;padding:9px 14px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,0.45);font-size:12px;margin:0 6px;" onclick="navigaSezione(\'profilo\')">' +
+          '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="3" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 15c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>' +
+          'Profilo' +
         '</div>' +
         '<div style="flex:1;"></div>' +
-        '<div style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="logout()">' +
-          '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H4a2 2 0 00-2 2v8a2 2 0 002 2h2M11 11l3-3-3-3M14 8H6" stroke="rgba(255,255,255,0.25)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+        '<div style="padding:0 14px;">' +
+          '<div style="font-size:11px;font-weight:600;color:white;margin-bottom:2px;">'+nome+'</div>' +
+          '<div style="display:flex;align-items:center;gap:9px;padding:9px 0;cursor:pointer;color:rgba(255,255,255,0.35);font-size:12px;" onclick="logout()">' +
+            '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H4a2 2 0 00-2 2v8a2 2 0 002 2h2M11 11l3-3-3-3M14 8H6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+            'Esci' +
+          '</div>' +
         '</div>' +
       '</div>' +
       '<div style="background:#d8dbe2;padding:28px 32px;font-family:\'Plus Jakarta Sans\',sans-serif;">' +
@@ -9428,8 +9437,8 @@ function renderPMIHome(container) {
           '</div>' +
           '<div style="display:flex;align-items:center;gap:16px;">' +
             '<div style="text-align:right;"><div style="font-size:9px;text-transform:uppercase;letter-spacing:0.5px;color:rgba(26,26,46,0.30);">Il tuo score</div></div>' +
-            '<div style="width:64px;height:64px;border-radius:50%;border:3px solid '+scoreBorder+';display:flex;align-items:center;justify-content:center;background:'+scoreBg+';">' +
-              '<div style="font-size:28px;font-weight:700;color:#1a1a2e;">'+s+'</div>' +
+            '<div style="width:88px;height:88px;border-radius:50%;border:3px solid '+scoreBorder+';display:flex;align-items:center;justify-content:center;background:'+scoreBg+';">' +
+              '<div style="font-size:36px;font-weight:700;color:#1a1a2e;">'+s+'</div>' +
             '</div>' +
           '</div>' +
         '</div>' +
