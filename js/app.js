@@ -9114,13 +9114,30 @@ function _renderSelezioneSetting(container) {
       '</div>' +
 
       '<p id="pmi-inizio-msg" style="font-size:12px;color:#E53935;min-height:18px;margin-bottom:10px"></p>' +
-      '<button onclick="pmiAvviaDiagnosi()" style="width:100%;padding:14px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .15s" onmouseover="this.style.opacity=\'0.88\'" onmouseout="this.style.opacity=\'1\'">Inizia la diagnosi →</button>' +
+      '<button id="pmi-avvia-btn" onclick="pmiAvviaDiagnosi()" disabled style="width:100%;padding:14px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:15px;font-weight:700;cursor:not-allowed;transition:opacity .15s;opacity:0.4">Inizia la diagnosi →</button>' +
     '</div>';
+}
+
+function _pmiUpdateAvviaBtn() {
+  var btn = document.getElementById('pmi-avvia-btn');
+  if (!btn) return;
+  var ok = !!_pmiSelectedSettore;
+  btn.disabled = !ok;
+  btn.style.opacity = ok ? '1' : '0.4';
+  btn.style.cursor  = ok ? 'pointer' : 'not-allowed';
+  if (ok) {
+    btn.onmouseover = function(){ this.style.opacity='0.88'; };
+    btn.onmouseout  = function(){ this.style.opacity='1'; };
+  } else {
+    btn.onmouseover = null;
+    btn.onmouseout  = null;
+  }
 }
 
 function pmiSelMacro(macroId) {
   _pmiSelectedMacro   = macroId;
   _pmiSelectedSettore = null;
+  _pmiUpdateAvviaBtn();
 
   // Highlight macro
   document.querySelectorAll('#pmi-macro-grid .pmi-select-card').forEach(function(el) { el.classList.remove('selected'); });
@@ -9152,6 +9169,7 @@ function pmiSelSettore(id) {
   document.querySelectorAll('#pmi-micro-grid .pmi-select-card').forEach(function(el) { el.classList.remove('selected'); });
   var c = document.getElementById('pmi-s-' + id);
   if (c) c.classList.add('selected');
+  _pmiUpdateAvviaBtn();
 }
 
 function pmiSelFascia(id) {
@@ -9299,6 +9317,8 @@ async function pmiSelezionaESuggerisci(idx) {
     document.querySelectorAll('#pmi-macro-grid .pmi-select-card, #pmi-micro-grid .pmi-select-card').forEach(function(el) {
       el.classList.remove('selected');
     });
+
+    _pmiUpdateAvviaBtn();
 
     if (msg) msg.innerHTML =
       '<span style="color:rgba(0,130,95,0.85);font-weight:600">✓ Settore "' + _esc(sd.nome_display) + '" creato!</span>' +
