@@ -8922,15 +8922,61 @@ function renderViewPMI(view) {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 var PMI_MACRO_SETTORI = [
-  { id:'manifatturiero_meccanica',            icon:'⚙️',  label:'Manifatturiero',          desc:'Produzione, metalmeccanica, lavorazioni' },
-  { id:'servizi_b2b',                         icon:'💼',  label:'Servizi B2B',             desc:'Consulenza, formazione, servizi professionali' },
-  { id:'edilizia_residenziale',               icon:'🏗️', label:'Edilizia / Impianti',     desc:'Costruzioni, impiantistica, ristrutturazioni' },
-  { id:'commercio_abbigliamento_dettaglio',   icon:'🛍️', label:'Negozio / Retail',        desc:'Punto vendita, dettaglio, e-commerce' },
-  { id:'commercio_distribuzione_industriale', icon:'🚛',  label:'Distribuzione / Ingrosso',desc:'Distribuzione B2B, ingrosso, logistica' },
-  { id:'commercio_auto_moto_nuovo',           icon:'🚗',  label:'Automotive',              desc:'Concessionaria auto, moto, veicoli' },
-  { id:'alimentare_trasformazione',           icon:'🍽️', label:'Alimentare / Food',       desc:'Produzione alimentare, bevande, ristorazione' },
-  { id:'tech_saas',                           icon:'💻',  label:'Tech / Software',         desc:'SaaS, digital agency, automazione' },
+  { id:'manifatturiero', icon:'⚙️',  label:'Manifatturiero',      desc:'Produzione, metalmeccanica, lavorazioni' },
+  { id:'servizi',        icon:'💼',  label:'Servizi B2B',         desc:'Consulenza, formazione, servizi professionali' },
+  { id:'edilizia',       icon:'🏗️', label:'Edilizia / Impianti', desc:'Costruzioni, impiantistica, ristrutturazioni' },
+  { id:'commercio',      icon:'🛒',  label:'Commercio',           desc:'Retail, distribuzione, ingrosso, automotive' },
+  { id:'alimentare',     icon:'🍽️', label:'Alimentare / Food',   desc:'Produzione alimentare, bevande, ristorazione' },
+  { id:'tech',           icon:'💻',  label:'Tech / Software',     desc:'SaaS, digital agency, automazione' },
 ];
+
+var PMI_MICRO_SETTORI = {
+  manifatturiero: [
+    { id:'manifatturiero_meccanica',        label:'Meccanica / Metalmeccanica' },
+    { id:'manifatturiero_elettromeccanica', label:'Elettromeccanica' },
+    { id:'manifatturiero_packaging',        label:'Packaging' },
+    { id:'manifatturiero_cterzi',           label:'Conto terzi' },
+    { id:'manifatturiero_automotive',       label:'Fornitura automotive (OEM)' },
+    { id:'manifatturiero_tessile_tessuti',  label:'Tessile — tessuti' },
+    { id:'manifatturiero_tessile_capi',     label:'Tessile — capi abbigliamento' },
+  ],
+  servizi: [
+    { id:'servizi_b2b',        label:'Consulenza / Servizi professionali' },
+    { id:'servizi_it',         label:'IT / Software house' },
+    { id:'servizi_formazione', label:'Formazione' },
+  ],
+  edilizia: [
+    { id:'edilizia_residenziale', label:'Edilizia residenziale' },
+    { id:'edilizia_impianti',     label:'Impiantistica' },
+    { id:'edilizia_serramenti',   label:'Serramenti / Infissi' },
+  ],
+  commercio: [
+    { id:'commercio_abbigliamento_dettaglio',   label:'Abbigliamento / Moda dettaglio' },
+    { id:'commercio_orologi_gioielli',          label:'Orologi & gioielli' },
+    { id:'commercio_elettronica',               label:'Elettronica / Hi-tech' },
+    { id:'commercio_auto_moto_nuovo',           label:'Auto & moto nuove' },
+    { id:'commercio_auto_moto_usato',           label:'Auto & moto usate' },
+    { id:'commercio_distribuzione_industriale', label:'Distribuzione industriale' },
+    { id:'commercio_ingrosso_alimentare',       label:'Ingrosso alimentare' },
+    { id:'commercio_materiali_edili',           label:'Materiali edili' },
+    { id:'commercio_ricambi_auto',              label:'Ricambi auto / moto' },
+    { id:'commercio_abbigliamento_ingrosso',    label:'Abbigliamento ingrosso' },
+  ],
+  alimentare: [
+    { id:'alimentare_trasformazione', label:'Trasformazione alimentare' },
+    { id:'alimentare_vini',           label:'Vini / Cantine' },
+    { id:'alimentare_birra',          label:'Birra / Bevande' },
+    { id:'alimentare_forno',          label:'Panificazione / Pasticceria' },
+    { id:'alimentare_conserve',       label:'Conserve / Salumi' },
+    { id:'alimentare_ingredienti',    label:'Ingredienti / Semilavorati' },
+  ],
+  tech: [
+    { id:'tech_saas',              label:'SaaS / Software' },
+    { id:'tech_system_integrator', label:'System integrator' },
+    { id:'tech_digital_agency',    label:'Digital agency / Marketing digitale' },
+    { id:'tech_automazione',       label:'Automazione industriale' },
+  ],
+};
 
 var PMI_FASCE_FATTURATO = [
   { id:'sotto_500k', label:'Sotto 500k€',   value:300000   },
@@ -8939,6 +8985,7 @@ var PMI_FASCE_FATTURATO = [
   { id:'sopra_10m',  label:'Oltre 10M€',    value:12000000 },
 ];
 
+var _pmiSelectedMacro   = null;
 var _pmiSelectedSettore = null;
 var _pmiSelectedFascia  = null;
 
@@ -8963,26 +9010,32 @@ function renderPrimoAccesso() {
 }
 
 function _renderSelezioneSetting(container) {
+  _pmiSelectedMacro   = null;
   _pmiSelectedSettore = null;
   _pmiSelectedFascia  = null;
 
   container.innerHTML =
-    '<div style="max-width:640px;margin:0 auto;padding:48px 28px">' +
+    '<div style="max-width:620px;margin:0 auto;padding:48px 28px">' +
       '<h1 style="font-size:22px;font-weight:700;color:#1a1a2e;margin-bottom:6px">Benvenuto in Leva</h1>' +
       '<p style="font-size:14px;color:rgba(26,26,46,0.55);margin-bottom:36px;line-height:1.5">Dicci qualcosa sulla tua azienda — la diagnosi sarà calibrata sul tuo settore.</p>' +
 
-      // Settore
-      '<div style="margin-bottom:28px">' +
+      // Step 1 — Macro settore
+      '<div style="margin-bottom:20px">' +
         '<div style="font-size:11px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:12px">Il tuo settore</div>' +
-        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="pmi-settore-grid">' +
+        '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px" id="pmi-macro-grid">' +
           PMI_MACRO_SETTORI.map(function(s) {
-            return '<div class="pmi-select-card" id="pmi-s-' + s.id + '" onclick="pmiSelSettore(\'' + s.id + '\')">' +
-              '<div style="font-size:24px;margin-bottom:7px">' + s.icon + '</div>' +
-              '<div style="font-size:13px;font-weight:700;color:#1a1a2e;margin-bottom:3px">' + s.label + '</div>' +
-              '<div style="font-size:11px;color:rgba(26,26,46,0.5);line-height:1.4">' + s.desc + '</div>' +
+            return '<div class="pmi-select-card" id="pmi-m-' + s.id + '" onclick="pmiSelMacro(\'' + s.id + '\')" style="text-align:center;padding:14px 10px">' +
+              '<div style="font-size:22px;margin-bottom:6px">' + s.icon + '</div>' +
+              '<div style="font-size:12px;font-weight:700;color:#1a1a2e">' + s.label + '</div>' +
             '</div>';
           }).join('') +
         '</div>' +
+      '</div>' +
+
+      // Step 2 — Micro settore (nascosto, appare dopo selezione macro)
+      '<div id="pmi-micro-wrap" style="display:none;margin-bottom:24px">' +
+        '<div style="font-size:11px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:12px" id="pmi-micro-label">Specifica il settore</div>' +
+        '<div id="pmi-micro-grid" style="display:flex;flex-wrap:wrap;gap:8px"></div>' +
       '</div>' +
 
       // Fascia fatturato
@@ -9002,9 +9055,38 @@ function _renderSelezioneSetting(container) {
     '</div>';
 }
 
+function pmiSelMacro(macroId) {
+  _pmiSelectedMacro   = macroId;
+  _pmiSelectedSettore = null;
+
+  // Highlight macro
+  document.querySelectorAll('#pmi-macro-grid .pmi-select-card').forEach(function(el) { el.classList.remove('selected'); });
+  var mc = document.getElementById('pmi-m-' + macroId);
+  if (mc) mc.classList.add('selected');
+
+  // Mostra micro-settori
+  var micros = PMI_MICRO_SETTORI[macroId] || [];
+  var wrap  = document.getElementById('pmi-micro-wrap');
+  var grid  = document.getElementById('pmi-micro-grid');
+  var label = document.getElementById('pmi-micro-label');
+  if (!wrap || !grid) return;
+
+  var macro = PMI_MACRO_SETTORI.find(function(m){ return m.id === macroId; });
+  if (label && macro) label.textContent = 'Specifica — ' + macro.label;
+
+  grid.innerHTML = micros.map(function(m) {
+    return '<div class="pmi-select-card" id="pmi-s-' + m.id + '" onclick="pmiSelSettore(\'' + m.id + '\')" ' +
+      'style="padding:9px 14px;font-size:12px;font-weight:600;color:#1a1a2e;white-space:nowrap">' +
+      m.label +
+    '</div>';
+  }).join('');
+
+  wrap.style.display = 'block';
+}
+
 function pmiSelSettore(id) {
   _pmiSelectedSettore = id;
-  document.querySelectorAll('#pmi-settore-grid .pmi-select-card').forEach(function(el) { el.classList.remove('selected'); });
+  document.querySelectorAll('#pmi-micro-grid .pmi-select-card').forEach(function(el) { el.classList.remove('selected'); });
   var c = document.getElementById('pmi-s-' + id);
   if (c) c.classList.add('selected');
 }
@@ -9018,7 +9100,8 @@ function pmiSelFascia(id) {
 
 async function pmiAvviaDiagnosi() {
   var msg = document.getElementById('pmi-inizio-msg');
-  if (!_pmiSelectedSettore) { if (msg) msg.textContent = 'Scegli il settore prima di continuare.'; return; }
+  if (!_pmiSelectedMacro)   { if (msg) msg.textContent = 'Scegli il settore prima di continuare.'; return; }
+  if (!_pmiSelectedSettore) { if (msg) msg.textContent = 'Specifica il tuo micro-settore.'; return; }
   if (!_pmiSelectedFascia)  { if (msg) msg.textContent = 'Scegli la fascia di fatturato.'; return; }
   if (msg) msg.textContent = '';
 
