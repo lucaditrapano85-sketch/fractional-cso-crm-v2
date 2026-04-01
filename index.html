@@ -7,7 +7,7 @@
 <title>Leva — Intelligence commerciale per PMI</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=20260401b">
+<link rel="stylesheet" href="css/styles.css?v=20260401c">
 </head>
 <body>
 
@@ -399,8 +399,8 @@
 <script src="js/data/azioni-listino.js"></script>
 <script src="js/data/step-detail.js?v=2"></script>
 <script src="js/data/diagnosi-data.js"></script>
-<script src="js/app.js?v=20260401b"></script>
-<script src="js/diagnosi.js?v=20260401b"></script>
+<script src="js/app.js?v=20260401c"></script>
+<script src="js/diagnosi.js?v=20260401c"></script>
 
 
 <!-- DETAIL PANEL -->
@@ -555,11 +555,11 @@
 </div>
 
 <!-- ═══ PMI APP — nascosta di default, attivata da initPMI() ═══ -->
-<div id="app-pmi" class="pmi-layout" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:100">
+<div id="app-pmi" class="pmi-layout" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:100;grid-template-columns:64px 1fr;overflow:hidden;">
   <!-- Sidebar PMI — popolata da renderSidebarPMI() -->
-  <div id="pmi-sidebar" class="pmi-sidebar"></div>
+  <div id="pmi-sidebar" class="pmi-sidebar" style="background:#1a1a2e;width:64px;min-width:64px;max-width:64px;height:100vh;padding:14px 0;display:flex;flex-direction:column;align-items:center;gap:14px;overflow:hidden;flex-shrink:0;"></div>
   <!-- Main PMI — popolata da renderViewPMI() -->
-  <div id="pmi-main" class="pmi-main" style="overflow-y:auto;height:100vh;"></div>
+  <div id="pmi-main" class="pmi-main" style="background:#d8dbe2;overflow-y:auto;height:100vh;padding:28px 32px;font-family:'Plus Jakarta Sans',sans-serif;"></div>
 </div>
 
 </body>

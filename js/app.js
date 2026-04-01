@@ -8855,6 +8855,18 @@ function renderSidebarPMI() {
   var sidebar = document.getElementById('pmi-sidebar');
   if (!sidebar) return;
 
+  // Forza dimensioni corrette via inline style — immune da CSS cache
+  sidebar.style.cssText = 'background:#1a1a2e;width:64px;min-width:64px;max-width:64px;height:100vh;padding:14px 0;display:flex;flex-direction:column;align-items:center;gap:14px;overflow:hidden;flex-shrink:0;';
+
+  // Forza grid 64px sul container padre
+  var pmiApp = document.getElementById('app-pmi');
+  if (pmiApp) {
+    pmiApp.style.display = 'grid';
+    pmiApp.style.gridTemplateColumns = '64px 1fr';
+    pmiApp.style.height = '100vh';
+    pmiApp.style.overflow = 'hidden';
+  }
+
   var navIcons = [
     { id:'home',   title:'Home',   svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="#3D5AFE"/><rect x="9" y="2" width="5" height="5" rx="1" fill="#3D5AFE"/><rect x="2" y="9" width="5" height="5" rx="1" fill="#3D5AFE"/><rect x="9" y="9" width="5" height="5" rx="1" fill="#3D5AFE"/></svg>' },
     { id:'azioni', title:'Azioni', svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' },
