@@ -9304,7 +9304,14 @@ function renderPMIHome(container) {
   var pro = window._currentProfile  || {};
   var nome    = pro.nome || (pro.nome_completo || '').split(' ')[0] || up.nome || '';
   var azienda = up.company_name || pro.azienda || '';
-  var settore = up.sector || p.settore || '';
+  var settoreRaw = up.sector || p.settore || '';
+  var settore = settoreRaw
+    ? settoreRaw.replace(/_/g, ' ').replace(/^\w/, function(c){ return c.toUpperCase(); })
+    : '';
+  var subtitleText = azienda && settore ? azienda + ' — ' + settore
+    : azienda ? azienda
+    : settore ? settore
+    : '';
 
   var s = calcScore(p);
   var scoreCol   = s < 30 ? 'rgba(229,57,53,0.85)' : s < 60 ? 'rgba(175,125,0,0.85)' : 'rgba(0,130,95,0.85)';
@@ -9389,9 +9396,9 @@ function renderPMIHome(container) {
     '<div class="pmi-header">' +
       '<div>' +
         '<p class="pmi-greeting">Buongiorno, ' + (nome || 'Benvenuto') + '</p>' +
-        '<p class="pmi-subtitle">' + (azienda || '—') + ' — ' + (settore || '—') + '</p>' +
+        '<p class="pmi-subtitle">' + (subtitleText || '') + '</p>' +
       '</div>' +
-      '<div class="pmi-score-ring" style="border-color:' + scoreCol + ';">' +
+      '<div class="pmi-score-ring" style="border-color:' + scoreCol + ';background:rgba(255,255,255,0.25);">' +
         '<div class="pmi-score-ring-number">' + s + '</div>' +
       '</div>' +
     '</div>' +

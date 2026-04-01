@@ -1157,7 +1157,7 @@ label{color:var(--gray2)}
 
 /* === CONTAINER PRINCIPALE PMI === */
 .pmi-main {
-  background: #d8dbe2;
+  background: #d8dbe2 !important;
   min-height: 100vh;
   padding: 28px 32px;
   font-family: 'Plus Jakarta Sans', sans-serif;
