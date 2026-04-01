@@ -8916,16 +8916,36 @@ function navigaAzioni(dim) {
   showViewPMI('azioni');
 }
 
+function navigaSezione(view) {
+  showViewPMI(view);
+}
+
 function renderViewPMI(view) {
-  var main = document.getElementById('pmi-main');
+  var sidebar = document.getElementById('pmi-sidebar');
+  var appPmi  = document.getElementById('app-pmi');
+  var main    = document.getElementById('pmi-main');
   if (!main) return;
-  switch (view) {
-    case 'home':    renderPMIHome(main);    break;
-    case 'score':   renderPMIScore(main);   break;
-    case 'azioni':  renderPMIAzioni(main);  break;
-    case 'trend':   renderPMITrend(main);   break;
-    case 'profilo': renderPMIProfilo(main); break;
-    default:        renderPMIHome(main);
+
+  if (view === 'home') {
+    // Il template ha la propria sidebar incorporata — nasconde quella esterna
+    if (sidebar) sidebar.style.display = 'none';
+    if (appPmi)  appPmi.style.gridTemplateColumns = '1fr';
+    main.style.padding    = '0';
+    main.style.background = 'transparent';
+    renderPMIHome(main);
+  } else {
+    // Altre view: mostra sidebar esterna con etichette
+    if (sidebar) sidebar.style.display = '';
+    if (appPmi)  appPmi.style.gridTemplateColumns = '160px 1fr';
+    main.style.padding    = '28px 32px';
+    main.style.background = '#d8dbe2';
+    renderSidebarPMI();
+    switch (view) {
+      case 'score':   renderPMIScore(main);   break;
+      case 'azioni':  renderPMIAzioni(main);  break;
+      case 'trend':   renderPMITrend(main);   break;
+      case 'profilo': renderPMIProfilo(main); break;
+    }
   }
 }
 
@@ -9305,150 +9325,133 @@ var _PMI_DIMS = ['vendite','pipeline','team','processi','ricavi','marketing','si
 // ── FASE 5 — Home ─────────────────────────────────────────────────────────────
 function renderPMIHome(container) {
   var p = window._pmiProspect;
-  if (!p || !p.dims || !Object.keys(p.dims).some(function(k){ return p.dims[k] > 0; })) {
-    container.innerHTML =
-      '<p class="pmi-greeting" style="padding-top:32px;">Benvenuto</p>' +
-      '<p class="pmi-subtitle">Completa la diagnosi per sbloccare la tua dashboard.</p>';
-    return;
-  }
+  if (!p || !p.dims) { container.innerHTML = ''; return; }
 
-  // Dati
   var up  = window._userProfileData || {};
   var pro = window._currentProfile  || {};
-  var nome       = pro.nome || (pro.nome_completo || '').split(' ')[0] || up.nome || '';
-  var azienda    = up.company_name || pro.azienda || '';
+  var nome    = pro.nome || (pro.nome_completo || '').split(' ')[0] || up.nome || 'Benvenuto';
+  var azienda = up.company_name || pro.azienda || '';
   var settoreRaw = up.sector || p.settore || '';
-  var settore    = settoreRaw
-    ? settoreRaw.replace(/_/g, ' ').replace(/^\w/, function(c){ return c.toUpperCase(); })
-    : '';
-  var subtitleText = azienda && settore ? azienda + ' — ' + settore
-    : azienda || settore || '';
+  var settore = settoreRaw ? settoreRaw.replace(/_/g,' ').replace(/^\w/,function(c){return c.toUpperCase();}) : '';
 
   var s = calcScore(p);
-  var scoreBorderColor = s < 30 ? 'rgba(229,57,53,0.55)' : s < 60 ? 'rgba(175,125,0,0.55)' : 'rgba(0,130,95,0.55)';
+  var scoreBorder = s < 30 ? 'rgba(229,57,53,0.55)' : s < 60 ? 'rgba(175,125,0,0.55)' : 'rgba(0,130,95,0.55)';
+  var scoreBg     = s < 30 ? 'rgba(229,57,53,0.04)' : s < 60 ? 'rgba(175,125,0,0.04)' : 'rgba(0,130,95,0.04)';
 
-  var d = {
-    vendite:   p.dims.vendite   || 0,
-    pipeline:  p.dims.pipeline  || 0,
-    team:      p.dims.team      || 0,
-    processi:  p.dims.processi  || 0,
-    ricavi:    p.dims.ricavi    || 0,
-    marketing: p.dims.marketing || 0,
-    sitoweb:   p.dims.sitoweb   || 0,
-    ecommerce: p.dims.ecommerce || 0
-  };
-
-  // Dimensione più debole
-  var dimMin   = _PMI_DIMS.reduce(function(min, k) { return (p.dims[k]||0) < (p.dims[min]||0) ? k : min; }, _PMI_DIMS[0]);
+  var dimMin   = _PMI_DIMS.reduce(function(min,k){ return (p.dims[k]||0)<(p.dims[min]||0)?k:min; }, _PMI_DIMS[0]);
   var scoreMin = p.dims[dimMin] || 1;
   var labelMin = getDimLabel(p.settore, dimMin);
-  var stepDesc = (typeof _getStepDesc === 'function') ? _getStepDesc(p.settore, dimMin, scoreMin) : '';
-  if (!stepDesc || stepDesc === '—') stepDesc = 'Concentrati sulla dimensione più debole questa settimana.';
+  var stepDesc = (typeof _getStepDesc==='function') ? _getStepDesc(p.settore, dimMin, scoreMin) : '';
+  if (!stepDesc || stepDesc==='—') stepDesc = 'Concentrati sulla dimensione più debole questa settimana.';
 
-  // Step tracker (4 step visibili)
-  var curStep = Math.max(1, Math.min(4, Math.round(scoreMin)));
-  var tgtStep = Math.min(curStep + 1, 4);
-  var sLbl = ['','Base','Struttura','Metodo','Eccellenza'];
-
-  function stepState(n) {
-    if (n < curStep) return 'done';
-    if (n === curStep) return 'current';
-    if (n === tgtStep) return 'target';
-    return 'future';
-  }
-  function stepHtml(n) {
-    var st  = stepState(n);
-    var bdr = st==='done' ? 'rgba(0,130,95,0.85)' : st==='current' ? '#FF6B2B' : st==='target' ? 'rgba(61,90,254,0.4)' : 'rgba(0,0,0,0.06)';
-    var bg  = st==='done' ? 'rgba(0,130,95,0.07)' : st==='current' ? 'rgba(255,107,43,0.06)' : st==='target' ? 'rgba(61,90,254,0.04)' : 'transparent';
-    var col = st==='done' ? 'rgba(0,130,95,0.85)' : st==='current' ? '#FF6B2B' : st==='target' ? '#3D5AFE' : 'rgba(26,26,46,0.25)';
-    var lc  = st==='done' ? 'rgba(0,130,95,0.6)' : st==='current' ? '#FF6B2B' : st==='target' ? '#3D5AFE' : 'rgba(26,26,46,0.30)';
-    var bs  = st==='target' ? 'dashed' : 'solid';
-    return '<div style="text-align:center;">' +
-      '<div style="width:32px;height:32px;border-radius:50%;border:2px ' + bs + ' ' + bdr + ';background:' + bg + ';display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:' + col + ';">' + n + '</div>' +
-      '<div style="font-size:7px;margin-top:2px;color:' + lc + ';">' + sLbl[n] + '</div>' +
-    '</div>';
-  }
-  var connPct = curStep > 1 ? 100 : 0;
-
-  // Azioni completate
-  var azObj   = p.azioni_completate || {};
-  var azFatte = Object.keys(azObj).filter(function(k){ return azObj[k]; }).length;
-
-  // Semaforo colori per dim card
-  function dimCol(v)       { return v < 2 ? 'rgba(229,57,53,0.85)' : v < 4 ? 'rgba(175,125,0,0.85)' : 'rgba(0,130,95,0.85)'; }
-  function dimCardBg(v)    { return v < 2 ? 'rgba(229,57,53,0.03)' : 'rgba(0,0,0,0.02)'; }
-  function dimCardBdr(v)   { return v < 2 ? 'border:1px solid rgba(229,57,53,0.08);' : ''; }
-  function dimPct(v)       { return Math.round((v / 5) * 100); }
-
-  function dimCard(label, key, navLabel) {
-    var v = d[key];
-    return '<div onclick="navigaAzioni(\'' + navLabel + '\')" ' +
-      'style="flex:1;min-width:45%;padding:8px 10px;background:' + dimCardBg(v) + ';border-radius:8px;cursor:pointer;' + dimCardBdr(v) + '">' +
+  // {{DIMS_HTML}}
+  var dimLabels = {vendite:'Vendite',pipeline:'Pipeline & CRM',team:'Organizzazione',processi:'Processi',ricavi:'Ricavi',marketing:'Marketing',sitoweb:'Sito Web',ecommerce:'Post-vendita'};
+  var dimsHtml = _PMI_DIMS.map(function(key) {
+    var v = p.dims[key] || 0;
+    var cardBg, cardBorder, color, barColor;
+    if (v < 2)      { cardBg='rgba(229,57,53,0.03)'; cardBorder='border:1px solid rgba(229,57,53,0.08);'; color='rgba(229,57,53,0.85)'; barColor='rgba(229,57,53,0.55)'; }
+    else if (v < 4) { cardBg='rgba(0,0,0,0.02)';     cardBorder='';                                       color='rgba(175,125,0,0.85)'; barColor='rgba(175,125,0,0.55)'; }
+    else            { cardBg='rgba(0,0,0,0.02)';     cardBorder='';                                       color='rgba(0,130,95,0.85)';  barColor='rgba(0,130,95,0.55)'; }
+    var pct = Math.round((v/5)*100);
+    return '<div onclick="navigaAzioni(\''+key+'\')" style="flex:1;min-width:45%;padding:8px 10px;background:'+cardBg+';border-radius:8px;cursor:pointer;'+cardBorder+'">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">' +
-        '<span style="font-size:11px;color:#1a1a2e;">' + label + '</span>' +
-        '<span style="font-size:13px;font-weight:700;color:' + dimCol(v) + ';">' + (v || '—') + '</span>' +
+        '<span style="font-size:11px;color:#1a1a2e;">'+dimLabels[key]+'</span>' +
+        '<span style="font-size:13px;font-weight:700;color:'+color+';">'+(v||'—')+'</span>' +
       '</div>' +
       '<div style="height:4px;background:rgba(0,0,0,0.04);border-radius:2px;">' +
-        '<div style="height:4px;border-radius:2px;width:' + dimPct(v) + '%;background:' + dimCol(v) + ';"></div>' +
+        '<div style="height:4px;border-radius:2px;width:'+pct+'%;background:'+barColor+';"></div>' +
       '</div>' +
     '</div>';
+  }).join('');
+
+  // {{STEPS_HTML}}
+  var curStep = Math.max(1, Math.min(4, Math.round(scoreMin)));
+  var tgtStep = Math.min(curStep+1, 4);
+  var sLbl = ['','Base','Struttura','Metodo','Eccellenza'];
+  function stepState(n) { return n<curStep?'done':n===curStep?'current':n===tgtStep?'target':'future'; }
+  function stepHtml(n) {
+    var st=stepState(n);
+    var bdr=st==='done'?'rgba(0,130,95,0.85)':st==='current'?'#FF6B2B':st==='target'?'rgba(61,90,254,0.4)':'rgba(0,0,0,0.06)';
+    var bg =st==='done'?'rgba(0,130,95,0.07)':st==='current'?'rgba(255,107,43,0.06)':st==='target'?'rgba(61,90,254,0.04)':'transparent';
+    var col=st==='done'?'rgba(0,130,95,0.85)':st==='current'?'#FF6B2B':st==='target'?'#3D5AFE':'rgba(26,26,46,0.25)';
+    var lc =st==='done'?'rgba(0,130,95,0.6)':st==='current'?'#FF6B2B':st==='target'?'#3D5AFE':'rgba(26,26,46,0.30)';
+    var bs =st==='target'?'dashed':'solid';
+    return '<div style="text-align:center;"><div style="width:32px;height:32px;border-radius:50%;border:2px '+bs+' '+bdr+';background:'+bg+';display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:'+col+';">'+n+'</div><div style="font-size:7px;margin-top:2px;color:'+lc+';">'+sLbl[n]+'</div></div>';
   }
+  var connPct = curStep>1?100:0;
+  var stepsHtml =
+    stepHtml(1)+
+    '<div style="flex:1;display:flex;align-items:center;"><div style="height:2px;width:100%;background:rgba(0,0,0,0.06);"><div style="height:2px;width:'+connPct+'%;background:rgba(0,130,95,0.4);border-radius:1px;"></div></div></div>'+
+    stepHtml(2)+
+    '<div style="flex:1;display:flex;align-items:center;"><div style="height:2px;width:100%;background:rgba(0,0,0,0.06);"></div></div>'+
+    stepHtml(3)+
+    '<div style="flex:1;display:flex;align-items:center;"><div style="height:2px;width:100%;background:rgba(0,0,0,0.06);"></div></div>'+
+    '<div style="text-align:center;"><div style="width:32px;height:32px;border-radius:50%;border:2px solid rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:rgba(26,26,46,0.25);">4</div><div style="font-size:7px;margin-top:2px;color:rgba(26,26,46,0.30);">Eccellenza</div></div>';
+
+  var azObj   = p.azioni_completate || {};
+  var azFatte = Object.keys(azObj).filter(function(k){return azObj[k];}).length;
 
   container.innerHTML =
-
-    // HEADER
+    '<div style="display:grid;grid-template-columns:64px 1fr;min-height:100vh;">' +
+      '<div style="background:#1a1a2e;padding:14px 0;display:flex;flex-direction:column;align-items:center;gap:14px;">' +
+        '<div style="margin-bottom:4px;">' +
+          '<svg width="22" height="22" viewBox="8 4 44 44" fill="none">' +
+            '<rect x="8" y="34" width="44" height="4.5" rx="2.25" fill="#3D5AFE"/>' +
+            '<rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="white"/>' +
+            '<circle cx="29.75" cy="36.25" r="6" fill="white"/>' +
+            '<line x1="29.75" y1="36.25" x2="47" y2="22" stroke="#FF6B2B" stroke-width="3.5" stroke-linecap="round"/>' +
+            '<circle cx="47" cy="22" r="3.5" fill="#FF6B2B"/>' +
+          '</svg>' +
+        '</div>' +
+        '<div style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(61,90,254,0.15);cursor:pointer;" onclick="navigaSezione(\'home\')">' +
+          '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="#3D5AFE"/><rect x="9" y="2" width="5" height="5" rx="1" fill="#3D5AFE"/><rect x="2" y="9" width="5" height="5" rx="1" fill="#3D5AFE"/><rect x="9" y="9" width="5" height="5" rx="1" fill="#3D5AFE"/></svg>' +
+        '</div>' +
+        '<div style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="navigaSezione(\'azioni\')">' +
+          '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+        '</div>' +
+        '<div style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="navigaSezione(\'trend\')">' +
+          '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13l3-4 3 2 4-6" stroke="rgba(255,255,255,0.3)" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>' +
+        '</div>' +
+        '<div style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="navigaSezione(\'profilo\')">' +
+          '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="3" stroke="rgba(255,255,255,0.3)" stroke-width="1.2" fill="none"/><path d="M3 15c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="rgba(255,255,255,0.3)" stroke-width="1.2" fill="none"/></svg>' +
+        '</div>' +
+        '<div style="flex:1;"></div>' +
+        '<div style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="logout()">' +
+          '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H4a2 2 0 00-2 2v8a2 2 0 002 2h2M11 11l3-3-3-3M14 8H6" stroke="rgba(255,255,255,0.25)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+        '</div>' +
+      '</div>' +
+      '<div style="background:#d8dbe2;padding:28px 32px;font-family:\'Plus Jakarta Sans\',sans-serif;">' +
         '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">' +
           '<div>' +
-            '<div style="font-size:22px;font-weight:700;color:#1a1a2e;">Buongiorno, ' + (nome || 'Benvenuto') + '</div>' +
-            '<div style="font-size:12px;color:rgba(26,26,46,0.50);">' + subtitleText + '</div>' +
+            '<div style="font-size:22px;font-weight:700;color:#1a1a2e;">Buongiorno, '+nome+'</div>' +
+            '<div style="font-size:12px;color:rgba(26,26,46,0.50);">'+azienda+' — '+settore+'</div>' +
           '</div>' +
           '<div style="display:flex;align-items:center;gap:16px;">' +
-            '<div style="text-align:right;">' +
-              '<div style="font-size:9px;text-transform:uppercase;letter-spacing:0.5px;color:rgba(26,26,46,0.30);">Il tuo score</div>' +
-            '</div>' +
-            '<div style="width:64px;height:64px;border-radius:50%;border:3px solid ' + scoreBorderColor + ';display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.25);">' +
-              '<div style="font-size:28px;font-weight:700;color:#1a1a2e;">' + s + '</div>' +
+            '<div style="text-align:right;"><div style="font-size:9px;text-transform:uppercase;letter-spacing:0.5px;color:rgba(26,26,46,0.30);">Il tuo score</div></div>' +
+            '<div style="width:64px;height:64px;border-radius:50%;border:3px solid '+scoreBorder+';display:flex;align-items:center;justify-content:center;background:'+scoreBg+';">' +
+              '<div style="font-size:28px;font-weight:700;color:#1a1a2e;">'+s+'</div>' +
             '</div>' +
           '</div>' +
         '</div>' +
-
-        // AZIONE DELLA SETTIMANA
         '<div style="background:rgba(255,107,43,0.05);border:1px solid rgba(255,107,43,0.15);border-left:4px solid #FF6B2B;border-radius:0 16px 16px 0;padding:18px 20px;margin-bottom:20px;">' +
           '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">' +
             '<div style="font-size:14px;font-weight:600;color:#1a1a2e;">La tua azione di questa settimana</div>' +
-            '<div style="padding:4px 12px;border-radius:20px;font-size:10px;font-weight:500;background:rgba(255,107,43,0.08);color:#FF6B2B;">' + labelMin + '</div>' +
+            '<div style="padding:4px 12px;border-radius:20px;font-size:10px;font-weight:500;background:rgba(255,107,43,0.08);color:#FF6B2B;">'+labelMin+'</div>' +
           '</div>' +
-          '<div style="font-size:13px;line-height:1.6;margin-bottom:14px;color:#1a1a2e;">' + stepDesc + ' <span style="font-weight:600;">Obiettivo: completare almeno 1 azione entro venerdì.</span></div>' +
+          '<div style="font-size:13px;line-height:1.6;margin-bottom:14px;color:#1a1a2e;">'+stepDesc+' <span style="font-weight:600;">Obiettivo: completare almeno 1 azione entro venerdì.</span></div>' +
           '<div style="display:flex;gap:8px;align-items:center;">' +
-            '<button onclick="completaAzioneSettimanale()" style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:9px 24px;font-size:12px;font-weight:600;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;">Ho fatto</button>' +
-            '<button onclick="saltaAzioneSettimanale()" style="background:rgba(255,255,255,0.45);border:1px solid rgba(0,0,0,0.06);color:rgba(26,26,46,0.4);border-radius:10px;padding:9px 24px;font-size:12px;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;">Non applicabile</button>' +
+            '<button onclick="completaAzioneSettimanale()" style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:9px 24px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;">Ho fatto</button>' +
+            '<button onclick="saltaAzioneSettimanale()" style="background:rgba(255,255,255,0.45);border:1px solid rgba(0,0,0,0.06);color:rgba(26,26,46,0.4);border-radius:10px;padding:9px 24px;font-size:12px;cursor:pointer;font-family:inherit;">Non applicabile</button>' +
             '<div style="flex:1;"></div>' +
             '<div style="font-size:10px;color:rgba(26,26,46,0.50);">Impatto stimato: <span style="color:rgba(0,130,95,0.85);font-weight:600;">+€2.800/mese</span></div>' +
           '</div>' +
         '</div>' +
-
-        // DUE COLONNE
-        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;">' +
-
-          // COLONNA SINISTRA: 8 DIMENSIONI
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">' +
           '<div style="background:rgba(255,255,255,0.50);border:1px solid rgba(255,255,255,0.65);border-radius:14px;padding:16px 18px;">' +
             '<div style="font-size:12px;font-weight:600;color:#1a1a2e;margin-bottom:14px;">Il tuo profilo commerciale</div>' +
-            '<div style="display:flex;flex-wrap:wrap;gap:6px;">' +
-              dimCard('Vendite',        'vendite',   'Vendite') +
-              dimCard('Pipeline & CRM', 'pipeline',  'Pipeline') +
-              dimCard('Organizzazione', 'team',       'Organizzazione') +
-              dimCard('Processi',       'processi',   'Processi') +
-              dimCard('Ricavi',         'ricavi',     'Ricavi') +
-              dimCard('Marketing',      'marketing',  'Marketing') +
-              dimCard('Sito Web',       'sitoweb',    'Sito Web') +
-              dimCard('Post-vendita',   'ecommerce',  'Post-vendita') +
-            '</div>' +
+            '<div style="display:flex;flex-wrap:wrap;gap:6px;">'+dimsHtml+'</div>' +
           '</div>' +
-
-          // COLONNA DESTRA
           '<div>' +
-
-            // LEVA DICE
             '<div style="background:rgba(61,90,254,0.04);border:1px solid rgba(61,90,254,0.12);border-radius:14px;padding:16px 18px;margin-bottom:12px;">' +
               '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">' +
                 '<div style="font-size:12px;font-weight:600;color:#1a1a2e;">Leva dice</div>' +
@@ -9456,33 +9459,14 @@ function renderPMIHome(container) {
               '</div>' +
               '<div style="font-size:12px;line-height:1.55;color:rgba(26,26,46,0.60);">Il tuo profilo commerciale mostra aree di miglioramento significative. <span style="font-weight:500;color:#1a1a2e;">Parti dalla dimensione più debole.</span></div>' +
             '</div>' +
-
-            // PERCORSO STEP
             '<div style="background:rgba(255,255,255,0.50);border:1px solid rgba(255,255,255,0.65);border-radius:14px;padding:16px 18px;margin-bottom:12px;">' +
               '<div style="font-size:12px;font-weight:600;color:#1a1a2e;margin-bottom:10px;">Il tuo percorso</div>' +
-              '<div style="display:flex;gap:10px;margin-bottom:12px;">' +
-                stepHtml(1) +
-                '<div style="flex:1;display:flex;align-items:center;">' +
-                  '<div style="height:2px;width:100%;background:rgba(0,0,0,0.06);">' +
-                    '<div style="height:2px;width:' + connPct + '%;background:rgba(0,130,95,0.4);border-radius:1px;"></div>' +
-                  '</div>' +
-                '</div>' +
-                stepHtml(2) +
-                '<div style="flex:1;display:flex;align-items:center;"><div style="height:2px;width:100%;background:rgba(0,0,0,0.06);"></div></div>' +
-                stepHtml(3) +
-                '<div style="flex:1;display:flex;align-items:center;"><div style="height:2px;width:100%;background:rgba(0,0,0,0.06);"></div></div>' +
-                '<div style="text-align:center;">' +
-                  '<div style="width:32px;height:32px;border-radius:50%;border:2px solid rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:rgba(26,26,46,0.25);">4</div>' +
-                  '<div style="font-size:7px;margin-top:2px;color:rgba(26,26,46,0.30);">dopo</div>' +
-                '</div>' +
-              '</div>' +
+              '<div style="display:flex;gap:10px;margin-bottom:12px;">'+stepsHtml+'</div>' +
               '<div style="display:flex;justify-content:space-between;font-size:10px;">' +
-                '<span style="color:rgba(26,26,46,0.50);">' + azFatte + '/5 moduli completati</span>' +
+                '<span style="color:rgba(26,26,46,0.50);">'+azFatte+'/5 moduli completati</span>' +
                 '<span style="color:rgba(0,130,95,0.85);font-weight:500;">+€2.800/mese</span>' +
               '</div>' +
             '</div>' +
-
-            // CTA ESPERTO
             '<div style="background:rgba(255,255,255,0.50);border:1px solid rgba(255,255,255,0.65);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:12px;">' +
               '<div style="width:38px;height:38px;border-radius:50%;background:rgba(61,90,254,0.06);border:1px solid rgba(61,90,254,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
                 '<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="7" r="3.5" stroke="#3D5AFE" stroke-width="1.3" fill="none"/><path d="M3 16.5c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#3D5AFE" stroke-width="1.3" fill="none"/></svg>' +
@@ -9491,11 +9475,12 @@ function renderPMIHome(container) {
                 '<div style="font-size:12px;font-weight:600;color:#1a1a2e;">Vuoi un esperto?</div>' +
                 '<div style="font-size:10px;color:rgba(26,26,46,0.50);">€120/sessione — nessun impegno</div>' +
               '</div>' +
-              '<button onclick="apriPrenotazioneCall()" style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:7px 16px;font-size:11px;font-weight:600;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;">Prenota</button>' +
+              '<button onclick="apriPrenotazioneCall()" style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:7px 16px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;">Prenota</button>' +
             '</div>' +
-
           '</div>' +
-        '</div>';
+        '</div>' +
+      '</div>' +
+    '</div>';
 }
 
 function completaAzioneSettimanale() {
