@@ -3,7 +3,7 @@
 
 const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 const MODEL             = 'claude-sonnet-4-20250514';
-const MAX_TOKENS        = 6000;
+const MAX_TOKENS        = 8000;
 
 // ── Prompt builder ────────────────────────────────────────────────────────────
 
@@ -122,10 +122,11 @@ export default async function handler(req, res) {
         'content-type':      'application/json',
       },
       body: JSON.stringify({
-        model:      MODEL,
-        max_tokens: MAX_TOKENS,
-        system:     messages.system,
-        messages:   [{ role: 'user', content: messages.user }],
+        model:       MODEL,
+        max_tokens:  MAX_TOKENS,
+        temperature: 0,
+        system:      messages.system,
+        messages:    [{ role: 'user', content: messages.user }],
       }),
     });
   } catch (err) {
