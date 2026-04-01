@@ -555,11 +555,11 @@
 </div>
 
 <!-- ═══ PMI APP — nascosta di default, attivata da initPMI() ═══ -->
-<div id="app-pmi" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;font-family:'Plus Jakarta Sans',sans-serif;z-index:100">
-  <!-- Sidebar PMI — popolata da renderSidebarPMI() (Fase 4) -->
-  <div id="pmi-sidebar" style="width:210px;background:#1a1a2e;height:100vh;display:flex;flex-direction:column;flex-shrink:0;box-shadow:2px 0 16px rgba(0,0,0,.12)"></div>
-  <!-- Main PMI — popolata da renderViewPMI() (Fasi 5-9) -->
-  <div id="pmi-main" style="flex:1;height:100vh;overflow-y:auto;background:#d8dbe2"></div>
+<div id="app-pmi" class="pmi-layout" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:100">
+  <!-- Sidebar PMI — popolata da renderSidebarPMI() -->
+  <div id="pmi-sidebar" class="pmi-sidebar"></div>
+  <!-- Main PMI — popolata da renderViewPMI() -->
+  <div id="pmi-main" class="pmi-main" style="overflow-y:auto;height:100vh;"></div>
 </div>
 
 </body>

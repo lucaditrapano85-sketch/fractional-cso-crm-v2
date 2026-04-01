@@ -451,7 +451,7 @@ async function initPMI() {
   }
   var csoApp = document.querySelector('.app');
   if (csoApp) csoApp.style.display = 'none';
-  if (pmiApp) pmiApp.style.display = 'flex';
+  if (pmiApp) pmiApp.style.display = 'grid';
 
   // Carica prospect del titolare (per owner_user_id)
   var { data: pOwned } = await sb.from('prospects')
