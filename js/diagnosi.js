@@ -469,11 +469,10 @@ async function initPMI() {
   }
 
   // Ha diagnosi → app normale
-  if (!window.prospects) window.prospects = [];
-  if (!window.prospects.find(function(x) { return x.id === window._pmiProspect.id; })) {
-    window.prospects.push(window._pmiProspect);
+  if (!prospects.find(function(x) { return x.id === window._pmiProspect.id; })) {
+    prospects.push(window._pmiProspect);
   }
-  window.currentId = window._pmiProspect.id;
+  currentId = window._pmiProspect.id;
 
   if (typeof renderSidebarPMI === 'function') renderSidebarPMI();
   if (typeof renderViewPMI === 'function') renderViewPMI('home');

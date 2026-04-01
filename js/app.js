@@ -9051,9 +9051,8 @@ async function pmiAvviaDiagnosi() {
   }
 
   window._pmiProspect = nuovoP;
-  if (!window.prospects) window.prospects = [];
-  window.prospects.push(nuovoP);
-  window.currentId = nuovoP.id;
+  prospects.push(nuovoP);
+  currentId = nuovoP.id;
 
   // Sidebar con nav ora che abbiamo il prospect
   renderSidebarPMI();
