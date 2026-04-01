@@ -9224,76 +9224,239 @@ var _PMI_DIMS = ['vendite','pipeline','team','processi','ricavi','marketing','si
 function renderPMIHome(container) {
   var p = window._pmiProspect;
   if (!p || !p.dims || !Object.keys(p.dims).some(function(k){ return p.dims[k] > 0; })) {
-    container.innerHTML = '<div style="padding:40px 32px;max-width:640px;margin:0 auto">' +
-      '<h2 style="font-size:18px;font-weight:700;color:#1a1a2e;margin-bottom:8px">Benvenuto</h2>' +
-      '<p style="font-size:13px;color:rgba(26,26,46,0.55)">Completa la diagnosi per sbloccare la tua dashboard.</p>' +
+    container.innerHTML = '<div style="padding:40px 32px;background:#d8dbe2;min-height:100vh;font-family:\'Plus Jakarta Sans\',sans-serif;">' +
+      '<h2 style="font-size:18px;font-weight:700;color:#1a1a2e;margin-bottom:8px;">Benvenuto</h2>' +
+      '<p style="font-size:13px;color:rgba(26,26,46,0.55);">Completa la diagnosi per sbloccare la tua dashboard.</p>' +
     '</div>';
     return;
   }
 
-  var s   = calcScore(p);
-  var sc  = scoreColor(s);
   var up  = window._userProfileData || {};
   var pro = window._currentProfile  || {};
-  var nome = pro.nome || (pro.nome_completo || '').split(' ')[0] || '';
+  var nome    = pro.nome || (pro.nome_completo || '').split(' ')[0] || up.nome || '';
+  var azienda = up.company_name || pro.azienda || '';
+  var settore = up.sector || p.settore || '';
 
-  // Prima priorità = dimensione col valore più basso
-  var dimMin = _PMI_DIMS.reduce(function(min, d) {
-    return (p.dims[d] || 0) < (p.dims[min] || 0) ? d : min;
-  }, _PMI_DIMS[0]);
+  var s = calcScore(p);
+  var scoreCol   = s < 30 ? 'rgba(229,57,53,0.85)' : s < 60 ? 'rgba(175,125,0,0.85)' : 'rgba(0,130,95,0.85)';
+  var scoreLabel = s < 30 ? 'Critica' : s < 45 ? 'Da migliorare' : s < 60 ? 'Sufficiente' : s < 70 ? 'Buona' : 'Ottima';
+
+  function dCol(v) { return v < 2 ? 'rgba(229,57,53,0.85)' : v < 4 ? 'rgba(175,125,0,0.85)' : 'rgba(0,130,95,0.85)'; }
+  function dPct(v) { return Math.round((v / 5) * 100); }
+
+  var d = {
+    vendite:   p.dims.vendite   || 0,
+    pipeline:  p.dims.pipeline  || 0,
+    team:      p.dims.team      || 0,
+    processi:  p.dims.processi  || 0,
+    ricavi:    p.dims.ricavi    || 0,
+    marketing: p.dims.marketing || 0,
+    sitoweb:   p.dims.sitoweb   || 0,
+    ecommerce: p.dims.ecommerce || 0
+  };
+
+  // Weakest dimension
+  var dimMin   = _PMI_DIMS.reduce(function(min, k) { return (p.dims[k]||0) < (p.dims[min]||0) ? k : min; }, _PMI_DIMS[0]);
   var scoreMin = p.dims[dimMin] || 1;
   var labelMin = getDimLabel(p.settore, dimMin);
   var stepDesc = (typeof _getStepDesc === 'function') ? _getStepDesc(p.settore, dimMin, scoreMin) : '';
+  if (!stepDesc || stepDesc === '—') stepDesc = 'Concentrati su questa area per migliorare il tuo score commerciale.';
 
-  // Griglia 8 dimensioni
-  var gridHtml = _PMI_DIMS.map(function(d) {
-    var v   = p.dims[d] || 0;
-    var col = dimColor(v);
-    var pct = (v / 5) * 100;
-    var lbl = getDimLabel(p.settore, d);
-    return '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:12px;padding:10px 12px">' +
-      '<div style="font-size:10px;font-weight:600;color:rgba(26,26,46,0.5);margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + lbl + '</div>' +
-      '<div style="height:4px;background:rgba(0,0,0,0.06);border-radius:3px;margin-bottom:6px"><div style="width:' + pct + '%;height:100%;background:' + col + ';border-radius:3px;transition:width .4s"></div></div>' +
-      '<div style="font-size:14px;font-weight:700;color:' + col + '">' + (v > 0 ? v + '/5' : '—') + '</div>' +
+  // Step tracker
+  var curStep = Math.max(1, Math.round(scoreMin));
+  var tgtStep = Math.min(curStep + 1, 5);
+  var stepPct = Math.round(((curStep - 1) / 4) * 100);
+
+  function sVars(n) {
+    var st = n < curStep ? 'done' : n === curStep ? 'active' : n === tgtStep ? 'target' : 'future';
+    if (st === 'done')    return { b:'rgba(0,130,95,0.7)',   c:'rgba(0,130,95,0.85)',  bg:'rgba(0,130,95,0.06)',   lc:'rgba(0,130,95,0.85)',  s:'solid' };
+    if (st === 'active')  return { b:'#3D5AFE',              c:'#3D5AFE',              bg:'rgba(61,90,254,0.08)',  lc:'#3D5AFE',              s:'solid' };
+    if (st === 'target')  return { b:'rgba(255,107,43,0.6)', c:'#FF6B2B',              bg:'rgba(255,107,43,0.06)', lc:'#FF6B2B',              s:'dashed' };
+    return                       { b:'rgba(0,0,0,0.1)',      c:'rgba(26,26,46,0.3)',   bg:'rgba(255,255,255,0.5)', lc:'rgba(26,26,46,0.35)',  s:'solid' };
+  }
+  var sv1=sVars(1), sv2=sVars(2), sv3=sVars(3), sv4=sVars(4);
+  var sLbl = ['','Base','Struttura','Metodo','Ottimo','Eccellenza'];
+
+  // Azioni
+  var azObj  = p.azioni_completate || {};
+  var azFatte = Object.keys(azObj).filter(function(k){ return azObj[k]; }).length;
+
+  // Ridiagnosi giorni
+  var ridiagGg = 90;
+  var lastDt = p.data_diagnosi || p.updated_at || p.created_at;
+  if (lastDt) {
+    var next = new Date(new Date(lastDt).getTime() + 90*24*60*60*1000);
+    ridiagGg = Math.max(0, Math.round((next - new Date()) / (24*60*60*1000)));
+  }
+
+  // Static V1 texts
+  var analisiTesto = 'Il tuo profilo commerciale mostra una struttura ' + scoreLabel.toLowerCase() + '. Le aree con punteggio basso — in particolare ' + labelMin + ' — sono quelle con il maggiore potenziale di miglioramento nei prossimi 90 giorni.';
+  var progressiTesto = azFatte > 0
+    ? 'Hai completato ' + azFatte + ' azione' + (azFatte !== 1 ? 'i' : 'e') + ' fino ad oggi. Continua su questo ritmo per vedere risultati concreti alla prossima diagnosi.'
+    : 'Non hai ancora completato azioni. Inizia dall\'azione della settimana suggerita per attivare il tuo percorso di miglioramento.';
+
+  function dimRow(label, val) {
+    return '<div>' +
+      '<div style="display:flex;justify-content:space-between;margin-bottom:3px;">' +
+        '<span style="font-size:11px;color:#1a1a2e;">' + label + '</span>' +
+        '<span style="font-size:11px;font-weight:600;color:' + dCol(val) + ';">' + (val || '—') + '</span>' +
+      '</div>' +
+      '<div style="width:100%;height:6px;background:rgba(0,0,0,0.05);border-radius:3px;overflow:hidden;">' +
+        '<div style="height:6px;border-radius:3px;width:' + dPct(val) + '%;background:' + dCol(val) + ';"></div>' +
+      '</div>' +
     '</div>';
-  }).join('');
+  }
 
-  var saluto = nome ? ('Ciao ' + nome + ' 👋') : 'La tua dashboard';
+  function stepCircle(n, sv, label, fixedStyle) {
+    var borderStyle = fixedStyle || sv.s;
+    return '<div style="flex:1;text-align:center;z-index:1;">' +
+      '<div style="width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin:0 auto 4px;border:2px ' + borderStyle + ' ' + sv.b + ';color:' + sv.c + ';background:' + sv.bg + ';">' + n + '</div>' +
+      '<div style="font-size:8px;color:' + sv.lc + ';">' + label + '</div>' +
+    '</div>';
+  }
 
   container.innerHTML =
-    '<div style="max-width:680px;margin:0 auto;padding:40px 28px">' +
-      '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:4px">' + saluto + '</h1>' +
-      '<p style="font-size:13px;color:rgba(26,26,46,0.45);margin-bottom:28px">Ecco la sintesi della tua situazione commerciale.</p>' +
+    '<div style="padding:24px 28px;background:#d8dbe2;min-height:100vh;font-family:\'Plus Jakarta Sans\',sans-serif;">' +
 
-      // Score + dims
-      '<div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:24px;flex-wrap:wrap">' +
-        // Score circle
-        '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:16px;padding:20px 24px;display:flex;flex-direction:column;align-items:center;min-width:110px;flex-shrink:0">' +
-          '<div style="font-size:10px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:10px">Score</div>' +
-          '<div style="display:flex;align-items:center;justify-content:center;width:70px;height:70px;border-radius:50%;border:2.5px solid ' + sc.text + ';background:' + sc.bg + '">' +
-            '<span style="font-size:26px;font-weight:700;color:' + sc.text + '">' + s + '</span>' +
+    // HEADER
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">' +
+      '<div>' +
+        '<div style="font-size:20px;font-weight:700;color:#1a1a2e;">Buongiorno, ' + (nome || 'Benvenuto') + '</div>' +
+        '<div style="font-size:12px;color:rgba(26,26,46,0.55);">' + (azienda || '—') + ' — ' + (settore || '—') + '</div>' +
+      '</div>' +
+      '<div style="width:72px;height:72px;border-radius:50%;border:3px solid ' + scoreCol + ';display:flex;align-items:center;justify-content:center;flex-direction:column;background:rgba(255,255,255,0.3);">' +
+        '<div style="font-size:26px;font-weight:700;color:#1a1a2e;">' + s + '</div>' +
+        '<div style="font-size:8px;color:rgba(26,26,46,0.35);">/100</div>' +
+      '</div>' +
+    '</div>' +
+
+    // KPI CARDS
+    '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;">' +
+      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:0 14px 14px 0;padding:14px 16px;border-left:3px solid rgba(175,125,0,0.85);">' +
+        '<div style="font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:rgba(26,26,46,0.55);">Score globale</div>' +
+        '<div style="font-size:22px;font-weight:700;color:#1a1a2e;margin-top:4px;">' + s + ' <span style="font-size:11px;color:' + scoreCol + ';">' + scoreLabel + '</span></div>' +
+      '</div>' +
+      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:0 14px 14px 0;padding:14px 16px;border-left:3px solid #3D5AFE;">' +
+        '<div style="font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:rgba(26,26,46,0.55);">Azioni completate</div>' +
+        '<div style="font-size:22px;font-weight:700;color:#1a1a2e;margin-top:4px;">' + azFatte + ' <span style="font-size:11px;color:rgba(26,26,46,0.35);">/8</span></div>' +
+      '</div>' +
+      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:0 14px 14px 0;padding:14px 16px;border-left:3px solid rgba(0,130,95,0.85);">' +
+        '<div style="font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:rgba(26,26,46,0.55);">Prossima ri-diagnosi</div>' +
+        '<div style="font-size:22px;font-weight:700;color:#1a1a2e;margin-top:4px;">' + ridiagGg + ' giorni</div>' +
+      '</div>' +
+      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:0 14px 14px 0;padding:14px 16px;border-left:3px solid #FF6B2B;">' +
+        '<div style="font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:rgba(26,26,46,0.55);">Fatturato protetto</div>' +
+        '<div style="font-size:22px;font-weight:700;color:#1a1a2e;margin-top:4px;">+€—</div>' +
+      '</div>' +
+    '</div>' +
+
+    // MAIN 2 columns
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">' +
+
+      // LEFT — 8 dimensioni
+      '<div style="background:rgba(255,255,255,0.65);border:1px solid rgba(255,255,255,0.8);border-radius:14px;padding:14px 16px;">' +
+        '<div style="font-size:13px;font-weight:600;color:#1a1a2e;margin-bottom:12px;">Le tue 8 dimensioni</div>' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">' +
+          dimRow('Vendite',     d.vendite) +
+          dimRow('Pipeline & CRM', d.pipeline) +
+          dimRow('Organizzazione', d.team) +
+          dimRow('Processi',    d.processi) +
+          dimRow('Ricavi',      d.ricavi) +
+          dimRow('Marketing',   d.marketing) +
+          dimRow('Sito Web',    d.sitoweb) +
+          dimRow('Post-vendita',d.ecommerce) +
+        '</div>' +
+      '</div>' +
+
+      // RIGHT column
+      '<div>' +
+
+        // Azione della settimana
+        '<div style="background:rgba(255,107,43,0.06);border:1px solid rgba(255,107,43,0.18);border-radius:0 14px 14px 0;padding:14px 16px;margin-bottom:10px;border-left:3px solid rgba(255,107,43,0.5);">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">' +
+            '<div style="display:flex;align-items:center;gap:6px;">' +
+              '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5 5.5-7" stroke="#FF6B2B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+              '<span style="font-size:12px;font-weight:600;color:#1a1a2e;">Azione della settimana</span>' +
+            '</div>' +
+            '<span style="padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;background:rgba(255,107,43,0.08);color:#FF6B2B;">' + labelMin + '</span>' +
           '</div>' +
-          '<div style="font-size:11px;font-weight:600;color:' + sc.text + ';margin-top:8px">' + sc.label + '</div>' +
+          '<div style="font-size:12px;color:#1a1a2e;line-height:1.5;margin-bottom:10px;">' + stepDesc + '</div>' +
+          '<div style="display:flex;gap:8px;">' +
+            '<button onclick="completaAzioneSettimanale()" style="flex:1;background:#3D5AFE;color:white;border:none;border-radius:10px;padding:8px 0;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;">Fatto</button>' +
+            '<button onclick="saltaAzioneSettimanale()" style="flex:1;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.08);color:rgba(26,26,46,0.5);border-radius:10px;padding:8px 0;font-size:11px;cursor:pointer;font-family:inherit;">Non applicabile</button>' +
+          '</div>' +
         '</div>' +
-        // Griglia dims
-        '<div style="flex:1;min-width:260px">' +
-          '<div style="font-size:10px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:10px">Dimensioni commerciali</div>' +
-          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">' + gridHtml + '</div>' +
+
+        // Step tracker
+        '<div style="background:rgba(255,255,255,0.55);border:1.5px solid rgba(61,90,254,0.2);border-radius:14px;padding:14px 16px;margin-bottom:10px;">' +
+          '<div style="font-size:12px;font-weight:600;color:#1a1a2e;margin-bottom:8px;">' + labelMin + ' — percorso step ' + curStep + ' → ' + tgtStep + '</div>' +
+          '<div style="display:flex;align-items:center;gap:0;margin-bottom:10px;position:relative;">' +
+            '<div style="position:absolute;top:14px;left:15px;right:15px;height:2px;background:rgba(0,0,0,0.06);z-index:0;"></div>' +
+            '<div style="position:absolute;top:14px;left:15px;width:' + stepPct + '%;height:2px;background:rgba(0,130,95,0.5);z-index:0;"></div>' +
+            stepCircle(1, sv1, sLbl[1], 'solid') +
+            stepCircle(2, sv2, sLbl[2], 'solid') +
+            stepCircle(3, sv3, sLbl[3], null) +
+            stepCircle(4, sv4, sLbl[4], null) +
+            '<div style="flex:1;text-align:center;z-index:1;">' +
+              '<div style="width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin:0 auto 4px;border:2px solid rgba(0,0,0,0.1);color:rgba(26,26,46,0.3);background:rgba(255,255,255,0.5);">5</div>' +
+              '<div style="font-size:8px;color:rgba(26,26,46,0.35);">Eccellenza</div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="display:flex;justify-content:space-between;">' +
+            '<div style="display:flex;align-items:center;gap:4px;">' +
+              '<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-6" stroke="rgba(0,130,95,0.7)" stroke-width="1.5" stroke-linecap="round"/></svg>' +
+              '<span style="font-size:10px;color:rgba(26,26,46,0.55);">—/— moduli</span>' +
+            '</div>' +
+            '<div style="font-size:10px;color:rgba(0,130,95,0.85);font-weight:500;">Impatto stimato disponibile prossimamente</div>' +
+          '</div>' +
         '</div>' +
-      '</div>' +
 
-      // Prima priorità
-      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:16px 18px;border-left:3px solid #FF6B2B;margin-bottom:20px">' +
-        '<div style="font-size:10px;font-weight:700;color:#FF6B2B;text-transform:uppercase;letter-spacing:0.7px;margin-bottom:5px">Priorità — ' + labelMin + '</div>' +
-        '<div style="font-size:13px;color:#1a1a2e;line-height:1.6">' + (stepDesc && stepDesc !== '—' ? stepDesc : 'Questa è la dimensione con il margine di miglioramento maggiore.') + '</div>' +
-      '</div>' +
+        // Analisi AI
+        '<div style="background:rgba(255,255,255,0.55);border:1.5px solid rgba(61,90,254,0.15);border-radius:14px;padding:14px 16px;margin-bottom:10px;">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">' +
+            '<span style="font-size:12px;font-weight:600;color:#1a1a2e;">Analisi AI</span>' +
+            '<span style="padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;background:rgba(61,90,254,0.08);color:#3D5AFE;">Generata oggi</span>' +
+          '</div>' +
+          '<div style="font-size:11px;color:rgba(26,26,46,0.55);line-height:1.5;">' + analisiTesto + '</div>' +
+        '</div>' +
 
-      // CTA
-      '<div style="display:flex;gap:10px">' +
-        '<button onclick="showViewPMI(\'azioni\')" style="flex:1;padding:11px 16px;background:#3D5AFE;color:#fff;border:none;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s" onmouseover="this.style.opacity=\'0.88\'" onmouseout="this.style.opacity=\'1\'">Vedi le azioni →</button>' +
-        '<button onclick="showViewPMI(\'score\')" style="flex:1;padding:11px 16px;background:rgba(255,255,255,0.5);color:rgba(26,26,46,0.7);border:1px solid rgba(0,0,0,0.08);border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s" onmouseover="this.style.opacity=\'0.75\'" onmouseout="this.style.opacity=\'1\'">Analisi score</button>' +
       '</div>' +
-    '</div>';
+    '</div>' +
+
+    // BOTTOM ROW
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">' +
+      '<div style="background:rgba(255,255,255,0.55);border:1.5px solid rgba(0,130,95,0.15);border-radius:14px;padding:14px 16px;">' +
+        '<div style="font-size:12px;font-weight:600;color:#1a1a2e;margin-bottom:8px;">I tuoi progressi</div>' +
+        '<div style="font-size:11px;color:rgba(26,26,46,0.55);line-height:1.5;">' + progressiTesto + '</div>' +
+      '</div>' +
+      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px;">' +
+        '<div style="width:44px;height:44px;border-radius:50%;background:rgba(61,90,254,0.08);border:1.5px solid rgba(61,90,254,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
+          '<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="7" r="3.5" stroke="#3D5AFE" stroke-width="1.3" fill="none"/><path d="M3 16.5c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#3D5AFE" stroke-width="1.3" fill="none"/></svg>' +
+        '</div>' +
+        '<div style="flex:1;">' +
+          '<div style="font-size:13px;font-weight:600;color:#1a1a2e;">Vuoi accelerare i risultati?</div>' +
+          '<div style="font-size:11px;color:rgba(26,26,46,0.55);margin-top:2px;">Prenota una sessione con un esperto commerciale. €120/sessione, nessun impegno.</div>' +
+        '</div>' +
+        '<button onclick="apriPrenotazioneCall()" style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:8px 18px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;flex-shrink:0;">Prenota</button>' +
+      '</div>' +
+    '</div>' +
+
+  '</div>';
+}
+
+function completaAzioneSettimanale() {
+  // TODO Phase 10 — segna azione come completata e aggiorna DB
+  alert('Ottimo! Azione registrata come completata.');
+}
+
+function saltaAzioneSettimanale() {
+  // TODO Phase 10 — segna azione come saltata
+  alert('Azione segnata come non applicabile. Passiamo alla prossima.');
+}
+
+function apriPrenotazioneCall() {
+  // TODO Phase 10 — apri flusso prenotazione call con CSO
+  alert('Funzione prenotazione in arrivo. Contatta il tuo CSO direttamente per ora.');
 }
 
 // ── FASE 6 — Score ────────────────────────────────────────────────────────────
