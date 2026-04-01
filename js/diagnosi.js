@@ -108,6 +108,11 @@ function apriDiagnosi() {
   var p = prospects.find(function(x){ return x.id === currentId; });
   if (!p) return;
   if (!p.settore) {
+    // In contesto PMI: torna al primo accesso per scegliere settore
+    if (window._pmiProspect && typeof renderPrimoAccesso === 'function') {
+      renderPrimoAccesso();
+      return;
+    }
     showToast('Seleziona prima il settore del prospect', 'error');
     return;
   }
