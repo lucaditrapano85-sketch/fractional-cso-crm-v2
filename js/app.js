@@ -9344,6 +9344,14 @@ function renderPMIHome(container) {
   var stepDesc = (typeof _getStepDesc==='function') ? _getStepDesc(p.settore, dimMin, scoreMin) : '';
   if (!stepDesc || stepDesc==='—') stepDesc = 'Concentrati sulla dimensione più debole questa settimana.';
 
+  // Calcolo impatto economico reale
+  var fatturato = p.fatturato || 1000000;
+  var gapStep   = Math.min(2, 5 - scoreMin);
+  var coefficienti = {vendite:0.04,pipeline:0.035,team:0.025,processi:0.03,ricavi:0.045,marketing:0.02,sitoweb:0.015,ecommerce:0.03};
+  var coeff = coefficienti[dimMin] || 0.03;
+  var impattoMensile = Math.round(fatturato * gapStep * coeff / 12);
+  var impattoFmt = '€' + impattoMensile.toLocaleString('it-IT');
+
   // {{DIMS_HTML}}
   var dimLabels = {vendite:'Vendite',pipeline:'Pipeline & CRM',team:'Organizzazione',processi:'Processi',ricavi:'Ricavi',marketing:'Marketing',sitoweb:'Sito Web',ecommerce:'Post-vendita'};
   var dimsHtml = _PMI_DIMS.map(function(key) {
@@ -9355,8 +9363,8 @@ function renderPMIHome(container) {
     var pct = Math.round((v/5)*100);
     return '<div onclick="navigaAzioni(\''+key+'\')" style="flex:1;min-width:45%;padding:8px 10px;background:'+cardBg+';border-radius:8px;cursor:pointer;'+cardBorder+'">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">' +
-        '<span style="font-size:11px;color:#1a1a2e;">'+dimLabels[key]+'</span>' +
-        '<span style="font-size:13px;font-weight:700;color:'+color+';">'+(v||'—')+'</span>' +
+        '<span style="font-size:12px;color:#1a1a2e;">'+dimLabels[key]+'</span>' +
+        '<span style="font-size:15px;font-weight:700;color:'+color+';">'+(v||'—')+'</span>' +
       '</div>' +
       '<div style="height:4px;background:rgba(0,0,0,0.04);border-radius:2px;">' +
         '<div style="height:4px;border-radius:2px;width:'+pct+'%;background:'+barColor+';"></div>' +
@@ -9432,7 +9440,7 @@ function renderPMIHome(container) {
       '<div style="background:#d8dbe2;padding:28px 32px;font-family:\'Plus Jakarta Sans\',sans-serif;">' +
         '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">' +
           '<div>' +
-            '<div style="font-size:22px;font-weight:700;color:#1a1a2e;">Buongiorno, '+nome+'</div>' +
+            '<div style="font-size:26px;font-weight:700;color:#1a1a2e;">Buongiorno, '+nome+'</div>' +
             '<div style="font-size:12px;color:rgba(26,26,46,0.50);">'+azienda+' — '+settore+'</div>' +
           '</div>' +
           '<div style="display:flex;align-items:center;gap:16px;">' +
@@ -9444,36 +9452,40 @@ function renderPMIHome(container) {
         '</div>' +
         '<div style="background:rgba(255,107,43,0.05);border:1px solid rgba(255,107,43,0.15);border-left:4px solid #FF6B2B;border-radius:0 16px 16px 0;padding:18px 20px;margin-bottom:20px;">' +
           '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">' +
-            '<div style="font-size:14px;font-weight:600;color:#1a1a2e;">La tua azione di questa settimana</div>' +
+            '<div style="font-size:16px;font-weight:600;color:#1a1a2e;">La tua azione di questa settimana</div>' +
             '<div style="padding:4px 12px;border-radius:20px;font-size:10px;font-weight:500;background:rgba(255,107,43,0.08);color:#FF6B2B;">'+labelMin+'</div>' +
           '</div>' +
-          '<div style="font-size:13px;line-height:1.6;margin-bottom:14px;color:#1a1a2e;">'+stepDesc+' <span style="font-weight:600;">Obiettivo: completare almeno 1 azione entro venerdì.</span></div>' +
+          '<div style="font-size:14px;line-height:1.6;margin-bottom:14px;color:#1a1a2e;">'+stepDesc+' <span style="font-weight:600;">Obiettivo: completare almeno 1 azione entro venerdì.</span></div>' +
           '<div style="display:flex;gap:8px;align-items:center;">' +
             '<button onclick="completaAzioneSettimanale()" style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:9px 24px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;">Ho fatto</button>' +
             '<button onclick="saltaAzioneSettimanale()" style="background:rgba(255,255,255,0.45);border:1px solid rgba(0,0,0,0.06);color:rgba(26,26,46,0.4);border-radius:10px;padding:9px 24px;font-size:12px;cursor:pointer;font-family:inherit;">Non applicabile</button>' +
             '<div style="flex:1;"></div>' +
-            '<div style="font-size:10px;color:rgba(26,26,46,0.50);">Impatto stimato: <span style="color:rgba(0,130,95,0.85);font-weight:600;">+€2.800/mese</span></div>' +
+            '<div style="display:flex;align-items:center;gap:8px;background:rgba(0,130,95,0.06);border:1px solid rgba(0,130,95,0.15);border-radius:12px;padding:8px 16px;">' +
+              '<div style="font-size:10px;color:rgba(0,130,95,0.70);">Impatto stimato</div>' +
+              '<div style="font-size:20px;font-weight:700;color:rgba(0,130,95,0.85);">+'+impattoFmt+'</div>' +
+              '<div style="font-size:10px;color:rgba(0,130,95,0.70);">/mese</div>' +
+            '</div>' +
           '</div>' +
         '</div>' +
         '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">' +
           '<div style="background:rgba(255,255,255,0.50);border:1px solid rgba(255,255,255,0.65);border-radius:14px;padding:16px 18px;">' +
-            '<div style="font-size:12px;font-weight:600;color:#1a1a2e;margin-bottom:14px;">Il tuo profilo commerciale</div>' +
+            '<div style="font-size:14px;font-weight:600;color:#1a1a2e;margin-bottom:14px;">Il tuo profilo commerciale</div>' +
             '<div style="display:flex;flex-wrap:wrap;gap:6px;">'+dimsHtml+'</div>' +
           '</div>' +
           '<div>' +
             '<div style="background:rgba(61,90,254,0.04);border:1px solid rgba(61,90,254,0.12);border-radius:14px;padding:16px 18px;margin-bottom:12px;">' +
               '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">' +
-                '<div style="font-size:12px;font-weight:600;color:#1a1a2e;">Leva dice</div>' +
+                '<div style="font-size:14px;font-weight:600;color:#1a1a2e;">Leva dice</div>' +
                 '<div style="padding:3px 10px;border-radius:20px;font-size:9px;background:rgba(61,90,254,0.08);color:#3D5AFE;">AI</div>' +
               '</div>' +
               '<div style="font-size:12px;line-height:1.55;color:rgba(26,26,46,0.60);">Il tuo profilo commerciale mostra aree di miglioramento significative. <span style="font-weight:500;color:#1a1a2e;">Parti dalla dimensione più debole.</span></div>' +
             '</div>' +
             '<div style="background:rgba(255,255,255,0.50);border:1px solid rgba(255,255,255,0.65);border-radius:14px;padding:16px 18px;margin-bottom:12px;">' +
-              '<div style="font-size:12px;font-weight:600;color:#1a1a2e;margin-bottom:10px;">Il tuo percorso</div>' +
+              '<div style="font-size:14px;font-weight:600;color:#1a1a2e;margin-bottom:10px;">Il tuo percorso</div>' +
               '<div style="display:flex;gap:10px;margin-bottom:12px;">'+stepsHtml+'</div>' +
               '<div style="display:flex;justify-content:space-between;font-size:10px;">' +
                 '<span style="color:rgba(26,26,46,0.50);">'+azFatte+'/5 moduli completati</span>' +
-                '<span style="color:rgba(0,130,95,0.85);font-weight:500;">+€2.800/mese</span>' +
+                '<span style="font-size:12px;font-weight:600;color:rgba(0,130,95,0.85);">+'+impattoFmt+'/mese</span>' +
               '</div>' +
             '</div>' +
             '<div style="background:rgba(255,255,255,0.50);border:1px solid rgba(255,255,255,0.65);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:12px;">' +
@@ -9481,7 +9493,7 @@ function renderPMIHome(container) {
                 '<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="7" r="3.5" stroke="#3D5AFE" stroke-width="1.3" fill="none"/><path d="M3 16.5c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#3D5AFE" stroke-width="1.3" fill="none"/></svg>' +
               '</div>' +
               '<div style="flex:1;">' +
-                '<div style="font-size:12px;font-weight:600;color:#1a1a2e;">Vuoi un esperto?</div>' +
+                '<div style="font-size:14px;font-weight:600;color:#1a1a2e;">Vuoi un esperto?</div>' +
                 '<div style="font-size:10px;color:rgba(26,26,46,0.50);">€120/sessione — nessun impegno</div>' +
               '</div>' +
               '<button onclick="apriPrenotazioneCall()" style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:7px 16px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;">Prenota</button>' +
