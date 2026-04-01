@@ -9322,6 +9322,97 @@ function _renderAHAPMI(container) {
 
 var _PMI_DIMS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
 
+var AZIONI_SETTIMANALI = {
+  "Vendite": {
+    1: {t: "Fai una lista dei tuoi 10 migliori clienti degli ultimi 12 mesi. Per ognuno scrivi: ultimo acquisto, valore, e se li hai sentiti nell'ultimo mese. Se ne trovi 3+ che non senti da oltre 30 giorni, chiamali questa settimana.", o: "Obiettivo: ricontattare almeno 3 clienti dormienti entro venerdì."},
+    2: {t: "Prendi i preventivi aperti degli ultimi 60 giorni. Conta quanti sono e quanti hai seguito almeno 2 volte. Chiama i 3 preventivi più grandi non ancora chiusi e proponi una variante semplificata.", o: "Obiettivo: chiuderne almeno 1 entro venerdì."},
+    3: {t: "Definisci per iscritto il tuo processo di vendita: quanti step dal primo contatto alla chiusura? Chi fa cosa? Dove si perde tempo? Scrivi tutto su un foglio e identifica il passaggio dove perdi più trattative.", o: "Obiettivo: processo scritto nero su bianco."},
+    4: {t: "Analizza il tuo tasso di chiusura: quanti preventivi hai fatto questo mese e quanti hai chiuso? Calcola la percentuale. Se è sotto il 30%, il problema è nel follow-up. Se è sopra ma il fatturato non cresce, il problema è nel numero di lead.", o: "Obiettivo: conoscere il tuo numero esatto."},
+    5: {t: "Rivedi i KPI del mese: tasso di chiusura, valore medio ordine, tempo medio di chiusura. Confrontali con il mese scorso. Identifica un KPI in calo.", o: "Obiettivo: definire un'azione correttiva per la prossima settimana."}
+  },
+  "Pipeline & CRM": {
+    1: {t: "Apri un foglio Excel o Google Sheet. Crea 5 colonne: Nome cliente, Valore preventivo, Data ultimo contatto, Prossima azione, Stato. Inserisci tutti i preventivi attivi.", o: "Obiettivo: pipeline visibile in un posto solo."},
+    2: {t: "Guarda il tuo foglio pipeline. Quanti preventivi hanno la colonna 'Prossima azione' vuota? Compilala per tutti. Per ogni preventivo aperto devi sapere cosa fare dopo e quando.", o: "Obiettivo: zero preventivi senza prossima azione."},
+    3: {t: "Imposta un promemoria settimanale: ogni lunedì mattina, 15 minuti per rivedere la pipeline. Se un preventivo è fermo da 45+ giorni senza risposta, segnalo come perso e chiedi il motivo.", o: "Obiettivo: pipeline pulita e aggiornata ogni lunedì."},
+    4: {t: "Calcola il tuo ciclo di vendita medio: dalla prima chiamata alla chiusura, quanti giorni passano? Calcolalo sulle ultime 10 chiusure. Se è sopra 30 giorni, identifica dove si blocca.", o: "Obiettivo: conoscere il ciclo e il collo di bottiglia."},
+    5: {t: "Implementa un CRM digitale (anche gratuito: HubSpot Free, Pipedrive trial). Migra i dati dal foglio. Configura i promemoria automatici per il follow-up.", o: "Obiettivo: nessun lead dimenticato, mai più."}
+  },
+  "Organizzazione": {
+    1: {t: "Scrivi su un foglio quanto tempo dedichi alla vendita ogni settimana — in ore reali. Includi: chiamate, preventivi, visite, follow-up. Se è meno di 10 ore su 40, stai facendo il tuttofare.", o: "Obiettivo: conoscere il tuo numero reale di ore vendita."},
+    2: {t: "Identifica le 3 attività che ti rubano più tempo e che NON sono vendita. Per ognuna chiediti: posso delegarla? A chi? A quanto?", o: "Obiettivo: pianificare almeno 1 delega questa settimana."},
+    3: {t: "Se hai un commerciale, fissa un incontro settimanale di 30 minuti: revisione pipeline, obiettivi della settimana, problemi aperti. Se non lo fai, il tuo commerciale vende alla cieca.", o: "Obiettivo: primo incontro commerciale strutturato."},
+    4: {t: "Definisci obiettivi mensili scritti per ogni persona che vende: numero di chiamate, preventivi, fatturato target. Condividili. Se non misuri, non puoi migliorare.", o: "Obiettivo: obiettivi scritti e comunicati entro venerdì."},
+    5: {t: "Rivedi la struttura commerciale: chi genera lead? Chi chiude? Chi gestisce i clienti esistenti? Disegna l'organigramma commerciale.", o: "Obiettivo: organigramma chiaro con responsabilità definite."}
+  },
+  "Processi": {
+    1: {t: "Descrivi il percorso di un cliente dal primo contatto al pagamento. Quanti passaggi? Chi lo gestisce ad ogni step? Dove si perde tempo? Scrivilo su un foglio.", o: "Obiettivo: processo scritto, anche grezzo."},
+    2: {t: "Per ogni passaggio del processo segna: tempo medio, responsabile, cosa può andare storto. Identifica il passaggio più lento — quello è il tuo collo di bottiglia.", o: "Obiettivo: identificare il collo di bottiglia numero 1."},
+    3: {t: "Standardizza il preventivo: template con layout professionale, condizioni chiare, scadenza 30 giorni, e follow-up automatico dopo 7 giorni.", o: "Obiettivo: template preventivo pronto per tutti i clienti."},
+    4: {t: "Misura il tempo dal preventivo alla chiusura. Se è sopra 15 giorni, il cliente sta decidendo altrove. Regola: follow-up al giorno 3, 7, 14. Dopo il 14 chiedi sì o no.", o: "Obiettivo: nessun preventivo in limbo oltre 14 giorni."},
+    5: {t: "Automatizza almeno 1 passaggio: promemoria automatici, email template per follow-up, o report settimanale generato automaticamente.", o: "Obiettivo: risparmiare almeno 1 ora a settimana."}
+  },
+  "Ricavi": {
+    1: {t: "Calcola quanto fatturato viene dai tuoi 3 clienti più grandi. Se è più del 40% del totale, sei a rischio. Fai una lista di 5 aziende prospect che non hai mai contattato.", o: "Obiettivo: lista di 5 prospect nuovi."},
+    2: {t: "Analizza i margini per cliente o prodotto. Quale genera più margine? Quale meno? Calcolalo sui top 5 clienti.", o: "Obiettivo: conoscere il margine sui 5 clienti più grandi."},
+    3: {t: "Proponi un upsell o cross-sell a 3 clienti esistenti questa settimana. Il cliente esistente compra 5x più facilmente di uno nuovo.", o: "Obiettivo: 3 proposte aggiuntive inviate."},
+    4: {t: "Rivedi il listino prezzi: l'ultima volta che hai alzato i prezzi? Se è più di 18 mesi fa, stai perdendo margine. Prepara un aumento del 3-5% per i nuovi clienti.", o: "Obiettivo: nuovo listino pronto."},
+    5: {t: "Identifica un servizio o prodotto complementare da offrire. Testa l'interesse con 5 clienti questa settimana.", o: "Obiettivo: validare una nuova linea di ricavo."}
+  },
+  "Marketing": {
+    1: {t: "Cerca la tua azienda su Google. Cosa esce? Se non esce niente, il tuo marketing è inesistente. Fai lo stesso con i tuoi 3 concorrenti principali.", o: "Obiettivo: sapere cosa vede chi ti cerca online."},
+    2: {t: "Crea o aggiorna la scheda Google Business Profile. Aggiungi: indirizzo, orari, foto reali, descrizione. Chiedi a 3 clienti soddisfatti di lasciare una recensione.", o: "Obiettivo: scheda Google con almeno 3 recensioni."},
+    3: {t: "Pubblica 1 contenuto a settimana su LinkedIn o Facebook: una foto di un lavoro completato, un consiglio pratico, un caso di successo. Non serve essere creativi.", o: "Obiettivo: 4 post in 4 settimane."},
+    4: {t: "Chiedi a 5 clienti come ti hanno trovato. Se la risposta è sempre passaparola, il marketing non funziona. Identifica un canale digitale da testare.", o: "Obiettivo: sapere come ti trovano i clienti."},
+    5: {t: "Imposta un budget marketing mensile (anche €200-500). Testa un canale per 60 giorni. Misura: quanti contatti, quanti preventivi, a che costo.", o: "Obiettivo: primo test marketing con budget e misura."}
+  },
+  "Sito Web": {
+    1: {t: "Apri il tuo sito sul telefono. Si carica in meno di 3 secondi? Si legge bene? Il numero è cliccabile? Il modulo contatti funziona? Se una risposta è no, il sito ti perde clienti.", o: "Obiettivo: test mobile del tuo sito fatto."},
+    2: {t: "Il sito deve avere: chi sei, cosa fai, dove sei, come contattarti, e almeno 3 foto reali. Se manca qualcosa, aggiornalo.", o: "Obiettivo: 5 informazioni base presenti e aggiornate."},
+    3: {t: "Installa Google Analytics (gratuito). Dopo una settimana guarda: quante visite, da dove, quale pagina è più vista. Se non misuri, non sai se il sito funziona.", o: "Obiettivo: Analytics installato e funzionante."},
+    4: {t: "Aggiungi una pagina casi di successo: 3-5 esempi con foto, problema, soluzione, risultato. Più persuasivo di qualsiasi testo commerciale.", o: "Obiettivo: almeno 3 casi pubblicati."},
+    5: {t: "Ottimizza per ricerche locali: inserisci città e servizi nei titoli. 'Meccanica di precisione a Torino' non solo 'I nostri servizi'.", o: "Obiettivo: titoli pagine ottimizzati."}
+  },
+  "Post-vendita": {
+    1: {t: "Chiama 3 clienti che hanno comprato negli ultimi 6 mesi. Non per vendere — per chiedere come va. Questa telefonata vale più di qualsiasi campagna marketing.", o: "Obiettivo: 3 chiamate di follow-up fatte."},
+    2: {t: "Crea un template email: 'Ciao [nome], sono passati 30 giorni dal tuo acquisto. Tutto bene? Posso aiutarti?' Inviala ai clienti degli ultimi 3 mesi.", o: "Obiettivo: template creato e prime 10 email inviate."},
+    3: {t: "Definisci un calendario post-vendita: giorno 7 feedback, giorno 30 check-in, giorno 90 proposta riacquisto. Automatizzalo se possibile.", o: "Obiettivo: calendario post-vendita scritto."},
+    4: {t: "Misura il tasso di riacquisto: quanti clienti comprano una seconda volta entro 12 mesi? Se è sotto il 20%, il post-vendita non funziona.", o: "Obiettivo: conoscere il tuo tasso di riacquisto."},
+    5: {t: "Implementa un programma referral: sconto o servizio gratuito ai clienti che portano un nuovo cliente. Il passaparola incentivato costa meno di qualsiasi pubblicità.", o: "Obiettivo: programma referral attivo."}
+  }
+};
+
+function generaAnalisiAI(prospect) {
+  var dims = prospect.dims;
+  var entries = Object.keys(dims).map(function(k){ return [k, dims[k]]; });
+  var sorted = entries.slice().sort(function(a,b){ return a[1]-b[1]; });
+  var debole = sorted[0];
+  var forte  = sorted[sorted.length-1];
+  var critiche = entries.filter(function(e){ return e[1]<=1; }).length;
+  var benchmarkMedia = 3.0;
+
+  var testo = '';
+  if (debole[1] <= 1) {
+    testo = 'La tua area più critica è ' + debole[0] + ' con score ' + debole[1] + '/5 — sei ben sotto la media di settore (' + benchmarkMedia + ').';
+  } else if (debole[1] <= 2) {
+    testo = debole[0] + ' (' + debole[1] + '/5) è la tua area più debole. La media del tuo settore è ' + benchmarkMedia + ' — c\'è margine di crescita significativo.';
+  } else {
+    testo = 'Il tuo profilo è equilibrato. ' + debole[0] + ' (' + debole[1] + '/5) è l\'area con più margine di miglioramento.';
+  }
+
+  var correlazioni = {'Pipeline & CRM':'Processi','Vendite':'Organizzazione','Marketing':'Sito Web','Ricavi':'Post-vendita'};
+  var prereq = correlazioni[debole[0]];
+  var consiglio = '';
+  if (prereq && dims[prereq] <= 2) {
+    consiglio = 'Ma prima di lavorare su ' + debole[0] + ', risolvi ' + prereq + ' (' + dims[prereq] + '/5) — è un prerequisito. Senza ' + prereq + ' strutturato, i miglioramenti su ' + debole[0] + ' non tengono.';
+  } else if (critiche >= 3) {
+    consiglio = 'Hai ' + critiche + ' aree critiche — concentrati su una alla volta. Parti da ' + debole[0] + '.';
+  } else {
+    consiglio = 'Parti da ' + debole[0] + ' — migliorarla avrà l\'impatto maggiore sul tuo fatturato nei prossimi 90 giorni. Il tuo punto di forza è ' + forte[0] + ' (' + forte[1] + '/5).';
+  }
+
+  return {testo: testo, consiglio: consiglio};
+}
+
 // ── FASE 5 — Home ─────────────────────────────────────────────────────────────
 function renderPMIHome(container) {
   var p = window._pmiProspect;
@@ -9341,8 +9432,14 @@ function renderPMIHome(container) {
   var dimMin   = _PMI_DIMS.reduce(function(min,k){ return (p.dims[k]||0)<(p.dims[min]||0)?k:min; }, _PMI_DIMS[0]);
   var scoreMin = p.dims[dimMin] || 1;
   var labelMin = getDimLabel(p.settore, dimMin);
-  var stepDesc = (typeof _getStepDesc==='function') ? _getStepDesc(p.settore, dimMin, scoreMin) : '';
-  if (!stepDesc || stepDesc==='—') stepDesc = 'Concentrati sulla dimensione più debole questa settimana.';
+  var stepActual = Math.max(1, Math.min(5, Math.round(scoreMin)));
+  var azioneData = (AZIONI_SETTIMANALI[labelMin] && AZIONI_SETTIMANALI[labelMin][stepActual]) || null;
+  var stepDesc   = azioneData ? azioneData.t : 'Concentrati sulla dimensione più debole questa settimana.';
+  var stepObj    = azioneData ? azioneData.o : 'Obiettivo: completare almeno 1 azione entro venerdì.';
+
+  // Analisi AI per "Leva dice"
+  var dimsMapped = {'Vendite':p.dims.vendite||0,'Pipeline & CRM':p.dims.pipeline||0,'Organizzazione':p.dims.team||0,'Processi':p.dims.processi||0,'Ricavi':p.dims.ricavi||0,'Marketing':p.dims.marketing||0,'Sito Web':p.dims.sitoweb||0,'Post-vendita':p.dims.ecommerce||0};
+  var analisi = generaAnalisiAI({dims: dimsMapped});
 
   // Calcolo impatto economico reale
   var fatturato = p.fatturato || 1000000;
@@ -9455,7 +9552,7 @@ function renderPMIHome(container) {
             '<div style="font-size:16px;font-weight:600;color:#1a1a2e;">La tua azione di questa settimana</div>' +
             '<div style="padding:4px 12px;border-radius:20px;font-size:10px;font-weight:500;background:rgba(255,107,43,0.08);color:#FF6B2B;">'+labelMin+'</div>' +
           '</div>' +
-          '<div style="font-size:14px;line-height:1.6;margin-bottom:14px;color:#1a1a2e;">'+stepDesc+' <span style="font-weight:600;">Obiettivo: completare almeno 1 azione entro venerdì.</span></div>' +
+          '<div style="font-size:14px;line-height:1.6;margin-bottom:14px;color:#1a1a2e;">'+stepDesc+' <span style="font-weight:600;">'+stepObj+'</span></div>' +
           '<div style="display:flex;gap:8px;align-items:center;">' +
             '<button onclick="completaAzioneSettimanale()" style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:9px 24px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;">Ho fatto</button>' +
             '<button onclick="saltaAzioneSettimanale()" style="background:rgba(255,255,255,0.45);border:1px solid rgba(0,0,0,0.06);color:rgba(26,26,46,0.4);border-radius:10px;padding:9px 24px;font-size:12px;cursor:pointer;font-family:inherit;">Non applicabile</button>' +
@@ -9478,7 +9575,7 @@ function renderPMIHome(container) {
                 '<div style="font-size:14px;font-weight:600;color:#1a1a2e;">Leva dice</div>' +
                 '<div style="padding:3px 10px;border-radius:20px;font-size:9px;background:rgba(61,90,254,0.08);color:#3D5AFE;">AI</div>' +
               '</div>' +
-              '<div style="font-size:12px;line-height:1.55;color:rgba(26,26,46,0.60);">Il tuo profilo commerciale mostra aree di miglioramento significative. <span style="font-weight:500;color:#1a1a2e;">Parti dalla dimensione più debole.</span></div>' +
+              '<div style="font-size:12px;line-height:1.55;color:rgba(26,26,46,0.60);">'+analisi.testo+' <span style="font-weight:500;color:#1a1a2e;">'+analisi.consiglio+'</span></div>' +
             '</div>' +
             '<div style="background:rgba(255,255,255,0.50);border:1px solid rgba(255,255,255,0.65);border-radius:14px;padding:16px 18px;margin-bottom:12px;">' +
               '<div style="font-size:14px;font-weight:600;color:#1a1a2e;margin-bottom:10px;">Il tuo percorso</div>' +
