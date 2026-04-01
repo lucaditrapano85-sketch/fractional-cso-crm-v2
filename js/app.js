@@ -10077,8 +10077,22 @@ function renderPMIProfilo(container) {
   var pro = window._currentProfile  || {};
 
   var nomeAzienda  = up.company_name || (p ? p.nome : '') || '';
-  var settoreVal   = (p ? p.settore : '') || up.sector || '';
-  var fasciaVal    = up.fascia_fatturato || (p ? p.fatturato : '') || '';
+
+  // settore: p.settore può essere micro (es. "manifatturiero_meccanica") → risali al macro
+  var _settoreRaw = (p ? p.settore : '') || up.sector || _pmiSelectedSettore || '';
+  var settoreVal  = (function(raw) {
+    if (!raw) return '';
+    // già macro?
+    if (PMI_MACRO_SETTORI.find(function(m){ return m.id === raw; })) return raw;
+    // cerca il macro che contiene questo micro
+    for (var macroId in PMI_MICRO_SETTORI) {
+      if ((PMI_MICRO_SETTORI[macroId] || []).find(function(m){ return m.id === raw; })) return macroId;
+    }
+    return raw;
+  })(_settoreRaw);
+
+  // fascia: up.fascia_fatturato ha l'ID corretto; p.fatturato ha il valore numerico — non usarlo
+  var fasciaVal    = up.fascia_fatturato || _pmiSelectedFascia || '';
   var cittaVal     = up.citta || (p ? p.citta : '') || '';
   var nomeVal      = pro.nome || '';
   var cognomeVal   = pro.cognome || '';
