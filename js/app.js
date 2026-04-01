@@ -7123,6 +7123,14 @@ async function salvaAzioneCustom(stepKey) {
 }
 
 function _getStepDesc(settore, dimId, stepNum) {
+  // 1. Settori custom (generati da AI)
+  var custom = window._settoriCustomCache && window._settoriCustomCache[settore];
+  if (custom && custom.dimensioni) {
+    var aiLabel = _DIM_TO_AI_LABEL[dimId];
+    var desc = aiLabel && custom.dimensioni[aiLabel] && custom.dimensioni[aiLabel][String(stepNum)];
+    if (desc) return desc;
+  }
+  // 2. Statico
   const sd = (typeof STEP_DETAIL_BY_SETTORE !== 'undefined') ? STEP_DETAIL_BY_SETTORE : {};
   const detail = sd[settore]?.[dimId]?.[String(stepNum)];
   if (detail) return (detail.chi ? detail.chi + ' — ' : '') + (detail.cosa || '');
@@ -9071,6 +9079,26 @@ function _renderSelezioneSetting(container) {
         '<div id="pmi-micro-grid" style="display:flex;flex-wrap:wrap;gap:8px"></div>' +
       '</div>' +
 
+      // Separatore AI
+      '<div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">' +
+        '<div style="flex:1;height:1px;background:rgba(0,0,0,0.08)"></div>' +
+        '<span style="font-size:12px;color:rgba(26,26,46,0.35)">oppure</span>' +
+        '<div style="flex:1;height:1px;background:rgba(0,0,0,0.08)"></div>' +
+      '</div>' +
+
+      // Sezione AI
+      '<div style="margin-bottom:28px">' +
+        '<div style="font-size:11px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:12px">Non trovi il tuo settore?</div>' +
+        '<div style="display:flex;gap:8px;align-items:center">' +
+          '<div style="flex:1;position:relative">' +
+            '<svg style="position:absolute;left:12px;top:50%;transform:translateY(-50%);pointer-events:none" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="rgba(26,26,46,0.35)" stroke-width="1.3"/><line x1="9.5" y1="9.5" x2="12.5" y2="12.5" stroke="rgba(26,26,46,0.35)" stroke-width="1.3" stroke-linecap="round"/></svg>' +
+            '<input id="pmi-ai-input" oninput="document.getElementById(\'pmi-ai-btn\').disabled=!this.value.trim()" style="width:100%;box-sizing:border-box;padding:12px 12px 12px 32px;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.08);border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;color:#1a1a2e;outline:none;" placeholder="Descrivi il tuo settore (es. negozio pesca sportiva, autolavaggio, vivaista...)">' +
+          '</div>' +
+          '<button id="pmi-ai-btn" onclick="pmiGeneraSettoreAI()" disabled style="padding:12px 18px;background:#3D5AFE;color:#fff;border:none;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;opacity:0.5" onmouseover="if(!this.disabled)this.style.opacity=\'0.88\'" onmouseout="if(!this.disabled)this.style.opacity=\'1\'">Genera con AI</button>' +
+        '</div>' +
+        '<div id="pmi-ai-msg" style="font-size:12px;min-height:18px;margin-top:8px;line-height:1.5"></div>' +
+      '</div>' +
+
       // Fascia fatturato
       '<div style="margin-bottom:32px">' +
         '<div style="font-size:11px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:12px">Fatturato annuo</div>' +
@@ -9129,6 +9157,95 @@ function pmiSelFascia(id) {
   document.querySelectorAll('#pmi-fascia-grid .pmi-select-card').forEach(function(el) { el.classList.remove('selected'); });
   var c = document.getElementById('pmi-f-' + id);
   if (c) c.classList.add('selected');
+}
+
+// ── Cache settori custom (caricati da Supabase o generati da AI) ──────────────
+window._settoriCustomCache = window._settoriCustomCache || {};
+
+// Mapping dimId → label usata dall'AI
+var _DIM_TO_AI_LABEL = {
+  vendite:'Vendite', pipeline:'Pipeline & CRM', team:'Organizzazione',
+  processi:'Processi', ricavi:'Ricavi', marketing:'Marketing',
+  sitoweb:'Sito Web', ecommerce:'Post-vendita'
+};
+var _AI_MACRO_TO_ID = {
+  'Manifatturiero':'manifatturiero', 'Servizi':'servizi', 'Servizi B2B':'servizi',
+  'Edilizia':'edilizia', 'Edilizia / Impianti':'edilizia',
+  'Commercio':'commercio', 'Alimentare':'alimentare', 'Alimentare / Food':'alimentare',
+  'Tech':'tech', 'Tech / Software':'tech'
+};
+
+// Carica un settore custom dalla cache o da Supabase
+async function _caricaSettoreCustom(settoreId) {
+  if (window._settoriCustomCache[settoreId]) return window._settoriCustomCache[settoreId];
+  if (typeof sb === 'undefined') return null;
+  try {
+    var { data } = await sb.from('settori_custom').select('*').eq('codice', settoreId).single();
+    if (data) {
+      window._settoriCustomCache[settoreId] = data;
+      return data;
+    }
+  } catch(e) {}
+  return null;
+}
+
+// Genera settore con AI e salva in settori_custom
+async function pmiGeneraSettoreAI() {
+  var input = (document.getElementById('pmi-ai-input') || {}).value || '';
+  input = input.trim();
+  if (!input) return;
+
+  var btn = document.getElementById('pmi-ai-btn');
+  var msg = document.getElementById('pmi-ai-msg');
+  if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; btn.textContent = '...'; }
+  if (msg) msg.innerHTML = '<span style="color:rgba(26,26,46,0.55)">⏳ Leva sta analizzando il tuo settore...</span>';
+
+  try {
+    var res = await fetch('/api/ai', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: 'genera_settore', data: { input: input } })
+    });
+    var json = await res.json();
+    if (!json.ok || !json.data) throw new Error(json.error || 'Risposta non valida');
+
+    var sd = json.data;
+
+    // Salva in settori_custom su Supabase
+    if (typeof sb !== 'undefined') {
+      await sb.from('settori_custom').upsert({
+        codice:          sd.codice,
+        nome_display:    sd.nome_display,
+        macro_settore:   sd.macro_settore,
+        dimensioni:      sd.dimensioni,
+        moduli:          sd.moduli,
+        benchmark_media: sd.benchmark_media,
+        created_by:      window._currentUserId || null,
+      }, { onConflict: 'codice' });
+    }
+
+    // Cache in memoria
+    window._settoriCustomCache[sd.codice] = sd;
+
+    // Imposta come settore selezionato
+    _pmiSelectedSettore = sd.codice;
+    _pmiSelectedMacro   = _AI_MACRO_TO_ID[sd.macro_settore] || 'servizi';
+
+    // Deseleziona card macro/micro
+    document.querySelectorAll('#pmi-macro-grid .pmi-select-card, #pmi-micro-grid .pmi-select-card').forEach(function(el) {
+      el.classList.remove('selected');
+    });
+
+    if (msg) msg.innerHTML =
+      '<span style="color:rgba(0,130,95,0.85);font-weight:600">✓ Settore "' + sd.nome_display + '" creato!</span>' +
+      '<span style="color:rgba(26,26,46,0.55)"> Scegli il fatturato e clicca "Inizia la diagnosi".</span>';
+
+  } catch(e) {
+    console.error('pmiGeneraSettoreAI:', e);
+    if (msg) msg.innerHTML = '<span style="color:#E53935">Errore nella generazione. Seleziona un settore dalla lista sopra.</span>';
+  }
+
+  if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.textContent = 'Genera con AI'; }
 }
 
 async function pmiAvviaDiagnosi() {
@@ -9772,15 +9889,35 @@ function _buildModuliPanelContent(dimId) {
     '</div>';
 
   // ─── Moduli ─────────────────────────────────────────────────────────────────
-  var sd = (typeof STEP_DETAIL_BY_SETTORE !== 'undefined') ? STEP_DETAIL_BY_SETTORE : {};
-  var nextDetail = (sd[settore] && sd[settore][dimId] && sd[settore][dimId][String(stepNext)]) || null;
-  var moduli = (nextDetail && nextDetail.moduli && nextDetail.moduli.length)
-    ? nextDetail.moduli
-    : [
-        { id:'mappa',     nome:'Mappatura situazione attuale', tipo:'flag', note:'Analisi di partenza: capire dov\'è il processo oggi e dove si vuole arrivare.' },
-        { id:'processo',  nome:'Definizione processo base',    tipo:'flag', note:'Formalizzare i passi chiave e le responsabilità per questa dimensione.' },
-        { id:'strumenti', nome:'Implementazione strumenti',    tipo:'flag', note:'Scegliere e configurare gli strumenti minimi necessari per supportare il processo.' },
-      ];
+  var moduli = null;
+
+  // 1. Prova settore custom (AI)
+  var customSd = window._settoriCustomCache && window._settoriCustomCache[settore];
+  if (customSd && customSd.moduli) {
+    var aiLabel    = _DIM_TO_AI_LABEL[dimId];
+    var transKey   = String(stepCurrent) + '_' + String(stepNext);
+    var aiModuli   = aiLabel && customSd.moduli[aiLabel] && customSd.moduli[aiLabel][transKey];
+    if (aiModuli && aiModuli.length) {
+      // Converti formato AI → formato interno
+      moduli = aiModuli.map(function(m, i) {
+        return { id: 'ai_' + i, nome: m.titolo || m.nome || '', tipo: 'flag', note: m.descrizione || m.note || '' };
+      });
+    }
+  }
+
+  // 2. Fallback statico
+  if (!moduli) {
+    var sd = (typeof STEP_DETAIL_BY_SETTORE !== 'undefined') ? STEP_DETAIL_BY_SETTORE : {};
+    var nextDetail = (sd[settore] && sd[settore][dimId] && sd[settore][dimId][String(stepNext)]) || null;
+    moduli = (nextDetail && nextDetail.moduli && nextDetail.moduli.length)
+      ? nextDetail.moduli
+      : [
+          { id:'mappa',     nome:'Mappatura situazione attuale', tipo:'flag', note:'Analisi di partenza: capire dov\'è il processo oggi e dove si vuole arrivare.' },
+          { id:'processo',  nome:'Definizione processo base',    tipo:'flag', note:'Formalizzare i passi chiave e le responsabilità per questa dimensione.' },
+          { id:'strumenti', nome:'Implementazione strumenti',    tipo:'flag', note:'Scegliere e configurare gli strumenti minimi necessari per supportare il processo.' },
+        ];
+  }
+  var nextDetail = nextDetail || null;
 
   var pmiAzioni = p.pmi_azioni || [];
   var tempoMesi = nextDetail ? (nextDetail.tempo_mesi || 1) : 1;

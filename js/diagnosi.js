@@ -488,6 +488,16 @@ async function initPMI() {
   }
   window._pmiProspect = pOwned || null;
 
+  // Se il settore del prospect non è tra quelli statici, carica da settori_custom
+  if (pOwned && pOwned.settore && typeof _caricaSettoreCustom === 'function') {
+    var settoreStatico = Object.keys(window.PMI_MICRO_SETTORI || {}).some(function(macro) {
+      return (window.PMI_MICRO_SETTORI[macro] || []).some(function(m) { return m.id === pOwned.settore; });
+    });
+    if (!settoreStatico) {
+      await _caricaSettoreCustom(pOwned.settore).catch(function(){});
+    }
+  }
+
   // Fase 12: diagnosi completa = tutte e 8 le dimensioni con score > 0
   var DIMS_ALL_PMI = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
   var hasDiagnosi = window._pmiProspect
