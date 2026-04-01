@@ -453,9 +453,24 @@ async function initPMI() {
   if (csoApp) csoApp.style.display = 'none';
   if (pmiApp) pmiApp.style.display = 'grid';
 
-  // Carica prospect del titolare (per owner_user_id)
+  // Carica prospect del titolare — prima tenta owner_user_id, poi fallback su ID salvato
   var { data: pOwned } = await sb.from('prospects')
     .select('*').eq('owner_user_id', window._currentUserId).maybeSingle();
+
+  if (!pOwned) {
+    // Fallback: cerca per ID salvato in localStorage (es. RLS non ancora applicata)
+    var savedPid = localStorage.getItem('leva_pmi_pid_' + window._currentUserId);
+    if (savedPid) {
+      var { data: pById } = await sb.from('prospects').select('*').eq('id', savedPid).maybeSingle();
+      if (pById) {
+        // Aggiorna owner_user_id se mancante
+        if (!pById.owner_user_id) {
+          sb.from('prospects').update({ owner_user_id: window._currentUserId }).eq('id', savedPid).catch(function(){});
+        }
+        pOwned = pById;
+      }
+    }
+  }
   window._pmiProspect = pOwned || null;
 
   // Fase 12: se non ha prospect o diagnosi mai completata → primo accesso

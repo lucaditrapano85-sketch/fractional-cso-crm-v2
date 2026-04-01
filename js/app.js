@@ -9139,6 +9139,9 @@ async function pmiAvviaDiagnosi() {
   prospects.push(nuovoP);
   currentId = nuovoP.id;
 
+  // Salva ID in localStorage come fallback per i refresh (RLS può bloccare SELECT per owner_user_id)
+  try { localStorage.setItem('leva_pmi_pid_' + window._currentUserId, nuovoP.id); } catch(e) {}
+
   // Sidebar con nav ora che abbiamo il prospect
   renderSidebarPMI();
 
