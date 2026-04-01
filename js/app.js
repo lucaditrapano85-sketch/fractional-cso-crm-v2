@@ -10076,42 +10076,203 @@ function renderPMIProfilo(container) {
   var up  = window._userProfileData || {};
   var pro = window._currentProfile  || {};
 
-  var nomeAzienda = up.company_name || (p ? p.nome : '') || '';
-  var settoreLbl  = (function() {
-    var s = (p ? p.settore : '') || up.sector || '';
-    var found = PMI_MACRO_SETTORI.find(function(x){ return x.id === s; });
-    return found ? found.icon + ' ' + found.label : (s || '—');
-  })();
-  var fasciaLbl = (function() {
-    var f = up.fascia_fatturato || '';
-    var found = PMI_FASCE_FATTURATO.find(function(x){ return x.id === f; });
-    return found ? found.label : (f || '—');
-  })();
-  var nomeCompleto = pro.nome_completo || ((pro.nome || '') + ' ' + (pro.cognome || '')).trim() || '';
+  var nomeAzienda  = up.company_name || (p ? p.nome : '') || '';
+  var settoreVal   = (p ? p.settore : '') || up.sector || '';
+  var fasciaVal    = up.fascia_fatturato || (p ? p.fatturato : '') || '';
+  var cittaVal     = up.citta || (p ? p.citta : '') || '';
+  var nomeVal      = pro.nome || '';
+  var cognomeVal   = pro.cognome || '';
+  var emailVal     = pro.email || window._currentUserEmail || '';
+  var telefonoVal  = pro.telefono || up.telefono || '';
+
+  var INP = 'width:100%;box-sizing:border-box;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.08);color:#1a1a2e;border-radius:10px;padding:10px 12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;outline:none;';
+  var LABEL = 'font-size:11px;font-weight:600;color:rgba(26,26,46,0.45);margin-bottom:5px;display:block;';
+  var CARD = 'background:rgba(255,255,255,0.65);border:1px solid rgba(255,255,255,0.75);border-radius:14px;padding:16px;margin-bottom:14px;';
+  var CARD_TTL = 'font-size:10px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:14px;';
+  var BTN_PRI = 'width:100%;margin-top:14px;padding:10px 14px;background:#3D5AFE;color:#fff;border:none;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:600;cursor:pointer;';
+  var BTN_GHO = 'padding:12px 18px;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.1);border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;color:rgba(26,26,46,0.65);cursor:pointer;flex:1;';
+
+  // ── Opzioni settore ──────────────────────────────────────────────────────
+  var settoreOpts = '<option value="">— Seleziona settore —</option>' +
+    PMI_MACRO_SETTORI.map(function(s) {
+      return '<option value="' + s.id + '"' + (settoreVal === s.id ? ' selected' : '') + '>' + s.icon + ' ' + s.label + '</option>';
+    }).join('');
+
+  // ── Opzioni fascia fatturato ─────────────────────────────────────────────
+  var fasciaOpts = '<option value="">— Seleziona fascia —</option>' +
+    PMI_FASCE_FATTURATO.map(function(f) {
+      return '<option value="' + f.id + '"' + (fasciaVal === f.id ? ' selected' : '') + '>' + f.label + '</option>';
+    }).join('');
+
+  // ── Righe tabella piano ──────────────────────────────────────────────────
+  var CHECK = '<span style="color:rgba(0,130,95,0.85);font-size:14px;font-weight:700">✓</span>';
+  var CROSS = '<span style="color:rgba(229,57,53,0.7);font-size:14px;font-weight:700">✗</span>';
+  var LOCK  = '<span style="font-size:11px;margin-right:4px">🔒</span>';
+
+  function _pianoRow(feat, hasSelf, locked) {
+    return '<tr style="border-bottom:1px solid rgba(0,0,0,0.04)">' +
+      '<td style="padding:9px 8px;font-size:12px;color:' + (locked ? 'rgba(26,26,46,0.35)' : 'rgba(26,26,46,0.75)') + '">' + (locked ? LOCK : '') + feat + '</td>' +
+      '<td style="padding:9px 8px;text-align:center">' + (hasSelf ? CHECK : CROSS) + '</td>' +
+      '<td style="padding:9px 8px;text-align:center">' + CHECK + '</td>' +
+    '</tr>';
+  }
+
+  var pianoRows = [
+    _pianoRow('Diagnosi 8 dimensioni',         true,  false),
+    _pianoRow('Score e semafori',               true,  false),
+    _pianoRow('1 azione/settimana',             true,  false),
+    _pianoRow('Ri-diagnosi trimestrale',        true,  false),
+    _pianoRow('Benchmark settoriale base',      true,  false),
+    _pianoRow('Modifica target manuale',        false, true),
+    _pianoRow('Benchmark peer dettagliato',     false, true),
+    _pianoRow('Piano azioni completo',          false, true),
+    _pianoRow('Report PDF',                     false, true),
+    _pianoRow('Simulazioni what-if',            false, true),
+    _pianoRow('Correlazioni dimensioni',        false, true),
+    _pianoRow('Cronistoria interventi',         false, true),
+    _pianoRow('Call strategiche mensili',       false, true),
+  ].join('');
 
   container.innerHTML =
-    '<div style="max-width:520px;margin:0 auto;padding:40px 28px">' +
-      '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:4px">Profilo</h1>' +
-      '<p style="font-size:13px;color:rgba(26,26,46,0.45);margin-bottom:28px">Le informazioni della tua azienda e del tuo account.</p>' +
+    '<div style="max-width:560px;margin:0 auto;padding:40px 28px">' +
+      '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:24px">Il tuo profilo</h1>' +
 
-      // Card azienda
-      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:16px;padding:20px 22px;margin-bottom:14px">' +
-        '<div style="font-size:10px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:14px">Azienda</div>' +
-        _profiloRow('Nome azienda', nomeAzienda || '—') +
-        _profiloRow('Settore', settoreLbl) +
-        _profiloRow('Fatturato', fasciaLbl) +
+      // ── Card Azienda ────────────────────────────────────────────────────
+      '<div style="' + CARD + '">' +
+        '<div style="' + CARD_TTL + '">La tua azienda</div>' +
+
+        '<div style="margin-bottom:10px"><label style="' + LABEL + '">Nome azienda</label>' +
+          '<input id="prf-nome-azienda" style="' + INP + '" value="' + _esc(nomeAzienda) + '" placeholder="Es. Rossi Srl"></div>' +
+
+        '<div style="margin-bottom:10px"><label style="' + LABEL + '">Settore</label>' +
+          '<select id="prf-settore" style="' + INP + '">' + settoreOpts + '</select></div>' +
+
+        '<div style="margin-bottom:10px"><label style="' + LABEL + '">Fascia fatturato</label>' +
+          '<select id="prf-fascia" style="' + INP + '">' + fasciaOpts + '</select></div>' +
+
+        '<div style="margin-bottom:2px"><label style="' + LABEL + '">Città</label>' +
+          '<input id="prf-citta" style="' + INP + '" value="' + _esc(cittaVal) + '" placeholder="Es. Milano"></div>' +
+
+        '<button onclick="salvaProfiloPMIAzienda()" style="' + BTN_PRI + '">Salva modifiche</button>' +
       '</div>' +
 
-      // Card utente
-      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:16px;padding:20px 22px;margin-bottom:20px">' +
-        '<div style="font-size:10px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:14px">Account</div>' +
-        _profiloRow('Nome', nomeCompleto || '—') +
-        _profiloRow('Email', pro.email || window._currentUserEmail || '—') +
+      // ── Card Account ────────────────────────────────────────────────────
+      '<div style="' + CARD + '">' +
+        '<div style="' + CARD_TTL + '">Il tuo account</div>' +
+
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">' +
+          '<div><label style="' + LABEL + '">Nome</label>' +
+            '<input id="prf-nome" style="' + INP + '" value="' + _esc(nomeVal) + '" placeholder="Mario"></div>' +
+          '<div><label style="' + LABEL + '">Cognome</label>' +
+            '<input id="prf-cognome" style="' + INP + '" value="' + _esc(cognomeVal) + '" placeholder="Rossi"></div>' +
+        '</div>' +
+
+        '<div style="margin-bottom:10px"><label style="' + LABEL + '">Email</label>' +
+          '<input style="' + INP + 'background:rgba(0,0,0,0.03);color:rgba(26,26,46,0.4);" value="' + _esc(emailVal) + '" readonly></div>' +
+
+        '<div style="margin-bottom:2px"><label style="' + LABEL + '">Telefono</label>' +
+          '<input id="prf-telefono" style="' + INP + '" value="' + _esc(telefonoVal) + '" placeholder="+39 333 1234567" type="tel"></div>' +
+
+        '<button onclick="salvaProfiloPMIAccount()" style="' + BTN_PRI + '">Salva</button>' +
       '</div>' +
 
-      // Logout
-      '<button onclick="logout()" style="width:100%;padding:11px 16px;background:rgba(229,57,53,0.08);border:1px solid rgba(229,57,53,0.25);color:#E53935;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s" onmouseover="this.style.opacity=\'0.75\'" onmouseout="this.style.opacity=\'1\'">Esci dall\'account</button>' +
+      // ── Card Piano ──────────────────────────────────────────────────────
+      '<div style="' + CARD + '">' +
+        '<div style="' + CARD_TTL + '">Il tuo piano</div>' +
+        '<div style="overflow-x:auto">' +
+          '<table style="width:100%;border-collapse:collapse">' +
+            '<thead>' +
+              '<tr>' +
+                '<th style="padding:8px 8px;font-size:10px;font-weight:700;color:rgba(26,26,46,0.4);text-align:left;border-bottom:1px solid rgba(0,0,0,0.07)">Funzionalità</th>' +
+                '<th style="padding:8px 8px;font-size:10px;font-weight:700;color:#3D5AFE;text-align:center;border-bottom:1px solid rgba(0,0,0,0.07);white-space:nowrap">Self<br><span style="font-weight:400;color:rgba(26,26,46,0.4)">€199/mese</span></th>' +
+                '<th style="padding:8px 8px;font-size:10px;font-weight:700;color:rgba(0,130,95,0.85);text-align:center;border-bottom:1px solid rgba(0,0,0,0.07);white-space:nowrap">Con esperto<br><span style="font-weight:400;color:rgba(26,26,46,0.4)">+€400/mese</span></th>' +
+              '</tr>' +
+            '</thead>' +
+            '<tbody>' + pianoRows + '</tbody>' +
+          '</table>' +
+        '</div>' +
+        '<button onclick="alert(\'Funzionalità in arrivo — ti contatteremo presto!\')" style="' + BTN_PRI + 'background:#3D5AFE;margin-top:16px">Passa a Guided — €599/mese</button>' +
+        '<div style="text-align:center;margin-top:10px">' +
+          '<a href="#" onclick="alert(\'Prenota una call singola — funzionalità in arrivo\');return false;" style="font-size:12px;color:rgba(26,26,46,0.45);text-decoration:underline;">Prenota una call singola — €120</a>' +
+        '</div>' +
+      '</div>' +
+
+      // ── Azioni rapide ───────────────────────────────────────────────────
+      '<div style="display:flex;gap:10px;margin-bottom:16px">' +
+        '<button onclick="renderPrimoAccesso()" style="' + BTN_GHO + '">Rifai la diagnosi</button>' +
+        '<button onclick="alert(\'Prenota una call CSO — funzionalità in arrivo\')" style="flex:1;padding:12px 18px;background:#3D5AFE;color:#fff;border:none;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Prenota una call CSO — €120</button>' +
+      '</div>' +
+
+      // ── Logout ──────────────────────────────────────────────────────────
+      '<button onclick="logout()" style="width:100%;padding:11px 16px;background:rgba(229,57,53,0.05);border:1px solid rgba(229,57,53,0.2);color:#E53935;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Esci</button>' +
     '</div>';
+}
+
+function _esc(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+async function salvaProfiloPMIAzienda() {
+  var nomeAzienda = (document.getElementById('prf-nome-azienda') || {}).value || '';
+  var settore     = (document.getElementById('prf-settore')      || {}).value || '';
+  var fascia      = (document.getElementById('prf-fascia')       || {}).value || '';
+  var citta       = (document.getElementById('prf-citta')        || {}).value || '';
+
+  var btn = document.querySelector('[onclick="salvaProfiloPMIAzienda()"]');
+  if (btn) { btn.disabled = true; btn.textContent = 'Salvataggio…'; }
+
+  try {
+    var p  = window._pmiProspect;
+    var up = window._userProfileData || {};
+
+    // Aggiorna prospect
+    if (p && p.id && typeof sb !== 'undefined') {
+      await sb.from('prospects').update({ nome: nomeAzienda, settore: settore, fatturato: fascia, citta: citta }).eq('id', p.id);
+      window._pmiProspect = Object.assign({}, p, { nome: nomeAzienda, settore: settore, fatturato: fascia, citta: citta });
+    }
+
+    // Aggiorna user_profiles
+    if (typeof sb !== 'undefined') {
+      var uid = (window._currentProfile || {}).id;
+      if (uid) {
+        await sb.from('user_profiles').update({ company_name: nomeAzienda, sector: settore, fascia_fatturato: fascia, citta: citta }).eq('user_id', uid);
+      }
+    }
+    window._userProfileData = Object.assign({}, window._userProfileData, { company_name: nomeAzienda, sector: settore, fascia_fatturato: fascia, citta: citta });
+
+    showToast('Azienda aggiornata', 'success');
+  } catch(e) {
+    showToast('Errore nel salvataggio', 'error');
+    console.error(e);
+  }
+
+  if (btn) { btn.disabled = false; btn.textContent = 'Salva modifiche'; }
+}
+
+async function salvaProfiloPMIAccount() {
+  var nome     = (document.getElementById('prf-nome')     || {}).value || '';
+  var cognome  = (document.getElementById('prf-cognome')  || {}).value || '';
+  var telefono = (document.getElementById('prf-telefono') || {}).value || '';
+
+  var btn = document.querySelector('[onclick="salvaProfiloPMIAccount()"]');
+  if (btn) { btn.disabled = true; btn.textContent = 'Salvataggio…'; }
+
+  try {
+    if (typeof sb !== 'undefined') {
+      var uid = (window._currentProfile || {}).id;
+      if (uid) {
+        await sb.from('profiles').update({ nome: nome, cognome: cognome, telefono: telefono }).eq('id', uid);
+        window._currentProfile = Object.assign({}, window._currentProfile, { nome: nome, cognome: cognome, telefono: telefono });
+      }
+    }
+    showToast('Account aggiornato', 'success');
+  } catch(e) {
+    showToast('Errore nel salvataggio', 'error');
+    console.error(e);
+  }
+
+  if (btn) { btn.disabled = false; btn.textContent = 'Salva'; }
 }
 
 function _profiloRow(label, value) {
