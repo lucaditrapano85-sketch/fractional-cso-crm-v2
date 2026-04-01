@@ -9612,22 +9612,25 @@ function renderPMIScore(container) {
     var col = dimColor(v);
     var pct = (v / 5) * 100;
     var lbl = getDimLabel(p.settore, d);
-    var stepDesc = (typeof _getStepDesc === 'function' && v > 0) ? _getStepDesc(p.settore, d, v) : '';
+    var stepDesc = (typeof _getStepDesc === 'function' && v > 0) ? _getStepDesc(p.settore, d, Math.max(1, Math.floor(v))) : '';
     var statoLabel = v < 2 ? 'Critico' : v <= 3 ? 'In sviluppo' : 'Solido';
-    var statoCol   = v < 2 ? '#E53935' : v <= 3 ? 'rgba(175,125,0,0.85)' : 'rgba(0,130,95,0.85)';
+    var statoTxt   = v < 2 ? 'rgba(229,57,53,0.9)'  : v <= 3 ? 'rgba(175,125,0,0.85)' : 'rgba(0,130,95,0.85)';
+    var statoBg    = v < 2 ? 'rgba(229,57,53,0.08)' : v <= 3 ? 'rgba(175,125,0,0.08)' : 'rgba(0,130,95,0.08)';
     return '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:14px 16px;margin-bottom:10px">' +
-      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
         '<div style="display:flex;align-items:center;gap:8px;">' +
           '<div style="font-size:13px;font-weight:700;color:#1a1a2e">' + lbl + '</div>' +
-          '<span style="font-size:9px;font-weight:600;color:' + statoCol + ';background:' + statoCol.replace(')', ',0.08)').replace('rgba(','rgba(') + ';padding:1px 6px;border-radius:4px;">' + statoLabel + '</span>' +
+          '<span style="font-size:9px;font-weight:600;color:' + statoTxt + ';background:' + statoBg + ';padding:1px 6px;border-radius:4px;">' + statoLabel + '</span>' +
         '</div>' +
         '<div style="font-size:15px;font-weight:700;color:' + col + '">' + (v > 0 ? v + '/5' : '—') + '</div>' +
       '</div>' +
-      '<div style="height:6px;background:rgba(0,0,0,0.06);border-radius:4px;margin-bottom:10px">' +
+      '<div style="height:5px;background:rgba(0,0,0,0.06);border-radius:4px;margin-bottom:' + (stepDesc && stepDesc !== '—' ? '10' : '8') + 'px">' +
         '<div style="width:' + pct + '%;height:100%;background:' + col + ';border-radius:4px;transition:width .4s"></div>' +
       '</div>' +
-      (stepDesc && stepDesc !== '—' ? '<div style="font-size:11px;color:rgba(26,26,46,0.55);line-height:1.55;margin-bottom:8px">' + stepDesc + '</div>' : '') +
-      '<div style="font-size:10px;color:rgba(26,26,46,0.35);border-top:1px solid rgba(0,0,0,0.04);padding-top:7px">Media settore: <strong style="color:rgba(26,26,46,0.5)">—</strong></div>' +
+      (stepDesc && stepDesc !== '—'
+        ? '<div style="font-size:11px;color:rgba(26,26,46,0.60);line-height:1.6;margin-bottom:10px">' + stepDesc + '</div>'
+        : '') +
+      '<div style="font-size:10px;color:rgba(26,26,46,0.35);border-top:1px solid rgba(0,0,0,0.05);padding-top:8px">Media settore: <strong style="color:rgba(26,26,46,0.5)">—</strong></div>' +
     '</div>';
   }).join('');
 
