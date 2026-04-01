@@ -8855,47 +8855,59 @@ function renderSidebarPMI() {
   var sidebar = document.getElementById('pmi-sidebar');
   if (!sidebar) return;
 
-  // Forza dimensioni corrette via inline style — immune da CSS cache
-  sidebar.style.cssText = 'background:#1a1a2e;width:64px;min-width:64px;max-width:64px;height:100vh;padding:14px 0;display:flex;flex-direction:column;align-items:center;gap:14px;overflow:hidden;flex-shrink:0;';
+  // Forza dimensioni sidebar via inline style
+  sidebar.style.cssText = 'background:#1a1a2e;width:160px;min-width:160px;max-width:160px;height:100vh;padding:16px 0;display:flex;flex-direction:column;align-items:stretch;gap:4px;overflow:hidden;flex-shrink:0;';
 
-  // Forza grid 64px sul container padre
+  // Forza grid 160px sul container padre
   var pmiApp = document.getElementById('app-pmi');
   if (pmiApp) {
     pmiApp.style.display = 'grid';
-    pmiApp.style.gridTemplateColumns = '64px 1fr';
+    pmiApp.style.gridTemplateColumns = '160px 1fr';
     pmiApp.style.height = '100vh';
     pmiApp.style.overflow = 'hidden';
   }
 
-  var navIcons = [
-    { id:'home',   title:'Home',   svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="#3D5AFE"/><rect x="9" y="2" width="5" height="5" rx="1" fill="#3D5AFE"/><rect x="2" y="9" width="5" height="5" rx="1" fill="#3D5AFE"/><rect x="9" y="9" width="5" height="5" rx="1" fill="#3D5AFE"/></svg>' },
-    { id:'azioni', title:'Azioni', svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' },
-    { id:'score',  title:'Score',  svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13l3-4 3 2 4-6" stroke="rgba(255,255,255,0.4)" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>' },
-    { id:'profilo',title:'Profilo',svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="3" stroke="rgba(255,255,255,0.4)" stroke-width="1.2" fill="none"/><path d="M3 15c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="rgba(255,255,255,0.4)" stroke-width="1.2" fill="none"/></svg>' },
+  var navItems = [
+    { id:'home',   title:'Home',   svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="currentColor" opacity=".9"/><rect x="9" y="2" width="5" height="5" rx="1" fill="currentColor" opacity=".9"/><rect x="2" y="9" width="5" height="5" rx="1" fill="currentColor" opacity=".9"/><rect x="9" y="9" width="5" height="5" rx="1" fill="currentColor" opacity=".9"/></svg>' },
+    { id:'azioni', title:'Azioni', svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' },
+    { id:'score',  title:'Score',  svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13l3-4 3 2 4-6" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>' },
+    { id:'profilo',title:'Profilo',svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="3" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 15c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>' },
   ];
 
+  // Logo
+  var logoHtml =
+    '<div style="padding:0 16px 20px;display:flex;align-items:center;gap:6px;">' +
+      '<svg width="24" height="24" viewBox="8 4 44 44" fill="none"><rect x="8" y="34" width="44" height="4.5" rx="2.25" fill="#3D5AFE"/><rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="white"/><circle cx="29.75" cy="36.25" r="6" fill="white"/><line x1="29.75" y1="36.25" x2="47" y2="22" stroke="#FF6B2B" stroke-width="3.5" stroke-linecap="round"/><circle cx="47" cy="22" r="3.5" fill="#FF6B2B"/></svg>' +
+      '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:18px;font-weight:600;color:white;letter-spacing:-0.5px;">Leva</span>' +
+    '</div>';
+
   sidebar.innerHTML =
-    '<div style="margin-bottom:4px;">' +
-      '<svg width="22" height="22" viewBox="8 4 44 44" fill="none"><rect x="8" y="34" width="44" height="4.5" rx="2.25" fill="#3D5AFE"/><rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="white"/><circle cx="29.75" cy="36.25" r="6" fill="white"/><line x1="29.75" y1="36.25" x2="47" y2="22" stroke="#FF6B2B" stroke-width="3.5" stroke-linecap="round"/><circle cx="47" cy="22" r="3.5" fill="#FF6B2B"/></svg>' +
-    '</div>' +
-    navIcons.map(function(item) {
+    logoHtml +
+    navItems.map(function(item) {
       var isActive = item.id === _pmiCurrentView;
-      return '<div class="pmi-nav-item" data-view="' + item.id + '" onclick="showViewPMI(\'' + item.id + '\')" title="' + item.title + '" ' +
-        'style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;' +
-        (isActive ? 'background:rgba(61,90,254,0.15);' : '') + '">' +
+      var col = isActive ? 'white' : 'rgba(255,255,255,0.45)';
+      var bg  = isActive ? 'rgba(61,90,254,0.18)' : 'transparent';
+      return '<div class="pmi-nav-item" data-view="' + item.id + '" onclick="showViewPMI(\'' + item.id + '\')"' +
+        ' style="display:flex;align-items:center;gap:10px;padding:10px 16px;margin:0 8px;border-radius:10px;cursor:pointer;color:' + col + ';background:' + bg + ';">' +
         item.svg +
+        '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:' + (isActive ? '600' : '500') + ';">' + item.title + '</span>' +
       '</div>';
     }).join('') +
     '<div style="flex:1;"></div>' +
-    '<div onclick="logout()" title="Esci" style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;">' +
-      '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H4a2 2 0 00-2 2v8a2 2 0 002 2h2M11 11l3-3-3-3M14 8H6" stroke="rgba(255,255,255,0.25)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+    '<div onclick="logout()" style="display:flex;align-items:center;gap:10px;padding:10px 16px;margin:0 8px;border-radius:10px;cursor:pointer;color:rgba(255,255,255,0.3);">' +
+      '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H4a2 2 0 00-2 2v8a2 2 0 002 2h2M11 11l3-3-3-3M14 8H6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+      '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;">Esci</span>' +
     '</div>';
 }
 
 function showViewPMI(view) {
   _pmiCurrentView = view;
   document.querySelectorAll('#pmi-sidebar .pmi-nav-item').forEach(function(el) {
-    el.style.background = el.dataset.view === view ? 'rgba(61,90,254,0.15)' : '';
+    var isActive = el.dataset.view === view;
+    el.style.background = isActive ? 'rgba(61,90,254,0.18)' : 'transparent';
+    el.style.color = isActive ? 'white' : 'rgba(255,255,255,0.45)';
+    var span = el.querySelector('span');
+    if (span) span.style.fontWeight = isActive ? '600' : '500';
   });
   renderViewPMI(view);
 }
