@@ -9058,6 +9058,12 @@ async function pmiAvviaDiagnosi() {
   // Sidebar con nav ora che abbiamo il prospect
   renderSidebarPMI();
 
+  // Sposta diagnosi-overlay nel body (è dentro .app che è display:none)
+  var diagOverlay = document.getElementById('diagnosi-overlay');
+  if (diagOverlay && diagOverlay.parentElement !== document.body) {
+    document.body.appendChild(diagOverlay);
+  }
+
   // Lancia wizard diagnosi esistente in modalità PMI
   window._pmiDiagnosiMode = true;
   apriDiagnosi();
