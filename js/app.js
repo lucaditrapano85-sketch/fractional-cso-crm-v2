@@ -9161,6 +9161,9 @@ async function pmiAvviaDiagnosi() {
     }).eq('id', nuovoP.id);
     if (errU) console.warn('update prospect:', errU.message);
     nuovoP = Object.assign({}, nuovoP, { settore: _pmiSelectedSettore, fatturato: fascia ? String(fascia.value) : '', fatturato_anno_1: fascia ? fascia.value : null });
+    // Aggiorna anche l'oggetto nell'array prospects così apriDiagnosi legge il settore corretto
+    var idxP = prospects.findIndex(function(x){ return x.id === nuovoP.id; });
+    if (idxP >= 0) prospects[idxP] = nuovoP;
   } else {
     var { data: created, error: errP } = await sb.from('prospects').insert({
       nome: nomePMI,
