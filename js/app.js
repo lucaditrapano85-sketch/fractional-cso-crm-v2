@@ -10106,11 +10106,17 @@ function renderPMIProfilo(container) {
   var BTN_PRI = 'width:100%;margin-top:14px;padding:10px 14px;background:#3D5AFE;color:#fff;border:none;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:600;cursor:pointer;';
   var BTN_GHO = 'padding:12px 18px;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.1);border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;color:rgba(26,26,46,0.65);cursor:pointer;flex:1;';
 
+  // micro-settore corrente (es. "manifatturiero_meccanica")
+  var microVal = _settoreRaw !== settoreVal ? _settoreRaw : (up.microsector || '');
+
   // ── Opzioni settore ──────────────────────────────────────────────────────
   var settoreOpts = '<option value="">— Seleziona settore —</option>' +
     PMI_MACRO_SETTORI.map(function(s) {
       return '<option value="' + s.id + '"' + (settoreVal === s.id ? ' selected' : '') + '>' + s.icon + ' ' + s.label + '</option>';
     }).join('');
+
+  // ── Opzioni micro-settore (macro attuale) ────────────────────────────────
+  var microOpts = _buildMicroOpts(settoreVal, microVal);
 
   // ── Opzioni fascia fatturato ─────────────────────────────────────────────
   var fasciaOpts = '<option value="">— Seleziona fascia —</option>' +
@@ -10159,7 +10165,10 @@ function renderPMIProfilo(container) {
           '<input id="prf-nome-azienda" style="' + INP + '" value="' + _esc(nomeAzienda) + '" placeholder="Es. Rossi Srl"></div>' +
 
         '<div style="margin-bottom:10px"><label style="' + LABEL + '">Settore</label>' +
-          '<select id="prf-settore" style="' + INP + '">' + settoreOpts + '</select></div>' +
+          '<select id="prf-settore" style="' + INP + '" onchange="pmiProfiloOnMacroChange(this.value)">' + settoreOpts + '</select></div>' +
+
+        '<div style="margin-bottom:10px" id="prf-micro-wrap"' + (settoreVal ? '' : ' style="display:none"') + '><label style="' + LABEL + '">Micro-settore</label>' +
+          '<select id="prf-micro" style="' + INP + '">' + microOpts + '</select></div>' +
 
         '<div style="margin-bottom:10px"><label style="' + LABEL + '">Fascia fatturato</label>' +
           '<select id="prf-fascia" style="' + INP + '">' + fasciaOpts + '</select></div>' +
@@ -10227,11 +10236,33 @@ function _esc(str) {
   return String(str).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
+function _buildMicroOpts(macroId, selectedMicro) {
+  var micros = PMI_MICRO_SETTORI[macroId] || [];
+  if (!micros.length) return '<option value="">— nessun micro-settore —</option>';
+  return '<option value="">— Seleziona micro-settore —</option>' +
+    micros.map(function(m) {
+      return '<option value="' + m.id + '"' + (selectedMicro === m.id ? ' selected' : '') + '>' + m.label + '</option>';
+    }).join('');
+}
+
+function pmiProfiloOnMacroChange(macroId) {
+  var wrap = document.getElementById('prf-micro-wrap');
+  var sel  = document.getElementById('prf-micro');
+  if (!wrap || !sel) return;
+  if (!macroId) { wrap.style.display = 'none'; return; }
+  sel.innerHTML = _buildMicroOpts(macroId, '');
+  wrap.style.display = '';
+}
+
 async function salvaProfiloPMIAzienda() {
   var nomeAzienda = (document.getElementById('prf-nome-azienda') || {}).value || '';
-  var settore     = (document.getElementById('prf-settore')      || {}).value || '';
+  var macroSett   = (document.getElementById('prf-settore')      || {}).value || '';
+  var microSett   = (document.getElementById('prf-micro')        || {}).value || '';
   var fascia      = (document.getElementById('prf-fascia')       || {}).value || '';
   var citta       = (document.getElementById('prf-citta')        || {}).value || '';
+
+  // Il settore salvato su prospect è il micro (se selezionato), altrimenti il macro
+  var settoreSave = microSett || macroSett;
 
   var btn = document.querySelector('[onclick="salvaProfiloPMIAzienda()"]');
   if (btn) { btn.disabled = true; btn.textContent = 'Salvataggio…'; }
@@ -10240,20 +10271,20 @@ async function salvaProfiloPMIAzienda() {
     var p  = window._pmiProspect;
     var up = window._userProfileData || {};
 
-    // Aggiorna prospect
+    // Aggiorna prospect (settore = micro-settore come in diagnosi)
     if (p && p.id && typeof sb !== 'undefined') {
-      await sb.from('prospects').update({ nome: nomeAzienda, settore: settore, fatturato: fascia, citta: citta }).eq('id', p.id);
-      window._pmiProspect = Object.assign({}, p, { nome: nomeAzienda, settore: settore, fatturato: fascia, citta: citta });
+      await sb.from('prospects').update({ nome: nomeAzienda, settore: settoreSave, fatturato: fascia, citta: citta }).eq('id', p.id);
+      window._pmiProspect = Object.assign({}, p, { nome: nomeAzienda, settore: settoreSave, fatturato: fascia, citta: citta });
     }
 
     // Aggiorna user_profiles
     if (typeof sb !== 'undefined') {
       var uid = (window._currentProfile || {}).id;
       if (uid) {
-        await sb.from('user_profiles').update({ company_name: nomeAzienda, sector: settore, fascia_fatturato: fascia, citta: citta }).eq('user_id', uid);
+        await sb.from('user_profiles').update({ company_name: nomeAzienda, sector: settoreSave, microsector: microSett, fascia_fatturato: fascia, citta: citta }).eq('user_id', uid);
       }
     }
-    window._userProfileData = Object.assign({}, window._userProfileData, { company_name: nomeAzienda, sector: settore, fascia_fatturato: fascia, citta: citta });
+    window._userProfileData = Object.assign({}, window._userProfileData, { company_name: nomeAzienda, sector: settoreSave, microsector: microSett, fascia_fatturato: fascia, citta: citta });
 
     showToast('Azienda aggiornata', 'success');
   } catch(e) {
