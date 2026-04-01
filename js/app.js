@@ -8855,57 +8855,35 @@ function renderSidebarPMI() {
   var sidebar = document.getElementById('pmi-sidebar');
   if (!sidebar) return;
 
-  var profile = window._currentProfile || {};
-  var upData  = window._userProfileData || {};
-  var nome    = profile.nome || (profile.nome_completo || '').split(' ')[0] || '';
-  var company = upData.company_name
-    || (window._pmiProspect ? window._pmiProspect.nome : '')
-    || 'La tua azienda';
-  var iniziali = nome
-    ? nome.split(' ').map(function(w){ return w[0] || ''; }).join('').toUpperCase().slice(0, 2)
-    : '?';
-
-  var navItems = [
-    { id:'home',    label:'Home',    svg:'<svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="#3D5AFE"/><rect x="9" y="2" width="5" height="5" rx="1" fill="#3D5AFE"/><rect x="2" y="9" width="5" height="5" rx="1" fill="#3D5AFE"/><rect x="9" y="9" width="5" height="5" rx="1" fill="#3D5AFE"/></svg>' },
-    { id:'score',   label:'Score',   svg:'<svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M8 5v3l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>' },
-    { id:'azioni',  label:'Azioni',  svg:'<svg viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' },
-    { id:'trend',   label:'Trend',   svg:'<svg viewBox="0 0 16 16" fill="none"><path d="M3 13l3-4 3 2 4-6" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' },
-    { id:'profilo', label:'Profilo', svg:'<svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="3" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 15c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>' },
+  var navIcons = [
+    { id:'home',   title:'Home',   svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="#3D5AFE"/><rect x="9" y="2" width="5" height="5" rx="1" fill="#3D5AFE"/><rect x="2" y="9" width="5" height="5" rx="1" fill="#3D5AFE"/><rect x="9" y="9" width="5" height="5" rx="1" fill="#3D5AFE"/></svg>' },
+    { id:'azioni', title:'Azioni', svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' },
+    { id:'score',  title:'Score',  svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13l3-4 3 2 4-6" stroke="rgba(255,255,255,0.4)" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>' },
+    { id:'profilo',title:'Profilo',svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="3" stroke="rgba(255,255,255,0.4)" stroke-width="1.2" fill="none"/><path d="M3 15c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="rgba(255,255,255,0.4)" stroke-width="1.2" fill="none"/></svg>' },
   ];
 
   sidebar.innerHTML =
-    '<div class="pmi-sidebar-logo">' +
-      '<svg width="28" height="28" viewBox="8 4 44 44" fill="none"><rect x="8" y="34" width="44" height="4.5" rx="2.25" fill="#3D5AFE"/><rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="white"/><circle cx="29.75" cy="36.25" r="6" fill="white"/><line x1="29.75" y1="36.25" x2="47" y2="22" stroke="#FF6B2B" stroke-width="3.5" stroke-linecap="round"/><circle cx="47" cy="22" r="3.5" fill="#FF6B2B"/></svg>' +
-      '<span>eva</span>' +
+    '<div style="margin-bottom:4px;">' +
+      '<svg width="22" height="22" viewBox="8 4 44 44" fill="none"><rect x="8" y="34" width="44" height="4.5" rx="2.25" fill="#3D5AFE"/><rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="white"/><circle cx="29.75" cy="36.25" r="6" fill="white"/><line x1="29.75" y1="36.25" x2="47" y2="22" stroke="#FF6B2B" stroke-width="3.5" stroke-linecap="round"/><circle cx="47" cy="22" r="3.5" fill="#FF6B2B"/></svg>' +
     '</div>' +
-    '<div class="pmi-sidebar-nav">' +
-      navItems.map(function(item) {
-        var isActive = item.id === _pmiCurrentView;
-        return '<a class="pmi-nav-item' + (isActive ? ' active' : '') + '" data-view="' + item.id + '" onclick="showViewPMI(\'' + item.id + '\')">' +
-          item.svg + item.label +
-        '</a>';
-      }).join('') +
-    '</div>' +
-    '<div class="pmi-sidebar-footer">' +
-      '<div class="pmi-sidebar-avatar">' + iniziali + '</div>' +
-      '<div>' +
-        '<div class="pmi-sidebar-name">' + (nome || '') + '</div>' +
-        '<div class="pmi-sidebar-role">' + company + '</div>' +
-      '</div>' +
-    '</div>' +
-    '<a class="pmi-sidebar-logout" onclick="logout()">Esci</a>';
+    navIcons.map(function(item) {
+      var isActive = item.id === _pmiCurrentView;
+      return '<div class="pmi-nav-item" data-view="' + item.id + '" onclick="showViewPMI(\'' + item.id + '\')" title="' + item.title + '" ' +
+        'style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;' +
+        (isActive ? 'background:rgba(61,90,254,0.15);' : '') + '">' +
+        item.svg +
+      '</div>';
+    }).join('') +
+    '<div style="flex:1;"></div>' +
+    '<div onclick="logout()" title="Esci" style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;">' +
+      '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H4a2 2 0 00-2 2v8a2 2 0 002 2h2M11 11l3-3-3-3M14 8H6" stroke="rgba(255,255,255,0.25)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+    '</div>';
 }
 
 function showViewPMI(view) {
   _pmiCurrentView = view;
-  // Aggiorna stato attivo sidebar classica (CSO)
-  document.querySelectorAll('.pmi-nav-item').forEach(function(el) {
-    el.classList.toggle('active', el.dataset.view === view);
-  });
-  // Aggiorna stato attivo nuove icone sidebar 64px
-  document.querySelectorAll('[data-pmi-view]').forEach(function(el) {
-    var isActive = el.dataset.pmiView === view;
-    el.style.background = isActive ? 'rgba(61,90,254,0.15)' : '';
+  document.querySelectorAll('#pmi-sidebar .pmi-nav-item').forEach(function(el) {
+    el.style.background = el.dataset.view === view ? 'rgba(61,90,254,0.15)' : '';
   });
   renderViewPMI(view);
 }
@@ -8915,7 +8893,7 @@ function navigaAzioni(dim) {
 }
 
 function renderViewPMI(view) {
-  var main = document.getElementById('pmi-right-col') || document.getElementById('pmi-main');
+  var main = document.getElementById('pmi-main');
   if (!main) return;
   switch (view) {
     case 'home':    renderPMIHome(main);    break;
@@ -9310,13 +9288,6 @@ function renderPMIHome(container) {
     return;
   }
 
-  // Concept A: sidebar 64px embedded nel template → nascondi il vecchio sidebar
-  var _appPmi = document.getElementById('app-pmi');
-  var _sidebarEl = document.getElementById('pmi-sidebar');
-  if (_appPmi) _appPmi.style.display = 'block';
-  if (_sidebarEl) _sidebarEl.style.display = 'none';
-  if (container) { container.style.cssText = 'width:100%;height:100vh;padding:0;overflow:hidden;'; }
-
   // Dati
   var up  = window._userProfileData || {};
   var pro = window._currentProfile  || {};
@@ -9400,35 +9371,8 @@ function renderPMIHome(container) {
   }
 
   container.innerHTML =
-    '<div style="display:grid;grid-template-columns:64px 1fr;height:100vh;">' +
 
-      // SIDEBAR ICONE 64px
-      '<div style="background:#1a1a2e;padding:14px 0;display:flex;flex-direction:column;align-items:center;gap:14px;height:100%;overflow:hidden;">' +
-        '<div style="margin-bottom:4px;">' +
-          '<svg width="22" height="22" viewBox="8 4 44 44" fill="none"><rect x="8" y="34" width="44" height="4.5" rx="2.25" fill="#3D5AFE"/><rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="white"/><circle cx="29.75" cy="36.25" r="6" fill="white"/><line x1="29.75" y1="36.25" x2="47" y2="22" stroke="#FF6B2B" stroke-width="3.5" stroke-linecap="round"/><circle cx="47" cy="22" r="3.5" fill="#FF6B2B"/></svg>' +
-        '</div>' +
-        '<div data-pmi-view="home" onclick="showViewPMI(\'home\')" title="Home" style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(61,90,254,0.15);cursor:pointer;">' +
-          '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="#3D5AFE"/><rect x="9" y="2" width="5" height="5" rx="1" fill="#3D5AFE"/><rect x="2" y="9" width="5" height="5" rx="1" fill="#3D5AFE"/><rect x="9" y="9" width="5" height="5" rx="1" fill="#3D5AFE"/></svg>' +
-        '</div>' +
-        '<div data-pmi-view="azioni" onclick="showViewPMI(\'azioni\')" title="Azioni" style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;">' +
-          '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
-        '</div>' +
-        '<div data-pmi-view="score" onclick="showViewPMI(\'score\')" title="Score" style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;">' +
-          '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13l3-4 3 2 4-6" stroke="rgba(255,255,255,0.3)" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>' +
-        '</div>' +
-        '<div onclick="openProfiloModal()" title="Profilo" style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;">' +
-          '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="3" stroke="rgba(255,255,255,0.3)" stroke-width="1.2" fill="none"/><path d="M3 15c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="rgba(255,255,255,0.3)" stroke-width="1.2" fill="none"/></svg>' +
-        '</div>' +
-        '<div style="flex:1;"></div>' +
-        '<div onclick="logout()" title="Esci" style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;">' +
-          '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H4a2 2 0 00-2 2v8a2 2 0 002 2h2M11 11l3-3-3-3M14 8H6" stroke="rgba(255,255,255,0.25)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
-        '</div>' +
-      '</div>' +
-
-      // CONTENUTO PRINCIPALE
-      '<div id="pmi-right-col" style="background:#d8dbe2;padding:28px 32px;font-family:\'Plus Jakarta Sans\',sans-serif;overflow-y:auto;height:100vh;">' +
-
-        // HEADER
+    // HEADER
         '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">' +
           '<div>' +
             '<div style="font-size:22px;font-weight:700;color:#1a1a2e;">Buongiorno, ' + (nome || 'Benvenuto') + '</div>' +
@@ -9527,10 +9471,7 @@ function renderPMIHome(container) {
             '</div>' +
 
           '</div>' +
-        '</div>' +
-
-      '</div>' +
-    '</div>';
+        '</div>';
 }
 
 function completaAzioneSettimanale() {

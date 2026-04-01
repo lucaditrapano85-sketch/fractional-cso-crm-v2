@@ -1151,14 +1151,16 @@ label{color:var(--gray2)}
 /* === LAYOUT WRAPPER === */
 .pmi-layout {
   display: grid;
-  grid-template-columns: 190px 1fr;
-  min-height: 100vh;
+  grid-template-columns: 64px 1fr;
+  height: 100vh;
+  overflow: hidden;
 }
 
 /* === CONTAINER PRINCIPALE PMI === */
 .pmi-main {
   background: #d8dbe2 !important;
-  min-height: 100vh;
+  height: 100vh;
+  overflow-y: auto;
   padding: 28px 32px;
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
@@ -1520,12 +1522,15 @@ label{color:var(--gray2)}
 /* === SIDEBAR PMI === */
 .pmi-sidebar {
   background: #1a1a2e;
-  width: 190px;
-  min-height: 100vh;
-  padding: 16px 0;
+  width: 64px;
+  height: 100vh;
+  padding: 14px 0;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: 14px;
   flex-shrink: 0;
+  overflow: hidden;
 }
 .pmi-sidebar-logo {
   display: flex;
