@@ -388,13 +388,22 @@ async function init() {
   window._currentUserEmail = session.user.email;
   window._viewAsUserId = null; // admin: se impostato, filtra per questo utente
 
-  // Fase 1: Leggi ruolo da user_profiles (default 'cso' per retrocompatibilità)
+  // Fase 1: Leggi ruolo da user_profiles, con fallback su user_metadata (signup)
   const { data: upData } = await sb.from('user_profiles')
     .select('role, company_name, sector, fascia_fatturato')
     .eq('user_id', session.user.id)
     .single();
-  window.LEVA_USER_ROLE = upData?.role || 'cso';
+  const metaRole = session.user.user_metadata?.role || null;
+  window.LEVA_USER_ROLE = upData?.role || metaRole || 'cso';
   window._userProfileData = upData || null;
+
+  // Se user_profiles mancante ma ruolo noto da metadata, crea il record
+  if (!upData && metaRole) {
+    try {
+      await sb.from('user_profiles').insert({ user_id: session.user.id, role: metaRole });
+      window._userProfileData = { role: metaRole };
+    } catch(e) { console.warn('user_profiles insert fallback:', e.message); }
+  }
 
   // Carica profilo per check admin e approvazione
   const { data: profile } = await sb.from('profiles').select('*').eq('id', session.user.id).single();
