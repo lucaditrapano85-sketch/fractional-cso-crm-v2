@@ -8922,12 +8922,14 @@ function renderViewPMI(view) {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 var PMI_MACRO_SETTORI = [
-  { id:'manifatturiero', icon:'⚙️', label:'Manifatturiero',       desc:'Produzione, metalmeccanica, lavorazioni' },
-  { id:'servizi_b2b',    icon:'💼', label:'Servizi B2B',          desc:'Consulenza, formazione, servizi professionali' },
-  { id:'edilizia',       icon:'🏗️', label:'Edilizia / Impianti',  desc:'Costruzioni, impiantistica, ristrutturazioni' },
-  { id:'commercio',      icon:'🛒', label:'Commercio',            desc:'Distribuzione, retail, ingrosso' },
-  { id:'alimentare',     icon:'🍽️', label:'Alimentare / Food',    desc:'Produzione alimentare, bevande, ristorazione' },
-  { id:'tech',           icon:'💻', label:'Tech / Software',      desc:'SaaS, digital agency, automazione' },
+  { id:'manifatturiero_meccanica',            icon:'⚙️',  label:'Manifatturiero',          desc:'Produzione, metalmeccanica, lavorazioni' },
+  { id:'servizi_b2b',                         icon:'💼',  label:'Servizi B2B',             desc:'Consulenza, formazione, servizi professionali' },
+  { id:'edilizia_residenziale',               icon:'🏗️', label:'Edilizia / Impianti',     desc:'Costruzioni, impiantistica, ristrutturazioni' },
+  { id:'commercio_abbigliamento_dettaglio',   icon:'🛍️', label:'Negozio / Retail',        desc:'Punto vendita, dettaglio, e-commerce' },
+  { id:'commercio_distribuzione_industriale', icon:'🚛',  label:'Distribuzione / Ingrosso',desc:'Distribuzione B2B, ingrosso, logistica' },
+  { id:'commercio_auto_moto_nuovo',           icon:'🚗',  label:'Automotive',              desc:'Concessionaria auto, moto, veicoli' },
+  { id:'alimentare_trasformazione',           icon:'🍽️', label:'Alimentare / Food',       desc:'Produzione alimentare, bevande, ristorazione' },
+  { id:'tech_saas',                           icon:'💻',  label:'Tech / Software',         desc:'SaaS, digital agency, automazione' },
 ];
 
 var PMI_FASCE_FATTURATO = [
@@ -8972,7 +8974,7 @@ function _renderSelezioneSetting(container) {
       // Settore
       '<div style="margin-bottom:28px">' +
         '<div style="font-size:11px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:12px">Il tuo settore</div>' +
-        '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px" id="pmi-settore-grid">' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="pmi-settore-grid">' +
           PMI_MACRO_SETTORI.map(function(s) {
             return '<div class="pmi-select-card" id="pmi-s-' + s.id + '" onclick="pmiSelSettore(\'' + s.id + '\')">' +
               '<div style="font-size:24px;margin-bottom:7px">' + s.icon + '</div>' +
