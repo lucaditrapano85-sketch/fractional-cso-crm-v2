@@ -9585,28 +9585,40 @@ function renderPMIScore(container) {
   var s  = calcScore(p);
   var sc = scoreColor(s);
 
-  var dimsHtml = _PMI_DIMS.map(function(d) {
+  // Ordine alfabetico per label
+  var dimLabelsMap = {vendite:'Vendite',pipeline:'Pipeline & CRM',team:'Organizzazione',processi:'Processi',ricavi:'Ricavi',marketing:'Marketing',sitoweb:'Sito Web',ecommerce:'Post-vendita'};
+  var dimsAlpha = _PMI_DIMS.slice().sort(function(a, b) {
+    return (dimLabelsMap[a] || a).localeCompare(dimLabelsMap[b] || b, 'it');
+  });
+
+  var dimsHtml = dimsAlpha.map(function(d) {
     var v   = p.dims[d] || 0;
     var col = dimColor(v);
     var pct = (v / 5) * 100;
     var lbl = getDimLabel(p.settore, d);
-    var stepDesc = (typeof _getStepDesc === 'function' && v > 0 && v < 5) ? _getStepDesc(p.settore, d, v) : '';
+    var stepDesc = (typeof _getStepDesc === 'function' && v > 0) ? _getStepDesc(p.settore, d, v) : '';
+    var statoLabel = v < 2 ? 'Critico' : v <= 3 ? 'In sviluppo' : 'Solido';
+    var statoCol   = v < 2 ? '#E53935' : v <= 3 ? 'rgba(175,125,0,0.85)' : 'rgba(0,130,95,0.85)';
     return '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:14px 16px;margin-bottom:10px">' +
-      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
-        '<div style="font-size:13px;font-weight:700;color:#1a1a2e">' + lbl + '</div>' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">' +
+        '<div style="display:flex;align-items:center;gap:8px;">' +
+          '<div style="font-size:13px;font-weight:700;color:#1a1a2e">' + lbl + '</div>' +
+          '<span style="font-size:9px;font-weight:600;color:' + statoCol + ';background:' + statoCol.replace(')', ',0.08)').replace('rgba(','rgba(') + ';padding:1px 6px;border-radius:4px;">' + statoLabel + '</span>' +
+        '</div>' +
         '<div style="font-size:15px;font-weight:700;color:' + col + '">' + (v > 0 ? v + '/5' : '—') + '</div>' +
       '</div>' +
-      '<div style="height:6px;background:rgba(0,0,0,0.06);border-radius:4px;margin-bottom:' + (stepDesc ? '10' : '0') + 'px">' +
+      '<div style="height:6px;background:rgba(0,0,0,0.06);border-radius:4px;margin-bottom:10px">' +
         '<div style="width:' + pct + '%;height:100%;background:' + col + ';border-radius:4px;transition:width .4s"></div>' +
       '</div>' +
-      (stepDesc ? '<div style="font-size:11px;color:rgba(26,26,46,0.5);line-height:1.55;padding-top:2px">' + stepDesc + '</div>' : '') +
+      (stepDesc && stepDesc !== '—' ? '<div style="font-size:11px;color:rgba(26,26,46,0.55);line-height:1.55;margin-bottom:8px">' + stepDesc + '</div>' : '') +
+      '<div style="font-size:10px;color:rgba(26,26,46,0.35);border-top:1px solid rgba(0,0,0,0.04);padding-top:7px">Media settore: <strong style="color:rgba(26,26,46,0.5)">—</strong></div>' +
     '</div>';
   }).join('');
 
   container.innerHTML =
     '<div style="max-width:580px;margin:0 auto;padding:40px 28px">' +
-      '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:4px">Score commerciale</h1>' +
-      '<p style="font-size:13px;color:rgba(26,26,46,0.45);margin-bottom:28px">Analisi delle 8 dimensioni della tua struttura commerciale.</p>' +
+      '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:4px">Analisi dettagliata</h1>' +
+      '<p style="font-size:13px;color:rgba(26,26,46,0.45);margin-bottom:28px">Il tuo profilo commerciale confrontato con il settore.</p>' +
 
       // Score globale
       '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:16px;padding:22px 24px;display:flex;align-items:center;gap:20px;margin-bottom:24px">' +
@@ -9619,8 +9631,8 @@ function renderPMIScore(container) {
         '</div>' +
       '</div>' +
 
-      // Dettaglio dimensioni
-      '<div style="font-size:10px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:12px">Dettaglio per dimensione</div>' +
+      // Dettaglio dimensioni (alfabetico)
+      '<div style="font-size:10px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:12px">Dimensioni — ordine alfabetico</div>' +
       dimsHtml +
     '</div>';
 }
@@ -9630,7 +9642,7 @@ function renderPMIAzioni(container) {
   var p = window._pmiProspect;
   if (!p || !p.dims) { renderPMIHome(container); return; }
 
-  // Ordina dimensioni dal punteggio più basso al più alto
+  // Ordina dimensioni dal punteggio più basso al più alto (priorità decrescente)
   var dimsSorted = _PMI_DIMS.slice().sort(function(a, b) {
     return (p.dims[a] || 0) - (p.dims[b] || 0);
   });
@@ -9640,9 +9652,11 @@ function renderPMIAzioni(container) {
     var col  = dimColor(v);
     var lbl  = getDimLabel(p.settore, d);
     var desc = (typeof _getStepDesc === 'function') ? _getStepDesc(p.settore, d, v || 1) : '';
-    var urgenza = v <= 1 ? 'Alta priorità' : v <= 3 ? 'Sviluppabile' : 'Ottimo';
-    var urgCol  = v <= 1 ? '#E53935' : v <= 3 ? 'rgba(175,125,0,0.85)' : 'rgba(0,130,95,0.85)';
-    var urgBg   = v <= 1 ? 'rgba(229,57,53,0.08)' : v <= 3 ? 'rgba(175,125,0,0.08)' : 'rgba(0,130,95,0.08)';
+    var urgenza = v < 2 ? 'Alta priorità' : v <= 3 ? 'Sviluppabile' : 'Ottimo';
+    var urgCol  = v < 2 ? '#E53935' : v <= 3 ? 'rgba(175,125,0,0.85)' : 'rgba(0,130,95,0.85)';
+    var urgBg   = v < 2 ? 'rgba(229,57,53,0.08)' : v <= 3 ? 'rgba(175,125,0,0.08)' : 'rgba(0,130,95,0.08)';
+    var stepActual = Math.max(1, Math.min(5, Math.round(v || 1)));
+    var stepTarget = Math.min(stepActual + 2, 5);
     return '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:14px 16px;margin-bottom:10px">' +
       '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px">' +
         '<div style="font-size:13px;font-weight:700;color:#1a1a2e">' + lbl + '</div>' +
@@ -9652,14 +9666,18 @@ function renderPMIAzioni(container) {
         '</div>' +
       '</div>' +
       (desc && desc !== '—'
-        ? '<div style="font-size:12px;color:rgba(26,26,46,0.6);line-height:1.6;border-top:1px solid rgba(0,0,0,0.05);padding-top:8px;margin-top:4px">' + desc + '</div>'
-        : '') +
+        ? '<div style="font-size:12px;color:rgba(26,26,46,0.6);line-height:1.6;border-top:1px solid rgba(0,0,0,0.05);padding-top:8px;margin-top:6px;margin-bottom:10px">' + desc + '</div>'
+        : '<div style="margin-top:8px;margin-bottom:10px;"></div>') +
+      '<div style="display:flex;align-items:center;justify-content:space-between;">' +
+        '<button onclick="alert(\'Dettaglio moduli in arrivo\')" style="background:rgba(61,90,254,0.07);border:1px solid rgba(61,90,254,0.18);color:#3D5AFE;border-radius:8px;padding:6px 14px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:11px;font-weight:600;cursor:pointer;">Vedi moduli →</button>' +
+        '<span style="font-size:10px;color:rgba(26,26,46,0.4);">Step attuale: <strong style="color:#1a1a2e">' + stepActual + '</strong> → Target: <strong style="color:#3D5AFE">' + stepTarget + '</strong></span>' +
+      '</div>' +
     '</div>';
   }).join('');
 
   container.innerHTML =
     '<div style="max-width:580px;margin:0 auto;padding:40px 28px">' +
-      '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:4px">Prossimi passi</h1>' +
+      '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:4px">Il tuo piano d\'azione</h1>' +
       '<p style="font-size:13px;color:rgba(26,26,46,0.45);margin-bottom:28px">Le azioni sono ordinate per priorità, dalla dimensione più critica.</p>' +
       azioniHtml +
     '</div>';
