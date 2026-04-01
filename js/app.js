@@ -9161,7 +9161,16 @@ function _dopoChiudiDiagnosiPMI(pid) {
   var p = prospects.find(function(x){ return x.id === pid; });
   if (p) window._pmiProspect = p;
   window._pmiDiagnosiMode = false;
+
+  var hasDims = p && p.dims && Object.keys(p.dims).some(function(k){ return (p.dims[k] || 0) > 0; });
   var main = document.getElementById('pmi-main');
+
+  if (!hasDims) {
+    // Diagnosi chiusa senza completare → torna alla selezione settore
+    if (main && typeof renderPrimoAccesso === 'function') renderPrimoAccesso();
+    return;
+  }
+
   if (main) _renderAHAPMI(main);
   renderSidebarPMI();
 }
