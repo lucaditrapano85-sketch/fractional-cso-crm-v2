@@ -9070,7 +9070,7 @@ async function pmiAvviaDiagnosi() {
 
 // Chiamata da chiudiDiagnosi() in modalità titolare
 function _dopoChiudiDiagnosiPMI(pid) {
-  var p = (window.prospects || []).find(function(x){ return x.id === pid; });
+  var p = prospects.find(function(x){ return x.id === pid; });
   if (p) window._pmiProspect = p;
   window._pmiDiagnosiMode = false;
   var main = document.getElementById('pmi-main');
