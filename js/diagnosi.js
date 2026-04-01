@@ -123,6 +123,15 @@ function apriDiagnosi() {
   _diagRisposte = (p.dims_answers && typeof p.dims_answers === 'object')
     ? JSON.parse(JSON.stringify(p.dims_answers))
     : {};
+  window._diagRisposte = _diagRisposte;
+  // Riprendi dal primo step senza risposte
+  var resumeStep = 0;
+  for (var ri = 0; ri < _diagDims.length; ri++) {
+    if (_diagRisposte[_diagDims[ri]] && Object.keys(_diagRisposte[_diagDims[ri]]).length > 0) {
+      resumeStep = ri + 1;
+    } else { break; }
+  }
+  _diagStep = Math.min(resumeStep, _diagDims.length - 1);
   document.getElementById('diagnosi-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
   document.getElementById('diag-btn-prev').style.display = '';
@@ -473,13 +482,28 @@ async function initPMI() {
   }
   window._pmiProspect = pOwned || null;
 
-  // Fase 12: se non ha prospect o diagnosi mai completata → primo accesso
+  // Fase 12: diagnosi completa = tutte e 8 le dimensioni con score > 0
+  var DIMS_ALL_PMI = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
   var hasDiagnosi = window._pmiProspect
     && window._pmiProspect.dims
-    && Object.keys(window._pmiProspect.dims).some(function(k) { return (window._pmiProspect.dims[k] || 0) > 0; });
+    && DIMS_ALL_PMI.every(function(k) { return (window._pmiProspect.dims[k] || 0) > 0; });
 
   if (!hasDiagnosi) {
-    if (typeof renderPrimoAccesso === 'function') renderPrimoAccesso();
+    var hasPartialAnswers = window._pmiProspect
+      && window._pmiProspect.dims_answers
+      && Object.keys(window._pmiProspect.dims_answers).length > 0;
+    if (hasPartialAnswers && typeof _renderRiprendiDiagnosi === 'function') {
+      // Espone le risposte parziali su window per _renderRiprendiDiagnosi
+      window._diagRisposte = window._pmiProspect.dims_answers;
+      if (!prospects.find(function(x) { return x.id === window._pmiProspect.id; })) {
+        prospects.push(window._pmiProspect);
+      }
+      currentId = window._pmiProspect.id;
+      if (typeof renderSidebarPMI === 'function') renderSidebarPMI();
+      _renderRiprendiDiagnosi(document.getElementById('pmi-main'));
+    } else if (typeof renderPrimoAccesso === 'function') {
+      renderPrimoAccesso();
+    }
     return;
   }
 

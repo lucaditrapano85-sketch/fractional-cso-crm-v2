@@ -9162,17 +9162,75 @@ function _dopoChiudiDiagnosiPMI(pid) {
   if (p) window._pmiProspect = p;
   window._pmiDiagnosiMode = false;
 
-  var hasDims = p && p.dims && Object.keys(p.dims).some(function(k){ return (p.dims[k] || 0) > 0; });
+  var DIMS_ALL   = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+  var hasDims    = p && p.dims && DIMS_ALL.every(function(k){ return (p.dims[k] || 0) > 0; });
+  var hasAnswers = Object.keys(window._diagRisposte || {}).length > 0;
   var main = document.getElementById('pmi-main');
 
-  if (!hasDims) {
-    // Diagnosi chiusa senza completare → torna alla selezione settore
-    if (main && typeof renderPrimoAccesso === 'function') renderPrimoAccesso();
-    return;
+  if (hasDims) {
+    // Diagnosi completata → AHA screen
+    if (main) _renderAHAPMI(main);
+    renderSidebarPMI();
+  } else if (hasAnswers) {
+    // Diagnosi iniziata ma non completata → schermata Riprendi
+    _renderRiprendiDiagnosi(main);
+  } else {
+    // Nessuna risposta → torna alla selezione settore
+    renderPrimoAccesso();
+  }
+}
+
+function _renderRiprendiDiagnosi(container) {
+  var dimsFatte = Object.keys(window._diagRisposte || {}).length;
+  var dimsNome = ['Vendite','Pipeline','Organizzazione','Processi','Ricavi','Marketing','Sito Web','Post-vendita'];
+
+  // Sidebar minimale "in corso"
+  var sidebar = document.getElementById('pmi-sidebar');
+  if (sidebar) {
+    sidebar.innerHTML =
+      '<div style="padding:20px 16px;border-bottom:1px solid rgba(255,255,255,0.08)">' +
+        '<div style="display:inline-flex;align-items:flex-start;gap:2px">' +
+          '<svg width="36" height="36" viewBox="8 4 44 44" fill="none"><rect x="8" y="34" width="44" height="4.5" rx="2.25" fill="#3D5AFE"/><rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="white"/><circle cx="29.75" cy="36.25" r="6" fill="white"/><line x1="29.75" y1="36.25" x2="47" y2="22" stroke="#FF6B2B" stroke-width="3.5" stroke-linecap="round"/><circle cx="47" cy="22" r="3.5" fill="#FF6B2B"/></svg>' +
+          '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:30px;font-weight:500;color:white;line-height:1;letter-spacing:-1px">eva</span>' +
+        '</div>' +
+        '<div style="margin-top:20px;font-size:11px;color:rgba(255,255,255,0.35);line-height:1.7">' +
+          '<div style="margin-bottom:8px;color:rgba(255,255,255,0.6);font-weight:600">Diagnosi in corso</div>' +
+          dimsFatte + ' di 8 aree completate.' +
+        '</div>' +
+      '</div>';
   }
 
-  if (main) _renderAHAPMI(main);
-  renderSidebarPMI();
+  if (!container) return;
+  container.innerHTML =
+    '<div style="max-width:520px;margin:0 auto;padding:56px 28px;">' +
+      '<div style="font-size:22px;font-weight:700;color:#1a1a2e;margin-bottom:8px;">Diagnosi interrotta</div>' +
+      '<p style="font-size:14px;color:rgba(26,26,46,0.55);margin-bottom:28px;line-height:1.6;">' +
+        'Hai completato <strong>' + dimsFatte + ' di 8</strong> aree. Riprendi da dove hai lasciato.' +
+      '</p>' +
+
+      // Barra progresso
+      '<div style="background:rgba(0,0,0,0.06);border-radius:6px;height:8px;margin-bottom:24px;">' +
+        '<div style="height:8px;border-radius:6px;background:#3D5AFE;width:' + Math.round((dimsFatte/8)*100) + '%;transition:width .4s;"></div>' +
+      '</div>' +
+
+      // Lista dimensioni
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:32px;">' +
+        dimsNome.map(function(nome, i) {
+          var done = i < dimsFatte;
+          return '<div style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:' +
+            (done ? 'rgba(0,130,95,0.07)' : 'rgba(0,0,0,0.04)') + ';border:1px solid ' +
+            (done ? 'rgba(0,130,95,0.2)' : 'rgba(0,0,0,0.06)') + ';">' +
+            '<span style="font-size:14px;">' + (done ? '✓' : '○') + '</span>' +
+            '<span style="font-size:12px;color:' + (done ? 'rgba(0,130,95,0.85)' : 'rgba(26,26,46,0.45)') + ';font-weight:' + (done ? '600' : '400') + ';">' + nome + '</span>' +
+          '</div>';
+        }).join('') +
+      '</div>' +
+
+      '<div style="display:flex;gap:10px;">' +
+        '<button onclick="apriDiagnosi()" style="flex:1;padding:13px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:15px;font-weight:700;cursor:pointer;">Riprendi diagnosi →</button>' +
+        '<button onclick="renderPrimoAccesso()" style="padding:13px 18px;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.08);border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;color:rgba(26,26,46,0.55);cursor:pointer;">Ricomincia</button>' +
+      '</div>' +
+    '</div>';
 }
 
 function _renderAHAPMI(container) {
