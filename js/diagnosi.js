@@ -444,9 +444,13 @@ async function initCSO() {
 
 // ── PMI (Fasi 4-12) ──────────────────────────────────────────────────────────
 async function initPMI() {
+  // Sposta #app-pmi nel body (potrebbe essere annidato dentro .main/.app)
+  var pmiApp = document.getElementById('app-pmi');
+  if (pmiApp && pmiApp.parentElement !== document.body) {
+    document.body.appendChild(pmiApp);
+  }
   var csoApp = document.querySelector('.app');
   if (csoApp) csoApp.style.display = 'none';
-  var pmiApp = document.getElementById('app-pmi');
   if (pmiApp) pmiApp.style.display = 'flex';
 
   // Carica prospect del titolare (per owner_user_id)
