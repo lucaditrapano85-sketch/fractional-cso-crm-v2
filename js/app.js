@@ -9373,7 +9373,10 @@ function renderPMIHome(container) {
 
   function dimRow(lbl, key) {
     var v = d[key];
-    return '<div class="pmi-dim-item">' +
+    return '<div class="pmi-dim-item" style="cursor:pointer;border-radius:8px;transition:background .15s;" ' +
+      'onclick="showViewPMI(\'azioni\')" ' +
+      'onmouseenter="this.style.background=\'rgba(0,0,0,0.03)\'" ' +
+      'onmouseleave="this.style.background=\'\'">' +
       '<div class="pmi-dim-header">' +
         '<span class="pmi-dim-name">' + lbl + '</span>' +
         '<span class="pmi-dim-score ' + dClass(v) + '">' + (v || '—') + '</span>' +
@@ -9398,26 +9401,26 @@ function renderPMIHome(container) {
         '<p class="pmi-greeting">Buongiorno, ' + (nome || 'Benvenuto') + '</p>' +
         '<p class="pmi-subtitle">' + (subtitleText || '') + '</p>' +
       '</div>' +
-      '<div class="pmi-score-ring" style="border-color:' + scoreCol + ';background:rgba(255,255,255,0.25);">' +
-        '<div class="pmi-score-ring-number">' + s + '</div>' +
+      '<div class="pmi-score-ring" style="width:88px;height:88px;border:3px solid ' + scoreCol + ';background:rgba(255,255,255,0.25);">' +
+        '<div class="pmi-score-ring-number" style="font-size:32px;">' + s + '</div>' +
       '</div>' +
     '</div>' +
 
     // KPI ROW
     '<div class="pmi-kpi-row">' +
-      '<div class="pmi-kpi-card" style="border-left-color:' + scoreCol + ';">' +
+      '<div class="pmi-kpi-card" style="border-left:3px solid ' + scoreCol + ';border-radius:0 12px 12px 0;">' +
         '<p class="pmi-kpi-label">Score globale</p>' +
         '<p class="pmi-kpi-value">' + s + ' <span style="color:' + scoreCol + ';">' + scoreLabel + '</span></p>' +
       '</div>' +
-      '<div class="pmi-kpi-card" style="border-left-color:#3D5AFE;">' +
+      '<div class="pmi-kpi-card" style="border-left:3px solid #3D5AFE;border-radius:0 12px 12px 0;">' +
         '<p class="pmi-kpi-label">Azioni completate</p>' +
         '<p class="pmi-kpi-value">' + azFatte + ' <span style="color:rgba(26,26,46,0.30);">/8</span></p>' +
       '</div>' +
-      '<div class="pmi-kpi-card" style="border-left-color:rgba(0,130,95,0.85);">' +
+      '<div class="pmi-kpi-card" style="border-left:3px solid rgba(0,130,95,0.85);border-radius:0 12px 12px 0;">' +
         '<p class="pmi-kpi-label">Prossima ri-diagnosi</p>' +
         '<p class="pmi-kpi-value">' + ridiagGg + ' <span>giorni</span></p>' +
       '</div>' +
-      '<div class="pmi-kpi-card" style="border-left-color:#FF6B2B;">' +
+      '<div class="pmi-kpi-card" style="border-left:3px solid #FF6B2B;border-radius:0 12px 12px 0;">' +
         '<p class="pmi-kpi-label">Fatturato protetto</p>' +
         '<p class="pmi-kpi-value">—</p>' +
       '</div>' +
