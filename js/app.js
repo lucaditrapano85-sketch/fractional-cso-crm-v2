@@ -8867,10 +8867,15 @@ function renderSidebarPMI() {
     pmiApp.style.overflow = 'hidden';
   }
 
+  var pro  = window._currentProfile  || {};
+  var up   = window._userProfileData || {};
+  var nome = pro.nome || (pro.nome_completo || '').split(' ')[0] || up.nome || '';
+
   var navItems = [
     { id:'home',   title:'Home',   svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="currentColor" opacity=".9"/><rect x="9" y="2" width="5" height="5" rx="1" fill="currentColor" opacity=".9"/><rect x="2" y="9" width="5" height="5" rx="1" fill="currentColor" opacity=".9"/><rect x="9" y="9" width="5" height="5" rx="1" fill="currentColor" opacity=".9"/></svg>' },
     { id:'azioni', title:'Azioni', svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' },
-    { id:'score',  title:'Score',  svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13l3-4 3 2 4-6" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>' },
+    { id:'score',  title:'Score',  svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M8 8l2.2-2.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="8" r="1.2" fill="currentColor"/></svg>' },
+    { id:'trend',  title:'Trend',  svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13l3-4 3 2 4-6" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>' },
     { id:'profilo',title:'Profilo',svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="3" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 15c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>' },
   ];
 
@@ -8894,6 +8899,7 @@ function renderSidebarPMI() {
       '</div>';
     }).join('') +
     '<div style="flex:1;"></div>' +
+    (nome ? '<div style="padding:2px 16px 8px;font-size:11px;font-weight:600;color:white;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + nome + '</div>' : '') +
     '<div onclick="logout()" style="display:flex;align-items:center;gap:10px;padding:10px 16px;margin:0 8px;border-radius:10px;cursor:pointer;color:rgba(255,255,255,0.3);">' +
       '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H4a2 2 0 00-2 2v8a2 2 0 002 2h2M11 11l3-3-3-3M14 8H6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
       '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;">Esci</span>' +
@@ -8926,20 +8932,15 @@ function renderViewPMI(view) {
   var main    = document.getElementById('pmi-main');
   if (!main) return;
 
+  if (sidebar) sidebar.style.display = '';
+  if (appPmi)  appPmi.style.gridTemplateColumns = '160px 1fr';
+  main.style.padding    = '28px 32px';
+  main.style.background = '#d8dbe2';
+  renderSidebarPMI();
+
   if (view === 'home') {
-    // Il template ha la propria sidebar incorporata — nasconde quella esterna
-    if (sidebar) sidebar.style.display = 'none';
-    if (appPmi)  appPmi.style.gridTemplateColumns = '1fr';
-    main.style.padding    = '0';
-    main.style.background = 'transparent';
     renderPMIHome(main);
   } else {
-    // Altre view: mostra sidebar esterna con etichette
-    if (sidebar) sidebar.style.display = '';
-    if (appPmi)  appPmi.style.gridTemplateColumns = '160px 1fr';
-    main.style.padding    = '28px 32px';
-    main.style.background = '#d8dbe2';
-    renderSidebarPMI();
     switch (view) {
       case 'score':   renderPMIScore(main);   break;
       case 'azioni':  renderPMIAzioni(main);  break;
@@ -9497,44 +9498,6 @@ function renderPMIHome(container) {
   var azFatte = Object.keys(azObj).filter(function(k){return azObj[k];}).length;
 
   container.innerHTML =
-    '<div style="display:grid;grid-template-columns:180px 1fr;min-height:100vh;">' +
-      '<div style="background:#1a1a2e;padding:14px 0;display:flex;flex-direction:column;gap:4px;">' +
-        '<div style="padding:0 14px 16px;display:flex;align-items:center;gap:8px;">' +
-          '<svg width="22" height="22" viewBox="8 4 44 44" fill="none">' +
-            '<rect x="8" y="34" width="44" height="4.5" rx="2.25" fill="#3D5AFE"/>' +
-            '<rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="white"/>' +
-            '<circle cx="29.75" cy="36.25" r="6" fill="white"/>' +
-            '<line x1="29.75" y1="36.25" x2="47" y2="22" stroke="#FF6B2B" stroke-width="3.5" stroke-linecap="round"/>' +
-            '<circle cx="47" cy="22" r="3.5" fill="#FF6B2B"/>' +
-          '</svg>' +
-          '<span style="font-size:17px;font-weight:600;color:white;letter-spacing:-0.3px;">Leva</span>' +
-        '</div>' +
-        '<div style="display:flex;align-items:center;gap:9px;padding:9px 14px;border-radius:8px;cursor:pointer;background:rgba(61,90,254,0.12);color:white;font-size:12px;margin:0 6px;" onclick="navigaSezione(\'home\')">' +
-          '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="currentColor"/><rect x="9" y="2" width="5" height="5" rx="1" fill="currentColor"/><rect x="2" y="9" width="5" height="5" rx="1" fill="currentColor"/><rect x="9" y="9" width="5" height="5" rx="1" fill="currentColor"/></svg>' +
-          'Home' +
-        '</div>' +
-        '<div style="display:flex;align-items:center;gap:9px;padding:9px 14px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,0.45);font-size:12px;margin:0 6px;" onclick="navigaSezione(\'azioni\')">' +
-          '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
-          'Azioni' +
-        '</div>' +
-        '<div style="display:flex;align-items:center;gap:9px;padding:9px 14px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,0.45);font-size:12px;margin:0 6px;" onclick="navigaSezione(\'trend\')">' +
-          '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13l3-4 3 2 4-6" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>' +
-          'Trend' +
-        '</div>' +
-        '<div style="display:flex;align-items:center;gap:9px;padding:9px 14px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,0.45);font-size:12px;margin:0 6px;" onclick="navigaSezione(\'profilo\')">' +
-          '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="3" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 15c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>' +
-          'Profilo' +
-        '</div>' +
-        '<div style="flex:1;"></div>' +
-        '<div style="padding:0 14px;">' +
-          '<div style="font-size:11px;font-weight:600;color:white;margin-bottom:2px;">'+nome+'</div>' +
-          '<div style="display:flex;align-items:center;gap:9px;padding:9px 0;cursor:pointer;color:rgba(255,255,255,0.35);font-size:12px;" onclick="logout()">' +
-            '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H4a2 2 0 00-2 2v8a2 2 0 002 2h2M11 11l3-3-3-3M14 8H6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
-            'Esci' +
-          '</div>' +
-        '</div>' +
-      '</div>' +
-      '<div style="background:#d8dbe2;padding:28px 32px;font-family:\'Plus Jakarta Sans\',sans-serif;">' +
         '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">' +
           '<div>' +
             '<div style="font-size:26px;font-weight:700;color:#1a1a2e;">Buongiorno, '+nome+'</div>' +
@@ -9596,9 +9559,7 @@ function renderPMIHome(container) {
               '<button onclick="apriPrenotazioneCall()" style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:7px 16px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;">Prenota</button>' +
             '</div>' +
           '</div>' +
-        '</div>' +
-      '</div>' +
-    '</div>';
+        '</div>';
 }
 
 function completaAzioneSettimanale() {
