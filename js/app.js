@@ -8897,18 +8897,15 @@ function renderSidebarPMI() {
 }
 
 function showViewPMI(view) {
-  // Se si naviga fuori da home, ripristina il layout sidebar/main classico
-  if (view !== 'home') {
-    var _appPmi = document.getElementById('app-pmi');
-    var _sidebarEl = document.getElementById('pmi-sidebar');
-    var _mainEl = document.getElementById('pmi-main');
-    if (_appPmi) _appPmi.style.display = 'grid';
-    if (_sidebarEl) { _sidebarEl.style.display = ''; renderSidebarPMI(); }
-    if (_mainEl) { _mainEl.style.cssText = 'overflow-y:auto;height:100vh;'; }
-  }
   _pmiCurrentView = view;
+  // Aggiorna stato attivo sidebar classica (CSO)
   document.querySelectorAll('.pmi-nav-item').forEach(function(el) {
     el.classList.toggle('active', el.dataset.view === view);
+  });
+  // Aggiorna stato attivo nuove icone sidebar 64px
+  document.querySelectorAll('[data-pmi-view]').forEach(function(el) {
+    var isActive = el.dataset.pmiView === view;
+    el.style.background = isActive ? 'rgba(61,90,254,0.15)' : '';
   });
   renderViewPMI(view);
 }
@@ -8918,7 +8915,7 @@ function navigaAzioni(dim) {
 }
 
 function renderViewPMI(view) {
-  var main = document.getElementById('pmi-main');
+  var main = document.getElementById('pmi-right-col') || document.getElementById('pmi-main');
   if (!main) return;
   switch (view) {
     case 'home':    renderPMIHome(main);    break;
@@ -9318,7 +9315,7 @@ function renderPMIHome(container) {
   var _sidebarEl = document.getElementById('pmi-sidebar');
   if (_appPmi) _appPmi.style.display = 'block';
   if (_sidebarEl) _sidebarEl.style.display = 'none';
-  if (container) { container.style.cssText = 'width:100%;height:100vh;padding:0;overflow-y:auto;'; }
+  if (container) { container.style.cssText = 'width:100%;height:100vh;padding:0;overflow:hidden;'; }
 
   // Dati
   var up  = window._userProfileData || {};
@@ -9403,20 +9400,20 @@ function renderPMIHome(container) {
   }
 
   container.innerHTML =
-    '<div style="display:grid;grid-template-columns:64px 1fr;min-height:100vh;">' +
+    '<div style="display:grid;grid-template-columns:64px 1fr;height:100vh;">' +
 
       // SIDEBAR ICONE 64px
-      '<div style="background:#1a1a2e;padding:14px 0;display:flex;flex-direction:column;align-items:center;gap:14px;position:sticky;top:0;height:100vh;">' +
+      '<div style="background:#1a1a2e;padding:14px 0;display:flex;flex-direction:column;align-items:center;gap:14px;height:100%;overflow:hidden;">' +
         '<div style="margin-bottom:4px;">' +
           '<svg width="22" height="22" viewBox="8 4 44 44" fill="none"><rect x="8" y="34" width="44" height="4.5" rx="2.25" fill="#3D5AFE"/><rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="white"/><circle cx="29.75" cy="36.25" r="6" fill="white"/><line x1="29.75" y1="36.25" x2="47" y2="22" stroke="#FF6B2B" stroke-width="3.5" stroke-linecap="round"/><circle cx="47" cy="22" r="3.5" fill="#FF6B2B"/></svg>' +
         '</div>' +
-        '<div onclick="showViewPMI(\'home\')" title="Home" style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(61,90,254,0.15);cursor:pointer;">' +
+        '<div data-pmi-view="home" onclick="showViewPMI(\'home\')" title="Home" style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(61,90,254,0.15);cursor:pointer;">' +
           '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="#3D5AFE"/><rect x="9" y="2" width="5" height="5" rx="1" fill="#3D5AFE"/><rect x="2" y="9" width="5" height="5" rx="1" fill="#3D5AFE"/><rect x="9" y="9" width="5" height="5" rx="1" fill="#3D5AFE"/></svg>' +
         '</div>' +
-        '<div onclick="showViewPMI(\'azioni\')" title="Azioni" style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;">' +
+        '<div data-pmi-view="azioni" onclick="showViewPMI(\'azioni\')" title="Azioni" style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;">' +
           '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
         '</div>' +
-        '<div onclick="showViewPMI(\'score\')" title="Score" style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;">' +
+        '<div data-pmi-view="score" onclick="showViewPMI(\'score\')" title="Score" style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;">' +
           '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13l3-4 3 2 4-6" stroke="rgba(255,255,255,0.3)" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>' +
         '</div>' +
         '<div onclick="openProfiloModal()" title="Profilo" style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;">' +
@@ -9429,7 +9426,7 @@ function renderPMIHome(container) {
       '</div>' +
 
       // CONTENUTO PRINCIPALE
-      '<div style="background:#d8dbe2;padding:28px 32px;font-family:\'Plus Jakarta Sans\',sans-serif;overflow-y:auto;height:100vh;">' +
+      '<div id="pmi-right-col" style="background:#d8dbe2;padding:28px 32px;font-family:\'Plus Jakarta Sans\',sans-serif;overflow-y:auto;height:100vh;">' +
 
         // HEADER
         '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">' +
