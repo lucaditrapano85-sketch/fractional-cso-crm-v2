@@ -9270,15 +9270,23 @@ async function pmiAvviaDiagnosi() {
   // Upsert: aggiorna se esiste già, crea solo se non esiste
   var nuovoP = window._pmiProspect || null;
   if (nuovoP && nuovoP.id) {
-    // Prospect già esistente — aggiorna solo settore e fatturato
+    // Prospect già esistente — aggiorna settore, fatturato e azzera diagnosi precedente
     var { error: errU } = await sb.from('prospects').update({
-      settore: _pmiSelectedSettore,
-      fatturato: fascia ? String(fascia.value) : '',
+      settore:          _pmiSelectedSettore,
+      fatturato:        fascia ? String(fascia.value) : '',
       fatturato_anno_1: fascia ? fascia.value : null,
+      dims:             {},
+      dims_answers:     {},
     }).eq('id', nuovoP.id);
     if (errU) console.warn('update prospect:', errU.message);
-    nuovoP = Object.assign({}, nuovoP, { settore: _pmiSelectedSettore, fatturato: fascia ? String(fascia.value) : '', fatturato_anno_1: fascia ? fascia.value : null });
-    // Aggiorna anche l'oggetto nell'array prospects così apriDiagnosi legge il settore corretto
+    nuovoP = Object.assign({}, nuovoP, {
+      settore:          _pmiSelectedSettore,
+      fatturato:        fascia ? String(fascia.value) : '',
+      fatturato_anno_1: fascia ? fascia.value : null,
+      dims:             {},
+      dims_answers:     {},
+    });
+    // Aggiorna anche l'oggetto nell'array prospects così apriDiagnosi legge dati puliti
     var idxP = prospects.findIndex(function(x){ return x.id === nuovoP.id; });
     if (idxP >= 0) prospects[idxP] = nuovoP;
   } else {
