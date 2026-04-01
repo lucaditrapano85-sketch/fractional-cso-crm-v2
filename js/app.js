@@ -9150,26 +9150,39 @@ async function pmiAvviaDiagnosi() {
     window._userProfileData = Object.assign({}, window._userProfileData, { sector: _pmiSelectedSettore, fascia_fatturato: _pmiSelectedFascia });
   } catch(e) { console.warn('user_profiles update:', e.message); }
 
-  // Crea record prospect collegato al titolare
-  var { data: nuovoP, error: errP } = await sb.from('prospects').insert({
-    nome: nomePMI,
-    settore: _pmiSelectedSettore,
-    fatturato: fascia ? String(fascia.value) : '',
-    fatturato_anno_1: fascia ? fascia.value : null,
-    stato: 'lead',
-    owner_user_id: window._currentUserId,
-    dims: {},
-    targets: {},
-  }).select().single();
-
-  if (errP || !nuovoP) {
-    if (msg) msg.textContent = 'Errore nella creazione del profilo. Riprova.';
-    console.error(errP);
-    return;
+  // Upsert: aggiorna se esiste già, crea solo se non esiste
+  var nuovoP = window._pmiProspect || null;
+  if (nuovoP && nuovoP.id) {
+    // Prospect già esistente — aggiorna solo settore e fatturato
+    var { error: errU } = await sb.from('prospects').update({
+      settore: _pmiSelectedSettore,
+      fatturato: fascia ? String(fascia.value) : '',
+      fatturato_anno_1: fascia ? fascia.value : null,
+    }).eq('id', nuovoP.id);
+    if (errU) console.warn('update prospect:', errU.message);
+    nuovoP = Object.assign({}, nuovoP, { settore: _pmiSelectedSettore, fatturato: fascia ? String(fascia.value) : '', fatturato_anno_1: fascia ? fascia.value : null });
+  } else {
+    var { data: created, error: errP } = await sb.from('prospects').insert({
+      nome: nomePMI,
+      settore: _pmiSelectedSettore,
+      fatturato: fascia ? String(fascia.value) : '',
+      fatturato_anno_1: fascia ? fascia.value : null,
+      stato: 'lead',
+      owner_user_id: window._currentUserId,
+      dims: {},
+      targets: {},
+    }).select().single();
+    if (errP || !created) {
+      if (msg) msg.textContent = 'Errore nella creazione del profilo. Riprova.';
+      console.error(errP);
+      return;
+    }
+    nuovoP = created;
+    prospects.push(nuovoP);
   }
 
   window._pmiProspect = nuovoP;
-  prospects.push(nuovoP);
+  if (!prospects.find(function(x){ return x.id === nuovoP.id; })) prospects.push(nuovoP);
   currentId = nuovoP.id;
 
   // Salva ID in localStorage come fallback per i refresh (RLS può bloccare SELECT per owner_user_id)
