@@ -179,17 +179,21 @@ body {
   <!-- REGISTER FORM -->
   <form id="register-form">
     <!-- Selezione ruolo — obbligatoria -->
-    <div class="role-selector-label">Sono un…</div>
+    <div class="role-selector-label">Come vuoi usare Leva?</div>
     <div class="role-cards">
       <div class="role-card" id="role-card-titolare" onclick="selectRole('titolare')">
-        <div class="role-card-icon">🏢</div>
-        <div class="role-card-title">Titolare</div>
+        <div class="role-card-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><polyline points="4,22 10,14 16,18 24,8" stroke="#3D5AFE" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><polyline points="20,8 24,8 24,12" stroke="#3D5AFE" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+        </div>
+        <div class="role-card-title">Sono un titolare</div>
         <div class="role-card-desc">Voglio migliorare la mia azienda</div>
       </div>
       <div class="role-card" id="role-card-cso" onclick="selectRole('cso')">
-        <div class="role-card-icon">💼</div>
-        <div class="role-card-title">Professionista</div>
-        <div class="role-card-desc">Voglio gestire i miei clienti</div>
+        <div class="role-card-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="9" r="4.5" stroke="#3D5AFE" stroke-width="2" fill="none"/><path d="M5 24c0-4.97 4.03-9 9-9s9 4.03 9 9" stroke="#3D5AFE" stroke-width="2" stroke-linecap="round" fill="none"/><rect x="17" y="15" width="8" height="5.5" rx="1.5" stroke="#3D5AFE" stroke-width="1.8" fill="none"/><line x1="17" y1="17.75" x2="25" y2="17.75" stroke="#3D5AFE" stroke-width="1.5"/></svg>
+        </div>
+        <div class="role-card-title">Sono un professionista</div>
+        <div class="role-card-desc">Voglio gestire i miei clienti come CSO</div>
       </div>
     </div>
     <div class="form-row">
@@ -218,7 +222,7 @@ body {
       <label>Conferma password</label>
       <input type="password" id="reg-password2" placeholder="Ripeti la password" required autocomplete="new-password" minlength="8">
     </div>
-    <button type="submit" class="login-btn" id="reg-btn">Crea account</button>
+    <button type="submit" class="login-btn" id="reg-btn" disabled>Crea account</button>
     <div class="login-msg" id="reg-msg"></div>
     <div class="login-toggle">Hai gia un account? <a onclick="showLogin()">Accedi</a></div>
   </form>
@@ -245,9 +249,9 @@ function selectRole(role) {
   selectedRole = role;
   document.getElementById('role-card-titolare').classList.toggle('selected', role === 'titolare');
   document.getElementById('role-card-cso').classList.toggle('selected', role === 'cso');
-  // Pulisce eventuale errore ruolo
+  document.getElementById('reg-btn').disabled = false;
   var msg = document.getElementById('reg-msg');
-  if (msg.textContent.includes('ruolo')) { msg.textContent = ''; msg.className = 'login-msg'; }
+  if (msg && msg.textContent.includes('ruolo')) { msg.textContent = ''; msg.className = 'login-msg'; }
 }
 
 // Toggle login/register
@@ -255,6 +259,7 @@ function showRegister() {
   selectedRole = '';
   document.getElementById('role-card-titolare').classList.remove('selected');
   document.getElementById('role-card-cso').classList.remove('selected');
+  document.getElementById('reg-btn').disabled = true;
   document.getElementById('login-form').style.display = 'none';
   document.getElementById('register-form').style.display = 'block';
   document.getElementById('reg-msg').textContent = '';
