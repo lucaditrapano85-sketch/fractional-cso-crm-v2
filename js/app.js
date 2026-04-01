@@ -9843,9 +9843,8 @@ async function toggleModuloCompletatoPMI(key, dimId, stepNum, moduloNome, dimLab
   p.pmi_azioni = lista;
 
   // Salva su Supabase (fire and forget)
-  var sbClient = window.supabase || window.sb;
-  if (sbClient && p.id) {
-    sbClient.from('prospects').update({ pmi_azioni: lista }).eq('id', p.id);
+  if (typeof sb !== 'undefined' && p.id) {
+    sb.from('prospects').update({ pmi_azioni: lista }).eq('id', p.id);
   }
 
   // Aggiorna badge
