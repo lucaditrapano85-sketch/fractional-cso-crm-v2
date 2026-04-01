@@ -9669,9 +9669,10 @@ function renderPMIAzioni(container) {
         ? '<div style="font-size:12px;color:rgba(26,26,46,0.6);line-height:1.6;border-top:1px solid rgba(0,0,0,0.05);padding-top:8px;margin-top:6px;margin-bottom:10px">' + desc + '</div>'
         : '<div style="margin-top:8px;margin-bottom:10px;"></div>') +
       '<div style="display:flex;align-items:center;justify-content:space-between;">' +
-        '<button onclick="alert(\'Dettaglio moduli in arrivo\')" style="background:rgba(61,90,254,0.07);border:1px solid rgba(61,90,254,0.18);color:#3D5AFE;border-radius:8px;padding:6px 14px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:11px;font-weight:600;cursor:pointer;">Vedi moduli →</button>' +
+        '<button id="pmi-mod-btn-' + d + '" onclick="togglePMIModuli(\'' + d + '\')" style="background:rgba(61,90,254,0.07);border:1px solid rgba(61,90,254,0.18);color:#3D5AFE;border-radius:8px;padding:6px 14px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:11px;font-weight:600;cursor:pointer;">Vedi moduli →</button>' +
         '<span style="font-size:10px;color:rgba(26,26,46,0.4);">Step attuale: <strong style="color:#1a1a2e">' + stepActual + '</strong> → Target: <strong style="color:#3D5AFE">' + stepTarget + '</strong></span>' +
       '</div>' +
+      '<div id="pmi-mod-panel-' + d + '" style="display:none;"></div>' +
     '</div>';
   }).join('');
 
@@ -9681,6 +9682,152 @@ function renderPMIAzioni(container) {
       '<p style="font-size:13px;color:rgba(26,26,46,0.45);margin-bottom:28px">Le azioni sono ordinate per priorità, dalla dimensione più critica.</p>' +
       azioniHtml +
     '</div>';
+}
+
+// ── PMI: espandi/collassa moduli per dimensione ───────────────────────────────
+function togglePMIModuli(dimId) {
+  var panel = document.getElementById('pmi-mod-panel-' + dimId);
+  var btn   = document.getElementById('pmi-mod-btn-' + dimId);
+  if (!panel) return;
+  if (panel.style.display === 'none' || !panel.dataset.rendered) {
+    panel.innerHTML = _buildModuliPanelContent(dimId);
+    panel.dataset.rendered = '1';
+    panel.style.display = 'block';
+    if (btn) btn.textContent = 'Nascondi ↑';
+  } else {
+    panel.style.display = 'none';
+    if (btn) btn.textContent = 'Vedi moduli →';
+  }
+}
+
+function _buildModuliPanelContent(dimId) {
+  var p = window._pmiProspect;
+  if (!p) return '';
+  var v         = (p.dims && p.dims[dimId]) || 0;
+  var settore   = p.settore || '';
+  var fatturato = p.fatturato || 1000000;
+
+  // Calcolo steps
+  var stepReached = Math.min(Math.floor(v), 4);
+  var stepCurrent = Math.min(stepReached + 1, 5);
+  var stepNext    = Math.min(stepCurrent + 1, 5);
+  var stepTarget  = Math.min(stepCurrent + 2, 5);
+
+  // ─── Track step HTML ────────────────────────────────────────────────────────
+  var sLbl = ['','Base','Struttura','Metodo','Eccellenza','Top'];
+  function dotState(n) {
+    if (n <= stepReached) return 'done';
+    if (n === stepCurrent) return 'current';
+    if (n === stepTarget)  return 'target';
+    return 'future';
+  }
+  function dotHtml(n) {
+    var st  = dotState(n);
+    var bdr = st==='done'?'rgba(0,130,95,0.85)':st==='current'?'#FF6B2B':st==='target'?'rgba(61,90,254,0.55)':'rgba(0,0,0,0.10)';
+    var bg  = st==='done'?'rgba(0,130,95,0.12)':st==='current'?'rgba(255,107,43,0.10)':st==='target'?'rgba(61,90,254,0.07)':'transparent';
+    var col = st==='done'?'rgba(0,130,95,0.85)':st==='current'?'#FF6B2B':st==='target'?'#3D5AFE':'rgba(26,26,46,0.2)';
+    var bs  = st==='target'?'dashed':'solid';
+    return '<div style="text-align:center;flex-shrink:0;">' +
+      '<div style="width:30px;height:30px;border-radius:50%;border:2px '+bs+' '+bdr+';background:'+bg+';display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:'+col+';margin:0 auto;">' + (st==='done'?'✓':String(n)) + '</div>' +
+      '<div style="font-size:7px;margin-top:3px;color:'+col+';">' + (sLbl[n]||'') + '</div>' +
+    '</div>';
+  }
+  function connHtml(n) {
+    return '<div style="flex:1;display:flex;align-items:center;padding-bottom:14px;">' +
+      '<div style="height:2px;width:100%;background:rgba(0,0,0,0.06);">' +
+        (n <= stepReached ? '<div style="height:2px;width:100%;background:rgba(0,130,95,0.4);border-radius:1px;"></div>' : '') +
+      '</div></div>';
+  }
+  var trackHtml =
+    '<div style="font-size:10px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:12px;">Track step</div>' +
+    '<div style="display:flex;align-items:flex-start;gap:0;margin-bottom:18px;padding:0 4px;">' +
+      dotHtml(1)+connHtml(1)+dotHtml(2)+connHtml(2)+dotHtml(3)+connHtml(3)+dotHtml(4)+connHtml(4)+dotHtml(5) +
+    '</div>';
+
+  // ─── Moduli ─────────────────────────────────────────────────────────────────
+  var sd = (typeof STEP_DETAIL_BY_SETTORE !== 'undefined') ? STEP_DETAIL_BY_SETTORE : {};
+  var nextDetail = (sd[settore] && sd[settore][dimId] && sd[settore][dimId][String(stepNext)]) || null;
+  var moduli = (nextDetail && nextDetail.moduli && nextDetail.moduli.length)
+    ? nextDetail.moduli
+    : [
+        { id:'mappa',     nome:'Mappatura situazione attuale', tipo:'flag', note:'Analisi di partenza: capire dov\'è il processo oggi e dove si vuole arrivare.' },
+        { id:'processo',  nome:'Definizione processo base',    tipo:'flag', note:'Formalizzare i passi chiave e le responsabilità per questa dimensione.' },
+        { id:'strumenti', nome:'Implementazione strumenti',    tipo:'flag', note:'Scegliere e configurare gli strumenti minimi necessari per supportare il processo.' },
+      ];
+
+  var azDone    = p.azioni_completate || {};
+  var tempoMesi = nextDetail ? (nextDetail.tempo_mesi || 1) : 1;
+  var totalCostoMensile = 0;
+
+  var moduliHtml = moduli.map(function(m) {
+    var key    = 'pmi_' + dimId + '_' + stepNext + '_' + m.id;
+    var isDone = !!azDone[key];
+    var desc   = m.note || (m.varianti && m.varianti.length ? m.varianti[0].note : '') || '';
+    var mc     = m.costo_mensile || (m.varianti && m.varianti.length
+      ? Math.min.apply(null, m.varianti.map(function(vv){ return vv.costo_mensile || 0; }))
+      : 0);
+    totalCostoMensile += mc;
+    return '<div id="pmi-mod-row-' + key + '" style="display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.05);">' +
+      '<input type="checkbox" id="pmi-chk-' + key + '"' + (isDone?' checked':'') + ' onchange="toggleModuloCompletatoPMI(\'' + key + '\')" style="margin-top:3px;cursor:pointer;accent-color:#3D5AFE;width:14px;height:14px;flex-shrink:0;">' +
+      '<div style="flex:1;min-width:0;">' +
+        '<div style="font-size:12px;font-weight:500;color:#1a1a2e;line-height:1.4;">' + m.nome + '</div>' +
+        (desc ? '<div style="font-size:11px;color:rgba(26,26,46,0.55);margin-top:2px;line-height:1.4;">' + desc + '</div>' : '') +
+      '</div>' +
+      '<span class="pmi-mod-badge" style="font-size:9px;font-weight:600;color:' + (isDone?'rgba(0,130,95,0.85)':'rgba(26,26,46,0.4)') + ';background:' + (isDone?'rgba(0,130,95,0.08)':'rgba(0,0,0,0.05)') + ';padding:2px 7px;border-radius:4px;white-space:nowrap;flex-shrink:0;">' + (isDone?'Completato':'Da fare') + '</span>' +
+    '</div>';
+  }).join('');
+
+  // ─── Metriche ────────────────────────────────────────────────────────────────
+  var coefficienti = {vendite:0.04,pipeline:0.035,team:0.03,processi:0.03,ricavi:0.045,marketing:0.025,sitoweb:0.02,ecommerce:0.025};
+  var coeff          = coefficienti[dimId] || 0.03;
+  var gapStep        = Math.max(0.5, Math.min(2, 5 - v));
+  var impattoMensile = Math.round(fatturato * gapStep * coeff / 12);
+  var tempoFmt       = tempoMesi < 1 ? '2-3 sett.' : tempoMesi === 1 ? '1 mese' : tempoMesi + ' mesi';
+  var costoFmt       = totalCostoMensile > 0 ? '€' + totalCostoMensile.toLocaleString('it-IT') + '/mese' : '—';
+  var roi            = totalCostoMensile > 0 ? Math.round(impattoMensile * 12 / totalCostoMensile) + 'x/anno' : '—';
+  function metricBox(lbl, val) {
+    return '<div style="flex:1;text-align:center;padding:10px 6px;background:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.8);border-radius:10px;">' +
+      '<div style="font-size:9px;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">' + lbl + '</div>' +
+      '<div style="font-size:13px;font-weight:700;color:#1a1a2e;">' + val + '</div>' +
+    '</div>';
+  }
+
+  return '<div style="border-top:1px solid rgba(0,0,0,0.06);margin-top:14px;padding-top:14px;">' +
+    trackHtml +
+    '<div style="font-size:12px;font-weight:600;color:#1a1a2e;margin-bottom:2px;">Per passare da step ' + stepCurrent + ' a step ' + stepNext + '</div>' +
+    '<div style="font-size:11px;color:rgba(26,26,46,0.45);margin-bottom:12px;">' + moduli.length + ' moduli</div>' +
+    moduliHtml +
+    '<div style="display:flex;gap:8px;margin-top:16px;">' +
+      metricBox('Impatto/mese', '+€' + impattoMensile.toLocaleString('it-IT')) +
+      metricBox('Costo/mese', costoFmt) +
+      metricBox('Tempo', tempoFmt) +
+      metricBox('ROI annuo', roi) +
+    '</div>' +
+  '</div>';
+}
+
+async function toggleModuloCompletatoPMI(key) {
+  var p = window._pmiProspect;
+  if (!p) return;
+  var done      = Object.assign({}, p.azioni_completate || {});
+  done[key]     = !done[key];
+  var completed = done[key];
+  p.azioni_completate = done;
+  // Salva su Supabase (fire and forget)
+  var sbClient = window.supabase || window.sb;
+  if (sbClient && p.id) {
+    sbClient.from('prospects').update({ azioni_completate: done }).eq('id', p.id);
+  }
+  // Aggiorna badge nella UI senza ri-renderizzare
+  var row = document.getElementById('pmi-mod-row-' + key);
+  if (row) {
+    var badge = row.querySelector('.pmi-mod-badge');
+    if (badge) {
+      badge.textContent  = completed ? 'Completato' : 'Da fare';
+      badge.style.color  = completed ? 'rgba(0,130,95,0.85)' : 'rgba(26,26,46,0.4)';
+      badge.style.background = completed ? 'rgba(0,130,95,0.08)' : 'rgba(0,0,0,0.05)';
+    }
+  }
 }
 
 // ── FASE 8 — Trend ────────────────────────────────────────────────────────────
