@@ -9886,77 +9886,188 @@ function renderPMITrend(container) {
   var p = window._pmiProspect;
   if (!p) { renderPMIHome(container); return; }
 
-  var history = (p.score_history || []).slice();
-
-  // Aggiungi score attuale come punto finale se non già presente
   var scoreNow = calcScore(p);
-  var oggi = new Date().toISOString();
-  if (!history.length || history[history.length - 1].score_base !== scoreNow) {
-    history.push({ data: oggi, score: scoreNow, score_base: scoreNow, evento: 'Diagnosi' });
+  var oggi     = new Date();
+
+  // Costruisci punti da score_history + score attuale
+  var rawHistory = (p.score_history || []).slice();
+  var points = rawHistory.map(function(h) {
+    return { data: h.data, score: h.score || h.score_base || 0 };
+  });
+
+  // Aggiungi score attuale se diverso dall'ultimo
+  var lastSc = points.length ? points[points.length - 1].score : null;
+  if (lastSc !== scoreNow) {
+    points.push({ data: oggi.toISOString(), score: scoreNow });
   }
 
-  if (history.length < 2) {
+  // Deduplicazione per giorno (tieni il primo di ogni giorno)
+  var seenDays = {};
+  points = points.filter(function(pt) {
+    var day = (pt.data || '').slice(0, 10);
+    if (seenDays[day]) return false;
+    seenDays[day] = true;
+    return true;
+  });
+
+  // Ordine cronologico
+  points.sort(function(a, b) { return a.data < b.data ? -1 : 1; });
+
+  // Conteggio azioni completate (CSO dict + PMI array)
+  var azioniDict  = p.azioni_completate || {};
+  var azioniCount = Object.keys(azioniDict).filter(function(k) { return azioniDict[k]; }).length;
+  var pmiCount    = (p.pmi_azioni || []).length;
+  var totalAzioni = azioniCount + pmiCount;
+
+  // Calcola giorni da prima diagnosi → giorni rimanenti alla ri-diagnosi
+  var dataInizio       = points.length ? new Date(points[0].data) : oggi;
+  var giorniDaDiagnosi = Math.floor((oggi - dataInizio) / (1000 * 60 * 60 * 24));
+  var giorniRimanenti  = Math.max(0, 90 - giorniDaDiagnosi);
+
+  // ── CASO: nessun dato ──────────────────────────────────────────────────────
+  if (!points.length) {
     container.innerHTML =
       '<div style="max-width:580px;margin:0 auto;padding:40px 28px">' +
-        '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:4px">Trend</h1>' +
-        '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:16px;padding:36px 28px;text-align:center;margin-top:24px">' +
-          '<div style="font-size:32px;margin-bottom:12px">📈</div>' +
-          '<div style="font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:6px">Dati insufficienti</div>' +
-          '<div style="font-size:13px;color:rgba(26,26,46,0.45);line-height:1.6">Il trend si sblocca dopo la seconda diagnosi.<br>Torna tra qualche settimana per vedere l\'evoluzione del tuo score.</div>' +
+        '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:4px">Il tuo andamento</h1>' +
+        '<p style="font-size:13px;color:rgba(26,26,46,0.45);margin-bottom:28px">L\'evoluzione del tuo score nel tempo.</p>' +
+        '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:16px;padding:36px 28px;text-align:center">' +
+          '<div style="font-size:32px;margin-bottom:12px">📊</div>' +
+          '<div style="font-size:14px;font-weight:600;color:#1a1a2e;margin-bottom:6px">Nessun dato disponibile</div>' +
+          '<div style="font-size:13px;color:rgba(26,26,46,0.45);line-height:1.6">Completa la diagnosi per iniziare a tracciare i tuoi progressi.</div>' +
         '</div>' +
       '</div>';
     return;
   }
 
-  // Trova min/max score per normalizzare le barre
-  var scores = history.map(function(h) { return h.score || h.score_base || 0; });
-  var maxScore = Math.max.apply(null, scores) || 100;
-  var minScore = Math.min.apply(null, scores);
-  var range = maxScore - minScore || 1;
+  var isSinglePoint = points.length === 1;
+  var scores  = points.map(function(pt) { return pt.score; });
+  var labels  = points.map(function(pt) {
+    var d = new Date(pt.data);
+    return d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear();
+  });
 
-  var barsHtml = history.map(function(h, i) {
-    var sc = h.score || h.score_base || 0;
-    var col = scoreColor(sc);
-    var pct = Math.max(8, Math.round(((sc - minScore) / range) * 60 + 40));
-    var data = new Date(h.data);
-    var dataStr = data.getDate() + '/' + (data.getMonth() + 1) + '/' + data.getFullYear();
-    var isLast = i === history.length - 1;
-    return '<div style="display:flex;align-items:center;gap:14px;padding:10px 0;border-bottom:' + (isLast ? 'none' : '1px solid rgba(0,0,0,0.04)') + '">' +
-      '<div style="width:70px;font-size:11px;color:rgba(26,26,46,0.45);flex-shrink:0">' + dataStr + '</div>' +
-      '<div style="flex:1;height:8px;background:rgba(0,0,0,0.06);border-radius:4px">' +
-        '<div style="width:' + pct + '%;height:100%;background:' + col.text + ';border-radius:4px;transition:width .5s"></div>' +
-      '</div>' +
-      '<div style="width:36px;font-size:13px;font-weight:700;color:' + col.text + ';text-align:right;flex-shrink:0">' + sc + '</div>' +
-    '</div>';
-  }).join('');
+  // ── CARD PROGRESSI ─────────────────────────────────────────────────────────
+  var progressiHtml;
+  if (!isSinglePoint) {
+    var scoreOld  = scores[0];
+    var scoreNew  = scores[scores.length - 1];
+    var delta     = scoreNew - scoreOld;
+    var deltaStr  = (delta >= 0 ? '+' : '') + delta;
+    var deltaCol  = delta > 0 ? 'rgba(0,130,95,0.85)' : delta < 0 ? '#E53935' : 'rgba(26,26,46,0.45)';
+    var mesiRaw   = (oggi - dataInizio) / (1000 * 60 * 60 * 24 * 30);
+    var mesiStr   = mesiRaw < 1 ? 'Meno di 1 mese' : Math.round(mesiRaw) + (Math.round(mesiRaw) === 1 ? ' mese' : ' mesi');
+    progressiHtml =
+      '<div style="font-size:13px;color:rgba(26,26,46,0.7);line-height:1.7">' +
+        mesiStr + ' fa eri a <strong>' + scoreOld + '/100</strong>. ' +
+        'Oggi sei a <strong>' + scoreNew + '/100</strong>. ' +
+        '<strong style="color:' + deltaCol + '">' + deltaStr + ' punti</strong> ' +
+        'grazie a <strong>' + totalAzioni + '</strong> ' + (totalAzioni === 1 ? 'azione completata.' : 'azioni completate.') +
+      '</div>';
+  } else {
+    progressiHtml =
+      '<div style="font-size:13px;color:rgba(26,26,46,0.7);line-height:1.7">' +
+        'Il tuo score attuale è <strong>' + scoreNow + '/100</strong>. ' +
+        'Tra <strong>' + giorniRimanenti + '</strong> ' + (giorniRimanenti === 1 ? 'giorno' : 'giorni') +
+        ' potrai vedere i tuoi progressi con la ri-diagnosi.' +
+      '</div>';
+  }
 
-  var delta = scores[scores.length - 1] - scores[0];
-  var deltaStr = (delta > 0 ? '+' : '') + delta + ' punti';
-  var deltaCol = delta > 0 ? 'rgba(0,130,95,0.85)' : delta < 0 ? '#E53935' : 'rgba(26,26,46,0.45)';
+  // ── MESSAGGIO SOTTO GRAFICO (solo per punto singolo) ──────────────────────
+  var singleMsgHtml = isSinglePoint
+    ? '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px">' +
+        '<div style="font-size:22px;flex-shrink:0">📅</div>' +
+        '<div style="font-size:13px;color:rgba(26,26,46,0.65);line-height:1.6">' +
+          'Completa la ri-diagnosi tra <strong>' + giorniRimanenti + '</strong> ' +
+          (giorniRimanenti === 1 ? 'giorno' : 'giorni') + ' per vedere il tuo trend.' +
+        '</div>' +
+      '</div>'
+    : '';
+
+  var canvasId = 'pmi-trend-chart';
 
   container.innerHTML =
     '<div style="max-width:580px;margin:0 auto;padding:40px 28px">' +
-      '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:4px">Trend score</h1>' +
-      '<p style="font-size:13px;color:rgba(26,26,46,0.45);margin-bottom:28px">Evoluzione del tuo score commerciale nel tempo.</p>' +
+      '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:4px">Il tuo andamento</h1>' +
+      '<p style="font-size:13px;color:rgba(26,26,46,0.45);margin-bottom:24px">L\'evoluzione del tuo score nel tempo.</p>' +
 
-      // Delta card
-      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:16px">' +
-        '<div style="flex:1">' +
-          '<div style="font-size:10px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:4px">Variazione totale</div>' +
-          '<div style="font-size:22px;font-weight:700;color:' + deltaCol + '">' + deltaStr + '</div>' +
-        '</div>' +
-        '<div style="text-align:right">' +
-          '<div style="font-size:10px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:4px">Score attuale</div>' +
-          '<div style="font-size:22px;font-weight:700;color:' + scoreColor(scores[scores.length-1]).text + '">' + scores[scores.length-1] + '</div>' +
+      // Grafico
+      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:16px;padding:20px 20px 16px;margin-bottom:16px">' +
+        '<div style="position:relative;height:200px">' +
+          '<canvas id="' + canvasId + '"></canvas>' +
         '</div>' +
       '</div>' +
 
-      // Barre storia
-      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:16px 20px">' +
-        '<div style="font-size:10px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:12px">Storico diagnosi</div>' +
-        barsHtml +
+      singleMsgHtml +
+
+      // Card progressi
+      '<div style="background:rgba(255,255,255,0.55);border:1.5px solid rgba(0,130,95,0.15);border-radius:14px;padding:14px 16px">' +
+        progressiHtml +
       '</div>' +
     '</div>';
+
+  // Inizializza Chart.js dopo inserimento DOM
+  setTimeout(function() {
+    var ctx = document.getElementById(canvasId);
+    if (!ctx || typeof Chart === 'undefined') return;
+
+    // Distruggi istanza precedente se esiste
+    var existing = Chart.getChart(canvasId);
+    if (existing) existing.destroy();
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: scores,
+          borderColor: '#3D5AFE',
+          borderWidth: 2,
+          backgroundColor: 'rgba(61,90,254,0.08)',
+          fill: true,
+          tension: 0.35,
+          pointRadius: 5,
+          pointBackgroundColor: '#ffffff',
+          pointBorderColor: '#3D5AFE',
+          pointBorderWidth: 2,
+          pointHoverRadius: 7,
+          pointHoverBackgroundColor: '#3D5AFE',
+          pointHoverBorderColor: '#ffffff',
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: 'rgba(255,255,255,0.9)',
+            borderColor: 'rgba(0,0,0,0.08)',
+            borderWidth: 1,
+            titleColor: '#1a1a2e',
+            bodyColor: 'rgba(26,26,46,0.55)',
+            padding: 10,
+            callbacks: {
+              label: function(ctx) { return ' Score: ' + ctx.raw + '/100'; }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: { color: 'rgba(0,0,0,0.06)', lineWidth: 0.5 },
+            border: { display: false },
+            ticks: { color: 'rgba(26,26,46,0.45)', font: { size: 11 } }
+          },
+          y: {
+            min: 0,
+            max: 100,
+            grid: { color: 'rgba(0,0,0,0.06)', lineWidth: 0.5 },
+            border: { display: false },
+            ticks: { color: 'rgba(26,26,46,0.45)', font: { size: 11 }, stepSize: 25 }
+          }
+        }
+      }
+    });
+  }, 50);
 }
 
 // ── FASE 9 — Profilo ──────────────────────────────────────────────────────────
