@@ -9755,20 +9755,23 @@ function _buildModuliPanelContent(dimId) {
         { id:'strumenti', nome:'Implementazione strumenti',    tipo:'flag', note:'Scegliere e configurare gli strumenti minimi necessari per supportare il processo.' },
       ];
 
-  var azDone    = p.azioni_completate || {};
+  var pmiAzioni = p.pmi_azioni || [];
   var tempoMesi = nextDetail ? (nextDetail.tempo_mesi || 1) : 1;
   var totalCostoMensile = 0;
+  var dimLblMap = {vendite:'Vendite',pipeline:'Pipeline & CRM',team:'Organizzazione',processi:'Processi',ricavi:'Ricavi',marketing:'Marketing',sitoweb:'Sito Web',ecommerce:'Post-vendita'};
+  var dimLabel  = dimLblMap[dimId] || dimId;
 
   var moduliHtml = moduli.map(function(m) {
     var key    = 'pmi_' + dimId + '_' + stepNext + '_' + m.id;
-    var isDone = !!azDone[key];
+    var isDone = pmiAzioni.some(function(a) { return a._key === key; });
     var desc   = m.note || (m.varianti && m.varianti.length ? m.varianti[0].note : '') || '';
     var mc     = m.costo_mensile || (m.varianti && m.varianti.length
       ? Math.min.apply(null, m.varianti.map(function(vv){ return vv.costo_mensile || 0; }))
       : 0);
     totalCostoMensile += mc;
+    var nomeEsc = m.nome.replace(/'/g, "\\'");
     return '<div id="pmi-mod-row-' + key + '" style="display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.05);">' +
-      '<input type="checkbox" id="pmi-chk-' + key + '"' + (isDone?' checked':'') + ' onchange="toggleModuloCompletatoPMI(\'' + key + '\')" style="margin-top:3px;cursor:pointer;accent-color:#3D5AFE;width:14px;height:14px;flex-shrink:0;">' +
+      '<input type="checkbox" id="pmi-chk-' + key + '"' + (isDone?' checked':'') + ' onchange="toggleModuloCompletatoPMI(\'' + key + '\',\'' + dimId + '\',' + stepNext + ',\'' + nomeEsc + '\',\'' + dimLabel + '\',' + moduli.length + ')" style="margin-top:3px;cursor:pointer;accent-color:#3D5AFE;width:14px;height:14px;flex-shrink:0;">' +
       '<div style="flex:1;min-width:0;">' +
         '<div style="font-size:12px;font-weight:500;color:#1a1a2e;line-height:1.4;">' + m.nome + '</div>' +
         (desc ? '<div style="font-size:11px;color:rgba(26,26,46,0.55);margin-top:2px;line-height:1.4;">' + desc + '</div>' : '') +
@@ -9792,10 +9795,12 @@ function _buildModuliPanelContent(dimId) {
     '</div>';
   }
 
+  var doneCnt = pmiAzioni.filter(function(a) { return a._key && a._key.startsWith('pmi_' + dimId + '_' + stepNext + '_'); }).length;
+
   return '<div style="border-top:1px solid rgba(0,0,0,0.06);margin-top:14px;padding-top:14px;">' +
     trackHtml +
     '<div style="font-size:12px;font-weight:600;color:#1a1a2e;margin-bottom:2px;">Per passare da step ' + stepCurrent + ' a step ' + stepNext + '</div>' +
-    '<div style="font-size:11px;color:rgba(26,26,46,0.45);margin-bottom:12px;">' + moduli.length + ' moduli</div>' +
+    '<div id="pmi-mod-count-' + dimId + '" style="font-size:11px;color:rgba(26,26,46,0.45);margin-bottom:12px;">' + doneCnt + '/' + moduli.length + ' moduli completati</div>' +
     moduliHtml +
     '<div style="display:flex;gap:8px;margin-top:16px;">' +
       metricBox('Impatto/mese', '+€' + impattoMensile.toLocaleString('it-IT')) +
@@ -9806,27 +9811,47 @@ function _buildModuliPanelContent(dimId) {
   '</div>';
 }
 
-async function toggleModuloCompletatoPMI(key) {
+async function toggleModuloCompletatoPMI(key, dimId, stepNum, moduloNome, dimLabel, totalModuli) {
   var p = window._pmiProspect;
   if (!p) return;
-  var done      = Object.assign({}, p.azioni_completate || {});
-  done[key]     = !done[key];
-  var completed = done[key];
-  p.azioni_completate = done;
+
+  var lista     = (p.pmi_azioni || []).slice();
+  var idx       = lista.findIndex(function(a) { return a._key === key; });
+  var completed = idx === -1; // se non c'è → lo stiamo completando
+
+  if (completed) {
+    lista.push({ _key: key, dimensione: dimLabel, step: stepNum, modulo: moduloNome, completato_il: new Date().toISOString() });
+  } else {
+    lista.splice(idx, 1);
+  }
+  p.pmi_azioni = lista;
+
   // Salva su Supabase (fire and forget)
   var sbClient = window.supabase || window.sb;
   if (sbClient && p.id) {
-    sbClient.from('prospects').update({ azioni_completate: done }).eq('id', p.id);
+    sbClient.from('prospects').update({ pmi_azioni: lista }).eq('id', p.id);
   }
-  // Aggiorna badge nella UI senza ri-renderizzare
+
+  // Aggiorna badge
   var row = document.getElementById('pmi-mod-row-' + key);
   if (row) {
     var badge = row.querySelector('.pmi-mod-badge');
     if (badge) {
-      badge.textContent  = completed ? 'Completato' : 'Da fare';
-      badge.style.color  = completed ? 'rgba(0,130,95,0.85)' : 'rgba(26,26,46,0.4)';
+      badge.textContent      = completed ? 'Completato' : 'Da fare';
+      badge.style.color      = completed ? 'rgba(0,130,95,0.85)' : 'rgba(26,26,46,0.4)';
       badge.style.background = completed ? 'rgba(0,130,95,0.08)' : 'rgba(0,0,0,0.05)';
     }
+  }
+
+  // Aggiorna contatore
+  var prefix   = 'pmi_' + dimId + '_' + stepNum + '_';
+  var doneCnt  = lista.filter(function(a) { return a._key && a._key.startsWith(prefix); }).length;
+  var counter  = document.getElementById('pmi-mod-count-' + dimId);
+  if (counter) counter.textContent = doneCnt + '/' + totalModuli + ' moduli completati';
+
+  // Toast se tutti completati
+  if (completed && doneCnt >= totalModuli) {
+    showToast('Complimenti! Hai completato lo step ' + stepNum + ' per ' + dimLabel + '. Alla prossima ri-diagnosi vedremo l\'impatto.');
   }
 }
 
