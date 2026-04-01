@@ -3,7 +3,7 @@
 
 const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 const MODEL             = 'claude-sonnet-4-20250514';
-const MAX_TOKENS        = 4000;
+const MAX_TOKENS        = 6000;
 
 // ── Prompt builder ────────────────────────────────────────────────────────────
 
@@ -152,15 +152,15 @@ export default async function handler(req, res) {
   const result = await anthropicRes.json();
   const text   = result?.content?.[0]?.text || '';
 
-  // Per genera_settore: verifica che sia JSON valido prima di rispondere
+  // Per genera_settore: estrai il blocco JSON dalla risposta (gestisce markdown wrapper)
   if (type === 'genera_settore') {
     try {
-      // Rimuovi eventuali code block markdown (```json ... ```)
-      const clean = text.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/i, '').trim();
-      const parsed = JSON.parse(clean);
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error('Nessun oggetto JSON trovato');
+      const parsed = JSON.parse(jsonMatch[0]);
       return res.status(200).json({ ok: true, data: parsed });
     } catch {
-      console.error('[ai.js] Risposta non JSON:', text.slice(0, 200));
+      console.error('[ai.js] Risposta non JSON:', text.slice(0, 300));
       return res.status(502).json({ error: 'Risposta AI non valida', raw: text.slice(0, 500) });
     }
   }
