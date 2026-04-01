@@ -9723,16 +9723,24 @@ function _buildModuliPanelContent(dimId) {
   var settore   = p.settore || '';
   var fatturato = p.fatturato || 1000000;
 
-  // Calcolo steps
-  var stepReached = Math.min(Math.floor(v), 4);
-  var stepCurrent = Math.min(stepReached + 1, 5);
+  // Calcolo steps: score = step raggiunto
+  var stepCurrent = Math.min(Math.max(Math.floor(v), 1), 5);
   var stepNext    = Math.min(stepCurrent + 1, 5);
   var stepTarget  = Math.min(stepCurrent + 2, 5);
+
+  // Score 5 = eccellenza raggiunta
+  if (stepCurrent >= 5) {
+    return '<div style="border-top:1px solid rgba(0,0,0,0.06);margin-top:14px;padding-top:14px;text-align:center;padding-bottom:8px;">' +
+      '<div style="font-size:22px;margin-bottom:8px;">🏆</div>' +
+      '<div style="font-size:13px;font-weight:700;color:rgba(0,130,95,0.85);">Eccellenza raggiunta</div>' +
+      '<div style="font-size:11px;color:rgba(26,26,46,0.45);margin-top:4px;">Questa dimensione è al massimo livello.</div>' +
+    '</div>';
+  }
 
   // ─── Track step HTML ────────────────────────────────────────────────────────
   var sLbl = ['','Base','Struttura','Metodo','Eccellenza','Top'];
   function dotState(n) {
-    if (n <= stepReached) return 'done';
+    if (n < stepCurrent) return 'done';
     if (n === stepCurrent) return 'current';
     if (n === stepTarget)  return 'target';
     return 'future';
@@ -9751,7 +9759,7 @@ function _buildModuliPanelContent(dimId) {
   function connHtml(n) {
     return '<div style="flex:1;display:flex;align-items:center;padding-bottom:14px;">' +
       '<div style="height:2px;width:100%;background:rgba(0,0,0,0.06);">' +
-        (n <= stepReached ? '<div style="height:2px;width:100%;background:rgba(0,130,95,0.4);border-radius:1px;"></div>' : '') +
+        (n < stepCurrent ? '<div style="height:2px;width:100%;background:rgba(0,130,95,0.4);border-radius:1px;"></div>' : '') +
       '</div></div>';
   }
   var trackHtml =
