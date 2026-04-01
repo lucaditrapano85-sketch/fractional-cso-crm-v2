@@ -61,6 +61,21 @@ Le descrizioni degli step devono essere specifiche per il settore, in italiano, 
       };
     }
 
+    case 'suggerisci_settori': {
+      const input = (data.input || '').trim();
+      if (!input) throw new Error('Campo "input" obbligatorio per suggerisci_settori');
+
+      return {
+        system: 'Sei un esperto di classificazione settoriale PMI italiane. L\'utente descrive la sua attività. Suggerisci 3-4 micro-settori specifici e distinti. Rispondi SOLO in JSON valido.',
+        user: `L'utente ha scritto: "${input}". Genera un JSON array con 3-4 opzioni:
+[
+  { "codice": "commercio_pesca_sportiva", "nome": "Negozio pesca sportiva", "descrizione": "Vendita esche, canne, mulinelli, abbigliamento tecnico" },
+  ...
+]
+Ogni opzione deve essere un settore SPECIFICO e DISTINTO dagli altri. Non accorpare settori diversi. Ogni codice deve seguire il formato macro_micro (es. commercio_pesca_sportiva, alimentare_acquacoltura).`,
+      };
+    }
+
     // Placeholder per i tipi futuri
     case 'prescrizione':
     case 'interpretazione':
@@ -111,6 +126,9 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: err.message });
   }
 
+  // max_tokens per-type
+  const maxTokens = type === 'suggerisci_settori' ? 500 : MAX_TOKENS;
+
   // Chiama Anthropic
   let anthropicRes;
   try {
@@ -123,7 +141,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model:       MODEL,
-        max_tokens:  MAX_TOKENS,
+        max_tokens:  maxTokens,
         temperature: 0,
         system:      messages.system,
         messages:    [{ role: 'user', content: messages.user }],
@@ -162,6 +180,19 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: true, data: parsed });
     } catch {
       console.error('[ai.js] Risposta non JSON:', text.slice(0, 300));
+      return res.status(502).json({ error: 'Risposta AI non valida', raw: text.slice(0, 500) });
+    }
+  }
+
+  // Per suggerisci_settori: estrai array JSON
+  if (type === 'suggerisci_settori') {
+    try {
+      const jsonMatch = text.match(/\[[\s\S]*\]/);
+      if (!jsonMatch) throw new Error('Nessun array JSON trovato');
+      const parsed = JSON.parse(jsonMatch[0]);
+      return res.status(200).json({ ok: true, data: parsed });
+    } catch {
+      console.error('[ai.js] suggerisci_settori non JSON:', text.slice(0, 300));
       return res.status(502).json({ error: 'Risposta AI non valida', raw: text.slice(0, 500) });
     }
   }

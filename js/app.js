@@ -9086,16 +9086,18 @@ function _renderSelezioneSetting(container) {
         '<div style="flex:1;height:1px;background:rgba(0,0,0,0.08)"></div>' +
       '</div>' +
 
-      // Sezione AI
+      // Sezione AI — step 1: Cerca, step 2: scegli opzione, step 3: Genera
       '<div style="margin-bottom:28px">' +
         '<div style="font-size:11px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:12px">Non trovi il tuo settore?</div>' +
         '<div style="display:flex;gap:8px;align-items:center">' +
           '<div style="flex:1;position:relative">' +
             '<svg style="position:absolute;left:12px;top:50%;transform:translateY(-50%);pointer-events:none" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="rgba(26,26,46,0.35)" stroke-width="1.3"/><line x1="9.5" y1="9.5" x2="12.5" y2="12.5" stroke="rgba(26,26,46,0.35)" stroke-width="1.3" stroke-linecap="round"/></svg>' +
-            '<input id="pmi-ai-input" oninput="document.getElementById(\'pmi-ai-btn\').disabled=!this.value.trim()" style="width:100%;box-sizing:border-box;padding:12px 12px 12px 32px;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.08);border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;color:#1a1a2e;outline:none;" placeholder="Descrivi il tuo settore (es. negozio pesca sportiva, autolavaggio, vivaista...)">' +
+            '<input id="pmi-ai-input" oninput="pmiAiOnInput()" style="width:100%;box-sizing:border-box;padding:12px 12px 12px 32px;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.08);border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;color:#1a1a2e;outline:none;" placeholder="Descrivi il tuo settore (es. negozio pesca sportiva, autolavaggio, vivaista...)">' +
           '</div>' +
-          '<button id="pmi-ai-btn" onclick="pmiGeneraSettoreAI()" disabled style="padding:12px 18px;background:#3D5AFE;color:#fff;border:none;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;opacity:0.5" onmouseover="if(!this.disabled)this.style.opacity=\'0.88\'" onmouseout="if(!this.disabled)this.style.opacity=\'1\'">Genera con AI</button>' +
+          '<button id="pmi-ai-btn" onclick="pmiSuggerisciSettori()" disabled style="padding:12px 18px;background:#3D5AFE;color:#fff;border:none;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;opacity:0.5">Cerca</button>' +
         '</div>' +
+        // Dropdown opzioni (nascosto finché non arrivano le suggestions)
+        '<div id="pmi-ai-opzioni" style="display:none;margin-top:8px;background:rgba(255,255,255,0.85);border:1px solid rgba(0,0,0,0.08);border-radius:10px;overflow:hidden"></div>' +
         '<div id="pmi-ai-msg" style="font-size:12px;min-height:18px;margin-top:8px;line-height:1.5"></div>' +
       '</div>' +
 
@@ -9189,22 +9191,84 @@ async function _caricaSettoreCustom(settoreId) {
   return null;
 }
 
-// Genera settore con AI e salva in settori_custom
-async function pmiGeneraSettoreAI() {
-  var input = (document.getElementById('pmi-ai-input') || {}).value || '';
-  input = input.trim();
+function pmiAiOnInput() {
+  var val = (document.getElementById('pmi-ai-input') || {}).value || '';
+  var btn = document.getElementById('pmi-ai-btn');
+  if (btn) { btn.disabled = !val.trim(); btn.style.opacity = val.trim() ? '1' : '0.5'; }
+  // Nascondi opzioni se l'utente modifica il testo dopo averle viste
+  var opzioni = document.getElementById('pmi-ai-opzioni');
+  if (opzioni) opzioni.style.display = 'none';
+}
+
+// Step 1: suggerisci 3-4 opzioni veloci
+async function pmiSuggerisciSettori() {
+  var input = ((document.getElementById('pmi-ai-input') || {}).value || '').trim();
   if (!input) return;
 
-  var btn = document.getElementById('pmi-ai-btn');
-  var msg = document.getElementById('pmi-ai-msg');
+  var btn    = document.getElementById('pmi-ai-btn');
+  var msg    = document.getElementById('pmi-ai-msg');
+  var opzioni = document.getElementById('pmi-ai-opzioni');
+
   if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; btn.textContent = '...'; }
-  if (msg) msg.innerHTML = '<span style="color:rgba(26,26,46,0.55)">⏳ Leva sta analizzando il tuo settore...</span>';
+  if (msg) msg.innerHTML = '<span style="color:rgba(26,26,46,0.45)">⏳ Ricerca in corso...</span>';
+  if (opzioni) opzioni.style.display = 'none';
 
   try {
-    var res = await fetch('/api/ai', {
+    var res  = await fetch('/api/ai', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: 'genera_settore', data: { input: input } })
+      body: JSON.stringify({ type: 'suggerisci_settori', data: { input: input } })
+    });
+    var json = await res.json();
+    if (!json.ok || !Array.isArray(json.data)) throw new Error(json.error || 'Risposta non valida');
+
+    var suggerimenti = json.data;
+    if (msg) msg.innerHTML = '';
+
+    // Mostra dropdown opzioni
+    opzioni.innerHTML = suggerimenti.map(function(s, i) {
+      var nome = _esc(s.nome || s.nome_display || s.codice);
+      var desc = _esc(s.descrizione || '');
+      return '<div onclick="pmiSelezionaESuggerisci(' + i + ')" style="padding:12px 14px;cursor:pointer;border-bottom:1px solid rgba(0,0,0,0.05);transition:background .12s" onmouseover="this.style.background=\'rgba(61,90,254,0.05)\'" onmouseout="this.style.background=\'\'">' +
+        '<div style="font-size:13px;font-weight:600;color:#1a1a2e">' + nome + '</div>' +
+        (desc ? '<div style="font-size:11px;color:rgba(26,26,46,0.5);margin-top:2px">' + desc + '</div>' : '') +
+      '</div>';
+    }).join('');
+    opzioni.style.display = 'block';
+
+    // Salva in window per step 2
+    window._pmiAiSuggerimenti = suggerimenti;
+
+  } catch(e) {
+    console.error('pmiSuggerisciSettori:', e);
+    if (msg) msg.innerHTML = '<span style="color:#E53935">Errore. Riprova o scegli un settore dalla lista.</span>';
+  }
+
+  if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.textContent = 'Cerca'; }
+}
+
+// Step 2: utente clicca un'opzione → genera struttura completa
+async function pmiSelezionaESuggerisci(idx) {
+  var suggerimenti = window._pmiAiSuggerimenti || [];
+  var scelta = suggerimenti[idx];
+  if (!scelta) return;
+
+  var opzioni = document.getElementById('pmi-ai-opzioni');
+  var msg     = document.getElementById('pmi-ai-msg');
+  var btn     = document.getElementById('pmi-ai-btn');
+
+  if (opzioni) opzioni.style.display = 'none';
+  if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; }
+
+  var nomeScelta = scelta.nome || scelta.nome_display || scelta.codice;
+  if (msg) msg.innerHTML = '<span style="color:rgba(26,26,46,0.55)">⏳ Leva sta generando la struttura per <strong>' + _esc(nomeScelta) + '</strong>... (15-25 sec)</span>';
+
+  try {
+    var inputGenerazione = scelta.codice + ' — ' + nomeScelta;
+    var res  = await fetch('/api/ai', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: 'genera_settore', data: { input: inputGenerazione } })
     });
     var json = await res.json();
     if (!json.ok || !json.data) throw new Error(json.error || 'Risposta non valida');
@@ -9237,15 +9301,15 @@ async function pmiGeneraSettoreAI() {
     });
 
     if (msg) msg.innerHTML =
-      '<span style="color:rgba(0,130,95,0.85);font-weight:600">✓ Settore "' + sd.nome_display + '" creato!</span>' +
+      '<span style="color:rgba(0,130,95,0.85);font-weight:600">✓ Settore "' + _esc(sd.nome_display) + '" creato!</span>' +
       '<span style="color:rgba(26,26,46,0.55)"> Scegli il fatturato e clicca "Inizia la diagnosi".</span>';
 
   } catch(e) {
-    console.error('pmiGeneraSettoreAI:', e);
-    if (msg) msg.innerHTML = '<span style="color:#E53935">Errore nella generazione. Seleziona un settore dalla lista sopra.</span>';
+    console.error('pmiSelezionaESuggerisci:', e);
+    if (msg) msg.innerHTML = '<span style="color:#E53935">Errore nella generazione. Riprova o scegli un settore dalla lista.</span>';
   }
 
-  if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.textContent = 'Genera con AI'; }
+  if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
 }
 
 async function pmiAvviaDiagnosi() {
