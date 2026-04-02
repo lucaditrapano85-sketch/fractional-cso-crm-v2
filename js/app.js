@@ -10607,8 +10607,12 @@ function renderPMIPiano(container) {
       '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;align-items:start;">' +
         cardsHtml +
       '</div>' +
-      '<div style="text-align:center;margin-top:20px">' +
-        '<a href="#" onclick="prenotaCallSingola();return false;" style="font-size:13px;color:#3D5AFE;text-decoration:underline;cursor:pointer;">Oppure prenota una call singola — €120</a>' +
+      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(0,0,0,0.08);border-radius:14px;padding:16px 20px;margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;">' +
+        '<div>' +
+          '<div style="font-size:15px;font-weight:700;color:#1a1a2e;margin-bottom:4px;">Non sei ancora sicuro?</div>' +
+          '<div style="font-size:13px;color:rgba(26,26,46,0.45);">Parla con un esperto. 45 minuti, zero impegno, zero sorprese.</div>' +
+        '</div>' +
+        '<button onclick="prenotaCallSingola()" style="flex-shrink:0;padding:10px 24px;background:#3D5AFE;color:white;border:none;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;">Prenota una call — €120</button>' +
       '</div>' +
     '</div>';
 }
