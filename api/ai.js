@@ -87,9 +87,17 @@ Rispondi SOLO in JSON valido, nessun testo aggiuntivo.`,
     "Marketing": 2.4,
     "Sito Web": 2.3,
     "Post-vendita": 2.5
-  }
+  },
+  "tips": [
+    {"tipo": "lo_sapevi", "testo": "dato statistico specifico per questo settore"},
+    {"tipo": "azione_rapida", "testo": "consiglio operativo immediato specifico per questo settore"},
+    {"tipo": "lo_sapevi", "testo": "dato statistico specifico per questo settore"},
+    {"tipo": "azione_rapida", "testo": "consiglio operativo immediato specifico per questo settore"},
+    {"tipo": "lo_sapevi", "testo": "dato statistico specifico per questo settore"},
+    {"tipo": "azione_rapida", "testo": "consiglio operativo immediato specifico per questo settore"}
+  ]
 }
-Le descrizioni degli step devono essere specifiche per il settore, in italiano, con azioni concrete, costi indicativi e tempi. I moduli devono contenere 2-3 azioni operative per ogni transizione di step.`,
+Le descrizioni degli step devono essere specifiche per il settore, in italiano, con azioni concrete, costi indicativi e tempi. I moduli devono contenere 2-3 azioni operative per ogni transizione di step. I tips devono essere 6 totali (3 lo_sapevi con dati statistici reali specifici per il settore, 3 azione_rapida con consigli operativi immediati specifici per il settore), in italiano, mai generici.`,
       };
     }
 
