@@ -160,6 +160,11 @@ function apriDiagnosi() {
 function chiudiDiagnosi() {
   document.getElementById('diagnosi-overlay').classList.remove('open');
   document.body.style.overflow = '';
+  // In PMI: dopo diagnosi completata → home con sidebar
+  if (window._pmiDiagnosiMode && _diagCompletata && typeof showViewPMI === 'function') {
+    showViewPMI('home');
+    return;
+  }
   if (!_diagProspect) return;
   var pid = _diagProspect.id;
   // Ricalcola dims solo se non già fatto da salvaDiagnosiScore

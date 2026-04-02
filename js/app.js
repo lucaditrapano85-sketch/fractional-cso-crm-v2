@@ -9031,23 +9031,43 @@ var _pmiSelectedSettore = null;
 var _pmiSelectedFascia  = null;
 
 function renderPrimoAccesso() {
-  // Sidebar minimale (niente nav — non ancora operativo)
+  // Sidebar nascosta durante onboarding — riappare dopo la diagnosi
   var sidebar = document.getElementById('pmi-sidebar');
-  if (sidebar) {
-    sidebar.innerHTML =
-      '<div style="padding:20px 16px;border-bottom:1px solid rgba(255,255,255,0.08)">' +
-        '<div style="display:inline-flex;align-items:flex-start;gap:2px">' +
-          '<svg width="36" height="36" viewBox="8 4 44 44" fill="none"><rect x="8" y="34" width="44" height="4.5" rx="2.25" fill="#3D5AFE"/><rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="white"/><circle cx="29.75" cy="36.25" r="6" fill="white"/><line x1="29.75" y1="36.25" x2="47" y2="22" stroke="#FF6B2B" stroke-width="3.5" stroke-linecap="round"/><circle cx="47" cy="22" r="3.5" fill="#FF6B2B"/></svg>' +
-          '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:30px;font-weight:500;color:white;line-height:1;letter-spacing:-1px">eva</span>' +
-        '</div>' +
-        '<div style="margin-top:20px;font-size:11px;color:rgba(255,255,255,0.35);line-height:1.7">' +
-          '<div style="margin-bottom:8px;color:rgba(255,255,255,0.6);font-weight:600">Passo 1 di 2</div>' +
-          'Seleziona settore e fatturato, poi completa la diagnosi per sbloccare la tua dashboard.' +
-        '</div>' +
-      '</div>';
-  }
+  if (sidebar) sidebar.style.display = 'none';
+  var appPmi = document.getElementById('app-pmi');
+  if (appPmi) appPmi.style.gridTemplateColumns = '1fr';
+
   var main = document.getElementById('pmi-main');
-  if (main) _renderSelezioneSetting(main);
+  if (main) {
+    main.style.padding = '0';
+    main.style.overflow = 'auto';
+    _renderSelezioneSetting(main);
+  }
+}
+
+// Mapping tag rapidi → micro-settori statici esistenti
+var _PMI_TAG_MAP = {
+  'Meccanica':            { settore: 'manifatturiero_meccanica',  macro: 'manifatturiero' },
+  'Concessionaria':       { settore: 'commercio_auto_moto_nuovo', macro: 'commercio' },
+  'Edilizia':             { settore: 'edilizia_residenziale',     macro: 'edilizia' },
+  'Studio professionale': { settore: 'servizi_b2b',               macro: 'servizi' }
+};
+
+function pmiClickTag(tag) {
+  var inp = document.getElementById('pmi-ai-input');
+  if (inp) inp.value = tag;
+  var staticMatch = _PMI_TAG_MAP[tag];
+  if (staticMatch) {
+    _pmiSelectedSettore = staticMatch.settore;
+    _pmiSelectedMacro   = staticMatch.macro;
+    _pmiUpdateAvviaBtn();
+    var msg = document.getElementById('pmi-ai-msg');
+    if (msg) msg.innerHTML = '<span style="color:rgba(0,130,95,0.85);font-weight:600">✓ ' + _esc(tag) + ' selezionato</span>';
+    var op = document.getElementById('pmi-ai-opzioni');
+    if (op) op.style.display = 'none';
+  } else {
+    pmiSuggerisciSettori();
+  }
 }
 
 function _renderSelezioneSetting(container) {
@@ -9055,66 +9075,91 @@ function _renderSelezioneSetting(container) {
   _pmiSelectedSettore = null;
   _pmiSelectedFascia  = null;
 
+  var QUICK_TAGS = ['Meccanica','Concessionaria','Edilizia','Ristorante','Parrucchiere','E-commerce','Palestra','Studio professionale'];
+
+  var FF = window.PMI_FASCE_FATTURATO || [];
+
   container.innerHTML =
-    '<div style="max-width:620px;margin:0 auto;padding:48px 28px">' +
-      '<h1 style="font-size:22px;font-weight:700;color:#1a1a2e;margin-bottom:6px">Benvenuto in Leva</h1>' +
-      '<p style="font-size:14px;color:rgba(26,26,46,0.55);margin-bottom:36px;line-height:1.5">Dicci qualcosa sulla tua azienda — la diagnosi sarà calibrata sul tuo settore.</p>' +
+    '<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 20px;box-sizing:border-box;background:#d8dbe2;">' +
 
-      // Step 1 — Macro settore
-      '<div style="margin-bottom:20px">' +
-        '<div style="font-size:11px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:12px">Il tuo settore</div>' +
-        '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px" id="pmi-macro-grid">' +
-          PMI_MACRO_SETTORI.map(function(s) {
-            return '<div class="pmi-select-card" id="pmi-m-' + s.id + '" onclick="pmiSelMacro(\'' + s.id + '\')" style="text-align:center;padding:14px 10px">' +
-              '<div style="font-size:22px;margin-bottom:6px">' + s.icon + '</div>' +
-              '<div style="font-size:12px;font-weight:700;color:#1a1a2e">' + s.label + '</div>' +
-            '</div>';
+      // Logo
+      '<div style="display:inline-flex;align-items:center;gap:4px;margin-bottom:52px">' +
+        '<svg width="42" height="42" viewBox="8 4 44 44" fill="none">' +
+          '<rect x="8" y="34" width="44" height="4.5" rx="2.25" fill="#3D5AFE"/>' +
+          '<rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="#1a1a2e"/>' +
+          '<circle cx="29.75" cy="36.25" r="6" fill="#1a1a2e"/>' +
+          '<line x1="29.75" y1="36.25" x2="47" y2="22" stroke="#FF6B2B" stroke-width="3.5" stroke-linecap="round"/>' +
+          '<circle cx="47" cy="22" r="3.5" fill="#FF6B2B"/>' +
+        '</svg>' +
+        '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:30px;font-weight:500;color:#1a1a2e;letter-spacing:-1px">eva</span>' +
+      '</div>' +
+
+      '<div style="width:100%;max-width:560px">' +
+
+        // Titolo
+        '<h1 style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:32px;font-weight:500;color:#1a1a2e;margin:0 0 10px;text-align:center">Cosa fa la tua azienda?</h1>' +
+        '<p style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:15px;color:rgba(26,26,46,0.45);text-align:center;margin:0 0 36px;line-height:1.55">Scrivi il tuo settore e Leva costruirà una diagnosi commerciale su misura per te.</p>' +
+
+        // Barra di ricerca
+        '<div style="position:relative;margin-bottom:10px">' +
+          '<svg style="position:absolute;left:20px;top:50%;transform:translateY(-50%);pointer-events:none" width="18" height="18" viewBox="0 0 18 18" fill="none">' +
+            '<circle cx="7.5" cy="7.5" r="5.5" stroke="rgba(61,90,254,0.4)" stroke-width="1.5"/>' +
+            '<line x1="11.5" y1="11.5" x2="16" y2="16" stroke="rgba(61,90,254,0.4)" stroke-width="1.5" stroke-linecap="round"/>' +
+          '</svg>' +
+          '<input id="pmi-ai-input" oninput="pmiAiOnInput()" onkeydown="if(event.key===\'Enter\'&&!this.disabled)pmiSuggerisciSettori()" ' +
+            'style="width:100%;box-sizing:border-box;height:72px;background:rgba(255,255,255,0.55);border:1.5px solid rgba(255,255,255,0.7);border-radius:14px;padding:0 150px 0 52px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:18px;color:#1a1a2e;outline:none;transition:border-color .15s;" ' +
+            'placeholder="Descrivi la tua attività..." ' +
+            'onfocus="this.style.borderColor=\'rgba(61,90,254,0.4)\'" onblur="this.style.borderColor=\'rgba(255,255,255,0.7)\'">' +
+          '<button id="pmi-ai-btn" onclick="pmiSuggerisciSettori()" disabled ' +
+            'style="position:absolute;right:10px;top:50%;transform:translateY(-50%);padding:12px 28px;background:#3D5AFE;color:#fff;border:none;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;opacity:0.5;transition:opacity .15s;white-space:nowrap">' +
+            'Cerca' +
+          '</button>' +
+        '</div>' +
+
+        // Dropdown opzioni AI
+        '<div id="pmi-ai-opzioni" style="display:none;margin-bottom:8px;background:rgba(255,255,255,0.55);border:1.5px solid rgba(255,255,255,0.7);border-radius:14px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)"></div>' +
+        '<div id="pmi-ai-msg" style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;min-height:20px;margin-bottom:20px;line-height:1.5;padding:0 4px"></div>' +
+
+        // Tag rapidi
+        '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px">' +
+          QUICK_TAGS.map(function(tag) {
+            return '<button onclick="pmiClickTag(\'' + tag.replace(/'/g,"\\'") + '\')" ' +
+              'style="padding:8px 18px;border-radius:20px;background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);color:rgba(26,26,46,0.45);font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;cursor:pointer;transition:all .15s" ' +
+              'onmouseover="this.style.color=\'#1a1a2e\';this.style.background=\'rgba(255,255,255,0.8)\'" ' +
+              'onmouseout="this.style.color=\'rgba(26,26,46,0.45)\';this.style.background=\'rgba(255,255,255,0.55)\'">' +
+              tag +
+            '</button>';
           }).join('') +
         '</div>' +
-      '</div>' +
 
-      // Step 2 — Micro settore (nascosto, appare dopo selezione macro)
-      '<div id="pmi-micro-wrap" style="display:none;margin-bottom:24px">' +
-        '<div style="font-size:11px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:12px" id="pmi-micro-label">Specifica il settore</div>' +
-        '<div id="pmi-micro-grid" style="display:flex;flex-wrap:wrap;gap:8px"></div>' +
-      '</div>' +
-
-      // Separatore AI
-      '<div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">' +
-        '<div style="flex:1;height:1px;background:rgba(0,0,0,0.08)"></div>' +
-        '<span style="font-size:12px;color:rgba(26,26,46,0.35)">oppure</span>' +
-        '<div style="flex:1;height:1px;background:rgba(0,0,0,0.08)"></div>' +
-      '</div>' +
-
-      // Sezione AI — step 1: Cerca, step 2: scegli opzione, step 3: Genera
-      '<div style="margin-bottom:28px">' +
-        '<div style="font-size:11px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:12px">Non trovi il tuo settore?</div>' +
-        '<div style="display:flex;gap:8px;align-items:center">' +
-          '<div style="flex:1;position:relative">' +
-            '<svg style="position:absolute;left:12px;top:50%;transform:translateY(-50%);pointer-events:none" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="rgba(26,26,46,0.35)" stroke-width="1.3"/><line x1="9.5" y1="9.5" x2="12.5" y2="12.5" stroke="rgba(26,26,46,0.35)" stroke-width="1.3" stroke-linecap="round"/></svg>' +
-            '<input id="pmi-ai-input" oninput="pmiAiOnInput()" style="width:100%;box-sizing:border-box;padding:12px 12px 12px 32px;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.08);border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;color:#1a1a2e;outline:none;" placeholder="Descrivi il tuo settore (es. negozio pesca sportiva, autolavaggio, vivaista...)">' +
+        // Fascia fatturato
+        '<div style="margin-bottom:32px">' +
+          '<div style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:12px;color:rgba(26,26,46,0.3);letter-spacing:0.4px;margin-bottom:12px">Fascia di fatturato annuo</div>' +
+          '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px" id="pmi-fascia-grid">' +
+            FF.map(function(f) {
+              return '<button class="pmi-fascia-btn" id="pmi-f-' + f.id + '" onclick="pmiSelFascia(\'' + f.id + '\')" ' +
+                'style="padding:12px 6px;background:rgba(255,255,255,0.55);border:1.5px solid rgba(255,255,255,0.7);border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:12px;font-weight:600;color:rgba(26,26,46,0.5);cursor:pointer;transition:all .15s;text-align:center">' +
+                f.label +
+              '</button>';
+            }).join('') +
           '</div>' +
-          '<button id="pmi-ai-btn" onclick="pmiSuggerisciSettori()" disabled style="padding:12px 18px;background:#3D5AFE;color:#fff;border:none;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;opacity:0.5">Cerca</button>' +
         '</div>' +
-        // Dropdown opzioni (nascosto finché non arrivano le suggestions)
-        '<div id="pmi-ai-opzioni" style="display:none;margin-top:8px;background:rgba(255,255,255,0.85);border:1px solid rgba(0,0,0,0.08);border-radius:10px;overflow:hidden"></div>' +
-        '<div id="pmi-ai-msg" style="font-size:12px;min-height:18px;margin-top:8px;line-height:1.5"></div>' +
-      '</div>' +
 
-      // Fascia fatturato
-      '<div style="margin-bottom:32px">' +
-        '<div style="font-size:11px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:12px">Fatturato annuo</div>' +
-        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="pmi-fascia-grid">' +
-          PMI_FASCE_FATTURATO.map(function(f) {
-            return '<div class="pmi-select-card" id="pmi-f-' + f.id + '" onclick="pmiSelFascia(\'' + f.id + '\')">' +
-              '<div style="font-size:15px;font-weight:700;color:#1a1a2e">' + f.label + '</div>' +
-            '</div>';
-          }).join('') +
+        // Messaggio errore
+        '<p id="pmi-inizio-msg" style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:12px;color:#E53935;min-height:18px;margin-bottom:14px;text-align:center"></p>' +
+
+        // CTA
+        '<div style="display:flex;justify-content:center;margin-bottom:20px">' +
+          '<button id="pmi-avvia-btn" onclick="pmiAvviaDiagnosi()" disabled ' +
+            'style="width:100%;max-width:400px;padding:16px;background:#3D5AFE;color:#fff;border:none;border-radius:14px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:16px;font-weight:700;cursor:not-allowed;opacity:0.4;transition:opacity .15s">' +
+            'Inizia la diagnosi gratuita →' +
+          '</button>' +
         '</div>' +
-      '</div>' +
 
-      '<p id="pmi-inizio-msg" style="font-size:12px;color:#E53935;min-height:18px;margin-bottom:10px"></p>' +
-      '<button id="pmi-avvia-btn" onclick="pmiAvviaDiagnosi()" disabled style="width:100%;padding:14px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:15px;font-weight:700;cursor:not-allowed;transition:opacity .15s;opacity:0.4">Inizia la diagnosi →</button>' +
+        // Footer
+        '<p style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:12px;color:rgba(26,26,46,0.25);text-align:center;margin:0">4 minuti, 8 domande, completamente gratuito</p>' +
+
+      '</div>' +
     '</div>';
 }
 
@@ -9174,9 +9219,19 @@ function pmiSelSettore(id) {
 
 function pmiSelFascia(id) {
   _pmiSelectedFascia = id;
-  document.querySelectorAll('#pmi-fascia-grid .pmi-select-card').forEach(function(el) { el.classList.remove('selected'); });
+  document.querySelectorAll('#pmi-fascia-grid .pmi-select-card, #pmi-fascia-grid .pmi-fascia-btn').forEach(function(el) {
+    el.classList.remove('selected');
+    el.style.borderColor = '';
+    el.style.color       = '';
+    el.style.background  = '';
+  });
   var c = document.getElementById('pmi-f-' + id);
-  if (c) c.classList.add('selected');
+  if (c) {
+    c.classList.add('selected');
+    c.style.borderColor = '#3D5AFE';
+    c.style.color       = '#3D5AFE';
+    c.style.background  = 'rgba(61,90,254,0.06)';
+  }
 }
 
 // ── Cache settori custom (caricati da Supabase o generati da AI) ──────────────
@@ -9244,12 +9299,17 @@ async function pmiSuggerisciSettori() {
     if (msg) msg.innerHTML = '';
 
     // Mostra dropdown opzioni
+    var _macroLabel = { commercio:'Commercio', servizi:'Servizi', manifatturiero:'Manifatturiero', edilizia:'Edilizia', alimentare:'Alimentare', tech:'Tech' };
     opzioni.innerHTML = suggerimenti.map(function(s, i) {
-      var nome = _esc(s.nome || s.nome_display || s.codice);
-      var desc = _esc(s.descrizione || '');
-      return '<div onclick="pmiSelezionaESuggerisci(' + i + ')" style="padding:12px 14px;cursor:pointer;border-bottom:1px solid rgba(0,0,0,0.05);transition:background .12s" onmouseover="this.style.background=\'rgba(61,90,254,0.05)\'" onmouseout="this.style.background=\'\'">' +
-        '<div style="font-size:13px;font-weight:600;color:#1a1a2e">' + nome + '</div>' +
-        (desc ? '<div style="font-size:11px;color:rgba(26,26,46,0.5);margin-top:2px">' + desc + '</div>' : '') +
+      var nome  = _esc(s.nome || s.nome_display || s.codice);
+      var desc  = _esc(s.descrizione || '');
+      var macro = _macroLabel[(s.codice || '').split('_')[0]] || '';
+      return '<div onclick="pmiSelezionaESuggerisci(' + i + ')" style="padding:14px 16px;cursor:pointer;border-bottom:1px solid rgba(0,0,0,0.04);display:flex;align-items:center;justify-content:space-between;gap:12px;transition:background .12s" onmouseover="this.style.background=\'rgba(61,90,254,0.04)\'" onmouseout="this.style.background=\'\'">' +
+        '<div>' +
+          '<div style="font-size:15px;font-weight:500;color:#1a1a2e">' + nome + '</div>' +
+          (desc ? '<div style="font-size:12px;color:rgba(26,26,46,0.4);margin-top:3px">' + desc + '</div>' : '') +
+        '</div>' +
+        (macro ? '<span style="flex-shrink:0;font-size:11px;font-weight:600;color:#3D5AFE;background:rgba(61,90,254,0.06);padding:3px 10px;border-radius:20px;white-space:nowrap">' + macro + '</span>' : '') +
       '</div>';
     }).join('');
     opzioni.style.display = 'block';
@@ -9412,8 +9472,12 @@ async function pmiAvviaDiagnosi() {
   // Salva ID in localStorage come fallback per i refresh (RLS può bloccare SELECT per owner_user_id)
   try { localStorage.setItem('leva_pmi_pid_' + window._currentUserId, nuovoP.id); } catch(e) {}
 
-  // Sidebar con nav ora che abbiamo il prospect
+  // Prepara sidebar HTML ma tienila nascosta durante la diagnosi
   renderSidebarPMI();
+  var _sbar = document.getElementById('pmi-sidebar');
+  if (_sbar) _sbar.style.display = 'none';
+  var _appPmi = document.getElementById('app-pmi');
+  if (_appPmi) _appPmi.style.gridTemplateColumns = '1fr';
 
   // Sposta diagnosi-overlay nel body (è dentro .app che è display:none)
   var diagOverlay = document.getElementById('diagnosi-overlay');
