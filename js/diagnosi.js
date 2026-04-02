@@ -625,7 +625,15 @@ async function initPMI() {
   }
   var csoApp = document.querySelector('.app');
   if (csoApp) csoApp.style.display = 'none';
-  if (pmiApp) pmiApp.style.display = 'grid';
+
+  // Mostra SOLO il background grigio durante il caricamento — niente sidebar, niente flash
+  if (pmiApp) {
+    pmiApp.style.display = 'grid';
+    pmiApp.style.gridTemplateColumns = '1fr';
+  }
+  var pmiSidebar = document.getElementById('pmi-sidebar');
+  if (pmiSidebar) pmiSidebar.style.display = 'none';
+
   document.body.classList.add('pmi-mode');
 
   // Carica prospect del titolare — prima tenta owner_user_id, poi fallback su ID salvato
@@ -658,36 +666,41 @@ async function initPMI() {
     }
   }
 
-  // Fase 12: diagnosi completa = tutte e 8 le dimensioni con score > 0
+  // Diagnosi completa: tutte e 8 le dimensioni con score > 0, OPPURE score_globale salvato
   var DIMS_ALL_PMI = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
-  var hasDiagnosi = window._pmiProspect
-    && window._pmiProspect.dims
-    && DIMS_ALL_PMI.every(function(k) { return (window._pmiProspect.dims[k] || 0) > 0; });
+  var hasDiagnosi = !!(window._pmiProspect && (
+    (window._pmiProspect.score_globale != null && window._pmiProspect.score_globale > 0)
+    || (window._pmiProspect.dims && DIMS_ALL_PMI.every(function(k) { return (window._pmiProspect.dims[k] || 0) > 0; }))
+  ));
 
   if (!hasDiagnosi) {
     var hasPartialAnswers = window._pmiProspect
       && window._pmiProspect.dims_answers
       && Object.keys(window._pmiProspect.dims_answers).length > 0;
     if (hasPartialAnswers && typeof _renderRiprendiDiagnosi === 'function') {
-      // Espone le risposte parziali su window per _renderRiprendiDiagnosi
       window._diagRisposte = window._pmiProspect.dims_answers;
       if (!prospects.find(function(x) { return x.id === window._pmiProspect.id; })) {
         prospects.push(window._pmiProspect);
       }
       currentId = window._pmiProspect.id;
-      if (typeof renderSidebarPMI === 'function') renderSidebarPMI();
+      // Sidebar già nascosta — _renderRiprendiDiagnosi la gestisce
       _renderRiprendiDiagnosi(document.getElementById('pmi-main'));
     } else if (typeof renderPrimoAccesso === 'function') {
+      // Sidebar già nascosta — renderPrimoAccesso la lascia nascosta
       renderPrimoAccesso();
     }
     return;
   }
 
-  // Ha diagnosi → app normale
+  // Ha diagnosi → Home PMI con sidebar
   if (!prospects.find(function(x) { return x.id === window._pmiProspect.id; })) {
     prospects.push(window._pmiProspect);
   }
   currentId = window._pmiProspect.id;
+
+  // Ora sappiamo che andiamo alla Home — mostra sidebar e ripristina grid
+  if (pmiSidebar) pmiSidebar.style.display = '';
+  if (pmiApp) pmiApp.style.gridTemplateColumns = '160px 1fr';
 
   if (typeof renderSidebarPMI === 'function') renderSidebarPMI();
   if (typeof renderViewPMI === 'function') renderViewPMI('home');
