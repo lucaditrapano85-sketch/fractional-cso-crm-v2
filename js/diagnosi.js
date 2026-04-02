@@ -352,15 +352,15 @@ var _TIPS_FALLBACK = [
   { tipo: 'azione_rapida', testo: 'Chiedi a 3 clienti soddisfatti di lasciarti una recensione Google questa settimana' }
 ];
 
-async function _mostraPopupAttesaAI(nomeSettore) {
-  var MIN_DURATION = 6000;
+// isCustom: true se settore generato da AI (non nei 32 standard)
+// Chiamata da pmiAvviaDiagnosi (app.js) prima di avviare le domande
+async function _mostraPopupAttesaAI(nomeSettore, isCustom) {
+  var MIN_DURATION = isCustom ? 6000 : 4000;
 
-  var settoreIsCustom = !!(_diagProspect && _diagProspect.settore && !FAMIGLIA_SETTORE[_diagProspect.settore]);
-  var hasPendingAI    = settoreIsCustom && window._generaSettorePromise && !window._generaSettoreResolved;
+  var hasPendingAI = isCustom && window._generaSettorePromise && !window._generaSettoreResolved;
 
-  var customData = window._settoriCustomCache && window._settoriCustomCache[
-    (_diagProspect && _diagProspect.settore) || ''
-  ];
+  var settoreKey = (_diagProspect && _diagProspect.settore) || window._pmiSelectedSettore || '';
+  var customData = window._settoriCustomCache && window._settoriCustomCache[settoreKey];
   var allTips = (customData && Array.isArray(customData.tips) && customData.tips.length >= 3)
     ? customData.tips
     : _TIPS_FALLBACK;
@@ -447,9 +447,7 @@ async function _mostraPopupAttesaAI(nomeSettore) {
     tipCard.style.opacity = '0';
     setTimeout(function() {
       tipIdx++;
-      var cData = window._settoriCustomCache && window._settoriCustomCache[
-        (_diagProspect && _diagProspect.settore) || ''
-      ];
+      var cData = window._settoriCustomCache && window._settoriCustomCache[settoreKey];
       if (cData && Array.isArray(cData.tips) && cData.tips.length >= 3) allTips = cData.tips;
       _setTip(tipIdx);
       tipCard.style.opacity = '1';
@@ -496,14 +494,7 @@ async function salvaDiagnosiScore() {
   }
   _diagCompletata = true;
 
-  // Popup SEMPRE — momento di transizione tra domande e risultati (min 8s)
-  var nomePopup = window._generaSettoreNome
-    || (window._settoriCustomCache && _diagProspect && window._settoriCustomCache[_diagProspect.settore] && window._settoriCustomCache[_diagProspect.settore].nome_display)
-    || (_diagProspect && _diagProspect.settore)
-    || '';
-  await _mostraPopupAttesaAI(nomePopup);
-
-  // Mostra risultati
+  // Mostra risultati subito (il popup di transizione è già stato mostrato prima della diagnosi)
   mostraRisultatoDiagnosi(nuoviDims);
 
   // Salva su Supabase
