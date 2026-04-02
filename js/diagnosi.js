@@ -353,13 +353,11 @@ var _TIPS_FALLBACK = [
 ];
 
 async function _mostraPopupAttesaAI(nomeSettore) {
-  var MIN_DURATION = 8000; // popup sempre visibile almeno 8 secondi
+  var MIN_DURATION = 6000;
 
-  // Settore custom con AI ancora in corso?
   var settoreIsCustom = !!(_diagProspect && _diagProspect.settore && !FAMIGLIA_SETTORE[_diagProspect.settore]);
   var hasPendingAI    = settoreIsCustom && window._generaSettorePromise && !window._generaSettoreResolved;
 
-  // Tips: da cache AI se disponibili, altrimenti fallback
   var customData = window._settoriCustomCache && window._settoriCustomCache[
     (_diagProspect && _diagProspect.settore) || ''
   ];
@@ -373,111 +371,101 @@ async function _mostraPopupAttesaAI(nomeSettore) {
   var old = document.getElementById('leva-attesa-popup');
   if (old && old.parentNode) old.parentNode.removeChild(old);
 
+  // Inserisci keyframes nello <head> (funziona sempre, non via innerHTML)
+  if (!document.getElementById('_leva_spin_style')) {
+    var styleEl = document.createElement('style');
+    styleEl.id = '_leva_spin_style';
+    styleEl.textContent = '@keyframes _spin { to { transform: rotate(360deg); } }';
+    document.head.appendChild(styleEl);
+  }
+
   var overlay = document.createElement('div');
   overlay.id = 'leva-attesa-popup';
   overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.35);z-index:9999;display:flex;align-items:center;justify-content:center;';
 
-  var dots6 = '';
-  for (var di = 0; di < 6; di++) {
-    dots6 += '<div class="leva-dot" style="width:7px;height:7px;border-radius:50%;background:rgba(61,90,254,0.2);transition:background .3s"></div>';
-  }
+  var card = document.createElement('div');
+  card.style.cssText = 'font-family:\'Plus Jakarta Sans\',sans-serif;background:#d8dbe2;border-radius:20px;max-width:420px;width:90%;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,0.25);text-align:center;';
 
-  overlay.innerHTML =
-    '<style>' +
-      '@keyframes _leva_spin{to{transform:rotate(360deg)}}' +
-    '</style>' +
-    '<div style="font-family:\'Plus Jakarta Sans\',sans-serif;background:#d8dbe2;border-radius:20px;max-width:420px;width:calc(100% - 40px);padding:28px;box-shadow:0 20px 60px rgba(0,0,0,0.25)">' +
+  // Spinner CSS (non SVG)
+  var spinner = document.createElement('div');
+  spinner.style.cssText = 'width:48px;height:48px;border:4px solid rgba(61,90,254,0.15);border-top-color:#3D5AFE;border-radius:50%;animation:_spin 1.5s linear infinite;margin:0 auto 20px;';
 
-      '<div style="display:flex;align-items:center;gap:14px;margin-bottom:22px">' +
-        '<svg width="38" height="38" viewBox="0 0 38 38" style="animation:_leva_spin 1s linear infinite;flex-shrink:0">' +
-          '<circle cx="19" cy="19" r="15" fill="none" stroke="rgba(61,90,254,0.15)" stroke-width="3"/>' +
-          '<path d="M19 4 A15 15 0 0 1 34 19" fill="none" stroke="#3D5AFE" stroke-width="3" stroke-linecap="round"/>' +
-        '</svg>' +
-        '<div>' +
-          '<div style="font-size:16px;font-weight:500;color:#1a1a2e;line-height:1.3">Stiamo personalizzando Leva per te</div>' +
-          '<div style="font-size:12px;color:rgba(26,26,46,0.45);margin-top:3px">' + nomeEsc + '</div>' +
-        '</div>' +
-      '</div>' +
+  // Titolo
+  var title = document.createElement('div');
+  title.style.cssText = 'font-size:16px;font-weight:500;color:#1a1a2e;margin-bottom:6px;';
+  title.textContent = 'Stiamo preparando i tuoi risultati';
 
-      '<div id="_leva_tip_card" style="background:rgba(255,255,255,0.65);border:1px solid rgba(255,255,255,0.8);border-radius:14px;padding:20px;margin-bottom:18px;min-height:80px;transition:opacity 0.3s ease">' +
-        '<div id="_leva_tip_label" style="font-size:10px;font-weight:700;letter-spacing:0.6px;margin-bottom:8px"></div>' +
-        '<div id="_leva_tip_text" style="font-size:13px;color:#1a1a2e;line-height:1.55"></div>' +
-      '</div>' +
+  // Sottotitolo settore
+  var subtitle = document.createElement('div');
+  subtitle.style.cssText = 'font-size:12px;color:rgba(26,26,46,0.45);margin-bottom:22px;';
+  subtitle.textContent = nomeEsc;
 
-      '<div style="display:flex;gap:6px;justify-content:center;margin-bottom:20px">' + dots6 + '</div>' +
+  // Tip card
+  var tipCard = document.createElement('div');
+  tipCard.style.cssText = 'background:rgba(255,255,255,0.65);border:1px solid rgba(255,255,255,0.8);border-radius:14px;padding:20px;min-height:120px;margin-bottom:20px;transition:opacity 0.3s ease;display:flex;flex-direction:column;justify-content:center;';
 
-      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">' +
-        '<div id="_leva_prog_label" style="font-size:11px;color:rgba(26,26,46,0.5)">Analisi mercato...</div>' +
-        '<div id="_leva_prog_pct" style="font-size:11px;font-weight:600;color:#3D5AFE">0%</div>' +
-      '</div>' +
-      '<div style="background:rgba(0,0,0,0.06);border-radius:3px;height:6px;overflow:hidden">' +
-        '<div id="_leva_prog_fill" style="height:100%;background:#3D5AFE;border-radius:3px;width:0%;transition:width 0.4s ease"></div>' +
-      '</div>' +
+  var tipLabel = document.createElement('div');
+  tipLabel.style.cssText = 'font-size:10px;font-weight:700;letter-spacing:0.6px;margin-bottom:8px;';
 
-    '</div>';
+  var tipText = document.createElement('div');
+  tipText.style.cssText = 'font-size:13px;color:#1a1a2e;line-height:1.55;';
 
+  tipCard.appendChild(tipLabel);
+  tipCard.appendChild(tipText);
+
+  // Barra progresso
+  var progWrap = document.createElement('div');
+  progWrap.style.cssText = 'background:rgba(0,0,0,0.06);border-radius:3px;height:6px;overflow:hidden;';
+
+  var progFill = document.createElement('div');
+  progFill.style.cssText = 'height:100%;background:#3D5AFE;border-radius:3px;width:0%;transition:width 0.4s ease;';
+
+  progWrap.appendChild(progFill);
+
+  card.appendChild(spinner);
+  card.appendChild(title);
+  card.appendChild(subtitle);
+  card.appendChild(tipCard);
+  card.appendChild(progWrap);
+  overlay.appendChild(card);
   document.body.appendChild(overlay);
 
   // ── Tips rotation ──────────────────────────────────────────────────────────
   var tipIdx = 0;
 
   function _setTip(idx) {
-    var tip   = allTips[idx % allTips.length];
-    var card  = document.getElementById('_leva_tip_card');
-    var label = document.getElementById('_leva_tip_label');
-    var text  = document.getElementById('_leva_tip_text');
-    var dots  = overlay.querySelectorAll('.leva-dot');
-    if (!card) return;
-    var isA = tip.tipo === 'lo_sapevi';
-    card.style.background = isA ? 'rgba(255,255,255,0.65)' : 'rgba(255,255,255,0.55)';
-    if (label) {
-      label.style.color = isA ? '#3D5AFE' : 'rgba(0,130,95,0.85)';
-      label.innerHTML = isA
-        ? '<svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:-1px;margin-right:4px"><circle cx="6" cy="6" r="5.5" fill="rgba(61,90,254,0.12)"/><text x="6" y="9" text-anchor="middle" font-size="8" fill="#3D5AFE">!</text></svg>LO SAPEVI?'
-        : '<svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:-1px;margin-right:4px"><circle cx="6" cy="6" r="5.5" fill="rgba(0,130,95,0.12)"/><path d="M3.5 6l2 2 3-3" stroke="rgba(0,130,95,0.85)" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>AZIONE RAPIDA';
-    }
-    if (text) text.textContent = tip.testo;
-    dots.forEach(function(d, i) {
-      d.style.background = i === (idx % 6) ? '#3D5AFE' : 'rgba(61,90,254,0.2)';
-    });
+    var tip  = allTips[idx % allTips.length];
+    var isLo = tip.tipo === 'lo_sapevi';
+    tipLabel.style.color = isLo ? '#3D5AFE' : 'rgba(0,130,95,0.85)';
+    tipLabel.textContent = isLo ? '💡 LO SAPEVI?' : '⚡ AZIONE RAPIDA';
+    tipText.textContent  = tip.testo;
   }
 
   _setTip(0);
 
   var tipIv = setInterval(function() {
-    var card = document.getElementById('_leva_tip_card');
-    if (!card) return;
-    card.style.opacity = '0';
+    tipCard.style.opacity = '0';
     setTimeout(function() {
       tipIdx++;
-      // Aggiorna tips da cache se nel frattempo l'AI ha risposto
       var cData = window._settoriCustomCache && window._settoriCustomCache[
         (_diagProspect && _diagProspect.settore) || ''
       ];
       if (cData && Array.isArray(cData.tips) && cData.tips.length >= 3) allTips = cData.tips;
       _setTip(tipIdx);
-      if (card) card.style.opacity = '1';
+      tipCard.style.opacity = '1';
     }, 300);
   }, 4000);
 
   // ── Barra progresso ────────────────────────────────────────────────────────
-  var progLabels = ['Analisi mercato...', 'Calibrazione benchmark...', 'Generazione azioni...'];
-  var progStart  = Date.now();
+  var progStart = Date.now();
   var progIv = setInterval(function() {
     var elapsed = Date.now() - progStart;
-    var raw     = Math.min(elapsed / MIN_DURATION, 1);
-    // Per custom con AI pendente: arriva max a 85%, poi aspetta
     var maxPct  = (hasPendingAI && !window._generaSettoreResolved) ? 85 : 100;
-    var pct     = Math.round(maxPct * (1 - Math.pow(1 - Math.min(raw, 1), 2)));
-    var fill    = document.getElementById('_leva_prog_fill');
-    var pctEl   = document.getElementById('_leva_prog_pct');
-    var lblEl   = document.getElementById('_leva_prog_label');
-    if (fill)  fill.style.width  = pct + '%';
-    if (pctEl) pctEl.textContent = pct + '%';
-    if (lblEl) lblEl.textContent = progLabels[pct < 30 ? 0 : pct < 65 ? 1 : 2];
-  }, 250);
+    var pct     = Math.min(Math.round((elapsed / MIN_DURATION) * maxPct), maxPct);
+    progFill.style.width = pct + '%';
+  }, 200);
 
-  // ── Attendi: minimo 8s, + AI se custom con promise pendente ───────────────
+  // ── Attendi: minimo 6s, + AI se custom con promise pendente ───────────────
   var waits = [new Promise(function(r){ setTimeout(r, MIN_DURATION); })];
   if (hasPendingAI) waits.push(window._generaSettorePromise.catch(function(){}));
   await Promise.all(waits);
@@ -485,31 +473,12 @@ async function _mostraPopupAttesaAI(nomeSettore) {
   clearInterval(tipIv);
   clearInterval(progIv);
 
-  // Scatta al 100% con tip finale
-  var fill  = document.getElementById('_leva_prog_fill');
-  var pctEl = document.getElementById('_leva_prog_pct');
-  var lblEl = document.getElementById('_leva_prog_label');
-  if (fill)  fill.style.width  = '100%';
-  if (pctEl) pctEl.textContent = '100%';
-  if (lblEl) lblEl.textContent = 'Struttura pronta!';
+  progFill.style.width = '100%';
+  await new Promise(function(r){ setTimeout(r, 400); });
 
-  var tipCard = document.getElementById('_leva_tip_card');
-  if (tipCard) {
-    tipCard.style.opacity = '0';
-    await new Promise(function(r){ setTimeout(r, 300); });
-    var lbl = document.getElementById('_leva_tip_label');
-    var txt = document.getElementById('_leva_tip_text');
-    if (lbl) { lbl.style.color = 'rgba(0,130,95,0.85)'; lbl.textContent = '✓ FATTO!'; }
-    if (txt) txt.textContent = 'Ecco i tuoi risultati personalizzati per ' + nomeEsc;
-    tipCard.style.background = 'rgba(255,255,255,0.65)';
-    tipCard.style.opacity = '1';
-  }
-
-  await new Promise(function(r){ setTimeout(r, 800); });
-
-  overlay.style.transition = 'opacity 0.35s ease';
-  overlay.style.opacity    = '0';
-  await new Promise(function(r){ setTimeout(r, 350); });
+  overlay.style.transition = 'opacity 0.5s ease';
+  overlay.style.opacity = '0';
+  await new Promise(function(r){ setTimeout(r, 500); });
   if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
 }
 
