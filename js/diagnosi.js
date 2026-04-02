@@ -348,7 +348,13 @@ var _TIPS_FALLBACK = [
 ];
 
 async function _mostraPopupAttesaAI(nomeSettore) {
-  // Prendi tips dal cache AI se già disponibili, altrimenti fallback
+  var MIN_DURATION = 8000; // popup sempre visibile almeno 8 secondi
+
+  // Settore custom con AI ancora in corso?
+  var settoreIsCustom = !!(_diagProspect && _diagProspect.settore && !FAMIGLIA_SETTORE[_diagProspect.settore]);
+  var hasPendingAI    = settoreIsCustom && window._generaSettorePromise && !window._generaSettoreResolved;
+
+  // Tips: da cache AI se disponibili, altrimenti fallback
   var customData = window._settoriCustomCache && window._settoriCustomCache[
     (_diagProspect && _diagProspect.settore) || ''
   ];
@@ -454,8 +460,10 @@ async function _mostraPopupAttesaAI(nomeSettore) {
   var progStart  = Date.now();
   var progIv = setInterval(function() {
     var elapsed = Date.now() - progStart;
-    var raw     = Math.min(elapsed / 25000, 1);
-    var pct     = Math.round(85 * (1 - Math.pow(1 - raw, 2)));
+    var raw     = Math.min(elapsed / MIN_DURATION, 1);
+    // Per custom con AI pendente: arriva max a 85%, poi aspetta
+    var maxPct  = (hasPendingAI && !window._generaSettoreResolved) ? 85 : 100;
+    var pct     = Math.round(maxPct * (1 - Math.pow(1 - Math.min(raw, 1), 2)));
     var fill    = document.getElementById('_leva_prog_fill');
     var pctEl   = document.getElementById('_leva_prog_pct');
     var lblEl   = document.getElementById('_leva_prog_label');
@@ -464,8 +472,10 @@ async function _mostraPopupAttesaAI(nomeSettore) {
     if (lblEl) lblEl.textContent = progLabels[pct < 30 ? 0 : pct < 65 ? 1 : 2];
   }, 250);
 
-  // ── Attendi promise ────────────────────────────────────────────────────────
-  try { await window._generaSettorePromise; } catch(e) { /* continua comunque */ }
+  // ── Attendi: minimo 8s, + AI se custom con promise pendente ───────────────
+  var waits = [new Promise(function(r){ setTimeout(r, MIN_DURATION); })];
+  if (hasPendingAI) waits.push(window._generaSettorePromise.catch(function(){}));
+  await Promise.all(waits);
 
   clearInterval(tipIv);
   clearInterval(progIv);
@@ -512,11 +522,12 @@ async function salvaDiagnosiScore() {
   }
   _diagCompletata = true;
 
-  // Popup di attesa solo se: settore custom + promise ancora pendente
-  var settoreIsCustom = !!(_diagProspect && _diagProspect.settore && !FAMIGLIA_SETTORE[_diagProspect.settore]);
-  if (settoreIsCustom && window._generaSettorePromise && !window._generaSettoreResolved) {
-    await _mostraPopupAttesaAI(window._generaSettoreNome || _diagProspect.settore);
-  }
+  // Popup SEMPRE — momento di transizione tra domande e risultati (min 8s)
+  var nomePopup = window._generaSettoreNome
+    || (window._settoriCustomCache && _diagProspect && window._settoriCustomCache[_diagProspect.settore] && window._settoriCustomCache[_diagProspect.settore].nome_display)
+    || (_diagProspect && _diagProspect.settore)
+    || '';
+  await _mostraPopupAttesaAI(nomePopup);
 
   // Mostra risultati
   mostraRisultatoDiagnosi(nuoviDims);
