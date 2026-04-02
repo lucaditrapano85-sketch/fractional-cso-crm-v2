@@ -9091,7 +9091,7 @@ function _renderSelezioneSetting(container) {
           '<line x1="29.75" y1="36.25" x2="47" y2="22" stroke="#FF6B2B" stroke-width="3.5" stroke-linecap="round"/>' +
           '<circle cx="47" cy="22" r="3.5" fill="#FF6B2B"/>' +
         '</svg>' +
-        '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:40px;font-weight:500;color:#1a1a2e;letter-spacing:-1px">eva</span>' +
+        '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:40px;font-weight:700;color:#1a1a2e;letter-spacing:-1px">eva</span>' +
       '</div>' +
 
       '<div style="width:100%;max-width:560px">' +
@@ -9525,7 +9525,7 @@ function _renderRiprendiDiagnosi(container) {
       '<div style="padding:20px 16px;border-bottom:1px solid rgba(255,255,255,0.08)">' +
         '<div style="display:inline-flex;align-items:flex-start;gap:2px">' +
           '<svg width="36" height="36" viewBox="8 4 44 44" fill="none"><rect x="8" y="34" width="44" height="4.5" rx="2.25" fill="#3D5AFE"/><rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="white"/><circle cx="29.75" cy="36.25" r="6" fill="white"/><line x1="29.75" y1="36.25" x2="47" y2="22" stroke="#FF6B2B" stroke-width="3.5" stroke-linecap="round"/><circle cx="47" cy="22" r="3.5" fill="#FF6B2B"/></svg>' +
-          '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:30px;font-weight:500;color:white;line-height:1;letter-spacing:-1px">eva</span>' +
+          '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:30px;font-weight:700;color:white;line-height:1;letter-spacing:-1px">eva</span>' +
         '</div>' +
         '<div style="margin-top:20px;font-size:11px;color:rgba(255,255,255,0.35);line-height:1.7">' +
           '<div style="margin-bottom:8px;color:rgba(255,255,255,0.6);font-weight:600">Diagnosi in corso</div>' +
