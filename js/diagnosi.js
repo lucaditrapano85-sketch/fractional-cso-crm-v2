@@ -117,7 +117,21 @@ function apriDiagnosi() {
     return;
   }
   _diagProspect = p;
-  var settoreBase = FAMIGLIA_SETTORE[p.settore] || 'b2b_manifatturiero';
+  var settoreBase = FAMIGLIA_SETTORE[p.settore];
+  // Settore custom (generato da AI): usa la famiglia del macro_settore di riferimento
+  if (!settoreBase) {
+    var _CUSTOM_MACRO_TO_FAMIGLIA = {
+      'Commercio':      'retail',
+      'Manifatturiero': 'b2b_manifatturiero',
+      'Servizi':        'b2b_servizi',
+      'Edilizia':       'edilizia',
+      'Alimentare':     'food',
+      'Tech':           'tech'
+    };
+    var customData = window._settoriCustomCache && window._settoriCustomCache[p.settore];
+    var macroAI = customData && customData.macro_settore;
+    settoreBase = (macroAI && _CUSTOM_MACRO_TO_FAMIGLIA[macroAI]) || 'retail';
+  }
   var isAutomotive = ['commercio_auto_moto_nuovo','commercio_auto_moto_usato'].indexOf(p.settore) >= 0;
   _diagFamiglia = isAutomotive ? 'automotive' : settoreBase;
   // Verifica che la famiglia esista in DIAGNOSI_DOMANDE, altrimenti fallback
