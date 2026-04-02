@@ -206,9 +206,12 @@ function renderDiagStep() {
   document.getElementById('diag-btn-prev').style.opacity = _diagStep === 0 ? '0.3' : '1';
   document.getElementById('diag-btn-prev').disabled = _diagStep === 0;
 
-  // Pulsante next
+  // Pulsante next — ripristina sempre onclick e stato (può essere stato sovrascritto da mostraRisultatoDiagnosi)
   var nextBtn = document.getElementById('diag-btn-next');
   nextBtn.textContent = _diagStep === totalSteps - 1 ? 'Calcola score' : 'Avanti';
+  nextBtn.onclick = diagNext;
+  nextBtn.disabled = false;
+  nextBtn.style.opacity = '1';
 
   // Domande dalla famiglia
   var domande = DIAGNOSI_DOMANDE[_diagFamiglia] && DIAGNOSI_DOMANDE[_diagFamiglia][dimId];
