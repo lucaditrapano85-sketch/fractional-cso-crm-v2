@@ -8884,6 +8884,7 @@ function renderSidebarPMI() {
     { id:'azioni', title:'Azioni', svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' },
     { id:'score',  title:'Score',  svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M8 8l2.2-2.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="8" r="1.2" fill="currentColor"/></svg>' },
     { id:'trend',  title:'Trend',  svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13l3-4 3 2 4-6" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>' },
+    { id:'piano',  title:'Piano',  svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2l1.5 3.5 3.5.5-2.5 2.5.6 3.5L8 10.5l-3.1 1.5.6-3.5L3 6l3.5-.5z" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linejoin="round"/></svg>' },
     { id:'profilo',title:'Profilo',svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="3" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 15c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>' },
   ];
 
@@ -8953,6 +8954,7 @@ function renderViewPMI(view) {
       case 'score':   renderPMIScore(main);   break;
       case 'azioni':  renderPMIAzioni(main);  break;
       case 'trend':   renderPMITrend(main);   break;
+      case 'piano':   renderPMIPiano(main);   break;
       case 'profilo': renderPMIProfilo(main); break;
     }
   }
@@ -10439,35 +10441,6 @@ function renderPMIProfilo(container) {
       return '<option value="' + f.id + '"' + (fasciaVal === f.id ? ' selected' : '') + '>' + f.label + '</option>';
     }).join('');
 
-  // ── Righe tabella piano ──────────────────────────────────────────────────
-  var CHECK = '<span style="color:rgba(0,130,95,0.85);font-size:14px;font-weight:700">✓</span>';
-  var CROSS = '<span style="color:rgba(229,57,53,0.7);font-size:14px;font-weight:700">✗</span>';
-  var LOCK  = '<span style="font-size:11px;margin-right:4px">🔒</span>';
-
-  function _pianoRow(feat, hasSelf, locked) {
-    return '<tr style="border-bottom:1px solid rgba(0,0,0,0.04)">' +
-      '<td style="padding:9px 8px;font-size:12px;color:' + (locked ? 'rgba(26,26,46,0.35)' : 'rgba(26,26,46,0.75)') + '">' + (locked ? LOCK : '') + feat + '</td>' +
-      '<td style="padding:9px 8px;text-align:center">' + (hasSelf ? CHECK : CROSS) + '</td>' +
-      '<td style="padding:9px 8px;text-align:center">' + CHECK + '</td>' +
-    '</tr>';
-  }
-
-  var pianoRows = [
-    _pianoRow('Diagnosi 8 dimensioni',         true,  false),
-    _pianoRow('Score e semafori',               true,  false),
-    _pianoRow('1 azione/settimana',             true,  false),
-    _pianoRow('Ri-diagnosi trimestrale',        true,  false),
-    _pianoRow('Benchmark settoriale base',      true,  false),
-    _pianoRow('Modifica target manuale',        false, true),
-    _pianoRow('Benchmark peer dettagliato',     false, true),
-    _pianoRow('Piano azioni completo',          false, true),
-    _pianoRow('Report PDF',                     false, true),
-    _pianoRow('Simulazioni what-if',            false, true),
-    _pianoRow('Correlazioni dimensioni',        false, true),
-    _pianoRow('Cronistoria interventi',         false, true),
-    _pianoRow('Call strategiche mensili',       false, true),
-  ].join('');
-
   container.innerHTML =
     '<div style="max-width:560px;margin:0 auto;padding:40px 28px">' +
       '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:24px">Il tuo profilo</h1>' +
@@ -10514,37 +10487,216 @@ function renderPMIProfilo(container) {
         '<button onclick="salvaProfiloPMIAccount()" style="' + BTN_PRI + '">Salva</button>' +
       '</div>' +
 
-      // ── Card Piano ──────────────────────────────────────────────────────
-      '<div style="' + CARD + '">' +
-        '<div style="' + CARD_TTL + '">Il tuo piano</div>' +
-        '<div style="overflow-x:auto">' +
-          '<table style="width:100%;border-collapse:collapse">' +
-            '<thead>' +
-              '<tr>' +
-                '<th style="padding:8px 8px;font-size:10px;font-weight:700;color:rgba(26,26,46,0.4);text-align:left;border-bottom:1px solid rgba(0,0,0,0.07)">Funzionalità</th>' +
-                '<th style="padding:8px 8px;font-size:10px;font-weight:700;color:#3D5AFE;text-align:center;border-bottom:1px solid rgba(0,0,0,0.07);white-space:nowrap">Self<br><span style="font-weight:400;color:rgba(26,26,46,0.4)">€199/mese</span></th>' +
-                '<th style="padding:8px 8px;font-size:10px;font-weight:700;color:rgba(0,130,95,0.85);text-align:center;border-bottom:1px solid rgba(0,0,0,0.07);white-space:nowrap">Con esperto<br><span style="font-weight:400;color:rgba(26,26,46,0.4)">+€400/mese</span></th>' +
-              '</tr>' +
-            '</thead>' +
-            '<tbody>' + pianoRows + '</tbody>' +
-          '</table>' +
-        '</div>' +
-        '<button onclick="alert(\'Funzionalità in arrivo — ti contatteremo presto!\')" style="' + BTN_PRI + 'background:#3D5AFE;margin-top:16px">Passa a Guided — €599/mese</button>' +
-        '<div style="text-align:center;margin-top:10px">' +
-          '<a href="#" onclick="alert(\'Prenota una call singola — funzionalità in arrivo\');return false;" style="font-size:12px;color:rgba(26,26,46,0.45);text-decoration:underline;">Prenota una call singola — €120</a>' +
-        '</div>' +
-      '</div>' +
-
       // ── Azioni rapide ───────────────────────────────────────────────────
       '<div style="display:flex;gap:10px;margin-bottom:16px">' +
         '<button onclick="renderPrimoAccesso()" style="' + BTN_GHO + '">Rifai la diagnosi</button>' +
-        '<button onclick="alert(\'Prenota una call CSO — funzionalità in arrivo\')" style="flex:1;padding:12px 18px;background:#3D5AFE;color:#fff;border:none;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Prenota una call CSO — €120</button>' +
+        '<button onclick="prenotaCallSingola()" style="flex:1;padding:12px 18px;background:#3D5AFE;color:#fff;border:none;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Prenota una call — €120</button>' +
       '</div>' +
 
       // ── Logout ──────────────────────────────────────────────────────────
       '<button onclick="logout()" style="width:100%;padding:11px 16px;background:rgba(229,57,53,0.05);border:1px solid rgba(229,57,53,0.2);color:#E53935;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Esci</button>' +
     '</div>';
 }
+
+// ── Il tuo piano ─────────────────────────────────────────────────────────────
+
+function renderPMIPiano(container) {
+  var p = window._pmiProspect || {};
+  var pianoCorrente = p.piano || 'self';
+
+  function featCheck(testo) {
+    return '<div style="display:flex;align-items:flex-start;margin-bottom:7px;font-size:12px;color:#1a1a2e;line-height:1.4">' +
+      '<span style="color:rgba(0,130,95,0.85);font-size:13px;font-weight:700;margin-right:6px;flex-shrink:0">✓</span>' + testo + '</div>';
+  }
+  function featLock(testo) {
+    return '<div style="display:flex;align-items:flex-start;margin-bottom:7px;font-size:12px;color:rgba(26,26,46,0.35);line-height:1.4">' +
+      '<span style="font-size:11px;margin-right:6px;flex-shrink:0">🔒</span>' + testo + '</div>';
+  }
+
+  var cards = [
+    {
+      id: 'self',
+      titolo: 'Self',
+      prezzo: '€199/mese',
+      headerBg: 'rgba(61,90,254,0.06)',
+      accentColor: '#3D5AFE',
+      badgeLabel: null,
+      features: [
+        featCheck('Diagnosi 8 dimensioni'),
+        featCheck('Score e semafori'),
+        featCheck('1 azione AI/settimana'),
+        featCheck('Ri-diagnosi trimestrale'),
+        featCheck('Benchmark base'),
+        featCheck('Controfattuale trimestrale'),
+      ].join(''),
+      btnLabelAlt: 'Scegli Self',
+    },
+    {
+      id: 'guided_base',
+      titolo: 'Guided Base',
+      prezzo: '€399/mese',
+      headerBg: 'rgba(61,90,254,0.1)',
+      accentColor: '#3D5AFE',
+      badgeLabel: null,
+      features: [
+        featCheck('Tutto Self incluso'),
+        featCheck('1 call CSO al mese'),
+        featCheck('Piano azioni condiviso con CSO'),
+        featLock('Report PDF (solo Pro)'),
+        featLock('What-if (solo Pro)'),
+        featLock('Benchmark peer (solo Pro)'),
+      ].join(''),
+      btnLabelAlt: 'Passa a Guided Base',
+    },
+    {
+      id: 'guided_pro',
+      titolo: 'Guided Pro',
+      prezzo: '€599/mese',
+      headerBg: 'rgba(255,107,43,0.08)',
+      accentColor: '#FF6B2B',
+      badgeLabel: 'Completo',
+      features: [
+        featCheck('Tutto Self incluso'),
+        featCheck('Call CSO illimitate'),
+        featCheck('Piano azioni condiviso'),
+        featCheck('Report PDF mensile'),
+        featCheck('Simulazioni what-if'),
+        featCheck('Benchmark peer dettagliato'),
+        featCheck('Correlazioni dimensioni'),
+        featCheck('Cronistoria interventi'),
+      ].join(''),
+      btnLabelAlt: 'Passa a Guided Pro',
+    },
+  ];
+
+  var cardsHtml = cards.map(function(card) {
+    var isCurrent = card.id === pianoCorrente;
+    var border = isCurrent ? '2px solid ' + card.accentColor : '1px solid rgba(0,0,0,0.08)';
+
+    var topBadgeHtml = '';
+    if (isCurrent) {
+      topBadgeHtml = '<span style="position:absolute;top:10px;right:10px;background:#3D5AFE;color:white;border-radius:8px;font-size:10px;font-weight:700;padding:2px 8px;white-space:nowrap">Il tuo piano</span>';
+    } else if (card.badgeLabel) {
+      topBadgeHtml = '<span style="position:absolute;top:10px;right:10px;background:' + card.accentColor + ';color:white;border-radius:8px;font-size:10px;font-weight:700;padding:2px 8px;">' + card.badgeLabel + '</span>';
+    }
+
+    var btnLabel  = isCurrent ? 'Piano attuale' : card.btnLabelAlt;
+    var btnBg     = isCurrent ? 'rgba(0,0,0,0.08)' : card.accentColor;
+    var btnColor  = isCurrent ? 'rgba(26,26,46,0.35)' : 'white';
+    var btnOnclick = isCurrent ? '' : 'onclick="aggiornaPiano(\'' + card.id + '\')"';
+
+    return '<div style="position:relative;background:rgba(255,255,255,0.55);border:' + border + ';border-radius:14px;overflow:hidden;display:flex;flex-direction:column;">' +
+      '<div style="background:' + card.headerBg + ';padding:14px 16px 12px;position:relative;">' +
+        topBadgeHtml +
+        '<div style="font-size:14px;font-weight:700;color:#1a1a2e;">' + card.titolo + '</div>' +
+        '<div style="font-size:12px;color:rgba(26,26,46,0.55);margin-top:2px;">' + card.prezzo + '</div>' +
+      '</div>' +
+      '<div style="padding:14px 16px;flex:1;">' + card.features + '</div>' +
+      '<div style="padding:0 16px 16px;">' +
+        '<button ' + btnOnclick + (isCurrent ? ' disabled' : '') + ' style="width:100%;padding:10px;background:' + btnBg + ';color:' + btnColor + ';border:none;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:600;cursor:' + (isCurrent ? 'default' : 'pointer') + ';">' + btnLabel + '</button>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  container.innerHTML =
+    '<div style="max-width:820px;margin:0 auto;padding:40px 28px">' +
+      '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:6px">Il tuo piano</h1>' +
+      '<p style="font-size:13px;color:rgba(26,26,46,0.5);margin-bottom:28px">Scegli il livello di supporto per la tua azienda.</p>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;align-items:start;">' +
+        cardsHtml +
+      '</div>' +
+      '<div style="text-align:center;margin-top:20px">' +
+        '<a href="#" onclick="prenotaCallSingola();return false;" style="font-size:13px;color:#3D5AFE;text-decoration:underline;cursor:pointer;">Oppure prenota una call singola — €120</a>' +
+      '</div>' +
+    '</div>';
+}
+
+async function aggiornaPiano(nuovoPiano) {
+  var p = window._pmiProspect;
+  if (!p || !p.id) return;
+  try {
+    await sb.from('prospects').update({ piano: nuovoPiano }).eq('id', p.id);
+    window._pmiProspect = Object.assign({}, p, { piano: nuovoPiano });
+    var idx = prospects.findIndex(function(x){ return x.id === p.id; });
+    if (idx >= 0) prospects[idx] = window._pmiProspect;
+    showToast('Piano aggiornato! Un CSO ti contatterà entro 24 ore.');
+    renderPMIPiano(document.getElementById('pmi-main'));
+  } catch(e) {
+    showToast('Errore aggiornamento piano: ' + e.message, 'error');
+  }
+}
+
+function prenotaCallSingola() {
+  var pro = window._currentProfile  || {};
+  var up  = window._userProfileData || {};
+
+  var nomeCompleto = ((pro.nome || '') + ' ' + (pro.cognome || '')).trim();
+  var emailVal     = pro.email || window._currentUserEmail || '';
+  var telefonoVal  = pro.telefono || up.telefono || '';
+
+  var old = document.getElementById('_leva_call_modal');
+  if (old && old.parentNode) old.parentNode.removeChild(old);
+
+  var INP   = 'width:100%;box-sizing:border-box;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.08);color:#1a1a2e;border-radius:10px;padding:10px 12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;outline:none;margin-bottom:14px;';
+  var INP_RO = INP + 'background:rgba(0,0,0,0.03);color:rgba(26,26,46,0.4);';
+  var LABEL = 'font-size:11px;font-weight:600;color:rgba(26,26,46,0.45);margin-bottom:5px;display:block;';
+
+  var overlay = document.createElement('div');
+  overlay.id = '_leva_call_modal';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.3);z-index:9999;display:flex;align-items:center;justify-content:center;';
+  overlay.onclick = function(e) { if (e.target === overlay) overlay.parentNode.removeChild(overlay); };
+
+  overlay.innerHTML =
+    '<div style="background:#d8dbe2;border-radius:16px;max-width:420px;width:90%;padding:24px;position:relative;">' +
+      '<button onclick="document.getElementById(\'_leva_call_modal\').remove()" style="position:absolute;top:14px;right:14px;background:none;border:none;font-size:18px;cursor:pointer;color:rgba(26,26,46,0.4);line-height:1;">✕</button>' +
+      '<h2 style="font-size:16px;font-weight:700;color:#1a1a2e;margin-bottom:6px;margin-right:24px;">Prenota una call con un esperto</h2>' +
+      '<p style="font-size:12px;color:rgba(26,26,46,0.5);margin-bottom:20px;">Un consulente commerciale ti contatterà per fissare la sessione.</p>' +
+      '<label style="' + LABEL + '">Nome</label>' +
+      '<input style="' + INP_RO + '" value="' + _esc(nomeCompleto) + '" readonly>' +
+      '<label style="' + LABEL + '">Email</label>' +
+      '<input style="' + INP_RO + '" value="' + _esc(emailVal) + '" readonly>' +
+      '<label style="' + LABEL + '">Telefono</label>' +
+      '<input id="_leva_call_tel" style="' + INP + '" value="' + _esc(telefonoVal) + '" placeholder="+39 333 1234567" type="tel">' +
+      '<label style="' + LABEL + '">Preferenza oraria</label>' +
+      '<select id="_leva_call_orario" style="' + INP + '">' +
+        '<option value="mattina">Mattina (9-12)</option>' +
+        '<option value="pomeriggio">Pomeriggio (14-17)</option>' +
+        '<option value="sera">Sera (17-19)</option>' +
+      '</select>' +
+      '<button onclick="inviaRichiestaCall()" style="width:100%;padding:12px;background:#3D5AFE;color:white;border:none;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Invia richiesta</button>' +
+    '</div>';
+
+  document.body.appendChild(overlay);
+}
+
+async function inviaRichiestaCall() {
+  var pro = window._currentProfile  || {};
+  var p   = window._pmiProspect     || {};
+
+  var nomeCompleto = ((pro.nome || '') + ' ' + (pro.cognome || '')).trim();
+  var emailVal     = pro.email || window._currentUserEmail || '';
+  var tel          = document.getElementById('_leva_call_tel');
+  var orario       = document.getElementById('_leva_call_orario');
+  if (!tel || !orario) return;
+
+  try {
+    await sb.from('call_requests').insert({
+      prospect_id:       p.id || null,
+      nome:              nomeCompleto,
+      email:             emailVal,
+      telefono:          tel.value.trim(),
+      preferenza_oraria: orario.value,
+      status:            'pending',
+    });
+    var overlay = document.getElementById('_leva_call_modal');
+    if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+    showToast('Richiesta inviata! Sarai contattato entro 24 ore.');
+  } catch(e) {
+    showToast('Errore invio richiesta: ' + e.message, 'error');
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 function _esc(str) {
   if (!str) return '';
