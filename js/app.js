@@ -9101,7 +9101,7 @@ function _renderSelezioneSetting(container) {
       '</div>' +
 
       // Claim
-      '<p style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:24px;font-weight:700;color:#1a1a2e;text-align:center;letter-spacing:-0.3px;margin:0 0 10px;">Il <span style="color:#FF6B2B">direttore commerciale</span> che non hai mai assunto.</p>' +
+      '<p style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:24px;font-weight:700;color:#1a1a2e;text-align:center;letter-spacing:-0.3px;margin:0 0 10px;">Il <span style="color:#FF6B2B">Direttore Commerciale</span> che non hai mai assunto.</p>' +
       '<p style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:15px;font-weight:400;color:rgba(26,26,46,0.45);text-align:center;margin:0 0 36px;">Scopri quanto fatturato stai lasciando sul tavolo.</p>' +
 
       '<div style="width:100%;max-width:560px">' +
