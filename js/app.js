@@ -9114,7 +9114,7 @@ function _renderSelezioneSetting(container) {
           '</svg>' +
           '<input id="pmi-ai-input" oninput="pmiAiOnInput()" onkeydown="if(event.key===\'Enter\'&&!this.disabled)pmiSuggerisciSettori()" ' +
             'style="width:100%;box-sizing:border-box;height:72px;background:rgba(255,255,255,0.55);border:1.5px solid rgba(255,255,255,0.7);border-radius:14px;padding:0 150px 0 52px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:18px;color:#1a1a2e;outline:none;transition:border-color .15s;" ' +
-            'placeholder="Descrivi la tua attività..." ' +
+            'placeholder="Es: piadineria, carrozzeria, negozio scarpe..." ' +
             'onfocus="this.style.borderColor=\'rgba(61,90,254,0.4)\'" onblur="this.style.borderColor=\'rgba(255,255,255,0.7)\'">' +
           '<button id="pmi-ai-btn" onclick="pmiSuggerisciSettori()" disabled ' +
             'style="position:absolute;right:10px;top:50%;transform:translateY(-50%);padding:12px 28px;background:#3D5AFE;color:#fff;border:none;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;opacity:0.5;transition:opacity .15s;white-space:nowrap">' +
