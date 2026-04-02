@@ -355,9 +355,7 @@ var _TIPS_FALLBACK = [
 // isCustom: true se settore generato da AI (non nei 32 standard)
 // Chiamata da pmiAvviaDiagnosi (app.js) prima di avviare le domande
 async function _mostraPopupAttesaAI(nomeSettore, isCustom) {
-  var MIN_DURATION = isCustom ? 6000 : 4000;
-
-  var hasPendingAI = isCustom && window._generaSettorePromise && !window._generaSettoreResolved;
+  var MIN_DURATION = 4000; // sempre 4s fissi — le domande non dipendono dall'AI
 
   var settoreKey = (_diagProspect && _diagProspect.settore) || window._pmiSelectedSettore || '';
   var customData = window._settoriCustomCache && window._settoriCustomCache[settoreKey];
@@ -458,15 +456,14 @@ async function _mostraPopupAttesaAI(nomeSettore, isCustom) {
   var progStart = Date.now();
   var progIv = setInterval(function() {
     var elapsed = Date.now() - progStart;
-    var maxPct  = (hasPendingAI && !window._generaSettoreResolved) ? 85 : 100;
+    var maxPct  = 100;
     var pct     = Math.min(Math.round((elapsed / MIN_DURATION) * maxPct), maxPct);
     progFill.style.width = pct + '%';
   }, 200);
 
   // ── Attendi: minimo 6s, + AI se custom con promise pendente ───────────────
-  var waits = [new Promise(function(r){ setTimeout(r, MIN_DURATION); })];
-  if (hasPendingAI) waits.push(window._generaSettorePromise.catch(function(){}));
-  await Promise.all(waits);
+  // Aspetta solo il timer fisso — l'AI continua in background mentre il titolare risponde
+  await new Promise(function(r){ setTimeout(r, MIN_DURATION); });
 
   clearInterval(tipIv);
   clearInterval(progIv);
