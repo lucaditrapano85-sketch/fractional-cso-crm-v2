@@ -9495,19 +9495,11 @@ async function pmiAvviaDiagnosi() {
     document.body.appendChild(diagOverlay);
   }
 
-  // Popup di transizione: appare PRIMA delle domande
-  // Custom → attende window._generaSettorePromise (min 6s)
-  // Standard → dura 4s fissi
-  var nomePopup = window._generaSettoreNome
-    || (window._settoriCustomCache && window._settoriCustomCache[_pmiSelectedSettore] && window._settoriCustomCache[_pmiSelectedSettore].nome_display)
-    || _pmiSelectedSettore
-    || '';
-  var isCustomSettore = !FAMIGLIA_SETTORE[_pmiSelectedSettore];
-  await _mostraPopupAttesaAI(nomePopup, isCustomSettore);
-
-  // Lancia wizard diagnosi esistente in modalità PMI
-  window._pmiDiagnosiMode = true;
-  apriDiagnosi();
+  // Popup di transizione → le domande partono nel callback
+  mostraPopupTransizione(function() {
+    window._pmiDiagnosiMode = true;
+    apriDiagnosi();
+  });
 }
 
 // Chiamata da chiudiDiagnosi() in modalità titolare

@@ -342,139 +342,145 @@ function diagNext() {
   }
 }
 
-// Tips hardcoded di fallback (usati se i tips AI non sono ancora disponibili)
-var _TIPS_FALLBACK = [
-  { tipo: 'lo_sapevi',     testo: 'Il 73% delle PMI italiane non ha un processo di follow-up strutturato' },
-  { tipo: 'azione_rapida', testo: 'Hai preventivi aperti da più di 30 giorni? Richiamali — il 40% si chiude' },
-  { tipo: 'lo_sapevi',     testo: 'Le aziende che misurano il close rate vendono in media il 35% in più' },
-  { tipo: 'azione_rapida', testo: 'Fai una lista dei tuoi 10 migliori clienti. Li hai sentiti nell\'ultimo mese?' },
-  { tipo: 'lo_sapevi',     testo: 'Solo il 12% delle PMI italiane usa un CRM — il resto perde contatti ogni giorno' },
-  { tipo: 'azione_rapida', testo: 'Chiedi a 3 clienti soddisfatti di lasciarti una recensione Google questa settimana' }
-];
+// Popup di transizione prima della diagnosi.
+// Standard: 4s fissi. Custom (settore AI): attende _generaSettorePromise (min 6s).
+// Il callback avvia le domande dopo il fade out.
+function mostraPopupTransizione(callback) {
+  var isCustom = !!(window._generaSettorePromise && !window._generaSettoreResolved);
+  var MIN_DURATION = isCustom ? 6000 : 4000;
 
-// isCustom: true se settore generato da AI (non nei 32 standard)
-// Chiamata da pmiAvviaDiagnosi (app.js) prima di avviare le domande
-async function _mostraPopupAttesaAI(nomeSettore, isCustom) {
-  var MIN_DURATION = 4000; // sempre 4s fissi — le domande non dipendono dall'AI
-
-  var settoreKey = (_diagProspect && _diagProspect.settore) || window._pmiSelectedSettore || '';
-  var customData = window._settoriCustomCache && window._settoriCustomCache[settoreKey];
-  var allTips = (customData && Array.isArray(customData.tips) && customData.tips.length >= 3)
-    ? customData.tips
-    : _TIPS_FALLBACK;
-
-  var nomeEsc = String(nomeSettore || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-
-  // Rimuovi eventuale popup già presente
-  var old = document.getElementById('leva-attesa-popup');
-  if (old && old.parentNode) old.parentNode.removeChild(old);
-
-  // Inserisci keyframes nello <head> (funziona sempre, non via innerHTML)
+  // Inject @keyframes spin una volta sola
   if (!document.getElementById('_leva_spin_style')) {
     var styleEl = document.createElement('style');
     styleEl.id = '_leva_spin_style';
-    styleEl.textContent = '@keyframes _spin { to { transform: rotate(360deg); } }';
+    styleEl.textContent = '@keyframes spin { to { transform: rotate(360deg); } }';
     document.head.appendChild(styleEl);
   }
 
+  var old = document.getElementById('leva-attesa-popup');
+  if (old && old.parentNode) old.parentNode.removeChild(old);
+
+  var tips = [
+    { label: 'Lo sapevi?',    color: '#3D5AFE',              testo: 'Il 73% delle PMI italiane non ha un processo di follow-up strutturato.' },
+    { label: 'Azione rapida', color: 'rgba(0,130,95,0.85)',  testo: 'Hai preventivi aperti da più di 30 giorni? Richiamali — il 40% si chiude con una telefonata.' },
+    { label: 'Lo sapevi?',    color: '#3D5AFE',              testo: 'Le aziende che misurano il close rate vendono in media il 35% in più.' },
+    { label: 'Azione rapida', color: 'rgba(0,130,95,0.85)',  testo: "Fai una lista dei tuoi 10 migliori clienti. Li hai sentiti nell'ultimo mese?" },
+    { label: 'Lo sapevi?',    color: '#3D5AFE',              testo: 'Solo il 12% delle PMI usa un CRM. Il resto perde contatti ogni giorno.' },
+    { label: 'Azione rapida', color: 'rgba(0,130,95,0.85)',  testo: 'Chiedi a 3 clienti soddisfatti una recensione Google questa settimana.' },
+  ];
+
+  // ── DOM ────────────────────────────────────────────────────────────────────
   var overlay = document.createElement('div');
   overlay.id = 'leva-attesa-popup';
-  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.35);z-index:9999;display:flex;align-items:center;justify-content:center;';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.35);z-index:99999;display:flex;align-items:center;justify-content:center;';
 
   var card = document.createElement('div');
-  card.style.cssText = 'font-family:\'Plus Jakarta Sans\',sans-serif;background:#d8dbe2;border-radius:20px;max-width:420px;width:90%;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,0.25);text-align:center;';
+  card.style.cssText = "font-family:'Plus Jakarta Sans',sans-serif;background:#d8dbe2;border-radius:20px;max-width:420px;width:90%;padding:28px;text-align:center;";
 
-  // Spinner CSS (non SVG)
   var spinner = document.createElement('div');
-  spinner.style.cssText = 'width:48px;height:48px;border:4px solid rgba(61,90,254,0.15);border-top-color:#3D5AFE;border-radius:50%;animation:_spin 1.5s linear infinite;margin:0 auto 20px;';
+  spinner.style.cssText = 'width:48px;height:48px;border:4px solid rgba(61,90,254,0.15);border-top-color:#3D5AFE;border-radius:50%;animation:spin 1.5s linear infinite;margin:0 auto 20px;';
 
-  // Titolo
-  var title = document.createElement('div');
-  title.style.cssText = 'font-size:16px;font-weight:500;color:#1a1a2e;margin-bottom:6px;';
-  title.textContent = 'Stiamo preparando i tuoi risultati';
+  var titleEl = document.createElement('div');
+  titleEl.style.cssText = 'font-size:16px;font-weight:500;color:#1a1a2e;margin-bottom:20px;';
+  titleEl.textContent = 'Stiamo preparando la tua diagnosi';
 
-  // Sottotitolo settore
-  var subtitle = document.createElement('div');
-  subtitle.style.cssText = 'font-size:12px;color:rgba(26,26,46,0.45);margin-bottom:22px;';
-  subtitle.textContent = nomeEsc;
-
-  // Tip card
   var tipCard = document.createElement('div');
-  tipCard.style.cssText = 'background:rgba(255,255,255,0.65);border:1px solid rgba(255,255,255,0.8);border-radius:14px;padding:20px;min-height:120px;margin-bottom:20px;transition:opacity 0.3s ease;display:flex;flex-direction:column;justify-content:center;';
+  tipCard.style.cssText = 'background:rgba(255,255,255,0.65);border:1px solid rgba(255,255,255,0.8);border-radius:14px;padding:20px;min-height:100px;margin-bottom:20px;transition:opacity 0.3s ease;text-align:left;';
 
   var tipLabel = document.createElement('div');
-  tipLabel.style.cssText = 'font-size:10px;font-weight:700;letter-spacing:0.6px;margin-bottom:8px;';
+  tipLabel.style.cssText = 'font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;';
 
   var tipText = document.createElement('div');
-  tipText.style.cssText = 'font-size:13px;color:#1a1a2e;line-height:1.55;';
+  tipText.style.cssText = 'font-size:14px;color:#1a1a2e;line-height:1.5;';
 
   tipCard.appendChild(tipLabel);
   tipCard.appendChild(tipText);
 
-  // Barra progresso
+  var progRow = document.createElement('div');
+  progRow.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;';
+
+  var progLbl = document.createElement('div');
+  progLbl.style.cssText = 'font-size:11px;color:rgba(26,26,46,0.5);';
+  progLbl.textContent = 'Analisi mercato...';
+
+  var progPct = document.createElement('div');
+  progPct.style.cssText = 'font-size:11px;font-weight:600;color:#3D5AFE;';
+  progPct.textContent = '0%';
+
+  progRow.appendChild(progLbl);
+  progRow.appendChild(progPct);
+
   var progWrap = document.createElement('div');
-  progWrap.style.cssText = 'background:rgba(0,0,0,0.06);border-radius:3px;height:6px;overflow:hidden;';
+  progWrap.style.cssText = 'height:6px;background:rgba(0,0,0,0.06);border-radius:3px;overflow:hidden;';
 
   var progFill = document.createElement('div');
   progFill.style.cssText = 'height:100%;background:#3D5AFE;border-radius:3px;width:0%;transition:width 0.4s ease;';
 
   progWrap.appendChild(progFill);
-
   card.appendChild(spinner);
-  card.appendChild(title);
-  card.appendChild(subtitle);
+  card.appendChild(titleEl);
   card.appendChild(tipCard);
+  card.appendChild(progRow);
   card.appendChild(progWrap);
   overlay.appendChild(card);
   document.body.appendChild(overlay);
 
-  // ── Tips rotation ──────────────────────────────────────────────────────────
+  // ── Tips rotation ogni 7s ──────────────────────────────────────────────────
   var tipIdx = 0;
-
-  function _setTip(idx) {
-    var tip  = allTips[idx % allTips.length];
-    var isLo = tip.tipo === 'lo_sapevi';
-    tipLabel.style.color = isLo ? '#3D5AFE' : 'rgba(0,130,95,0.85)';
-    tipLabel.textContent = isLo ? '💡 LO SAPEVI?' : '⚡ AZIONE RAPIDA';
-    tipText.textContent  = tip.testo;
+  function setTip(idx) {
+    var t = tips[idx % tips.length];
+    tipLabel.style.color = t.color;
+    tipLabel.textContent = t.label;
+    tipText.textContent  = t.testo;
   }
-
-  _setTip(0);
+  setTip(0);
 
   var tipIv = setInterval(function() {
     tipCard.style.opacity = '0';
-    setTimeout(function() {
-      tipIdx++;
-      var cData = window._settoriCustomCache && window._settoriCustomCache[settoreKey];
-      if (cData && Array.isArray(cData.tips) && cData.tips.length >= 3) allTips = cData.tips;
-      _setTip(tipIdx);
-      tipCard.style.opacity = '1';
-    }, 300);
+    setTimeout(function() { tipIdx++; setTip(tipIdx); tipCard.style.opacity = '1'; }, 300);
   }, 7000);
 
-  // ── Barra progresso ────────────────────────────────────────────────────────
+  // ── Progress bar: 0→85% in 20s poi si ferma ───────────────────────────────
+  var progLabels = ['Analisi mercato...', 'Calibrazione benchmark...', 'Personalizzazione diagnosi...'];
   var progStart = Date.now();
   var progIv = setInterval(function() {
-    var elapsed = Date.now() - progStart;
-    var maxPct  = 100;
-    var pct     = Math.min(Math.round((elapsed / MIN_DURATION) * maxPct), maxPct);
+    var pct = Math.min(Math.round(((Date.now() - progStart) / 20000) * 85), 85);
     progFill.style.width = pct + '%';
+    progPct.textContent  = pct + '%';
+    progLbl.textContent  = progLabels[pct < 30 ? 0 : pct < 60 ? 1 : 2];
   }, 200);
 
-  // ── Attendi: minimo 6s, + AI se custom con promise pendente ───────────────
-  // Aspetta solo il timer fisso — l'AI continua in background mentre il titolare risponde
-  await new Promise(function(r){ setTimeout(r, MIN_DURATION); });
+  // ── Chiusura ───────────────────────────────────────────────────────────────
+  var _closed = false;
+  function closePopup() {
+    if (_closed) return;
+    _closed = true;
+    clearInterval(tipIv);
+    clearInterval(progIv);
+    progFill.style.width = '100%';
+    progPct.textContent  = '100%';
+    setTimeout(function() {
+      overlay.style.transition = 'opacity 0.5s ease';
+      overlay.style.opacity    = '0';
+      setTimeout(function() {
+        if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+        if (callback) callback();
+      }, 500);
+    }, 500);
+  }
 
-  clearInterval(tipIv);
-  clearInterval(progIv);
+  // Standard: timer fisso
+  var minTimer = setTimeout(closePopup, MIN_DURATION);
 
-  progFill.style.width = '100%';
-  await new Promise(function(r){ setTimeout(r, 400); });
-
-  overlay.style.transition = 'opacity 0.5s ease';
-  overlay.style.opacity = '0';
-  await new Promise(function(r){ setTimeout(r, 500); });
-  if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+  // Custom: aspetta anche la promise AI (min MIN_DURATION)
+  if (isCustom && window._generaSettorePromise) {
+    var startTs = Date.now();
+    window._generaSettorePromise.catch(function(){}).then(function() {
+      var wait = Math.max(0, MIN_DURATION - (Date.now() - startTs));
+      clearTimeout(minTimer);
+      setTimeout(closePopup, wait);
+    });
+  }
 }
 
 async function salvaDiagnosiScore() {
