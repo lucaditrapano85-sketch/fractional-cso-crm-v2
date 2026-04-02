@@ -9333,8 +9333,12 @@ async function pmiSuggerisciSettori() {
 
 // Prefisso codice AI → macro ID app
 var _CODICE_PREFIX_TO_MACRO = {
+  // 6 macro standard
   commercio:'commercio', servizi:'servizi', manifatturiero:'manifatturiero',
-  edilizia:'edilizia', alimentare:'alimentare', tech:'tech'
+  edilizia:'edilizia', alimentare:'alimentare', tech:'tech',
+  // safety net — prefix non standard che l'AI può ancora generare
+  ristorazione:'alimentare', benessere:'servizi', sanitario:'servizi',
+  automotive:'servizi', artigianato:'manifatturiero', agricoltura:'commercio',
 };
 
 // Step 2: utente clicca un'opzione → abilita diagnosi subito, genera in background

@@ -106,13 +106,27 @@ Le descrizioni degli step devono essere specifiche per il settore, in italiano, 
       if (!input) throw new Error('Campo "input" obbligatorio per suggerisci_settori');
 
       return {
-        system: 'Sei un esperto di classificazione settoriale PMI italiane. L\'utente descrive la sua attività. Suggerisci 3-4 micro-settori specifici e distinti. Rispondi SOLO in JSON valido.',
+        system: `Sei un esperto di classificazione settoriale PMI italiane. L'utente descrive la sua attività. Suggerisci 3-4 micro-settori specifici e distinti. Rispondi SOLO in JSON valido.
+
+REGOLA OBBLIGATORIA: il codice di ogni settore DEVE iniziare con uno di questi 6 prefissi. NON inventare altri prefissi.
+
+I 6 macro-settori ammessi sono:
+- alimentare_ → per TUTTA la ristorazione (ristoranti, pizzerie, piadinerie, bar, pasticcerie, gelaterie, kebab, panifici), produzione food, vini, birra, conserve
+- servizi_ → per servizi alla persona (parrucchiere, estetista, palestra, dentista, veterinario), servizi auto (carrozzeria, gommista, autolavaggio), artigiani di servizio (idraulico, elettricista), agenzie (immobiliare, viaggi), scuole, creativi (fotografo, tatuatore), consulenza, formazione, IT
+- manifatturiero_ → per chi PRODUCE beni fisici: falegnameria, sartoria, meccanica, packaging, tessile
+- commercio_ → per chi VENDE prodotti in negozio o online: abbigliamento, scarpe, ferramenta, libreria, elettronica, pesca sportiva, vivaio, giocattoli
+- edilizia_ → per costruzioni, impianti, ristrutturazioni, serramenti
+- tech_ → per SaaS, digital agency, system integrator, automazione
+
+Esempi: una piadineria = alimentare_piadineria, un dentista = servizi_dentista, una carrozzeria = servizi_carrozzeria, una falegnameria = manifatturiero_falegnameria, un vivaio = commercio_vivaio.
+
+NON usare MAI prefissi come ristorazione_, benessere_, sanitario_, automotive_, artigianato_, agricoltura_ — questi NON esistono nel sistema.`,
         user: `L'utente ha scritto: "${input}". Genera un JSON array con 3-4 opzioni:
 [
   { "codice": "commercio_pesca_sportiva", "nome": "Negozio pesca sportiva", "descrizione": "Vendita esche, canne, mulinelli, abbigliamento tecnico" },
   ...
 ]
-Ogni opzione deve essere un settore SPECIFICO e DISTINTO dagli altri. Non accorpare settori diversi. Ogni codice deve seguire il formato macro_micro (es. commercio_pesca_sportiva, alimentare_acquacoltura).`,
+Ogni opzione deve essere un settore SPECIFICO e DISTINTO dagli altri. Non accorpare settori diversi. Ogni codice deve seguire il formato macro_micro con SOLO i 6 prefissi ammessi.`,
       };
     }
 
