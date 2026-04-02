@@ -452,7 +452,7 @@ async function _mostraPopupAttesaAI(nomeSettore, isCustom) {
       _setTip(tipIdx);
       tipCard.style.opacity = '1';
     }, 300);
-  }, 4000);
+  }, 7000);
 
   // ── Barra progresso ────────────────────────────────────────────────────────
   var progStart = Date.now();
