@@ -9265,8 +9265,14 @@ async function pmiSuggerisciSettori() {
   if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.textContent = 'Cerca'; }
 }
 
-// Step 2: utente clicca un'opzione → genera struttura completa
-async function pmiSelezionaESuggerisci(idx) {
+// Prefisso codice AI → macro ID app
+var _CODICE_PREFIX_TO_MACRO = {
+  commercio:'commercio', servizi:'servizi', manifatturiero:'manifatturiero',
+  edilizia:'edilizia', alimentare:'alimentare', tech:'tech'
+};
+
+// Step 2: utente clicca un'opzione → abilita diagnosi subito, genera in background
+function pmiSelezionaESuggerisci(idx) {
   var suggerimenti = window._pmiAiSuggerimenti || [];
   var scelta = suggerimenti[idx];
   if (!scelta) return;
@@ -9279,57 +9285,63 @@ async function pmiSelezionaESuggerisci(idx) {
   if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; }
 
   var nomeScelta = scelta.nome || scelta.nome_display || scelta.codice;
-  if (msg) msg.innerHTML = '<span style="color:rgba(26,26,46,0.55)">⏳ Leva sta generando la struttura per <strong>' + _esc(nomeScelta) + '</strong>... (15-25 sec)</span>';
 
-  try {
-    var inputGenerazione = scelta.codice + ' — ' + nomeScelta;
-    var res  = await fetch('/api/ai', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: 'genera_settore', data: { input: inputGenerazione } })
-    });
-    var json = await res.json();
-    if (!json.ok || !json.data) throw new Error(json.error || 'Risposta non valida');
+  // Abilita subito il bottone diagnosi senza aspettare l'AI
+  _pmiSelectedSettore = scelta.codice;
+  _pmiSelectedMacro   = _CODICE_PREFIX_TO_MACRO[scelta.codice.split('_')[0]] || 'servizi';
+  document.querySelectorAll('#pmi-macro-grid .pmi-select-card, #pmi-micro-grid .pmi-select-card').forEach(function(el) {
+    el.classList.remove('selected');
+  });
+  _pmiUpdateAvviaBtn();
 
-    var sd = json.data;
+  if (msg) msg.innerHTML =
+    '<span style="color:rgba(0,130,95,0.85);font-weight:600">✓ ' + _esc(nomeScelta) + ' selezionato!</span>' +
+    '<span style="color:rgba(26,26,46,0.55)"> Scegli il fatturato e inizia — Leva elabora la struttura mentre rispondi.</span>';
 
-    // Salva in settori_custom su Supabase
-    if (typeof sb !== 'undefined') {
-      await sb.from('settori_custom').upsert({
-        codice:          sd.codice,
-        nome_display:    sd.nome_display,
-        macro_settore:   sd.macro_settore,
-        dimensioni:      sd.dimensioni,
-        moduli:          sd.moduli,
-        benchmark_media: sd.benchmark_media,
-        created_by:      window._currentUserId || null,
-      }, { onConflict: 'codice' });
+  // Genera struttura in background
+  window._generaSettoreNome     = nomeScelta;
+  window._generaSettoreResolved = false;
+  window._generaSettorePromise  = (async function() {
+    try {
+      var inputGenerazione = scelta.codice + ' — ' + nomeScelta;
+      var res  = await fetch('/api/ai', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'genera_settore', data: { input: inputGenerazione } })
+      });
+      var json = await res.json();
+      if (!json.ok || !json.data) throw new Error(json.error || 'Risposta non valida');
+
+      var sd = json.data;
+
+      // Salva in settori_custom su Supabase
+      if (typeof sb !== 'undefined') {
+        await sb.from('settori_custom').upsert({
+          codice:          sd.codice,
+          nome_display:    sd.nome_display,
+          macro_settore:   sd.macro_settore,
+          dimensioni:      sd.dimensioni,
+          moduli:          sd.moduli,
+          benchmark_media: sd.benchmark_media,
+          created_by:      window._currentUserId || null,
+        }, { onConflict: 'codice' });
+      }
+
+      // Cache in memoria
+      window._settoriCustomCache[sd.codice] = sd;
+
+      // Affina macro con dato preciso dall'AI
+      _pmiSelectedMacro = _AI_MACRO_TO_ID[sd.macro_settore] || _pmiSelectedMacro;
+
+      return sd;
+    } catch(e) {
+      console.error('pmiSelezionaESuggerisci background:', e);
+      throw e;
+    } finally {
+      window._generaSettoreResolved = true;
+      if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
     }
-
-    // Cache in memoria
-    window._settoriCustomCache[sd.codice] = sd;
-
-    // Imposta come settore selezionato
-    _pmiSelectedSettore = sd.codice;
-    _pmiSelectedMacro   = _AI_MACRO_TO_ID[sd.macro_settore] || 'servizi';
-
-    // Deseleziona card macro/micro
-    document.querySelectorAll('#pmi-macro-grid .pmi-select-card, #pmi-micro-grid .pmi-select-card').forEach(function(el) {
-      el.classList.remove('selected');
-    });
-
-    _pmiUpdateAvviaBtn();
-
-    if (msg) msg.innerHTML =
-      '<span style="color:rgba(0,130,95,0.85);font-weight:600">✓ Settore "' + _esc(sd.nome_display) + '" creato!</span>' +
-      '<span style="color:rgba(26,26,46,0.55)"> Scegli il fatturato e clicca "Inizia la diagnosi".</span>';
-
-  } catch(e) {
-    console.error('pmiSelezionaESuggerisci:', e);
-    if (msg) msg.innerHTML = '<span style="color:#E53935">Errore nella generazione. Riprova o scegli un settore dalla lista.</span>';
-  }
-
-  if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
+  })();
 }
 
 async function pmiAvviaDiagnosi() {

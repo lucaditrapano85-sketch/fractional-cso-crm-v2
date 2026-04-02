@@ -334,6 +334,134 @@ function diagNext() {
   }
 }
 
+async function _mostraPopupAttesaAI(nomeSettore) {
+  var TIPS_A = [
+    'Il 73% delle PMI italiane non ha un processo di follow-up strutturato',
+    'Le aziende che misurano il close rate vendono in media il 35% in più',
+    'Il 60% dei preventivi si chiude con una semplice telefonata di follow-up',
+    'Solo il 12% delle PMI italiane usa un CRM — il resto perde contatti ogni giorno'
+  ];
+  var TIPS_B = [
+    'Hai preventivi aperti da più di 30 giorni? Richiamali domani — il 40% si chiude',
+    'Fai una lista dei tuoi 10 migliori clienti. Li hai sentiti nell\'ultimo mese?',
+    'Chiedi a 3 clienti soddisfatti di lasciarti una recensione Google questa settimana'
+  ];
+  var allTips = [];
+  for (var ti = 0; ti < 6; ti++) {
+    allTips.push(ti % 2 === 0
+      ? { tipo: 'A', testo: TIPS_A[Math.floor(ti/2) % TIPS_A.length] }
+      : { tipo: 'B', testo: TIPS_B[Math.floor(ti/2) % TIPS_B.length] }
+    );
+  }
+  var nomeEsc = String(nomeSettore).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+  var overlay = document.createElement('div');
+  overlay.id = 'leva-attesa-popup';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:9999;display:flex;align-items:center;justify-content:center;';
+  overlay.innerHTML =
+    '<style>' +
+      '@keyframes leva-spin{to{transform:rotate(360deg)}}' +
+      '#leva-tip-card{transition:opacity 0.3s ease}' +
+    '</style>' +
+    '<div id="leva-attesa-card" style="font-family:\'Plus Jakarta Sans\',sans-serif;background:#d8dbe2;border-radius:20px;max-width:420px;width:90%;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,0.25)">' +
+
+      '<div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">' +
+        '<svg width="36" height="36" viewBox="0 0 36 36" style="animation:leva-spin 1s linear infinite;flex-shrink:0">' +
+          '<circle cx="18" cy="18" r="14" fill="none" stroke="rgba(61,90,254,0.15)" stroke-width="3"/>' +
+          '<path d="M18 4 A14 14 0 0 1 32 18" fill="none" stroke="#3D5AFE" stroke-width="3" stroke-linecap="round"/>' +
+        '</svg>' +
+        '<div>' +
+          '<div style="font-size:16px;font-weight:500;color:#1a1a2e">Stiamo personalizzando Leva per te</div>' +
+          '<div style="font-size:12px;color:rgba(26,26,46,0.45);margin-top:2px">' + nomeEsc + '</div>' +
+        '</div>' +
+      '</div>' +
+
+      '<div id="leva-tip-card" style="background:rgba(255,255,255,0.65);border:1px solid rgba(255,255,255,0.8);border-radius:14px;padding:14px 16px;margin-bottom:16px;min-height:72px">' +
+        '<div id="leva-tip-label" style="font-size:10px;font-weight:700;letter-spacing:0.6px;margin-bottom:6px"></div>' +
+        '<div id="leva-tip-text" style="font-size:13px;color:#1a1a2e;line-height:1.5"></div>' +
+      '</div>' +
+
+      '<div style="display:flex;gap:6px;justify-content:center;margin-bottom:18px" id="leva-dots">' +
+        [0,1,2,3,4,5].map(function(){ return '<div class="leva-dot" style="width:7px;height:7px;border-radius:50%;background:rgba(61,90,254,0.2);transition:background .3s"></div>'; }).join('') +
+      '</div>' +
+
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">' +
+        '<div id="leva-prog-label" style="font-size:11px;color:rgba(26,26,46,0.5)">Analisi mercato...</div>' +
+        '<div id="leva-prog-pct" style="font-size:11px;font-weight:600;color:#3D5AFE">0%</div>' +
+      '</div>' +
+      '<div style="background:rgba(0,0,0,0.06);border-radius:3px;height:6px;overflow:hidden">' +
+        '<div id="leva-prog-fill" style="height:100%;background:#3D5AFE;border-radius:3px;width:0%;transition:width 0.5s ease"></div>' +
+      '</div>' +
+
+    '</div>';
+  document.body.appendChild(overlay);
+
+  var tipIdx = 0;
+  function _setTip(idx) {
+    var tip    = allTips[idx % allTips.length];
+    var card   = document.getElementById('leva-tip-card');
+    var label  = document.getElementById('leva-tip-label');
+    var text   = document.getElementById('leva-tip-text');
+    var dots   = document.querySelectorAll('.leva-dot');
+    if (!card) return;
+    if (tip.tipo === 'A') {
+      card.style.background = 'rgba(255,255,255,0.65)';
+      label.style.color = '#3D5AFE';
+      label.textContent = '🕐 LO SAPEVI?';
+    } else {
+      card.style.background = 'rgba(255,255,255,0.55)';
+      label.style.color = 'rgba(0,130,95,0.85)';
+      label.textContent = '✓ AZIONE RAPIDA';
+    }
+    text.textContent = tip.testo;
+    dots.forEach(function(d, i){ d.style.background = i === (idx % 6) ? '#3D5AFE' : 'rgba(61,90,254,0.2)'; });
+  }
+  _setTip(0);
+
+  var tipIv = setInterval(function() {
+    var card = document.getElementById('leva-tip-card');
+    if (!card) return;
+    card.style.opacity = '0';
+    setTimeout(function() {
+      tipIdx++;
+      _setTip(tipIdx);
+      if (card) card.style.opacity = '1';
+    }, 300);
+  }, 4000);
+
+  var progLabels = ['Analisi mercato...', 'Calibrazione benchmark...', 'Generazione azioni...'];
+  var progStart   = Date.now();
+  var progIv = setInterval(function() {
+    var elapsed = Date.now() - progStart;
+    var raw     = Math.min(elapsed / 25000, 1);
+    var pct     = Math.round(85 * (1 - Math.pow(1 - raw, 2)));
+    var fill    = document.getElementById('leva-prog-fill');
+    var pctEl   = document.getElementById('leva-prog-pct');
+    var lblEl   = document.getElementById('leva-prog-label');
+    if (fill)  fill.style.width  = pct + '%';
+    if (pctEl) pctEl.textContent = pct + '%';
+    if (lblEl) lblEl.textContent = progLabels[pct < 30 ? 0 : pct < 65 ? 1 : 2];
+  }, 300);
+
+  try { await window._generaSettorePromise; } catch(e) { /* continua comunque */ }
+
+  clearInterval(tipIv);
+  clearInterval(progIv);
+
+  var fill  = document.getElementById('leva-prog-fill');
+  var pctEl = document.getElementById('leva-prog-pct');
+  var lblEl = document.getElementById('leva-prog-label');
+  if (fill)  fill.style.width  = '100%';
+  if (pctEl) pctEl.textContent = '100%';
+  if (lblEl) lblEl.textContent = 'Struttura pronta!';
+
+  await new Promise(function(r){ setTimeout(r, 600); });
+  overlay.style.transition = 'opacity 0.4s ease';
+  overlay.style.opacity    = '0';
+  await new Promise(function(r){ setTimeout(r, 400); });
+  if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+}
+
 async function salvaDiagnosiScore() {
   var _diagDimsAll = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
   // Calcola score per ogni dimensione — 0 se non compilata
@@ -351,8 +479,14 @@ async function salvaDiagnosiScore() {
   }
   _diagCompletata = true;
 
+  // Se settore custom e generazione AI ancora in corso → popup di attesa
+  var settoreIsCustom = _diagProspect && _diagProspect.settore && !FAMIGLIA_SETTORE[_diagProspect.settore];
+  if (settoreIsCustom && window._generaSettorePromise && !window._generaSettoreResolved) {
+    var nomeAttesa = window._generaSettoreNome || _diagProspect.settore;
+    await _mostraPopupAttesaAI(nomeAttesa);
+  }
+
   // Mostra risultati
-  mostraRisultatoDiagnosi(nuoviDims);
 
   // Salva su Supabase
   try {
