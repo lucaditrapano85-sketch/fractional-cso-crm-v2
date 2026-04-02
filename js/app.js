@@ -9090,18 +9090,19 @@ function _renderSelezioneSetting(container) {
 
       // Logo
       '<div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:16px">' +
-        '<svg width="100" height="100" viewBox="8 4 44 44" fill="none">' +
+        '<svg width="90" height="90" viewBox="8 4 44 44" fill="none">' +
           '<rect x="8" y="34" width="44" height="4.5" rx="2.25" fill="#3D5AFE"/>' +
           '<rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="#1a1a2e"/>' +
           '<circle cx="29.75" cy="36.25" r="6" fill="#1a1a2e"/>' +
           '<line x1="29.75" y1="36.25" x2="47" y2="22" stroke="#FF6B2B" stroke-width="3.5" stroke-linecap="round"/>' +
           '<circle cx="47" cy="22" r="3.5" fill="#FF6B2B"/>' +
         '</svg>' +
-        '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:64px;font-weight:700;color:#1a1a2e;letter-spacing:-2px;line-height:1">eva</span>' +
+        '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:56px;font-weight:700;color:#1a1a2e;letter-spacing:-2px;line-height:1">eva</span>' +
       '</div>' +
 
       // Claim
-      '<p style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:20px;font-weight:700;color:#1a1a2e;text-align:center;letter-spacing:-0.3px;margin:0 0 36px;">Il direttore commerciale che non hai mai assunto.</p>' +
+      '<p style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:24px;font-weight:700;color:#1a1a2e;text-align:center;letter-spacing:-0.3px;margin:0 0 10px;">Il <span style="color:#FF6B2B">direttore commerciale</span> che non hai mai assunto.</p>' +
+      '<p style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:15px;font-weight:400;color:rgba(26,26,46,0.45);text-align:center;margin:0 0 36px;">Scopri quanto fatturato stai lasciando sul tavolo.</p>' +
 
       '<div style="width:100%;max-width:560px">' +
 
