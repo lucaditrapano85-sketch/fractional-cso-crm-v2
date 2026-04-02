@@ -10604,7 +10604,7 @@ function renderPMIPiano(container) {
     '<div style="max-width:820px;margin:0 auto;padding:40px 28px">' +
       '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:6px">Il tuo piano</h1>' +
       '<p style="font-size:13px;color:rgba(26,26,46,0.5);margin-bottom:28px">Scegli il livello di supporto per la tua azienda.</p>' +
-      '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;align-items:start;">' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;align-items:stretch;">' +
         cardsHtml +
       '</div>' +
       '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(0,0,0,0.08);border-radius:14px;padding:16px 20px;margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;">' +
