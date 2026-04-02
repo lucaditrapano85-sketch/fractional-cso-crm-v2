@@ -9082,7 +9082,8 @@ function _renderSelezioneSetting(container) {
   var FF = window.PMI_FASCE_FATTURATO || [];
 
   container.innerHTML =
-    '<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 20px;box-sizing:border-box;background:#d8dbe2;">' +
+    '<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 20px;box-sizing:border-box;background:#d8dbe2;position:relative;">' +
+      '<span onclick="logout()" style="position:absolute;top:20px;right:24px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:12px;color:rgba(26,26,46,0.4);cursor:pointer;user-select:none;">Esci</span>' +
 
       // Logo
       '<div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:52px">' +
