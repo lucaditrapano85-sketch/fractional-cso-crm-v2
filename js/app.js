@@ -9163,7 +9163,7 @@ function _renderSelezioneSetting(container) {
         '</div>' +
 
         // Footer
-        '<p style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:12px;color:rgba(26,26,46,0.25);text-align:center;margin:0">4 minuti, 8 domande, completamente gratuito</p>' +
+        '<p style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:400;color:rgba(26,26,46,0.45);text-align:center;margin:0">Scopri dove la tua azienda perde fatturato — in soli 4 minuti</p>' +
 
       '</div>' +
     '</div>';
