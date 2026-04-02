@@ -9083,7 +9083,10 @@ function _renderSelezioneSetting(container) {
 
   container.innerHTML =
     '<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 20px;box-sizing:border-box;background:#d8dbe2;position:relative;">' +
-      '<span onclick="logout()" style="position:absolute;top:20px;right:24px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:12px;color:rgba(26,26,46,0.4);cursor:pointer;user-select:none;">Esci</span>' +
+      '<div onclick="logout()" style="position:absolute;bottom:16px;left:16px;display:flex;align-items:center;gap:10px;padding:10px 16px;margin:0 8px;border-radius:10px;cursor:pointer;color:rgba(26,26,46,0.3);">' +
+        '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H4a2 2 0 00-2 2v8a2 2 0 002 2h2M11 11l3-3-3-3M14 8H6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+        '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;">Esci</span>' +
+      '</div>' +
 
       // Logo
       '<div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:52px">' +
