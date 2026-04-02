@@ -9083,15 +9083,15 @@ function _renderSelezioneSetting(container) {
     '<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 20px;box-sizing:border-box;background:#d8dbe2;">' +
 
       // Logo
-      '<div style="display:inline-flex;align-items:center;gap:4px;margin-bottom:52px">' +
-        '<svg width="80" height="80" viewBox="8 4 44 44" fill="none">' +
+      '<div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:52px">' +
+        '<svg width="100" height="100" viewBox="8 4 44 44" fill="none">' +
           '<rect x="8" y="34" width="44" height="4.5" rx="2.25" fill="#3D5AFE"/>' +
           '<rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="#1a1a2e"/>' +
           '<circle cx="29.75" cy="36.25" r="6" fill="#1a1a2e"/>' +
           '<line x1="29.75" y1="36.25" x2="47" y2="22" stroke="#FF6B2B" stroke-width="3.5" stroke-linecap="round"/>' +
           '<circle cx="47" cy="22" r="3.5" fill="#FF6B2B"/>' +
         '</svg>' +
-        '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:40px;font-weight:700;color:#1a1a2e;letter-spacing:-1px">eva</span>' +
+        '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:64px;font-weight:700;color:#1a1a2e;letter-spacing:-2px;line-height:1">eva</span>' +
       '</div>' +
 
       '<div style="width:100%;max-width:560px">' +
