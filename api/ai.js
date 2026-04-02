@@ -120,7 +120,16 @@ I 6 macro-settori ammessi sono:
 
 Esempi: una piadineria = alimentare_piadineria, un dentista = servizi_dentista, una carrozzeria = servizi_carrozzeria, una falegnameria = manifatturiero_falegnameria, un vivaio = commercio_vivaio.
 
-NON usare MAI prefissi come ristorazione_, benessere_, sanitario_, automotive_, artigianato_, agricoltura_ — questi NON esistono nel sistema.`,
+NON usare MAI prefissi come ristorazione_, benessere_, sanitario_, automotive_, artigianato_, agricoltura_ — questi NON esistono nel sistema.
+
+Tieni conto della realtà italiana. Molte attività sono ibride:
+- Un birrificio artigianale in Italia ha quasi sempre una taproom/pub annesso
+- Una pasticceria spesso fa anche bar e caffetteria
+- Un vivaio spesso fa anche progettazione giardini
+- Una carrozzeria spesso fa anche meccanica leggera
+- Un bar spesso ha anche tabaccheria o edicola
+
+Quando proponi le opzioni, includi SEMPRE l'opzione ibrida che riflette la realtà italiana come PRIMA proposta. Non separare artificialmente attività che nella pratica sono unite.`,
         user: `L'utente ha scritto: "${input}". Genera un JSON array con 3-4 opzioni:
 [
   { "codice": "commercio_pesca_sportiva", "nome": "Negozio pesca sportiva", "descrizione": "Vendita esche, canne, mulinelli, abbigliamento tecnico" },
