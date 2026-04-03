@@ -284,6 +284,19 @@ async function attivaTestPiano() {
     // Se utente già esiste, proviamo a ricavare l'id dal prospect (se già salvato)
     if (!userId && p.user_id) userId = p.user_id;
 
+    // 1b. Crea record in user_profiles (necessario per il router CSO/PMI al login)
+    if (userId) {
+      try {
+        await sb.from('user_profiles').insert({
+          user_id: userId,
+          role: 'titolare',
+          company_name: p.azienda || null,
+          sector: p.settore || null,
+          created_at: new Date().toISOString()
+        });
+      } catch(e) { console.warn('user_profiles insert:', e.message); }
+    }
+
     // 2. Aggiorna prospect
     var updatePayload = {
       stato: 'ingaggiato',

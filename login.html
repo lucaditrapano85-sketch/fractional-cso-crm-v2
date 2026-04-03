@@ -390,7 +390,16 @@ document.getElementById('register-form').addEventListener('submit', async functi
     btn.disabled = false;
     btn.textContent = 'Crea account';
   } else {
-    // user_profiles viene creato dal trigger handle_new_user() lato server
+    // Crea record in user_profiles (il trigger crea solo profiles, non user_profiles)
+    if (data.user) {
+      try {
+        await sb.from('user_profiles').insert({
+          user_id: data.user.id,
+          role: selectedRole,
+          created_at: new Date().toISOString()
+        });
+      } catch(e) { console.warn('user_profiles insert:', e.message); }
+    }
     msg.textContent = 'Account creato! Accesso in corso...';
     msg.className = 'login-msg success';
     setTimeout(function() { window.location.href = '/index.html'; }, 1000);
