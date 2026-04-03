@@ -11854,21 +11854,24 @@ function _chatRadarSVG(dims) {
 
 function _chatVaiHome() {
   _chatChiudiOverlay();
-
   renderSidebarPMI();
-  renderViewPMI('home');
 
-  // Ricarica prospect dal DB in background (diagnosi-end ha già salvato dims/score)
-  if (window._pmiProspect && window._pmiProspect.id) {
-    sb.from('prospects').select('*').eq('id', window._pmiProspect.id).single()
+  // Ricarica prospect dal DB PRIMA di renderizzare il piano
+  // (diagnosi-end ha già salvato score_globale e dims su Supabase)
+  var pid = window._pmiProspect && window._pmiProspect.id;
+  if (pid) {
+    sb.from('prospects').select('*').eq('id', pid).single()
       .then(function(r) {
-        if (!r.data) return;
-        window._pmiProspect = r.data;
-        var idx = prospects.findIndex(function(x) { return x.id === r.data.id; });
-        if (idx >= 0) prospects[idx] = r.data; else prospects.push(r.data);
-        currentId = r.data.id;
-        renderViewPMI('home');
-      }).catch(function(){});
+        if (r.data) {
+          window._pmiProspect = r.data;
+          var idx = prospects.findIndex(function(x) { return x.id === r.data.id; });
+          if (idx >= 0) prospects[idx] = r.data; else prospects.push(r.data);
+          currentId = r.data.id;
+        }
+        renderViewPMI('piano');
+      }).catch(function() { renderViewPMI('piano'); });
+  } else {
+    renderViewPMI('piano');
   }
 }
 
@@ -11956,7 +11959,7 @@ function _renderAHAPMI(container) {
     return;
   }
 
-  var s  = calcScore(p);
+  var s  = calcScore(p) || (p.score_globale || 0);
   var sc = scoreColor(s);
   var DIMS_LIST = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
 
@@ -12109,9 +12112,11 @@ function renderPMIHome(container) {
   var settoreRaw = up.sector || p.settore || '';
   var settore = settoreRaw ? settoreRaw.replace(/_/g,' ').replace(/^\w/,function(c){return c.toUpperCase();}) : '';
 
-  var s = calcScore(p);
-  var scoreBorder = s < 30 ? 'rgba(229,57,53,0.55)' : s < 60 ? 'rgba(175,125,0,0.55)' : 'rgba(0,130,95,0.55)';
-  var scoreBg     = s < 30 ? 'rgba(229,57,53,0.04)' : s < 60 ? 'rgba(175,125,0,0.04)' : 'rgba(0,130,95,0.04)';
+  // calcScore usa i dim keys del vecchio CRM (lowercase). Se la diagnosi nuova
+  // ha salvato dim con keys diversi (es. "Vendite"), usa score_globale come fallback.
+  var s = calcScore(p) || (p.score_globale || 0);
+  var scoreBorder = s < 40 ? 'rgba(229,57,53,0.55)' : s < 60 ? 'rgba(175,125,0,0.55)' : 'rgba(0,130,95,0.55)';
+  var scoreBg     = s < 40 ? 'rgba(229,57,53,0.04)' : s < 60 ? 'rgba(175,125,0,0.04)' : 'rgba(0,130,95,0.04)';
 
   var dimMin   = _PMI_DIMS.reduce(function(min,k){ return (p.dims[k]||0)<(p.dims[min]||0)?k:min; }, _PMI_DIMS[0]);
   var scoreMin = p.dims[dimMin] || 1;
@@ -12302,7 +12307,7 @@ function renderPMIScore(container) {
   var p = window._pmiProspect;
   if (!p || !p.dims) { renderPMIHome(container); return; }
 
-  var s  = calcScore(p);
+  var s  = calcScore(p) || (p.score_globale || 0);
   var sc = scoreColor(s);
 
   // Ordine alfabetico per label
