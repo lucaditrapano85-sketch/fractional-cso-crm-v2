@@ -87,3 +87,30 @@ CREATE POLICY "Admin sees all benchmark" ON benchmark_custom
 
 -- STEP 6: Indice per performance
 CREATE INDEX IF NOT EXISTS idx_profiles_is_admin ON profiles(is_admin) WHERE is_admin = true;
+
+-- Colonne aggiuntive per CSO Piano Sections (eseguire una volta)
+-- ALTER TABLE prospects ADD COLUMN IF NOT EXISTS notes_cso jsonb DEFAULT '[]';
+-- ALTER TABLE prospects ADD COLUMN IF NOT EXISTS piano_azioni_cso jsonb DEFAULT '[]';
+
+-- Colonne per il flusso "Nuovo cliente" (eseguire una volta)
+-- ALTER TABLE prospects ADD COLUMN IF NOT EXISTS cognome text;
+-- ALTER TABLE prospects ADD COLUMN IF NOT EXISTS azienda text;
+-- ALTER TABLE prospects ADD COLUMN IF NOT EXISTS piva text;
+-- ALTER TABLE prospects ADD COLUMN IF NOT EXISTS piano text DEFAULT 'self';
+-- ALTER TABLE prospects ADD COLUMN IF NOT EXISTS cso_id uuid;
+-- ALTER TABLE prospects ADD COLUMN IF NOT EXISTS invite_token text;
+-- ALTER TABLE prospects ADD COLUMN IF NOT EXISTS invite_sent_at timestamptz;
+
+-- Colonne per attivazione piano (invite.html — bottone test)
+-- ALTER TABLE prospects ADD COLUMN IF NOT EXISTS user_id uuid;
+-- ALTER TABLE prospects ADD COLUMN IF NOT EXISTS activated_at timestamptz;
+
+-- Colonne per tab scheda cliente e piano condiviso
+-- ALTER TABLE prospects ADD COLUMN IF NOT EXISTS shared_plan text;
+
+-- Colonne aggiuntive per tabella calls
+-- ALTER TABLE calls ADD COLUMN IF NOT EXISTS durata_min integer;
+-- ALTER TABLE calls ADD COLUMN IF NOT EXISTS tipo text DEFAULT 'follow_up';
+-- ALTER TABLE calls ADD COLUMN IF NOT EXISTS appunti text;
+-- ALTER TABLE calls ADD COLUMN IF NOT EXISTS prossimi_passi text;
+-- ALTER TABLE calls ADD COLUMN IF NOT EXISTS cso_id uuid;

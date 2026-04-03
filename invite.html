@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attiva il tuo piano — Leva</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #d8dbe2;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      margin-bottom: 32px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.55);
+      border: 1px solid rgba(255,255,255,0.7);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 12px;
+    }
+
+    .data-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(26,26,46,0.06);
+      gap: 16px;
+    }
+    .data-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .data-row:first-child { padding-top: 0; }
+
+    .data-label { font-size: 12px; color: rgba(26,26,46,0.35); flex-shrink: 0; }
+    .data-value { font-size: 14px; color: #1a1a2e; font-weight: 500; text-align: right; }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      background: #3D5AFE;
+      color: white;
+      opacity: 0.4;
+      margin-top: 16px;
+    }
+
+    #state-error { display: none; text-align: center; padding: 48px 24px; }
+    #state-loading { text-align: center; padding: 48px 24px; }
+    #state-main { display: none; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Logo -->
+  <div class="logo">
+    <svg width="36" height="36" viewBox="8 4 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="8" y="34" width="44" height="4.5" rx="2.25" fill="#3D5AFE"/>
+      <rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="#1a1a2e"/>
+      <circle cx="29.75" cy="36.25" r="6" fill="#1a1a2e"/>
+      <line x1="29.75" y1="36.25" x2="47" y2="22" stroke="#FF6B2B" stroke-width="3.5" stroke-linecap="round"/>
+      <circle cx="47" cy="22" r="3.5" fill="#FF6B2B"/>
+    </svg>
+    <span style="font-size:28px;font-weight:700;color:#1a1a2e;letter-spacing:-0.5px;">eva</span>
+  </div>
+
+  <!-- Stato: loading -->
+  <div id="state-loading">
+    <div style="width:32px;height:32px;border:3px solid rgba(61,90,254,0.2);border-top-color:#3D5AFE;border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px;"></div>
+    <div style="font-size:13px;color:rgba(26,26,46,0.4);">Caricamento in corso…</div>
+  </div>
+
+  <!-- Stato: successo attivazione -->
+  <div id="state-success" style="display:none;">
+    <div class="card" style="text-align:center;padding:36px 24px;">
+      <div style="width:56px;height:56px;border-radius:50%;background:rgba(0,130,95,0.08);border:2px solid rgba(0,130,95,0.4);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+        <svg width="24" height="20" viewBox="0 0 24 20" fill="none"><path d="M2 10l8 8L22 2" stroke="#00825F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:10px;">Piano attivato!</div>
+      <div style="font-size:13px;color:rgba(26,26,46,0.55);line-height:1.6;margin-bottom:20px;">
+        Le tue credenziali di accesso:<br>
+        <strong style="color:#1a1a2e;">Email:</strong> <span id="success-email"></span><br>
+        <strong style="color:#1a1a2e;">Password:</strong> Leva2026!
+      </div>
+      <div style="background:rgba(0,130,95,0.05);border:1px solid rgba(0,130,95,0.15);border-radius:10px;padding:12px 16px;font-size:12px;color:rgba(26,26,46,0.45);margin-bottom:24px;text-align:left;">
+        Accedi all'app e completa la diagnosi commerciale per iniziare il tuo percorso con il tuo CSO.
+      </div>
+      <a href="https://levacso.vercel.app" style="display:block;background:#3D5AFE;color:white;text-decoration:none;border-radius:12px;padding:14px;font-size:15px;font-weight:600;">Accedi a Leva →</a>
+    </div>
+  </div>
+
+  <!-- Stato: errore -->
+  <div id="state-error">
+    <div class="card" style="text-align:center;padding:40px 24px;">
+      <div style="font-size:40px;margin-bottom:16px;">🔗</div>
+      <div style="font-size:18px;font-weight:600;color:#1a1a2e;margin-bottom:8px;">Link non valido o scaduto</div>
+      <div style="font-size:13px;color:rgba(26,26,46,0.4);margin-bottom:24px;">Contatta il tuo consulente per ricevere un nuovo link.</div>
+      <a href="/" style="display:inline-block;background:#3D5AFE;color:white;text-decoration:none;border-radius:10px;padding:10px 28px;font-size:14px;font-weight:500;">Torna alla home</a>
+    </div>
+  </div>
+
+  <!-- Stato: main -->
+  <div id="state-main">
+
+    <!-- Intestazione -->
+    <div style="text-align:center;margin-bottom:24px;">
+      <h1 id="inv-titolo" style="font-size:24px;font-weight:600;color:#1a1a2e;margin-bottom:6px;"></h1>
+      <p style="font-size:14px;color:rgba(26,26,46,0.4);">Verifica i tuoi dati e attiva il tuo piano commerciale.</p>
+    </div>
+
+    <!-- Dati anagrafici -->
+    <div class="card">
+      <div class="data-row"><span class="data-label">Nome e cognome</span><span class="data-value" id="inv-referente"></span></div>
+      <div class="data-row"><span class="data-label">Azienda</span><span class="data-value" id="inv-azienda"></span></div>
+      <div class="data-row"><span class="data-label">P.IVA</span><span class="data-value" id="inv-piva"></span></div>
+      <div class="data-row"><span class="data-label">Email</span><span class="data-value" id="inv-email"></span></div>
+      <div class="data-row"><span class="data-label">Telefono</span><span class="data-value" id="inv-tel"></span></div>
+    </div>
+
+    <!-- Piano -->
+    <div class="card" id="inv-piano-card">
+      <div style="font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;" id="inv-piano-label-small">Il tuo piano</div>
+      <div style="font-size:18px;font-weight:600;margin-bottom:4px;" id="inv-piano-nome"></div>
+      <div style="font-size:14px;margin-bottom:8px;" id="inv-piano-prezzo"></div>
+      <div style="font-size:12px;color:rgba(26,26,46,0.35);" id="inv-cso-nome"></div>
+    </div>
+
+    <!-- Pagamento -->
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+        <svg width="14" height="16" viewBox="0 0 14 16" fill="none"><rect x="2" y="7" width="10" height="8" rx="2" stroke="rgba(26,26,46,0.35)" stroke-width="1.5"/><path d="M4 7V5a3 3 0 0 1 6 0v2" stroke="rgba(26,26,46,0.35)" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span style="font-size:13px;color:rgba(26,26,46,0.35);">Pagamento sicuro</span>
+      </div>
+      <div style="background:rgba(26,26,46,0.03);border-radius:10px;padding:20px;text-align:center;font-size:13px;color:rgba(26,26,46,0.25);">
+        Integrazione Stripe — disponibile a breve
+      </div>
+      <button class="btn" disabled>Attiva piano</button>
+      <!-- BOTTONE TEMPORANEO PER TEST — rimuovere quando Stripe è integrato -->
+      <button id="btn-test-activate" onclick="attivaTestPiano()" style="width:100%;padding:14px;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;border:none;background:#00825F;color:white;margin-top:12px;">Attiva piano (test)</button>
+      <p style="font-size:11px;color:rgba(26,26,46,0.25);text-align:center;margin-top:8px;margin-bottom:0;">Modalità test — nessun pagamento richiesto</p>
+    </div>
+
+    <!-- Footer -->
+    <p style="font-size:11px;color:rgba(26,26,46,0.2);text-align:center;margin-top:24px;">
+      Leva — Intelligence Commerciale AI per PMI
+    </p>
+  </div>
+
+</div>
+
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+<script>
+const { createClient } = supabase;
+const sb = createClient(
+  'https://glxwvvtdybzkxtobsiin.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdseHd2dnRkeWJ6a3h0b2JzaWluIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0MzYxNzIsImV4cCI6MjA4OTAxMjE3Mn0.FvL3LTPaHC43WXzWn6Z_eXo3nly_Gz3QvvTT_S2QNIY'
+);
+
+var _inviteProspect = null;
+
+(async function() {
+  var params = new URLSearchParams(window.location.search);
+  var token  = params.get('token');
+
+  function showError() {
+    document.getElementById('state-loading').style.display = 'none';
+    document.getElementById('state-error').style.display   = 'block';
+  }
+
+  if (!token) { showError(); return; }
+
+  // Cerca prospect per invite_token
+  var { data: p, error } = await sb
+    .from('prospects')
+    .select('*')
+    .eq('invite_token', token)
+    .maybeSingle();
+
+  if (error || !p) { showError(); return; }
+
+  // Carica dati CSO se disponibile
+  var csoNome = '';
+  if (p.cso_id) {
+    var { data: csoProfile } = await sb
+      .from('profiles')
+      .select('nome, cognome')
+      .eq('id', p.cso_id)
+      .maybeSingle();
+    if (csoProfile) {
+      csoNome = ((csoProfile.nome || '') + ' ' + (csoProfile.cognome || '')).trim();
+    }
+  }
+
+  // Salva prospect globalmente per attivaTestPiano()
+  _inviteProspect = p;
+
+  // Aggiorna stato
+  await sb.from('prospects').update({ stato: 'invite_opened' }).eq('id', p.id);
+
+  // Popola UI
+  var nome = p.referente ? p.referente.split(' ')[0] : (p.nome || '');
+  document.getElementById('inv-titolo').textContent    = 'Benvenuto, ' + nome;
+  document.getElementById('inv-referente').textContent = p.referente || '—';
+  document.getElementById('inv-azienda').textContent   = p.azienda || p.nome || '—';
+  document.getElementById('inv-piva').textContent      = p.piva || '—';
+  document.getElementById('inv-email').textContent     = p.email || '—';
+  document.getElementById('inv-tel').textContent       = p.telefono || '—';
+
+  // Piano
+  var isPro      = p.piano === 'guided_pro';
+  var pianoColor = isPro ? '#FF6B2B' : '#3D5AFE';
+  var pianoNome  = isPro ? 'Guided Pro' : 'Guided Base';
+  var pianoPrezzo = isPro ? '€599/mese' : '€399/mese';
+
+  var pianoCard = document.getElementById('inv-piano-card');
+  pianoCard.style.borderLeft = '3px solid ' + pianoColor;
+
+  document.getElementById('inv-piano-label-small').style.color = pianoColor;
+  document.getElementById('inv-piano-nome').textContent   = pianoNome;
+  document.getElementById('inv-piano-nome').style.color   = pianoColor;
+  document.getElementById('inv-piano-prezzo').textContent = pianoPrezzo;
+  document.getElementById('inv-piano-prezzo').style.color = 'rgba(26,26,46,0.5)';
+  document.getElementById('inv-cso-nome').textContent     = csoNome ? 'Il tuo consulente: ' + csoNome : '';
+
+  // Mostra
+  document.getElementById('state-loading').style.display = 'none';
+  document.getElementById('state-main').style.display    = 'block';
+})();
+
+async function attivaTestPiano() {
+  var p = _inviteProspect;
+  if (!p || !p.email) {
+    alert('Dati prospect non caricati. Ricarica la pagina.');
+    return;
+  }
+
+  var btn = document.getElementById('btn-test-activate');
+  btn.disabled = true;
+  btn.textContent = 'Attivazione in corso…';
+
+  try {
+    // 1. Crea utente su Supabase Auth
+    var password = 'Leva2026!';
+    var { data: authData, error: authError } = await sb.auth.signUp({
+      email: p.email,
+      password: password,
+    });
+
+    if (authError && authError.message && !authError.message.includes('already registered')) {
+      throw new Error('Errore creazione account: ' + authError.message);
+    }
+
+    var userId = (authData && authData.user && authData.user.id) || null;
+
+    // Se utente già esiste, proviamo a ricavare l'id dal prospect (se già salvato)
+    if (!userId && p.user_id) userId = p.user_id;
+
+    // 2. Aggiorna prospect
+    var updatePayload = {
+      stato: 'ingaggiato',
+      activated_at: new Date().toISOString(),
+    };
+    if (userId) updatePayload.user_id = userId;
+
+    var { error: updateError } = await sb
+      .from('prospects')
+      .update(updatePayload)
+      .eq('id', p.id);
+
+    if (updateError) throw new Error('Errore aggiornamento prospect: ' + updateError.message);
+
+    // 3. Mostra messaggio di successo
+    document.getElementById('state-main').style.display = 'none';
+    document.getElementById('state-success').style.display = 'block';
+    document.getElementById('success-email').textContent = p.email;
+
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = 'Attiva piano (test)';
+    alert('Errore: ' + err.message);
+  }
+}
+</script>
+</body>
+</html>

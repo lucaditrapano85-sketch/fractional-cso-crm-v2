@@ -27,35 +27,32 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
         Dashboard
       </div>
+      <div class="nav-item" onclick="showView('prospects')" id="nav-prospects">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        I miei clienti
+      </div>
       <div class="nav-item" onclick="showView('calendario')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
         Calendario
       </div>
-      <div class="nav-item" onclick="showView('market')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        Dati di Mercato
+      <div class="nav-item" onclick="showView('guadagni')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        I miei guadagni
       </div>
-        <div class="nav-item" onclick="showView('listino')" id="nav-listino">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-          Listino Servizi
-        </div>
-        <div class="nav-item" onclick="showView('prospects')" id="nav-prospects">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-          Prospect
-        </div>
-        <div class="nav-item" onclick="showView('glossario')">
+        <div class="nav-item" onclick="showView('risorse')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-          Glossario
+          Risorse
         </div>
-
-
-
+      <div style="border-top:1px solid rgba(255,255,255,0.1);margin:8px 0;"></div>
+      <div class="nav-item" onclick="apriModaleNuovoCliente()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        Nuovo cliente
+      </div>
 
   </div>
     <div class="sidebar-prospects">
       <div class="sidebar-section-label">PROSPECT</div>
       <div id="sidebar-list"></div>
-      <button class="btn-new" onclick="document.getElementById('modal-prospect').style.display='flex'">+ Nuovo Prospect</button>
     </div>
     <div class="sidebar-logout">
       <button id="admin-btn" onclick="renderAdminPanel()" class="btn-admin" style="display:none">Gestione Utenti</button>
@@ -80,6 +77,8 @@
         <div class="kpi-card"><div class="kpi-label">Chiusi</div><div class="kpi-val" id="kpi-closed">—</div></div>
       </div>
       <div id="alert-scadenze"></div>
+      <div id="guadagni-dashboard"></div>
+      <div id="da-fare-oggi"></div>
       <div class="section-title">Pipeline commerciale</div>
       <div class="status-summary" id="status-summary"></div>
       <div class="pipeline-grid" id="pipeline-grid"></div>
@@ -124,126 +123,153 @@
         <div class="fin-pane" id="fin-pane-extra"><div id="fin-extra-content"></div></div>
       </div>
 
-      <div id="prospect-main-content">
-      <div class="score-bench-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
-        <div class="card">
-          <div class="card-title" style="display:flex;align-items:center;justify-content:space-between">
-            Score complessivo
-            <div style="display:flex;gap:6px">
-              <button onclick="apriDiagnosi()" class="btn btn-orange">&#9673; Diagnosi</button>
-              <button onclick="openSessioneModal()" class="btn btn-secondary">&#128203; Sessione</button>
-              <button onclick="apriMultiScenario()" class="btn btn-secondary">&#9878; Scenari</button>
-              <button onclick="resetDiagnosi()" class="btn btn-secondary">&#8635; Reset</button>
-            </div>
-          </div>
-          <div class="score-big" id="det-score">—</div>
-          <div class="score-verdict" id="det-verdict"></div>
-          <div class="score-desc" id="det-verdesc"></div>
-          <div class="divider"></div>
-          <div id="det-dims"></div>
-        </div>
-        <div class="card">
-          <div class="card-title">Benchmark di settore</div>
-          <div id="det-benchmark"></div>
-        </div>
-      </div>
-      <div id="det-info-content" style="display:none"></div>
+      <style>
+      .ptab-btn{background:none;border:none;border-bottom:2px solid transparent;padding:10px 20px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:rgba(26,26,46,0.4);cursor:pointer;white-space:nowrap;transition:color .15s,border-color .15s;}
+      .ptab-btn:hover{color:#1a1a2e;}
+      .ptab-btn.active{border-bottom-color:#3D5AFE;color:#1a1a2e;font-weight:500;}
+      </style>
 
-      <!-- RADAR + TARGET -->
-      <div id="radar-target-row" style="display:flex;gap:16px;align-items:flex-start;margin-bottom:16px;">
-        <!-- Colonna sinistra: due blocchi uno sopra l altro -->
-        <div style="flex:1;display:flex;flex-direction:column;gap:16px">
-          <!-- Blocco 1: grafico proiezione barre (nascosto) -->
-          <div class="radar-card" style="display:none">
-            <div id="mega-grafico-section"></div>
+      <div id="prospect-main-content">
+
+      <!-- Tab navigation -->
+      <div id="prospect-tab-nav" style="display:flex;border-bottom:1px solid rgba(0,0,0,0.08);margin-bottom:20px;overflow-x:auto;">
+        <button class="ptab-btn active" id="ptab-btn-panoramica" onclick="switchProspectTab('panoramica')">Panoramica</button>
+        <button class="ptab-btn" id="ptab-btn-diagnosi" onclick="switchProspectTab('diagnosi')">Diagnosi &amp; Score</button>
+        <button class="ptab-btn" id="ptab-btn-azioni" onclick="switchProspectTab('azioni')">Azioni</button>
+        <button class="ptab-btn" id="ptab-btn-finanziaria" onclick="switchProspectTab('finanziaria')">Finanziaria</button>
+        <button class="ptab-btn" id="ptab-btn-callnote" onclick="switchProspectTab('callnote')">Call &amp; Note</button>
+      </div>
+
+      <!-- Tab 1: Panoramica -->
+      <div id="ptab-panoramica" class="ptab-panel">
+        <div id="panoramica-content"></div>
+      </div>
+
+      <!-- Tab 2: Diagnosi & Score -->
+      <div id="ptab-diagnosi" class="ptab-panel" style="display:none">
+        <div class="score-bench-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+          <div class="card">
+            <div class="card-title" style="display:flex;align-items:center;justify-content:space-between">
+              Score complessivo
+              <div style="display:flex;gap:6px">
+                <button onclick="apriDiagnosi()" class="btn btn-orange">&#9673; Diagnosi</button>
+                <button onclick="openSessioneModal()" class="btn btn-secondary">&#128203; Sessione</button>
+                <button onclick="apriMultiScenario()" class="btn btn-secondary">&#9878; Scenari</button>
+                <button onclick="resetDiagnosi()" class="btn btn-secondary">&#8635; Reset</button>
+              </div>
+            </div>
+            <div class="score-big" id="det-score">—</div>
+            <div class="score-verdict" id="det-verdict"></div>
+            <div class="score-desc" id="det-verdesc"></div>
+            <div class="divider"></div>
+            <div id="det-dims"></div>
           </div>
-          <!-- Blocco timeline progressione -->
-          <div class="card" id="grafico-timeline-card">
-            <div class="card-title">Progressione nel tempo</div>
-            <div id="grafico-timeline-container"></div>
+          <div class="card">
+            <div class="card-title">Benchmark di settore</div>
+            <div id="det-benchmark"></div>
           </div>
-          <!-- Blocco 2: radar + score live (nascosto) -->
-          <div class="radar-card" style="display:none">
-            <div class="card-title" style="margin-bottom:16px;display:flex;align-items:flex-start;justify-content:space-between">
-              Diagramma a ragnatela
-              <div id="radar-score-box" style="background:var(--bg3);border-radius:14px;padding:14px 18px;border:1px solid var(--border);min-width:160px">
-                <div style="display:flex;align-items:flex-end;gap:6px;margin-bottom:6px">
-                  <div style="flex:1">
-                    <div style="font-size:8px;color:var(--gray);letter-spacing:.07em;text-transform:uppercase;margin-bottom:2px">SCORE LIVE</div>
-                    <div style="display:flex;align-items:baseline;gap:3px">
-                      <div id="radar-score-num" style="font-size:44px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;line-height:1">-</div>
-                      <div style="font-size:13px;color:var(--gray);margin-bottom:4px">/100</div>
+        </div>
+        <div id="det-info-content" style="display:none"></div>
+
+        <!-- RADAR + TARGET -->
+        <div id="radar-target-row" style="display:flex;gap:16px;align-items:flex-start;margin-bottom:16px;">
+          <div style="flex:1;display:flex;flex-direction:column;gap:16px">
+            <div class="radar-card" style="display:none"><div id="mega-grafico-section"></div></div>
+            <div class="card" id="grafico-timeline-card">
+              <div class="card-title">Progressione nel tempo</div>
+              <div id="grafico-timeline-container"></div>
+            </div>
+            <div class="radar-card" style="display:none">
+              <div class="card-title" style="margin-bottom:16px;display:flex;align-items:flex-start;justify-content:space-between">
+                Diagramma a ragnatela
+                <div id="radar-score-box" style="background:var(--bg3);border-radius:14px;padding:14px 18px;border:1px solid var(--border);min-width:160px">
+                  <div style="display:flex;align-items:flex-end;gap:6px;margin-bottom:6px">
+                    <div style="flex:1">
+                      <div style="font-size:8px;color:var(--gray);letter-spacing:.07em;text-transform:uppercase;margin-bottom:2px">SCORE LIVE</div>
+                      <div style="display:flex;align-items:baseline;gap:3px">
+                        <div id="radar-score-num" style="font-size:44px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;line-height:1">-</div>
+                        <div style="font-size:13px;color:var(--gray);margin-bottom:4px">/100</div>
+                      </div>
+                      <div id="radar-score-label" style="font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-top:1px"></div>
                     </div>
-                    <div id="radar-score-label" style="font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-top:1px"></div>
                   </div>
-                </div>
-                <div id="radar-score-bar-wrap" style="display:none;margin-top:8px">
-                  <div style="font-size:9px;color:var(--gray);margin-bottom:4px;display:flex;justify-content:space-between"><span>OGGI</span><span>CON IL PIANO</span></div>
-                  <div style="background:var(--border);border-radius:4px;height:6px;position:relative">
-                    <div id="radar-score-bar-now" style="position:absolute;left:0;top:0;height:100%;background:var(--red);border-radius:4px;transition:width .3s"></div>
-                    <div id="radar-score-bar-tgt" style="position:absolute;left:0;top:0;height:100%;background:var(--green);border-radius:4px;opacity:.5;transition:width .3s"></div>
-                  </div>
-                  <div style="display:flex;justify-content:space-between;margin-top:3px">
-                    <div id="radar-score-now-val" style="font-size:10px;font-weight:700"></div>
-                    <div id="radar-score-tgt-val" style="font-size:10px;font-weight:700;color:var(--green)"></div>
+                  <div id="radar-score-bar-wrap" style="display:none;margin-top:8px">
+                    <div style="font-size:9px;color:var(--gray);margin-bottom:4px;display:flex;justify-content:space-between"><span>OGGI</span><span>CON IL PIANO</span></div>
+                    <div style="background:var(--border);border-radius:4px;height:6px;position:relative">
+                      <div id="radar-score-bar-now" style="position:absolute;left:0;top:0;height:100%;background:var(--red);border-radius:4px;transition:width .3s"></div>
+                      <div id="radar-score-bar-tgt" style="position:absolute;left:0;top:0;height:100%;background:var(--green);border-radius:4px;opacity:.5;transition:width .3s"></div>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;margin-top:3px">
+                      <div id="radar-score-now-val" style="font-size:10px;font-weight:700"></div>
+                      <div id="radar-score-tgt-val" style="font-size:10px;font-weight:700;color:var(--green)"></div>
+                    </div>
                   </div>
                 </div>
               </div>
+              <svg id="radar-svg" viewBox="0 0 360 360" style="width:100%;max-width:680px;display:block;margin:0 auto"></svg>
+              <div style="display:flex;justify-content:center;gap:16px;margin-top:8px;font-size:10px;color:var(--gray)">
+                <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:var(--green);border-radius:2px;display:inline-block;opacity:.7"></span>Stato attuale</span>
+                <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border:2px dashed var(--gold);border-radius:2px;display:inline-block"></span>Obiettivo</span>
+              </div>
             </div>
-            <svg id="radar-svg" viewBox="0 0 360 360" style="width:100%;max-width:680px;display:block;margin:0 auto"></svg>
-            <div style="display:flex;justify-content:center;gap:16px;margin-top:8px;font-size:10px;color:var(--gray)">
-              <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:var(--green);border-radius:2px;display:inline-block;opacity:.7"></span>Stato attuale</span>
-              <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border:2px dashed var(--gold);border-radius:2px;display:inline-block"></span>Obiettivo</span>
+          </div>
+          <div class="radar-card" style="width:380px;flex-shrink:0;overflow-y:auto;max-height:85vh;position:sticky;top:0;">
+            <div class="card-title" style="margin-bottom:4px">Obiettivi per dimensione</div>
+            <div style="font-size:11px;color:var(--gray);margin-bottom:14px">Target personalizzati - si aggiorna in tempo reale</div>
+            <div id="target-editor-content" style="overflow-y:auto;padding-right:4px;flex:1"></div>
+            <div id="target-buttons-row" style="padding-top:12px;border-top:1px solid var(--border);margin-top:12px;display:flex;gap:8px">
+              <button class="target-save" onclick="saveTargets()" style="flex:1">Salva obiettivi</button>
+              <button onclick="resetTargets()" class="btn btn-secondary">&#8635; Reset</button>
             </div>
           </div>
         </div>
-        <!-- Colonna destra: target editor sticky -->
-        <div class="radar-card" style="width:380px;flex-shrink:0;overflow-y:auto;max-height:85vh;position:sticky;top:0;">
-          <div class="card-title" style="margin-bottom:4px">Obiettivi per dimensione</div>
-          <div style="font-size:11px;color:var(--gray);margin-bottom:14px">Target personalizzati - si aggiorna in tempo reale</div>
-          <div id="target-editor-content" style="overflow-y:auto;padding-right:4px;flex:1"></div>
-          <div id="target-buttons-row" style="padding-top:12px;border-top:1px solid var(--border);margin-top:12px;display:flex;gap:8px">
-            <button class="target-save" onclick="saveTargets()" style="flex:1">Salva obiettivi</button>
-            <button onclick="resetTargets()" class="btn btn-secondary">&#8635; Reset</button>
-          </div>
-        </div>
-      </div>
-      <script>
-      (function() {
-        function alignTargetHeight() {
-          const leftCol = document.querySelector('#radar-target-row > div:first-child');
-          const targetCard = document.querySelector('#radar-target-row > .radar-card:last-child');
-          if (!targetCard || !leftCol) return;
-          const leftH = leftCol.offsetHeight;
-          if (leftH > 0) {
-            targetCard.style.height = leftH + 'px';
-            targetCard.style.minHeight = '0';
-            targetCard.style.overflowY = 'auto';
-            targetCard.style.maxHeight = leftH + 'px';
+        <script>
+        (function() {
+          function alignTargetHeight() {
+            const leftCol = document.querySelector('#radar-target-row > div:first-child');
+            const targetCard = document.querySelector('#radar-target-row > .radar-card:last-child');
+            if (!targetCard || !leftCol) return;
+            const leftH = leftCol.offsetHeight;
+            if (leftH > 0) { targetCard.style.height = leftH + 'px'; targetCard.style.minHeight = '0'; targetCard.style.overflowY = 'auto'; targetCard.style.maxHeight = leftH + 'px'; }
           }
-        }
-        // Esegui dopo il render del mega-grafico
-        const obs = new MutationObserver(alignTargetHeight);
-        obs.observe(document.body, {childList:true, subtree:true});
-        setTimeout(alignTargetHeight, 500);
-        setTimeout(alignTargetHeight, 1500);
-      })();
-      </script>
-      <div class="card" id="card-cronistoria" style="display:none">
-        <div id="cronistoria-content"></div>
+          const obs = new MutationObserver(alignTargetHeight);
+          obs.observe(document.body, {childList:true, subtree:true});
+          setTimeout(alignTargetHeight, 500);
+          setTimeout(alignTargetHeight, 1500);
+        })();
+        </script>
+        <div class="card" id="card-cronistoria" style="display:none">
+          <div id="cronistoria-content"></div>
+        </div>
       </div>
 
-      <div class="card">
-        <div class="card-title" style="display:flex;align-items:center;justify-content:space-between">
-          Storico del cliente
-          <div id="timeline-filter-bar" style="display:flex;gap:4px"></div>
+      <!-- Tab 3: Azioni -->
+      <div id="ptab-azioni" class="ptab-panel" style="display:none">
+        <div id="cso-azioni-container"></div>
+      </div>
+
+      <!-- Tab 4: Finanziaria -->
+      <div id="ptab-finanziaria" class="ptab-panel" style="display:none">
+        <div class="card" id="preventivi-card">
+          <div class="card-title">Preventivi</div>
+          <div id="preventivi-container"></div>
         </div>
-        <div id="timeline-unificata" style="max-height:500px;overflow-y:auto"></div>
+        <div id="finanziaria-pro-extras"></div>
       </div>
-      <div class="card" id="preventivi-card">
-        <div class="card-title">Preventivi</div>
-        <div id="preventivi-container"></div>
+
+      <!-- Tab 5: Call & Note -->
+      <div id="ptab-callnote" class="ptab-panel" style="display:none">
+        <div class="card">
+          <div class="card-title" style="display:flex;align-items:center;justify-content:space-between">
+            Storico del cliente
+            <div id="timeline-filter-bar" style="display:flex;gap:4px"></div>
+          </div>
+          <div id="timeline-unificata" style="max-height:500px;overflow-y:auto"></div>
+        </div>
+        <div id="calls-list-container"></div>
+        <div id="cso-note-container"></div>
       </div>
+
       </div>
     </div>
 
@@ -287,11 +313,12 @@
       <h1>Prospect</h1>
       <p id="prospects-count" style="font-size:14px;color:var(--gray);margin-top:6px"></p>
     </div>
-    <button class="btn-new" onclick="openNewProspect()" style="width:auto;margin:0;padding:9px 20px">+ Nuovo Prospect</button>
   </div>
   <div id="prospects-list-view" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px"></div>
 </div>
 <div id="view-glossario" class="view"></div>
+<div id="view-guadagni" class="view"></div>
+<div id="view-risorse" class="view"></div>
 <div id="view-listino" class="view">
   <div class="glos-header">
     <div class="glos-title">Listino Servizi</div>
@@ -399,7 +426,7 @@
 <script src="js/data/azioni-listino.js"></script>
 <script src="js/data/step-detail.js?v=2"></script>
 <script src="js/data/diagnosi-data.js"></script>
-<script src="js/app.js?v=20260402v"></script>
+<script src="js/app.js?v=20260403g"></script>
 <script src="js/diagnosi.js?v=20260402n"></script>
 
 

@@ -747,7 +747,16 @@ const DIM_DESC = {
   ],
 };
 
-const STATUS_COLORS = {nuovo:'rgba(120,130,150,0.8)',contattato:'rgba(61,90,254,0.8)',diagnosi:'rgba(255,107,43,0.85)',proposta:'rgba(0,160,115,0.8)',chiuso:'rgba(0,130,95,0.75)'};
+const STATUS_COLORS = {
+  in_attesa:   '#AF7D00',
+  ingaggiato:  '#3D5AFE',
+  in_diagnosi: '#7B61FF',
+  attivo:      '#00825F',
+  archiviato:  'rgba(26,26,46,0.3)',
+  // legacy (compatibilità dati vecchi)
+  nuovo:'rgba(120,130,150,0.8)',contattato:'rgba(61,90,254,0.8)',diagnosi:'rgba(255,107,43,0.85)',proposta:'rgba(0,160,115,0.8)',chiuso:'rgba(0,130,95,0.75)',
+  pending_confirmation:'#AF7D00',
+};
 
 // Palette colori prospect ? 12 toni premium
 const PROSPECT_PALETTE = [
@@ -775,7 +784,16 @@ function getProspectColor(prospect) {
 function assignNextColor() {
   return PROSPECT_PALETTE[prospects.length % PROSPECT_PALETTE.length];
 }
-const STATUS_LABELS = {nuovo:'Nuovo',contattato:'Contattato',diagnosi:'Diagnosi',proposta:'Proposta',chiuso:'Chiuso'};
+const STATUS_LABELS = {
+  in_attesa:   'In attesa',
+  ingaggiato:  'Ingaggiato',
+  in_diagnosi: 'In diagnosi',
+  attivo:      'Attivo',
+  archiviato:  'Archiviato',
+  // legacy
+  nuovo:'Nuovo',contattato:'Contattato',diagnosi:'Diagnosi',proposta:'Proposta',chiuso:'Chiuso',
+  pending_confirmation:'In attesa',
+};
 
 const TETTO_BY_SETTORE = {
   manifatturiero_meccanica:          { ecommerce: 2, sitoweb: 4 },

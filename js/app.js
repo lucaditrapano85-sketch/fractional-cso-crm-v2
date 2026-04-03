@@ -461,6 +461,55 @@ async function saveSessione() {
   showToast(hasUpgrade ? 'Sessione e upgrade salvati' : 'Sessione registrata');
 }
 
+function renderGuadagni() {
+  var c = document.getElementById('view-guadagni');
+  if (!c) return;
+  c.innerHTML = '<div style="padding:40px 32px;font-family:\'Plus Jakarta Sans\',sans-serif;">' +
+    '<h2 style="font-size:22px;font-weight:700;color:#1a1a2e;margin-bottom:8px;">I miei guadagni</h2>' +
+    '<p style="font-size:14px;color:rgba(26,26,46,0.4);margin-bottom:32px;">Riepilogo compensi e fatturato da clienti attivi. Disponibile a breve.</p>' +
+    '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:48px 32px;text-align:center;color:rgba(26,26,46,0.25);font-size:14px;">' +
+    'Funzionalità in arrivo' +
+    '</div>' +
+  '</div>';
+}
+
+function renderRisorse() {
+  var c = document.getElementById('view-risorse');
+  if (!c) return;
+  // Render tabs: Glossario | Listino
+  c.innerHTML = '<div style="padding:32px 32px 0;font-family:\'Plus Jakarta Sans\',sans-serif;">' +
+    '<h2 style="font-size:22px;font-weight:700;color:#1a1a2e;margin-bottom:20px;">Risorse</h2>' +
+    '<div style="display:flex;gap:0;border-bottom:1px solid rgba(0,0,0,0.08);margin-bottom:24px;">' +
+      '<button onclick="_risorsaTab(\'glossario\')" id="rtab-glossario" style="background:none;border:none;border-bottom:2px solid #3D5AFE;padding:8px 20px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:600;color:#3D5AFE;cursor:pointer;">Glossario</button>' +
+      '<button onclick="_risorsaTab(\'listino\')" id="rtab-listino" style="background:none;border:none;border-bottom:2px solid transparent;padding:8px 20px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:400;color:rgba(26,26,46,0.4);cursor:pointer;">Listino Servizi</button>' +
+    '</div>' +
+    '<div id="risorse-body"></div>' +
+  '</div>';
+  _risorsaTab('glossario');
+}
+
+function _risorsaTab(tab) {
+  ['glossario','listino'].forEach(function(t) {
+    var btn = document.getElementById('rtab-' + t);
+    if (!btn) return;
+    var active = t === tab;
+    btn.style.borderBottomColor = active ? '#3D5AFE' : 'transparent';
+    btn.style.color = active ? '#3D5AFE' : 'rgba(26,26,46,0.4)';
+    btn.style.fontWeight = active ? '600' : '400';
+  });
+  var body = document.getElementById('risorse-body');
+  if (!body) return;
+  if (tab === 'glossario') {
+    renderGlossario();
+    var src = document.getElementById('view-glossario');
+    if (src) body.innerHTML = src.innerHTML;
+  } else {
+    renderListinoServizi('manifatturiero');
+    var src2 = document.getElementById('view-listino');
+    if (src2) body.innerHTML = src2.innerHTML;
+  }
+}
+
 function renderListinoServizi(settore) {
   var sd = typeof STEP_DETAIL_BY_SETTORE !== 'undefined' ? STEP_DETAIL_BY_SETTORE : {};
   var keys = Object.keys(sd).filter(k => !k.startsWith('_'));
@@ -1029,9 +1078,12 @@ function showView(name) {
   if(name==='listino') { renderListinoServizi('manifatturiero'); }
   if(name==='prospects') { renderProspectsView(); }
   if(name==='glossario') renderGlossario();
+  if(name==='guadagni') renderGuadagni();
+  if(name==='risorse') renderRisorse();
 }
 
 function openProspect(id) {
+  if (currentId !== id) _activeProspectTab = 'panoramica';
   currentId = id;
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
@@ -1046,8 +1098,35 @@ function renderSidebar() {
   el.innerHTML = '';
 }
 
+function _espandiDaFareOggi() {
+  var c = document.getElementById('da-fare-oggi-list');
+  if (!c || !window._dashAlerts) return;
+  c.innerHTML = window._dashAlerts.map(function(a) {
+    return '<div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-left:3px solid ' + a.colore + ';border-radius:0 12px 12px 0;padding:14px 16px;margin-bottom:8px;">' +
+      '<div style="display:flex;align-items:center;gap:12px;flex:1;min-width:0;">' +
+        '<div style="width:32px;height:32px;border-radius:50%;background:' + a.colore + '1a;display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
+          '<div style="width:10px;height:10px;border-radius:50%;background:' + a.colore + ';"></div>' +
+        '</div>' +
+        '<div style="min-width:0;">' +
+          '<div style="font-size:13px;font-weight:600;color:#1a1a2e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + a.testo + '</div>' +
+          '<div style="font-size:12px;color:rgba(26,26,46,0.4);margin-top:2px;">' + a.dettaglio + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<button onclick="' + a.btnAction + '" style="flex-shrink:0;margin-left:16px;font-size:12px;padding:6px 14px;border-radius:8px;background:' + a.colore + '14;color:' + a.colore + ';border:none;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;font-weight:500;white-space:nowrap;" onmouseover="this.style.background=\'' + a.colore + '26\'" onmouseout="this.style.background=\'' + a.colore + '14\'">' + a.btnLabel + '</button>' +
+    '</div>';
+  }).join('');
+}
+
+async function reinviaInvito(prospectId) {
+  try {
+    var res = await fetch('/api/invite', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ prospect_id: prospectId }) });
+    if (res.ok) { showToast('Invito reinviato'); }
+    else { showToast('Errore reinvio invito'); }
+  } catch(e) { showToast('Errore reinvio invito'); }
+}
+
 // -- DASHBOARD ---------------------------------------------
-function renderDashboard() {
+async function renderDashboard() {
   // Saluto personalizzato
   (function() {
     var profile = window._currentProfile;
@@ -1059,36 +1138,35 @@ function renderDashboard() {
     if (h1) h1.textContent = nome ? saluto + ', ' + nome.split(' ')[0] : saluto;
   })();
 
-  const total=prospects.length;
-  const hot=prospects.filter(p=>calcScore(p)>=70).length;
-  const prop=prospects.filter(p=>p.stato==='proposta').length;
-  const closed=prospects.filter(p=>p.stato==='chiuso').length;
+  var attivi    = prospects.filter(function(p){ return p.stato === 'attivo'; });
+  var inAttesa  = prospects.filter(function(p){ return p.stato === 'in_attesa' || p.stato === 'ingaggiato' || p.stato === 'in_diagnosi' || p.stato === 'pending_confirmation'; });
+  var archiviati= prospects.filter(function(p){ return p.stato === 'archiviato' || p.stato === 'chiuso'; });
+
   var fatTotale = 0, fatPotenziale = 0, scoreMedia = 0, conFatturato = 0;
-  prospects.forEach(function(p) {
+  attivi.forEach(function(p) {
     if (p.fatturato_anno_1) { fatTotale += p.fatturato_anno_1; conFatturato++; }
     var ic = _calcolaImpattoCumulativo(p);
     if (ic && ic.fat12) fatPotenziale += ic.fat12[1] - (p.fatturato_anno_1 || 0);
     scoreMedia += calcScore(p);
   });
-  scoreMedia = total > 0 ? Math.round(scoreMedia / total) : 0;
+  scoreMedia = attivi.length > 0 ? Math.round(scoreMedia / attivi.length) : 0;
   var fmtK = function(v) { return v >= 1000000 ? (v/1000000).toFixed(1) + 'M' : Math.round(v/1000) + 'k'; };
-  var convRate = total > 0 ? Math.round(closed / total * 100) : 0;
 
   var kpiBorderStyle = 'border-radius:0 14px 14px 0;';
   document.getElementById('kpi-grid').innerHTML = [
-    { label: 'Prospect totali', val: total, filter: 'tutti', border: '#3D5AFE' },
-    { label: 'Score alto (\u226570)', val: hot, filter: 'score', border: 'rgba(0,130,95,0.85)' },
-    { label: 'In proposta', val: prop, filter: 'proposta', border: '#FF6B2B' },
-    { label: 'Chiusi', val: closed, filter: 'chiuso', border: 'rgba(175,125,0,0.85)' },
-  ].map(k => `<div class="kpi-card" onclick="showView('prospects');setProspectFilter('${k.filter}')" style="cursor:pointer;border-left:3px solid ${k.border};${kpiBorderStyle}" title="Clicca per vedere i prospect">
+    { label: 'Clienti attivi',  val: attivi.length,     filter: 'attivo',    border: '#00825F' },
+    { label: 'In attesa/onboarding', val: inAttesa.length, filter: 'in_attesa', border: '#AF7D00' },
+    { label: 'Archiviati',      val: archiviati.length, filter: 'archiviato',border: 'rgba(26,26,46,0.3)' },
+    { label: 'Score medio',     val: scoreMedia + '/100',filter: 'attivo',   border: '#7B61FF' },
+  ].map(k => `<div class="kpi-card" onclick="showView('prospects');setProspectFilter('${k.filter}')" style="cursor:pointer;border-left:3px solid ${k.border};${kpiBorderStyle}" title="Clicca per filtrare">
     <div class="kpi-label">${k.label}</div>
     <div class="kpi-val">${k.val}</div>
   </div>`).join('') +
   '<div style="grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:14px">' +
-    '<div class="kpi-card" style="border-left:3px solid #3D5AFE;'+kpiBorderStyle+'"><div class="kpi-label">Fatturato gestito</div><div class="kpi-val" style="font-size:22px">' + fmtK(fatTotale) + '\u20AC</div><div class="kpi-sub">' + conFatturato + ' prospect con fatturato</div></div>' +
-    '<div class="kpi-card" style="border-left:3px solid rgba(0,130,95,0.85);'+kpiBorderStyle+'"><div class="kpi-label">Potenziale crescita 12m</div><div class="kpi-val tl-green" style="font-size:22px">+' + fmtK(fatPotenziale) + '\u20AC</div><div class="kpi-sub">somma proiezioni portafoglio</div></div>' +
-    '<div class="kpi-card" style="border-left:3px solid rgba(175,125,0,0.85);'+kpiBorderStyle+'"><div class="kpi-label">Score medio</div><div class="kpi-val" style="font-size:22px">' + scoreMedia + '/100</div><div class="kpi-sub">media portafoglio</div></div>' +
-    '<div class="kpi-card" style="border-left:3px solid #FF6B2B;'+kpiBorderStyle+'"><div class="kpi-label">Tasso conversione</div><div class="kpi-val" style="font-size:22px">' + convRate + '%</div><div class="kpi-sub">chiusi / totali</div></div>' +
+    '<div class="kpi-card" style="border-left:3px solid #3D5AFE;'+kpiBorderStyle+'"><div class="kpi-label">Fatturato gestito</div><div class="kpi-val" style="font-size:22px">' + fmtK(fatTotale) + '\u20AC</div><div class="kpi-sub">' + conFatturato + ' clienti attivi con fatturato</div></div>' +
+    '<div class="kpi-card" style="border-left:3px solid rgba(0,130,95,0.85);'+kpiBorderStyle+'"><div class="kpi-label">Potenziale crescita 12m</div><div class="kpi-val tl-green" style="font-size:22px">+' + fmtK(fatPotenziale) + '\u20AC</div><div class="kpi-sub">proiezioni clienti attivi</div></div>' +
+    '<div class="kpi-card" style="border-left:3px solid rgba(175,125,0,0.85);'+kpiBorderStyle+'"><div class="kpi-label">Tot. clienti</div><div class="kpi-val" style="font-size:22px">' + prospects.length + '</div><div class="kpi-sub">inclusi archiviati</div></div>' +
+    '<div class="kpi-card" style="border-left:3px solid #FF6B2B;'+kpiBorderStyle+'"><div class="kpi-label">Tasso attivazione</div><div class="kpi-val" style="font-size:22px">' + (prospects.length > 0 ? Math.round(attivi.length / prospects.length * 100) : 0) + '%</div><div class="kpi-sub">attivi / totali</div></div>' +
   '</div>';
 
   // Alert scadenze in avvicinamento
@@ -1133,7 +1211,181 @@ function renderDashboard() {
   var alertContainer = document.getElementById('alert-scadenze');
   if (alertContainer) alertContainer.innerHTML = alertHtml;
 
-  const allCols=['nuovo','contattato','diagnosi','proposta','chiuso'];
+  // ── SEZIONE: I MIEI GUADAGNI ──────────────────────────────
+  var attiviBase = attivi.filter(function(p){ return p.piano === 'guided_base'; });
+  var attiviPro  = attivi.filter(function(p){ return p.piano === 'guided_pro'; });
+  var guadagnoMensile = (attiviBase.length * 200) + (attiviPro.length * 320);
+  var guadagnoAnnuo   = guadagnoMensile * 12;
+
+  // Calls questo mese — conteggio asincrono con fallback a 0
+  var callsQuest = 0;
+  try {
+    var prospectIds = prospects.map(function(p){ return p.id; });
+    if (prospectIds.length > 0) {
+      var meseStart = new Date(); meseStart.setDate(1); meseStart.setHours(0,0,0,0);
+      var meseEnd   = new Date(); meseEnd.setMonth(meseEnd.getMonth()+1,0); meseEnd.setHours(23,59,59,999);
+      var { data: callsRows } = await sb.from('calls').select('id')
+        .in('prospect_id', prospectIds)
+        .gte('data', meseStart.toISOString().split('T')[0])
+        .lte('data', meseEnd.toISOString().split('T')[0]);
+      callsQuest = (callsRows || []).length;
+    }
+  } catch(e) {}
+
+  var fmtEur = function(v){ return '\u20AC' + v.toLocaleString('it-IT'); };
+  var sectionLabel = 'font-size:13px;color:rgba(26,26,46,0.35);text-transform:uppercase;letter-spacing:1px;font-weight:600;margin:24px 0 10px;font-family:\'Plus Jakarta Sans\',sans-serif;';
+  var kpiGreen = 'border-radius:0 14px 14px 0;border-left:3px solid #00825F;';
+  var gContainer = document.getElementById('guadagni-dashboard');
+  if (gContainer) {
+    gContainer.innerHTML =
+      '<div style="' + sectionLabel + '">I miei guadagni</div>' +
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;">' +
+        '<div class="kpi-card" style="' + kpiGreen + '">' +
+          '<div class="kpi-label">Guadagno mensile</div>' +
+          '<div class="kpi-val" style="font-size:28px;color:#00825F;">' + fmtEur(guadagnoMensile) + '</div>' +
+          '<div class="kpi-sub">' + attiviBase.length + ' Base \xd7 \u20AC200 + ' + attiviPro.length + ' Pro \xd7 \u20AC320</div>' +
+        '</div>' +
+        '<div class="kpi-card" style="border-radius:0 14px 14px 0;border-left:3px solid rgba(0,130,95,0.6);">' +
+          '<div class="kpi-label">Guadagno annuo proiettato</div>' +
+          '<div class="kpi-val" style="font-size:28px;color:#00825F;">' + fmtEur(guadagnoAnnuo) + '</div>' +
+          '<div class="kpi-sub">mensile \xd7 12</div>' +
+        '</div>' +
+        '<div class="kpi-card" style="border-radius:0 14px 14px 0;border-left:3px solid #7B61FF;">' +
+          '<div class="kpi-label">Call questo mese</div>' +
+          '<div class="kpi-val" style="font-size:28px;color:#7B61FF;">' + callsQuest + ' call</div>' +
+          '<div class="kpi-sub" style="color:#7B61FF;">' + fmtEur(callsQuest * 90) + ' di consulenza</div>' +
+        '</div>' +
+      '</div>';
+  }
+
+  // ── SEZIONE: DA FARE OGGI ─────────────────────────────────
+  var oggiStr = new Date().toISOString().split('T')[0];
+  var domaniStr = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+  var oggiMs  = Date.now();
+  var alerts  = [];
+
+  // Alert 1 — ROSSO: cliente attivo non aggiornato da 14+ giorni
+  attivi.forEach(function(p) {
+    var updatedAt = p.updated_at || p.created_at;
+    if (!updatedAt) return;
+    var giorni = Math.round((oggiMs - new Date(updatedAt)) / 86400000);
+    if (giorni >= 14) {
+      alerts.push({
+        tipo: 1, colore: '#E53935', urgenza: 1,
+        testo: (p.nome || p.azienda || '—') + ' \u2014 inattivo da ' + giorni + ' giorni',
+        dettaglio: 'Ultimo aggiornamento: ' + new Date(updatedAt).toLocaleDateString('it-IT') + '. Rischio churn.',
+        btnLabel: 'Programma call',
+        btnAction: 'showView(\'calendario\')',
+        id: p.id
+      });
+    }
+  });
+
+  // Alert 2 — ARANCIONE: in_attesa da 7+ giorni
+  prospects.filter(function(p){ return p.stato === 'in_attesa'; }).forEach(function(p) {
+    var ref = p.invite_sent_at || p.created_at;
+    if (!ref) return;
+    var giorni = Math.round((oggiMs - new Date(ref)) / 86400000);
+    if (giorni >= 7) {
+      alerts.push({
+        tipo: 2, colore: '#FF6B2B', urgenza: 2,
+        testo: (p.nome || p.azienda || '—') + ' \u2014 invito non confermato da ' + giorni + ' giorni',
+        dettaglio: 'Email inviata il ' + new Date(ref).toLocaleDateString('it-IT') + '. Considera un sollecito.',
+        btnLabel: 'Reinvia invito',
+        btnAction: 'reinviaInvito(\'' + p.id + '\')',
+        id: p.id
+      });
+    }
+  });
+
+  // Alert 3 — BLU: call in programma oggi o domani
+  allEventi.filter(function(e){ return e.data === oggiStr || e.data === domaniStr; }).forEach(function(e) {
+    var quando = e.data === oggiStr ? 'oggi' : 'domani';
+    var ora    = e.ora || '';
+    var pNome  = (e.prospects && e.prospects.nome) || e.nome_custom || '—';
+    var pObj   = prospects.find(function(p){ return p.id === e.prospect_id; });
+    var score  = pObj ? calcScore(pObj) : '—';
+    var piano  = pObj && pObj.piano === 'guided_pro' ? 'Pro' : pObj && pObj.piano === 'guided_base' ? 'Base' : '—';
+    alerts.push({
+      tipo: 3, colore: '#3D5AFE', urgenza: 3,
+      testo: 'Call con ' + pNome + ' \u2014 ' + quando + (ora ? ' alle ' + ora : ''),
+      dettaglio: 'Piano: ' + piano + '. Score attuale: ' + score + '/100',
+      btnLabel: 'Vedi scheda',
+      btnAction: e.prospect_id ? 'openProspect(\'' + e.prospect_id + '\')' : 'showView(\'calendario\')',
+      id: e.id
+    });
+  });
+
+  // Alert 4 — VERDE: Base con score ≥ 70 (candidato upgrade)
+  attiviBase.filter(function(p){ return calcScore(p) >= 70; }).forEach(function(p) {
+    var score = calcScore(p);
+    alerts.push({
+      tipo: 4, colore: '#00825F', urgenza: 4,
+      testo: (p.nome || p.azienda || '—') + ' \u2014 score ' + score + '/100 \u2014 pronto per upgrade',
+      dettaglio: 'Considera proposta upgrade a Pro per massimizzare il potenziale.',
+      btnLabel: 'Vedi trend',
+      btnAction: 'openProspect(\'' + p.id + '\')',
+      id: p.id
+    });
+  });
+
+  // Alert 5 — VIOLA: attivo da 90+ giorni (ri-diagnosi)
+  attivi.forEach(function(p) {
+    var ref = p.created_at;
+    if (!ref) return;
+    var giorni = Math.round((oggiMs - new Date(ref)) / 86400000);
+    if (giorni >= 90) {
+      alerts.push({
+        tipo: 5, colore: '#7B61FF', urgenza: 5,
+        testo: (p.nome || p.azienda || '—') + ' \u2014 ri-diagnosi disponibile',
+        dettaglio: 'Attivo dal ' + new Date(ref).toLocaleDateString('it-IT') + '. Sono passati ' + giorni + ' giorni.',
+        btnLabel: 'Avvia ri-diagnosi',
+        btnAction: 'openProspect(\'' + p.id + '\')',
+        id: p.id
+      });
+    }
+  });
+
+  // Ordina per urgenza
+  alerts.sort(function(a, b){ return a.urgenza - b.urgenza; });
+
+  var dContainer = document.getElementById('da-fare-oggi');
+  if (dContainer) {
+    var alertCardHtml = '';
+    var visible = alerts.slice(0, 5);
+    var extra   = alerts.length - 5;
+    if (visible.length === 0) {
+      alertCardHtml = '<div style="text-align:center;padding:28px;color:rgba(26,26,46,0.35);font-size:14px;background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:12px;">' +
+        '<div style="font-size:28px;margin-bottom:8px;">✓</div>' +
+        'Tutto in ordine! Nessuna azione urgente per oggi.' +
+        '</div>';
+    } else {
+      alertCardHtml = visible.map(function(a) {
+        return '<div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-left:3px solid ' + a.colore + ';border-radius:0 12px 12px 0;padding:14px 16px;margin-bottom:8px;">' +
+          '<div style="display:flex;align-items:center;gap:12px;flex:1;min-width:0;">' +
+            '<div style="width:32px;height:32px;border-radius:50%;background:' + a.colore + '1a;display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
+              '<div style="width:10px;height:10px;border-radius:50%;background:' + a.colore + ';"></div>' +
+            '</div>' +
+            '<div style="min-width:0;">' +
+              '<div style="font-size:13px;font-weight:600;color:#1a1a2e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + a.testo + '</div>' +
+              '<div style="font-size:12px;color:rgba(26,26,46,0.4);margin-top:2px;">' + a.dettaglio + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<button onclick="' + a.btnAction + '" style="flex-shrink:0;margin-left:16px;font-size:12px;padding:6px 14px;border-radius:8px;background:' + a.colore + '14;color:' + a.colore + ';border:none;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;font-weight:500;white-space:nowrap;" onmouseover="this.style.background=\'' + a.colore + '26\'" onmouseout="this.style.background=\'' + a.colore + '14\'">' + a.btnLabel + '</button>' +
+        '</div>';
+      }).join('');
+      if (extra > 0) {
+        alertCardHtml += '<div onclick="_espandiDaFareOggi()" style="text-align:center;padding:10px;font-size:12px;color:rgba(26,26,46,0.4);cursor:pointer;font-weight:500;">Vedi tutti (' + alerts.length + ') \u25be</div>';
+      }
+    }
+    dContainer.innerHTML =
+      '<div style="' + sectionLabel + '">Da fare oggi</div>' +
+      '<div id="da-fare-oggi-list">' + alertCardHtml + '</div>';
+  }
+
+  window._dashAlerts = alerts;
+
+  const allCols=['in_attesa','ingaggiato','in_diagnosi','attivo','archiviato'];
 
   // Status summary bar
   document.getElementById('status-summary').innerHTML=allCols.map(stato=>{
@@ -1187,12 +1439,12 @@ function renderDashboard() {
   // Sezione "Richiede Attenzione"
   var oggi = new Date();
   var problematici = prospects.filter(function(p) {
-    if (p.stato === 'chiuso') return false;
+    if (p.stato === 'archiviato' || p.stato === 'chiuso') return false;
     // Score critico
     var s = calcScore(p);
     if (s < 30 && s > 0) return true;
-    // Nessuna interazione da 30+ giorni in stato "nuovo"
-    if (p.stato === 'nuovo') {
+    // Nessuna interazione da 30+ giorni in stato "in_attesa"
+    if (p.stato === 'in_attesa' || p.stato === 'pending_confirmation') {
       var created = p.created_at ? new Date(p.created_at) : null;
       if (created && (oggi - created) / 86400000 > 30) return true;
     }
@@ -1234,21 +1486,254 @@ function renderDashboard() {
 let _prospectFilter = 'tutti';
 let _prospectSearch = '';
 let _prospectSort = 'score';
+let _csoFilterPiano = 'tutti';
 
 function setProspectFilter(filter) {
   _prospectFilter = filter;
   renderProspects();
 }
 
+function setPianoFilter(piano) {
+  _csoFilterPiano = piano;
+  renderProspects();
+}
+
+function _pianoBadge(piano) {
+  if (piano === 'guided_pro')  return '<span style="display:inline-block;font-size:10px;padding:2px 9px;border-radius:8px;background:rgba(255,107,43,0.10);color:#FF6B2B;font-weight:600;margin-left:6px;vertical-align:middle;line-height:1.4">Pro</span>';
+  if (piano === 'guided_base') return '<span style="display:inline-block;font-size:10px;padding:2px 9px;border-radius:8px;background:rgba(61,90,254,0.09);color:#3D5AFE;font-weight:600;margin-left:6px;vertical-align:middle;line-height:1.4">Base</span>';
+  return '<span style="display:inline-block;font-size:10px;padding:2px 9px;border-radius:8px;background:rgba(26,26,46,0.07);color:rgba(26,26,46,0.45);font-weight:600;margin-left:6px;vertical-align:middle;line-height:1.4">Self</span>';
+}
+
 function renderProspectsView() { renderProspects(); }
+
+// ── MODALE NUOVO CLIENTE ─────────────────────────────────────
+
+function apriModaleNuovoCliente() {
+  var existing = document.getElementById('cso-modal-overlay');
+  if (existing) existing.remove();
+
+  var IS = 'width:100%;background:rgba(255,255,255,0.6);border:1px solid rgba(26,26,46,0.1);border-radius:10px;padding:12px 14px;font-size:14px;color:#1a1a2e;font-family:\'Plus Jakarta Sans\',sans-serif;box-sizing:border-box;outline:none;transition:border-color .15s;';
+  var LS = 'display:block;font-size:12px;color:rgba(26,26,46,0.4);margin-bottom:4px;margin-top:14px;';
+
+  var overlay = document.createElement('div');
+  overlay.id = 'cso-modal-overlay';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.35);z-index:9000;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:20px 0;box-sizing:border-box;';
+
+  var box = document.createElement('div');
+  box.id = 'cso-modal-box';
+  box.style.cssText = 'width:520px;max-width:90vw;background:rgba(255,255,255,0.92);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.8);border-radius:20px;padding:28px;box-shadow:0 8px 32px rgba(0,0,0,0.12);transform:scale(0.95);opacity:0;transition:transform 200ms ease-out,opacity 200ms ease-out;';
+
+  box.innerHTML =
+    '<div style="font-size:20px;font-weight:600;color:#1a1a2e;margin-bottom:4px;">Registra nuovo cliente</div>' +
+    '<div style="font-size:12px;color:rgba(26,26,46,0.4);margin-bottom:20px;">Il cliente riceverà un\'email per completare la registrazione.</div>' +
+
+    // Nome + Cognome
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">' +
+      '<div><label style="' + LS + 'margin-top:0;">Nome</label><input id="nc-nome" type="text" autocomplete="given-name" style="' + IS + '" oninput="_ncValidate()" onfocus="this.style.borderColor=\'rgba(61,90,254,0.4)\'" onblur="this.style.borderColor=\'rgba(26,26,46,0.1)\'"></div>' +
+      '<div><label style="' + LS + 'margin-top:0;">Cognome</label><input id="nc-cognome" type="text" autocomplete="family-name" style="' + IS + '" oninput="_ncValidate()" onfocus="this.style.borderColor=\'rgba(61,90,254,0.4)\'" onblur="this.style.borderColor=\'rgba(26,26,46,0.1)\'"></div>' +
+    '</div>' +
+
+    // Azienda
+    '<label style="' + LS + '">Nome azienda</label>' +
+    '<input id="nc-azienda" type="text" autocomplete="organization" style="' + IS + '" oninput="_ncValidate()" onfocus="this.style.borderColor=\'rgba(61,90,254,0.4)\'" onblur="this.style.borderColor=\'rgba(26,26,46,0.1)\'">' +
+
+    // P.IVA
+    '<label style="' + LS + '">P.IVA</label>' +
+    '<input id="nc-piva" type="text" placeholder="IT01234567890" style="' + IS + '" oninput="_ncValidate()" onfocus="this.style.borderColor=\'rgba(61,90,254,0.4)\'" onblur="this.style.borderColor=\'rgba(26,26,46,0.1)\'">' +
+
+    // Telefono + Email
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">' +
+      '<div><label style="' + LS + '">Telefono</label><input id="nc-tel" type="tel" placeholder="+39 333 1234567" autocomplete="tel" style="' + IS + '" oninput="_ncValidate()" onfocus="this.style.borderColor=\'rgba(61,90,254,0.4)\'" onblur="this.style.borderColor=\'rgba(26,26,46,0.1)\'"></div>' +
+      '<div><label style="' + LS + '">Email</label><input id="nc-email" type="email" placeholder="titolare@azienda.it" autocomplete="email" style="' + IS + '" oninput="_ncValidate()" onfocus="this.style.borderColor=\'rgba(61,90,254,0.4)\'" onblur="this.style.borderColor=\'rgba(26,26,46,0.1)\'"></div>' +
+    '</div>' +
+
+    // Pacchetto
+    '<label style="' + LS + '">Pacchetto</label>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">' +
+      '<div id="nc-card-base" onclick="_ncSelPiano(\'guided_base\')" style="border:2px solid rgba(26,26,46,0.08);border-radius:12px;padding:14px;cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;gap:10px;">' +
+        '<div id="nc-radio-base" style="width:16px;height:16px;border-radius:50%;border:2px solid rgba(26,26,46,0.2);flex-shrink:0;margin-top:2px;transition:all .15s;"></div>' +
+        '<div><div style="font-size:15px;font-weight:600;color:#3D5AFE;">Guided Base</div>' +
+        '<div style="font-size:12px;color:rgba(61,90,254,0.5);margin-top:2px;">€399/mese</div>' +
+        '<div style="font-size:11px;color:rgba(26,26,46,0.35);margin-top:4px;">1 call/mese + piano condiviso</div></div>' +
+      '</div>' +
+      '<div id="nc-card-pro" onclick="_ncSelPiano(\'guided_pro\')" style="border:2px solid rgba(26,26,46,0.08);border-radius:12px;padding:14px;cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;gap:10px;">' +
+        '<div id="nc-radio-pro" style="width:16px;height:16px;border-radius:50%;border:2px solid rgba(26,26,46,0.2);flex-shrink:0;margin-top:2px;transition:all .15s;"></div>' +
+        '<div><div style="font-size:15px;font-weight:600;color:#FF6B2B;">Guided Pro</div>' +
+        '<div style="font-size:12px;color:rgba(255,107,43,0.5);margin-top:2px;">€599/mese</div>' +
+        '<div style="font-size:11px;color:rgba(26,26,46,0.35);margin-top:4px;">Report + what-if + benchmark + call illimitate</div></div>' +
+      '</div>' +
+    '</div>' +
+
+    // Bottoni
+    '<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:24px;">' +
+      '<button onclick="_chiudiModaleCSO()" style="background:transparent;border:1px solid rgba(26,26,46,0.12);color:rgba(26,26,46,0.5);border-radius:10px;padding:10px 24px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;cursor:pointer;">Annulla</button>' +
+      '<button id="nc-submit" onclick="inviaInvitoNuovoCliente()" disabled style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:10px 24px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:500;cursor:default;opacity:0.4;transition:opacity .15s;">Invia invito</button>' +
+    '</div>';
+
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+  overlay._selectedPiano = null;
+
+  overlay.addEventListener('click', function(e) { if (e.target === overlay) _chiudiModaleCSO(); });
+  overlay._escHandler = function(e) { if (e.key === 'Escape') _chiudiModaleCSO(); };
+  document.addEventListener('keydown', overlay._escHandler);
+
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() { box.style.transform = 'scale(1)'; box.style.opacity = '1'; });
+  });
+  setTimeout(function() { var el = document.getElementById('nc-nome'); if (el) el.focus(); }, 60);
+}
+
+function _ncSelPiano(piano) {
+  var overlay = document.getElementById('cso-modal-overlay');
+  if (!overlay) return;
+  overlay._selectedPiano = piano;
+
+  var cardBase  = document.getElementById('nc-card-base');
+  var cardPro   = document.getElementById('nc-card-pro');
+  var radioBase = document.getElementById('nc-radio-base');
+  var radioPro  = document.getElementById('nc-radio-pro');
+
+  if (cardBase && cardPro && radioBase && radioPro) {
+    if (piano === 'guided_base') {
+      cardBase.style.border  = '2px solid #3D5AFE';
+      cardBase.style.background = 'rgba(61,90,254,0.04)';
+      cardPro.style.border   = '2px solid rgba(26,26,46,0.08)';
+      cardPro.style.background  = 'transparent';
+      radioBase.style.background = '#3D5AFE';
+      radioBase.style.border     = '2px solid #3D5AFE';
+      radioPro.style.background  = 'transparent';
+      radioPro.style.border      = '2px solid rgba(26,26,46,0.2)';
+    } else {
+      cardPro.style.border   = '2px solid #FF6B2B';
+      cardPro.style.background  = 'rgba(255,107,43,0.04)';
+      cardBase.style.border  = '2px solid rgba(26,26,46,0.08)';
+      cardBase.style.background = 'transparent';
+      radioPro.style.background  = '#FF6B2B';
+      radioPro.style.border      = '2px solid #FF6B2B';
+      radioBase.style.background = 'transparent';
+      radioBase.style.border     = '2px solid rgba(26,26,46,0.2)';
+    }
+  }
+  _ncValidate();
+}
+
+function _ncValidate() {
+  var overlay = document.getElementById('cso-modal-overlay');
+  var btn     = document.getElementById('nc-submit');
+  if (!btn || !overlay) return;
+  var ok = overlay._selectedPiano &&
+    (document.getElementById('nc-nome')?.value.trim()) &&
+    (document.getElementById('nc-cognome')?.value.trim()) &&
+    (document.getElementById('nc-azienda')?.value.trim()) &&
+    (document.getElementById('nc-piva')?.value.trim()) &&
+    (document.getElementById('nc-tel')?.value.trim()) &&
+    (document.getElementById('nc-email')?.value.trim());
+  btn.disabled    = !ok;
+  btn.style.opacity = ok ? '1' : '0.4';
+  btn.style.cursor  = ok ? 'pointer' : 'default';
+}
+
+async function inviaInvitoNuovoCliente() {
+  var overlay = document.getElementById('cso-modal-overlay');
+  var btn     = document.getElementById('nc-submit');
+  if (!overlay || !btn || btn.disabled) return;
+
+  var nome    = document.getElementById('nc-nome').value.trim();
+  var cognome = document.getElementById('nc-cognome').value.trim();
+  var azienda = document.getElementById('nc-azienda').value.trim();
+  var piva    = document.getElementById('nc-piva').value.trim();
+  var tel     = document.getElementById('nc-tel').value.trim();
+  var email   = document.getElementById('nc-email').value.trim();
+  var piano   = overlay._selectedPiano;
+  var csoId   = (window._currentProfile || {}).id || null;
+
+  // Spinner
+  btn.disabled    = true;
+  btn.style.opacity = '0.7';
+  btn.innerHTML   = '<span style="display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.4);border-top-color:white;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:6px;"></span>Invio in corso...';
+
+  var box = document.getElementById('cso-modal-box');
+
+  try {
+    var inviteToken = crypto.randomUUID();
+    var payload = {
+      nome:         azienda,
+      referente:    nome + ' ' + cognome,
+      cognome:      cognome,
+      azienda:      azienda,
+      piva:         piva,
+      telefono:     tel,
+      email:        email,
+      piano:        piano,
+      stato:        'in_attesa',
+      cso_id:       csoId,
+      invite_token: inviteToken,
+      created_at:   new Date().toISOString(),
+    };
+    console.log('Step 1: salvataggio prospect', payload);
+
+    var { data: newP, error: insErr } = await sb.from('prospects').insert(payload).select().single();
+    console.log('Step 1 risultato:', newP, insErr);
+
+    if (insErr) {
+      if (box) box.innerHTML =
+        '<div style="text-align:center;padding:16px 0;">' +
+          '<div style="font-size:36px;margin-bottom:12px;">❌</div>' +
+          '<div style="font-size:16px;font-weight:600;color:#E53935;margin-bottom:8px;">Errore salvataggio</div>' +
+          '<div style="font-size:12px;color:rgba(26,26,46,0.5);margin-bottom:20px;word-break:break-all;">' + insErr.message + '</div>' +
+          '<button onclick="_chiudiModaleCSO()" style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:10px 28px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;cursor:pointer;">Chiudi</button>' +
+        '</div>';
+      return;
+    }
+
+    // Chiama /api/invite
+    console.log('Step 2: chiamo /api/invite con id:', newP.id);
+    var res = await fetch('/api/invite', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ prospect_id: newP.id }),
+    });
+    var resJson = await res.json().catch(() => ({}));
+    console.log('Step 2 risultato:', resJson);
+    if (!res.ok) {
+      throw new Error(resJson.error || 'Errore invio email');
+    }
+
+    // Aggiorna lista locale
+    prospects.unshift(newP);
+
+    // Stato successo nel modale
+    if (box) box.innerHTML =
+      '<div style="text-align:center;padding:16px 0;">' +
+        '<div style="width:48px;height:48px;border-radius:50%;background:#00825F;display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px;">' +
+          '<svg width="22" height="16" viewBox="0 0 22 16" fill="none"><path d="M1 8L8 15L21 1" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+        '</div>' +
+        '<div style="font-size:18px;font-weight:600;color:#1a1a2e;margin-bottom:8px;">Invito inviato!</div>' +
+        '<div style="font-size:13px;color:rgba(26,26,46,0.4);line-height:1.6;margin-bottom:24px;">Email inviata a <strong>' + email + '</strong>.<br>Il cliente completerà la registrazione dal link.</div>' +
+        '<button onclick="_chiudiModaleCSO();renderProspects();" style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:10px 32px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:500;cursor:pointer;">Chiudi</button>' +
+      '</div>';
+
+  } catch(e) {
+    if (box) box.innerHTML =
+      '<div style="text-align:center;padding:16px 0;">' +
+        '<div style="width:48px;height:48px;border-radius:50%;background:#e74c3c;display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px;">' +
+          '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v8M10 14v2" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>' +
+        '</div>' +
+        '<div style="font-size:18px;font-weight:600;color:#1a1a2e;margin-bottom:8px;">Errore nell\'invio</div>' +
+        '<div style="font-size:13px;color:rgba(26,26,46,0.4);margin-bottom:24px;">' + e.message + '</div>' +
+        '<button onclick="_chiudiModaleCSO()" style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:10px 32px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:500;cursor:pointer;">Riprova</button>' +
+      '</div>';
+  }
+}
 
 function renderProspects() {
   const container = document.getElementById('view-prospects');
   if (!container) return;
 
-  const STATI = ['nuovo', 'contattato', 'diagnosi', 'proposta', 'chiuso'];
-  const STATI_LABEL = { nuovo: 'Nuovo', contattato: 'Contattato', diagnosi: 'Diagnosi', proposta: 'Proposta', chiuso: 'Chiuso' };
-  const STATI_COLOR = { nuovo: '#7a8090', contattato: '#3D5AFE', diagnosi: '#FF6B2B', proposta: '#00A873', chiuso: '#00826C' };
+  const STATI = ['in_attesa','ingaggiato','in_diagnosi','attivo','archiviato'];
+  const STATI_LABEL = { in_attesa:'In attesa', ingaggiato:'Ingaggiato', in_diagnosi:'In diagnosi', attivo:'Attivo', archiviato:'Archiviato' };
+  const STATI_COLOR = { in_attesa:'#AF7D00', ingaggiato:'#3D5AFE', in_diagnosi:'#7B61FF', attivo:'#00825F', archiviato:'rgba(26,26,46,0.3)' };
 
   // Filtra prospect
   let lista = prospects.filter(function(p) {
@@ -1262,7 +1747,13 @@ function renderProspects() {
       : _prospectFilter === 'score' ? calcScore(p) >= 70
       : p.stato === _prospectFilter;
 
-    return matchSearch && matchFilter;
+    var matchPiano = _csoFilterPiano === 'tutti' ? true
+      : _csoFilterPiano === 'self'        ? (!p.piano || p.piano === 'self')
+      : _csoFilterPiano === 'guided_base' ? p.piano === 'guided_base'
+      : _csoFilterPiano === 'guided_pro'  ? p.piano === 'guided_pro'
+      : true;
+
+    return matchSearch && matchFilter && matchPiano;
   });
 
   // Ordina
@@ -1287,7 +1778,10 @@ function renderProspects() {
     return '<div class="prospect-kanban-card" onclick="openProspect(\'' + p.id + '\')" style="cursor:pointer">' +
       '<div class="pkc-header">' +
         '<div class="pkc-color" style="background:' + (p.color||statoColor) + '"></div>' +
-        '<div class="pkc-nome">' + (p.nome || '\u2014') + '</div>' +
+        '<div class="pkc-nome">' + (p.nome || '\u2014') +
+          (STATI_LABEL[p.stato] ? '<span style="display:inline-block;font-size:10px;padding:2px 8px;border-radius:6px;background:' + (STATI_COLOR[p.stato]||'#888') + '1a;color:' + (STATI_COLOR[p.stato]||'#888') + ';font-weight:600;margin-left:6px;vertical-align:middle;line-height:1.4">' + STATI_LABEL[p.stato] + '</span>' : '') +
+          _pianoBadge(p.piano) +
+        '</div>' +
       '</div>' +
       '<div class="pkc-settore">' + macroLabel(p.settore) + '</div>' +
       '<div class="pkc-score-row">' +
@@ -1333,14 +1827,18 @@ function renderProspects() {
   }
 
   // Filtri buttons
-  var filterBtns = ['tutti','nuovo','contattato','diagnosi','proposta','chiuso'].map(function(f) {
+  var filterBtns = ['tutti','in_attesa','ingaggiato','in_diagnosi','attivo','archiviato','score'].map(function(f) {
     var active = _prospectFilter === f;
-    var style = active ? 'background:' + (STATI_COLOR[f]||'#2c3e50') + ';color:#fff;border-color:' + (STATI_COLOR[f]||'#2c3e50') : '';
-    return '<button class="pf-btn' + (active?' active':'') + '" style="' + style + '" onclick="setProspectFilter(\'' + f + '\')">' +
-      (f === 'tutti' ? 'Tutti' : STATI_LABEL[f]) + '</button>';
+    var label  = f === 'tutti' ? 'Tutti' : f === 'score' ? 'Score alto' : STATI_LABEL[f];
+    var color  = f === 'score' ? '#f39c12' : (STATI_COLOR[f] || '#3D5AFE');
+    return '<button onclick="setProspectFilter(\'' + f + '\')" style="background:none;border:none;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:' + (active?'600':'400') + ';color:' + (active?color:'rgba(26,26,46,0.45)') + ';padding:4px 8px;border-bottom:2px solid ' + (active?color:'transparent') + ';transition:all .15s;">' + label + '</button>';
   }).join('');
-  var scoreActive = _prospectFilter === 'score';
-  filterBtns += '<button class="pf-btn' + (scoreActive?' active':'') + '" style="' + (scoreActive?'background:#f39c12;color:#fff;border-color:#f39c12':'') + '" onclick="setProspectFilter(\'score\')">Score alto</button>';
+
+  var pianoFilterBtns = ['tutti','self','guided_base','guided_pro'].map(function(f) {
+    var active = _csoFilterPiano === f;
+    var label = f === 'tutti' ? 'Tutti' : f === 'self' ? 'Self' : f === 'guided_base' ? 'Base' : 'Pro';
+    return '<button onclick="setPianoFilter(\'' + f + '\')" style="background:none;border:none;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:' + (active?'600':'400') + ';color:' + (active?'#3D5AFE':'rgba(26,26,46,0.45)') + ';padding:4px 8px;border-bottom:2px solid ' + (active?'#3D5AFE':'transparent') + ';transition:all .15s;">' + label + '</button>';
+  }).join('');
 
   container.innerHTML =
     '<div class="prospects-header">' +
@@ -1358,9 +1856,16 @@ function renderProspects() {
           '<option value="data"' + (_prospectSort==='data'?' selected':'') + '>Ordina: Data</option>' +
           '<option value="nome"' + (_prospectSort==='nome'?' selected':'') + '>Ordina: Nome</option>' +
         '</select>' +
-        '<button class="btn-prospect-new" onclick="openNewProspect()">+ Nuovo Prospect</button>' +
+        '<button onclick="apriModaleNuovoCliente()" style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:10px 20px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;">+ Nuovo cliente</button>' +
       '</div>' +
-      '<div class="prospects-filters">' + filterBtns + '</div>' +
+      '<div style="display:flex;align-items:center;gap:0;padding:6px 0 2px;border-bottom:1px solid rgba(0,0,0,0.06);margin-bottom:0;">' +
+        '<span style="font-size:11px;color:rgba(26,26,46,0.35);margin-right:10px;font-weight:500;">Stato:</span>' +
+        filterBtns +
+      '</div>' +
+      '<div style="display:flex;align-items:center;gap:0;padding:6px 0 2px;border-bottom:1px solid rgba(0,0,0,0.06);margin-bottom:4px;">' +
+        '<span style="font-size:11px;color:rgba(26,26,46,0.35);margin-right:10px;font-weight:500;">Piano:</span>' +
+        pianoFilterBtns +
+      '</div>' +
     '</div>' +
     kanban;
 }
@@ -1621,6 +2126,12 @@ async function renderProspectDetail(id) {
   renderCronistoria(p);
   renderTimelineUnificata(p, currentCalls);
   renderCapitoliTabs(p);
+  renderTabPanoramica(p, currentCalls);
+  renderCSOAzioniSection(p, currentCalls);
+  renderCSONoteSection(p);
+  renderTabCallNote(p, currentCalls);
+  renderTabFinanziaria(p);
+  switchProspectTab(_activeProspectTab || 'panoramica');
 
   // Read-only mode per capitoli archiviati
   var targetBtns = document.getElementById('target-buttons-row');
@@ -1632,6 +2143,972 @@ async function renderProspectDetail(id) {
     if (targetBtns) targetBtns.style.display = '';
     if (headerBtns) headerBtns.style.display = '';
   }
+}
+
+// -- PROSPECT TABS -----------------------------------------
+
+var _activeProspectTab = 'panoramica';
+
+function switchProspectTab(tab) {
+  _activeProspectTab = tab;
+  ['panoramica','diagnosi','azioni','finanziaria','callnote'].forEach(function(t) {
+    var panel = document.getElementById('ptab-' + t);
+    var btn   = document.getElementById('ptab-btn-' + t);
+    if (panel) panel.style.display = t === tab ? '' : 'none';
+    if (btn)   btn.classList.toggle('active', t === tab);
+  });
+}
+
+function renderTabPanoramica(p, calls) {
+  var c = document.getElementById('panoramica-content');
+  if (!c) return;
+
+  var score = calcScore(p);
+  var sc    = scoreColor(score);
+  var piano = p.piano || 'self';
+  var pianoLabel = piano === 'guided_pro' ? 'Guided Pro' : piano === 'guided_base' ? 'Guided Base' : 'Self';
+  var pianoColor = piano === 'guided_pro' ? '#FF6B2B' : piano === 'guided_base' ? '#3D5AFE' : 'rgba(26,26,46,0.4)';
+
+  // Cliente da X mesi
+  var mesiCliente = 0;
+  if (p.created_at) {
+    mesiCliente = Math.floor((Date.now() - new Date(p.created_at)) / (1000 * 60 * 60 * 24 * 30.5));
+  }
+
+  // Azioni completate
+  var azioni = Array.isArray(p.piano_azioni_cso) ? p.piano_azioni_cso : [];
+  var azioniOk = azioni.filter(function(a){ return a.completata; }).length;
+
+  // Ultimo contatto
+  var ultimoContatto = '—';
+  var ultimoContattoGiorni = '';
+  if (calls && calls.length > 0) {
+    var lastDate = new Date(calls[0].data);
+    var giorni = Math.floor((Date.now() - lastDate) / 86400000);
+    ultimoContatto = lastDate.toLocaleDateString('it-IT', { day:'2-digit', month:'short', year:'numeric' });
+    ultimoContattoGiorni = giorni === 0 ? 'oggi' : giorni === 1 ? 'ieri' : giorni + ' giorni fa';
+  }
+
+  // Prossima azione
+  var prossimaAzione = azioni.find(function(a){ return !a.completata; });
+
+  // Trend score
+  var trendHtml = '';
+  if (p.score_history && p.score_history.length >= 2) {
+    var first = p.score_history[0].score;
+    var delta = score - first;
+    var trendColor = delta >= 0 ? '#00825F' : '#E53935';
+    var trendArrow = delta >= 0 ? '↑' : '↓';
+    trendHtml = '<span style="color:' + trendColor + ';font-weight:700;font-size:16px;">' + trendArrow + ' ' + Math.abs(delta) + ' pt</span>' +
+      '<span style="font-size:12px;color:rgba(26,26,46,0.4);margin-left:6px;">dalla prima diagnosi</span>';
+  } else {
+    trendHtml = '<span style="font-size:12px;color:rgba(26,26,46,0.4);">Dati insufficienti per il trend</span>';
+  }
+
+  var CARD2 = 'background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:12px;padding:16px;';
+  var kpiBorderStyle = 'border-radius:0 14px 14px 0;';
+
+  c.innerHTML =
+    // 4 mini KPI
+    '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">' +
+      '<div class="kpi-card" style="' + kpiBorderStyle + 'border-left:3px solid ' + sc.text + ';">' +
+        '<div class="kpi-label">Score attuale</div>' +
+        '<div class="kpi-val" style="font-size:24px;color:' + sc.text + ';">' + score + '/100</div>' +
+        '<div class="kpi-sub">' + sc.label + '</div>' +
+      '</div>' +
+      '<div class="kpi-card" style="' + kpiBorderStyle + 'border-left:3px solid ' + pianoColor + ';">' +
+        '<div class="kpi-label">Piano</div>' +
+        '<div class="kpi-val" style="font-size:18px;color:' + pianoColor + ';">' + pianoLabel + '</div>' +
+      '</div>' +
+      '<div class="kpi-card" style="' + kpiBorderStyle + 'border-left:3px solid #7B61FF;">' +
+        '<div class="kpi-label">Cliente da</div>' +
+        '<div class="kpi-val" style="font-size:24px;">' + mesiCliente + '</div>' +
+        '<div class="kpi-sub">mesi</div>' +
+      '</div>' +
+      '<div class="kpi-card" style="' + kpiBorderStyle + 'border-left:3px solid #00825F;">' +
+        '<div class="kpi-label">Azioni completate</div>' +
+        '<div class="kpi-val" style="font-size:24px;">' + azioniOk + '/' + azioni.length + '</div>' +
+      '</div>' +
+    '</div>' +
+
+    // 2 colonne
+    '<div style="display:grid;grid-template-columns:3fr 2fr;gap:16px;">' +
+
+      // Colonna sinistra
+      '<div style="display:flex;flex-direction:column;gap:12px;">' +
+        '<div style="' + CARD2 + '">' +
+          '<div style="font-size:11px;color:rgba(26,26,46,0.35);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;font-weight:600;">Ultimo contatto</div>' +
+          '<div style="font-size:15px;font-weight:600;color:#1a1a2e;">' + ultimoContatto + '</div>' +
+          (ultimoContattoGiorni ? '<div style="font-size:12px;color:rgba(26,26,46,0.4);margin-top:2px;">' + ultimoContattoGiorni + '</div>' : '') +
+        '</div>' +
+        '<div style="' + CARD2 + '">' +
+          '<div style="font-size:11px;color:rgba(26,26,46,0.35);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;font-weight:600;">Prossima azione</div>' +
+          (prossimaAzione
+            ? '<div style="font-size:13px;font-weight:600;color:#1a1a2e;">' + (prossimaAzione.testo || '').replace(/</g,'&lt;') + '</div>'
+            : '<div style="font-size:13px;color:rgba(26,26,46,0.35);">Nessuna azione in sospeso</div>') +
+        '</div>' +
+        '<div style="' + CARD2 + '">' +
+          '<div style="font-size:11px;color:rgba(26,26,46,0.35);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;font-weight:600;">Trend score</div>' +
+          '<div style="display:flex;align-items:center;gap:8px;">' + trendHtml + '</div>' +
+        '</div>' +
+      '</div>' +
+
+      // Colonna destra
+      '<div style="display:flex;flex-direction:column;gap:12px;">' +
+        '<div style="' + CARD2 + '">' +
+          '<div style="font-size:11px;color:rgba(26,26,46,0.35);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;font-weight:600;">Dati azienda</div>' +
+          '<div style="font-size:13px;color:#1a1a2e;line-height:1.8;">' +
+            '<div><b>' + (p.nome || '—') + '</b></div>' +
+            (p.referente ? '<div>' + p.referente + '</div>' : '') +
+            (p.settore ? '<div style="color:rgba(26,26,46,0.5);">' + (p.settore.replace(/_/g,' ')) + '</div>' : '') +
+            (p.fatturato ? '<div style="color:rgba(26,26,46,0.5);">' + p.fatturato + '</div>' : '') +
+            (p.piva ? '<div style="color:rgba(26,26,46,0.4);font-size:12px;">P.IVA ' + p.piva + '</div>' : '') +
+          '</div>' +
+        '</div>' +
+        '<button onclick="showView(\'calendario\')" style="width:100%;padding:12px;border-radius:12px;background:#3D5AFE;color:white;border:none;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">📅 Programma call</button>' +
+        '<button onclick="aggiungiNotaCSO(\'' + p.id + '\')" style="width:100%;padding:12px;border-radius:12px;background:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.9);color:#1a1a2e;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:500;cursor:pointer;">📝 Aggiungi nota</button>' +
+      '</div>' +
+    '</div>';
+}
+
+function renderCSOAzioniSection(p, calls) {
+  var c = document.getElementById('cso-azioni-container');
+  if (!c) return;
+
+  var piano = p.piano || 'self';
+  var isBase = piano === 'guided_base' || piano === 'guided_pro';
+  var isPro  = piano === 'guided_pro';
+  var CARD = 'background:rgba(255,255,255,0.45);border:1px solid rgba(255,255,255,0.6);border-radius:12px;padding:12px;margin-bottom:8px;';
+
+  var html = '';
+
+  // Alert inattività
+  if (isBase) {
+    var alertHtml = '';
+    if (calls && calls.length > 0) {
+      var lastCall = new Date(calls[0].data);
+      var diffDays = Math.floor((Date.now() - lastCall.getTime()) / 86400000);
+      if (diffDays > 14) {
+        alertHtml = '<div style="background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.4);border-radius:10px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px;">' +
+          '<span style="font-size:18px;">⚠️</span>' +
+          '<div><div style="font-size:13px;font-weight:600;color:#92400e;">Inattivo da ' + diffDays + ' giorni</div>' +
+          '<div style="font-size:12px;color:rgba(146,64,14,0.7);">Nessuna call negli ultimi ' + diffDays + ' giorni.</div></div></div>';
+      }
+    }
+    html += alertHtml;
+  }
+
+  // Piano azioni condiviso (checkbox list)
+  var azioni = Array.isArray(p.piano_azioni_cso) ? p.piano_azioni_cso : [];
+  var azioniHtml = azioni.length === 0
+    ? '<div style="font-size:12px;color:rgba(26,26,46,0.35);padding:8px 0;">Nessuna azione pianificata.</div>'
+    : azioni.map(function(a) {
+        var checked = a.completata ? 'checked' : '';
+        var style   = a.completata ? 'text-decoration:line-through;color:rgba(26,26,46,0.35);' : 'color:#1a1a2e;';
+        return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.04);">' +
+          '<input type="checkbox" ' + checked + ' onchange="toggleAzioneCSOPiano(\'' + p.id + '\',\'' + a.id + '\')" style="width:16px;height:16px;cursor:pointer;accent-color:#3D5AFE;">' +
+          '<span style="font-size:13px;flex:1;' + style + '">' + (a.testo || '').replace(/</g,'&lt;') + '</span>' +
+          (a.manual ? '<span style="font-size:10px;padding:2px 6px;border-radius:6px;background:rgba(123,97,255,0.1);color:#7B61FF;flex-shrink:0;">CSO</span>' : '') +
+          '<button onclick="eliminaAzioneCSOPiano(\'' + p.id + '\',\'' + a.id + '\')" style="background:none;border:none;cursor:pointer;font-size:16px;color:rgba(26,26,46,0.2);padding:0 4px;" title="Elimina">×</button>' +
+        '</div>';
+      }).join('');
+
+  html +=
+    '<div class="card">' +
+      '<div class="card-title" style="display:flex;align-items:center;justify-content:space-between;">' +
+        'Piano azioni' +
+        '<div style="display:flex;gap:6px;">' +
+          '<button onclick="aggiungiAzioneCSOPiano(\'' + p.id + '\')" class="btn btn-secondary" style="font-size:12px;">+ Azione</button>' +
+          '<button onclick="apriModaleAzioneManuale(\'' + p.id + '\')" class="btn btn-secondary" style="font-size:12px;border-color:#7B61FF;color:#7B61FF;">+ Personalizzata</button>' +
+        '</div>' +
+      '</div>' +
+      azioniHtml +
+    '</div>';
+
+  // Piano condiviso con PMI
+  var pianoCondiviso = p.shared_plan || '';
+  html +=
+    '<div class="card" style="margin-top:12px;">' +
+      '<div class="card-title" style="display:flex;align-items:center;justify-content:space-between;">' +
+        'Piano condiviso con il cliente' +
+        '<button onclick="salvaPianoCondiviso(\'' + p.id + '\')" class="btn btn-primary" style="font-size:12px;">Salva</button>' +
+      '</div>' +
+      '<div style="font-size:12px;color:rgba(26,26,46,0.4);margin-bottom:10px;">Questo testo sarà visibile al cliente dalla sua app nella sezione Piano.</div>' +
+      '<textarea id="shared-plan-textarea" style="width:100%;min-height:120px;border:1px solid rgba(0,0,0,0.1);border-radius:10px;padding:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;color:#1a1a2e;resize:vertical;background:rgba(255,255,255,0.6);" placeholder="Scrivi il piano strutturato per il cliente...">' + pianoCondiviso.replace(/</g,'&lt;') + '</textarea>' +
+    '</div>';
+
+  // Pro: what-if e benchmark
+  if (isPro) {
+    var dims = p.dims || {};
+    var macro = (p.settore || '').split('_')[0];
+    var peers = prospects.filter(function(x){ return x.id !== p.id && (x.settore || '').split('_')[0] === macro && x.dims; });
+
+    html +=
+      '<div class="card" style="margin-top:12px;">' +
+        '<div class="card-title" style="display:flex;align-items:center;justify-content:space-between;">Report PDF' +
+          '<button onclick="generaReportProPDF(\'' + p.id + '\')" class="btn btn-primary" style="font-size:12px;">Genera PDF</button>' +
+        '</div>' +
+        '<div style="font-size:12px;color:rgba(26,26,46,0.45);">Report completo con score, analisi e piano azioni per ' + (p.nome || 'il cliente') + '.</div>' +
+      '</div>';
+  }
+
+  c.innerHTML = html;
+}
+
+function renderCSONoteSection(p) {
+  var c = document.getElementById('cso-note-container');
+  if (!c) return;
+
+  var CARD = 'background:rgba(255,255,255,0.45);border:1px solid rgba(255,255,255,0.6);border-radius:12px;padding:12px;margin-bottom:8px;';
+  var notesList = Array.isArray(p.notes_cso) ? p.notes_cso : [];
+  var notesHtml = notesList.length === 0
+    ? '<div style="font-size:12px;color:rgba(26,26,46,0.35);padding:8px 0;">Nessuna nota ancora.</div>'
+    : notesList.slice().reverse().slice(0, 5).map(function(n) {
+        var d = new Date(n.ts);
+        var data = d.toLocaleDateString('it-IT', { day:'2-digit', month:'short', year:'numeric' });
+        return '<div style="' + CARD + '">' +
+          '<div style="font-size:10px;color:rgba(26,26,46,0.35);margin-bottom:4px;">' + data + '</div>' +
+          '<div style="font-size:13px;color:#1a1a2e;line-height:1.5;">' + (n.text || '').replace(/</g,'&lt;') + '</div>' +
+        '</div>';
+      }).join('');
+
+  c.innerHTML =
+    '<div class="card" style="margin-top:12px;">' +
+      '<div class="card-title" style="display:flex;align-items:center;justify-content:space-between;">' +
+        'Note CSO' +
+        '<button onclick="aggiungiNotaCSO(\'' + p.id + '\')" class="btn btn-secondary" style="font-size:12px;">+ Aggiungi nota</button>' +
+      '</div>' +
+      notesHtml +
+    '</div>';
+}
+
+function renderTabCallNote(p, calls) {
+  var c = document.getElementById('calls-list-container');
+  if (!c) return;
+
+  var CARD = 'background:rgba(255,255,255,0.45);border:1px solid rgba(255,255,255,0.6);border-radius:12px;padding:12px;margin-bottom:8px;';
+  var callsHtml = (calls && calls.length > 0)
+    ? calls.map(function(call) {
+        var d = new Date(call.data).toLocaleDateString('it-IT', { day:'2-digit', month:'short', year:'numeric' });
+        var tipoColor = call.tipo === 'strategica' ? '#3D5AFE' : call.tipo === 'emergenza' ? '#E53935' : '#7B61FF';
+        var tipoLabel = call.tipo === 'strategica' ? 'Strategica' : call.tipo === 'emergenza' ? 'Emergenza' : 'Follow-up';
+        return '<div style="' + CARD + '">' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">' +
+            '<div style="display:flex;align-items:center;gap:8px;">' +
+              '<span style="font-size:13px;font-weight:600;color:#1a1a2e;">' + d + '</span>' +
+              '<span style="font-size:11px;padding:2px 8px;border-radius:6px;background:' + tipoColor + '1a;color:' + tipoColor + ';font-weight:600;">' + tipoLabel + '</span>' +
+            '</div>' +
+            (call.durata_min ? '<span style="font-size:12px;color:rgba(26,26,46,0.4);">' + call.durata_min + ' min</span>' : '') +
+          '</div>' +
+          (call.appunti ? '<div style="font-size:12px;color:rgba(26,26,46,0.6);line-height:1.5;margin-bottom:4px;">' + call.appunti.replace(/</g,'&lt;') + '</div>' : '') +
+          (call.prossimi_passi ? '<div style="font-size:11px;color:#3D5AFE;margin-top:4px;">→ ' + call.prossimi_passi.replace(/</g,'&lt;') + '</div>' : '') +
+        '</div>';
+      }).join('')
+    : '<div style="font-size:12px;color:rgba(26,26,46,0.35);padding:8px 0;">Nessuna call registrata.</div>';
+
+  c.innerHTML =
+    '<div class="card" style="margin-top:12px;">' +
+      '<div class="card-title" style="display:flex;align-items:center;justify-content:space-between;">' +
+        'Call registrate' +
+        '<button onclick="apriModaleRegistraCall(\'' + p.id + '\')" class="btn btn-secondary" style="font-size:12px;">+ Registra call</button>' +
+      '</div>' +
+      callsHtml +
+    '</div>';
+}
+
+function renderTabFinanziaria(p) {
+  var c = document.getElementById('finanziaria-pro-extras');
+  if (!c) return;
+  var isPro = p.piano === 'guided_pro';
+  if (!isPro) { c.innerHTML = ''; return; }
+
+  // Benchmark peer
+  var macro = (p.settore || '').split('_')[0];
+  var peers = prospects.filter(function(x){ return x.id !== p.id && (x.settore || '').split('_')[0] === macro && x.dims; });
+  var DIMS_IDS = ['vendite','pipeline','organizzazione','processi','ricavi','marketing','sito_web','post_vendita'];
+  var benchHtml = '';
+  if (peers.length > 0) {
+    benchHtml = DIMS_IDS.map(function(dimId) {
+      var myVal  = (p.dims || {})[dimId] || 0;
+      var peerAvg = peers.reduce(function(sum, x){ return sum + ((x.dims || {})[dimId] || 0); }, 0) / peers.length;
+      var diff   = myVal - peerAvg;
+      var diffStr = diff >= 0 ? '+' + diff.toFixed(1) : diff.toFixed(1);
+      var diffColor = diff >= 0 ? '#00825F' : '#e74c3c';
+      var label  = dimId.replace(/_/g,' ').replace(/\b\w/g,function(l){return l.toUpperCase();});
+      return '<div style="margin-bottom:10px;">' +
+        '<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;">' +
+          '<span style="color:#1a1a2e;">' + label + '</span>' +
+          '<span style="color:' + diffColor + ';font-weight:600;">' + diffStr + ' vs peer</span>' +
+        '</div>' +
+        '<div style="position:relative;height:6px;background:rgba(0,0,0,0.07);border-radius:4px;">' +
+          '<div style="position:absolute;left:0;top:0;height:100%;width:' + (myVal/5*100).toFixed(0) + '%;background:#3D5AFE;border-radius:4px;opacity:0.7;"></div>' +
+          '<div style="position:absolute;left:0;top:0;height:100%;width:' + (peerAvg/5*100).toFixed(0) + '%;background:rgba(0,0,0,0.2);border-radius:4px;border:1px dashed rgba(0,0,0,0.3);"></div>' +
+        '</div>' +
+        '<div style="font-size:10px;color:rgba(26,26,46,0.4);">' + myVal.toFixed(1) + '/5 · media: ' + peerAvg.toFixed(1) + ' (' + peers.length + ' aziende)</div>' +
+      '</div>';
+    }).join('');
+  } else {
+    benchHtml = '<div style="font-size:12px;color:rgba(26,26,46,0.35);">Nessun peer trovato per questo settore.</div>';
+  }
+
+  // What-if slider
+  var dims = p.dims || {};
+  var whatifsHtml = Object.keys(dims).map(function(dimId) {
+    var cur  = dims[dimId] || 0;
+    var label = dimId.replace(/_/g,' ').replace(/\b\w/g,function(l){return l.toUpperCase();});
+    return '<div style="margin-bottom:8px;display:flex;align-items:center;gap:10px;">' +
+      '<span style="font-size:12px;color:#1a1a2e;width:130px;flex-shrink:0;">' + label + '</span>' +
+      '<input type="range" min="1" max="5" step="1" value="' + cur + '" style="flex:1;accent-color:#3D5AFE;" oninput="aggiornaWhatif(\'' + p.id + '\',\'' + dimId + '\',this.value)">' +
+      '<span id="wi-val-' + dimId + '" style="font-size:12px;font-weight:600;color:#3D5AFE;width:28px;text-align:right;">' + cur + '/5</span>' +
+    '</div>';
+  }).join('');
+
+  c.innerHTML =
+    '<div class="card" style="margin-top:12px;">' +
+      '<div class="card-title">Benchmark peer — ' + (macro ? macro.charAt(0).toUpperCase()+macro.slice(1) : '') + '</div>' +
+      '<div style="font-size:11px;color:rgba(26,26,46,0.4);margin-bottom:12px;">Blu = cliente · grigio = media peer</div>' +
+      benchHtml +
+    '</div>' +
+    '<div class="card" style="margin-top:12px;">' +
+      '<div class="card-title">Simulazione what-if</div>' +
+      '<div style="font-size:12px;color:rgba(26,26,46,0.45);margin-bottom:12px;">Sposta i cursori per simulare l\'impatto sul score.</div>' +
+      whatifsHtml +
+      '<div style="margin-top:12px;padding:12px;background:rgba(61,90,254,0.06);border-radius:10px;text-align:center;">' +
+        '<div style="font-size:11px;color:rgba(26,26,46,0.4);margin-bottom:2px;">Score simulato</div>' +
+        '<div id="whatif-score-display" style="font-size:28px;font-weight:700;color:#3D5AFE;">' + calcScore(p) + '</div>' +
+      '</div>' +
+    '</div>';
+}
+
+// Modale registra call
+function apriModaleRegistraCall(prospectId) {
+  var oggi = new Date().toISOString().split('T')[0];
+  _apriModaleCSO({
+    titolo: 'Registra call',
+    sottotitolo: 'Inserisci i dettagli della call',
+    customBody:
+      '<div style="display:flex;flex-direction:column;gap:12px;">' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">' +
+          '<div>' +
+            '<label style="font-size:12px;color:rgba(26,26,46,0.5);display:block;margin-bottom:4px;">Data</label>' +
+            '<input type="date" id="call-data" value="' + oggi + '" style="width:100%;border:1px solid rgba(0,0,0,0.1);border-radius:8px;padding:8px 12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;">' +
+          '</div>' +
+          '<div>' +
+            '<label style="font-size:12px;color:rgba(26,26,46,0.5);display:block;margin-bottom:4px;">Durata (min)</label>' +
+            '<input type="number" id="call-durata" placeholder="60" min="1" style="width:100%;border:1px solid rgba(0,0,0,0.1);border-radius:8px;padding:8px 12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;">' +
+          '</div>' +
+        '</div>' +
+        '<div>' +
+          '<label style="font-size:12px;color:rgba(26,26,46,0.5);display:block;margin-bottom:6px;">Tipo</label>' +
+          '<div style="display:flex;gap:6px;" id="call-tipo-btns">' +
+            '<button onclick="_selCallTipo(\'follow_up\')" id="ctype-follow_up" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,0.1);background:rgba(123,97,255,0.1);color:#7B61FF;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">Follow-up</button>' +
+            '<button onclick="_selCallTipo(\'strategica\')" id="ctype-strategica" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,0.1);background:none;color:rgba(26,26,46,0.5);font-family:\'Plus Jakarta Sans\',sans-serif;font-size:12px;cursor:pointer;">Strategica</button>' +
+            '<button onclick="_selCallTipo(\'emergenza\')" id="ctype-emergenza" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,0.1);background:none;color:rgba(26,26,46,0.5);font-family:\'Plus Jakarta Sans\',sans-serif;font-size:12px;cursor:pointer;">Emergenza</button>' +
+          '</div>' +
+        '</div>' +
+        '<div>' +
+          '<label style="font-size:12px;color:rgba(26,26,46,0.5);display:block;margin-bottom:4px;">Appunti</label>' +
+          '<textarea id="call-appunti" placeholder="Note della call..." style="width:100%;min-height:80px;border:1px solid rgba(0,0,0,0.1);border-radius:8px;padding:8px 12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;resize:vertical;"></textarea>' +
+        '</div>' +
+        '<div>' +
+          '<label style="font-size:12px;color:rgba(26,26,46,0.5);display:block;margin-bottom:4px;">Prossimi passi</label>' +
+          '<textarea id="call-passi" placeholder="Cosa fare entro la prossima call..." style="width:100%;min-height:60px;border:1px solid rgba(0,0,0,0.1);border-radius:8px;padding:8px 12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;resize:vertical;"></textarea>' +
+        '</div>' +
+      '</div>',
+    btnLabel: 'Salva call',
+    onSalva: function() { salvaCallRegistrata(prospectId); }
+  });
+  window._callTipoSel = 'follow_up';
+}
+
+function _selCallTipo(tipo) {
+  window._callTipoSel = tipo;
+  ['follow_up','strategica','emergenza'].forEach(function(t) {
+    var btn = document.getElementById('ctype-' + t);
+    if (!btn) return;
+    var color = t === 'follow_up' ? '#7B61FF' : t === 'strategica' ? '#3D5AFE' : '#E53935';
+    if (t === tipo) {
+      btn.style.background = color + '1a';
+      btn.style.color = color;
+      btn.style.borderColor = color + '44';
+      btn.style.fontWeight = '600';
+    } else {
+      btn.style.background = 'none';
+      btn.style.color = 'rgba(26,26,46,0.5)';
+      btn.style.borderColor = 'rgba(0,0,0,0.1)';
+      btn.style.fontWeight = '400';
+    }
+  });
+}
+
+async function salvaCallRegistrata(prospectId) {
+  var data       = (document.getElementById('call-data') || {}).value || new Date().toISOString().split('T')[0];
+  var durata_min = parseInt((document.getElementById('call-durata') || {}).value) || null;
+  var tipo       = window._callTipoSel || 'follow_up';
+  var appunti    = (document.getElementById('call-appunti') || {}).value || '';
+  var prossimi_passi = (document.getElementById('call-passi') || {}).value || '';
+  var csoId      = window._currentProfile ? window._currentProfile.id : null;
+
+  try {
+    var { error } = await sb.from('calls').insert({
+      prospect_id: prospectId,
+      cso_id: csoId,
+      data: data,
+      durata_min: durata_min,
+      tipo: tipo,
+      appunti: appunti,
+      prossimi_passi: prossimi_passi,
+    });
+    if (error) throw error;
+    _chiudiModaleCSO();
+    showToast('Call registrata');
+    await renderProspectDetail(prospectId);
+    switchProspectTab('callnote');
+  } catch(e) {
+    showToast('Errore salvataggio call');
+  }
+}
+
+// Salva piano condiviso
+async function salvaPianoCondiviso(prospectId) {
+  var textarea = document.getElementById('shared-plan-textarea');
+  if (!textarea) return;
+  var testo = textarea.value;
+  try {
+    var { error } = await sb.from('prospects').update({ shared_plan: testo }).eq('id', prospectId);
+    if (error) throw error;
+    var p = prospects.find(function(x){ return x.id === prospectId; });
+    if (p) p.shared_plan = testo;
+    showToast('Piano condiviso salvato');
+  } catch(e) {
+    showToast('Errore salvataggio piano');
+  }
+}
+
+// Modale azione manuale CSO
+function apriModaleAzioneManuale(prospectId) {
+  _apriModaleCSO({
+    titolo: 'Azione personalizzata',
+    sottotitolo: 'Aggiungi un\'azione manuale al piano del cliente',
+    placeholder: 'Descrizione dell\'azione...',
+    maxLen: 400,
+    btnLabel: 'Aggiungi',
+    onSalva: async function(testo) {
+      var p = prospects.find(function(x){ return x.id === prospectId; });
+      if (!p) return;
+      var azioni = Array.isArray(p.piano_azioni_cso) ? [...p.piano_azioni_cso] : [];
+      azioni.push({ id: Date.now().toString(), testo: testo, completata: false, manual: true, cso_id: window._currentProfile?.id, ts: new Date().toISOString() });
+      var { error } = await sb.from('prospects').update({ piano_azioni_cso: azioni }).eq('id', prospectId);
+      if (error) { showToast('Errore salvataggio'); return; }
+      p.piano_azioni_cso = azioni;
+      _chiudiModaleCSO();
+      renderCSOAzioniSection(p, currentCalls);
+      showToast('Azione aggiunta');
+    }
+  });
+}
+
+// -- CSO PIANO SECTIONS (legacy, not used for new tabs) ----
+
+function renderCSOPianoSections(p, calls) {
+  var container = document.getElementById('cso-piano-sections');
+  if (!container) return;
+
+  var piano   = p.piano || 'self';
+  var isBase  = piano === 'guided_base' || piano === 'guided_pro';
+  var isPro   = piano === 'guided_pro';
+  var CARD    = 'background:rgba(255,255,255,0.45);border:1px solid rgba(255,255,255,0.6);border-radius:12px;padding:12px;margin-bottom:8px;';
+
+  // ── NOTE CSO (tutti i piani) ─────────────────────────────
+  var notesList = Array.isArray(p.notes_cso) ? p.notes_cso : [];
+  var notesHtml = notesList.length === 0
+    ? '<div style="font-size:12px;color:rgba(26,26,46,0.35);padding:8px 0;">Nessuna nota ancora.</div>'
+    : notesList.slice().reverse().slice(0, 5).map(function(n) {
+        var d = new Date(n.ts);
+        var data = d.toLocaleDateString('it-IT', { day:'2-digit', month:'short', year:'numeric' });
+        return '<div style="' + CARD + '">' +
+          '<div style="font-size:10px;color:rgba(26,26,46,0.35);margin-bottom:4px;">' + data + '</div>' +
+          '<div style="font-size:13px;color:#1a1a2e;line-height:1.5;">' + (n.text || '').replace(/</g,'&lt;') + '</div>' +
+        '</div>';
+      }).join('');
+
+  var noteCSOSection =
+    '<div class="card" style="margin-top:16px;">' +
+      '<div class="card-title" style="display:flex;align-items:center;justify-content:space-between;">' +
+        'Note CSO' +
+        '<button onclick="aggiungiNotaCSO(\'' + p.id + '\')" class="btn btn-secondary" style="font-size:12px;">+ Aggiungi nota</button>' +
+      '</div>' +
+      notesHtml +
+    '</div>';
+
+  // ── SEZIONI BASE + PRO ───────────────────────────────────
+  var baseProSections = '';
+  if (isBase) {
+    // Alert inattività: controlla l'ultima call
+    var alertHtml = '';
+    if (calls && calls.length > 0) {
+      var lastCall = new Date(calls[0].data);
+      var diffDays = Math.floor((Date.now() - lastCall.getTime()) / (1000 * 60 * 60 * 24));
+      if (diffDays > 14) {
+        alertHtml = '<div style="background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.4);border-radius:10px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px;">' +
+          '<span style="font-size:18px;">⚠️</span>' +
+          '<div><div style="font-size:13px;font-weight:600;color:#92400e;">Inattivo da ' + diffDays + ' giorni</div>' +
+          '<div style="font-size:12px;color:rgba(146,64,14,0.7);">Nessuna call negli ultimi ' + diffDays + ' giorni — considera di contattare il cliente.</div></div>' +
+        '</div>';
+      }
+    } else {
+      alertHtml = '<div style="background:rgba(251,191,36,0.10);border:1px solid rgba(251,191,36,0.3);border-radius:10px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px;">' +
+        '<span style="font-size:18px;">⚠️</span>' +
+        '<div><div style="font-size:13px;font-weight:600;color:#92400e;">Nessuna call registrata</div>' +
+        '<div style="font-size:12px;color:rgba(146,64,14,0.7);">Pianifica la prima call con il cliente.</div></div>' +
+      '</div>';
+    }
+
+    // Piano azioni condiviso
+    var azioni = Array.isArray(p.piano_azioni_cso) ? p.piano_azioni_cso : [];
+    var azioniHtml = azioni.length === 0
+      ? '<div style="font-size:12px;color:rgba(26,26,46,0.35);padding:8px 0;">Nessuna azione pianificata.</div>'
+      : azioni.map(function(a) {
+          var checked = a.completata ? 'checked' : '';
+          var style   = a.completata ? 'text-decoration:line-through;color:rgba(26,26,46,0.35);' : 'color:#1a1a2e;';
+          return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.04);">' +
+            '<input type="checkbox" ' + checked + ' onchange="toggleAzioneCSOPiano(\'' + p.id + '\',\'' + a.id + '\')" style="width:16px;height:16px;cursor:pointer;accent-color:#3D5AFE;">' +
+            '<span style="font-size:13px;flex:1;' + style + '">' + (a.testo || '').replace(/</g,'&lt;') + '</span>' +
+            '<button onclick="eliminaAzioneCSOPiano(\'' + p.id + '\',\'' + a.id + '\')" style="background:none;border:none;cursor:pointer;font-size:16px;color:rgba(26,26,46,0.2);padding:0 4px;" title="Elimina">×</button>' +
+          '</div>';
+        }).join('');
+
+    // Storico call
+    var callsHtml = (calls && calls.length > 0)
+      ? calls.slice(0, 5).map(function(c) {
+          var d = new Date(c.data).toLocaleDateString('it-IT', { day:'2-digit', month:'short', year:'numeric' });
+          return '<div style="' + CARD + '">' +
+            '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">' +
+              '<span style="font-size:12px;font-weight:600;color:#1a1a2e;">' + d + '</span>' +
+              (c.durata ? '<span style="font-size:11px;color:rgba(26,26,46,0.4);">' + c.durata + ' min</span>' : '') +
+            '</div>' +
+            (c.note ? '<div style="font-size:12px;color:rgba(26,26,46,0.6);line-height:1.5;">' + c.note.replace(/</g,'&lt;') + '</div>' : '') +
+          '</div>';
+        }).join('')
+      : '<div style="font-size:12px;color:rgba(26,26,46,0.35);padding:8px 0;">Nessuna call registrata.</div>';
+
+    baseProSections =
+      '<div class="card" style="margin-top:12px;">' +
+        alertHtml +
+        '<div class="card-title" style="display:flex;align-items:center;justify-content:space-between;">' +
+          'Piano azioni condiviso' +
+          '<button onclick="aggiungiAzioneCSOPiano(\'' + p.id + '\')" class="btn btn-secondary" style="font-size:12px;">+ Aggiungi</button>' +
+        '</div>' +
+        azioniHtml +
+      '</div>' +
+      '<div class="card" style="margin-top:12px;">' +
+        '<div class="card-title">Storico call</div>' +
+        callsHtml +
+      '</div>';
+  }
+
+  // ── SEZIONI PRO ──────────────────────────────────────────
+  var proSections = '';
+  if (isPro) {
+    // Benchmark peer: media dims del settore
+    var macro = (p.settore || '').split('_')[0];
+    var peers  = prospects.filter(function(x) { return x.id !== p.id && (x.settore || '').split('_')[0] === macro && x.dims; });
+    var benchPeerHtml = '';
+    if (peers.length > 0) {
+      var DIMS_IDS = ['vendite','pipeline','organizzazione','processi','ricavi','marketing','sito_web','post_vendita'];
+      benchPeerHtml = DIMS_IDS.map(function(dimId) {
+        var myVal  = (p.dims || {})[dimId] || 0;
+        var peerAvg = peers.reduce(function(sum, x) { return sum + ((x.dims || {})[dimId] || 0); }, 0) / peers.length;
+        var diff   = myVal - peerAvg;
+        var diffStr = diff >= 0 ? '+' + diff.toFixed(1) : diff.toFixed(1);
+        var diffColor = diff >= 0 ? '#00825F' : '#e74c3c';
+        var label  = dimId.replace(/_/g,' ').replace(/\b\w/g, function(l){return l.toUpperCase();});
+        var barW   = (myVal / 5 * 100).toFixed(0) + '%';
+        var avgW   = (peerAvg / 5 * 100).toFixed(0) + '%';
+        return '<div style="margin-bottom:10px;">' +
+          '<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;">' +
+            '<span style="color:#1a1a2e;">' + label + '</span>' +
+            '<span style="color:' + diffColor + ';font-weight:600;">' + diffStr + ' vs peer</span>' +
+          '</div>' +
+          '<div style="position:relative;height:6px;background:rgba(0,0,0,0.07);border-radius:4px;margin-bottom:2px;">' +
+            '<div style="position:absolute;left:0;top:0;height:100%;width:' + barW + ';background:#3D5AFE;border-radius:4px;opacity:0.7;"></div>' +
+            '<div style="position:absolute;left:0;top:0;height:100%;width:' + avgW + ';background:rgba(0,0,0,0.2);border-radius:4px;border:1px dashed rgba(0,0,0,0.3);"></div>' +
+          '</div>' +
+          '<div style="font-size:10px;color:rgba(26,26,46,0.4);">' + myVal.toFixed(1) + '/5 · media peer: ' + peerAvg.toFixed(1) + ' (' + peers.length + ' aziende)</div>' +
+        '</div>';
+      }).join('');
+    } else {
+      benchPeerHtml = '<div style="font-size:12px;color:rgba(26,26,46,0.35);">Nessun peer dello stesso macro-settore trovato.</div>';
+    }
+
+    // Correlazioni: calcola Pearson tra coppie di dims
+    var corrHtml = '';
+    if (prospects.length >= 5) {
+      var DIM_IDS2 = ['vendite','pipeline','organizzazione','processi','ricavi','marketing','sito_web','post_vendita'];
+      function _pearson(a, b) {
+        var n = a.length, sumA = 0, sumB = 0, sumAB = 0, sumA2 = 0, sumB2 = 0;
+        for (var i = 0; i < n; i++) { sumA+=a[i]; sumB+=b[i]; sumAB+=a[i]*b[i]; sumA2+=a[i]*a[i]; sumB2+=b[i]*b[i]; }
+        var num = n*sumAB - sumA*sumB;
+        var den = Math.sqrt((n*sumA2-sumA*sumA)*(n*sumB2-sumB*sumB));
+        return den === 0 ? 0 : num/den;
+      }
+      var pairs = [];
+      for (var i = 0; i < DIM_IDS2.length; i++) {
+        for (var j = i+1; j < DIM_IDS2.length; j++) {
+          var dA = prospects.map(function(x){ return ((x.dims||{})[DIM_IDS2[i]]||0); });
+          var dB = prospects.map(function(x){ return ((x.dims||{})[DIM_IDS2[j]]||0); });
+          var r  = _pearson(dA, dB);
+          if (Math.abs(r) > 0.3) pairs.push({ a: DIM_IDS2[i], b: DIM_IDS2[j], r: r });
+        }
+      }
+      pairs.sort(function(x,y){ return Math.abs(y.r)-Math.abs(x.r); });
+      corrHtml = pairs.slice(0,4).map(function(pair) {
+        var label = pair.a.replace(/_/g,' ') + ' ↔ ' + pair.b.replace(/_/g,' ');
+        var sign  = pair.r > 0 ? 'correlazione positiva' : 'correlazione negativa';
+        var col   = pair.r > 0 ? '#00825F' : '#e74c3c';
+        return '<div style="' + CARD + 'display:flex;align-items:center;justify-content:space-between;">' +
+          '<div style="font-size:12px;color:#1a1a2e;text-transform:capitalize;">' + label + '</div>' +
+          '<div style="font-size:11px;color:' + col + ';font-weight:600;">' + (pair.r*100).toFixed(0) + '% · ' + sign + '</div>' +
+        '</div>';
+      }).join('') || '<div style="font-size:12px;color:rgba(26,26,46,0.35);">Dati insufficienti per le correlazioni.</div>';
+    } else {
+      corrHtml = '<div style="font-size:12px;color:rgba(26,26,46,0.35);">Servono almeno 5 prospect per calcolare le correlazioni.</div>';
+    }
+
+    // What-if slider
+    var dims = p.dims || {};
+    var whatifsHtml = Object.keys(dims).map(function(dimId) {
+      var cur  = dims[dimId] || 0;
+      var label = dimId.replace(/_/g,' ').replace(/\b\w/g,function(l){return l.toUpperCase();});
+      return '<div style="margin-bottom:8px;display:flex;align-items:center;gap:10px;">' +
+        '<span style="font-size:12px;color:#1a1a2e;width:130px;flex-shrink:0;">' + label + '</span>' +
+        '<input type="range" min="1" max="5" step="1" value="' + cur + '" style="flex:1;accent-color:#3D5AFE;" ' +
+          'oninput="aggiornaWhatif(\'' + p.id + '\',\'' + dimId + '\',this.value)">' +
+        '<span id="wi-val-' + dimId + '" style="font-size:12px;font-weight:600;color:#3D5AFE;width:28px;text-align:right;">' + cur + '/5</span>' +
+      '</div>';
+    }).join('');
+
+    proSections =
+      '<div class="card" style="margin-top:12px;">' +
+        '<div class="card-title" style="display:flex;align-items:center;justify-content:space-between;">' +
+          'Report PDF' +
+          '<button onclick="generaReportProPDF(\'' + p.id + '\')" class="btn btn-primary" style="font-size:12px;">Genera report PDF</button>' +
+        '</div>' +
+        '<div style="font-size:12px;color:rgba(26,26,46,0.45);">Genera un report completo con score, analisi e piano azioni per ' + (p.nome || 'il cliente') + '.</div>' +
+      '</div>' +
+      '<div class="card" style="margin-top:12px;">' +
+        '<div class="card-title">Benchmark peer — ' + (macro ? macro.charAt(0).toUpperCase()+macro.slice(1) : '') + '</div>' +
+        '<div style="font-size:11px;color:rgba(26,26,46,0.4);margin-bottom:12px;">Linea blu = cliente · linea grigia = media peer</div>' +
+        benchPeerHtml +
+      '</div>' +
+      '<div class="card" style="margin-top:12px;">' +
+        '<div class="card-title">Simulazione what-if</div>' +
+        '<div style="font-size:12px;color:rgba(26,26,46,0.45);margin-bottom:12px;">Sposta i cursori per simulare l\'impatto sul score globale.</div>' +
+        whatifsHtml +
+        '<div style="margin-top:12px;padding:12px;background:rgba(61,90,254,0.06);border-radius:10px;text-align:center;">' +
+          '<div style="font-size:11px;color:rgba(26,26,46,0.4);margin-bottom:2px;">Score simulato</div>' +
+          '<div id="whatif-score-display" style="font-size:28px;font-weight:700;color:#3D5AFE;">' + calcScore(p) + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="card" style="margin-top:12px;">' +
+        '<div class="card-title">Correlazioni tra dimensioni</div>' +
+        '<div style="font-size:11px;color:rgba(26,26,46,0.4);margin-bottom:12px;">Calcolate su ' + prospects.length + ' prospect nel sistema.</div>' +
+        corrHtml +
+      '</div>';
+  }
+
+  container.innerHTML = noteCSOSection + baseProSections + proSections;
+}
+
+// ── MODALE LIQUID GLASS (CSO) ────────────────────────────────
+
+function _apriModaleCSO(opts) {
+  // opts: { titolo, sottotitolo, placeholder, maxLen, btnLabel, onSalva }
+  var maxLen   = opts.maxLen || 500;
+  var btnLabel = opts.btnLabel || 'Salva';
+
+  // Rimuovi eventuale modale già aperto
+  var existing = document.getElementById('cso-modal-overlay');
+  if (existing) existing.remove();
+
+  var overlay = document.createElement('div');
+  overlay.id = 'cso-modal-overlay';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.35);z-index:9000;display:flex;align-items:center;justify-content:center;';
+
+  var box = document.createElement('div');
+  box.id = 'cso-modal-box';
+  box.style.cssText = 'width:480px;max-width:90vw;background:rgba(255,255,255,0.92);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.8);border-radius:20px;padding:28px;box-shadow:0 8px 32px rgba(0,0,0,0.12);transform:scale(0.95);opacity:0;transition:transform 200ms ease-out,opacity 200ms ease-out;';
+
+  var bodyHtml = opts.customBody
+    ? opts.customBody
+    : '<div style="position:relative;">' +
+        '<textarea id="cso-modal-ta" maxlength="' + maxLen + '" placeholder="' + (opts.placeholder || 'Scrivi...') + '" ' +
+          'style="width:100%;height:120px;background:rgba(255,255,255,0.6);border:1px solid rgba(26,26,46,0.1);border-radius:12px;padding:14px;font-size:14px;color:#1a1a2e;font-family:\'Plus Jakarta Sans\',sans-serif;resize:vertical;box-sizing:border-box;outline:none;transition:border-color .15s;" ' +
+          'oninput="_csoModalInput(this,' + maxLen + ')"' +
+          'onkeydown="_csoModalKeydown(event)">' +
+        '</textarea>' +
+        '<div id="cso-modal-count" style="position:absolute;bottom:10px;right:12px;font-size:11px;color:rgba(26,26,46,0.25);pointer-events:none;">0/' + maxLen + '</div>' +
+      '</div>';
+
+  var saveDisabled = opts.customBody ? '' : 'disabled';
+  var saveOpacity  = opts.customBody ? '1' : '0.4';
+  var saveCursor   = opts.customBody ? 'pointer' : 'pointer';
+
+  box.innerHTML =
+    '<div style="font-size:18px;font-weight:600;color:#1a1a2e;margin-bottom:4px;">' + (opts.titolo || 'Nuova nota') + '</div>' +
+    (opts.sottotitolo ? '<div style="font-size:13px;color:rgba(26,26,46,0.4);margin-bottom:18px;">' + opts.sottotitolo + '</div>' : '<div style="margin-bottom:18px;"></div>') +
+    bodyHtml +
+    '<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:16px;">' +
+      '<button onclick="_chiudiModaleCSO()" style="background:transparent;border:1px solid rgba(26,26,46,0.12);color:rgba(26,26,46,0.5);border-radius:10px;padding:10px 24px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;cursor:pointer;">Annulla</button>' +
+      '<button id="cso-modal-save" onclick="_salvaModaleCSO()" ' + saveDisabled + ' style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:10px 24px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:500;cursor:pointer;opacity:' + saveOpacity + ';transition:opacity .15s;">' + btnLabel + '</button>' +
+    '</div>';
+
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+
+  // Salva callback
+  overlay._onSalva = opts.onSalva;
+
+  // Chiudi cliccando overlay (non il box)
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) _chiudiModaleCSO();
+  });
+
+  // ESC
+  overlay._escHandler = function(e) { if (e.key === 'Escape') _chiudiModaleCSO(); };
+  document.addEventListener('keydown', overlay._escHandler);
+
+  // Animazione apertura
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      box.style.transform = 'scale(1)';
+      box.style.opacity   = '1';
+    });
+  });
+
+  // Focus textarea
+  setTimeout(function() {
+    var ta = document.getElementById('cso-modal-ta');
+    if (ta) {
+      ta.focus();
+      ta.addEventListener('focus', function() { ta.style.borderColor = 'rgba(61,90,254,0.4)'; });
+      ta.addEventListener('blur',  function() { ta.style.borderColor = 'rgba(26,26,46,0.1)'; });
+    }
+  }, 50);
+}
+
+function _csoModalInput(ta, maxLen) {
+  var len = ta.value.length;
+  var cnt = document.getElementById('cso-modal-count');
+  if (cnt) cnt.textContent = len + '/' + maxLen;
+  var btn = document.getElementById('cso-modal-save');
+  if (btn) {
+    var empty = !ta.value.trim();
+    btn.disabled = empty;
+    btn.style.opacity = empty ? '0.4' : '1';
+    btn.style.cursor  = empty ? 'default' : 'pointer';
+  }
+}
+
+function _csoModalKeydown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    var btn = document.getElementById('cso-modal-save');
+    if (btn && !btn.disabled) _salvaModaleCSO();
+  }
+}
+
+function _salvaModaleCSO() {
+  var overlay = document.getElementById('cso-modal-overlay');
+  if (!overlay || !overlay._onSalva) return;
+  var ta = document.getElementById('cso-modal-ta');
+  if (ta) {
+    // Standard textarea modal
+    var testo = ta.value.trim();
+    if (!testo) return;
+    overlay._onSalva(testo);
+    _chiudiModaleCSO();
+  } else {
+    // Custom body modal — call onSalva directly (no auto-close, the handler closes it)
+    overlay._onSalva();
+  }
+}
+
+function _chiudiModaleCSO() {
+  var overlay = document.getElementById('cso-modal-overlay');
+  if (!overlay) return;
+  var box = document.getElementById('cso-modal-box');
+  if (overlay._escHandler) document.removeEventListener('keydown', overlay._escHandler);
+  if (box) {
+    box.style.transition = 'transform 150ms ease-in,opacity 150ms ease-in';
+    box.style.transform  = 'scale(0.95)';
+    box.style.opacity    = '0';
+  }
+  setTimeout(function() { if (overlay.parentNode) overlay.remove(); }, 160);
+}
+
+// ── MODALE MULTI-CAMPO (per aggiungiModuloCustom) ────────────
+
+function _apriModaleModuloCSO(onSalva) {
+  var existing = document.getElementById('cso-modal-overlay');
+  if (existing) existing.remove();
+
+  var overlay = document.createElement('div');
+  overlay.id = 'cso-modal-overlay';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.35);z-index:9000;display:flex;align-items:center;justify-content:center;';
+
+  var box = document.createElement('div');
+  box.id = 'cso-modal-box';
+  box.style.cssText = 'width:480px;max-width:90vw;background:rgba(255,255,255,0.92);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.8);border-radius:20px;padding:28px;box-shadow:0 8px 32px rgba(0,0,0,0.12);transform:scale(0.95);opacity:0;transition:transform 200ms ease-out,opacity 200ms ease-out;';
+
+  var fieldStyle = 'width:100%;background:rgba(255,255,255,0.6);border:1px solid rgba(26,26,46,0.1);border-radius:10px;padding:10px 14px;font-size:14px;color:#1a1a2e;font-family:\'Plus Jakarta Sans\',sans-serif;box-sizing:border-box;outline:none;';
+  var labelStyle = 'display:block;font-size:12px;font-weight:500;color:rgba(26,26,46,0.5);margin-bottom:5px;margin-top:14px;';
+
+  box.innerHTML =
+    '<div style="font-size:18px;font-weight:600;color:#1a1a2e;margin-bottom:18px;">Nuovo modulo personalizzato</div>' +
+    '<label style="' + labelStyle + 'margin-top:0;">Nome voce</label>' +
+    '<input id="csom-nome" type="text" placeholder="Es: Software gestionale" style="' + fieldStyle + '">' +
+    '<label style="' + labelStyle + '">Costo mensile (€)</label>' +
+    '<input id="csom-mensile" type="number" min="0" placeholder="0" style="' + fieldStyle + '">' +
+    '<label style="' + labelStyle + '">Costo setup una tantum (€)</label>' +
+    '<input id="csom-setup" type="number" min="0" placeholder="0" style="' + fieldStyle + '">' +
+    '<label style="' + labelStyle + '">Impatto sul fatturato</label>' +
+    '<select id="csom-impatto" style="' + fieldStyle + '">' +
+      '<option value="0.3">Basso</option>' +
+      '<option value="0.6" selected>Medio</option>' +
+      '<option value="0.9">Alto</option>' +
+    '</select>' +
+    '<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:22px;">' +
+      '<button onclick="_chiudiModaleCSO()" style="background:transparent;border:1px solid rgba(26,26,46,0.12);color:rgba(26,26,46,0.5);border-radius:10px;padding:10px 24px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;cursor:pointer;">Annulla</button>' +
+      '<button onclick="_salvaModuloCSO()" style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:10px 24px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:500;cursor:pointer;">Aggiungi</button>' +
+    '</div>';
+
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+  overlay._onSalva = onSalva;
+
+  overlay.addEventListener('click', function(e) { if (e.target === overlay) _chiudiModaleCSO(); });
+  overlay._escHandler = function(e) { if (e.key === 'Escape') _chiudiModaleCSO(); };
+  document.addEventListener('keydown', overlay._escHandler);
+
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() { box.style.transform='scale(1)'; box.style.opacity='1'; });
+  });
+  setTimeout(function() { var el=document.getElementById('csom-nome'); if(el) el.focus(); }, 50);
+}
+
+function _salvaModuloCSO() {
+  var nome    = (document.getElementById('csom-nome')?.value || '').trim();
+  if (!nome) { showToast('Inserisci un nome per il modulo', 'error'); return; }
+  var mensile = parseInt(document.getElementById('csom-mensile')?.value) || 0;
+  var setup   = parseInt(document.getElementById('csom-setup')?.value)   || 0;
+  var impatto = parseFloat(document.getElementById('csom-impatto')?.value) || 0.6;
+  var overlay = document.getElementById('cso-modal-overlay');
+  if (overlay && overlay._onSalva) overlay._onSalva({ nome, mensile, setup, impatto });
+  _chiudiModaleCSO();
+}
+
+// ── NOTE CSO ─────────────────────────────────────────────────
+
+async function aggiungiNotaCSO(prospectId) {
+  var p = prospects.find(function(x){ return x.id === prospectId; });
+  if (!p) return;
+  _apriModaleCSO({
+    titolo:      'Nuova nota',
+    sottotitolo: p.nome || '',
+    placeholder: 'Scrivi la tua nota...',
+    maxLen:      500,
+    btnLabel:    'Salva nota',
+    onSalva: async function(testo) {
+      var notes = Array.isArray(p.notes_cso) ? p.notes_cso.slice() : [];
+      notes.push({ ts: new Date().toISOString(), text: testo });
+      try {
+        await sb.from('prospects').update({ notes_cso: notes }).eq('id', prospectId);
+        p.notes_cso = notes;
+        showToast('Nota salvata');
+        renderCSOPianoSections(p, currentCalls);
+      } catch(e) {
+        showToast('Errore salvataggio nota: ' + e.message, 'error');
+      }
+    }
+  });
+}
+
+async function aggiungiAzioneCSOPiano(prospectId) {
+  var p = prospects.find(function(x){ return x.id === prospectId; });
+  if (!p) return;
+  _apriModaleCSO({
+    titolo:      'Nuova azione',
+    sottotitolo: p.nome || '',
+    placeholder: 'Descrivi l\'azione da completare...',
+    maxLen:      300,
+    btnLabel:    'Aggiungi',
+    onSalva: async function(testo) {
+      var azioni = Array.isArray(p.piano_azioni_cso) ? p.piano_azioni_cso.slice() : [];
+      azioni.push({ id: Date.now().toString(36), testo: testo, completata: false, created_at: new Date().toISOString() });
+      try {
+        await sb.from('prospects').update({ piano_azioni_cso: azioni }).eq('id', prospectId);
+        p.piano_azioni_cso = azioni;
+        showToast('Azione aggiunta');
+        renderCSOPianoSections(p, currentCalls);
+      } catch(e) {
+        showToast('Errore: ' + e.message, 'error');
+      }
+    }
+  });
+}
+
+async function toggleAzioneCSOPiano(prospectId, azioneId) {
+  var p = prospects.find(function(x){ return x.id === prospectId; });
+  if (!p) return;
+  var azioni = (Array.isArray(p.piano_azioni_cso) ? p.piano_azioni_cso : []).map(function(a) {
+    return a.id === azioneId ? Object.assign({}, a, { completata: !a.completata }) : a;
+  });
+  try {
+    await sb.from('prospects').update({ piano_azioni_cso: azioni }).eq('id', prospectId);
+    p.piano_azioni_cso = azioni;
+    renderCSOPianoSections(p, currentCalls);
+  } catch(e) {
+    showToast('Errore: ' + e.message, 'error');
+  }
+}
+
+async function eliminaAzioneCSOPiano(prospectId, azioneId) {
+  var p = prospects.find(function(x){ return x.id === prospectId; });
+  if (!p) return;
+  var azioni = (Array.isArray(p.piano_azioni_cso) ? p.piano_azioni_cso : []).filter(function(a){ return a.id !== azioneId; });
+  try {
+    await sb.from('prospects').update({ piano_azioni_cso: azioni }).eq('id', prospectId);
+    p.piano_azioni_cso = azioni;
+    showToast('Azione eliminata');
+    renderCSOPianoSections(p, currentCalls);
+  } catch(e) {
+    showToast('Errore: ' + e.message, 'error');
+  }
+}
+
+function aggiornaWhatif(prospectId, dimId, newVal) {
+  var el = document.getElementById('wi-val-' + dimId);
+  if (el) el.textContent = newVal + '/5';
+  var p = prospects.find(function(x){ return x.id === prospectId; });
+  if (!p) return;
+  // Raccoglie tutti i valori correnti dagli slider
+  var dimsCopy = Object.assign({}, p.dims || {});
+  dimsCopy[dimId] = parseFloat(newVal);
+  // Calcola score simulato
+  var keys = Object.keys(dimsCopy);
+  var sum  = keys.reduce(function(s, k){ return s + (dimsCopy[k] || 0); }, 0);
+  var simScore = keys.length > 0 ? Math.round((sum / (keys.length * 5)) * 100) : 0;
+  var el2 = document.getElementById('whatif-score-display');
+  if (el2) el2.textContent = simScore;
+}
+
+async function generaReportProPDF(prospectId) {
+  showToast('Generazione report in corso...');
+  // Funzionalità futura: chiama /api/ai con type 'report_pdf'
+  setTimeout(function() {
+    showToast('Report PDF: funzionalità in arrivo nel prossimo aggiornamento.');
+  }, 1500);
 }
 
 // -- MARKET ------------------------------------------------
@@ -1826,14 +3303,6 @@ function switchModalTab(tabId, btn) {
   if (btn) btn.classList.add('active');
 }
 
-function openNewProspect() {
-  editingId = null;
-  document.getElementById('modal-prospect-title').textContent = 'Nuovo Prospect';
-  var bodyEl = document.getElementById('modal-prospect-body');
-  bodyEl.innerHTML = _buildProspectModalBody({});
-  document.getElementById('modal-prospect').classList.add('open');
-  document.getElementById('modal-prospect').style.display = 'flex';
-}
 
 function openEditProspect(id) {
   id = id || currentId;
@@ -7512,21 +8981,14 @@ function aggiornaAzioni(dimId) {
 // ── MODULI HANDLERS ──────────────────────────────────────────
 
 function aggiungiModuloCustom(dimId, step) {
-  var nome = prompt('Nome della voce personalizzata:');
-  if (!nome) return;
-  var costoStr = prompt('Costo mensile (€):', '0');
-  var costoMensile = parseInt(costoStr) || 0;
-  var setupStr = prompt('Costo setup una tantum (€):', '0');
-  var costoSetup = parseInt(setupStr) || 0;
-  var impattoSel = prompt('Impatto sul fatturato:\n1 = Basso\n2 = Medio\n3 = Alto', '2');
-  var impatto = impattoSel === '3' ? 0.9 : impattoSel === '1' ? 0.3 : 0.6;
-
-  var sel = _getModuliSel();
-  var stepSel = _ensureModuliPath(sel, dimId, step);
-  if (!Array.isArray(stepSel._custom)) stepSel._custom = [];
-  stepSel._custom.push({ nome: nome, costo_mensile: costoMensile, costo_setup: costoSetup, impatto: impatto, attivo: true });
-  aggiornaAzioni(dimId);
-  previewTarget();
+  _apriModaleModuloCSO(function(dati) {
+    var sel = _getModuliSel();
+    var stepSel = _ensureModuliPath(sel, dimId, step);
+    if (!Array.isArray(stepSel._custom)) stepSel._custom = [];
+    stepSel._custom.push({ nome: dati.nome, costo_mensile: dati.mensile, costo_setup: dati.setup, impatto: dati.impatto, attivo: true });
+    aggiornaAzioni(dimId);
+    previewTarget();
+  });
 }
 
 function rimuoviModuloCustom(dimId, step, idx) {
@@ -8879,14 +10341,28 @@ function renderSidebarPMI() {
   var up   = window._userProfileData || {};
   var nome = pro.nome || (pro.nome_completo || '').split(' ')[0] || up.nome || '';
 
+  var _plan = window._userPlan || 'self';
+  var _isBase = _plan === 'guided_base' || _plan === 'guided_pro';
+  var _isPro  = _plan === 'guided_pro';
+
   var navItems = [
     { id:'home',   title:'Home',   svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="currentColor" opacity=".9"/><rect x="9" y="2" width="5" height="5" rx="1" fill="currentColor" opacity=".9"/><rect x="2" y="9" width="5" height="5" rx="1" fill="currentColor" opacity=".9"/><rect x="9" y="9" width="5" height="5" rx="1" fill="currentColor" opacity=".9"/></svg>' },
     { id:'azioni', title:'Azioni', svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' },
     { id:'score',  title:'Score',  svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M8 8l2.2-2.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="8" r="1.2" fill="currentColor"/></svg>' },
     { id:'trend',  title:'Trend',  svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13l3-4 3 2 4-6" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>' },
-    { id:'piano',  title:'Piano',  svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2l1.5 3.5 3.5.5-2.5 2.5.6 3.5L8 10.5l-3.1 1.5.6-3.5L3 6l3.5-.5z" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linejoin="round"/></svg>' },
-    { id:'profilo',title:'Profilo',svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="3" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 15c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>' },
   ];
+
+  if (_isBase) {
+    navItems.push({ id:'piano_cso', title:'Piano CSO', svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="9" height="1.5" rx=".75" fill="currentColor"/><rect x="2" y="7" width="7" height="1.5" rx=".75" fill="currentColor"/><rect x="2" y="11" width="5" height="1.5" rx=".75" fill="currentColor"/><circle cx="12" cy="11" r="2.5" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M13.8 13.8l1.5 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>' });
+  }
+  if (_isPro) {
+    navItems.push({ id:'report',      title:'Report',      svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2.5" y="1.5" width="11" height="13" rx="2" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="5" y="5" width="6" height="1.2" rx=".6" fill="currentColor" opacity=".7"/><rect x="5" y="8" width="4" height="1.2" rx=".6" fill="currentColor" opacity=".5"/></svg>' });
+    navItems.push({ id:'simulazioni', title:'Simulaz.',    svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14l4-5 3 2 5-8" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="9" r="1.5" fill="currentColor" opacity=".6"/></svg>' });
+    navItems.push({ id:'benchmark',   title:'Benchmark',   svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="10" width="3" height="4" rx="1" fill="currentColor" opacity=".5"/><rect x="6.5" y="7" width="3" height="7" rx="1" fill="currentColor" opacity=".7"/><rect x="11" y="4" width="3" height="10" rx="1" fill="currentColor" opacity=".9"/></svg>' });
+  }
+
+  navItems.push({ id:'piano',  title:'Piano',  svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2l1.5 3.5 3.5.5-2.5 2.5.6 3.5L8 10.5l-3.1 1.5.6-3.5L3 6l3.5-.5z" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linejoin="round"/></svg>' });
+  navItems.push({ id:'profilo',title:'Profilo',svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="3" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 15c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>' });
 
   // Logo
   var logoHtml =
@@ -8951,11 +10427,15 @@ function renderViewPMI(view) {
     renderPMIHome(main);
   } else {
     switch (view) {
-      case 'score':   renderPMIScore(main);   break;
-      case 'azioni':  renderPMIAzioni(main);  break;
-      case 'trend':   renderPMITrend(main);   break;
-      case 'piano':   renderPMIPiano(main);   break;
-      case 'profilo': renderPMIProfilo(main); break;
+      case 'score':      renderPMIScore(main);      break;
+      case 'azioni':     renderPMIAzioni(main);     break;
+      case 'trend':      renderPMITrend(main);      break;
+      case 'piano':      renderPMIPiano(main);      break;
+      case 'profilo':    renderPMIProfilo(main);    break;
+      case 'piano_cso':  renderPMIPianoCSO(main);   break;
+      case 'report':     renderPMIReport(main);     break;
+      case 'simulazioni':renderPMISimulazioni(main);break;
+      case 'benchmark':  renderPMIBenchmark(main);  break;
     }
   }
 }
@@ -9478,6 +10958,7 @@ async function pmiAvviaDiagnosi() {
   }
 
   window._pmiProspect = nuovoP;
+  window._userPlan = nuovoP.piano || 'self';
   if (!prospects.find(function(x){ return x.id === nuovoP.id; })) prospects.push(nuovoP);
   currentId = nuovoP.id;
 
@@ -9507,7 +10988,7 @@ async function pmiAvviaDiagnosi() {
 // Chiamata da chiudiDiagnosi() in modalità titolare
 function _dopoChiudiDiagnosiPMI(pid) {
   var p = prospects.find(function(x){ return x.id === pid; });
-  if (p) window._pmiProspect = p;
+  if (p) { window._pmiProspect = p; window._userPlan = p.piano || 'self'; }
   window._pmiDiagnosiMode = false;
 
   var DIMS_ALL   = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
@@ -9863,18 +11344,55 @@ function renderPMIHome(container) {
                 '<span style="font-size:12px;font-weight:600;color:rgba(0,130,95,0.85);">+'+impattoFmt+'/mese</span>' +
               '</div>' +
             '</div>' +
-            '<div style="background:rgba(255,255,255,0.50);border:1px solid rgba(255,255,255,0.65);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:12px;">' +
-              '<div style="width:38px;height:38px;border-radius:50%;background:rgba(61,90,254,0.06);border:1px solid rgba(61,90,254,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
-                '<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="7" r="3.5" stroke="#3D5AFE" stroke-width="1.3" fill="none"/><path d="M3 16.5c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#3D5AFE" stroke-width="1.3" fill="none"/></svg>' +
-              '</div>' +
-              '<div style="flex:1;">' +
-                '<div style="font-size:14px;font-weight:600;color:#1a1a2e;">Vuoi un esperto?</div>' +
-                '<div style="font-size:10px;color:rgba(26,26,46,0.50);">€120/sessione — nessun impegno</div>' +
-              '</div>' +
-              '<button onclick="apriPrenotazioneCall()" style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:7px 16px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;">Prenota</button>' +
-            '</div>' +
+            (window._userPlan === 'guided_base' || window._userPlan === 'guided_pro'
+              ? '' // Hide "Vuoi un esperto?" for guided plans — CSO already assigned
+              : '<div style="background:rgba(255,255,255,0.50);border:1px solid rgba(255,255,255,0.65);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:12px;">' +
+                '<div style="width:38px;height:38px;border-radius:50%;background:rgba(61,90,254,0.06);border:1px solid rgba(61,90,254,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
+                  '<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="7" r="3.5" stroke="#3D5AFE" stroke-width="1.3" fill="none"/><path d="M3 16.5c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#3D5AFE" stroke-width="1.3" fill="none"/></svg>' +
+                '</div>' +
+                '<div style="flex:1;">' +
+                  '<div style="font-size:14px;font-weight:600;color:#1a1a2e;">Vuoi un esperto?</div>' +
+                  '<div style="font-size:10px;color:rgba(26,26,46,0.50);">€120/sessione — nessun impegno</div>' +
+                '</div>' +
+                '<button onclick="apriPrenotazioneCall()" style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:7px 16px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;">Prenota</button>' +
+              '</div>'
+            ) +
           '</div>' +
-        '</div>';
+        '</div>' +
+        // "Il tuo CSO" card — visible only for guided_base and guided_pro
+        ((window._userPlan === 'guided_base' || window._userPlan === 'guided_pro') ? (function() {
+          var p2 = window._pmiProspect || {};
+          var csoNome = window._pmiCSONome || '';
+          var isPro = window._userPlan === 'guided_pro';
+          var planCol = isPro ? '#FF6B2B' : '#3D5AFE';
+          var planName = isPro ? 'Guided Pro' : 'Guided Base';
+          return '<div style="margin-top:14px;background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-left:4px solid ' + planCol + ';border-radius:14px;padding:18px 20px;display:flex;align-items:center;gap:16px;">' +
+            '<div style="width:44px;height:44px;border-radius:50%;background:rgba(61,90,254,0.07);border:1.5px solid ' + planCol + ';display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
+              '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="8" r="4" stroke="' + planCol + '" stroke-width="1.4" fill="none"/><path d="M3 19c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke="' + planCol + '" stroke-width="1.4" fill="none"/></svg>' +
+            '</div>' +
+            '<div style="flex:1;">' +
+              '<div style="font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:' + planCol + ';margin-bottom:3px;">Il tuo CSO — Piano ' + planName + '</div>' +
+              '<div id="pmi-cso-nome-home" style="font-size:15px;font-weight:600;color:#1a1a2e;">' + (csoNome || 'CSO assegnato al tuo account') + '</div>' +
+              '<div style="font-size:12px;color:rgba(26,26,46,0.45);margin-top:2px;">' + (isPro ? 'Call illimitate · Piano azioni · Report mensile' : '1 call/mese · Piano azioni condiviso') + '</div>' +
+            '</div>' +
+            '<button onclick="showViewPMI(\'piano_cso\')" style="flex-shrink:0;background:' + planCol + ';color:white;border:none;border-radius:10px;padding:8px 18px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;">Vedi piano</button>' +
+          '</div>';
+        })() : '');
+
+  // Async: load CSO name if needed
+  if ((window._userPlan === 'guided_base' || window._userPlan === 'guided_pro') && !window._pmiCSONome) {
+    (async function() {
+      var p2 = window._pmiProspect || {};
+      if (p2.cso_id && typeof sb !== 'undefined') {
+        var res = await sb.from('profiles').select('nome, cognome').eq('id', p2.cso_id).maybeSingle();
+        if (res && res.data) {
+          window._pmiCSONome = ((res.data.nome || '') + ' ' + (res.data.cognome || '')).trim();
+          var el = document.getElementById('pmi-cso-nome-home');
+          if (el && window._pmiCSONome) el.textContent = window._pmiCSONome;
+        }
+      }
+    })();
+  }
 }
 
 function completaAzioneSettimanale() {
@@ -10506,108 +12024,130 @@ function renderPMIPiano(container) {
   var p = window._pmiProspect || {};
   var pianoCorrente = p.piano || 'self';
 
-  function featCheck(testo) {
-    return '<div style="display:flex;align-items:flex-start;margin-bottom:7px;font-size:12px;color:#1a1a2e;line-height:1.4">' +
-      '<span style="color:rgba(0,130,95,0.85);font-size:13px;font-weight:700;margin-right:6px;flex-shrink:0">✓</span>' + testo + '</div>';
-  }
-  function featLock(testo) {
-    return '<div style="display:flex;align-items:flex-start;margin-bottom:7px;font-size:12px;color:rgba(26,26,46,0.35);line-height:1.4">' +
-      '<span style="font-size:11px;margin-right:6px;flex-shrink:0">🔒</span>' + testo + '</div>';
-  }
+  var CHECK = '<div style="width:20px;height:20px;border-radius:50%;background:#00825F;display:inline-flex;align-items:center;justify-content:center;">' +
+    '<svg width="11" height="8" viewBox="0 0 11 8" fill="none"><path d="M1 4L4 7L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+    '</div>';
+  var DASH = '<div style="width:20px;height:20px;border-radius:50%;background:rgba(26,26,46,0.06);display:inline-flex;align-items:center;justify-content:center;">' +
+    '<div style="width:8px;height:1.5px;background:rgba(26,26,46,0.25);border-radius:2px;"></div>' +
+    '</div>';
 
-  var cards = [
-    {
-      id: 'self',
-      titolo: 'Self',
-      prezzo: '€199/mese',
-      headerBg: 'rgba(61,90,254,0.06)',
-      accentColor: '#3D5AFE',
-      badgeLabel: null,
-      features: [
-        featCheck('Diagnosi 8 dimensioni'),
-        featCheck('Score e semafori'),
-        featCheck('1 azione AI/settimana'),
-        featCheck('Ri-diagnosi trimestrale'),
-        featCheck('Benchmark base'),
-        featCheck('Controfattuale trimestrale'),
-      ].join(''),
-      btnLabelAlt: 'Scegli Self',
-    },
-    {
-      id: 'guided_base',
-      titolo: 'Guided Base',
-      prezzo: '€399/mese',
-      headerBg: 'rgba(61,90,254,0.1)',
-      accentColor: '#3D5AFE',
-      badgeLabel: null,
-      features: [
-        featCheck('Tutto Self incluso'),
-        featCheck('1 call CSO al mese'),
-        featCheck('Piano azioni condiviso con CSO'),
-        featLock('Report PDF (solo Pro)'),
-        featLock('What-if (solo Pro)'),
-        featLock('Benchmark peer (solo Pro)'),
-      ].join(''),
-      btnLabelAlt: 'Passa a Guided Base',
-    },
-    {
-      id: 'guided_pro',
-      titolo: 'Guided Pro',
-      prezzo: '€599/mese',
-      headerBg: 'rgba(255,107,43,0.08)',
-      accentColor: '#FF6B2B',
-      badgeLabel: 'Completo',
-      features: [
-        featCheck('Tutto Self incluso'),
-        featCheck('Call CSO illimitate'),
-        featCheck('Piano azioni condiviso'),
-        featCheck('Report PDF mensile'),
-        featCheck('Simulazioni what-if'),
-        featCheck('Benchmark peer dettagliato'),
-        featCheck('Correlazioni dimensioni'),
-        featCheck('Cronistoria interventi'),
-      ].join(''),
-      btnLabelAlt: 'Passa a Guided Pro',
-    },
+  // [label, self, guided_base, guided_pro]
+  var features = [
+    ['Diagnosi 8 dimensioni',      CHECK, CHECK, CHECK],
+    ['Score e semafori',            CHECK, CHECK, CHECK],
+    ['1 azione AI / settimana',     CHECK, CHECK, CHECK],
+    ['Ri-diagnosi trimestrale',     CHECK, CHECK, CHECK],
+    ['Benchmark di settore base',   CHECK, CHECK, CHECK],
+    ['Controfattuale trimestrale',  CHECK, CHECK, CHECK],
+    ['1 call CSO al mese',          DASH,  CHECK, CHECK],
+    ['Piano azioni con CSO',        DASH,  CHECK, CHECK],
+    ['Report PDF mensile',          DASH,  DASH,  CHECK],
+    ['Simulazioni what-if',         DASH,  DASH,  CHECK],
+    ['Benchmark peer dettagliato',  DASH,  DASH,  CHECK],
+    ['Call CSO illimitate',         DASH,  DASH,  CHECK],
   ];
 
-  var cardsHtml = cards.map(function(card) {
-    var isCurrent = card.id === pianoCorrente;
-    var border = isCurrent ? '2px solid ' + card.accentColor : '1px solid rgba(0,0,0,0.08)';
+  function mkBtn(id, labelAttivo, labelDefault, bg, color, border) {
+    var isCurrent = pianoCorrente === id;
+    var label  = isCurrent ? labelAttivo : labelDefault;
+    var bBg    = isCurrent ? 'rgba(26,26,46,0.07)' : bg;
+    var bColor = isCurrent ? 'rgba(26,26,46,0.35)' : color;
+    var bBord  = isCurrent ? '1.5px solid rgba(26,26,46,0.10)' : border;
+    var oc     = isCurrent ? '' : ' onclick="aggiornaPiano(\'' + id + '\')"';
+    return '<button' + oc + (isCurrent ? ' disabled' : '') +
+      ' style="width:80%;padding:10px 0;background:' + bBg + ';color:' + bColor +
+      ';border:' + bBord + ';border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;' +
+      'font-size:13px;font-weight:500;cursor:' + (isCurrent ? 'default' : 'pointer') +
+      ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + label + '</button>';
+  }
 
-    var topBadgeHtml = '';
-    if (isCurrent) {
-      topBadgeHtml = '<span style="position:absolute;top:10px;right:10px;background:#3D5AFE;color:white;border-radius:8px;font-size:10px;font-weight:700;padding:2px 8px;white-space:nowrap">Il tuo piano</span>';
-    } else if (card.badgeLabel) {
-      topBadgeHtml = '<span style="position:absolute;top:10px;right:10px;background:' + card.accentColor + ';color:white;border-radius:8px;font-size:10px;font-weight:700;padding:2px 8px;">' + card.badgeLabel + '</span>';
-    }
+  // Header cards HTML
+  var selfIsCurrent  = pianoCorrente === 'self';
+  var baseIsCurrent  = pianoCorrente === 'guided_base';
+  var proIsCurrent   = pianoCorrente === 'guided_pro';
 
-    var btnLabel  = isCurrent ? 'Piano attuale' : card.btnLabelAlt;
-    var btnBg     = isCurrent ? 'rgba(0,0,0,0.08)' : card.accentColor;
-    var btnColor  = isCurrent ? 'rgba(26,26,46,0.35)' : 'white';
-    var btnOnclick = isCurrent ? '' : 'onclick="aggiornaPiano(\'' + card.id + '\')"';
+  function currentLabel(id) {
+    if (pianoCorrente !== id) return '';
+    var c = id === 'guided_pro' ? '#FF6B2B' : '#3D5AFE';
+    return '<div style="font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:' + c + ';margin-bottom:4px;">Il tuo piano</div>';
+  }
 
-    return '<div style="position:relative;background:rgba(255,255,255,0.55);border:' + border + ';border-radius:14px;overflow:hidden;display:flex;flex-direction:column;">' +
-      '<div style="background:' + card.headerBg + ';padding:14px 16px 12px;position:relative;">' +
-        topBadgeHtml +
-        '<div style="font-size:14px;font-weight:700;color:#1a1a2e;">' + card.titolo + '</div>' +
-        '<div style="font-size:12px;color:rgba(26,26,46,0.55);margin-top:2px;">' + card.prezzo + '</div>' +
-      '</div>' +
-      '<div style="padding:14px 16px;flex:1;">' + card.features + '</div>' +
-      '<div style="padding:0 16px 16px;">' +
-        '<button ' + btnOnclick + (isCurrent ? ' disabled' : '') + ' style="width:100%;padding:10px;background:' + btnBg + ';color:' + btnColor + ';border:none;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:600;cursor:' + (isCurrent ? 'default' : 'pointer') + ';">' + btnLabel + '</button>' +
-      '</div>' +
+  var headerSelf =
+    '<div style="height:90px;background:rgba(255,255,255,0.55);border-radius:14px 14px 0 0;padding:16px;text-align:center;display:flex;flex-direction:column;justify-content:center;">' +
+      currentLabel('self') +
+      '<div style="font-size:18px;font-weight:600;color:#1a1a2e;">Self</div>' +
+      '<div style="font-size:13px;color:rgba(26,26,46,0.45);margin-top:4px;">€199/mese</div>' +
     '</div>';
+
+  var headerBase =
+    '<div style="position:relative;height:90px;background:rgba(61,90,254,0.08);border-radius:14px 14px 0 0;border-top:3px solid #3D5AFE;padding:16px;text-align:center;display:flex;flex-direction:column;justify-content:center;">' +
+      (baseIsCurrent ? currentLabel('guided_base') : '<span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#3D5AFE;color:white;font-size:10px;font-weight:600;padding:3px 12px;border-radius:10px;white-space:nowrap;">Consigliato</span>') +
+      '<div style="font-size:18px;font-weight:600;color:#3D5AFE;">Guided Base</div>' +
+      '<div style="font-size:13px;color:rgba(61,90,254,0.5);margin-top:4px;">€399/mese</div>' +
+    '</div>';
+
+  var headerPro =
+    '<div style="height:90px;background:rgba(255,107,43,0.06);border-radius:14px 14px 0 0;border-top:3px solid #FF6B2B;padding:16px;text-align:center;display:flex;flex-direction:column;justify-content:center;">' +
+      currentLabel('guided_pro') +
+      '<div style="font-size:18px;font-weight:600;color:#FF6B2B;">Guided Pro</div>' +
+      '<div style="font-size:13px;color:rgba(255,107,43,0.5);margin-top:4px;">€599/mese</div>' +
+    '</div>';
+
+  var rowsHtml = features.map(function(row, i) {
+    var alt = i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'transparent';
+    return '<tr style="background:' + alt + ';">' +
+      '<td style="padding:10px 12px 10px 20px;font-size:13px;color:#1a1a2e;line-height:1.35;min-width:200px;">' + row[0] + '</td>' +
+      '<td style="text-align:center;padding:10px 8px;width:20%;">' + row[1] + '</td>' +
+      '<td style="text-align:center;padding:10px 8px;width:20%;">' + row[2] + '</td>' +
+      '<td style="text-align:center;padding:10px 8px;width:20%;">' + row[3] + '</td>' +
+    '</tr>';
   }).join('');
+
+  var btnRowHtml =
+    '<tr>' +
+      '<td style="padding:16px 12px 20px 20px;"></td>' +
+      '<td style="text-align:center;padding:16px 8px 20px;">' +
+        mkBtn('self', 'Piano attuale', 'Attiva Self', 'transparent', '#1a1a2e', '1.5px solid rgba(26,26,46,0.15)') +
+      '</td>' +
+      '<td style="text-align:center;padding:16px 8px 20px;">' +
+        mkBtn('guided_base', 'Piano attuale', 'Attiva Base', '#3D5AFE', 'white', 'none') +
+      '</td>' +
+      '<td style="text-align:center;padding:16px 8px 20px;">' +
+        mkBtn('guided_pro', 'Piano attuale', 'Attiva Pro', '#FF6B2B', 'white', 'none') +
+      '</td>' +
+    '</tr>';
+
+  var tableHtml =
+    '<table style="width:100%;border-collapse:collapse;">' +
+      '<colgroup>' +
+        '<col style="width:40%">' +
+        '<col style="width:20%">' +
+        '<col style="width:20%">' +
+        '<col style="width:20%">' +
+      '</colgroup>' +
+      '<tbody>' + rowsHtml + btnRowHtml + '</tbody>' +
+    '</table>';
 
   container.innerHTML =
     '<div style="max-width:820px;margin:0 auto;padding:40px 28px">' +
       '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:6px">Il tuo piano</h1>' +
       '<p style="font-size:13px;color:rgba(26,26,46,0.5);margin-bottom:28px">Scegli il livello di supporto per la tua azienda.</p>' +
-      '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;align-items:stretch;">' +
-        cardsHtml +
+
+      // Header cards row
+      '<div style="display:grid;grid-template-columns:40% 20% 20% 20%;margin-bottom:0;">' +
+        '<div></div>' +
+        '<div style="padding:0 4px 0 0;">' + headerSelf + '</div>' +
+        '<div style="padding:0 4px;">' + headerBase + '</div>' +
+        '<div style="padding:0 0 0 4px;">' + headerPro + '</div>' +
       '</div>' +
-      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(0,0,0,0.08);border-radius:14px;padding:16px 20px;margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:16px;">' +
+
+      // Table body
+      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:0 0 14px 14px;overflow:hidden;">' +
+        tableHtml +
+      '</div>' +
+
+      '<p style="font-size:11px;color:rgba(26,26,46,0.35);text-align:center;margin-top:10px;">Ogni piano include il precedente. Puoi cambiare in qualsiasi momento.</p>' +
+      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(0,0,0,0.08);border-radius:14px;padding:16px 20px;margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:16px;">' +
         '<div>' +
           '<div style="font-size:15px;font-weight:700;color:#1a1a2e;margin-bottom:4px;">Non sei ancora sicuro?</div>' +
           '<div style="font-size:13px;color:rgba(26,26,46,0.45);">Parla con un esperto. 45 minuti, zero impegno, zero sorprese.</div>' +
@@ -10623,6 +12163,7 @@ async function aggiornaPiano(nuovoPiano) {
   try {
     await sb.from('prospects').update({ piano: nuovoPiano }).eq('id', p.id);
     window._pmiProspect = Object.assign({}, p, { piano: nuovoPiano });
+    window._userPlan = nuovoPiano;
     var idx = prospects.findIndex(function(x){ return x.id === p.id; });
     if (idx >= 0) prospects[idx] = window._pmiProspect;
     showToast('Piano aggiornato! Un CSO ti contatterà entro 24 ore.');
@@ -10798,6 +12339,278 @@ function _profiloRow(label, value) {
     '<div style="font-size:12px;color:rgba(26,26,46,0.45)">' + label + '</div>' +
     '<div style="font-size:13px;font-weight:600;color:#1a1a2e;text-align:right;max-width:60%">' + value + '</div>' +
   '</div>';
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// PMI — VISTE PIANO-DIFFERENZIATE
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function renderPMIPianoCSO(container) {
+  var p = window._pmiProspect || {};
+  var isPro = window._userPlan === 'guided_pro';
+  var planCol = isPro ? '#FF6B2B' : '#3D5AFE';
+  var csoNome = window._pmiCSONome || '';
+
+  var pianoAzioni = [];
+  try { pianoAzioni = JSON.parse(p.piano_azioni_cso || '[]'); } catch(e) {}
+
+  var sharedPlan = p.shared_plan || '';
+
+  var azioniHtml = pianoAzioni.length
+    ? pianoAzioni.map(function(a, i) {
+        var done = a.done ? 'rgba(0,130,95,0.7)' : 'rgba(26,26,46,0.2)';
+        var icon = a.done
+          ? '<div style="width:20px;height:20px;border-radius:50%;background:rgba(0,130,95,0.1);border:1.5px solid rgba(0,130,95,0.5);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="rgba(0,130,95,0.8)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>'
+          : '<div style="width:20px;height:20px;border-radius:50%;border:1.5px solid rgba(26,26,46,0.12);flex-shrink:0;"></div>';
+        return '<div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid rgba(0,0,0,0.04);">' +
+          icon +
+          '<div style="flex:1;">' +
+            '<div style="font-size:13px;color:' + (a.done ? 'rgba(26,26,46,0.35)' : '#1a1a2e') + ';' + (a.done ? 'text-decoration:line-through;' : '') + 'line-height:1.5;">' + _esc(a.testo || a.text || '') + '</div>' +
+            (a.data ? '<div style="font-size:11px;color:rgba(26,26,46,0.35);margin-top:2px;">' + a.data + '</div>' : '') +
+          '</div>' +
+        '</div>';
+      }).join('')
+    : '<div style="font-size:13px;color:rgba(26,26,46,0.35);text-align:center;padding:32px 0;">Nessuna azione ancora definita dal tuo CSO.</div>';
+
+  container.innerHTML =
+    '<div style="max-width:720px;margin:0 auto;">' +
+      '<div style="margin-bottom:24px;">' +
+        '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:4px;">Piano CSO</h1>' +
+        '<p style="font-size:13px;color:rgba(26,26,46,0.45);">Il percorso personalizzato preparato dal tuo consulente commerciale.</p>' +
+      '</div>' +
+
+      // CSO banner
+      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-left:4px solid ' + planCol + ';border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:14px;margin-bottom:16px;">' +
+        '<div style="width:40px;height:40px;border-radius:50%;background:rgba(61,90,254,0.06);border:1.5px solid ' + planCol + ';display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
+          '<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="8" r="4" stroke="' + planCol + '" stroke-width="1.4" fill="none"/><path d="M3 19c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke="' + planCol + '" stroke-width="1.4" fill="none"/></svg>' +
+        '</div>' +
+        '<div style="flex:1;">' +
+          '<div style="font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:' + planCol + ';margin-bottom:2px;">Il tuo consulente CSO</div>' +
+          '<div style="font-size:15px;font-weight:600;color:#1a1a2e;">' + (csoNome || 'CSO assegnato al tuo account') + '</div>' +
+        '</div>' +
+        (isPro ? '<div style="background:rgba(255,107,43,0.08);color:#FF6B2B;font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;">Call illimitate</div>' : '<div style="background:rgba(61,90,254,0.08);color:#3D5AFE;font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;">1 call/mese</div>') +
+      '</div>' +
+
+      // Piano testo condiviso
+      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:20px;margin-bottom:16px;">' +
+        '<div style="font-size:13px;font-weight:600;color:#1a1a2e;margin-bottom:12px;">Note dal tuo CSO</div>' +
+        (sharedPlan
+          ? '<div style="font-size:13px;color:#1a1a2e;line-height:1.65;white-space:pre-wrap;">' + _esc(sharedPlan) + '</div>'
+          : '<div style="font-size:13px;color:rgba(26,26,46,0.35);font-style:italic;">Il tuo CSO non ha ancora aggiunto note. Le riceverai dopo la prima call.</div>'
+        ) +
+      '</div>' +
+
+      // Piano azioni
+      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:20px;">' +
+        '<div style="font-size:13px;font-weight:600;color:#1a1a2e;margin-bottom:4px;">Piano azioni</div>' +
+        '<div style="font-size:11px;color:rgba(26,26,46,0.40);margin-bottom:12px;">' + pianoAzioni.length + ' azioni definite</div>' +
+        azioniHtml +
+      '</div>' +
+    '</div>';
+
+  // Async: load CSO name if not yet cached
+  if (!window._pmiCSONome) {
+    (async function() {
+      var p2 = window._pmiProspect || {};
+      if (p2.cso_id && typeof sb !== 'undefined') {
+        var res = await sb.from('profiles').select('nome, cognome').eq('id', p2.cso_id).maybeSingle();
+        if (res && res.data) {
+          window._pmiCSONome = ((res.data.nome || '') + ' ' + (res.data.cognome || '')).trim();
+          container.querySelectorAll('[data-cso-nome]').forEach(function(el) {
+            if (window._pmiCSONome) el.textContent = window._pmiCSONome;
+          });
+        }
+      }
+    })();
+  }
+}
+
+function renderPMIReport(container) {
+  var p = window._pmiProspect || {};
+  var s = calcScore(p);
+  var dimLabels = {vendite:'Vendite',pipeline:'Pipeline & CRM',team:'Organizzazione',processi:'Processi',ricavi:'Ricavi',marketing:'Marketing',sitoweb:'Sito Web',ecommerce:'Post-vendita'};
+  var _PMI_DIMS2 = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+
+  var dimsHtml = _PMI_DIMS2.map(function(k) {
+    var v = (p.dims && p.dims[k]) || 0;
+    var col = v < 2 ? 'rgba(229,57,53,0.8)' : v < 4 ? 'rgba(175,125,0,0.8)' : 'rgba(0,130,95,0.8)';
+    var pct = Math.round((v/5)*100);
+    return '<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.04);">' +
+      '<div style="width:110px;font-size:12px;color:#1a1a2e;flex-shrink:0;">' + dimLabels[k] + '</div>' +
+      '<div style="flex:1;height:6px;background:rgba(0,0,0,0.05);border-radius:3px;">' +
+        '<div style="width:' + pct + '%;height:100%;background:' + col + ';border-radius:3px;"></div>' +
+      '</div>' +
+      '<div style="width:30px;text-align:right;font-size:13px;font-weight:700;color:' + col + ';">' + (v || '—') + '</div>' +
+    '</div>';
+  }).join('');
+
+  var today = new Date();
+  var mese = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'][today.getMonth()];
+
+  container.innerHTML =
+    '<div style="max-width:680px;margin:0 auto;">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;">' +
+        '<div>' +
+          '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:4px;">Report mensile</h1>' +
+          '<p style="font-size:13px;color:rgba(26,26,46,0.45);">' + mese + ' ' + today.getFullYear() + ' — generato automaticamente</p>' +
+        '</div>' +
+        '<button style="background:rgba(26,26,46,0.06);color:rgba(26,26,46,0.35);border:1px solid rgba(0,0,0,0.08);border-radius:10px;padding:9px 18px;font-size:12px;font-weight:600;cursor:not-allowed;font-family:inherit;">PDF — in arrivo</button>' +
+      '</div>' +
+
+      // Score KPI
+      '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px;">' +
+        '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:16px;text-align:center;">' +
+          '<div style="font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:rgba(26,26,46,0.35);margin-bottom:8px;">Score attuale</div>' +
+          '<div style="font-size:32px;font-weight:700;color:#1a1a2e;">' + s + '</div>' +
+          '<div style="font-size:11px;color:rgba(26,26,46,0.35);">/100</div>' +
+        '</div>' +
+        '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:16px;text-align:center;">' +
+          '<div style="font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:rgba(26,26,46,0.35);margin-bottom:8px;">Azioni completate</div>' +
+          '<div style="font-size:32px;font-weight:700;color:#1a1a2e;">' + Object.values(p.azioni_completate || {}).filter(Boolean).length + '</div>' +
+          '<div style="font-size:11px;color:rgba(26,26,46,0.35);">/5 moduli</div>' +
+        '</div>' +
+        '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:16px;text-align:center;">' +
+          '<div style="font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:rgba(26,26,46,0.35);margin-bottom:8px;">Fatturato dichiarato</div>' +
+          '<div style="font-size:24px;font-weight:700;color:#1a1a2e;">' + (p.fatturato ? '€' + (p.fatturato/1000).toFixed(0) + 'K' : '—') + '</div>' +
+          '<div style="font-size:11px;color:rgba(26,26,46,0.35);">annuo</div>' +
+        '</div>' +
+      '</div>' +
+
+      // Profilo dimensioni
+      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:20px;">' +
+        '<div style="font-size:13px;font-weight:600;color:#1a1a2e;margin-bottom:12px;">Profilo per dimensione</div>' +
+        dimsHtml +
+      '</div>' +
+    '</div>';
+}
+
+function renderPMISimulazioni(container) {
+  var p = window._pmiProspect || {};
+  var fatturato = p.fatturato || 1000000;
+  var dimLabels = {vendite:'Vendite',pipeline:'Pipeline & CRM',team:'Organizzazione',processi:'Processi',ricavi:'Ricavi',marketing:'Marketing',sitoweb:'Sito Web',ecommerce:'Post-vendita'};
+  var coefficienti = {vendite:0.04,pipeline:0.035,team:0.025,processi:0.03,ricavi:0.045,marketing:0.02,sitoweb:0.015,ecommerce:0.03};
+  var _PMI_DIMS2 = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+
+  var simsHtml = _PMI_DIMS2.map(function(k) {
+    var v = (p.dims && p.dims[k]) || 0;
+    if (v >= 5) return '';
+    var gapMax = 5 - v;
+    var impatto1 = Math.round(fatturato * 1 * (coefficienti[k] || 0.03) / 12);
+    var impatto2 = Math.round(fatturato * Math.min(2, gapMax) * (coefficienti[k] || 0.03) / 12);
+    var col = v < 2 ? 'rgba(229,57,53,0.8)' : v < 4 ? 'rgba(175,125,0,0.8)' : 'rgba(0,130,95,0.8)';
+    return '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:16px 20px;margin-bottom:10px;">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">' +
+        '<div>' +
+          '<div style="font-size:13px;font-weight:600;color:#1a1a2e;">' + dimLabels[k] + '</div>' +
+          '<div style="font-size:11px;color:rgba(26,26,46,0.40);">Score attuale: <span style="font-weight:700;color:' + col + ';">' + v + '/5</span></div>' +
+        '</div>' +
+        '<div style="text-align:right;">' +
+          '<div style="font-size:10px;text-transform:uppercase;letter-spacing:.4px;color:rgba(26,26,46,0.35);margin-bottom:2px;">Impatto stimato</div>' +
+          '<div style="font-size:18px;font-weight:700;color:rgba(0,130,95,0.85);">+€' + impatto2.toLocaleString('it-IT') + '/mese</div>' +
+          '<div style="font-size:11px;color:rgba(26,26,46,0.35);">portando a ' + Math.min(v+2, 5) + '/5</div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">' +
+        '<div style="background:rgba(0,130,95,0.04);border:1px solid rgba(0,130,95,0.12);border-radius:10px;padding:10px 14px;">' +
+          '<div style="font-size:10px;color:rgba(0,130,95,0.6);margin-bottom:3px;">+1 livello</div>' +
+          '<div style="font-size:16px;font-weight:700;color:rgba(0,130,95,0.8);">+€' + impatto1.toLocaleString('it-IT') + '/mese</div>' +
+        '</div>' +
+        '<div style="background:rgba(0,130,95,0.07);border:1px solid rgba(0,130,95,0.18);border-radius:10px;padding:10px 14px;">' +
+          '<div style="font-size:10px;color:rgba(0,130,95,0.6);margin-bottom:3px;">+2 livelli</div>' +
+          '<div style="font-size:16px;font-weight:700;color:rgba(0,130,95,0.85);">+€' + impatto2.toLocaleString('it-IT') + '/mese</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  container.innerHTML =
+    '<div style="max-width:680px;margin:0 auto;">' +
+      '<div style="margin-bottom:24px;">' +
+        '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:4px;">Simulazioni what-if</h1>' +
+        '<p style="font-size:13px;color:rgba(26,26,46,0.45);">Stima l\'impatto economico di migliorare ogni dimensione commerciale.</p>' +
+      '</div>' +
+      '<div style="background:rgba(61,90,254,0.04);border:1px solid rgba(61,90,254,0.12);border-radius:14px;padding:14px 18px;margin-bottom:16px;font-size:12px;color:rgba(26,26,46,0.55);line-height:1.5;">' +
+        'Basato su un fatturato dichiarato di <strong style="color:#1a1a2e;">€' + fatturato.toLocaleString('it-IT') + '</strong>. ' +
+        'I valori sono stime indicative basate su benchmark di settore PMI italiano.' +
+      '</div>' +
+      simsHtml +
+    '</div>';
+}
+
+function renderPMIBenchmark(container) {
+  var p = window._pmiProspect || {};
+  var s = calcScore(p);
+  var settoreRaw = (window._userProfileData || {}).sector || p.settore || '';
+  var settore = settoreRaw ? settoreRaw.replace(/_/g,' ').replace(/^\w/, function(c){ return c.toUpperCase(); }) : 'il tuo settore';
+  var dimLabels = {vendite:'Vendite',pipeline:'Pipeline & CRM',team:'Organizzazione',processi:'Processi',ricavi:'Ricavi',marketing:'Marketing',sitoweb:'Sito Web',ecommerce:'Post-vendita'};
+  var _PMI_DIMS2 = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+
+  // Benchmark peer — valori medi di settore simulati (in assenza di dati reali)
+  var BENCHMARK_BASE = {vendite:2.8,pipeline:2.3,team:2.6,processi:2.5,ricavi:3.0,marketing:2.1,sitoweb:2.4,ecommerce:2.2};
+
+  var rowsHtml = _PMI_DIMS2.map(function(k) {
+    var mio = (p.dims && p.dims[k]) || 0;
+    var avg = BENCHMARK_BASE[k] || 2.5;
+    var diff = mio - avg;
+    var diffCol = diff > 0.3 ? 'rgba(0,130,95,0.8)' : diff < -0.3 ? 'rgba(229,57,53,0.8)' : 'rgba(175,125,0,0.8)';
+    var diffLabel = diff > 0.3 ? '↑ sopra media' : diff < -0.3 ? '↓ sotto media' : '≈ nella media';
+    var mioPct  = Math.round((mio/5)*100);
+    var avgPct  = Math.round((avg/5)*100);
+    return '<div style="padding:14px 0;border-bottom:1px solid rgba(0,0,0,0.04);">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">' +
+        '<div style="font-size:13px;font-weight:500;color:#1a1a2e;">' + dimLabels[k] + '</div>' +
+        '<div style="font-size:11px;font-weight:600;color:' + diffCol + ';">' + diffLabel + '</div>' +
+      '</div>' +
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">' +
+        '<div style="width:50px;font-size:11px;color:rgba(26,26,46,0.40);">Tu</div>' +
+        '<div style="flex:1;height:6px;background:rgba(0,0,0,0.05);border-radius:3px;">' +
+          '<div style="width:' + mioPct + '%;height:100%;background:#3D5AFE;border-radius:3px;"></div>' +
+        '</div>' +
+        '<div style="width:24px;text-align:right;font-size:12px;font-weight:700;color:#3D5AFE;">' + mio + '</div>' +
+      '</div>' +
+      '<div style="display:flex;align-items:center;gap:8px;">' +
+        '<div style="width:50px;font-size:11px;color:rgba(26,26,46,0.40);">Media</div>' +
+        '<div style="flex:1;height:6px;background:rgba(0,0,0,0.05);border-radius:3px;">' +
+          '<div style="width:' + avgPct + '%;height:100%;background:rgba(26,26,46,0.20);border-radius:3px;"></div>' +
+        '</div>' +
+        '<div style="width:24px;text-align:right;font-size:12px;color:rgba(26,26,46,0.40);">' + avg.toFixed(1) + '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  var scoreAvg = 52; // Media PMI italiane
+  var scoreDiff = s - scoreAvg;
+  var scoreDiffCol = scoreDiff > 0 ? 'rgba(0,130,95,0.8)' : 'rgba(229,57,53,0.8)';
+
+  container.innerHTML =
+    '<div style="max-width:680px;margin:0 auto;">' +
+      '<div style="margin-bottom:24px;">' +
+        '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:4px;">Benchmark di settore</h1>' +
+        '<p style="font-size:13px;color:rgba(26,26,46,0.45);">Come ti posizioni rispetto alle PMI italiane in ' + settore + '.</p>' +
+      '</div>' +
+
+      // Score comparison KPI
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">' +
+        '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:16px;text-align:center;">' +
+          '<div style="font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:rgba(26,26,46,0.35);margin-bottom:8px;">Il tuo score</div>' +
+          '<div style="font-size:38px;font-weight:700;color:#3D5AFE;">' + s + '</div>' +
+          '<div style="font-size:11px;color:rgba(26,26,46,0.35);">/100</div>' +
+        '</div>' +
+        '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:16px;text-align:center;">' +
+          '<div style="font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:rgba(26,26,46,0.35);margin-bottom:8px;">Media PMI Italia</div>' +
+          '<div style="font-size:38px;font-weight:700;color:rgba(26,26,46,0.40);">' + scoreAvg + '</div>' +
+          '<div style="font-size:11px;font-weight:600;color:' + scoreDiffCol + ';">' + (scoreDiff >= 0 ? '+' : '') + scoreDiff + ' rispetto alla media</div>' +
+        '</div>' +
+      '</div>' +
+
+      // Confronto per dimensione
+      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:20px;">' +
+        '<div style="font-size:13px;font-weight:600;color:#1a1a2e;margin-bottom:4px;">Confronto per dimensione</div>' +
+        '<div style="font-size:11px;color:rgba(26,26,46,0.35);margin-bottom:12px;">Media settore PMI italiano — dati aggregati benchmark Leva</div>' +
+        rowsHtml +
+      '</div>' +
+    '</div>';
 }
 
 
