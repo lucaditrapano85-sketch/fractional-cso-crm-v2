@@ -11967,70 +11967,244 @@ function _chatStepFase2(idx) {
 
 // ─── FASE 3: Risultati ───────────────────────────────────────────────────────
 
-async function _chatTermina() {
+function _chatTermina() {
   var panel = document.getElementById('leva-chat-panel');
   if (!panel) return;
 
-  if (!document.getElementById('_leva_spin_style')) {
-    var s = document.createElement('style');
-    s.id = '_leva_spin_style';
-    s.textContent = '@keyframes spin{to{transform:rotate(360deg)}}';
-    document.head.appendChild(s);
+  // ── 1. Calcola score dal frontend (stesso calcolo di diagnosi-end) ─────────
+  var domande  = _dc.domande_fase2 || [];
+  var risposte = _dc.risposte_fase2 || [];
+  var dimsOrdered = []; // [{nome, score100}] in ordine domande
+  var dimsMap = {};     // nome → score 1-5
+
+  domande.forEach(function(d, i) {
+    var r = risposte[i];
+    if (r === null || r === undefined) return;
+    var s = Math.min(5, Math.max(1, r + 1));
+    dimsMap[d.dimensione] = s;
+    dimsOrdered.push({ nome: d.dimensione, score100: Math.round(s * 20) });
+  });
+
+  var dimVals = Object.values(dimsMap);
+  var scoreGlobale = dimVals.length > 0
+    ? Math.round((dimVals.reduce(function(a, b) { return a + b; }, 0) / dimVals.length) * 20)
+    : 0;
+
+  // ── 2. Lancia API diagnosi-end subito (in parallelo col reveal) ────────────
+  var _apiData   = null;
+  var _apiError  = null;
+  var _animDone  = false;
+  var _finishing = false;
+
+  fetch('/api/diagnosi-end', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      prospect_id:         _dc.prospect_id,
+      settore:             _dc.settore,
+      fascia_fatturato:    _dc.fascia,
+      risposte_fase1:      _dc.risposte_fase1,
+      risposte_fase2:      _dc.risposte_fase2,
+      domande_fase1:       _dc.domande_fase1,
+      domande_fase2:       _dc.domande_fase2,
+      sintesi_fase1:       _dc.sintesi_fase1,
+      dimensioni_critiche: _dc.dimensioni_critiche,
+      shock:               _dc.shock
+    })
+  }).then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (!data.ok) throw new Error(data.error || 'diagnosi-end error');
+      if (window._pmiProspect && data.score_globale) {
+        window._pmiProspect = Object.assign({}, window._pmiProspect, {
+          score_globale:      data.score_globale,
+          diagnosi_narrativa: data.diagnosi,
+          diagnosi_priorita:  data.priorita
+        });
+        var idx = prospects.findIndex(function(x) { return window._pmiProspect && x.id === window._pmiProspect.id; });
+        if (idx >= 0) prospects[idx] = window._pmiProspect;
+      }
+      _apiData = data;
+      _tryFinish();
+    })
+    .catch(function(e) {
+      console.error('diagnosi-end:', e);
+      _apiError = e;
+      _tryFinish();
+    });
+
+  // ── 3. Helper colori/badge ─────────────────────────────────────────────────
+  function scoreColor(s) {
+    return s <= 30 ? '#E24B4A' : s <= 50 ? '#EF9F27' : s <= 70 ? '#378ADD' : '#1D9E75';
+  }
+  function scoreBadge(s) {
+    if (s <= 30) return { bg:'#FCEBEB', text:'#791F1F', label:'Critico' };
+    if (s <= 50) return { bg:'#FAEEDA', text:'#633806', label:'Da migliorare' };
+    if (s <= 70) return { bg:'#E6F1FB', text:'#0C447C', label:'Sufficiente' };
+    return { bg:'#E1F5EE', text:'#085041', label:'Buono' };
+  }
+  function globalLevel(s) {
+    if (s < 25) return 'Emergenza';
+    if (s < 50) return 'Intervento urgente';
+    if (s < 75) return 'In crescita';
+    return 'Eccellenza';
   }
 
-  panel.innerHTML =
-    _chatPanelHeader('Diagnosi commerciale') +
-    '<div style="flex:1;display:flex;align-items:center;justify-content:center;">' +
-      '<div style="text-align:center;">' +
-        '<div style="width:44px;height:44px;border:4px solid rgba(61,90,254,0.15);border-top-color:#3D5AFE;border-radius:50%;animation:spin 1.5s linear infinite;margin:0 auto 14px;"></div>' +
-        '<div style="font-size:15px;color:rgba(26,26,46,0.55);font-family:\'Plus Jakarta Sans\',sans-serif;">Elaboro la tua diagnosi...</div>' +
+  var gc   = scoreColor(scoreGlobale);
+  var gb   = scoreBadge(scoreGlobale);
+  var glvl = globalLevel(scoreGlobale);
+
+  var statusTexts = [
+    'Calcolo dimensioni...',
+    'Confronto benchmark settore...',
+    'Identificazione priorit\u00e0...',
+    'Generazione piano d\'azione...',
+    'Diagnosi quasi pronta...',
+    'Diagnosi completata.'
+  ];
+
+  // ── 4. Render reveal screen ────────────────────────────────────────────────
+  var dimRowsHtml = dimsOrdered.map(function(d, i) {
+    var b = scoreBadge(d.score100);
+    var c = scoreColor(d.score100);
+    return '<div id="diag-dim-' + i + '" style="' +
+      'opacity:0;transform:translateX(-10px);transition:opacity 0.4s ease,transform 0.4s ease;' +
+      'display:flex;align-items:center;gap:10px;margin-bottom:14px;">' +
+      '<div style="flex:0 0 85px;font-size:13px;color:rgba(26,26,46,0.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + _esc(d.nome) + '</div>' +
+      '<div style="flex:1;height:8px;background:rgba(0,0,0,0.07);border-radius:4px;overflow:hidden;">' +
+        '<div id="diag-bar-' + i + '" style="height:100%;background:' + c + ';border-radius:4px;width:0%;transition:width 1s ease;"></div>' +
       '</div>' +
+      '<div style="flex:0 0 26px;text-align:right;font-size:15px;font-weight:500;color:' + c + ';">' + d.score100 + '</div>' +
+      '<div style="flex-shrink:0;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;background:' + b.bg + ';color:' + b.text + ';white-space:nowrap;">' + _esc(b.label) + '</div>' +
+    '</div>';
+  }).join('');
+
+  panel.innerHTML =
+    '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px 12px;flex-shrink:0;">' +
+      '<span style="font-size:12px;font-weight:700;color:rgba(26,26,46,0.35);letter-spacing:0.05em;text-transform:uppercase;">ELABORAZIONE DIAGNOSI</span>' +
+      '<button onclick="_chatChiudiOverlay()" style="width:28px;height:28px;background:rgba(0,0,0,0.06);border:none;border-radius:8px;cursor:pointer;font-size:14px;color:rgba(26,26,46,0.4);line-height:1;">\u2715</button>' +
+    '</div>' +
+    '<div id="diag-body" style="flex:1;overflow-y:auto;padding:16px 20px 8px;">' +
+      dimRowsHtml +
+      '<div id="diag-global" style="opacity:0;transition:opacity 0.6s ease;">' +
+        '<div style="height:1px;background:rgba(0,0,0,0.1);margin:16px 0 20px;"></div>' +
+        '<div style="font-size:12px;font-weight:700;color:rgba(26,26,46,0.35);letter-spacing:0.05em;text-transform:uppercase;text-align:center;margin-bottom:16px;">IL TUO SCORE COMMERCIALE</div>' +
+        '<div style="text-align:center;margin-bottom:12px;">' +
+          '<div id="diag-counter" style="font-size:64px;font-weight:500;color:' + gc + ';line-height:1;">0</div>' +
+          '<div style="font-size:14px;color:rgba(26,26,46,0.45);margin-top:4px;">su 100</div>' +
+          '<div id="diag-badge-global" style="display:inline-block;margin-top:12px;font-size:12px;font-weight:700;padding:4px 14px;border-radius:20px;background:' + gb.bg + ';color:' + gb.text + ';opacity:0;transition:opacity 0.5s ease;">' + _esc(glvl) + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div id="diag-finalizing" style="display:none;text-align:center;padding:10px 0;">' +
+        '<div style="font-size:13px;color:rgba(26,26,46,0.5);font-style:italic;">Stiamo finalizzando il tuo piano...</div>' +
+      '</div>' +
+    '</div>' +
+    '<div style="padding:8px 20px 20px;flex-shrink:0;">' +
+      '<div style="width:100%;height:4px;background:#f0f0f5;border-radius:2px;overflow:hidden;margin-bottom:8px;">' +
+        '<div id="diag-prog-bar" style="height:100%;background:#3D5AFE;border-radius:2px;width:0%;transition:width 1.5s ease,background 0.5s ease;"></div>' +
+      '</div>' +
+      '<div id="diag-prog-text" style="font-size:12px;color:rgba(26,26,46,0.4);text-align:center;">' + _esc(statusTexts[0]) + '</div>' +
     '</div>';
 
-  try {
-    var res = await fetch('/api/diagnosi-end', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        prospect_id:         _dc.prospect_id,
-        settore:             _dc.settore,
-        fascia_fatturato:    _dc.fascia,
-        risposte_fase1:      _dc.risposte_fase1,
-        risposte_fase2:      _dc.risposte_fase2,
-        domande_fase1:       _dc.domande_fase1,
-        domande_fase2:       _dc.domande_fase2,
-        sintesi_fase1:       _dc.sintesi_fase1,
-        dimensioni_critiche: _dc.dimensioni_critiche,
-        shock:               _dc.shock
-      })
-    });
-    var data = await res.json();
-    if (!data.ok) throw new Error(data.error || 'diagnosi-end error');
+  // ── 5. Rivela dimensioni una alla volta (prima a 3.5s, poi ogni 3.5s) ──────
+  dimsOrdered.forEach(function(d, i) {
+    setTimeout(function() {
+      var row = document.getElementById('diag-dim-' + i);
+      if (row) { row.style.opacity = '1'; row.style.transform = 'translateX(0)'; }
+      setTimeout(function() {
+        var bar = document.getElementById('diag-bar-' + i);
+        if (bar) bar.style.width = d.score100 + '%';
+        var body = document.getElementById('diag-body');
+        if (body) body.scrollTop = body.scrollHeight;
+      }, 80);
+    }, (i + 1) * 3500);
+  });
 
-    // Aggiorna subito il prospect in memoria con score e diagnosi
-    // (difesa: se Supabase non ha le colonne, il reload non sovrascrive i dati)
-    if (window._pmiProspect && data.score_globale) {
-      window._pmiProspect = Object.assign({}, window._pmiProspect, {
-        score_globale:      data.score_globale,
-        diagnosi_narrativa: data.diagnosi,
-        diagnosi_priorita:  data.priorita
-      });
-      var _dcIdx = prospects.findIndex(function(x) { return window._pmiProspect && x.id === window._pmiProspect.id; });
-      if (_dcIdx >= 0) prospects[_dcIdx] = window._pmiProspect;
+  // ── 6. Progress bar + status text ogni 8s ─────────────────────────────────
+  var progIdx = 0;
+  var _progId = setInterval(function() {
+    progIdx++;
+    var maxProg = statusTexts.length - 2; // ultimo riservato al completamento
+    if (progIdx > maxProg) { clearInterval(_progId); return; }
+    var txt = document.getElementById('diag-prog-text');
+    if (txt) txt.textContent = statusTexts[progIdx];
+    var bar = document.getElementById('diag-prog-bar');
+    if (bar) bar.style.width = Math.round((progIdx / maxProg) * 85) + '%';
+  }, 8000);
+
+  // ── 7. Score globale: appare dopo ultima dim + 2s ─────────────────────────
+  var lastDimDelay = dimsOrdered.length > 0 ? dimsOrdered.length * 3500 : 0;
+  var globalDelay  = lastDimDelay + 2000;
+
+  setTimeout(function() {
+    var globalEl = document.getElementById('diag-global');
+    if (globalEl) globalEl.style.opacity = '1';
+    setTimeout(function() {
+      var body = document.getElementById('diag-body');
+      if (body) body.scrollTop = body.scrollHeight;
+    }, 100);
+
+    // Contatore 0 → scoreGlobale in 1.5s cubic ease-out
+    var t0 = Date.now();
+    (function tick() {
+      var el = document.getElementById('diag-counter');
+      if (!el) return;
+      var p = Math.min((Date.now() - t0) / 1500, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.floor(eased * scoreGlobale);
+      if (p < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        el.textContent = scoreGlobale;
+        setTimeout(function() {
+          var badge = document.getElementById('diag-badge-global');
+          if (badge) badge.style.opacity = '1';
+        }, 150);
+      }
+    })();
+  }, globalDelay);
+
+  // ── 8. Segna animazione completata (dopo counter + badge) ─────────────────
+  setTimeout(function() {
+    _animDone = true;
+    _tryFinish();
+  }, globalDelay + 2000); // +1.5s counter +0.5s badge
+
+  // ── 9. tryFinish: entrambi pronti → transizione risultati ─────────────────
+  function _tryFinish() {
+    if (_finishing || !_animDone) return;
+
+    if (_apiData) {
+      _finishing = true;
+      clearInterval(_progId);
+      var bar = document.getElementById('diag-prog-bar');
+      var txt = document.getElementById('diag-prog-text');
+      if (bar) { bar.style.background = '#1D9E75'; bar.style.width = '100%'; }
+      if (txt) txt.textContent = statusTexts[statusTexts.length - 1];
+      setTimeout(function() { _chatMostraRisultati(_apiData); }, 800);
+
+    } else if (_apiError) {
+      _finishing = true;
+      clearInterval(_progId);
+      var p2 = document.getElementById('leva-chat-panel');
+      if (p2) p2.innerHTML =
+        _chatPanelHeader('Diagnosi commerciale') +
+        '<div style="flex:1;display:flex;align-items:center;justify-content:center;padding:24px;">' +
+          '<div style="text-align:center;">' +
+            '<div style="font-size:15px;color:#E53935;margin-bottom:16px;font-family:\'Plus Jakarta Sans\',sans-serif;">Errore nel calcolo della diagnosi.</div>' +
+            '<button onclick="_chatTermina()" style="padding:12px 22px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Riprova</button>' +
+          '</div>' +
+        '</div>';
+
+    } else {
+      // Animazione finita ma API non ancora pronta
+      var finEl = document.getElementById('diag-finalizing');
+      if (finEl) finEl.style.display = 'block';
+      var progBar = document.getElementById('diag-prog-bar');
+      var progTxt = document.getElementById('diag-prog-text');
+      if (progBar) progBar.style.width = '95%';
+      if (progTxt) progTxt.textContent = statusTexts[statusTexts.length - 2];
+      // _apiData arriverà dal fetch e chiamerà _tryFinish() di nuovo
     }
-
-    _chatMostraRisultati(data);
-  } catch(e) {
-    console.error('diagnosi-end:', e);
-    panel = document.getElementById('leva-chat-panel');
-    if (panel) panel.innerHTML =
-      _chatPanelHeader('Diagnosi commerciale') +
-      '<div style="flex:1;display:flex;align-items:center;justify-content:center;padding:24px;">' +
-        '<div style="text-align:center;">' +
-          '<div style="font-size:15px;color:#E53935;margin-bottom:16px;font-family:\'Plus Jakarta Sans\',sans-serif;">Errore nel calcolo della diagnosi.</div>' +
-          '<button onclick="_chatTermina()" style="padding:12px 22px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Riprova</button>' +
-        '</div>' +
-      '</div>';
   }
 }
 
