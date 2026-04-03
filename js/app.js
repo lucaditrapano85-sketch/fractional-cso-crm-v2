@@ -10557,8 +10557,6 @@ function _renderSelezioneSetting(container) {
   _pmiSelectedSettore = null;
   _pmiSelectedFascia  = null;
 
-  var QUICK_TAGS = ['Meccanica','Concessionaria','Edilizia','Ristorante','Parrucchiere','E-commerce','Palestra','Studio professionale'];
-
   var FF = window.PMI_FASCE_FATTURATO || [];
 
   container.innerHTML =
@@ -10591,17 +10589,18 @@ function _renderSelezioneSetting(container) {
         '<p style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:15px;color:rgba(26,26,46,0.45);text-align:center;margin:0 0 36px;line-height:1.55">Scrivi il tuo settore e Leva costruirà una diagnosi commerciale su misura per te.</p>' +
 
         // Barra di ricerca
-        '<div style="position:relative;margin-bottom:10px">' +
-          '<svg style="position:absolute;left:20px;top:50%;transform:translateY(-50%);pointer-events:none" width="18" height="18" viewBox="0 0 18 18" fill="none">' +
-            '<circle cx="7.5" cy="7.5" r="5.5" stroke="rgba(61,90,254,0.4)" stroke-width="1.5"/>' +
-            '<line x1="11.5" y1="11.5" x2="16" y2="16" stroke="rgba(61,90,254,0.4)" stroke-width="1.5" stroke-linecap="round"/>' +
+        '<div id="pmi-search-wrap" style="position:relative;margin-bottom:10px;opacity:0;transform:translateY(10px);transition:opacity 0.5s ease,transform 0.5s ease;">' +
+          '<svg style="position:absolute;left:22px;top:50%;transform:translateY(-50%);pointer-events:none;z-index:1" width="20" height="20" viewBox="0 0 20 20" fill="none">' +
+            '<circle cx="8.5" cy="8.5" r="6" stroke="rgba(61,90,254,0.5)" stroke-width="1.8"/>' +
+            '<line x1="13" y1="13" x2="18" y2="18" stroke="rgba(61,90,254,0.5)" stroke-width="1.8" stroke-linecap="round"/>' +
           '</svg>' +
           '<input id="pmi-ai-input" oninput="pmiAiOnInput()" onkeydown="if(event.key===\'Enter\'&&!this.disabled)pmiSuggerisciSettori()" ' +
-            'style="width:100%;box-sizing:border-box;height:72px;background:rgba(255,255,255,0.55);border:1.5px solid rgba(255,255,255,0.7);border-radius:14px;padding:0 150px 0 52px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:18px;color:#1a1a2e;outline:none;transition:border-color .15s;" ' +
-            'placeholder="Es: piadineria, carrozzeria, negozio scarpe..." ' +
-            'onfocus="this.style.borderColor=\'rgba(61,90,254,0.4)\'" onblur="this.style.borderColor=\'rgba(255,255,255,0.7)\'">' +
+            'style="width:100%;box-sizing:border-box;height:60px;background:#fff;border:2px solid rgba(255,255,255,0.9);border-radius:16px;padding:0 0 0 58px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:18px;color:#1a1a2e;outline:none;transition:border-color .2s,box-shadow .2s;box-shadow:0 4px 20px rgba(0,0,0,0.08);" ' +
+            'placeholder="Scrivi cosa fa la tua azienda..." ' +
+            'onfocus="this.style.borderColor=\'#3D5AFE\';this.style.boxShadow=\'0 4px 20px rgba(61,90,254,0.2)\'" ' +
+            'onblur="this.style.borderColor=\'rgba(255,255,255,0.9)\';this.style.boxShadow=\'0 4px 20px rgba(0,0,0,0.08)\'">' +
           '<button id="pmi-ai-btn" onclick="pmiSuggerisciSettori()" disabled ' +
-            'style="position:absolute;right:10px;top:50%;transform:translateY(-50%);padding:12px 28px;background:#3D5AFE;color:#fff;border:none;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;opacity:0.5;transition:opacity .15s;white-space:nowrap">' +
+            'style="position:absolute;right:0;top:0;bottom:0;padding:0 28px;background:#3D5AFE;color:#fff;border:none;border-radius:0 16px 16px 0;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:15px;font-weight:600;cursor:pointer;opacity:0.4;transition:opacity .15s;white-space:nowrap">' +
             'Cerca' +
           '</button>' +
         '</div>' +
@@ -10609,18 +10608,6 @@ function _renderSelezioneSetting(container) {
         // Dropdown opzioni AI
         '<div id="pmi-ai-opzioni" style="display:none;margin-bottom:8px;background:rgba(255,255,255,0.55);border:1.5px solid rgba(255,255,255,0.7);border-radius:14px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)"></div>' +
         '<div id="pmi-ai-msg" style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;min-height:20px;margin-bottom:20px;line-height:1.5;padding:0 4px"></div>' +
-
-        // Tag rapidi
-        '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px">' +
-          QUICK_TAGS.map(function(tag) {
-            return '<button onclick="pmiClickTag(\'' + tag.replace(/'/g,"\\'") + '\')" ' +
-              'style="padding:8px 18px;border-radius:20px;background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);color:rgba(26,26,46,0.45);font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;cursor:pointer;transition:all .15s" ' +
-              'onmouseover="this.style.color=\'#1a1a2e\';this.style.background=\'rgba(255,255,255,0.8)\'" ' +
-              'onmouseout="this.style.color=\'rgba(26,26,46,0.45)\';this.style.background=\'rgba(255,255,255,0.55)\'">' +
-              tag +
-            '</button>';
-          }).join('') +
-        '</div>' +
 
         // Messaggio errore
         '<p id="pmi-inizio-msg" style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:12px;color:#E53935;min-height:18px;margin-bottom:14px;text-align:center"></p>' +
@@ -10636,6 +10623,12 @@ function _renderSelezioneSetting(container) {
 
       '</div>' +
     '</div>';
+
+  // Fade-in animation per la barra di ricerca
+  requestAnimationFrame(function() {
+    var wrap = document.getElementById('pmi-search-wrap');
+    if (wrap) { wrap.style.opacity = '1'; wrap.style.transform = 'translateY(0)'; }
+  });
 }
 
 function _pmiUpdateAvviaBtn() {
