@@ -12034,7 +12034,11 @@ async function _chatFase1Batch() {
     _dc.dimensioni_critiche = data.dimensioni_critiche || [];
     _dc.sintesi_fase1       = data.sintesi_fase1 || '';
 
-    _chatIniziaFase2();
+    if (data.stima_perdita && data.stima_perdita.totale_annuo_min) {
+      _chatMostraStimaPerdita(data.stima_perdita);
+    } else {
+      _chatIniziaFase2();
+    }
 
   } catch(e) {
     console.error('diagnosi-chat batch:', e);
@@ -12049,6 +12053,50 @@ async function _chatFase1Batch() {
         '</div>';
     }
   }
+}
+
+// ─── TRANSIZIONE F1→F2: Stima perdita ────────────────────────────────────────
+
+function _chatMostraStimaPerdita(sp) {
+  var panel = document.getElementById('leva-chat-panel');
+  if (!panel) return;
+
+  function fmtEuro(n) {
+    return '\u20ac\u00a0' + Math.round(n).toLocaleString('it-IT');
+  }
+
+  var breakdownHtml = '';
+  if (sp.breakdown && sp.breakdown.length) {
+    breakdownHtml =
+      '<div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;">' +
+      sp.breakdown.map(function(b) {
+        return '<div style="background:rgba(255,255,255,0.65);border-radius:12px;padding:12px 16px;">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">' +
+            '<span style="font-size:11px;font-weight:700;color:#3D5AFE;text-transform:uppercase;letter-spacing:0.05em;">' + _esc(b.dimensione) + '</span>' +
+            '<span style="font-size:15px;font-weight:700;color:#E24B4A;">' + fmtEuro(b.importo) + '</span>' +
+          '</div>' +
+          '<div style="font-size:11px;color:rgba(26,26,46,0.5);line-height:1.4;">' + _esc(b.motivo) + '</div>' +
+        '</div>';
+      }).join('') +
+      '</div>';
+  }
+
+  panel.innerHTML =
+    _chatPanelHeader('Diagnosi commerciale') +
+    '<div style="flex:1;overflow-y:auto;padding:24px 20px 16px;box-sizing:border-box;">' +
+      '<div style="font-size:12px;font-weight:700;color:rgba(26,26,46,0.35);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:16px;">Quanto stai perdendo ogni anno?</div>' +
+      '<div style="margin-bottom:6px;">' +
+        '<span style="font-size:44px;font-weight:700;color:#E24B4A;line-height:1;">' + fmtEuro(sp.totale_annuo_min) + '</span>' +
+      '</div>' +
+      '<div style="font-size:14px;color:#1D9E75;font-weight:500;margin-bottom:4px;">' +
+        'fino a ' + fmtEuro(sp.totale_annuo_max) + ' con una gestione ottimale' +
+      '</div>' +
+      '<div style="font-size:12px;color:rgba(26,26,46,0.4);margin-bottom:0;">stima conservativa basata sul tuo fatturato e le tue risposte</div>' +
+      breakdownHtml +
+    '</div>' +
+    '<div style="padding:12px 20px 20px;flex-shrink:0;">' +
+      '<button onclick="_chatIniziaFase2()" style="width:100%;padding:16px;background:#3D5AFE;color:#fff;border:none;border-radius:14px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:16px;font-weight:700;cursor:pointer;">Continua con la diagnosi \u2192</button>' +
+    '</div>';
 }
 
 // ─── FASE 2: Wizard rapido (8 domande) ───────────────────────────────────────

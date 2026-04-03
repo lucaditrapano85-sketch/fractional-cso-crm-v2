@@ -110,7 +110,8 @@ module.exports = async function handler(req, res) {
       transizione: parsed.transizione || null,
       prossima_domanda: null,
       dimensioni_critiche: parsed.dimensioni_critiche || null,
-      sintesi_fase1: parsed.sintesi_fase1 || null
+      sintesi_fase1: parsed.sintesi_fase1 || null,
+      stima_perdita: parsed.stima_perdita || null
     });
 
   } catch (err) {
@@ -156,14 +157,31 @@ Rispondi SOLO in JSON valido:
 
     "dimensioni_critiche": ["dim1", "dim2", "dim3"],
 
-    "sintesi_fase1": "3-4 frasi che riassumono i punti chiave emersi da tutte e 5 le risposte. Linguaggio diretto, come se parlassi al titolare: forza su X, gap su Y, problema principale è Z."
+    "sintesi_fase1": "3-4 frasi che riassumono i punti chiave emersi da tutte e 5 le risposte. Linguaggio diretto, come se parlassi al titolare: forza su X, gap su Y, problema principale è Z.",
+
+    "stima_perdita": {
+        "totale_annuo_min": 12000,
+        "totale_annuo_max": 17000,
+        "breakdown": [
+            {"dimensione": "Vendite", "importo": 6000, "motivo": "3 clienti persi al mese × €170 ordine medio × 12 mesi"},
+            {"dimensione": "Pricing", "importo": 4000, "motivo": "Margine inferiore del 4% su €100.000 di fatturato per prezzi non ottimizzati"},
+            {"dimensione": "Pipeline", "importo": 2000, "motivo": "20% dei preventivi senza follow-up sistematico"}
+        ]
+    }
 }
 
 REGOLE:
 - dimensioni_critiche: le 3 più deboli basandoti su TUTTE le risposte. Scegli tra: ${tutteLeD.join(', ')}.
 - La reazione deve integrare più risposte, non solo l'ultima.
 - La sintesi deve essere specifica per questo titolare, non generica.
-- Quando menzioni gli anni di attività del titolare, usa SEMPRE il range dichiarato (es. 'con oltre 15 anni di esperienza' o 'con anni di esperienza nel settore'). MAI inventare un numero preciso (es. '16 anni', '12 anni'). Non hai il dato esatto.`;
+- Quando menzioni gli anni di attività del titolare, usa SEMPRE il range dichiarato (es. 'con oltre 15 anni di esperienza' o 'con anni di esperienza nel settore'). MAI inventare un numero preciso (es. '16 anni', '12 anni'). Non hai il dato esatto.
+- stima_perdita.breakdown: massimo 3 voci, le 3 dimensioni dove perde di più basandoti sulle risposte.
+- Ogni importo deve essere giustificabile con un calcolo esplicito nel campo motivo (es. "3 clienti persi/mese × €400 ordine medio × 12 mesi").
+- Il motivo deve essere UNA frase secca che il titolare capisce immediatamente.
+- MAI sovrastimare: meglio €10.000 reali che €20.000 gonfiati.
+- stima_perdita.totale_annuo_min è la somma esatta degli importi nel breakdown.
+- stima_perdita.totale_annuo_max è totale_annuo_min × 1.3-1.5 (margine di miglioramento extra realizzabile).
+- Usa il fatturato dichiarato (${ctx.fatturato_anno_scorso ? '€' + ctx.fatturato_anno_scorso.toLocaleString('it-IT') : 'non dichiarato'}) come base per i calcoli percentuali.`;
 }
 
 // Prompt singola risposta (backward compat)
