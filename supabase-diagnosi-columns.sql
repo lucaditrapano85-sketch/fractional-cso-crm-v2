@@ -19,6 +19,9 @@ ALTER TABLE prospects ADD COLUMN IF NOT EXISTS diagnosi_narrativa TEXT;
 ALTER TABLE prospects ADD COLUMN IF NOT EXISTS diagnosi_priorita JSONB DEFAULT '[]';
 ALTER TABLE prospects ADD COLUMN IF NOT EXISTS diagnosi_data TIMESTAMPTZ;
 
+-- Flag diagnosi completata (check primario per routing home/onboarding)
+ALTER TABLE prospects ADD COLUMN IF NOT EXISTS diagnosi_completata BOOLEAN DEFAULT false;
+
 -- updated_at (per tracking modifiche)
 ALTER TABLE prospects ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT now();
 

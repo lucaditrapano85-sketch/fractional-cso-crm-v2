@@ -78,6 +78,7 @@ module.exports = async function handler(req, res) {
           diagnosi_narrativa: diagnosiNarrativa.diagnosi,
           diagnosi_priorita: diagnosiNarrativa.priorita,
           diagnosi_data: now,
+          diagnosi_completata: true,
           updated_at: now
         })
         .eq('id', prospect_id);

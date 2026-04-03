@@ -666,10 +666,11 @@ async function initPMI() {
     }
   }
 
-  // Diagnosi completa: tutte e 8 le dimensioni con score > 0, OPPURE score_globale salvato
+  // Diagnosi completa: campo diagnosi_completata = true (nuovo), OPPURE score_globale > 0 (fallback)
   var DIMS_ALL_PMI = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
   var hasDiagnosi = !!(window._pmiProspect && (
-    (window._pmiProspect.score_globale != null && window._pmiProspect.score_globale > 0)
+    window._pmiProspect.diagnosi_completata === true
+    || (window._pmiProspect.score_globale != null && window._pmiProspect.score_globale > 0)
     || (window._pmiProspect.dims && DIMS_ALL_PMI.every(function(k) { return (window._pmiProspect.dims[k] || 0) > 0; }))
   ));
 
