@@ -181,7 +181,8 @@ REGOLE:
 - priorita: le 3 dimensioni con score più basso. Ordinate dalla peggiore alla migliore.
 - azioni_immediate: 3 azioni che il titolare può fare QUESTA SETTIMANA senza investimento.
 - La diagnosi NON deve sembrare generata da un'AI. Deve sembrare scritta da un direttore commerciale che ha passato 2 ore con il titolare.
-- Usa il linguaggio del settore "${settore}", non termini generici.`;
+- Usa il linguaggio del settore "${settore}", non termini generici.
+- Quando menzioni gli anni di attività del titolare, usa SEMPRE il range dichiarato (es. 'con oltre 15 anni di esperienza' o 'con anni di esperienza nel settore'). MAI inventare un numero preciso (es. '16 anni', '12 anni'). Non hai il dato esatto.`;
 
   const response = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',

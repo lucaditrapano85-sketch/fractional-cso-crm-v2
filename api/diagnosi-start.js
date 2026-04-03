@@ -150,6 +150,8 @@ async function callSonnet(settore, fascia) {
 5 tips "Lo sapevi?" con un dato reale e specifico del settore nel mercato italiano.
 5 tips "Azione rapida" con un consiglio concreto che può applicare oggi.
 
+REGOLA IMPORTANTE: ogni tip deve essere MASSIMO una frase (max 15 parole). Niente paragrafi, niente elenchi di percentuali multiple. Una frase secca con un dato specifico.
+
 Rispondi SOLO in JSON, niente altro:
 {
     "tips": [

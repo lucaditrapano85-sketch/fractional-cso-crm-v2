@@ -162,7 +162,8 @@ Rispondi SOLO in JSON valido:
 REGOLE:
 - dimensioni_critiche: le 3 più deboli basandoti su TUTTE le risposte. Scegli tra: ${tutteLeD.join(', ')}.
 - La reazione deve integrare più risposte, non solo l'ultima.
-- La sintesi deve essere specifica per questo titolare, non generica.`;
+- La sintesi deve essere specifica per questo titolare, non generica.
+- Quando menzioni gli anni di attività del titolare, usa SEMPRE il range dichiarato (es. 'con oltre 15 anni di esperienza' o 'con anni di esperienza nel settore'). MAI inventare un numero preciso (es. '16 anni', '12 anni'). Non hai il dato esatto.`;
 }
 
 // Prompt singola risposta (backward compat)
@@ -220,7 +221,8 @@ Rispondi SOLO in JSON valido:
 REGOLE:
 - dimensioni_critiche: le 3 dimensioni su cui il titolare è più debole, basandoti sulle sue risposte. Scegli tra: ${[...new Set(tutteLeD)].join(', ')}.
 - La reazione deve essere una CHIUSURA naturale — il titolare deve sentire che la conversazione è stata utile.
-- La sintesi è per il titolare, non per un report. Linguaggio diretto.`;
+- La sintesi è per il titolare, non per un report. Linguaggio diretto.
+- Quando menzioni gli anni di attività del titolare, usa SEMPRE il range dichiarato (es. 'con oltre 15 anni di esperienza' o 'con anni di esperienza nel settore'). MAI inventare un numero preciso (es. '16 anni', '12 anni'). Non hai il dato esatto.`;
 
   } else {
     const prossima = domandeProssime[0];
@@ -237,6 +239,7 @@ REGOLE:
 - La prossima domanda sarà su "${prossima.dimensione}": "${prossima.domanda}" — la transizione deve portarci lì in modo naturale.
 - Non anticipare la domanda successiva nella transizione. Preparare il terreno, non spoilerare.
 - La reazione DEVE riferirsi a qualcosa di specifico che il titolare ha detto, non essere generica.
-- Max 4 frasi totali tra reazione e transizione.`;
+- Max 4 frasi totali tra reazione e transizione.
+- Quando menzioni gli anni di attività del titolare, usa SEMPRE il range dichiarato (es. 'con oltre 15 anni di esperienza' o 'con anni di esperienza nel settore'). MAI inventare un numero preciso (es. '16 anni', '12 anni'). Non hai il dato esatto.`;
   }
 }

@@ -11470,13 +11470,9 @@ function _wizRenderLoading() {
       mkCard('wiz-card-1', '#E6F1FB','#3D5AFE', iconLine,  'Fatturato medio del settore', _esc(mediaStr), fatSub) +
       mkCard('wiz-card-2', '#FCEBEB','#E24B4A', iconInfo,  'Il dato che pochi conoscono', '<span id="wiz-tip-sapevi1" style="transition:opacity 0.3s ease;">' + _esc(_placeholderSapevi[0]) + '</span>', '') +
       mkCard('wiz-card-3', '#E1F5EE','#1D9E75', iconPin,   'La tua zona: ' + _esc(locStr), 'Concorrenza <strong>' + _esc(concStr) + '</strong> nella tua area', '') +
-      mkCard('wiz-card-4', '#FAEEDA','#BA7517', iconBolt,  'Azione rapida', '<span id="wiz-tip-azione1" style="transition:opacity 0.3s ease;">' + _esc(_placeholderAzione[0]) + '</span>', '') +
-      mkCard('wiz-card-5', '#FCEBEB','#E24B4A', iconInfo,  'Il dato che pochi conoscono', '<span id="wiz-tip-sapevi2" style="transition:opacity 0.3s ease;">' + _esc(_placeholderSapevi[1]) + '</span>', '') +
-      mkCard('wiz-card-6', '#EEEDFE','#534AB7', iconTarget,'Le tue aree da esplorare', '<strong>' + _esc(areSub) + '</strong>', 'Corrispondono ai problemi pi\u00f9 comuni del settore') +
-      mkCard('wiz-card-7', '#FAEEDA','#BA7517', iconBolt,  'Azione rapida', '<span id="wiz-tip-azione2" style="transition:opacity 0.3s ease;">' + _esc(_placeholderAzione[1]) + '</span>', '') +
-      mkCard('wiz-card-8', '#FCEBEB','#E24B4A', iconInfo,  'Il dato che pochi conoscono', '<span id="wiz-tip-sapevi3" style="transition:opacity 0.3s ease;">' + _esc(_placeholderSapevi[2]) + '</span>', '') +
-      mkCard('wiz-card-9', '#FAEEDA','#BA7517', iconBolt,  'Azione rapida', '<span id="wiz-tip-azione3" style="transition:opacity 0.3s ease;">' + _esc(_placeholderAzione[2]) + '</span>', '') +
-      mkCard('wiz-card-10','#FCEBEB','#E24B4A', iconInfo,  'Il dato che pochi conoscono', '<span id="wiz-tip-sapevi4" style="transition:opacity 0.3s ease;">' + _esc(_placeholderSapevi[3]) + '</span>', '') +
+      mkCard('wiz-card-4', '#FCEBEB','#E24B4A', iconInfo,  'Il dato che pochi conoscono', '<span id="wiz-tip-sapevi2" style="transition:opacity 0.3s ease;">' + _esc(_placeholderSapevi[1]) + '</span>', '') +
+      mkCard('wiz-card-5', '#EEEDFE','#534AB7', iconTarget,'Le tue aree da esplorare', '<strong>' + _esc(areSub) + '</strong>', 'Corrispondono ai problemi pi\u00f9 comuni del settore') +
+      mkCard('wiz-card-6', '#FAEEDA','#BA7517', iconBolt,  'Azione rapida', '<span id="wiz-tip-azione1" style="transition:opacity 0.3s ease;">' + _esc(_placeholderAzione[0]) + '</span>', '') +
     '</div>' +
     '<div style="padding:8px 20px 20px;flex-shrink:0;">' +
       '<div style="width:100%;height:4px;background:#f0f0f5;border-radius:2px;overflow:hidden;margin-bottom:8px;">' +
@@ -11496,17 +11492,16 @@ function _wizRenderLoading() {
     if (bar) bar.style.width = Math.min(Math.round((progIdx + 1) / statusTexts.length * 88), 88) + '%';
   }, 9000);
 
-  // 10 cards every 5s: card-1@5s, card-2@10s, ..., card-10@50s
-  [[5000,'wiz-card-1'],[10000,'wiz-card-2'],[15000,'wiz-card-3'],[20000,'wiz-card-4'],
-   [25000,'wiz-card-5'],[30000,'wiz-card-6'],[35000,'wiz-card-7'],[40000,'wiz-card-8'],
-   [45000,'wiz-card-9'],[50000,'wiz-card-10']].forEach(function(c) {
+  // 6 cards every 8s: card-1@8s, card-2@16s, ..., card-6@48s
+  [[8000,'wiz-card-1'],[16000,'wiz-card-2'],[24000,'wiz-card-3'],
+   [32000,'wiz-card-4'],[40000,'wiz-card-5'],[48000,'wiz-card-6']].forEach(function(c) {
     setTimeout(function() {
       var el = document.getElementById(c[1]);
       if (el) { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }
     }, c[0]);
   });
 
-  // timing obbligatorio: tutte e 10 le card (min 54s)
+  // timing obbligatorio: tutte e 6 le card (min 54s)
   var _startData   = null;
   var _minTimeDone = false;
 
@@ -11552,13 +11547,9 @@ function _wizRenderLoading() {
             span.textContent = nuovoTesto;
           }
         }
-        if (sapevi[0]) _fadeUpdateTip('wiz-tip-sapevi1', 'wiz-card-2',  sapevi[0].testo);
-        if (sapevi[1]) _fadeUpdateTip('wiz-tip-sapevi2', 'wiz-card-5',  sapevi[1].testo);
-        if (sapevi[2]) _fadeUpdateTip('wiz-tip-sapevi3', 'wiz-card-8',  sapevi[2].testo);
-        if (sapevi[3]) _fadeUpdateTip('wiz-tip-sapevi4', 'wiz-card-10', sapevi[3].testo);
-        if (azione[0]) _fadeUpdateTip('wiz-tip-azione1', 'wiz-card-4',  azione[0].testo);
-        if (azione[1]) _fadeUpdateTip('wiz-tip-azione2', 'wiz-card-7',  azione[1].testo);
-        if (azione[2]) _fadeUpdateTip('wiz-tip-azione3', 'wiz-card-9',  azione[2].testo);
+        if (sapevi[0]) _fadeUpdateTip('wiz-tip-sapevi1', 'wiz-card-2', sapevi[0].testo);
+        if (sapevi[1]) _fadeUpdateTip('wiz-tip-sapevi2', 'wiz-card-4', sapevi[1].testo);
+        if (azione[0]) _fadeUpdateTip('wiz-tip-azione1', 'wiz-card-6', azione[0].testo);
       }
       _tryTransition();
     }).catch(function() {
@@ -11952,10 +11943,10 @@ function _chatRenderWizard(idx) {
   }).join('') +
   '<button onclick="_chatSelFase2(' + idx + ',null)" style="' +
     'display:block;width:100%;text-align:center;padding:10px 16px;margin-top:4px;border-radius:12px;' +
-    'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;line-height:1.45;cursor:pointer;transition:all .12s;font-style:italic;' +
+    'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;line-height:1.45;cursor:pointer;transition:all .12s;' +
     (isNonSaprei
-      ? 'background:rgba(0,0,0,0.06);color:rgba(26,26,46,0.6);border:1.5px dashed rgba(26,26,46,0.45);'
-      : 'background:transparent;color:rgba(26,26,46,0.35);border:1.5px dashed rgba(26,26,46,0.2);') +
+      ? 'background:rgba(0,0,0,0.06);color:rgba(26,26,46,0.6);border:1.5px solid rgba(26,26,46,0.45);'
+      : 'background:transparent;color:rgba(26,26,46,0.55);border:0.5px solid var(--color-border-secondary,rgba(26,26,46,0.35));') +
     '">Non saprei</button>';
 
   panel.innerHTML =
