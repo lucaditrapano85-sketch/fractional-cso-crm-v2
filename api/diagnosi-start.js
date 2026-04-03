@@ -19,12 +19,15 @@ module.exports = async function handler(req, res) {
     if (!settore || !fascia_fatturato) return res.status(400).json({ error: 'Missing settore or fascia_fatturato' });
 
     // STEP 1: Cerca se il settore esiste già nel database
-    const { data: existing } = await supabase
+    // Cerca per nome, nome_display e codice per coprire entrambi gli schemi
+    const codiceCalcolato = settore.toLowerCase().replace(/[^a-z0-9]/g, '_');
+    const { data: existing, error: searchError } = await supabase
       .from('settori_custom')
       .select('*')
-      .ilike('nome', '%' + settore + '%')
+      .or(`nome.ilike.%${settore}%,nome_display.ilike.%${settore}%,codice.ilike.%${codiceCalcolato}%`)
       .limit(1);
 
+    if (searchError) console.error('SEARCH ERROR:', JSON.stringify(searchError));
     let settoreData = existing && existing.length > 0 ? existing[0] : null;
 
     // STEP 2: Se il settore esiste E ha già shock per questa fascia, usa il cached
@@ -67,9 +70,10 @@ module.exports = async function handler(req, res) {
     if (settoreData) {
       // Settore esiste ma non per questa fascia — aggiorna
       const merged = { ...(settoreData.shock_data || {}), ...shockData };
-      await supabase
+      const { data: updated, error: updateError } = await supabase
         .from('settori_custom')
         .update({
+          nome: settoreData.nome || opusResult.nome_settore || settore,
           shock_data: merged,
           domande_fase1: opusResult.domande_fase1,
           domande_fase2: opusResult.domande_fase2,
@@ -77,13 +81,18 @@ module.exports = async function handler(req, res) {
           n_diagnosi: (settoreData.n_diagnosi || 0) + 1,
           updated_at: new Date().toISOString()
         })
-        .eq('id', settoreData.id);
+        .eq('id', settoreData.id)
+        .select()
+        .single();
+
+      if (updateError) console.error('UPDATE ERROR:', JSON.stringify(updateError));
+      else settoreData = updated;
     } else {
-      // Settore completamente nuovo — crea
-      const { data: newSettore } = await supabase
+      // Settore completamente nuovo — upsert su codice per evitare duplicati
+      const { data: upserted, error: upsertError } = await supabase
         .from('settori_custom')
-        .insert({
-          codice: settore.toLowerCase().replace(/[^a-z0-9]/g, '_'),
+        .upsert({
+          codice: codiceCalcolato,
           nome: opusResult.nome_settore || settore,
           macro_settore: opusResult.macro_settore || 'altro',
           shock_data: shockData,
@@ -95,11 +104,12 @@ module.exports = async function handler(req, res) {
           created_by: user_id || null,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
-        })
+        }, { onConflict: 'codice' })
         .select()
         .single();
 
-      settoreData = newSettore;
+      if (upsertError) console.error('UPSERT ERROR:', JSON.stringify(upsertError));
+      else settoreData = upserted;
     }
 
     return res.status(200).json({
