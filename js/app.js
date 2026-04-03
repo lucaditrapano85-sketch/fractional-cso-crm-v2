@@ -11735,7 +11735,16 @@ function _chatFase0() {
     _chatPanelHeader('Diagnosi commerciale') +
     '<div style="flex:1;overflow-y:auto;padding:24px 20px 16px;box-sizing:border-box;">' +
       '<div style="text-align:center;margin-bottom:24px;">' +
-        '<span style="font-size:18px;font-weight:700;color:#1a1a2e;letter-spacing:-0.3px;">L<span style="color:#FF6B2B">e</span>va</span>' +
+        '<div style="display:inline-flex;align-items:center;gap:6px;">' +
+          '<svg width="32" height="32" viewBox="8 4 44 44" fill="none">' +
+            '<rect x="8" y="34" width="44" height="4.5" rx="2.25" fill="#3D5AFE"/>' +
+            '<rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="#1a1a2e"/>' +
+            '<circle cx="29.75" cy="36.25" r="6" fill="#1a1a2e"/>' +
+            '<line x1="29.75" y1="36.25" x2="47" y2="22" stroke="#FF6B2B" stroke-width="3.5" stroke-linecap="round"/>' +
+            '<circle cx="47" cy="22" r="3.5" fill="#FF6B2B"/>' +
+          '</svg>' +
+          '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:20px;font-weight:700;color:#1a1a2e;letter-spacing:-0.5px;">eva</span>' +
+        '</div>' +
       '</div>' +
       '<div style="font-size:16px;color:rgba(26,26,46,0.5);margin-bottom:20px;">' + salutoTesto + '</div>' +
       '<div style="background:#EEF1FE;border-radius:14px;padding:18px 20px;margin-bottom:16px;">' +
@@ -12089,7 +12098,7 @@ function _chatMostraStimaPerdita(sp) {
         '<span style="font-size:44px;font-weight:700;color:#E24B4A;line-height:1;">' + fmtEuro(sp.totale_annuo_min) + '</span>' +
       '</div>' +
       '<div style="font-size:14px;color:#1D9E75;font-weight:500;margin-bottom:4px;">' +
-        'fino a ' + fmtEuro(sp.totale_annuo_max) + ' con una gestione ottimale' +
+        'Con le azioni giuste puoi recuperare fino a ' + fmtEuro(sp.totale_annuo_max) + '/anno' +
       '</div>' +
       '<div style="font-size:12px;color:rgba(26,26,46,0.4);margin-bottom:0;">stima conservativa basata sul tuo fatturato e le tue risposte</div>' +
       breakdownHtml +
