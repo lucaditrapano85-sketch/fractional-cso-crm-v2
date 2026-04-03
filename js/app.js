@@ -11748,16 +11748,147 @@ function _chatFase0() {
   }, 400);
 }
 
-// ─── FASE 1: Chat conversazionale ────────────────────────────────────────────
+// ─── FASE 1: Wizard (una domanda per schermata) ───────────────────────────────
 
 function _chatIniziaFase1() {
-  _chatSetInput('');
-  _dc.step_fase1         = 0;
-  _dc.conversazione      = [];
-  _dc.risposte_fase1     = [];
+  _dc.step_fase1          = 0;
+  _dc.conversazione       = [];
+  _dc.risposte_fase1      = [];
   _dc.risposte_accumulate = [];
-  setTimeout(function() { _chatMostraDomanda(0); }, 300);
+  window._f1Opzioni       = [];
+  _chatRenderWizardF1(0);
 }
+
+function _chatRenderWizardF1(idx, altroMode) {
+  var panel = document.getElementById('leva-chat-panel');
+  if (!panel) return;
+
+  var domande = _dc.domande_fase1;
+  var tot = domande.length;
+  var d = domande[idx];
+  if (!d) return;
+
+  // Shuffle opzioni una volta per step, poi mantieni l'ordine stabile
+  if (!window._f1Opzioni) window._f1Opzioni = [];
+  if (!window._f1Opzioni[idx]) {
+    window._f1Opzioni[idx] = (d.opzioni || []).slice().sort(function() { return Math.random() - 0.5; });
+  }
+  var opzioniStep = window._f1Opzioni[idx];
+
+  var pct = Math.round((idx / tot) * 100);
+  var risposta = _dc.risposte_accumulate[idx];
+
+  var opzioniHtml;
+  if (altroMode) {
+    opzioniHtml =
+      '<textarea id="leva-f1-ta" rows="3" placeholder="Scrivi la tua risposta..." ' +
+        'style="width:100%;box-sizing:border-box;padding:12px 14px;border-radius:12px;' +
+        'border:1.5px solid rgba(61,90,254,0.3);background:rgba(255,255,255,0.7);' +
+        'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;resize:none;outline:none;' +
+        'margin-bottom:8px;display:block;"></textarea>' +
+      '<button onclick="_chatInviaF1Libero(' + idx + ')" style="display:block;width:100%;' +
+        'padding:13px 16px;margin-bottom:8px;border-radius:12px;background:#3D5AFE;color:#fff;border:none;' +
+        'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Invia \u2192</button>' +
+      '<button onclick="_chatRenderWizardF1(' + idx + ')" style="display:block;width:100%;text-align:center;' +
+        'padding:10px 16px;border-radius:12px;background:transparent;color:rgba(26,26,46,0.55);' +
+        'border:0.5px solid rgba(26,26,46,0.35);' +
+        'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;line-height:1.45;cursor:pointer;">\u2190 Torna alle opzioni</button>';
+  } else {
+    opzioniHtml = opzioniStep.map(function(op, i) {
+      var isSel = risposta && risposta.risposta === op.testo;
+      return '<button onclick="_chatSelFase1(' + idx + ',' + i + ')" style="' +
+        'display:block;width:100%;text-align:left;padding:13px 16px;margin-bottom:8px;border-radius:12px;' +
+        'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;line-height:1.45;cursor:pointer;transition:all .12s;' +
+        (isSel
+          ? 'background:#3D5AFE;color:#fff;border:2px solid #3D5AFE;font-weight:600;'
+          : 'background:rgba(255,255,255,0.65);color:#1a1a2e;border:1.5px solid rgba(255,255,255,0.7);') +
+        '">' + _esc(op.testo) + '</button>';
+    }).join('') +
+    '<button onclick="_chatRenderWizardF1(' + idx + ',true)" style="display:block;width:100%;text-align:center;' +
+      'padding:10px 16px;margin-top:4px;border-radius:12px;' +
+      'background:transparent;color:rgba(26,26,46,0.55);' +
+      'border:0.5px solid var(--color-border-secondary,rgba(26,26,46,0.35));' +
+      'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;line-height:1.45;cursor:pointer;transition:all .12s;">' +
+      'Altro \u2014 scrivo io</button>';
+  }
+
+  panel.innerHTML =
+    _chatPanelHeader('Domanda ' + (idx+1) + ' di ' + tot) +
+    '<div style="flex:1;overflow-y:auto;padding:20px 16px 16px;box-sizing:border-box;">' +
+      '<div style="margin-bottom:20px;">' +
+        '<div style="height:4px;background:rgba(0,0,0,0.08);border-radius:3px;overflow:hidden;">' +
+          '<div style="height:100%;background:#3D5AFE;border-radius:3px;width:' + pct + '%;transition:width .3s;"></div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="font-size:11px;font-weight:700;color:#3D5AFE;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:10px;">' + _esc(d.dimensione) + '</div>' +
+      '<div style="font-size:18px;font-weight:500;color:#1a1a2e;line-height:1.45;margin-bottom:22px;">' + _esc(d.domanda) + '</div>' +
+      opzioniHtml +
+      (idx > 0 ? '<div style="margin-top:8px;"><button onclick="_chatStepFase1(' + (idx-1) + ')" style="width:100%;padding:11px;background:rgba(255,255,255,0.4);border:1px solid rgba(0,0,0,0.1);border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;cursor:pointer;color:rgba(26,26,46,0.5);">\u2190 Indietro</button></div>' : '') +
+    '</div>';
+
+  if (altroMode) {
+    var ta = document.getElementById('leva-f1-ta');
+    if (ta) {
+      ta.focus();
+      ta.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); _chatInviaF1Libero(idx); }
+      });
+    }
+  }
+}
+
+function _chatSelFase1(idx, optIdx) {
+  var opzioniStep = window._f1Opzioni && window._f1Opzioni[idx];
+  if (!opzioniStep || !opzioniStep[optIdx]) return;
+  var testo = opzioniStep[optIdx].testo;
+
+  _dc.risposte_accumulate[idx] = { step: idx, risposta: testo };
+
+  // Flash: re-render con selezione evidenziata, poi avanza
+  _chatRenderWizardF1(idx);
+  var tot = _dc.domande_fase1.length;
+  setTimeout(function() {
+    if (idx < tot - 1) {
+      _chatRenderWizardF1(idx + 1);
+    } else {
+      _chatFase1Fine();
+    }
+  }, 300);
+}
+
+function _chatStepFase1(idx) {
+  _chatRenderWizardF1(idx);
+}
+
+function _chatInviaF1Libero(idx) {
+  var ta = document.getElementById('leva-f1-ta');
+  var testo = ta ? ta.value.trim() : '';
+  if (!testo) return;
+
+  _dc.risposte_accumulate[idx] = { step: idx, risposta: testo };
+
+  var tot = _dc.domande_fase1.length;
+  if (idx < tot - 1) {
+    _chatRenderWizardF1(idx + 1);
+  } else {
+    _chatFase1Fine();
+  }
+}
+
+function _chatFase1Fine() {
+  var panel = document.getElementById('leva-chat-panel');
+  if (panel) {
+    panel.innerHTML =
+      _chatPanelHeader('Diagnosi commerciale') +
+      '<div style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:32px;">' +
+        '<div style="font-size:16px;font-weight:500;color:#1a1a2e;">Elaboro le tue risposte...</div>' +
+        '<div style="font-size:13px;color:rgba(26,26,46,0.45);">Un momento</div>' +
+      '</div>';
+  }
+  _chatFase1Batch();
+}
+
+// ─── FASE 1: Chat (legacy — non chiamato, kept for reference) ────────────────
 
 function _chatMostraDomanda(step) {
   var d = _dc.domande_fase1[step];
@@ -11859,12 +11990,28 @@ function _chatRispostaFase1(testo) {
 
 async function _chatFase1Batch() {
   try {
+    // Ricostruisce conversazione e risposte_fase1 dall'accumulate (wizard mode)
+    var accumulate = (_dc.risposte_accumulate || []).filter(Boolean);
+    _dc.conversazione  = [];
+    _dc.risposte_fase1 = [];
+    accumulate.forEach(function(r) {
+      var d = _dc.domande_fase1[r.step];
+      if (d) {
+        _dc.conversazione.push({ ruolo: 'ai',       testo: d.domanda });
+        _dc.conversazione.push({ ruolo: 'titolare', testo: r.risposta });
+        _dc.risposte_fase1.push({ domanda: d.domanda, risposta: r.risposta });
+      }
+    });
+
+    var lastStep = _dc.domande_fase1.length - 1;
+    var lastRisposta = _dc.risposte_accumulate[lastStep];
+
     var res = await fetch('/api/diagnosi-chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        step:                _dc.domande_fase1.length - 1,
-        risposta_titolare:   _dc.risposte_accumulate[_dc.domande_fase1.length - 1].risposta,
+        step:                lastStep,
+        risposta_titolare:   lastRisposta ? lastRisposta.risposta : '',
         domande_fase1:       _dc.domande_fase1,
         conversazione:       _dc.conversazione,
         settore:             _dc.settore,
@@ -11875,28 +12022,25 @@ async function _chatFase1Batch() {
       })
     });
     var data = await res.json();
-    _chatRemoveLoadingBolla();
     if (!data.ok) throw new Error(data.error || 'diagnosi-chat error');
 
     _dc.dimensioni_critiche = data.dimensioni_critiche || [];
     _dc.sintesi_fase1       = data.sintesi_fase1 || '';
 
-    _chatAddBolla('ai', _esc(data.reazione));
-
-    setTimeout(function() {
-      if (data.sintesi_fase1) _chatAddBolla('ai', _esc(data.sintesi_fase1));
-      setTimeout(function() {
-        _chatAddBolla('ai', 'Ora ti faccio qualche domanda rapida per quantificare la situazione. Ci vogliono 2 minuti.');
-        _chatSetInput('<button onclick="_chatIniziaFase2()" style="width:100%;padding:16px;background:#3D5AFE;color:#fff;border:none;border-radius:14px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:16px;font-weight:700;cursor:pointer;">Continua →</button>');
-        _chatScroll();
-      }, 1000);
-    }, 1000);
+    _chatIniziaFase2();
 
   } catch(e) {
-    _chatRemoveLoadingBolla();
     console.error('diagnosi-chat batch:', e);
-    _chatAddBolla('ai', 'Si è verificato un errore. Riproviamo.');
-    _chatSetInput('<button onclick="_chatFase1Batch()" style="width:100%;padding:13px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Riprova</button>');
+    var panel = document.getElementById('leva-chat-panel');
+    if (panel) {
+      panel.innerHTML =
+        _chatPanelHeader('Diagnosi commerciale') +
+        '<div style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;padding:32px;">' +
+          '<div style="font-size:14px;color:rgba(26,26,46,0.5);text-align:center;">Si \u00e8 verificato un errore. Riprova.</div>' +
+          '<button onclick="_chatFase1Batch()" style="padding:13px 24px;background:#3D5AFE;color:#fff;border:none;' +
+            'border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Riprova</button>' +
+        '</div>';
+    }
   }
 }
 
