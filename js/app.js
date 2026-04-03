@@ -11029,24 +11029,55 @@ function _avviaChatDiagnosi(datiStart) {
     sintesi_fase1:       ''
   };
 
-  var sidebar = document.getElementById('pmi-sidebar');
-  if (sidebar) sidebar.style.display = 'none';
-  var appPmi = document.getElementById('app-pmi');
-  if (appPmi) appPmi.style.gridTemplateColumns = '1fr';
+  // Rimuovi overlay esistente se presente
+  var _old = document.getElementById('leva-chat-overlay');
+  if (_old && _old.parentNode) _old.parentNode.removeChild(_old);
 
-  var main = document.getElementById('pmi-main');
-  if (!main) return;
-  main.style.padding  = '0';
-  main.style.overflow = 'hidden';
-  main.style.height   = '100vh';
+  // Crea overlay popup (position:fixed sopra la pagina)
+  var overlay = document.createElement('div');
+  overlay.id = 'leva-chat-overlay';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.45);z-index:9000;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;';
 
-  main.innerHTML =
-    '<div id="leva-chat-wrap" style="display:flex;flex-direction:column;height:100%;font-family:\'Plus Jakarta Sans\',sans-serif;">' +
-      '<div id="leva-chat-feed" style="flex:1;overflow-y:auto;padding:20px 16px 160px;box-sizing:border-box;"></div>' +
-      '<div id="leva-chat-inputarea" style="flex-shrink:0;background:#d8dbe2;border-top:1px solid rgba(0,0,0,0.06);padding:12px 16px;box-sizing:border-box;"></div>' +
-    '</div>';
+  var panel = document.createElement('div');
+  panel.id = 'leva-chat-panel';
+  panel.style.cssText = "background:#d8dbe2;border-radius:20px;width:100%;max-width:600px;max-height:85vh;display:flex;flex-direction:column;overflow:hidden;font-family:'Plus Jakarta Sans',sans-serif;box-shadow:0 24px 64px rgba(0,0,0,0.25);";
+
+  panel.innerHTML =
+    _chatPanelHeader('Diagnosi commerciale') +
+    '<div id="leva-chat-feed" style="flex:1;overflow-y:auto;padding:20px 16px 12px;box-sizing:border-box;"></div>' +
+    '<div id="leva-chat-inputarea" style="flex-shrink:0;background:#d8dbe2;border-top:1px solid rgba(0,0,0,0.06);padding:12px 16px;box-sizing:border-box;"></div>';
+
+  overlay.appendChild(panel);
+  document.body.appendChild(overlay);
+  document.body.style.overflow = 'hidden';
 
   _chatFase0();
+}
+
+function _chatPanelHeader(titolo) {
+  return '<div style="display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-bottom:1px solid rgba(0,0,0,0.07);flex-shrink:0;">' +
+    '<span style="font-size:13px;font-weight:600;color:rgba(26,26,46,0.4);font-family:\'Plus Jakarta Sans\',sans-serif;">' + (titolo || 'Diagnosi') + '</span>' +
+    '<button onclick="_chatChiudi()" style="width:30px;height:30px;background:rgba(0,0,0,0.07);border:none;border-radius:8px;cursor:pointer;font-size:15px;color:rgba(26,26,46,0.45);line-height:1;font-family:sans-serif;">✕</button>' +
+  '</div>';
+}
+
+function _chatChiudi() {
+  // Salva progresso localmente così può riprendere
+  try {
+    if (_dc) localStorage.setItem('leva_dc_bak_' + (window._currentUserId || ''), JSON.stringify({
+      step_fase1:    _dc.step_fase1,
+      risposte_fase1: _dc.risposte_fase1,
+      settore:       _dc.settore,
+      fascia:        _dc.fascia
+    }));
+  } catch(e) {}
+  _chatChiudiOverlay();
+}
+
+function _chatChiudiOverlay() {
+  var ov = document.getElementById('leva-chat-overlay');
+  if (ov && ov.parentNode) ov.parentNode.removeChild(ov);
+  document.body.style.overflow = '';
 }
 
 // ─── helpers ─────────────────────────────────────────────────────────────────
@@ -11264,10 +11295,8 @@ async function _chatIniziaFase2() {
 }
 
 function _chatRenderWizard(idx) {
-  var main = document.getElementById('pmi-main');
-  if (!main) return;
-  main.style.overflow = 'auto';
-  main.style.height   = '';
+  var panel = document.getElementById('leva-chat-panel');
+  if (!panel) return;
 
   var domande = _dc.domande_fase2;
   var tot     = domande.length;
@@ -11280,7 +11309,7 @@ function _chatRenderWizard(idx) {
   var opzioniHtml = (d.opzioni || []).map(function(op, i) {
     var isSel = (selIdx === i);
     return '<button onclick="_chatSelFase2(' + idx + ',' + i + ')" style="' +
-      'display:block;width:100%;text-align:left;padding:15px 18px;margin-bottom:10px;border-radius:14px;' +
+      'display:block;width:100%;text-align:left;padding:13px 16px;margin-bottom:8px;border-radius:12px;' +
       'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;line-height:1.45;cursor:pointer;transition:all .12s;' +
       (isSel
         ? 'background:#3D5AFE;color:#fff;border:2px solid #3D5AFE;font-weight:600;'
@@ -11288,26 +11317,22 @@ function _chatRenderWizard(idx) {
       '">' + _esc(op) + '</button>';
   }).join('');
 
-  main.innerHTML =
-    '<div style="min-height:100vh;background:#d8dbe2;font-family:\'Plus Jakarta Sans\',sans-serif;">' +
-    '<div style="max-width:560px;margin:0 auto;padding:24px 16px 60px;box-sizing:border-box;">' +
-      '<div style="margin-bottom:28px;">' +
-        '<div style="display:flex;justify-content:space-between;margin-bottom:8px;">' +
-          '<span style="font-size:12px;font-weight:600;color:rgba(26,26,46,0.4);">Domanda ' + (idx+1) + ' di ' + tot + '</span>' +
-          '<span style="font-size:12px;font-weight:700;color:#3D5AFE;">' + pct + '%</span>' +
-        '</div>' +
-        '<div style="height:5px;background:rgba(0,0,0,0.08);border-radius:3px;overflow:hidden;">' +
+  panel.innerHTML =
+    _chatPanelHeader('Domanda ' + (idx+1) + ' di ' + tot) +
+    '<div style="flex:1;overflow-y:auto;padding:20px 16px 16px;box-sizing:border-box;">' +
+      '<div style="margin-bottom:20px;">' +
+        '<div style="height:4px;background:rgba(0,0,0,0.08);border-radius:3px;overflow:hidden;">' +
           '<div style="height:100%;background:#3D5AFE;border-radius:3px;width:' + pct + '%;transition:width .3s;"></div>' +
         '</div>' +
       '</div>' +
-      '<div style="font-size:12px;font-weight:700;color:#3D5AFE;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:12px;">' + _esc(d.dimensione) + '</div>' +
-      '<div style="font-size:20px;font-weight:600;color:#1a1a2e;line-height:1.45;margin-bottom:28px;">' + _esc(d.domanda) + '</div>' +
+      '<div style="font-size:11px;font-weight:700;color:#3D5AFE;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:10px;">' + _esc(d.dimensione) + '</div>' +
+      '<div style="font-size:18px;font-weight:600;color:#1a1a2e;line-height:1.45;margin-bottom:22px;">' + _esc(d.domanda) + '</div>' +
       opzioniHtml +
-      '<div style="display:flex;gap:10px;margin-top:20px;">' +
-        (idx > 0 ? '<button onclick="_chatStepFase2(' + (idx-1) + ')" style="flex:1;padding:14px;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.1);border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:15px;cursor:pointer;color:rgba(26,26,46,0.6);">← Indietro</button>' : '') +
-        (selIdx !== undefined ? '<button onclick="' + (idx < tot-1 ? '_chatStepFase2(' + (idx+1) + ')' : '_chatTermina()') + '" style="flex:2;padding:14px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:15px;font-weight:700;cursor:pointer;">' + (idx < tot-1 ? 'Avanti →' : 'Vedi la diagnosi →') + '</button>' : '') +
+      '<div style="display:flex;gap:10px;margin-top:16px;">' +
+        (idx > 0 ? '<button onclick="_chatStepFase2(' + (idx-1) + ')" style="flex:1;padding:13px;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.1);border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;cursor:pointer;color:rgba(26,26,46,0.6);">← Indietro</button>' : '') +
+        (selIdx !== undefined ? '<button onclick="' + (idx < tot-1 ? '_chatStepFase2(' + (idx+1) + ')' : '_chatTermina()') + '" style="flex:2;padding:13px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:700;cursor:pointer;">' + (idx < tot-1 ? 'Avanti →' : 'Vedi la diagnosi →') + '</button>' : '') +
       '</div>' +
-    '</div></div>';
+    '</div>';
 }
 
 function _chatSelFase2(idx, optIdx) {
@@ -11322,10 +11347,8 @@ function _chatStepFase2(idx) {
 // ─── FASE 3: Risultati ───────────────────────────────────────────────────────
 
 async function _chatTermina() {
-  var main = document.getElementById('pmi-main');
-  if (!main) return;
-  main.style.overflow = 'auto';
-  main.style.height   = '';
+  var panel = document.getElementById('leva-chat-panel');
+  if (!panel) return;
 
   if (!document.getElementById('_leva_spin_style')) {
     var s = document.createElement('style');
@@ -11334,11 +11357,12 @@ async function _chatTermina() {
     document.head.appendChild(s);
   }
 
-  main.innerHTML =
-    '<div style="min-height:100vh;background:#d8dbe2;display:flex;align-items:center;justify-content:center;font-family:\'Plus Jakarta Sans\',sans-serif;">' +
+  panel.innerHTML =
+    _chatPanelHeader('Diagnosi commerciale') +
+    '<div style="flex:1;display:flex;align-items:center;justify-content:center;">' +
       '<div style="text-align:center;">' +
-        '<div style="width:48px;height:48px;border:4px solid rgba(61,90,254,0.15);border-top-color:#3D5AFE;border-radius:50%;animation:spin 1.5s linear infinite;margin:0 auto 16px;"></div>' +
-        '<div style="font-size:16px;color:rgba(26,26,46,0.55);">Elaboro la tua diagnosi...</div>' +
+        '<div style="width:44px;height:44px;border:4px solid rgba(61,90,254,0.15);border-top-color:#3D5AFE;border-radius:50%;animation:spin 1.5s linear infinite;margin:0 auto 14px;"></div>' +
+        '<div style="font-size:15px;color:rgba(26,26,46,0.55);font-family:\'Plus Jakarta Sans\',sans-serif;">Elaboro la tua diagnosi...</div>' +
       '</div>' +
     '</div>';
 
@@ -11364,19 +11388,21 @@ async function _chatTermina() {
     _chatMostraRisultati(data);
   } catch(e) {
     console.error('diagnosi-end:', e);
-    main.innerHTML =
-      '<div style="min-height:100vh;background:#d8dbe2;display:flex;align-items:center;justify-content:center;font-family:\'Plus Jakarta Sans\',sans-serif;padding:20px;box-sizing:border-box;">' +
-        '<div style="text-align:center;max-width:400px;">' +
-          '<div style="font-size:16px;color:#E53935;margin-bottom:16px;">Errore nel calcolo della diagnosi.</div>' +
-          '<button onclick="_chatTermina()" style="padding:13px 24px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Riprova</button>' +
+    panel = document.getElementById('leva-chat-panel');
+    if (panel) panel.innerHTML =
+      _chatPanelHeader('Diagnosi commerciale') +
+      '<div style="flex:1;display:flex;align-items:center;justify-content:center;padding:24px;">' +
+        '<div style="text-align:center;">' +
+          '<div style="font-size:15px;color:#E53935;margin-bottom:16px;font-family:\'Plus Jakarta Sans\',sans-serif;">Errore nel calcolo della diagnosi.</div>' +
+          '<button onclick="_chatTermina()" style="padding:12px 22px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Riprova</button>' +
         '</div>' +
       '</div>';
   }
 }
 
 function _chatMostraRisultati(data) {
-  var main = document.getElementById('pmi-main');
-  if (!main) return;
+  var panel = document.getElementById('leva-chat-panel');
+  if (!panel) return;
 
   var sg         = data.score_globale || 0;
   var scoreColor = sg >= 4 ? '#00825F' : sg >= 3 ? '#FF6B2B' : '#E53935';
@@ -11397,30 +11423,30 @@ function _chatMostraRisultati(data) {
     '</div>';
   }).join('');
 
-  main.innerHTML =
-    '<div style="min-height:100vh;background:#d8dbe2;font-family:\'Plus Jakarta Sans\',sans-serif;">' +
-    '<div style="max-width:600px;margin:0 auto;padding:32px 16px 72px;box-sizing:border-box;">' +
-      '<div style="text-align:center;margin-bottom:32px;">' +
-        '<div style="font-size:12px;font-weight:700;color:rgba(26,26,46,0.35);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:14px;">La tua diagnosi commerciale</div>' +
-        '<div style="font-size:80px;font-weight:700;color:' + scoreColor + ';line-height:1;margin-bottom:8px;">' + sg.toFixed(1) + '</div>' +
+  panel.innerHTML =
+    _chatPanelHeader('La tua diagnosi') +
+    '<div style="flex:1;overflow-y:auto;padding:24px 20px 32px;background:#d8dbe2;">' +
+      '<div style="text-align:center;margin-bottom:28px;">' +
+        '<div style="font-size:12px;font-weight:700;color:rgba(26,26,46,0.35);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:14px;">Score commerciale</div>' +
+        '<div style="font-size:72px;font-weight:700;color:' + scoreColor + ';line-height:1;margin-bottom:8px;">' + sg.toFixed(1) + '</div>' +
         '<div style="font-size:15px;font-weight:600;color:#1a1a2e;">' + _esc(scoreLabel) + '</div>' +
         '<div style="font-size:13px;color:rgba(26,26,46,0.4);margin-top:4px;">su 5 — media delle 8 dimensioni commerciali</div>' +
       '</div>' +
-      '<div style="display:flex;justify-content:center;margin-bottom:28px;">' + _chatRadarSVG(data.dims || {}) + '</div>' +
-      '<div style="background:rgba(255,255,255,0.65);border-radius:16px;padding:20px;margin-bottom:20px;">' +
+      '<div style="display:flex;justify-content:center;margin-bottom:24px;">' + _chatRadarSVG(data.dims || {}) + '</div>' +
+      '<div style="background:rgba(255,255,255,0.65);border-radius:16px;padding:20px;margin-bottom:16px;">' +
         '<div style="font-size:11px;font-weight:700;color:rgba(26,26,46,0.35);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;">Diagnosi</div>' +
         '<div style="font-size:15px;color:#1a1a2e;line-height:1.7;">' + _esc(data.diagnosi) + '</div>' +
       '</div>' +
-      '<div style="margin-bottom:20px;">' +
+      '<div style="margin-bottom:16px;">' +
         '<div style="font-size:11px;font-weight:700;color:rgba(26,26,46,0.35);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;">Le 3 priorità</div>' +
         prioritaHtml +
       '</div>' +
-      '<div style="background:rgba(255,255,255,0.65);border-radius:16px;padding:20px;margin-bottom:28px;">' +
+      '<div style="background:rgba(255,255,255,0.65);border-radius:16px;padding:20px;margin-bottom:24px;">' +
         '<div style="font-size:11px;font-weight:700;color:rgba(26,26,46,0.35);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:16px;">Cosa fare questa settimana</div>' +
         azioniHtml +
       '</div>' +
       '<button onclick="_chatVaiHome()" style="width:100%;padding:17px;background:#3D5AFE;color:#fff;border:none;border-radius:14px;font-size:17px;font-weight:700;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;">Vedi il tuo piano →</button>' +
-    '</div></div>';
+    '</div>';
 }
 
 function _chatRadarSVG(dims) {
@@ -11468,12 +11494,7 @@ function _chatRadarSVG(dims) {
 }
 
 function _chatVaiHome() {
-  var main = document.getElementById('pmi-main');
-  if (main) { main.style.overflow = ''; main.style.height = ''; main.style.padding = ''; }
-  var sidebar = document.getElementById('pmi-sidebar');
-  if (sidebar) sidebar.style.display = '';
-  var appPmi = document.getElementById('app-pmi');
-  if (appPmi) appPmi.style.gridTemplateColumns = '160px 1fr';
+  _chatChiudiOverlay();
 
   renderSidebarPMI();
   renderViewPMI('home');
