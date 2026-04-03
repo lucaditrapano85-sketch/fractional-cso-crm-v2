@@ -54,17 +54,21 @@ module.exports = async function handler(req, res) {
       })
     ]);
 
-    // STEP 3: Calcola score globale
+    // STEP 3: Calcola score globale su scala 0-100 (media dims 1-5 × 20)
     const dimValues = Object.values(dims);
     const scoreGlobale = dimValues.length > 0
-      ? Math.round((dimValues.reduce((a, b) => a + b, 0) / dimValues.length) * 10) / 10
+      ? Math.round((dimValues.reduce((a, b) => a + b, 0) / dimValues.length) * 20)
       : 0;
+
+    // Dims su scala 0-100 per la risposta al frontend (Supabase mantiene 1-5)
+    const dims100 = {};
+    Object.entries(dims).forEach(([k, v]) => { dims100[k] = Math.round(v * 20); });
 
     // STEP 4: Salva su Supabase se c'è un prospect_id
     if (prospect_id) {
       const now = new Date().toISOString();
 
-      // Aggiorna dims e diagnosi sul prospect
+      // Aggiorna dims (1-5) e diagnosi sul prospect
       const { error: updateError } = await supabase
         .from('prospects')
         .update({
@@ -115,7 +119,7 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({
       ok: true,
       score_globale: scoreGlobale,
-      dims: dims,
+      dims: dims100,
       diagnosi: diagnosiNarrativa.diagnosi,
       priorita: diagnosiNarrativa.priorita,
       azioni_immediate: diagnosiNarrativa.azioni_immediate

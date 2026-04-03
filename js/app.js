@@ -11763,12 +11763,13 @@ function _chatMostraRisultati(data) {
   if (!panel) return;
 
   var sg         = data.score_globale || 0;
-  var scoreColor = sg >= 4 ? '#00825F' : sg >= 3 ? '#FF6B2B' : '#E53935';
-  var scoreLabel = sg >= 4 ? 'Buona salute commerciale' : sg >= 3 ? 'Margine di miglioramento' : 'Intervento urgente';
+  var scoreColor = sg >= 80 ? '#00825F' : sg >= 60 ? '#FF6B2B' : '#E53935';
+  var scoreLabel = sg >= 80 ? 'Buona salute commerciale' : sg >= 60 ? 'Margine di miglioramento' : 'Intervento urgente';
 
   var prioritaHtml = (data.priorita || []).map(function(p) {
+    var scoreP100 = Math.round((p.score || 1) * 20);
     return '<div style="background:rgba(255,255,255,0.65);border-radius:14px;padding:16px 18px;margin-bottom:10px;">' +
-      '<div style="margin-bottom:8px;"><span style="font-size:11px;font-weight:700;color:' + scoreColor + ';border:1px solid ' + scoreColor + '44;padding:3px 10px;border-radius:20px;">' + _esc(p.dimensione) + ' — ' + p.score + '/5</span></div>' +
+      '<div style="margin-bottom:8px;"><span style="font-size:11px;font-weight:700;color:' + scoreColor + ';border:1px solid ' + scoreColor + '44;padding:3px 10px;border-radius:20px;">' + _esc(p.dimensione) + ' — ' + scoreP100 + '/100</span></div>' +
       '<div style="font-size:14px;font-weight:500;color:#1a1a2e;margin-bottom:6px;">' + _esc(p.problema) + '</div>' +
       '<div style="font-size:13px;color:rgba(26,26,46,0.55);">→ ' + _esc(p.azione) + '</div>' +
     '</div>';
@@ -11786,9 +11787,9 @@ function _chatMostraRisultati(data) {
     '<div style="flex:1;overflow-y:auto;padding:24px 20px 32px;background:#d8dbe2;">' +
       '<div style="text-align:center;margin-bottom:28px;">' +
         '<div style="font-size:12px;font-weight:700;color:rgba(26,26,46,0.35);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:14px;">Score commerciale</div>' +
-        '<div style="font-size:72px;font-weight:700;color:' + scoreColor + ';line-height:1;margin-bottom:8px;">' + sg.toFixed(1) + '</div>' +
+        '<div style="font-size:72px;font-weight:700;color:' + scoreColor + ';line-height:1;margin-bottom:8px;">' + Math.round(sg) + '</div>' +
         '<div style="font-size:15px;font-weight:600;color:#1a1a2e;">' + _esc(scoreLabel) + '</div>' +
-        '<div style="font-size:13px;color:rgba(26,26,46,0.4);margin-top:4px;">su 5 — media delle 8 dimensioni commerciali</div>' +
+        '<div style="font-size:13px;color:rgba(26,26,46,0.4);margin-top:4px;">su 100 — media delle 8 dimensioni commerciali</div>' +
       '</div>' +
       '<div style="display:flex;justify-content:center;margin-bottom:24px;">' + _chatRadarSVG(data.dims || {}) + '</div>' +
       '<div style="background:rgba(255,255,255,0.65);border-radius:16px;padding:20px;margin-bottom:16px;">' +
@@ -11814,9 +11815,9 @@ function _chatRadarSVG(dims) {
   var cx = 115, cy = 115, r = 82;
   var angles = keys.map(function(_, i) { return (i / n) * 2 * Math.PI - Math.PI / 2; });
 
-  var grid = [1,2,3,4,5].map(function(lvl) {
+  var grid = [20,40,60,80,100].map(function(lvl) {
     var pts = angles.map(function(a) {
-      return (cx + r*(lvl/5)*Math.cos(a)).toFixed(1) + ',' + (cy + r*(lvl/5)*Math.sin(a)).toFixed(1);
+      return (cx + r*(lvl/100)*Math.cos(a)).toFixed(1) + ',' + (cy + r*(lvl/100)*Math.sin(a)).toFixed(1);
     }).join(' ');
     return '<polygon points="' + pts + '" fill="none" stroke="rgba(26,26,46,0.1)" stroke-width="1"/>';
   }).join('');
@@ -11826,13 +11827,13 @@ function _chatRadarSVG(dims) {
   }).join('');
 
   var dataPts = keys.map(function(k, i) {
-    var sc = Math.min(5, Math.max(0, dims[k] || 0));
-    return (cx + r*(sc/5)*Math.cos(angles[i])).toFixed(1) + ',' + (cy + r*(sc/5)*Math.sin(angles[i])).toFixed(1);
+    var sc = Math.min(100, Math.max(0, dims[k] || 0));
+    return (cx + r*(sc/100)*Math.cos(angles[i])).toFixed(1) + ',' + (cy + r*(sc/100)*Math.sin(angles[i])).toFixed(1);
   }).join(' ');
 
   var dots = keys.map(function(k, i) {
-    var sc = Math.min(5, Math.max(0, dims[k] || 0));
-    return '<circle cx="' + (cx + r*(sc/5)*Math.cos(angles[i])).toFixed(1) + '" cy="' + (cy + r*(sc/5)*Math.sin(angles[i])).toFixed(1) + '" r="3.5" fill="#3D5AFE"/>';
+    var sc = Math.min(100, Math.max(0, dims[k] || 0));
+    return '<circle cx="' + (cx + r*(sc/100)*Math.cos(angles[i])).toFixed(1) + '" cy="' + (cy + r*(sc/100)*Math.sin(angles[i])).toFixed(1) + '" r="3.5" fill="#3D5AFE"/>';
   }).join('');
 
   var labels = keys.map(function(k, i) {
