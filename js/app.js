@@ -10970,10 +10970,21 @@ async function pmiAvviaDiagnosi() {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 var _wizStep = 0;
-var _wizTot  = 6;
+var _wizTot  = 7;
+var _comuniData = null; // cache lista comuni italiani
+
+function _loadComuni(cb) {
+  if (_comuniData) { cb(_comuniData); return; }
+  fetch('/js/data/comuni.json')
+    .then(function(r) { return r.json(); })
+    .then(function(d) { _comuniData = d; if (cb) cb(d); })
+    .catch(function() { if (cb) cb([]); });
+}
 
 function _wizardApri() {
   _wizStep = 0;
+  // Precarica comuni in background
+  if (!_comuniData) _loadComuni(null);
 
   // Rimuovi overlay precedente se c'è
   var _old = document.getElementById('leva-chat-overlay');
@@ -11117,6 +11128,25 @@ function _wizRender() {
         }).join('') +
       '</div>';
     footHtml = _wizFooter(true, !!selA);
+
+  } else if (_wizStep === 6) {
+    var locSel = window._datiGenerici.localita;
+    var locVal = locSel ? locSel.comune + ' (' + locSel.provincia + ')' : '';
+    bodyHtml =
+      '<div style="padding:32px 28px 8px;">' +
+        '<div style="font-size:22px;font-weight:700;color:#1a1a2e;margin-bottom:8px;line-height:1.3;">Dove si trova la tua azienda?</div>' +
+        '<div style="font-size:14px;color:rgba(26,26,46,0.45);margin-bottom:20px;">Ci serve per confrontarti con aziende simili della tua zona.</div>' +
+        '<div style="position:relative;">' +
+          '<input id="wiz-localita-inp" type="text" placeholder="Scrivi il nome del tuo comune..." autocomplete="off" ' +
+            'value="' + _esc(locVal) + '" ' +
+            'style="width:100%;padding:14px 16px;border:2px solid ' + (locSel ? '#3D5AFE' : '#e8e8f0') + ';border-radius:12px;font-size:16px;font-family:\'Plus Jakarta Sans\',sans-serif;outline:none;box-sizing:border-box;color:#1a1a2e;" ' +
+            'oninput="_wizComuniInput(this.value)" ' +
+            'onfocus="if(this.value.length>=2)_wizComuniInput(this.value)" ' +
+            'onblur="setTimeout(function(){var d=document.getElementById(\'wiz-comuni-drop\');if(d)d.style.display=\'none\';},180)" />' +
+          '<div id="wiz-comuni-drop" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1.5px solid #e8e8f0;border-top:none;border-radius:0 0 12px 12px;z-index:99;box-shadow:0 8px 24px rgba(0,0,0,0.1);overflow:hidden;"></div>' +
+        '</div>' +
+      '</div>';
+    footHtml = _wizFooter(true, !!locSel);
   }
 
   panel.innerHTML =
@@ -11136,6 +11166,60 @@ function _wizRender() {
     var inp3 = document.getElementById('wiz-fatturato');
     if (inp3) setTimeout(function(){ inp3.focus(); }, 80);
   }
+  if (_wizStep === 6) {
+    var inpL = document.getElementById('wiz-localita-inp');
+    if (inpL) setTimeout(function(){ inpL.focus(); }, 80);
+  }
+}
+
+function _wizComuniInput(query) {
+  var drop = document.getElementById('wiz-comuni-drop');
+  if (!drop) return;
+  // Reset selezione se l'utente modifica il campo
+  if (window._datiGenerici.localita && query !== window._datiGenerici.localita.comune + ' (' + window._datiGenerici.localita.provincia + ')') {
+    window._datiGenerici.localita = null;
+    // Disabilita avanti
+    var av = document.querySelectorAll('#leva-chat-panel button');
+    av.forEach(function(b) { if (b.textContent.indexOf('Avanti') >= 0) { b.disabled = true; b.style.opacity = '0.4'; } });
+  }
+  if (!query || query.trim().length < 2) { drop.style.display = 'none'; return; }
+  var q = query.trim().toLowerCase();
+  var esegui = function(lista) {
+    var matches = [];
+    for (var i = 0; i < lista.length && matches.length < 5; i++) {
+      if (lista[i].nome.toLowerCase().indexOf(q) === 0) matches.push(lista[i]);
+    }
+    if (matches.length === 0) {
+      // Fallback: contiene
+      for (var j = 0; j < lista.length && matches.length < 5; j++) {
+        if (lista[j].nome.toLowerCase().indexOf(q) >= 0) matches.push(lista[j]);
+      }
+    }
+    if (matches.length === 0) { drop.style.display = 'none'; return; }
+    drop.innerHTML = matches.map(function(c) {
+      return '<div onclick="_wizSelComune(\'' + c.nome.replace(/'/g,"\\'") + '\',\'' + c.sigla + '\',\'' + c.regione.nome.replace(/'/g,"\\'") + '\')" ' +
+        'style="padding:11px 16px;cursor:pointer;font-size:14px;color:#1a1a2e;border-bottom:1px solid #f0f0f5;font-family:\'Plus Jakarta Sans\',sans-serif;" ' +
+        'onmouseenter="this.style.background=\'rgba(61,90,254,0.06)\'" onmouseleave="this.style.background=\'\'"> ' +
+        '<strong>' + _esc(c.nome) + '</strong> <span style="color:rgba(26,26,46,0.45);font-size:13px;">(' + _esc(c.sigla) + ')</span>' +
+      '</div>';
+    }).join('');
+    drop.style.display = 'block';
+  };
+  _loadComuni(esegui);
+}
+
+function _wizSelComune(comune, sigla, regione) {
+  window._datiGenerici.localita = { comune: comune, provincia: sigla, regione: regione };
+  var inp = document.getElementById('wiz-localita-inp');
+  if (inp) {
+    inp.value = comune + ' (' + sigla + ')';
+    inp.style.borderColor = '#3D5AFE';
+  }
+  var drop = document.getElementById('wiz-comuni-drop');
+  if (drop) drop.style.display = 'none';
+  // Abilita avanti
+  var btns = document.querySelectorAll('#leva-chat-panel button');
+  btns.forEach(function(b) { if (b.textContent.indexOf('Avanti') >= 0) { b.disabled = false; b.style.opacity = '1'; } });
 }
 
 function _wizFooter(showBack, enableNext) {
@@ -11210,13 +11294,18 @@ function _wizAvanti() {
       .finally(function() { window._generaSettoreResolved = true; });
   }
 
+  if (_wizStep === 6) {
+    // Validazione localita: deve essere stata selezionata dal dropdown
+    if (!window._datiGenerici.localita) return;
+  }
+
   if (_wizStep < _wizTot - 1) {
     _wizStep++;
     _wizRender();
     return;
   }
 
-  // Step 6 completato — controlla se diagnosi-start è pronto
+  // Step 7 (localita) completato — controlla se diagnosi-start è pronto
   _wizDopoStep6();
 }
 
