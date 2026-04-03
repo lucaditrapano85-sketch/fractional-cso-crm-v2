@@ -11727,25 +11727,26 @@ function _chatSetInput(html) {
 // ─── FASE 0: Shock ───────────────────────────────────────────────────────────
 
 function _chatFase0() {
-  var feed = document.getElementById('leva-chat-feed');
-  if (!feed) return;
+  var panel = document.getElementById('leva-chat-panel');
+  if (!panel) return;
   var nome = (window._datiGenerici && window._datiGenerici.nome) ? window._datiGenerici.nome.split(' ')[0] : '';
-  var saluto = nome ? _esc(nome) + ', ho analizzato il tuo settore.' : 'Ho analizzato il tuo settore.';
-  feed.innerHTML = '<div style="text-align:center;padding:24px 0 16px;"><span style="font-size:24px;font-weight:700;color:#1a1a2e;letter-spacing:-0.5px;">L<span style="color:#FF6B2B">e</span>va</span></div>';
-  setTimeout(function() {
-    _chatAddBolla('ai', saluto);
-    setTimeout(function() {
-      _chatAddBolla('ai', _esc(_dc.shock));
-      setTimeout(function() {
-        _chatAddBolla('ai', _esc(_dc.collegamento));
-        setTimeout(function() {
-          _chatAddBolla('ai', _esc(_dc.aggancio));
-          _chatSetInput('<button onclick="_chatIniziaFase1()" style="width:100%;padding:16px;background:#3D5AFE;color:#fff;border:none;border-radius:14px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:16px;font-weight:700;cursor:pointer;">Iniziamo →</button>');
-          _chatScroll();
-        }, 700);
-      }, 700);
-    }, 700);
-  }, 400);
+  var salutoTesto = nome ? _esc(nome) + ', ecco cosa ho trovato.' : 'Ecco cosa ho trovato.';
+  panel.innerHTML =
+    _chatPanelHeader('Diagnosi commerciale') +
+    '<div style="flex:1;overflow-y:auto;padding:24px 20px 16px;box-sizing:border-box;">' +
+      '<div style="text-align:center;margin-bottom:24px;">' +
+        '<span style="font-size:18px;font-weight:700;color:#1a1a2e;letter-spacing:-0.3px;">L<span style="color:#FF6B2B">e</span>va</span>' +
+      '</div>' +
+      '<div style="font-size:16px;color:rgba(26,26,46,0.5);margin-bottom:20px;">' + salutoTesto + '</div>' +
+      '<div style="background:#EEF1FE;border-radius:14px;padding:18px 20px;margin-bottom:16px;">' +
+        '<div style="font-size:18px;font-weight:500;color:#1a1a2e;line-height:1.5;">' + _esc(_dc.shock) + '</div>' +
+      '</div>' +
+      '<div style="font-size:15px;color:#1a1a2e;line-height:1.55;margin-bottom:12px;">' + _esc(_dc.collegamento) + '</div>' +
+      '<div style="font-size:15px;font-weight:500;color:#1a1a2e;line-height:1.55;">' + _esc(_dc.aggancio) + '</div>' +
+    '</div>' +
+    '<div style="padding:12px 20px 20px;flex-shrink:0;">' +
+      '<button onclick="_chatIniziaFase1()" style="width:100%;padding:16px;background:#3D5AFE;color:#fff;border:none;border-radius:14px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:16px;font-weight:700;cursor:pointer;">Iniziamo \u2192</button>' +
+    '</div>';
 }
 
 // ─── FASE 1: Wizard (una domanda per schermata) ───────────────────────────────
@@ -11778,38 +11779,44 @@ function _chatRenderWizardF1(idx, altroMode) {
   var pct = Math.round((idx / tot) * 100);
   var risposta = _dc.risposte_accumulate[idx];
 
-  var opzioniHtml;
+  // 3 opzioni sempre visibili — disabilitate (dimmed) in altroMode
+  var opzioniHtml = opzioniStep.map(function(op, i) {
+    var isSel = risposta && risposta.risposta === op.testo;
+    return '<button ' + (altroMode ? '' : 'onclick="_chatSelFase1(' + idx + ',' + i + ')"') + ' style="' +
+      'display:block;width:100%;text-align:left;padding:13px 16px;margin-bottom:8px;border-radius:12px;' +
+      'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;line-height:1.45;' +
+      (altroMode ? 'cursor:default;opacity:0.45;pointer-events:none;' : 'cursor:pointer;transition:all .12s;') +
+      (isSel
+        ? 'background:#3D5AFE;color:#fff;border:2px solid #3D5AFE;font-weight:600;'
+        : 'background:rgba(255,255,255,0.65);color:#1a1a2e;border:1.5px solid rgba(255,255,255,0.7);') +
+      '">' + _esc(op.testo) + '</button>';
+  }).join('');
+
   if (altroMode) {
-    opzioniHtml =
-      '<textarea id="leva-f1-ta" rows="3" placeholder="Scrivi la tua risposta..." ' +
-        'style="width:100%;box-sizing:border-box;padding:12px 14px;border-radius:12px;' +
-        'border:1.5px solid rgba(61,90,254,0.3);background:rgba(255,255,255,0.7);' +
-        'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;resize:none;outline:none;' +
-        'margin-bottom:8px;display:block;"></textarea>' +
-      '<button onclick="_chatInviaF1Libero(' + idx + ')" style="display:block;width:100%;' +
-        'padding:13px 16px;margin-bottom:8px;border-radius:12px;background:#3D5AFE;color:#fff;border:none;' +
-        'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Invia \u2192</button>' +
-      '<button onclick="_chatRenderWizardF1(' + idx + ')" style="display:block;width:100%;text-align:center;' +
-        'padding:10px 16px;border-radius:12px;background:transparent;color:rgba(26,26,46,0.55);' +
-        'border:0.5px solid rgba(26,26,46,0.35);' +
-        'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;line-height:1.45;cursor:pointer;">\u2190 Torna alle opzioni</button>';
+    opzioniHtml +=
+      '<div style="margin-top:8px;">' +
+        '<div style="display:flex;gap:8px;align-items:flex-end;margin-bottom:8px;">' +
+          '<textarea id="leva-f1-ta" rows="2" placeholder="Scrivi la tua risposta..." ' +
+            'style="flex:1;padding:12px 14px;border-radius:12px;border:1.5px solid rgba(61,90,254,0.3);' +
+            'background:rgba(255,255,255,0.7);font-family:\'Plus Jakarta Sans\',sans-serif;' +
+            'font-size:14px;resize:none;outline:none;box-sizing:border-box;"></textarea>' +
+          '<button onclick="_chatInviaF1Libero(' + idx + ')" style="flex-shrink:0;height:48px;padding:0 18px;' +
+            'background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;' +
+            'font-size:14px;font-weight:600;cursor:pointer;">Invia \u2192</button>' +
+        '</div>' +
+        '<button onclick="_chatRenderWizardF1(' + idx + ')" style="display:block;width:100%;text-align:center;' +
+          'padding:10px 16px;border-radius:12px;background:transparent;color:rgba(26,26,46,0.55);' +
+          'border:0.5px solid rgba(26,26,46,0.35);font-family:\'Plus Jakarta Sans\',sans-serif;' +
+          'font-size:13px;cursor:pointer;">\u2190 Torna alle opzioni</button>' +
+      '</div>';
   } else {
-    opzioniHtml = opzioniStep.map(function(op, i) {
-      var isSel = risposta && risposta.risposta === op.testo;
-      return '<button onclick="_chatSelFase1(' + idx + ',' + i + ')" style="' +
-        'display:block;width:100%;text-align:left;padding:13px 16px;margin-bottom:8px;border-radius:12px;' +
-        'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;line-height:1.45;cursor:pointer;transition:all .12s;' +
-        (isSel
-          ? 'background:#3D5AFE;color:#fff;border:2px solid #3D5AFE;font-weight:600;'
-          : 'background:rgba(255,255,255,0.65);color:#1a1a2e;border:1.5px solid rgba(255,255,255,0.7);') +
-        '">' + _esc(op.testo) + '</button>';
-    }).join('') +
-    '<button onclick="_chatRenderWizardF1(' + idx + ',true)" style="display:block;width:100%;text-align:center;' +
-      'padding:10px 16px;margin-top:4px;border-radius:12px;' +
-      'background:transparent;color:rgba(26,26,46,0.55);' +
-      'border:0.5px solid var(--color-border-secondary,rgba(26,26,46,0.35));' +
-      'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;line-height:1.45;cursor:pointer;transition:all .12s;">' +
-      'Altro \u2014 scrivo io</button>';
+    opzioniHtml +=
+      '<button onclick="_chatRenderWizardF1(' + idx + ',true)" style="display:block;width:100%;text-align:center;' +
+        'padding:10px 16px;margin-top:4px;border-radius:12px;' +
+        'background:transparent;color:rgba(26,26,46,0.55);' +
+        'border:0.5px solid var(--color-border-secondary,rgba(26,26,46,0.35));' +
+        'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;line-height:1.45;cursor:pointer;transition:all .12s;">' +
+        'Altro \u2014 scrivo io</button>';
   }
 
   panel.innerHTML =
@@ -12049,6 +12056,7 @@ async function _chatFase1Batch() {
 async function _chatIniziaFase2() {
   _chatSetInput('');
   _dc.risposte_fase2 = [];
+  window._f2Opzioni  = [];
 
   // Fallback: carica domande_fase2 da DB se mancanti (settori vecchi)
   if (!_dc.domande_fase2 || _dc.domande_fase2.length === 0) {
@@ -12072,18 +12080,28 @@ function _chatRenderWizard(idx) {
   if (!d) return;
 
   var pct    = Math.round((idx / tot) * 100);
-  var selIdx = _dc.risposte_fase2[idx];
+  var selIdx = _dc.risposte_fase2[idx]; // origIdx o null
   var isNonSaprei = (selIdx === null);
 
-  var opzioniHtml = (d.opzioni || []).map(function(op, i) {
-    var isSel = (selIdx === i);
+  // Shuffle opzioni una volta per step, mantieni origIdx per il calcolo score
+  if (!window._f2Opzioni) window._f2Opzioni = [];
+  if (!window._f2Opzioni[idx]) {
+    window._f2Opzioni[idx] = (d.opzioni || []).map(function(op, i) {
+      return { testo: op, origIdx: i };
+    }).sort(function() { return Math.random() - 0.5; });
+  }
+  var opzioniStep = window._f2Opzioni[idx];
+
+  var opzioniHtml = opzioniStep.map(function(op, i) {
+    var isSel = (selIdx !== null && selIdx !== undefined && selIdx === op.origIdx);
+    var testoDisplay = op.testo.replace(/\s*\(score\s*\d+\)\s*$/i, '');
     return '<button onclick="_chatSelFase2(' + idx + ',' + i + ')" style="' +
       'display:block;width:100%;text-align:left;padding:13px 16px;margin-bottom:8px;border-radius:12px;' +
       'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;line-height:1.45;cursor:pointer;transition:all .12s;' +
       (isSel
         ? 'background:#3D5AFE;color:#fff;border:2px solid #3D5AFE;font-weight:600;'
         : 'background:rgba(255,255,255,0.65);color:#1a1a2e;border:1.5px solid rgba(255,255,255,0.7);') +
-      '">' + _esc(op) + '</button>';
+      '">' + _esc(testoDisplay) + '</button>';
   }).join('') +
   '<button onclick="_chatSelFase2(' + idx + ',null)" style="' +
     'display:block;width:100%;text-align:center;padding:10px 16px;margin-top:4px;border-radius:12px;' +
@@ -12108,8 +12126,15 @@ function _chatRenderWizard(idx) {
     '</div>';
 }
 
-function _chatSelFase2(idx, optIdx) {
-  _dc.risposte_fase2[idx] = optIdx;
+function _chatSelFase2(idx, displayIdx) {
+  // Risolve displayIdx → origIdx per calcolo score corretto dopo shuffle
+  if (displayIdx === null) {
+    _dc.risposte_fase2[idx] = null; // Non saprei
+  } else {
+    var opzioniStep = window._f2Opzioni && window._f2Opzioni[idx];
+    var origIdx = (opzioniStep && opzioniStep[displayIdx]) ? opzioniStep[displayIdx].origIdx : displayIdx;
+    _dc.risposte_fase2[idx] = origIdx;
+  }
   // Mostra selezione (flash blu), poi auto-avanza dopo 300ms
   _chatRenderWizard(idx);
   var tot = (_dc.domande_fase2 || []).length;
