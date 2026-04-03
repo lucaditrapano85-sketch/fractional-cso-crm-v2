@@ -11652,7 +11652,19 @@ function _chatMostraInputLibero() {
 function _chatSelezionaOp(idx) {
   var op = window._chatOpzioniCorrente && window._chatOpzioniCorrente[idx];
   if (!op) return;
-  _chatSelezionaOpzione(op.testo);
+  // Flash: evidenzia il bottone selezionato e disabilita tutti per 300ms
+  var area = document.getElementById('leva-chat-inputarea');
+  if (area) {
+    var btns = area.querySelectorAll('button');
+    btns.forEach(function(b) { b.disabled = true; b.style.opacity = '0.35'; });
+    if (btns[idx]) {
+      btns[idx].style.background = '#3D5AFE';
+      btns[idx].style.color = '#fff';
+      btns[idx].style.borderColor = '#3D5AFE';
+      btns[idx].style.opacity = '1';
+    }
+  }
+  setTimeout(function() { _chatSelezionaOpzione(op.testo); }, 300);
 }
 
 function _chatInviaTestoLibero() {
@@ -11776,16 +11788,22 @@ function _chatRenderWizard(idx) {
       '<div style="font-size:11px;font-weight:700;color:#3D5AFE;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:10px;">' + _esc(d.dimensione) + '</div>' +
       '<div style="font-size:18px;font-weight:600;color:#1a1a2e;line-height:1.45;margin-bottom:22px;">' + _esc(d.domanda) + '</div>' +
       opzioniHtml +
-      '<div style="display:flex;gap:10px;margin-top:16px;">' +
-        (idx > 0 ? '<button onclick="_chatStepFase2(' + (idx-1) + ')" style="flex:1;padding:13px;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.1);border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;cursor:pointer;color:rgba(26,26,46,0.6);">← Indietro</button>' : '') +
-        (selIdx !== undefined ? '<button onclick="' + (idx < tot-1 ? '_chatStepFase2(' + (idx+1) + ')' : '_chatTermina()') + '" style="flex:2;padding:13px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:700;cursor:pointer;">' + (idx < tot-1 ? 'Avanti →' : 'Vedi la diagnosi →') + '</button>' : '') +
-      '</div>' +
+      (idx > 0 ? '<div style="margin-top:8px;"><button onclick="_chatStepFase2(' + (idx-1) + ')" style="width:100%;padding:11px;background:rgba(255,255,255,0.4);border:1px solid rgba(0,0,0,0.1);border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;cursor:pointer;color:rgba(26,26,46,0.5);">← Indietro</button></div>' : '') +
     '</div>';
 }
 
 function _chatSelFase2(idx, optIdx) {
   _dc.risposte_fase2[idx] = optIdx;
+  // Mostra selezione (flash blu), poi auto-avanza dopo 300ms
   _chatRenderWizard(idx);
+  var tot = (_dc.domande_fase2 || []).length;
+  setTimeout(function() {
+    if (idx < tot - 1) {
+      _chatRenderWizard(idx + 1);
+    } else {
+      _chatTermina();
+    }
+  }, 300);
 }
 
 function _chatStepFase2(idx) {
