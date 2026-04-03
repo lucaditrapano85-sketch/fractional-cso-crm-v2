@@ -10950,10 +10950,16 @@ async function pmiAvviaDiagnosi() {
     document.body.appendChild(diagOverlay);
   }
 
-  // Apri il wizard (le 6 domande hardcoded); diagnosi-start sarà lanciato dopo lo step 4
+  // Lancia subito diagnosi-start con fascia 'nd' — non aspettare il fatturato
   window._datiGenerici = {};
   window._generaSettoreResolved = false;
-  window._generaSettorePromise  = null;
+  window._generaSettorePromise = fetch('/api/diagnosi-start', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ settore: _pmiSelectedSettore, fascia_fatturato: 'nd', user_id: window._currentUserId || null })
+  }).then(function(r) { return r.json(); })
+    .finally(function() { window._generaSettoreResolved = true; });
+  window._diagnosi_start_promise = window._generaSettorePromise;
   _wizardApri();
 }
 
@@ -11284,15 +11290,8 @@ function _wizAvanti() {
     if (!inp3 || !inp3.value || Number(inp3.value) <= 0) return;
     var fat = Number(inp3.value);
     window._datiGenerici.fatturato_anno_scorso = fat;
-    // Calcola fascia e lancia diagnosi-start in background
+    // Calcola fascia — la fetch è già partita in pmiAvviaDiagnosi()
     _pmiSelectedFascia = fat < 500000 ? 'sotto-500k' : fat < 2000000 ? '500k-2M' : fat < 10000000 ? '2M-10M' : 'oltre-10M';
-    window._generaSettoreResolved = false;
-    window._generaSettorePromise = fetch('/api/diagnosi-start', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ settore: _pmiSelectedSettore, fascia_fatturato: _pmiSelectedFascia, user_id: window._currentUserId || null })
-    }).then(function(r) { return r.json(); })
-      .finally(function() { window._generaSettoreResolved = true; });
   }
 
   if (_wizStep === 6) {
@@ -11376,32 +11375,142 @@ function _wizDopoStep7() {
 function _wizRenderLoading() {
   var panel = document.getElementById('leva-chat-panel');
   if (!panel) return;
-  var nome = (window._datiGenerici && window._datiGenerici.nome) ? window._datiGenerici.nome.split(' ')[0] : '';
-  var msg = nome ? 'Quasi pronto, ' + nome + '...' : 'Quasi pronto...';
 
-  panel.innerHTML =
-    '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 28px;text-align:center;">' +
-      '<div style="font-size:17px;font-weight:700;color:#1a1a2e;margin-bottom:10px;">' + _esc(msg) + '</div>' +
-      '<div style="font-size:14px;color:rgba(26,26,46,0.45);margin-bottom:28px;">Stiamo finalizzando l\'analisi del tuo settore.</div>' +
-      '<div style="width:100%;max-width:320px;height:6px;background:#f0f0f5;border-radius:3px;overflow:hidden;">' +
-        '<div id="wiz-loading-bar" style="height:100%;background:#3D5AFE;border-radius:3px;width:20%;animation:wizLoadPulse 1.4s ease-in-out infinite;"></div>' +
-      '</div>' +
-    '</div>';
+  var settore = _pmiSelectedSettore || 'aziende';
+  var fascia  = _pmiSelectedFascia  || 'nd';
+  var fat     = (window._datiGenerici && window._datiGenerici.fatturato_anno_scorso) || 0;
+  var localita = (window._datiGenerici && window._datiGenerici.localita) || '';
+  var areDeboli = (window._datiGenerici && window._datiGenerici.aree_deboli && window._datiGenerici.aree_deboli.length)
+    ? window._datiGenerici.aree_deboli : [];
 
-  // Aggiungi keyframe se non presente
-  if (!document.getElementById('wiz-load-style')) {
-    var sty = document.createElement('style');
-    sty.id = 'wiz-load-style';
-    sty.textContent = '@keyframes wizLoadPulse{0%{width:20%}50%{width:75%}100%{width:20%}}';
-    document.head.appendChild(sty);
+  function fmtEuro(n) {
+    if (n >= 1000000) return '\u20ac\u00a0' + (n / 1000000).toFixed(1).replace('.', ',') + 'M';
+    if (n >= 1000)    return '\u20ac\u00a0' + Math.round(n / 1000) + 'K';
+    return '\u20ac\u00a0' + n;
   }
 
-  // Polling ogni 400ms finché diagnosi-start è pronto
-  var _wizPollId = setInterval(function() {
-    if (window._generaSettoreResolved) {
-      clearInterval(_wizPollId);
-      _wizPassaAShock();
-    }
+  var fasciaMedia = { 'sotto-500k': 280000, '500k-2M': 950000, '2M-10M': 4200000, 'oltre-10M': 15000000 };
+  var mediaN = fasciaMedia[fascia] || 950000;
+  var mediaStr = fmtEuro(mediaN);
+  var fatSub = fat > 0
+    ? 'Il tuo: ' + fmtEuro(fat) + ' — ' + (fat > mediaN ? 'sopra' : fat < mediaN ? 'sotto' : 'in linea con') + ' la media'
+    : '';
+  var concStr = fascia === 'sotto-500k' ? 'alta' : fascia === 'oltre-10M' ? 'bassa' : 'media';
+  var locStr  = localita || 'la tua area';
+  var areSub  = areDeboli.length ? areDeboli.join(', ') : 'analisi in corso...';
+
+  var statusTexts = [
+    'Raccolta dati di mercato...',
+    'Analisi benchmark settore...',
+    'Confronto con la tua zona...',
+    'Identificazione opportunit\u00e0...',
+    'Calcolo impatto potenziale...',
+    'Preparazione diagnosi personalizzata...'
+  ];
+
+  var iconLine   = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>';
+  var iconInfo   = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  var iconPin    = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+  var iconBolt   = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13,2 3,14 12,14 11,22 21,10 12,10"/></svg>';
+  var iconTarget = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>';
+
+  function mkCard(id, bg, accent, icon, title, valHtml, sub) {
+    return '<div id="' + id + '" style="background:' + bg + ';border-radius:12px;padding:14px 16px;margin-bottom:10px;' +
+      'opacity:0;transform:translateY(12px);transition:opacity 0.5s ease,transform 0.5s ease;' +
+      'display:flex;align-items:flex-start;gap:12px;">' +
+      '<div style="color:' + accent + ';flex-shrink:0;margin-top:1px;">' + icon + '</div>' +
+      '<div style="flex:1;min-width:0;">' +
+        '<div style="font-size:11px;font-weight:700;color:' + accent + ';letter-spacing:0.04em;text-transform:uppercase;margin-bottom:5px;">' + title + '</div>' +
+        '<div style="font-size:15px;font-weight:600;color:#1a1a2e;line-height:1.4;">' + valHtml + '</div>' +
+        (sub ? '<div style="font-size:12px;color:rgba(26,26,46,0.5);margin-top:4px;">' + _esc(sub) + '</div>' : '') +
+      '</div>' +
+    '</div>';
+  }
+
+  panel.innerHTML =
+    '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px 12px;flex-shrink:0;">' +
+      '<span style="font-size:12px;font-weight:700;color:rgba(26,26,46,0.35);letter-spacing:0.05em;">ANALISI IN CORSO</span>' +
+      '<button onclick="_chatChiudiOverlay()" style="width:28px;height:28px;background:rgba(0,0,0,0.06);border:none;border-radius:8px;cursor:pointer;font-size:14px;color:rgba(26,26,46,0.4);line-height:1;">\u2715</button>' +
+    '</div>' +
+    '<div style="flex:1;overflow-y:auto;padding:0 20px 8px;">' +
+      '<div style="text-align:center;padding:20px 0 22px;">' +
+        '<div id="wiz-counter" style="font-size:48px;font-weight:500;color:#3D5AFE;line-height:1;transition:color 0.5s ease;">0</div>' +
+        '<div id="wiz-counter-sub" style="font-size:14px;color:rgba(26,26,46,0.45);margin-top:6px;">' + _esc(settore) + ' analizzati in Italia</div>' +
+      '</div>' +
+      mkCard('wiz-card-1','#E6F1FB','#3D5AFE', iconLine,  'Fatturato medio del settore', _esc(mediaStr), fatSub) +
+      mkCard('wiz-card-2','#FCEBEB','#E24B4A', iconInfo,  'Il dato che pochi conoscono', '<span id="wiz-tip-sapevi">...</span>', '') +
+      mkCard('wiz-card-3','#E1F5EE','#1D9E75', iconPin,   'La tua zona: ' + _esc(locStr), 'Concorrenza <strong>' + _esc(concStr) + '</strong> nella tua area', '') +
+      mkCard('wiz-card-4','#FAEEDA','#BA7517', iconBolt,  'Azione rapida', '<span id="wiz-tip-azione">...</span>', '') +
+      mkCard('wiz-card-5','#EEEDFE','#534AB7', iconTarget,'Le tue aree da esplorare', '<strong>' + _esc(areSub) + '</strong>', 'Corrispondono ai problemi più comuni del settore') +
+    '</div>' +
+    '<div style="padding:8px 20px 20px;flex-shrink:0;">' +
+      '<div style="width:100%;height:4px;background:#f0f0f5;border-radius:2px;overflow:hidden;margin-bottom:8px;">' +
+        '<div id="wiz-prog-bar" style="height:100%;background:#3D5AFE;border-radius:2px;width:8%;transition:width 1.2s ease,background 0.5s ease;"></div>' +
+      '</div>' +
+      '<div id="wiz-prog-text" style="font-size:12px;color:rgba(26,26,46,0.4);text-align:center;">' + _esc(statusTexts[0]) + '</div>' +
+    '</div>';
+
+  // Counter: 0 → 10.000+ in 2.5s cubic ease-out
+  var t0 = Date.now();
+  (function tick() {
+    var el = document.getElementById('wiz-counter');
+    if (!el) return;
+    var p = Math.min((Date.now() - t0) / 2500, 1);
+    var eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.floor(eased * 10000).toLocaleString('it-IT') + (p >= 1 ? '+' : '');
+    if (p < 1) requestAnimationFrame(tick);
+  })();
+
+  // Progress bar + status text, one step every 6s
+  var progIdx = 0;
+  var _progId = setInterval(function() {
+    progIdx++;
+    if (progIdx >= statusTexts.length) { clearInterval(_progId); return; }
+    var txt = document.getElementById('wiz-prog-text');
+    if (txt) txt.textContent = statusTexts[progIdx];
+    var bar = document.getElementById('wiz-prog-bar');
+    if (bar) bar.style.width = Math.min(Math.round((progIdx + 1) / statusTexts.length * 88), 88) + '%';
+  }, 6000);
+
+  // Cards appear in sequence
+  [[5000,'wiz-card-1'],[11000,'wiz-card-2'],[17000,'wiz-card-3'],[23000,'wiz-card-4'],[29000,'wiz-card-5']].forEach(function(c) {
+    setTimeout(function() {
+      var el = document.getElementById(c[1]);
+      if (el) { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }
+    }, c[0]);
+  });
+
+  // Poll for diagnosi-start completion
+  var _pollId = setInterval(function() {
+    if (!window._generaSettoreResolved) return;
+    clearInterval(_pollId);
+    clearInterval(_progId);
+    window._generaSettorePromise.then(function(data) {
+      // Aggiorna tips se disponibili
+      if (data && data.tips) {
+        var sapevi = data.tips.filter(function(t) { return t.tipo === 'sapevi'; });
+        var azione = data.tips.filter(function(t) { return t.tipo === 'azione'; });
+        var el2 = document.getElementById('wiz-tip-sapevi');
+        if (el2 && sapevi.length) el2.textContent = sapevi[0].testo;
+        var el4 = document.getElementById('wiz-tip-azione');
+        if (el4 && azione.length) el4.textContent = azione[0].testo;
+        // Rendi visibili le card 2 e 4 se non lo fossero ancora
+        ['wiz-card-2','wiz-card-4'].forEach(function(id) {
+          var c = document.getElementById(id);
+          if (c && c.style.opacity !== '1') { c.style.opacity = '1'; c.style.transform = 'translateY(0)'; }
+        });
+      }
+      // Completa UI in verde
+      var bar = document.getElementById('wiz-prog-bar');
+      var txt = document.getElementById('wiz-prog-text');
+      var ctr = document.getElementById('wiz-counter');
+      var ctrSub = document.getElementById('wiz-counter-sub');
+      if (bar)    { bar.style.background = '#1D9E75'; bar.style.width = '100%'; }
+      if (txt)    txt.textContent = 'Analisi completata \u2713';
+      if (ctr)    ctr.style.color = '#1D9E75';
+      if (ctrSub) ctrSub.textContent = 'Analisi completata';
+      setTimeout(function() { _wizPassaAShock(); }, 1000);
+    }).catch(function() { _wizPassaAShock(); });
   }, 400);
 }
 

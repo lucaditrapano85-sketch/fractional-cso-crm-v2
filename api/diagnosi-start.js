@@ -16,7 +16,8 @@ module.exports = async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
     const { settore, fascia_fatturato, user_id } = req.body;
-    if (!settore || !fascia_fatturato) return res.status(400).json({ error: 'Missing settore or fascia_fatturato' });
+    if (!settore) return res.status(400).json({ error: 'Missing settore' });
+    const fasciaEffettiva = fascia_fatturato || 'nd';
 
     // STEP 1: Cerca se il settore esiste già nel database
     // Cerca per nome, nome_display e codice per coprire entrambi gli schemi
@@ -31,9 +32,9 @@ module.exports = async function handler(req, res) {
     let settoreData = existing && existing.length > 0 ? existing[0] : null;
 
     // STEP 2: Se il settore esiste E ha già shock per questa fascia, usa il cached
-    if (settoreData && settoreData.shock_data && settoreData.shock_data[fascia_fatturato]) {
+    if (settoreData && settoreData.shock_data && settoreData.shock_data[fasciaEffettiva]) {
       // Genera solo i tips con Sonnet (veloce)
-      const tips = await callSonnet(settore, fascia_fatturato);
+      const tips = await callSonnet(settore, fasciaEffettiva);
 
       // Incrementa contatore diagnosi
       await supabase
@@ -46,9 +47,9 @@ module.exports = async function handler(req, res) {
         cached: true,
         settore_id: settoreData.id,
         tips: tips,
-        shock: settoreData.shock_data[fascia_fatturato].shock,
-        collegamento: settoreData.shock_data[fascia_fatturato].collegamento,
-        aggancio: settoreData.shock_data[fascia_fatturato].aggancio,
+        shock: settoreData.shock_data[fasciaEffettiva].shock,
+        collegamento: settoreData.shock_data[fasciaEffettiva].collegamento,
+        aggancio: settoreData.shock_data[fasciaEffettiva].aggancio,
         domande_fase1: settoreData.domande_fase1,
         domande_fase2: settoreData.domande_fase2
       });
@@ -56,13 +57,13 @@ module.exports = async function handler(req, res) {
 
     // STEP 3: Settore nuovo — lancia Sonnet e Opus in PARALLELO
     const [tips, opusResult] = await Promise.all([
-      callSonnet(settore, fascia_fatturato),
-      callOpus(settore, fascia_fatturato)
+      callSonnet(settore, fasciaEffettiva),
+      callOpus(settore, fasciaEffettiva)
     ]);
 
     // STEP 4: Salva il settore nel database
     const shockData = {};
-    shockData[fascia_fatturato] = {
+    shockData[fasciaEffettiva] = {
       shock: opusResult.shock,
       collegamento: opusResult.collegamento,
       aggancio: opusResult.aggancio
@@ -144,7 +145,7 @@ async function callSonnet(settore, fascia) {
       max_tokens: 800,
       messages: [{
         role: 'user',
-        content: `Genera 6 tips per un titolare di "${settore}" con fatturato ${fascia}.
+        content: `Genera 6 tips per un titolare di "${settore}"${fascia !== 'nd' ? ` con fatturato ${fascia}` : ''}.
 
 3 tips "Lo sapevi?" con un dato reale e specifico del settore nel mercato italiano.
 3 tips "Azione rapida" con un consiglio concreto che può applicare oggi.
@@ -178,7 +179,7 @@ async function callOpus(settore, fascia) {
       'anthropic-version': '2023-06-01'
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-opus-4-20250514',
       max_tokens: 4000,
       messages: [{
         role: 'user',
@@ -186,7 +187,7 @@ async function callOpus(settore, fascia) {
 Sei il direttore commerciale più esperto d'Italia. 20 anni di esperienza trasversale su ogni settore. Hai analizzato migliaia di PMI italiane. Parli come un professionista che è stato dentro le aziende, non come un consulente che legge slide.
 
 CONTESTO:
-Un titolare di "${settore}" con fatturato annuo nella fascia "${fascia}" sta per fare una diagnosi commerciale. Non ti conosce. Non si fida. Ha 7 secondi prima di chiudere tutto.
+Un titolare di "${settore}" sta per fare una diagnosi commerciale. Non ti conosce. Non si fida. Ha 7 secondi prima di chiudere tutto.
 
 IL TUO OBIETTIVO:
 Colpirlo con un'affermazione che dimostra che conosci il suo business meglio di lui. Non fare domande. AFFERMA. Usa un dato reale, specifico, verificabile sul suo settore nel mercato italiano.
@@ -198,7 +199,7 @@ Rispondi SOLO in JSON valido, niente altro testo prima o dopo:
 
     "shock": "Una frase secca con un dato reale del settore italiano. Specifica — numeri, percentuali, comportamenti reali. Il titolare deve pensare: è vero, succede anche a me. Massimo 2 righe.",
 
-    "collegamento": "Colleghi il dato alla SUA realtà usando la fascia di fatturato. Quantifichi l'impatto in euro. Massimo 2 righe.",
+    "collegamento": "Colleghi il dato shock alla realtà operativa di una PMI tipica del settore. Quantifichi l'impatto concreto in euro o percentuale. Massimo 2 righe.",
 
     "aggancio": "Proponi — non chiedere. Massimo 1 riga.",
 
