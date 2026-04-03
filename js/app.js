@@ -10622,19 +10622,6 @@ function _renderSelezioneSetting(container) {
           }).join('') +
         '</div>' +
 
-        // Fascia fatturato
-        '<div style="margin-bottom:32px">' +
-          '<div style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:12px;color:rgba(26,26,46,0.3);letter-spacing:0.4px;margin-bottom:12px">Fascia di fatturato annuo</div>' +
-          '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px" id="pmi-fascia-grid">' +
-            FF.map(function(f) {
-              return '<button class="pmi-fascia-btn" id="pmi-f-' + f.id + '" onclick="pmiSelFascia(\'' + f.id + '\')" ' +
-                'style="padding:12px 6px;background:rgba(255,255,255,0.55);border:1.5px solid rgba(255,255,255,0.7);border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:12px;font-weight:600;color:rgba(26,26,46,0.5);cursor:pointer;transition:all .15s;text-align:center">' +
-                f.label +
-              '</button>';
-            }).join('') +
-          '</div>' +
-        '</div>' +
-
         // Messaggio errore
         '<p id="pmi-inizio-msg" style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:12px;color:#E53935;min-height:18px;margin-bottom:14px;text-align:center"></p>' +
 
@@ -10900,53 +10887,45 @@ async function pmiAvviaDiagnosi() {
   var msg = document.getElementById('pmi-inizio-msg');
   if (!_pmiSelectedMacro)   { if (msg) msg.textContent = 'Scegli il settore prima di continuare.'; return; }
   if (!_pmiSelectedSettore) { if (msg) msg.textContent = 'Specifica il tuo micro-settore.'; return; }
-  if (!_pmiSelectedFascia)  { if (msg) msg.textContent = 'Scegli la fascia di fatturato.'; return; }
   if (msg) msg.textContent = '';
 
-  var fascia  = PMI_FASCE_FATTURATO.find(function(f){ return f.id === _pmiSelectedFascia; });
   var profile = window._currentProfile || {};
   var upData  = window._userProfileData || {};
   var nomePMI = upData.company_name || profile.nome_completo || profile.nome || 'La mia azienda';
 
-  // Aggiorna user_profiles con settore e fascia scelte
+  // Aggiorna user_profiles con settore scelto
   try {
-    await sb.from('user_profiles').update({ sector: _pmiSelectedSettore, fascia_fatturato: _pmiSelectedFascia })
+    await sb.from('user_profiles').update({ sector: _pmiSelectedSettore })
       .eq('user_id', window._currentUserId);
-    window._userProfileData = Object.assign({}, window._userProfileData, { sector: _pmiSelectedSettore, fascia_fatturato: _pmiSelectedFascia });
+    window._userProfileData = Object.assign({}, window._userProfileData, { sector: _pmiSelectedSettore });
   } catch(e) { console.warn('user_profiles update:', e.message); }
 
   // Upsert: aggiorna se esiste già, crea solo se non esiste
   var nuovoP = window._pmiProspect || null;
   if (nuovoP && nuovoP.id) {
-    // Prospect già esistente — aggiorna settore, fatturato e azzera diagnosi precedente
+    // Prospect già esistente — aggiorna settore e azzera diagnosi precedente
     var { error: errU } = await sb.from('prospects').update({
-      settore:          _pmiSelectedSettore,
-      fatturato:        fascia ? String(fascia.value) : '',
-      fatturato_anno_1: fascia ? fascia.value : null,
-      dims:             {},
-      dims_answers:     {},
+      settore:      _pmiSelectedSettore,
+      dims:         {},
+      dims_answers: {},
     }).eq('id', nuovoP.id);
     if (errU) console.warn('update prospect:', errU.message);
     nuovoP = Object.assign({}, nuovoP, {
-      settore:          _pmiSelectedSettore,
-      fatturato:        fascia ? String(fascia.value) : '',
-      fatturato_anno_1: fascia ? fascia.value : null,
-      dims:             {},
-      dims_answers:     {},
+      settore:      _pmiSelectedSettore,
+      dims:         {},
+      dims_answers: {},
     });
     // Aggiorna anche l'oggetto nell'array prospects così apriDiagnosi legge dati puliti
     var idxP = prospects.findIndex(function(x){ return x.id === nuovoP.id; });
     if (idxP >= 0) prospects[idxP] = nuovoP;
   } else {
     var { data: created, error: errP } = await sb.from('prospects').insert({
-      nome: nomePMI,
-      settore: _pmiSelectedSettore,
-      fatturato: fascia ? String(fascia.value) : '',
-      fatturato_anno_1: fascia ? fascia.value : null,
-      stato: 'lead',
+      nome:          nomePMI,
+      settore:       _pmiSelectedSettore,
+      stato:         'lead',
       owner_user_id: window._currentUserId,
-      dims: {},
-      targets: {},
+      dims:          {},
+      targets:       {},
     }).select().single();
     if (errP || !created) {
       if (msg) msg.textContent = 'Errore nella creazione del profilo. Riprova.';
@@ -10978,21 +10957,10 @@ async function pmiAvviaDiagnosi() {
     document.body.appendChild(diagOverlay);
   }
 
-  // Avvia diagnosi-start in background; mostraPopupTransizione aspetta la promise
-  window._generaSettoreResolved = false;
-  window._generaSettorePromise = fetch('/api/diagnosi-start', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      settore:          _pmiSelectedSettore,
-      fascia_fatturato: _pmiSelectedFascia,
-      user_id:          window._currentUserId || null
-    })
-  }).then(function(r) { return r.json(); })
-    .finally(function() { window._generaSettoreResolved = true; });
-
-  // Apri subito il wizard (le 6 domande hardcoded); diagnosi-start gira in background
+  // Apri il wizard (le 6 domande hardcoded); diagnosi-start sarà lanciato dopo lo step 4
   window._datiGenerici = {};
+  window._generaSettoreResolved = false;
+  window._generaSettorePromise  = null;
   _wizardApri();
 }
 
@@ -11229,7 +11197,17 @@ function _wizAvanti() {
   if (_wizStep === 3) {
     var inp3 = document.getElementById('wiz-fatturato');
     if (!inp3 || !inp3.value || Number(inp3.value) <= 0) return;
-    window._datiGenerici.fatturato_anno_scorso = Number(inp3.value);
+    var fat = Number(inp3.value);
+    window._datiGenerici.fatturato_anno_scorso = fat;
+    // Calcola fascia e lancia diagnosi-start in background
+    _pmiSelectedFascia = fat < 500000 ? 'sotto-500k' : fat < 2000000 ? '500k-2M' : fat < 10000000 ? '2M-10M' : 'oltre-10M';
+    window._generaSettoreResolved = false;
+    window._generaSettorePromise = fetch('/api/diagnosi-start', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ settore: _pmiSelectedSettore, fascia_fatturato: _pmiSelectedFascia, user_id: window._currentUserId || null })
+    }).then(function(r) { return r.json(); })
+      .finally(function() { window._generaSettoreResolved = true; });
   }
 
   if (_wizStep < _wizTot - 1) {
@@ -11338,6 +11316,15 @@ function _wizRenderLoading() {
 }
 
 function _wizPassaAShock() {
+  if (!_pmiSelectedFascia) _pmiSelectedFascia = '500k-2M';
+  if (!window._generaSettorePromise) {
+    // fallback: fascia non raccolta (non dovrebbe accadere)
+    window._generaSettorePromise = fetch('/api/diagnosi-start', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ settore: _pmiSelectedSettore, fascia_fatturato: _pmiSelectedFascia, user_id: window._currentUserId || null })
+    }).then(function(r) { return r.json(); });
+  }
   window._generaSettorePromise.then(function(datiStart) {
     if (!datiStart.ok) {
       showToast('Errore nel caricamento della diagnosi. Riprova.', 'error');
