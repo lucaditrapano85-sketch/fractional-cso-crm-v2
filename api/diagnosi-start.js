@@ -142,13 +142,13 @@ async function callSonnet(settore, fascia) {
     },
     body: JSON.stringify({
       model: 'claude-sonnet-4-20250514',
-      max_tokens: 800,
+      max_tokens: 1200,
       messages: [{
         role: 'user',
-        content: `Genera 6 tips per un titolare di "${settore}"${fascia !== 'nd' ? ` con fatturato ${fascia}` : ''}.
+        content: `Genera 10 tips per un titolare di "${settore}"${fascia !== 'nd' ? ` con fatturato ${fascia}` : ''}.
 
-3 tips "Lo sapevi?" con un dato reale e specifico del settore nel mercato italiano.
-3 tips "Azione rapida" con un consiglio concreto che può applicare oggi.
+5 tips "Lo sapevi?" con un dato reale e specifico del settore nel mercato italiano.
+5 tips "Azione rapida" con un consiglio concreto che può applicare oggi.
 
 Rispondi SOLO in JSON, niente altro:
 {
@@ -156,6 +156,10 @@ Rispondi SOLO in JSON, niente altro:
         {"tipo": "sapevi", "testo": "..."},
         {"tipo": "sapevi", "testo": "..."},
         {"tipo": "sapevi", "testo": "..."},
+        {"tipo": "sapevi", "testo": "..."},
+        {"tipo": "sapevi", "testo": "..."},
+        {"tipo": "azione", "testo": "..."},
+        {"tipo": "azione", "testo": "..."},
         {"tipo": "azione", "testo": "..."},
         {"tipo": "azione", "testo": "..."},
         {"tipo": "azione", "testo": "..."}

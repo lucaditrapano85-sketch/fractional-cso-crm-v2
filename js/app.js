@@ -11412,23 +11412,31 @@ function _wizRenderLoading() {
     'Preparazione diagnosi personalizzata...'
   ];
 
+  // Shuffle helper per placeholder casuali
+  function _shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
   // Placeholder tips — mostrati subito, aggiornati con fade quando arrivano quelli reali
-  var _placeholderSapevi = [
+  var _placeholderSapevi = _shuffle([
     'Le PMI italiane perdono in media il 23% dei clienti ogni anno senza accorgersene',
     'Solo il 12% delle piccole imprese ha un processo strutturato di follow-up clienti',
     'Il passaparola genera il 65% dei nuovi clienti per le attività locali',
     'Un cliente fidelizzato spende in media 3 volte di più di uno nuovo',
     'Il 78% dei titolari non conosce il proprio margine netto reale'
-  ];
-  var _placeholderAzione = [
+  ]);
+  var _placeholderAzione = _shuffle([
     'Chiama oggi i tuoi 3 migliori clienti e chiedi cosa puoi migliorare',
     'Scrivi su un foglio i 5 servizi che ti chiedono di più — è il tuo listino ideale',
     'Controlla quanti clienti non vedi da oltre 30 giorni — sono soldi che perdi',
     'Fai una foto al tuo negozio dall\'esterno — è quello che vede chi passa',
     'Chiedi ai tuoi dipendenti qual è la domanda più frequente dei clienti'
-  ];
-  var _wizTipSapevi = _placeholderSapevi[Math.floor(Math.random() * _placeholderSapevi.length)];
-  var _wizTipAzione = _placeholderAzione[Math.floor(Math.random() * _placeholderAzione.length)];
+  ]);
 
   var iconLine   = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>';
   var iconInfo   = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
@@ -11456,14 +11464,19 @@ function _wizRenderLoading() {
     '</div>' +
     '<div style="flex:1;overflow-y:auto;padding:0 20px 8px;">' +
       '<div style="text-align:center;padding:20px 0 22px;">' +
-        '<div id="wiz-counter" style="font-size:48px;font-weight:500;color:#3D5AFE;line-height:1;transition:color 0.5s ease;">0</div>' +
-        '<div id="wiz-counter-sub" style="font-size:14px;color:rgba(26,26,46,0.45);margin-top:6px;">' + _esc(settore) + ' analizzati in Italia</div>' +
+        '<div style="font-size:24px;font-weight:500;color:#3D5AFE;line-height:1.2;">' + _esc(settore) + '</div>' +
+        '<div style="font-size:14px;color:rgba(26,26,46,0.45);margin-top:8px;">Stiamo analizzando il tuo settore nel mercato italiano</div>' +
       '</div>' +
-      mkCard('wiz-card-1','#E6F1FB','#3D5AFE', iconLine,  'Fatturato medio del settore', _esc(mediaStr), fatSub) +
-      mkCard('wiz-card-2','#FCEBEB','#E24B4A', iconInfo,  'Il dato che pochi conoscono', '<span id="wiz-tip-sapevi" style="transition:opacity 0.3s ease;">' + _esc(_wizTipSapevi) + '</span>', '') +
-      mkCard('wiz-card-3','#E1F5EE','#1D9E75', iconPin,   'La tua zona: ' + _esc(locStr), 'Concorrenza <strong>' + _esc(concStr) + '</strong> nella tua area', '') +
-      mkCard('wiz-card-4','#FAEEDA','#BA7517', iconBolt,  'Azione rapida', '<span id="wiz-tip-azione" style="transition:opacity 0.3s ease;">' + _esc(_wizTipAzione) + '</span>', '') +
-      mkCard('wiz-card-5','#EEEDFE','#534AB7', iconTarget,'Le tue aree da esplorare', '<strong>' + _esc(areSub) + '</strong>', 'Corrispondono ai problemi più comuni del settore') +
+      mkCard('wiz-card-1', '#E6F1FB','#3D5AFE', iconLine,  'Fatturato medio del settore', _esc(mediaStr), fatSub) +
+      mkCard('wiz-card-2', '#FCEBEB','#E24B4A', iconInfo,  'Il dato che pochi conoscono', '<span id="wiz-tip-sapevi1" style="transition:opacity 0.3s ease;">' + _esc(_placeholderSapevi[0]) + '</span>', '') +
+      mkCard('wiz-card-3', '#E1F5EE','#1D9E75', iconPin,   'La tua zona: ' + _esc(locStr), 'Concorrenza <strong>' + _esc(concStr) + '</strong> nella tua area', '') +
+      mkCard('wiz-card-4', '#FAEEDA','#BA7517', iconBolt,  'Azione rapida', '<span id="wiz-tip-azione1" style="transition:opacity 0.3s ease;">' + _esc(_placeholderAzione[0]) + '</span>', '') +
+      mkCard('wiz-card-5', '#FCEBEB','#E24B4A', iconInfo,  'Il dato che pochi conoscono', '<span id="wiz-tip-sapevi2" style="transition:opacity 0.3s ease;">' + _esc(_placeholderSapevi[1]) + '</span>', '') +
+      mkCard('wiz-card-6', '#EEEDFE','#534AB7', iconTarget,'Le tue aree da esplorare', '<strong>' + _esc(areSub) + '</strong>', 'Corrispondono ai problemi pi\u00f9 comuni del settore') +
+      mkCard('wiz-card-7', '#FAEEDA','#BA7517', iconBolt,  'Azione rapida', '<span id="wiz-tip-azione2" style="transition:opacity 0.3s ease;">' + _esc(_placeholderAzione[1]) + '</span>', '') +
+      mkCard('wiz-card-8', '#FCEBEB','#E24B4A', iconInfo,  'Il dato che pochi conoscono', '<span id="wiz-tip-sapevi3" style="transition:opacity 0.3s ease;">' + _esc(_placeholderSapevi[2]) + '</span>', '') +
+      mkCard('wiz-card-9', '#FAEEDA','#BA7517', iconBolt,  'Azione rapida', '<span id="wiz-tip-azione3" style="transition:opacity 0.3s ease;">' + _esc(_placeholderAzione[2]) + '</span>', '') +
+      mkCard('wiz-card-10','#FCEBEB','#E24B4A', iconInfo,  'Il dato che pochi conoscono', '<span id="wiz-tip-sapevi4" style="transition:opacity 0.3s ease;">' + _esc(_placeholderSapevi[3]) + '</span>', '') +
     '</div>' +
     '<div style="padding:8px 20px 20px;flex-shrink:0;">' +
       '<div style="width:100%;height:4px;background:#f0f0f5;border-radius:2px;overflow:hidden;margin-bottom:8px;">' +
@@ -11472,18 +11485,7 @@ function _wizRenderLoading() {
       '<div id="wiz-prog-text" style="font-size:12px;color:rgba(26,26,46,0.4);text-align:center;">' + _esc(statusTexts[0]) + '</div>' +
     '</div>';
 
-  // Counter: 0 → 10.000+ in 2.5s cubic ease-out
-  var t0 = Date.now();
-  (function tick() {
-    var el = document.getElementById('wiz-counter');
-    if (!el) return;
-    var p = Math.min((Date.now() - t0) / 2500, 1);
-    var eased = 1 - Math.pow(1 - p, 3);
-    el.textContent = Math.floor(eased * 10000).toLocaleString('it-IT') + (p >= 1 ? '+' : '');
-    if (p < 1) requestAnimationFrame(tick);
-  })();
-
-  // Progress bar + status text, one step every 6s
+  // Progress bar + status text, one step every 9s (54s / 6 steps)
   var progIdx = 0;
   var _progId = setInterval(function() {
     progIdx++;
@@ -11492,31 +11494,27 @@ function _wizRenderLoading() {
     if (txt) txt.textContent = statusTexts[progIdx];
     var bar = document.getElementById('wiz-prog-bar');
     if (bar) bar.style.width = Math.min(Math.round((progIdx + 1) / statusTexts.length * 88), 88) + '%';
-  }, 6000);
+  }, 9000);
 
-  // Cards appear in sequence
-  [[5000,'wiz-card-1'],[11000,'wiz-card-2'],[17000,'wiz-card-3'],[23000,'wiz-card-4'],[29000,'wiz-card-5']].forEach(function(c) {
+  // 10 cards every 5s: card-1@5s, card-2@10s, ..., card-10@50s
+  [[5000,'wiz-card-1'],[10000,'wiz-card-2'],[15000,'wiz-card-3'],[20000,'wiz-card-4'],
+   [25000,'wiz-card-5'],[30000,'wiz-card-6'],[35000,'wiz-card-7'],[40000,'wiz-card-8'],
+   [45000,'wiz-card-9'],[50000,'wiz-card-10']].forEach(function(c) {
     setTimeout(function() {
       var el = document.getElementById(c[1]);
       if (el) { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }
     }, c[0]);
   });
 
-  // Fix 3: timing obbligatorio — attendi sempre tutte le card (min 34s)
-  // _startDataReady: true quando diagnosi-start ha risposto
-  // _minTimeDone: true a 34s (dopo card 5 + 2s pausa + 1s margine)
-  var _startData      = null;
-  var _minTimeDone    = false;
+  // timing obbligatorio: tutte e 10 le card (min 54s)
+  var _startData   = null;
+  var _minTimeDone = false;
 
   function _applyGreenUI() {
-    var bar    = document.getElementById('wiz-prog-bar');
-    var txt    = document.getElementById('wiz-prog-text');
-    var ctr    = document.getElementById('wiz-counter');
-    var ctrSub = document.getElementById('wiz-counter-sub');
-    if (bar)    { bar.style.background = '#1D9E75'; bar.style.width = '100%'; }
-    if (txt)    txt.textContent = 'Analisi completata \u2713';
-    if (ctr)    ctr.style.color = '#1D9E75';
-    if (ctrSub) ctrSub.textContent = 'Analisi completata';
+    var bar = document.getElementById('wiz-prog-bar');
+    var txt = document.getElementById('wiz-prog-text');
+    if (bar) { bar.style.background = '#1D9E75'; bar.style.width = '100%'; }
+    if (txt) txt.textContent = 'Analisi completata \u2713';
   }
 
   function _tryTransition() {
@@ -11525,14 +11523,14 @@ function _wizRenderLoading() {
     _wizPassaAShock();
   }
 
-  // A 32s: checkmark verde (indipendente da quando risponde l'API)
-  setTimeout(function() { _applyGreenUI(); }, 32000);
+  // A 52s: checkmark verde
+  setTimeout(function() { _applyGreenUI(); }, 52000);
 
-  // A 34s: sblocca la transizione (se l'API è già pronta, parte subito)
+  // A 54s: sblocca la transizione (se l'API è già pronta, parte subito)
   setTimeout(function() {
     _minTimeDone = true;
     _tryTransition();
-  }, 34000);
+  }, 54000);
 
   // Poll per diagnosi-start — quando risponde, aggiorna tips e tenta transizione
   var _pollId = setInterval(function() {
@@ -11540,7 +11538,6 @@ function _wizRenderLoading() {
     clearInterval(_pollId);
     window._generaSettorePromise.then(function(data) {
       _startData = data || {};
-      // Aggiorna tips con i dati reali di Sonnet
       if (data && data.tips) {
         var sapevi = data.tips.filter(function(t) { return t.tipo === 'sapevi'; });
         var azione = data.tips.filter(function(t) { return t.tipo === 'azione'; });
@@ -11549,16 +11546,19 @@ function _wizRenderLoading() {
           var span = document.getElementById(spanId);
           if (!span || !nuovoTesto) return;
           if (card && card.style.opacity === '1') {
-            // Card già visibile: fade out → aggiorna → fade in
             span.style.opacity = '0';
             setTimeout(function() { span.textContent = nuovoTesto; span.style.opacity = '1'; }, 300);
           } else {
-            // Card non ancora apparsa: aggiorna il testo direttamente (verrà visto al reveal)
             span.textContent = nuovoTesto;
           }
         }
-        if (sapevi.length) _fadeUpdateTip('wiz-tip-sapevi', 'wiz-card-2', sapevi[0].testo);
-        if (azione.length) _fadeUpdateTip('wiz-tip-azione', 'wiz-card-4', azione[0].testo);
+        if (sapevi[0]) _fadeUpdateTip('wiz-tip-sapevi1', 'wiz-card-2',  sapevi[0].testo);
+        if (sapevi[1]) _fadeUpdateTip('wiz-tip-sapevi2', 'wiz-card-5',  sapevi[1].testo);
+        if (sapevi[2]) _fadeUpdateTip('wiz-tip-sapevi3', 'wiz-card-8',  sapevi[2].testo);
+        if (sapevi[3]) _fadeUpdateTip('wiz-tip-sapevi4', 'wiz-card-10', sapevi[3].testo);
+        if (azione[0]) _fadeUpdateTip('wiz-tip-azione1', 'wiz-card-4',  azione[0].testo);
+        if (azione[1]) _fadeUpdateTip('wiz-tip-azione2', 'wiz-card-7',  azione[1].testo);
+        if (azione[2]) _fadeUpdateTip('wiz-tip-azione3', 'wiz-card-9',  azione[2].testo);
       }
       _tryTransition();
     }).catch(function() {
