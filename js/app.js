@@ -10974,7 +10974,7 @@ var _wizTot  = 7;
 var _comuniData = null; // cache lista comuni italiani
 
 function _loadComuni(cb) {
-  if (_comuniData) { cb(_comuniData); return; }
+  if (_comuniData) { if (cb) cb(_comuniData); return; }
   fetch('/js/data/comuni.json')
     .then(function(r) { return r.json(); })
     .then(function(d) { _comuniData = d; if (cb) cb(d); })
