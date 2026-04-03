@@ -7,6 +7,7 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SER
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
 
 module.exports = async function handler(req, res) {
+  console.log('DIAGNOSI-START RICEVUTA:', new Date().toISOString());
   res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
