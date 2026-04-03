@@ -33,10 +33,11 @@ module.exports = async function handler(req, res) {
     }
 
     // STEP 1: Calcola score per dimensione dalle risposte Fase 2
-    // Ogni risposta è un indice 0-4 → score 1-5
+    // Ogni risposta è un indice 0-4 → score 1-5. null = "Non saprei" → esclusa dalla media
     const dims = {};
     domande_fase2.forEach((d, i) => {
       const risposta = risposte_fase2[i];
+      if (risposta === null || risposta === undefined) return; // Non saprei: escludi
       const score = (typeof risposta === 'number') ? risposta + 1 : 1;
       dims[d.dimensione] = Math.min(5, Math.max(1, score));
     });

@@ -11912,6 +11912,7 @@ function _chatRenderWizard(idx) {
 
   var pct    = Math.round((idx / tot) * 100);
   var selIdx = _dc.risposte_fase2[idx];
+  var isNonSaprei = (selIdx === null);
 
   var opzioniHtml = (d.opzioni || []).map(function(op, i) {
     var isSel = (selIdx === i);
@@ -11922,7 +11923,14 @@ function _chatRenderWizard(idx) {
         ? 'background:#3D5AFE;color:#fff;border:2px solid #3D5AFE;font-weight:600;'
         : 'background:rgba(255,255,255,0.65);color:#1a1a2e;border:1.5px solid rgba(255,255,255,0.7);') +
       '">' + _esc(op) + '</button>';
-  }).join('');
+  }).join('') +
+  '<button onclick="_chatSelFase2(' + idx + ',null)" style="' +
+    'display:block;width:100%;text-align:center;padding:10px 16px;margin-top:4px;border-radius:12px;' +
+    'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;line-height:1.45;cursor:pointer;transition:all .12s;font-style:italic;' +
+    (isNonSaprei
+      ? 'background:rgba(0,0,0,0.06);color:rgba(26,26,46,0.6);border:1.5px dashed rgba(26,26,46,0.45);'
+      : 'background:transparent;color:rgba(26,26,46,0.35);border:1.5px dashed rgba(26,26,46,0.2);') +
+    '">Non saprei</button>';
 
   panel.innerHTML =
     _chatPanelHeader('Domanda ' + (idx+1) + ' di ' + tot) +
