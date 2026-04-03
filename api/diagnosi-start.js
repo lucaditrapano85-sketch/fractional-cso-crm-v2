@@ -203,6 +203,11 @@ Rispondi SOLO in JSON valido, niente altro testo prima o dopo:
     "domande_fase1": [
         {
             "domanda": "Domanda da direttore commerciale. Linguaggio del settore. Concreta.",
+            "opzioni": [
+                {"testo": "Risposta negativa — situazione critica, descritta con il linguaggio del titolare", "sentiment": "negativo"},
+                {"testo": "Risposta media — ci si prova ma senza metodo, descritta concretamente", "sentiment": "medio"},
+                {"testo": "Risposta positiva — situazione sotto controllo, descritta con dettagli reali", "sentiment": "positivo"}
+            ],
             "se_positivo": "Reazione se la risposta è buona — riconosci e approfondisci",
             "se_negativo": "Reazione se la risposta è negativa — spiega l'impatto con numeri",
             "dimensione": "Una tra: Vendite, Marketing, Pipeline, Processi, Clienti, Pricing, Team, Digitale"
@@ -232,7 +237,8 @@ REGOLE:
 2. domande_fase2: esattamente 8 domande (1 per dimensione). Ogni domanda ha 5 opzioni ordinate dal peggiore al migliore.
 3. I dati nello shock devono essere REALISTICI per il mercato italiano.
 4. Usa il linguaggio che usa il titolare di quel settore, non termini da MBA.
-5. benchmark deve avere numeri realistici.`
+5. benchmark deve avere numeri realistici.
+    6. Ogni domanda di Fase 1 ha 3 opzioni. Le opzioni sono frasi che il titolare direbbe davvero — linguaggio suo, non da consulente. Ordinate: negativo, medio, positivo. Ogni opzione deve essere specifica per il settore e la domanda, non generica.`
       }]
     })
   });
