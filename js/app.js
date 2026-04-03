@@ -11379,29 +11379,44 @@ function _avviaChatDiagnosi(datiStart) {
     sintesi_fase1:       ''
   };
 
-  // Rimuovi overlay esistente se presente
-  var _old = document.getElementById('leva-chat-overlay');
-  if (_old && _old.parentNode) _old.parentNode.removeChild(_old);
+  // Riutilizza overlay esistente (wizard) se presente, altrimenti crea nuovo
+  var panel = document.getElementById('leva-chat-panel');
+  if (panel) {
+    // Sfuma il contenuto del wizard, poi sostituisce con il pannello chat
+    panel.style.transition = 'opacity 0.3s ease';
+    panel.style.opacity = '0';
+    setTimeout(function() {
+      panel.style.cssText = "background:#d8dbe2;border-radius:20px;width:100%;max-width:600px;max-height:85vh;display:flex;flex-direction:column;overflow:hidden;font-family:'Plus Jakarta Sans',sans-serif;box-shadow:0 24px 64px rgba(0,0,0,0.25);transition:opacity 0.3s ease;opacity:0;";
+      panel.innerHTML =
+        _chatPanelHeader('Diagnosi commerciale') +
+        '<div id="leva-chat-feed" style="flex:1;overflow-y:auto;padding:20px 16px 12px;box-sizing:border-box;"></div>' +
+        '<div id="leva-chat-inputarea" style="flex-shrink:0;background:#d8dbe2;border-top:1px solid rgba(0,0,0,0.06);padding:12px 16px;box-sizing:border-box;"></div>';
+      requestAnimationFrame(function() {
+        panel.style.opacity = '1';
+        _chatFase0();
+      });
+    }, 300);
+  } else {
+    // Nessun overlay esistente — crea da zero
+    var overlay = document.createElement('div');
+    overlay.id = 'leva-chat-overlay';
+    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.45);z-index:9000;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;';
 
-  // Crea overlay popup (position:fixed sopra la pagina)
-  var overlay = document.createElement('div');
-  overlay.id = 'leva-chat-overlay';
-  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.45);z-index:9000;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;';
+    panel = document.createElement('div');
+    panel.id = 'leva-chat-panel';
+    panel.style.cssText = "background:#d8dbe2;border-radius:20px;width:100%;max-width:600px;max-height:85vh;display:flex;flex-direction:column;overflow:hidden;font-family:'Plus Jakarta Sans',sans-serif;box-shadow:0 24px 64px rgba(0,0,0,0.25);";
 
-  var panel = document.createElement('div');
-  panel.id = 'leva-chat-panel';
-  panel.style.cssText = "background:#d8dbe2;border-radius:20px;width:100%;max-width:600px;max-height:85vh;display:flex;flex-direction:column;overflow:hidden;font-family:'Plus Jakarta Sans',sans-serif;box-shadow:0 24px 64px rgba(0,0,0,0.25);";
+    panel.innerHTML =
+      _chatPanelHeader('Diagnosi commerciale') +
+      '<div id="leva-chat-feed" style="flex:1;overflow-y:auto;padding:20px 16px 12px;box-sizing:border-box;"></div>' +
+      '<div id="leva-chat-inputarea" style="flex-shrink:0;background:#d8dbe2;border-top:1px solid rgba(0,0,0,0.06);padding:12px 16px;box-sizing:border-box;"></div>';
 
-  panel.innerHTML =
-    _chatPanelHeader('Diagnosi commerciale') +
-    '<div id="leva-chat-feed" style="flex:1;overflow-y:auto;padding:20px 16px 12px;box-sizing:border-box;"></div>' +
-    '<div id="leva-chat-inputarea" style="flex-shrink:0;background:#d8dbe2;border-top:1px solid rgba(0,0,0,0.06);padding:12px 16px;box-sizing:border-box;"></div>';
+    overlay.appendChild(panel);
+    document.body.appendChild(overlay);
+    document.body.style.overflow = 'hidden';
 
-  overlay.appendChild(panel);
-  document.body.appendChild(overlay);
-  document.body.style.overflow = 'hidden';
-
-  _chatFase0();
+    _chatFase0();
+  }
 }
 
 function _chatPanelHeader(titolo) {
@@ -11483,15 +11498,20 @@ function _chatSetInput(html) {
 function _chatFase0() {
   var feed = document.getElementById('leva-chat-feed');
   if (!feed) return;
+  var nome = (window._datiGenerici && window._datiGenerici.nome) ? window._datiGenerici.nome.split(' ')[0] : '';
+  var saluto = nome ? _esc(nome) + ', ho analizzato il tuo settore.' : 'Ho analizzato il tuo settore.';
   feed.innerHTML = '<div style="text-align:center;padding:24px 0 16px;"><span style="font-size:24px;font-weight:700;color:#1a1a2e;letter-spacing:-0.5px;">L<span style="color:#FF6B2B">e</span>va</span></div>';
   setTimeout(function() {
-    _chatAddBolla('ai', _esc(_dc.shock));
+    _chatAddBolla('ai', saluto);
     setTimeout(function() {
-      _chatAddBolla('ai', _esc(_dc.collegamento));
+      _chatAddBolla('ai', _esc(_dc.shock));
       setTimeout(function() {
-        _chatAddBolla('ai', _esc(_dc.aggancio));
-        _chatSetInput('<button onclick="_chatIniziaFase1()" style="width:100%;padding:16px;background:#3D5AFE;color:#fff;border:none;border-radius:14px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:16px;font-weight:700;cursor:pointer;">Iniziamo →</button>');
-        _chatScroll();
+        _chatAddBolla('ai', _esc(_dc.collegamento));
+        setTimeout(function() {
+          _chatAddBolla('ai', _esc(_dc.aggancio));
+          _chatSetInput('<button onclick="_chatIniziaFase1()" style="width:100%;padding:16px;background:#3D5AFE;color:#fff;border:none;border-radius:14px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:16px;font-weight:700;cursor:pointer;">Iniziamo →</button>');
+          _chatScroll();
+        }, 700);
       }, 700);
     }, 700);
   }, 400);
@@ -11581,13 +11601,14 @@ async function _chatSelezionaOpzione(testo) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        step:              _dc.step_fase1,
-        risposta_titolare: testo,
-        domande_fase1:     _dc.domande_fase1,
-        conversazione:     _dc.conversazione,
-        settore:           _dc.settore,
-        fascia_fatturato:  _dc.fascia,
-        shock:             _dc.shock
+        step:               _dc.step_fase1,
+        risposta_titolare:  testo,
+        domande_fase1:      _dc.domande_fase1,
+        conversazione:      _dc.conversazione,
+        settore:            _dc.settore,
+        fascia_fatturato:   _dc.fascia,
+        shock:              _dc.shock,
+        contesto_titolare:  window._datiGenerici || {}
       })
     });
     var data = await res.json();

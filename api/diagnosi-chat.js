@@ -19,7 +19,8 @@ module.exports = async function handler(req, res) {
       conversazione,
       settore,
       fascia_fatturato,
-      shock
+      shock,
+      contesto_titolare
     } = req.body;
 
     if (step === undefined || !risposta_titolare || !domande_fase1) {
@@ -44,7 +45,8 @@ module.exports = async function handler(req, res) {
       risposta_titolare,
       isUltima,
       domandeProssime: isUltima ? [] : domande_fase1.slice(step + 1),
-      domande_fase1
+      domande_fase1,
+      contesto_titolare: contesto_titolare || {}
     });
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -91,13 +93,27 @@ module.exports = async function handler(req, res) {
   }
 };
 
-function buildPrompt({ settore, fascia_fatturato, shock, storicoFormattato, domandaCorrente, risposta_titolare, isUltima, domandeProssime, domande_fase1 }) {
+function buildPrompt({ settore, fascia_fatturato, shock, storicoFormattato, domandaCorrente, risposta_titolare, isUltima, domandeProssime, domande_fase1, contesto_titolare }) {
+
+  const ctx = contesto_titolare || {};
+  const nomeCtx = ctx.nome ? `Nome: ${ctx.nome}` : '';
+  const contesLines = [
+    nomeCtx,
+    ctx.soddisfazione ? `Soddisfazione fatturato: ${ctx.soddisfazione}` : '',
+    ctx.aree_deboli && ctx.aree_deboli.length ? `Aree deboli dichiarate: ${ctx.aree_deboli.join(', ')}` : '',
+    ctx.fatturato_anno_scorso ? `Fatturato anno scorso: €${ctx.fatturato_anno_scorso.toLocaleString('it-IT')}` : '',
+    ctx.n_persone ? `Dimensione team: ${ctx.n_persone}` : '',
+    ctx.anni_attivita ? `Anni di attività: ${ctx.anni_attivita}` : ''
+  ].filter(Boolean).join('\n');
 
   const base = `RUOLO:
 Sei il direttore commerciale che sta conducendo una diagnosi con un titolare di "${settore}" (fatturato ${fascia_fatturato}).
 
 TONO:
-Parli come uno che ha visto centinaia di aziende come la sua. Diretto, concreto, mai accademico. Usi il linguaggio del settore. Frasi corte. Quando dai un numero, è specifico. Quando fai un'osservazione, è tagliente ma rispettosa.
+Parli come uno che ha visto centinaia di aziende come la sua. Diretto, concreto, mai accademico. Usi il linguaggio del settore. Frasi corte. Quando dai un numero, è specifico. Quando fai un'osservazione, è tagliente ma rispettosa.${ctx.nome ? ` Usa il nome "${ctx.nome.split(' ')[0]}" solo se è naturale farlo, non in modo forzato.` : ''}
+
+PROFILO TITOLARE (raccolto prima della conversazione):
+${contesLines || 'Non disponibile'}
 
 CONTESTO CONVERSAZIONE:
 L'apertura shock era: "${shock}"
