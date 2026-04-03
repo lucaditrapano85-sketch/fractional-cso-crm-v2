@@ -10884,6 +10884,19 @@ async function pmiAvviaDiagnosi() {
   if (!_pmiSelectedSettore) { if (msg) msg.textContent = 'Specifica il tuo micro-settore.'; return; }
   if (msg) msg.textContent = '';
 
+  // PRIMA COSA: lancia diagnosi-start fire-and-forget — prima di qualsiasi await
+  window._datiGenerici = {};
+  window._generaSettoreResolved = false;
+  console.log('DIAGNOSI-START LANCIATA:', new Date().toISOString());
+  window._generaSettorePromise = fetch('/api/diagnosi-start', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ settore: _pmiSelectedSettore, fascia_fatturato: 'nd', user_id: window._currentUserId || null })
+  }).then(function(r) { return r.json(); })
+    .then(function(data) { console.log('DIAGNOSI-START COMPLETATA:', new Date().toISOString()); return data; })
+    .finally(function() { window._generaSettoreResolved = true; });
+  window._diagnosi_start_promise = window._generaSettorePromise;
+
   var profile = window._currentProfile || {};
   var upData  = window._userProfileData || {};
   var nomePMI = upData.company_name || profile.nome_completo || profile.nome || 'La mia azienda';
@@ -10952,18 +10965,6 @@ async function pmiAvviaDiagnosi() {
     document.body.appendChild(diagOverlay);
   }
 
-  // Lancia subito diagnosi-start con fascia 'nd' — non aspettare il fatturato
-  window._datiGenerici = {};
-  window._generaSettoreResolved = false;
-  console.log('DIAGNOSI-START LANCIATA:', new Date().toISOString());
-  window._generaSettorePromise = fetch('/api/diagnosi-start', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ settore: _pmiSelectedSettore, fascia_fatturato: 'nd', user_id: window._currentUserId || null })
-  }).then(function(r) { return r.json(); })
-    .then(function(data) { console.log('DIAGNOSI-START COMPLETATA:', new Date().toISOString()); return data; })
-    .finally(function() { window._generaSettoreResolved = true; });
-  window._diagnosi_start_promise = window._generaSettorePromise;
   _wizardApri();
 }
 
