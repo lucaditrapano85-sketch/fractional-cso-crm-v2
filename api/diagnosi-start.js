@@ -49,7 +49,8 @@ module.exports = async function handler(req, res) {
         shock: settoreData.shock_data[fascia_fatturato].shock,
         collegamento: settoreData.shock_data[fascia_fatturato].collegamento,
         aggancio: settoreData.shock_data[fascia_fatturato].aggancio,
-        domande_fase1: settoreData.domande_fase1
+        domande_fase1: settoreData.domande_fase1,
+        domande_fase2: settoreData.domande_fase2
       });
     }
 
@@ -120,7 +121,8 @@ module.exports = async function handler(req, res) {
       shock: opusResult.shock,
       collegamento: opusResult.collegamento,
       aggancio: opusResult.aggancio,
-      domande_fase1: opusResult.domande_fase1
+      domande_fase1: opusResult.domande_fase1,
+      domande_fase2: opusResult.domande_fase2
     });
 
   } catch (err) {

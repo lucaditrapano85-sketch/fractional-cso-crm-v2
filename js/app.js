@@ -10978,11 +10978,511 @@ async function pmiAvviaDiagnosi() {
     document.body.appendChild(diagOverlay);
   }
 
-  // Popup di transizione → le domande partono nel callback
-  mostraPopupTransizione(function() {
-    window._pmiDiagnosiMode = true;
-    apriDiagnosi();
+  // Avvia diagnosi-start in background; mostraPopupTransizione aspetta la promise
+  window._generaSettoreResolved = false;
+  window._generaSettorePromise = fetch('/api/diagnosi-start', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      settore:          _pmiSelectedSettore,
+      fascia_fatturato: _pmiSelectedFascia,
+      user_id:          window._currentUserId || null
+    })
+  }).then(function(r) { return r.json(); })
+    .finally(function() { window._generaSettoreResolved = true; });
+
+  mostraPopupTransizione(async function() {
+    try {
+      var datiStart = await window._generaSettorePromise;
+      if (!datiStart.ok) throw new Error(datiStart.error || 'Errore diagnosi-start');
+      _avviaChatDiagnosi(datiStart);
+    } catch(e) {
+      console.error('diagnosi-start:', e);
+      showToast('Errore nel caricamento della diagnosi. Riprova.', 'error');
+      renderPrimoAccesso();
+    }
   });
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// PMI — DIAGNOSI CHAT: Fase 0 (shock) → Fase 1 (chat) → Fase 2 (wizard) → Risultati
+// ═══════════════════════════════════════════════════════════════════════════════
+
+var _dc = null; // stato diagnosi chat corrente
+
+function _avviaChatDiagnosi(datiStart) {
+  _dc = {
+    settore:             _pmiSelectedSettore,
+    fascia:              _pmiSelectedFascia,
+    prospect_id:         window._pmiProspect ? window._pmiProspect.id : null,
+    settore_id:          datiStart.settore_id,
+    shock:               datiStart.shock || '',
+    collegamento:        datiStart.collegamento || '',
+    aggancio:            datiStart.aggancio || '',
+    domande_fase1:       datiStart.domande_fase1 || [],
+    domande_fase2:       datiStart.domande_fase2 || [],
+    conversazione:       [],
+    risposte_fase1:      [],
+    step_fase1:          0,
+    risposte_fase2:      [],
+    dimensioni_critiche: [],
+    sintesi_fase1:       ''
+  };
+
+  var sidebar = document.getElementById('pmi-sidebar');
+  if (sidebar) sidebar.style.display = 'none';
+  var appPmi = document.getElementById('app-pmi');
+  if (appPmi) appPmi.style.gridTemplateColumns = '1fr';
+
+  var main = document.getElementById('pmi-main');
+  if (!main) return;
+  main.style.padding  = '0';
+  main.style.overflow = 'hidden';
+  main.style.height   = '100vh';
+
+  main.innerHTML =
+    '<div id="leva-chat-wrap" style="display:flex;flex-direction:column;height:100%;font-family:\'Plus Jakarta Sans\',sans-serif;">' +
+      '<div id="leva-chat-feed" style="flex:1;overflow-y:auto;padding:20px 16px 160px;box-sizing:border-box;"></div>' +
+      '<div id="leva-chat-inputarea" style="flex-shrink:0;background:#d8dbe2;border-top:1px solid rgba(0,0,0,0.06);padding:12px 16px;box-sizing:border-box;"></div>' +
+    '</div>';
+
+  _chatFase0();
+}
+
+// ─── helpers ─────────────────────────────────────────────────────────────────
+
+function _chatScroll() {
+  var feed = document.getElementById('leva-chat-feed');
+  if (feed) requestAnimationFrame(function() { feed.scrollTop = feed.scrollHeight; });
+}
+
+function _chatAddBolla(ruolo, htmlContent) {
+  var feed = document.getElementById('leva-chat-feed');
+  if (!feed) return;
+  var isAI = (ruolo === 'ai');
+  var wrap = document.createElement('div');
+  wrap.style.cssText = 'display:flex;margin-bottom:10px;' + (isAI ? 'justify-content:flex-start' : 'justify-content:flex-end');
+  var bolla = document.createElement('div');
+  bolla.style.cssText = 'max-width:84%;padding:13px 16px;word-break:break-word;font-size:15px;line-height:1.6;' +
+    (isAI
+      ? 'background:rgba(255,255,255,0.75);color:#1a1a2e;border-radius:4px 18px 18px 18px;'
+      : 'background:#3D5AFE;color:#fff;border-radius:18px 4px 18px 18px;');
+  bolla.innerHTML = htmlContent;
+  wrap.appendChild(bolla);
+  feed.appendChild(wrap);
+  _chatScroll();
+}
+
+function _chatAddLoadingBolla() {
+  var feed = document.getElementById('leva-chat-feed');
+  if (!feed) return;
+  var wrap = document.createElement('div');
+  wrap.id = 'leva-chat-loading-bolla';
+  wrap.style.cssText = 'display:flex;margin-bottom:10px;justify-content:flex-start';
+  var bolla = document.createElement('div');
+  bolla.style.cssText = 'padding:13px 20px;background:rgba(255,255,255,0.75);border-radius:4px 18px 18px 18px;font-size:20px;letter-spacing:3px;color:#3D5AFE;';
+  bolla.textContent = '···';
+  wrap.appendChild(bolla);
+  feed.appendChild(wrap);
+  _chatScroll();
+}
+
+function _chatRemoveLoadingBolla() {
+  var el = document.getElementById('leva-chat-loading-bolla');
+  if (el && el.parentNode) el.parentNode.removeChild(el);
+}
+
+function _chatSetInput(html) {
+  var area = document.getElementById('leva-chat-inputarea');
+  if (area) area.innerHTML = html;
+}
+
+// ─── FASE 0: Shock ───────────────────────────────────────────────────────────
+
+function _chatFase0() {
+  var feed = document.getElementById('leva-chat-feed');
+  if (!feed) return;
+  feed.innerHTML = '<div style="text-align:center;padding:24px 0 16px;"><span style="font-size:24px;font-weight:700;color:#1a1a2e;letter-spacing:-0.5px;">L<span style="color:#FF6B2B">e</span>va</span></div>';
+  setTimeout(function() {
+    _chatAddBolla('ai', _esc(_dc.shock));
+    setTimeout(function() {
+      _chatAddBolla('ai', _esc(_dc.collegamento));
+      setTimeout(function() {
+        _chatAddBolla('ai', _esc(_dc.aggancio));
+        _chatSetInput('<button onclick="_chatIniziaFase1()" style="width:100%;padding:16px;background:#3D5AFE;color:#fff;border:none;border-radius:14px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:16px;font-weight:700;cursor:pointer;">Iniziamo →</button>');
+        _chatScroll();
+      }, 700);
+    }, 700);
+  }, 400);
+}
+
+// ─── FASE 1: Chat conversazionale ────────────────────────────────────────────
+
+function _chatIniziaFase1() {
+  _chatSetInput('');
+  _dc.step_fase1    = 0;
+  _dc.conversazione = [];
+  _dc.risposte_fase1 = [];
+  setTimeout(function() { _chatMostraDomanda(0); }, 300);
+}
+
+function _chatMostraDomanda(step) {
+  var d = _dc.domande_fase1[step];
+  if (!d) return;
+  _chatAddBolla('ai', _esc(d.domanda));
+
+  var icona = { negativo: '🔴', medio: '🟡', positivo: '🟢' };
+  var opzioniHtml = (d.opzioni || []).map(function(op) {
+    var ic = icona[op.sentiment] || '•';
+    return '<button onclick="_chatSelezionaOpzione(' + JSON.stringify(op.testo) + ')" ' +
+      'style="display:block;width:100%;text-align:left;padding:13px 16px;margin-bottom:8px;' +
+      'background:rgba(255,255,255,0.65);border:1.5px solid rgba(255,255,255,0.7);border-radius:12px;' +
+      'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;color:#1a1a2e;cursor:pointer;line-height:1.4;" ' +
+      'onmouseover="this.style.background=\'rgba(255,255,255,0.9)\'" onmouseout="this.style.background=\'rgba(255,255,255,0.65)\'">' +
+      ic + ' ' + _esc(op.testo) + '</button>';
+  }).join('');
+
+  _chatSetInput(
+    '<div>' + opzioniHtml +
+      '<button onclick="_chatMostraInputLibero()" style="display:block;width:100%;text-align:left;padding:11px 16px;' +
+      'background:transparent;border:1.5px dashed rgba(26,26,46,0.2);border-radius:12px;' +
+      'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;color:rgba(26,26,46,0.5);cursor:pointer;">' +
+      '✏️ Altro — scrivo io</button></div>'
+  );
+  _chatScroll();
+}
+
+function _chatMostraInputLibero() {
+  _chatSetInput(
+    '<div style="display:flex;gap:8px;align-items:flex-end;">' +
+      '<textarea id="leva-chat-ta" rows="2" placeholder="Scrivi la tua risposta..." ' +
+        'style="flex:1;padding:12px 14px;border-radius:12px;border:1.5px solid rgba(61,90,254,0.3);' +
+        'background:rgba(255,255,255,0.7);font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;resize:none;outline:none;box-sizing:border-box;"></textarea>' +
+      '<button onclick="_chatInviaTestoLibero()" style="flex-shrink:0;height:48px;padding:0 18px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Invia →</button>' +
+    '</div>'
+  );
+  var ta = document.getElementById('leva-chat-ta');
+  if (ta) {
+    ta.focus();
+    ta.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); _chatInviaTestoLibero(); }
+    });
+  }
+}
+
+function _chatInviaTestoLibero() {
+  var ta = document.getElementById('leva-chat-ta');
+  var testo = ta ? ta.value.trim() : '';
+  if (!testo) return;
+  _chatSelezionaOpzione(testo);
+}
+
+async function _chatSelezionaOpzione(testo) {
+  _chatSetInput('');
+  _chatAddBolla('titolare', _esc(testo));
+
+  var d = _dc.domande_fase1[_dc.step_fase1];
+  _dc.conversazione.push({ ruolo: 'ai',       testo: d.domanda });
+  _dc.conversazione.push({ ruolo: 'titolare', testo: testo });
+  _dc.risposte_fase1.push({ domanda: d.domanda, risposta: testo });
+
+  _chatAddLoadingBolla();
+
+  try {
+    var res = await fetch('/api/diagnosi-chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        step:              _dc.step_fase1,
+        risposta_titolare: testo,
+        domande_fase1:     _dc.domande_fase1,
+        conversazione:     _dc.conversazione,
+        settore:           _dc.settore,
+        fascia_fatturato:  _dc.fascia,
+        shock:             _dc.shock
+      })
+    });
+    var data = await res.json();
+    _chatRemoveLoadingBolla();
+    if (!data.ok) throw new Error(data.error || 'diagnosi-chat error');
+
+    _dc.conversazione.push({ ruolo: 'ai', testo: data.reazione });
+    _chatAddBolla('ai', _esc(data.reazione));
+
+    if (data.is_ultima) {
+      _dc.dimensioni_critiche = data.dimensioni_critiche || [];
+      _dc.sintesi_fase1       = data.sintesi_fase1 || '';
+      setTimeout(function() {
+        if (data.sintesi_fase1) _chatAddBolla('ai', _esc(data.sintesi_fase1));
+        setTimeout(function() {
+          _chatAddBolla('ai', 'Ora ti faccio qualche domanda rapida per quantificare la situazione. Ci vogliono 2 minuti.');
+          _chatSetInput('<button onclick="_chatIniziaFase2()" style="width:100%;padding:16px;background:#3D5AFE;color:#fff;border:none;border-radius:14px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:16px;font-weight:700;cursor:pointer;">Continua →</button>');
+          _chatScroll();
+        }, 1000);
+      }, 1000);
+    } else {
+      setTimeout(function() {
+        if (data.transizione) _chatAddBolla('ai', _esc(data.transizione));
+        setTimeout(function() {
+          _dc.step_fase1++;
+          _chatMostraDomanda(_dc.step_fase1);
+        }, 1000);
+      }, 1000);
+    }
+
+  } catch(e) {
+    _chatRemoveLoadingBolla();
+    console.error('diagnosi-chat:', e);
+    _chatAddBolla('ai', 'Si è verificato un errore. Riproviamo.');
+    _chatSetInput('<button onclick="_chatMostraDomanda(' + _dc.step_fase1 + ')" style="width:100%;padding:13px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Riprova</button>');
+  }
+}
+
+// ─── FASE 2: Wizard rapido (8 domande) ───────────────────────────────────────
+
+async function _chatIniziaFase2() {
+  _chatSetInput('');
+  _dc.risposte_fase2 = [];
+
+  // Fallback: carica domande_fase2 da DB se mancanti (settori vecchi)
+  if (!_dc.domande_fase2 || _dc.domande_fase2.length === 0) {
+    try {
+      var q = await sb.from('settori_custom').select('domande_fase2').eq('id', _dc.settore_id).single();
+      _dc.domande_fase2 = (q.data && q.data.domande_fase2) ? q.data.domande_fase2 : [];
+    } catch(e) { console.error('load domande_fase2:', e); }
+  }
+
+  if (!_dc.domande_fase2 || _dc.domande_fase2.length === 0) return _chatTermina();
+  _chatRenderWizard(0);
+}
+
+function _chatRenderWizard(idx) {
+  var main = document.getElementById('pmi-main');
+  if (!main) return;
+  main.style.overflow = 'auto';
+  main.style.height   = '';
+
+  var domande = _dc.domande_fase2;
+  var tot     = domande.length;
+  var d       = domande[idx];
+  if (!d) return;
+
+  var pct    = Math.round((idx / tot) * 100);
+  var selIdx = _dc.risposte_fase2[idx];
+
+  var opzioniHtml = (d.opzioni || []).map(function(op, i) {
+    var isSel = (selIdx === i);
+    return '<button onclick="_chatSelFase2(' + idx + ',' + i + ')" style="' +
+      'display:block;width:100%;text-align:left;padding:15px 18px;margin-bottom:10px;border-radius:14px;' +
+      'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;line-height:1.45;cursor:pointer;transition:all .12s;' +
+      (isSel
+        ? 'background:#3D5AFE;color:#fff;border:2px solid #3D5AFE;font-weight:600;'
+        : 'background:rgba(255,255,255,0.65);color:#1a1a2e;border:1.5px solid rgba(255,255,255,0.7);') +
+      '">' + _esc(op) + '</button>';
+  }).join('');
+
+  main.innerHTML =
+    '<div style="min-height:100vh;background:#d8dbe2;font-family:\'Plus Jakarta Sans\',sans-serif;">' +
+    '<div style="max-width:560px;margin:0 auto;padding:24px 16px 60px;box-sizing:border-box;">' +
+      '<div style="margin-bottom:28px;">' +
+        '<div style="display:flex;justify-content:space-between;margin-bottom:8px;">' +
+          '<span style="font-size:12px;font-weight:600;color:rgba(26,26,46,0.4);">Domanda ' + (idx+1) + ' di ' + tot + '</span>' +
+          '<span style="font-size:12px;font-weight:700;color:#3D5AFE;">' + pct + '%</span>' +
+        '</div>' +
+        '<div style="height:5px;background:rgba(0,0,0,0.08);border-radius:3px;overflow:hidden;">' +
+          '<div style="height:100%;background:#3D5AFE;border-radius:3px;width:' + pct + '%;transition:width .3s;"></div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="font-size:12px;font-weight:700;color:#3D5AFE;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:12px;">' + _esc(d.dimensione) + '</div>' +
+      '<div style="font-size:20px;font-weight:600;color:#1a1a2e;line-height:1.45;margin-bottom:28px;">' + _esc(d.domanda) + '</div>' +
+      opzioniHtml +
+      '<div style="display:flex;gap:10px;margin-top:20px;">' +
+        (idx > 0 ? '<button onclick="_chatStepFase2(' + (idx-1) + ')" style="flex:1;padding:14px;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.1);border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:15px;cursor:pointer;color:rgba(26,26,46,0.6);">← Indietro</button>' : '') +
+        (selIdx !== undefined ? '<button onclick="' + (idx < tot-1 ? '_chatStepFase2(' + (idx+1) + ')' : '_chatTermina()') + '" style="flex:2;padding:14px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:15px;font-weight:700;cursor:pointer;">' + (idx < tot-1 ? 'Avanti →' : 'Vedi la diagnosi →') + '</button>' : '') +
+      '</div>' +
+    '</div></div>';
+}
+
+function _chatSelFase2(idx, optIdx) {
+  _dc.risposte_fase2[idx] = optIdx;
+  _chatRenderWizard(idx);
+}
+
+function _chatStepFase2(idx) {
+  _chatRenderWizard(idx);
+}
+
+// ─── FASE 3: Risultati ───────────────────────────────────────────────────────
+
+async function _chatTermina() {
+  var main = document.getElementById('pmi-main');
+  if (!main) return;
+  main.style.overflow = 'auto';
+  main.style.height   = '';
+
+  if (!document.getElementById('_leva_spin_style')) {
+    var s = document.createElement('style');
+    s.id = '_leva_spin_style';
+    s.textContent = '@keyframes spin{to{transform:rotate(360deg)}}';
+    document.head.appendChild(s);
+  }
+
+  main.innerHTML =
+    '<div style="min-height:100vh;background:#d8dbe2;display:flex;align-items:center;justify-content:center;font-family:\'Plus Jakarta Sans\',sans-serif;">' +
+      '<div style="text-align:center;">' +
+        '<div style="width:48px;height:48px;border:4px solid rgba(61,90,254,0.15);border-top-color:#3D5AFE;border-radius:50%;animation:spin 1.5s linear infinite;margin:0 auto 16px;"></div>' +
+        '<div style="font-size:16px;color:rgba(26,26,46,0.55);">Elaboro la tua diagnosi...</div>' +
+      '</div>' +
+    '</div>';
+
+  try {
+    var res = await fetch('/api/diagnosi-end', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        prospect_id:         _dc.prospect_id,
+        settore:             _dc.settore,
+        fascia_fatturato:    _dc.fascia,
+        risposte_fase1:      _dc.risposte_fase1,
+        risposte_fase2:      _dc.risposte_fase2,
+        domande_fase1:       _dc.domande_fase1,
+        domande_fase2:       _dc.domande_fase2,
+        sintesi_fase1:       _dc.sintesi_fase1,
+        dimensioni_critiche: _dc.dimensioni_critiche,
+        shock:               _dc.shock
+      })
+    });
+    var data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'diagnosi-end error');
+    _chatMostraRisultati(data);
+  } catch(e) {
+    console.error('diagnosi-end:', e);
+    main.innerHTML =
+      '<div style="min-height:100vh;background:#d8dbe2;display:flex;align-items:center;justify-content:center;font-family:\'Plus Jakarta Sans\',sans-serif;padding:20px;box-sizing:border-box;">' +
+        '<div style="text-align:center;max-width:400px;">' +
+          '<div style="font-size:16px;color:#E53935;margin-bottom:16px;">Errore nel calcolo della diagnosi.</div>' +
+          '<button onclick="_chatTermina()" style="padding:13px 24px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Riprova</button>' +
+        '</div>' +
+      '</div>';
+  }
+}
+
+function _chatMostraRisultati(data) {
+  var main = document.getElementById('pmi-main');
+  if (!main) return;
+
+  var sg         = data.score_globale || 0;
+  var scoreColor = sg >= 4 ? '#00825F' : sg >= 3 ? '#FF6B2B' : '#E53935';
+  var scoreLabel = sg >= 4 ? 'Buona salute commerciale' : sg >= 3 ? 'Margine di miglioramento' : 'Intervento urgente';
+
+  var prioritaHtml = (data.priorita || []).map(function(p) {
+    return '<div style="background:rgba(255,255,255,0.65);border-radius:14px;padding:16px 18px;margin-bottom:10px;">' +
+      '<div style="margin-bottom:8px;"><span style="font-size:11px;font-weight:700;color:' + scoreColor + ';border:1px solid ' + scoreColor + '44;padding:3px 10px;border-radius:20px;">' + _esc(p.dimensione) + ' — ' + p.score + '/5</span></div>' +
+      '<div style="font-size:14px;font-weight:500;color:#1a1a2e;margin-bottom:6px;">' + _esc(p.problema) + '</div>' +
+      '<div style="font-size:13px;color:rgba(26,26,46,0.55);">→ ' + _esc(p.azione) + '</div>' +
+    '</div>';
+  }).join('');
+
+  var azioniHtml = (data.azioni_immediate || []).map(function(a, i) {
+    return '<div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;">' +
+      '<span style="flex-shrink:0;width:24px;height:24px;background:#3D5AFE;color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-top:2px;">' + (i+1) + '</span>' +
+      '<span style="font-size:14px;color:#1a1a2e;line-height:1.55;">' + _esc(a) + '</span>' +
+    '</div>';
+  }).join('');
+
+  main.innerHTML =
+    '<div style="min-height:100vh;background:#d8dbe2;font-family:\'Plus Jakarta Sans\',sans-serif;">' +
+    '<div style="max-width:600px;margin:0 auto;padding:32px 16px 72px;box-sizing:border-box;">' +
+      '<div style="text-align:center;margin-bottom:32px;">' +
+        '<div style="font-size:12px;font-weight:700;color:rgba(26,26,46,0.35);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:14px;">La tua diagnosi commerciale</div>' +
+        '<div style="font-size:80px;font-weight:700;color:' + scoreColor + ';line-height:1;margin-bottom:8px;">' + sg.toFixed(1) + '</div>' +
+        '<div style="font-size:15px;font-weight:600;color:#1a1a2e;">' + _esc(scoreLabel) + '</div>' +
+        '<div style="font-size:13px;color:rgba(26,26,46,0.4);margin-top:4px;">su 5 — media delle 8 dimensioni commerciali</div>' +
+      '</div>' +
+      '<div style="display:flex;justify-content:center;margin-bottom:28px;">' + _chatRadarSVG(data.dims || {}) + '</div>' +
+      '<div style="background:rgba(255,255,255,0.65);border-radius:16px;padding:20px;margin-bottom:20px;">' +
+        '<div style="font-size:11px;font-weight:700;color:rgba(26,26,46,0.35);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;">Diagnosi</div>' +
+        '<div style="font-size:15px;color:#1a1a2e;line-height:1.7;">' + _esc(data.diagnosi) + '</div>' +
+      '</div>' +
+      '<div style="margin-bottom:20px;">' +
+        '<div style="font-size:11px;font-weight:700;color:rgba(26,26,46,0.35);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;">Le 3 priorità</div>' +
+        prioritaHtml +
+      '</div>' +
+      '<div style="background:rgba(255,255,255,0.65);border-radius:16px;padding:20px;margin-bottom:28px;">' +
+        '<div style="font-size:11px;font-weight:700;color:rgba(26,26,46,0.35);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:16px;">Cosa fare questa settimana</div>' +
+        azioniHtml +
+      '</div>' +
+      '<button onclick="_chatVaiHome()" style="width:100%;padding:17px;background:#3D5AFE;color:#fff;border:none;border-radius:14px;font-size:17px;font-weight:700;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;">Vedi il tuo piano →</button>' +
+    '</div></div>';
+}
+
+function _chatRadarSVG(dims) {
+  var keys = Object.keys(dims);
+  var n = keys.length;
+  if (n === 0) return '';
+  var cx = 115, cy = 115, r = 82;
+  var angles = keys.map(function(_, i) { return (i / n) * 2 * Math.PI - Math.PI / 2; });
+
+  var grid = [1,2,3,4,5].map(function(lvl) {
+    var pts = angles.map(function(a) {
+      return (cx + r*(lvl/5)*Math.cos(a)).toFixed(1) + ',' + (cy + r*(lvl/5)*Math.sin(a)).toFixed(1);
+    }).join(' ');
+    return '<polygon points="' + pts + '" fill="none" stroke="rgba(26,26,46,0.1)" stroke-width="1"/>';
+  }).join('');
+
+  var axes = keys.map(function(_, i) {
+    return '<line x1="' + cx + '" y1="' + cy + '" x2="' + (cx + r*Math.cos(angles[i])).toFixed(1) + '" y2="' + (cy + r*Math.sin(angles[i])).toFixed(1) + '" stroke="rgba(26,26,46,0.08)" stroke-width="1"/>';
+  }).join('');
+
+  var dataPts = keys.map(function(k, i) {
+    var sc = Math.min(5, Math.max(0, dims[k] || 0));
+    return (cx + r*(sc/5)*Math.cos(angles[i])).toFixed(1) + ',' + (cy + r*(sc/5)*Math.sin(angles[i])).toFixed(1);
+  }).join(' ');
+
+  var dots = keys.map(function(k, i) {
+    var sc = Math.min(5, Math.max(0, dims[k] || 0));
+    return '<circle cx="' + (cx + r*(sc/5)*Math.cos(angles[i])).toFixed(1) + '" cy="' + (cy + r*(sc/5)*Math.sin(angles[i])).toFixed(1) + '" r="3.5" fill="#3D5AFE"/>';
+  }).join('');
+
+  var labels = keys.map(function(k, i) {
+    var lx = cx + (r + 24)*Math.cos(angles[i]);
+    var ly = cy + (r + 24)*Math.sin(angles[i]);
+    var cosA = Math.cos(angles[i]);
+    var anchor = cosA < -0.25 ? 'end' : cosA > 0.25 ? 'start' : 'middle';
+    return '<text x="' + lx.toFixed(1) + '" y="' + ly.toFixed(1) + '" text-anchor="' + anchor + '" dominant-baseline="middle" fill="rgba(26,26,46,0.65)" font-size="9" font-family="Plus Jakarta Sans,sans-serif" font-weight="500">' +
+      _esc(k) + ' <tspan fill="#3D5AFE" font-weight="700">' + (dims[k] || 0) + '</tspan></text>';
+  }).join('');
+
+  return '<svg viewBox="0 0 230 230" width="230" height="230" style="display:block;">' +
+    grid + axes +
+    '<polygon points="' + dataPts + '" fill="rgba(61,90,254,0.18)" stroke="#3D5AFE" stroke-width="2"/>' +
+    dots + labels +
+  '</svg>';
+}
+
+function _chatVaiHome() {
+  var main = document.getElementById('pmi-main');
+  if (main) { main.style.overflow = ''; main.style.height = ''; main.style.padding = ''; }
+  var sidebar = document.getElementById('pmi-sidebar');
+  if (sidebar) sidebar.style.display = '';
+  var appPmi = document.getElementById('app-pmi');
+  if (appPmi) appPmi.style.gridTemplateColumns = '160px 1fr';
+
+  renderSidebarPMI();
+  renderViewPMI('home');
+
+  // Ricarica prospect dal DB in background (diagnosi-end ha già salvato dims/score)
+  if (window._pmiProspect && window._pmiProspect.id) {
+    sb.from('prospects').select('*').eq('id', window._pmiProspect.id).single()
+      .then(function(r) {
+        if (!r.data) return;
+        window._pmiProspect = r.data;
+        var idx = prospects.findIndex(function(x) { return x.id === r.data.id; });
+        if (idx >= 0) prospects[idx] = r.data; else prospects.push(r.data);
+        currentId = r.data.id;
+        renderViewPMI('home');
+      }).catch(function(){});
+  }
 }
 
 // Chiamata da chiudiDiagnosi() in modalità titolare
