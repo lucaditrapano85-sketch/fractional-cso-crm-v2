@@ -12166,8 +12166,10 @@ async function aggiornaPiano(nuovoPiano) {
     window._userPlan = nuovoPiano;
     var idx = prospects.findIndex(function(x){ return x.id === p.id; });
     if (idx >= 0) prospects[idx] = window._pmiProspect;
-    showToast('Piano aggiornato! Un CSO ti contatterà entro 24 ore.');
-    renderPMIPiano(document.getElementById('pmi-main'));
+    var nomiPiano = { self: 'Self', guided_base: 'Guided Base', guided_pro: 'Guided Pro' };
+    showToast('Piano ' + (nomiPiano[nuovoPiano] || nuovoPiano) + ' attivato!', 'success');
+    // Re-render full view so sidebar nav updates too
+    renderViewPMI('piano');
   } catch(e) {
     showToast('Errore aggiornamento piano: ' + e.message, 'error');
   }
