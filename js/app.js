@@ -10830,7 +10830,7 @@ function pmiSelezionaESuggerisci(idx) {
 
   if (msg) msg.innerHTML =
     '<span style="color:rgba(0,130,95,0.85);font-weight:600">✓ ' + _esc(nomeScelta) + ' selezionato!</span>' +
-    '<span style="color:rgba(26,26,46,0.55)"> Scegli il fatturato e inizia — Leva elabora la struttura mentre rispondi.</span>';
+    '<span style="color:rgba(26,26,46,0.55)"> Clicca il bottone qui sotto per iniziare la tua diagnosi gratuita.</span>';
 
   // Genera struttura in background
   window._generaSettoreNome     = nomeScelta;
