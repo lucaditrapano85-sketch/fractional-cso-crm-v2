@@ -11376,10 +11376,13 @@ function _wizRenderLoading() {
   var panel = document.getElementById('leva-chat-panel');
   if (!panel) return;
 
-  var settore = _pmiSelectedSettore || 'aziende';
+  // Fix 1: usa nome display pulito, non il codice con underscore
+  var settore = window._generaSettoreNome || _pmiSelectedSettore || 'aziende';
   var fascia  = _pmiSelectedFascia  || 'nd';
   var fat     = (window._datiGenerici && window._datiGenerici.fatturato_anno_scorso) || 0;
-  var localita = (window._datiGenerici && window._datiGenerici.localita) || '';
+  // Fix 2: localita è {comune, provincia, regione} — usa .comune
+  var locRaw  = (window._datiGenerici && window._datiGenerici.localita) || null;
+  var locStr  = (locRaw && locRaw.comune) ? locRaw.comune : 'la tua area';
   var areDeboli = (window._datiGenerici && window._datiGenerici.aree_deboli && window._datiGenerici.aree_deboli.length)
     ? window._datiGenerici.aree_deboli : [];
 
@@ -11396,7 +11399,6 @@ function _wizRenderLoading() {
     ? 'Il tuo: ' + fmtEuro(fat) + ' — ' + (fat > mediaN ? 'sopra' : fat < mediaN ? 'sotto' : 'in linea con') + ' la media'
     : '';
   var concStr = fascia === 'sotto-500k' ? 'alta' : fascia === 'oltre-10M' ? 'bassa' : 'media';
-  var locStr  = localita || 'la tua area';
   var areSub  = areDeboli.length ? areDeboli.join(', ') : 'analisi in corso...';
 
   var statusTexts = [
@@ -11480,12 +11482,44 @@ function _wizRenderLoading() {
     }, c[0]);
   });
 
-  // Poll for diagnosi-start completion
+  // Fix 3: timing obbligatorio — attendi sempre tutte le card (min 34s)
+  // _startDataReady: true quando diagnosi-start ha risposto
+  // _minTimeDone: true a 34s (dopo card 5 + 2s pausa + 1s margine)
+  var _startData      = null;
+  var _minTimeDone    = false;
+
+  function _applyGreenUI() {
+    var bar    = document.getElementById('wiz-prog-bar');
+    var txt    = document.getElementById('wiz-prog-text');
+    var ctr    = document.getElementById('wiz-counter');
+    var ctrSub = document.getElementById('wiz-counter-sub');
+    if (bar)    { bar.style.background = '#1D9E75'; bar.style.width = '100%'; }
+    if (txt)    txt.textContent = 'Analisi completata \u2713';
+    if (ctr)    ctr.style.color = '#1D9E75';
+    if (ctrSub) ctrSub.textContent = 'Analisi completata';
+  }
+
+  function _tryTransition() {
+    if (!_minTimeDone || _startData === null) return;
+    clearInterval(_progId);
+    _wizPassaAShock();
+  }
+
+  // A 32s: checkmark verde (indipendente da quando risponde l'API)
+  setTimeout(function() { _applyGreenUI(); }, 32000);
+
+  // A 34s: sblocca la transizione (se l'API è già pronta, parte subito)
+  setTimeout(function() {
+    _minTimeDone = true;
+    _tryTransition();
+  }, 34000);
+
+  // Poll per diagnosi-start — quando risponde, aggiorna tips e tenta transizione
   var _pollId = setInterval(function() {
     if (!window._generaSettoreResolved) return;
     clearInterval(_pollId);
-    clearInterval(_progId);
     window._generaSettorePromise.then(function(data) {
+      _startData = data || {};
       // Aggiorna tips se disponibili
       if (data && data.tips) {
         var sapevi = data.tips.filter(function(t) { return t.tipo === 'sapevi'; });
@@ -11500,17 +11534,11 @@ function _wizRenderLoading() {
           if (c && c.style.opacity !== '1') { c.style.opacity = '1'; c.style.transform = 'translateY(0)'; }
         });
       }
-      // Completa UI in verde
-      var bar = document.getElementById('wiz-prog-bar');
-      var txt = document.getElementById('wiz-prog-text');
-      var ctr = document.getElementById('wiz-counter');
-      var ctrSub = document.getElementById('wiz-counter-sub');
-      if (bar)    { bar.style.background = '#1D9E75'; bar.style.width = '100%'; }
-      if (txt)    txt.textContent = 'Analisi completata \u2713';
-      if (ctr)    ctr.style.color = '#1D9E75';
-      if (ctrSub) ctrSub.textContent = 'Analisi completata';
-      setTimeout(function() { _wizPassaAShock(); }, 1000);
-    }).catch(function() { _wizPassaAShock(); });
+      _tryTransition();
+    }).catch(function() {
+      _startData = {};
+      _tryTransition();
+    });
   }, 400);
 }
 
