@@ -11929,12 +11929,21 @@ function _chatMostraRisultati(data) {
     '</div>';
 }
 
+function _radarScoreColor(sc) {
+  return sc <= 30 ? '#E24B4A' : sc <= 50 ? '#EF9F27' : sc <= 70 ? '#BA7517' : '#1D9E75';
+}
+
 function _chatRadarSVG(dims) {
   var keys = Object.keys(dims);
   var n = keys.length;
   if (n === 0) return '';
   var cx = 200, cy = 175, r = 105;
   var angles = keys.map(function(_, i) { return (i / n) * 2 * Math.PI - Math.PI / 2; });
+
+  // Score globale per colore poligono
+  var vals = keys.map(function(k) { return dims[k] || 0; });
+  var avg = vals.length ? Math.round(vals.reduce(function(a,b){return a+b;},0) / vals.length) : 0;
+  var polyColor = _radarScoreColor(avg);
 
   var grid = [20,40,60,80,100].map(function(lvl) {
     var pts = angles.map(function(a) {
@@ -11954,22 +11963,24 @@ function _chatRadarSVG(dims) {
 
   var dots = keys.map(function(k, i) {
     var sc = Math.min(100, Math.max(0, dims[k] || 0));
-    return '<circle cx="' + (cx + r*(sc/100)*Math.cos(angles[i])).toFixed(1) + '" cy="' + (cy + r*(sc/100)*Math.sin(angles[i])).toFixed(1) + '" r="4" fill="#3D5AFE"/>';
+    return '<circle cx="' + (cx + r*(sc/100)*Math.cos(angles[i])).toFixed(1) + '" cy="' + (cy + r*(sc/100)*Math.sin(angles[i])).toFixed(1) + '" r="4" fill="' + polyColor + '"/>';
   }).join('');
 
   var labels = keys.map(function(k, i) {
+    var sc = Math.min(100, Math.max(0, dims[k] || 0));
     var cosA = Math.cos(angles[i]);
     var sinA = Math.sin(angles[i]);
     var lx = cx + (r + 38) * cosA;
     var ly = cy + (r + 38) * sinA;
     var anchor = cosA < -0.2 ? 'end' : cosA > 0.2 ? 'start' : 'middle';
-    return '<text x="' + lx.toFixed(1) + '" y="' + (ly - 7).toFixed(1) + '" text-anchor="' + anchor + '" fill="rgba(26,26,46,0.65)" font-size="10" font-family="Plus Jakarta Sans,sans-serif" font-weight="500">' + _esc(k) + '</text>' +
-      '<text x="' + lx.toFixed(1) + '" y="' + (ly + 7).toFixed(1) + '" text-anchor="' + anchor + '" fill="#3D5AFE" font-size="11" font-family="Plus Jakarta Sans,sans-serif" font-weight="700">' + (dims[k] || 0) + '</text>';
+    var scoreCol = _radarScoreColor(sc);
+    return '<text x="' + lx.toFixed(1) + '" y="' + (ly - 8).toFixed(1) + '" text-anchor="' + anchor + '" fill="rgba(26,26,46,0.75)" font-size="13" font-family="Plus Jakarta Sans,sans-serif" font-weight="700">' + _esc(k) + '</text>' +
+      '<text x="' + lx.toFixed(1) + '" y="' + (ly + 10).toFixed(1) + '" text-anchor="' + anchor + '" fill="' + scoreCol + '" font-size="15" font-family="Plus Jakarta Sans,sans-serif" font-weight="700">' + sc + '</text>';
   }).join('');
 
   return '<svg viewBox="0 0 400 350" width="400" height="350" style="display:block;max-width:100%;">' +
     grid + axes +
-    '<polygon points="' + dataPts + '" fill="rgba(61,90,254,0.18)" stroke="#3D5AFE" stroke-width="2"/>' +
+    '<polygon points="' + dataPts + '" fill="' + polyColor + '33" stroke="' + polyColor + '" stroke-width="2"/>' +
     dots + labels +
   '</svg>';
 }
