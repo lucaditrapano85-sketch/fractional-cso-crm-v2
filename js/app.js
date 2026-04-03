@@ -10991,16 +10991,366 @@ async function pmiAvviaDiagnosi() {
   }).then(function(r) { return r.json(); })
     .finally(function() { window._generaSettoreResolved = true; });
 
-  mostraPopupTransizione(async function() {
-    try {
-      var datiStart = await window._generaSettorePromise;
-      if (!datiStart.ok) throw new Error(datiStart.error || 'Errore diagnosi-start');
-      _avviaChatDiagnosi(datiStart);
-    } catch(e) {
-      console.error('diagnosi-start:', e);
-      showToast('Errore nel caricamento della diagnosi. Riprova.', 'error');
-      renderPrimoAccesso();
+  // Apri subito il wizard (le 6 domande hardcoded); diagnosi-start gira in background
+  window._datiGenerici = {};
+  _wizardApri();
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// PMI — WIZARD GENERICO (6 step hardcoded, zero AI)
+// Raccoglie dati base → poi avvia Fase shock quando diagnosi-start è pronto
+// ═══════════════════════════════════════════════════════════════════════════════
+
+var _wizStep = 0;
+var _wizTot  = 6;
+
+function _wizardApri() {
+  _wizStep = 0;
+
+  // Rimuovi overlay precedente se c'è
+  var _old = document.getElementById('leva-chat-overlay');
+  if (_old && _old.parentNode) _old.parentNode.removeChild(_old);
+
+  var overlay = document.createElement('div');
+  overlay.id = 'leva-chat-overlay';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.45);z-index:9000;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;';
+
+  var panel = document.createElement('div');
+  panel.id = 'leva-chat-panel';
+  panel.style.cssText = "background:#fff;border-radius:20px;width:100%;max-width:560px;max-height:85vh;display:flex;flex-direction:column;overflow:hidden;font-family:'Plus Jakarta Sans',sans-serif;box-shadow:0 24px 64px rgba(0,0,0,0.25);";
+
+  overlay.appendChild(panel);
+  document.body.appendChild(overlay);
+  document.body.style.overflow = 'hidden';
+
+  _wizRender();
+}
+
+function _wizProgressBar(step, tot) {
+  var pct = Math.round((step / tot) * 100);
+  return '<div style="height:4px;background:#f0f0f5;flex-shrink:0;">' +
+    '<div style="height:4px;background:#3D5AFE;width:' + pct + '%;transition:width 0.35s ease;border-radius:0 2px 2px 0;"></div>' +
+  '</div>';
+}
+
+function _wizRender() {
+  var panel = document.getElementById('leva-chat-panel');
+  if (!panel) return;
+  var nome = (window._datiGenerici && window._datiGenerici.nome) ? window._datiGenerici.nome.split(' ')[0] : '';
+
+  var headerHtml =
+    '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px 12px;flex-shrink:0;">' +
+      '<span style="font-size:12px;font-weight:700;color:rgba(26,26,46,0.35);letter-spacing:0.3px;">DIAGNOSI COMMERCIALE</span>' +
+      '<button onclick="_chatChiudiOverlay()" style="width:28px;height:28px;background:rgba(0,0,0,0.06);border:none;border-radius:8px;cursor:pointer;font-size:14px;color:rgba(26,26,46,0.4);line-height:1;">✕</button>' +
+    '</div>' +
+    _wizProgressBar(_wizStep, _wizTot);
+
+  var bodyHtml = '';
+  var footHtml = '';
+
+  if (_wizStep === 0) {
+    bodyHtml =
+      '<div style="padding:32px 28px 8px;">' +
+        '<div style="font-size:22px;font-weight:700;color:#1a1a2e;margin-bottom:8px;line-height:1.3;">Ciao! Come ti chiami?</div>' +
+        '<div style="font-size:14px;color:rgba(26,26,46,0.45);margin-bottom:24px;">Ti chiedo qualche informazione prima di iniziare.</div>' +
+        '<input id="wiz-nome" type="text" placeholder="Il tuo nome" maxlength="50" ' +
+          'style="width:100%;padding:14px 16px;border:2px solid #e8e8f0;border-radius:12px;font-size:16px;font-family:\'Plus Jakarta Sans\',sans-serif;outline:none;box-sizing:border-box;color:#1a1a2e;" ' +
+          'oninput="document.getElementById(\'wiz-avanti-0\').disabled=this.value.trim().length<2" ' +
+          'onkeydown="if(event.key===\'Enter\'&&this.value.trim().length>=2)_wizAvanti()" />' +
+      '</div>';
+    footHtml =
+      '<div style="padding:16px 28px 24px;display:flex;justify-content:flex-end;">' +
+        '<button id="wiz-avanti-0" onclick="_wizAvanti()" disabled ' +
+          'style="padding:14px 32px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;opacity:0.4;transition:opacity 0.2s;" ' +
+          'onmouseenter="if(!this.disabled)this.style.opacity=\'0.9\'" onmouseleave="if(!this.disabled)this.style.opacity=\'1\'">Avanti →</button>' +
+      '</div>';
+
+  } else if (_wizStep === 1) {
+    var domanda = nome ? nome + ', sei soddisfatto del tuo fatturato attuale?' : 'Sei soddisfatto del tuo fatturato attuale?';
+    var opz = ['Sì, va bene', 'Potrebbe andare meglio', 'No, sono preoccupato'];
+    bodyHtml =
+      '<div style="padding:32px 28px 8px;">' +
+        '<div style="font-size:22px;font-weight:700;color:#1a1a2e;margin-bottom:24px;line-height:1.3;">' + _esc(domanda) + '</div>' +
+        opz.map(function(o, i) {
+          var sel = window._datiGenerici.soddisfazione === o;
+          return '<button onclick="_wizSelBtn(1,this,' + i + ')" data-val="' + _esc(o) + '" ' +
+            'style="display:block;width:100%;text-align:left;padding:14px 18px;margin-bottom:10px;border:2px solid ' + (sel ? '#3D5AFE' : '#e8e8f0') + ';background:' + (sel ? 'rgba(61,90,254,0.07)' : '#fff') + ';border-radius:12px;font-size:15px;font-weight:500;color:#1a1a2e;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;">' +
+            _esc(o) + '</button>';
+        }).join('') +
+      '</div>';
+    footHtml = _wizFooter(true, !!window._datiGenerici.soddisfazione);
+
+  } else if (_wizStep === 2) {
+    var domanda2 = nome ? nome + ', su quali aree ti senti meno forte?' : 'Su quali aree ti senti meno forte?';
+    var aree = ['Vendite','Marketing','Clienti','Prezzi','Team','Processi','Digitale','Fornitori'];
+    var sel2 = window._datiGenerici.aree_deboli || [];
+    bodyHtml =
+      '<div style="padding:32px 28px 8px;">' +
+        '<div style="font-size:22px;font-weight:700;color:#1a1a2e;margin-bottom:6px;line-height:1.3;">' + _esc(domanda2) + '</div>' +
+        '<div style="font-size:13px;color:rgba(26,26,46,0.4);margin-bottom:20px;">Seleziona fino a 3 aree</div>' +
+        '<div style="display:flex;flex-wrap:wrap;gap:10px;">' +
+        aree.map(function(a) {
+          var isS = sel2.indexOf(a) >= 0;
+          return '<button onclick="_wizToggleArea(\'' + a + '\')" data-area="' + a + '" ' +
+            'style="padding:10px 18px;border:2px solid ' + (isS ? '#3D5AFE' : '#e8e8f0') + ';background:' + (isS ? 'rgba(61,90,254,0.07)' : '#fff') + ';border-radius:22px;font-size:14px;font-weight:600;color:' + (isS ? '#3D5AFE' : '#1a1a2e') + ';cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;">' +
+            _esc(a) + '</button>';
+        }).join('') +
+        '</div>' +
+      '</div>';
+    footHtml = _wizFooter(true, sel2.length > 0);
+
+  } else if (_wizStep === 3) {
+    var fatVal = window._datiGenerici.fatturato_anno_scorso || '';
+    bodyHtml =
+      '<div style="padding:32px 28px 8px;">' +
+        '<div style="font-size:22px;font-weight:700;color:#1a1a2e;margin-bottom:8px;line-height:1.3;">Qual è stato il tuo fatturato l\'anno scorso?</div>' +
+        '<div style="font-size:14px;color:rgba(26,26,46,0.45);margin-bottom:24px;">Un\'indicazione approssimativa va benissimo.</div>' +
+        '<div style="display:flex;align-items:center;border:2px solid #e8e8f0;border-radius:12px;overflow:hidden;background:#fff;">' +
+          '<span style="padding:0 14px;font-size:18px;color:rgba(26,26,46,0.3);font-weight:600;flex-shrink:0;">€</span>' +
+          '<input id="wiz-fatturato" type="number" placeholder="es. 350000" min="0" value="' + (fatVal || '') + '" ' +
+            'style="flex:1;padding:14px 16px 14px 0;border:none;outline:none;font-size:16px;font-family:\'Plus Jakarta Sans\',sans-serif;color:#1a1a2e;background:transparent;" ' +
+            'oninput="document.getElementById(\'wiz-avanti-3\').disabled=!this.value||Number(this.value)<=0" ' +
+            'onkeydown="if(event.key===\'Enter\'&&Number(this.value)>0)_wizAvanti()" />' +
+        '</div>' +
+      '</div>';
+    footHtml =
+      '<div style="padding:16px 28px 24px;display:flex;justify-content:space-between;">' +
+        '<button onclick="_wizIndietro()" style="padding:14px 24px;background:transparent;border:2px solid #e8e8f0;border-radius:12px;font-size:15px;font-weight:600;color:rgba(26,26,46,0.5);cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;">← Indietro</button>' +
+        '<button id="wiz-avanti-3" onclick="_wizAvanti()" ' + (!fatVal ? 'disabled' : '') + ' ' +
+          'style="padding:14px 32px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;' + (!fatVal ? 'opacity:0.4;' : '') + '">Avanti →</button>' +
+      '</div>';
+
+  } else if (_wizStep === 4) {
+    var opzP = ['Solo io','2-5','6-15','Più di 15'];
+    var selP = window._datiGenerici.n_persone;
+    bodyHtml =
+      '<div style="padding:32px 28px 8px;">' +
+        '<div style="font-size:22px;font-weight:700;color:#1a1a2e;margin-bottom:24px;line-height:1.3;">Quante persone lavorano con te?</div>' +
+        opzP.map(function(o) {
+          var isS = selP === o;
+          return '<button onclick="_wizSelBtn(4,this,-1)" data-val="' + _esc(o) + '" ' +
+            'style="display:block;width:100%;text-align:left;padding:14px 18px;margin-bottom:10px;border:2px solid ' + (isS ? '#3D5AFE' : '#e8e8f0') + ';background:' + (isS ? 'rgba(61,90,254,0.07)' : '#fff') + ';border-radius:12px;font-size:15px;font-weight:500;color:#1a1a2e;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;">' +
+            _esc(o) + '</button>';
+        }).join('') +
+      '</div>';
+    footHtml = _wizFooter(true, !!selP);
+
+  } else if (_wizStep === 5) {
+    var opzA = ['Meno di 2','2-5','5-15','Più di 15'];
+    var selA = window._datiGenerici.anni_attivita;
+    bodyHtml =
+      '<div style="padding:32px 28px 8px;">' +
+        '<div style="font-size:22px;font-weight:700;color:#1a1a2e;margin-bottom:24px;line-height:1.3;">Da quanti anni è attiva la tua azienda?</div>' +
+        opzA.map(function(o) {
+          var isS = selA === o;
+          return '<button onclick="_wizSelBtn(5,this,-1)" data-val="' + _esc(o) + '" ' +
+            'style="display:block;width:100%;text-align:left;padding:14px 18px;margin-bottom:10px;border:2px solid ' + (isS ? '#3D5AFE' : '#e8e8f0') + ';background:' + (isS ? 'rgba(61,90,254,0.07)' : '#fff') + ';border-radius:12px;font-size:15px;font-weight:500;color:#1a1a2e;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;">' +
+            _esc(o) + '</button>';
+        }).join('') +
+      '</div>';
+    footHtml = _wizFooter(true, !!selA);
+  }
+
+  panel.innerHTML =
+    headerHtml +
+    '<div style="flex:1;overflow-y:auto;">' + bodyHtml + '</div>' +
+    footHtml;
+
+  // Focus sul campo testo se step 0
+  if (_wizStep === 0) {
+    var inp = document.getElementById('wiz-nome');
+    if (inp) { setTimeout(function(){ inp.focus(); }, 80); }
+    // Abilita pulsante se c'è già un valore (es. tornato indietro)
+    var btn = document.getElementById('wiz-avanti-0');
+    if (btn && inp && inp.value.trim().length >= 2) btn.disabled = false;
+  }
+  if (_wizStep === 3) {
+    var inp3 = document.getElementById('wiz-fatturato');
+    if (inp3) setTimeout(function(){ inp3.focus(); }, 80);
+  }
+}
+
+function _wizFooter(showBack, enableNext) {
+  return '<div style="padding:16px 28px 24px;display:flex;justify-content:' + (showBack ? 'space-between' : 'flex-end') + ';">' +
+    (showBack ? '<button onclick="_wizIndietro()" style="padding:14px 24px;background:transparent;border:2px solid #e8e8f0;border-radius:12px;font-size:15px;font-weight:600;color:rgba(26,26,46,0.5);cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;">← Indietro</button>' : '') +
+    '<button onclick="_wizAvanti()" ' + (enableNext ? '' : 'disabled ') +
+      'style="padding:14px 32px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;' + (enableNext ? '' : 'opacity:0.4;') + '">Avanti →</button>' +
+  '</div>';
+}
+
+function _wizSelBtn(step, btn, idx) {
+  // Deseleziona tutti i fratelli
+  var parent = btn.parentElement;
+  var tutti = parent.querySelectorAll('button[data-val]');
+  tutti.forEach(function(b) {
+    b.style.borderColor = '#e8e8f0';
+    b.style.background = '#fff';
+    b.style.color = '#1a1a2e';
+  });
+  // Seleziona questo
+  btn.style.borderColor = '#3D5AFE';
+  btn.style.background = 'rgba(61,90,254,0.07)';
+  btn.style.color = '#3D5AFE';
+  var val = btn.getAttribute('data-val');
+  if (step === 1) window._datiGenerici.soddisfazione = val;
+  if (step === 4) window._datiGenerici.n_persone = val;
+  if (step === 5) window._datiGenerici.anni_attivita = val;
+  // Abilita avanti
+  var footBtns = document.querySelectorAll('#leva-chat-panel button:not([data-val]):not([data-area])');
+  footBtns.forEach(function(b) {
+    if (b.textContent.indexOf('Avanti') >= 0) { b.disabled = false; b.style.opacity = '1'; }
+  });
+}
+
+function _wizToggleArea(area) {
+  if (!window._datiGenerici.aree_deboli) window._datiGenerici.aree_deboli = [];
+  var arr = window._datiGenerici.aree_deboli;
+  var idx = arr.indexOf(area);
+  if (idx >= 0) {
+    arr.splice(idx, 1);
+  } else {
+    if (arr.length >= 3) return; // max 3
+    arr.push(area);
+  }
+  _wizRender();
+}
+
+function _wizIndietro() {
+  if (_wizStep > 0) { _wizStep--; _wizRender(); }
+}
+
+function _wizAvanti() {
+  // Raccogli valore corrente per lo step
+  if (_wizStep === 0) {
+    var inp = document.getElementById('wiz-nome');
+    if (!inp || inp.value.trim().length < 2) return;
+    window._datiGenerici.nome = inp.value.trim();
+  }
+  if (_wizStep === 3) {
+    var inp3 = document.getElementById('wiz-fatturato');
+    if (!inp3 || !inp3.value || Number(inp3.value) <= 0) return;
+    window._datiGenerici.fatturato_anno_scorso = Number(inp3.value);
+  }
+
+  if (_wizStep < _wizTot - 1) {
+    _wizStep++;
+    _wizRender();
+    return;
+  }
+
+  // Step 6 completato — controlla se diagnosi-start è pronto
+  _wizDopoStep6();
+}
+
+function _wizDopoStep6() {
+  if (window._generaSettoreResolved) {
+    // Pronto — transizione alla Fase shock
+    _wizPassaAShock();
+    return;
+  }
+  // Non pronto — mostra step 7 (cuscinetto)
+  _wizRenderStep7();
+}
+
+function _wizRenderStep7() {
+  var panel = document.getElementById('leva-chat-panel');
+  if (!panel) return;
+  var nome = (window._datiGenerici && window._datiGenerici.nome) ? window._datiGenerici.nome.split(' ')[0] : '';
+  var domanda = nome ? nome + ', hai mai lavorato con un consulente commerciale?' : 'Hai mai lavorato con un consulente commerciale?';
+  var opzC = ['Mai', 'Sì, ma non ha funzionato', 'Sì, con buoni risultati'];
+  var selC = window._datiGenerici.consulente;
+
+  panel.innerHTML =
+    '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px 12px;flex-shrink:0;">' +
+      '<span style="font-size:12px;font-weight:700;color:rgba(26,26,46,0.35);letter-spacing:0.3px;">DIAGNOSI COMMERCIALE</span>' +
+      '<button onclick="_chatChiudiOverlay()" style="width:28px;height:28px;background:rgba(0,0,0,0.06);border:none;border-radius:8px;cursor:pointer;font-size:14px;color:rgba(26,26,46,0.4);line-height:1;">✕</button>' +
+    '</div>' +
+    _wizProgressBar(7, 7) +
+    '<div style="flex:1;overflow-y:auto;">' +
+      '<div style="padding:32px 28px 8px;">' +
+        '<div style="font-size:22px;font-weight:700;color:#1a1a2e;margin-bottom:24px;line-height:1.3;">' + _esc(domanda) + '</div>' +
+        opzC.map(function(o) {
+          var isS = selC === o;
+          return '<button onclick="_wizSelConsulente(this)" data-val="' + _esc(o) + '" ' +
+            'style="display:block;width:100%;text-align:left;padding:14px 18px;margin-bottom:10px;border:2px solid ' + (isS ? '#3D5AFE' : '#e8e8f0') + ';background:' + (isS ? 'rgba(61,90,254,0.07)' : '#fff') + ';border-radius:12px;font-size:15px;font-weight:500;color:#1a1a2e;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;">' +
+            _esc(o) + '</button>';
+        }).join('') +
+      '</div>' +
+    '</div>' +
+    '<div style="padding:16px 28px 24px;display:flex;justify-content:flex-end;">' +
+      '<button id="wiz-avanti-7" onclick="_wizDopoStep7()" ' + (selC ? '' : 'disabled ') +
+        'style="padding:14px 32px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;' + (selC ? '' : 'opacity:0.4;') + '">Avanti →</button>' +
+    '</div>';
+}
+
+function _wizSelConsulente(btn) {
+  var parent = btn.parentElement;
+  parent.querySelectorAll('button[data-val]').forEach(function(b) {
+    b.style.borderColor = '#e8e8f0'; b.style.background = '#fff'; b.style.color = '#1a1a2e';
+  });
+  btn.style.borderColor = '#3D5AFE';
+  btn.style.background = 'rgba(61,90,254,0.07)';
+  btn.style.color = '#3D5AFE';
+  window._datiGenerici.consulente = btn.getAttribute('data-val');
+  var av = document.getElementById('wiz-avanti-7');
+  if (av) { av.disabled = false; av.style.opacity = '1'; }
+}
+
+function _wizDopoStep7() {
+  if (window._generaSettoreResolved) {
+    _wizPassaAShock();
+    return;
+  }
+  // Ancora non pronto — mostra loading
+  _wizRenderLoading();
+}
+
+function _wizRenderLoading() {
+  var panel = document.getElementById('leva-chat-panel');
+  if (!panel) return;
+  var nome = (window._datiGenerici && window._datiGenerici.nome) ? window._datiGenerici.nome.split(' ')[0] : '';
+  var msg = nome ? 'Quasi pronto, ' + nome + '...' : 'Quasi pronto...';
+
+  panel.innerHTML =
+    '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 28px;text-align:center;">' +
+      '<div style="font-size:17px;font-weight:700;color:#1a1a2e;margin-bottom:10px;">' + _esc(msg) + '</div>' +
+      '<div style="font-size:14px;color:rgba(26,26,46,0.45);margin-bottom:28px;">Stiamo finalizzando l\'analisi del tuo settore.</div>' +
+      '<div style="width:100%;max-width:320px;height:6px;background:#f0f0f5;border-radius:3px;overflow:hidden;">' +
+        '<div id="wiz-loading-bar" style="height:100%;background:#3D5AFE;border-radius:3px;width:20%;animation:wizLoadPulse 1.4s ease-in-out infinite;"></div>' +
+      '</div>' +
+    '</div>';
+
+  // Aggiungi keyframe se non presente
+  if (!document.getElementById('wiz-load-style')) {
+    var sty = document.createElement('style');
+    sty.id = 'wiz-load-style';
+    sty.textContent = '@keyframes wizLoadPulse{0%{width:20%}50%{width:75%}100%{width:20%}}';
+    document.head.appendChild(sty);
+  }
+
+  // Polling ogni 400ms finché diagnosi-start è pronto
+  var _wizPollId = setInterval(function() {
+    if (window._generaSettoreResolved) {
+      clearInterval(_wizPollId);
+      _wizPassaAShock();
     }
+  }, 400);
+}
+
+function _wizPassaAShock() {
+  window._generaSettorePromise.then(function(datiStart) {
+    if (!datiStart.ok) {
+      showToast('Errore nel caricamento della diagnosi. Riprova.', 'error');
+      _chatChiudiOverlay();
+      renderPrimoAccesso();
+      return;
+    }
+    _avviaChatDiagnosi(datiStart);
+  }).catch(function(e) {
+    console.error('diagnosi-start:', e);
+    showToast('Errore nel caricamento della diagnosi. Riprova.', 'error');
+    _chatChiudiOverlay();
+    renderPrimoAccesso();
   });
 }
 
