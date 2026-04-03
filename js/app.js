@@ -11598,9 +11598,10 @@ function _chatFase0() {
 
 function _chatIniziaFase1() {
   _chatSetInput('');
-  _dc.step_fase1    = 0;
-  _dc.conversazione = [];
-  _dc.risposte_fase1 = [];
+  _dc.step_fase1         = 0;
+  _dc.conversazione      = [];
+  _dc.risposte_fase1     = [];
+  _dc.risposte_accumulate = [];
   setTimeout(function() { _chatMostraDomanda(0); }, 300);
 }
 
@@ -11664,75 +11665,84 @@ function _chatSelezionaOp(idx) {
       btns[idx].style.opacity = '1';
     }
   }
-  setTimeout(function() { _chatSelezionaOpzione(op.testo); }, 300);
+  setTimeout(function() { _chatRispostaFase1(op.testo); }, 300);
 }
 
 function _chatInviaTestoLibero() {
   var ta = document.getElementById('leva-chat-ta');
   var testo = ta ? ta.value.trim() : '';
   if (!testo) return;
-  _chatSelezionaOpzione(testo);
+  _chatRispostaFase1(testo);
 }
 
-async function _chatSelezionaOpzione(testo) {
-  _chatSetInput('');
-  _chatAddBolla('titolare', _esc(testo));
+// Accumula risposta localmente; chiama API solo all'ultima domanda
+function _chatRispostaFase1(testo) {
+  var step = _dc.step_fase1;
+  var d = _dc.domande_fase1[step];
+  var isUltima = step >= _dc.domande_fase1.length - 1;
 
-  var d = _dc.domande_fase1[_dc.step_fase1];
+  // Accumula
+  _dc.risposte_accumulate[step] = { step: step, risposta: testo };
+  _dc.risposte_fase1.push({ domanda: d.domanda, risposta: testo });
   _dc.conversazione.push({ ruolo: 'ai',       testo: d.domanda });
   _dc.conversazione.push({ ruolo: 'titolare', testo: testo });
-  _dc.risposte_fase1.push({ domanda: d.domanda, risposta: testo });
 
+  _chatSetInput('');
+  _chatAddBolla('titolare', _esc(testo));
+  _chatScroll();
+
+  if (!isUltima) {
+    // Avanzamento istantaneo — zero chiamate API
+    _dc.step_fase1++;
+    setTimeout(function() { _chatMostraDomanda(_dc.step_fase1); }, 220);
+    return;
+  }
+
+  // Ultima domanda: UNA sola chiamata batch con tutte le risposte
   _chatAddLoadingBolla();
+  _chatFase1Batch();
+}
 
+async function _chatFase1Batch() {
   try {
     var res = await fetch('/api/diagnosi-chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        step:               _dc.step_fase1,
-        risposta_titolare:  testo,
-        domande_fase1:      _dc.domande_fase1,
-        conversazione:      _dc.conversazione,
-        settore:            _dc.settore,
-        fascia_fatturato:   _dc.fascia,
-        shock:              _dc.shock,
-        contesto_titolare:  window._datiGenerici || {}
+        step:                _dc.domande_fase1.length - 1,
+        risposta_titolare:   _dc.risposte_accumulate[_dc.domande_fase1.length - 1].risposta,
+        domande_fase1:       _dc.domande_fase1,
+        conversazione:       _dc.conversazione,
+        settore:             _dc.settore,
+        fascia_fatturato:    _dc.fascia,
+        shock:               _dc.shock,
+        contesto_titolare:   window._datiGenerici || {},
+        risposte_accumulate: _dc.risposte_accumulate
       })
     });
     var data = await res.json();
     _chatRemoveLoadingBolla();
     if (!data.ok) throw new Error(data.error || 'diagnosi-chat error');
 
-    _dc.conversazione.push({ ruolo: 'ai', testo: data.reazione });
+    _dc.dimensioni_critiche = data.dimensioni_critiche || [];
+    _dc.sintesi_fase1       = data.sintesi_fase1 || '';
+
     _chatAddBolla('ai', _esc(data.reazione));
 
-    if (data.is_ultima) {
-      _dc.dimensioni_critiche = data.dimensioni_critiche || [];
-      _dc.sintesi_fase1       = data.sintesi_fase1 || '';
+    setTimeout(function() {
+      if (data.sintesi_fase1) _chatAddBolla('ai', _esc(data.sintesi_fase1));
       setTimeout(function() {
-        if (data.sintesi_fase1) _chatAddBolla('ai', _esc(data.sintesi_fase1));
-        setTimeout(function() {
-          _chatAddBolla('ai', 'Ora ti faccio qualche domanda rapida per quantificare la situazione. Ci vogliono 2 minuti.');
-          _chatSetInput('<button onclick="_chatIniziaFase2()" style="width:100%;padding:16px;background:#3D5AFE;color:#fff;border:none;border-radius:14px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:16px;font-weight:700;cursor:pointer;">Continua →</button>');
-          _chatScroll();
-        }, 1000);
+        _chatAddBolla('ai', 'Ora ti faccio qualche domanda rapida per quantificare la situazione. Ci vogliono 2 minuti.');
+        _chatSetInput('<button onclick="_chatIniziaFase2()" style="width:100%;padding:16px;background:#3D5AFE;color:#fff;border:none;border-radius:14px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:16px;font-weight:700;cursor:pointer;">Continua →</button>');
+        _chatScroll();
       }, 1000);
-    } else {
-      setTimeout(function() {
-        if (data.transizione) _chatAddBolla('ai', _esc(data.transizione));
-        setTimeout(function() {
-          _dc.step_fase1++;
-          _chatMostraDomanda(_dc.step_fase1);
-        }, 1000);
-      }, 1000);
-    }
+    }, 1000);
 
   } catch(e) {
     _chatRemoveLoadingBolla();
-    console.error('diagnosi-chat:', e);
+    console.error('diagnosi-chat batch:', e);
     _chatAddBolla('ai', 'Si è verificato un errore. Riproviamo.');
-    _chatSetInput('<button onclick="_chatMostraDomanda(' + _dc.step_fase1 + ')" style="width:100%;padding:13px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Riprova</button>');
+    _chatSetInput('<button onclick="_chatFase1Batch()" style="width:100%;padding:13px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Riprova</button>');
   }
 }
 

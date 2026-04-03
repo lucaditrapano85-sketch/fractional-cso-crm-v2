@@ -1,5 +1,5 @@
 // api/diagnosi-chat.js
-// Gestisce Fase 1 conversazionale: il titolare risponde, Opus reagisce e guida
+// Gestisce Fase 1: modalità batch (risposte_accumulate) o singola risposta
 
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
 
@@ -20,7 +20,8 @@ module.exports = async function handler(req, res) {
       settore,
       fascia_fatturato,
       shock,
-      contesto_titolare
+      contesto_titolare,
+      risposte_accumulate
     } = req.body;
 
     if (step === undefined || !risposta_titolare || !domande_fase1) {
@@ -30,24 +31,48 @@ module.exports = async function handler(req, res) {
     const domandaCorrente = domande_fase1[step];
     if (!domandaCorrente) return res.status(400).json({ error: 'Invalid step index' });
 
-    const isUltima = step >= domande_fase1.length - 1;
+    // Modalità batch: tutte le risposte accumulate → una sola chiamata finale
+    const isBatch = Array.isArray(risposte_accumulate) && risposte_accumulate.length > 0;
 
-    const storicoFormattato = (conversazione || []).map(m =>
-      `${m.ruolo === 'ai' ? 'CONSULENTE' : 'TITOLARE'}: ${m.testo}`
-    ).join('\n');
+    let prompt;
+    if (isBatch) {
+      // Costruisci storico completo da tutte le risposte
+      const storicoCompleto = risposte_accumulate.map(r => {
+        const d = domande_fase1[r.step] || domande_fase1[risposte_accumulate.indexOf(r)];
+        return d
+          ? `CONSULENTE: ${d.domanda}\nTITOLARE: ${r.risposta}`
+          : `TITOLARE: ${r.risposta}`;
+      }).join('\n');
 
-    const prompt = buildPrompt({
-      settore,
-      fascia_fatturato,
-      shock,
-      storicoFormattato,
-      domandaCorrente,
-      risposta_titolare,
-      isUltima,
-      domandeProssime: isUltima ? [] : domande_fase1.slice(step + 1),
-      domande_fase1,
-      contesto_titolare: contesto_titolare || {}
-    });
+      prompt = buildPromptBatch({
+        settore,
+        fascia_fatturato,
+        shock,
+        storicoCompleto,
+        domande_fase1,
+        contesto_titolare: contesto_titolare || {},
+        risposte_accumulate
+      });
+    } else {
+      // Modalità singola (backward compat)
+      const isUltima = step >= domande_fase1.length - 1;
+      const storicoFormattato = (conversazione || []).map(m =>
+        `${m.ruolo === 'ai' ? 'CONSULENTE' : 'TITOLARE'}: ${m.testo}`
+      ).join('\n');
+
+      prompt = buildPrompt({
+        settore,
+        fascia_fatturato,
+        shock,
+        storicoFormattato,
+        domandaCorrente,
+        risposta_titolare,
+        isUltima,
+        domandeProssime: isUltima ? [] : domande_fase1.slice(step + 1),
+        domande_fase1,
+        contesto_titolare: contesto_titolare || {}
+      });
+    }
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -66,7 +91,7 @@ module.exports = async function handler(req, res) {
     const data = await response.json();
 
     if (!data.content || !data.content[0]) {
-      return res.status(500).json({ error: 'Empty Opus response', raw: data });
+      return res.status(500).json({ error: 'Empty response', raw: data });
     }
 
     const text = data.content[0].text.replace(/```json|```/g, '').trim();
@@ -80,10 +105,10 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({
       ok: true,
       step: step,
-      is_ultima: isUltima,
+      is_ultima: true,
       reazione: parsed.reazione,
       transizione: parsed.transizione || null,
-      prossima_domanda: isUltima ? null : domande_fase1[step + 1].domanda,
+      prossima_domanda: null,
       dimensioni_critiche: parsed.dimensioni_critiche || null,
       sintesi_fase1: parsed.sintesi_fase1 || null
     });
@@ -93,12 +118,59 @@ module.exports = async function handler(req, res) {
   }
 };
 
+// Prompt batch: tutte e 5 le risposte in un colpo solo
+function buildPromptBatch({ settore, fascia_fatturato, shock, storicoCompleto, domande_fase1, contesto_titolare, risposte_accumulate }) {
+  const ctx = contesto_titolare || {};
+  const contesLines = [
+    ctx.nome ? `Nome: ${ctx.nome}` : '',
+    ctx.soddisfazione ? `Soddisfazione fatturato: ${ctx.soddisfazione}` : '',
+    ctx.aree_deboli && ctx.aree_deboli.length ? `Aree deboli dichiarate: ${ctx.aree_deboli.join(', ')}` : '',
+    ctx.fatturato_anno_scorso ? `Fatturato anno scorso: €${ctx.fatturato_anno_scorso.toLocaleString('it-IT')}` : '',
+    ctx.n_persone ? `Dimensione team: ${ctx.n_persone}` : '',
+    ctx.anni_attivita ? `Anni di attività: ${ctx.anni_attivita}` : ''
+  ].filter(Boolean).join('\n');
+
+  const tutteLeD = [...new Set(domande_fase1.map(d => d.dimensione))];
+
+  return `RUOLO:
+Sei il direttore commerciale che ha appena completato un colloquio diagnostico con un titolare di "${settore}" (fatturato ${fascia_fatturato}).
+
+TONO:
+Diretto, concreto, mai accademico. Linguaggio del settore. Frasi corte. Numeri specifici. Tagliente ma rispettoso.${ctx.nome ? ` Puoi usare "${ctx.nome.split(' ')[0]}" se naturale.` : ''}
+
+PROFILO TITOLARE:
+${contesLines || 'Non disponibile'}
+
+APERTURA SHOCK USATA:
+"${shock}"
+
+COLLOQUIO COMPLETO (5 domande + risposte del titolare):
+${storicoCompleto}
+
+COMPITO:
+Hai appena sentito tutte le risposte. Ora genera la chiusura della Fase 1.
+
+Rispondi SOLO in JSON valido:
+{
+    "reazione": "Sintesi finale del colloquio in 2-3 frasi. Parti da un'osservazione concreta su quello che emerge dalle risposte. Chiudi con: 'Ho un quadro chiaro. Ora ti faccio qualche domanda rapida per quantificare.'",
+
+    "dimensioni_critiche": ["dim1", "dim2", "dim3"],
+
+    "sintesi_fase1": "3-4 frasi che riassumono i punti chiave emersi da tutte e 5 le risposte. Linguaggio diretto, come se parlassi al titolare: forza su X, gap su Y, problema principale è Z."
+}
+
+REGOLE:
+- dimensioni_critiche: le 3 più deboli basandoti su TUTTE le risposte. Scegli tra: ${tutteLeD.join(', ')}.
+- La reazione deve integrare più risposte, non solo l'ultima.
+- La sintesi deve essere specifica per questo titolare, non generica.`;
+}
+
+// Prompt singola risposta (backward compat)
 function buildPrompt({ settore, fascia_fatturato, shock, storicoFormattato, domandaCorrente, risposta_titolare, isUltima, domandeProssime, domande_fase1, contesto_titolare }) {
 
   const ctx = contesto_titolare || {};
-  const nomeCtx = ctx.nome ? `Nome: ${ctx.nome}` : '';
   const contesLines = [
-    nomeCtx,
+    ctx.nome ? `Nome: ${ctx.nome}` : '',
     ctx.soddisfazione ? `Soddisfazione fatturato: ${ctx.soddisfazione}` : '',
     ctx.aree_deboli && ctx.aree_deboli.length ? `Aree deboli dichiarate: ${ctx.aree_deboli.join(', ')}` : '',
     ctx.fatturato_anno_scorso ? `Fatturato anno scorso: €${ctx.fatturato_anno_scorso.toLocaleString('it-IT')}` : '',
