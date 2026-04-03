@@ -10817,6 +10817,8 @@ function pmiSelezionaESuggerisci(idx) {
   if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; }
 
   var nomeScelta = scelta.nome || scelta.nome_display || scelta.codice;
+  // Salva il nome display pulito (usato nella schermata "Analisi in corso")
+  window._pmiSelectedNomeDisplay = scelta.nome_display || scelta.nome || scelta.codice;
 
   // Abilita subito il bottone diagnosi senza aspettare l'AI
   _pmiSelectedSettore = scelta.codice;
@@ -11376,13 +11378,13 @@ function _wizRenderLoading() {
   var panel = document.getElementById('leva-chat-panel');
   if (!panel) return;
 
-  // Fix 1: usa nome display pulito, non il codice con underscore
-  var settore = window._generaSettoreNome || _pmiSelectedSettore || 'aziende';
+  // Usa nome_display dalla selezione dropdown (es. "Panificio e bar"), non il codice
+  var settore = window._pmiSelectedNomeDisplay || window._generaSettoreNome || _pmiSelectedSettore || 'aziende';
   var fascia  = _pmiSelectedFascia  || 'nd';
   var fat     = (window._datiGenerici && window._datiGenerici.fatturato_anno_scorso) || 0;
-  // Fix 2: localita è {comune, provincia, regione} — usa .comune
-  var locRaw  = (window._datiGenerici && window._datiGenerici.localita) || null;
-  var locStr  = (locRaw && locRaw.comune) ? locRaw.comune : 'la tua area';
+  // localita è {comune, provincia, regione} — usa .comune; se stringa, usala direttamente
+  var _loc    = (window._datiGenerici && window._datiGenerici.localita) || null;
+  var locStr  = _loc ? (typeof _loc === 'object' ? (_loc.comune || 'la tua area') : String(_loc)) : 'la tua area';
   var areDeboli = (window._datiGenerici && window._datiGenerici.aree_deboli && window._datiGenerici.aree_deboli.length)
     ? window._datiGenerici.aree_deboli : [];
 
@@ -11409,6 +11411,24 @@ function _wizRenderLoading() {
     'Calcolo impatto potenziale...',
     'Preparazione diagnosi personalizzata...'
   ];
+
+  // Placeholder tips — mostrati subito, aggiornati con fade quando arrivano quelli reali
+  var _placeholderSapevi = [
+    'Le PMI italiane perdono in media il 23% dei clienti ogni anno senza accorgersene',
+    'Solo il 12% delle piccole imprese ha un processo strutturato di follow-up clienti',
+    'Il passaparola genera il 65% dei nuovi clienti per le attività locali',
+    'Un cliente fidelizzato spende in media 3 volte di più di uno nuovo',
+    'Il 78% dei titolari non conosce il proprio margine netto reale'
+  ];
+  var _placeholderAzione = [
+    'Chiama oggi i tuoi 3 migliori clienti e chiedi cosa puoi migliorare',
+    'Scrivi su un foglio i 5 servizi che ti chiedono di più — è il tuo listino ideale',
+    'Controlla quanti clienti non vedi da oltre 30 giorni — sono soldi che perdi',
+    'Fai una foto al tuo negozio dall\'esterno — è quello che vede chi passa',
+    'Chiedi ai tuoi dipendenti qual è la domanda più frequente dei clienti'
+  ];
+  var _wizTipSapevi = _placeholderSapevi[Math.floor(Math.random() * _placeholderSapevi.length)];
+  var _wizTipAzione = _placeholderAzione[Math.floor(Math.random() * _placeholderAzione.length)];
 
   var iconLine   = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>';
   var iconInfo   = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
@@ -11440,9 +11460,9 @@ function _wizRenderLoading() {
         '<div id="wiz-counter-sub" style="font-size:14px;color:rgba(26,26,46,0.45);margin-top:6px;">' + _esc(settore) + ' analizzati in Italia</div>' +
       '</div>' +
       mkCard('wiz-card-1','#E6F1FB','#3D5AFE', iconLine,  'Fatturato medio del settore', _esc(mediaStr), fatSub) +
-      mkCard('wiz-card-2','#FCEBEB','#E24B4A', iconInfo,  'Il dato che pochi conoscono', '<span id="wiz-tip-sapevi">...</span>', '') +
+      mkCard('wiz-card-2','#FCEBEB','#E24B4A', iconInfo,  'Il dato che pochi conoscono', '<span id="wiz-tip-sapevi" style="transition:opacity 0.3s ease;">' + _esc(_wizTipSapevi) + '</span>', '') +
       mkCard('wiz-card-3','#E1F5EE','#1D9E75', iconPin,   'La tua zona: ' + _esc(locStr), 'Concorrenza <strong>' + _esc(concStr) + '</strong> nella tua area', '') +
-      mkCard('wiz-card-4','#FAEEDA','#BA7517', iconBolt,  'Azione rapida', '<span id="wiz-tip-azione">...</span>', '') +
+      mkCard('wiz-card-4','#FAEEDA','#BA7517', iconBolt,  'Azione rapida', '<span id="wiz-tip-azione" style="transition:opacity 0.3s ease;">' + _esc(_wizTipAzione) + '</span>', '') +
       mkCard('wiz-card-5','#EEEDFE','#534AB7', iconTarget,'Le tue aree da esplorare', '<strong>' + _esc(areSub) + '</strong>', 'Corrispondono ai problemi più comuni del settore') +
     '</div>' +
     '<div style="padding:8px 20px 20px;flex-shrink:0;">' +
@@ -11520,19 +11540,25 @@ function _wizRenderLoading() {
     clearInterval(_pollId);
     window._generaSettorePromise.then(function(data) {
       _startData = data || {};
-      // Aggiorna tips se disponibili
+      // Aggiorna tips con i dati reali di Sonnet
       if (data && data.tips) {
         var sapevi = data.tips.filter(function(t) { return t.tipo === 'sapevi'; });
         var azione = data.tips.filter(function(t) { return t.tipo === 'azione'; });
-        var el2 = document.getElementById('wiz-tip-sapevi');
-        if (el2 && sapevi.length) el2.textContent = sapevi[0].testo;
-        var el4 = document.getElementById('wiz-tip-azione');
-        if (el4 && azione.length) el4.textContent = azione[0].testo;
-        // Rendi visibili le card 2 e 4 se non lo fossero ancora
-        ['wiz-card-2','wiz-card-4'].forEach(function(id) {
-          var c = document.getElementById(id);
-          if (c && c.style.opacity !== '1') { c.style.opacity = '1'; c.style.transform = 'translateY(0)'; }
-        });
+        function _fadeUpdateTip(spanId, cardId, nuovoTesto) {
+          var card = document.getElementById(cardId);
+          var span = document.getElementById(spanId);
+          if (!span || !nuovoTesto) return;
+          if (card && card.style.opacity === '1') {
+            // Card già visibile: fade out → aggiorna → fade in
+            span.style.opacity = '0';
+            setTimeout(function() { span.textContent = nuovoTesto; span.style.opacity = '1'; }, 300);
+          } else {
+            // Card non ancora apparsa: aggiorna il testo direttamente (verrà visto al reveal)
+            span.textContent = nuovoTesto;
+          }
+        }
+        if (sapevi.length) _fadeUpdateTip('wiz-tip-sapevi', 'wiz-card-2', sapevi[0].testo);
+        if (azione.length) _fadeUpdateTip('wiz-tip-azione', 'wiz-card-4', azione[0].testo);
       }
       _tryTransition();
     }).catch(function() {
