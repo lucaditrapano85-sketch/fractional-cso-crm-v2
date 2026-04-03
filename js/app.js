@@ -11131,10 +11131,11 @@ function _chatMostraDomanda(step) {
   if (!d) return;
   _chatAddBolla('ai', _esc(d.domanda));
 
-  // Mescola opzioni (copia per non alterare l'array originale con i sentiment)
-  var opzioniMescolate = (d.opzioni || []).slice().sort(function() { return Math.random() - 0.5; });
-  var opzioniHtml = opzioniMescolate.map(function(op) {
-    return '<button onclick="_chatSelezionaOpzione(' + JSON.stringify(op.testo) + ')" ' +
+  // Mescola opzioni; salva in globale e passa indice numerico nell'onclick
+  // (evita il bug: JSON.stringify con virgolette rompe l'attributo HTML onclick="...")
+  window._chatOpzioniCorrente = (d.opzioni || []).slice().sort(function() { return Math.random() - 0.5; });
+  var opzioniHtml = window._chatOpzioniCorrente.map(function(op, i) {
+    return '<button onclick="_chatSelezionaOp(' + i + ')" ' +
       'style="display:block;width:100%;text-align:left;padding:13px 16px;margin-bottom:8px;' +
       'background:rgba(255,255,255,0.65);border:1.5px solid rgba(255,255,255,0.7);border-radius:12px;' +
       'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;color:#1a1a2e;cursor:pointer;line-height:1.4;" ' +
@@ -11168,6 +11169,12 @@ function _chatMostraInputLibero() {
       if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); _chatInviaTestoLibero(); }
     });
   }
+}
+
+function _chatSelezionaOp(idx) {
+  var op = window._chatOpzioniCorrente && window._chatOpzioniCorrente[idx];
+  if (!op) return;
+  _chatSelezionaOpzione(op.testo);
 }
 
 function _chatInviaTestoLibero() {
