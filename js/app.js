@@ -11143,7 +11143,7 @@ function _wizRender() {
             'oninput="_wizComuniInput(this.value)" ' +
             'onfocus="if(this.value.length>=2)_wizComuniInput(this.value)" ' +
             'onblur="setTimeout(function(){var d=document.getElementById(\'wiz-comuni-drop\');if(d)d.style.display=\'none\';},180)" />' +
-          '<div id="wiz-comuni-drop" style="display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border:1.5px solid #e8e8f0;border-top:none;border-radius:0 0 12px 12px;z-index:99;box-shadow:0 8px 24px rgba(0,0,0,0.1);overflow:hidden;"></div>' +
+          '<div id="wiz-comuni-drop" style="display:none;position:fixed;background:#fff;border:1.5px solid #e8e8f0;border-radius:8px;z-index:99999;box-shadow:0 8px 24px rgba(0,0,0,0.15);overflow:hidden;"></div>' +
         '</div>' +
       '</div>';
     footHtml = _wizFooter(true, !!locSel);
@@ -11203,6 +11203,14 @@ function _wizComuniInput(query) {
         '<strong>' + _esc(c.nome) + '</strong> <span style="color:rgba(26,26,46,0.45);font-size:13px;">(' + _esc(c.sigla) + ')</span>' +
       '</div>';
     }).join('');
+    // Position fixed relative to input bounding rect
+    var inp2 = document.getElementById('wiz-localita-inp');
+    if (inp2) {
+      var rect = inp2.getBoundingClientRect();
+      drop.style.top  = (rect.bottom + 2) + 'px';
+      drop.style.left = rect.left + 'px';
+      drop.style.width = rect.width + 'px';
+    }
     drop.style.display = 'block';
   };
   _loadComuni(esegui);
