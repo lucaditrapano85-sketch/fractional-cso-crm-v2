@@ -11851,6 +11851,19 @@ async function _chatTermina() {
     });
     var data = await res.json();
     if (!data.ok) throw new Error(data.error || 'diagnosi-end error');
+
+    // Aggiorna subito il prospect in memoria con score e diagnosi
+    // (difesa: se Supabase non ha le colonne, il reload non sovrascrive i dati)
+    if (window._pmiProspect && data.score_globale) {
+      window._pmiProspect = Object.assign({}, window._pmiProspect, {
+        score_globale:      data.score_globale,
+        diagnosi_narrativa: data.diagnosi,
+        diagnosi_priorita:  data.priorita
+      });
+      var _dcIdx = prospects.findIndex(function(x) { return window._pmiProspect && x.id === window._pmiProspect.id; });
+      if (_dcIdx >= 0) prospects[_dcIdx] = window._pmiProspect;
+    }
+
     _chatMostraRisultati(data);
   } catch(e) {
     console.error('diagnosi-end:', e);
@@ -11920,7 +11933,7 @@ function _chatRadarSVG(dims) {
   var keys = Object.keys(dims);
   var n = keys.length;
   if (n === 0) return '';
-  var cx = 115, cy = 115, r = 82;
+  var cx = 200, cy = 175, r = 105;
   var angles = keys.map(function(_, i) { return (i / n) * 2 * Math.PI - Math.PI / 2; });
 
   var grid = [20,40,60,80,100].map(function(lvl) {
@@ -11941,19 +11954,20 @@ function _chatRadarSVG(dims) {
 
   var dots = keys.map(function(k, i) {
     var sc = Math.min(100, Math.max(0, dims[k] || 0));
-    return '<circle cx="' + (cx + r*(sc/100)*Math.cos(angles[i])).toFixed(1) + '" cy="' + (cy + r*(sc/100)*Math.sin(angles[i])).toFixed(1) + '" r="3.5" fill="#3D5AFE"/>';
+    return '<circle cx="' + (cx + r*(sc/100)*Math.cos(angles[i])).toFixed(1) + '" cy="' + (cy + r*(sc/100)*Math.sin(angles[i])).toFixed(1) + '" r="4" fill="#3D5AFE"/>';
   }).join('');
 
   var labels = keys.map(function(k, i) {
-    var lx = cx + (r + 24)*Math.cos(angles[i]);
-    var ly = cy + (r + 24)*Math.sin(angles[i]);
     var cosA = Math.cos(angles[i]);
-    var anchor = cosA < -0.25 ? 'end' : cosA > 0.25 ? 'start' : 'middle';
-    return '<text x="' + lx.toFixed(1) + '" y="' + ly.toFixed(1) + '" text-anchor="' + anchor + '" dominant-baseline="middle" fill="rgba(26,26,46,0.65)" font-size="9" font-family="Plus Jakarta Sans,sans-serif" font-weight="500">' +
-      _esc(k) + ' <tspan fill="#3D5AFE" font-weight="700">' + (dims[k] || 0) + '</tspan></text>';
+    var sinA = Math.sin(angles[i]);
+    var lx = cx + (r + 38) * cosA;
+    var ly = cy + (r + 38) * sinA;
+    var anchor = cosA < -0.2 ? 'end' : cosA > 0.2 ? 'start' : 'middle';
+    return '<text x="' + lx.toFixed(1) + '" y="' + (ly - 7).toFixed(1) + '" text-anchor="' + anchor + '" fill="rgba(26,26,46,0.65)" font-size="10" font-family="Plus Jakarta Sans,sans-serif" font-weight="500">' + _esc(k) + '</text>' +
+      '<text x="' + lx.toFixed(1) + '" y="' + (ly + 7).toFixed(1) + '" text-anchor="' + anchor + '" fill="#3D5AFE" font-size="11" font-family="Plus Jakarta Sans,sans-serif" font-weight="700">' + (dims[k] || 0) + '</text>';
   }).join('');
 
-  return '<svg viewBox="0 0 230 230" width="230" height="230" style="display:block;">' +
+  return '<svg viewBox="0 0 400 350" width="400" height="350" style="display:block;max-width:100%;">' +
     grid + axes +
     '<polygon points="' + dataPts + '" fill="rgba(61,90,254,0.18)" stroke="#3D5AFE" stroke-width="2"/>' +
     dots + labels +
@@ -11971,9 +11985,14 @@ function _chatVaiHome() {
     sb.from('prospects').select('*').eq('id', pid).single()
       .then(function(r) {
         if (r.data) {
+          // Preserva score_globale in memoria se Supabase non l'ha salvato (colonne mancanti)
+          var cachedScore = window._pmiProspect && window._pmiProspect.score_globale;
           window._pmiProspect = r.data;
+          if (!window._pmiProspect.score_globale && cachedScore) {
+            window._pmiProspect.score_globale = cachedScore;
+          }
           var idx = prospects.findIndex(function(x) { return x.id === r.data.id; });
-          if (idx >= 0) prospects[idx] = r.data; else prospects.push(r.data);
+          if (idx >= 0) prospects[idx] = window._pmiProspect; else prospects.push(window._pmiProspect);
           currentId = r.data.id;
         }
         renderViewPMI('piano');
