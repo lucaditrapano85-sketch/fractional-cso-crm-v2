@@ -626,13 +626,15 @@ async function initPMI() {
   var csoApp = document.querySelector('.app');
   if (csoApp) csoApp.style.display = 'none';
 
-  // Mostra SOLO il background grigio durante il caricamento — niente sidebar, niente flash
+  // FIX 4: nascondi tutto con opacity:0 durante il caricamento, fade-in dopo la decisione
   if (pmiApp) {
     pmiApp.style.display = 'grid';
     pmiApp.style.gridTemplateColumns = '1fr';
+    pmiApp.style.opacity = '0';
+    pmiApp.style.transition = 'opacity 0.25s ease';
   }
+  // pmi-sidebar parte già nascosta (display:none in HTML)
   var pmiSidebar = document.getElementById('pmi-sidebar');
-  if (pmiSidebar) pmiSidebar.style.display = 'none';
 
   document.body.classList.add('pmi-mode');
 
@@ -666,12 +668,15 @@ async function initPMI() {
     }
   }
 
-  // Diagnosi completa: campo diagnosi_completata = true (nuovo), OPPURE score_globale > 0 (fallback)
-  var DIMS_ALL_PMI = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+  // FIX 5: hasDiagnosi — supporta sia chiavi standard (Vendite…) che vecchie (vendite…) e score_globale
+  var _STD_DIMS_PMI = ['Vendite','Marketing','Clienti','Pipeline','Pricing','Processi','Team','Digitale'];
   var hasDiagnosi = !!(window._pmiProspect && (
     window._pmiProspect.diagnosi_completata === true
     || (window._pmiProspect.score_globale != null && window._pmiProspect.score_globale > 0)
-    || (window._pmiProspect.dims && DIMS_ALL_PMI.every(function(k) { return (window._pmiProspect.dims[k] || 0) > 0; }))
+    // Almeno 4 dimensioni standard valorizzate
+    || (window._pmiProspect.dims && _STD_DIMS_PMI.filter(function(k){ return (window._pmiProspect.dims[k]||0) > 0; }).length >= 4)
+    // Backward compat: vecchie chiavi lowercase
+    || (window._pmiProspect.dims && ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'].every(function(k){ return (window._pmiProspect.dims[k]||0) > 0; }))
   ));
 
   if (!hasDiagnosi) {
@@ -684,12 +689,12 @@ async function initPMI() {
         prospects.push(window._pmiProspect);
       }
       currentId = window._pmiProspect.id;
-      // Sidebar già nascosta — _renderRiprendiDiagnosi la gestisce
       _renderRiprendiDiagnosi(document.getElementById('pmi-main'));
     } else if (typeof renderPrimoAccesso === 'function') {
-      // Sidebar già nascosta — renderPrimoAccesso la lascia nascosta
       renderPrimoAccesso();
     }
+    // FIX 4: fade-in dopo la decisione
+    requestAnimationFrame(function() { if (pmiApp) pmiApp.style.opacity = '1'; });
     return;
   }
 
@@ -705,6 +710,8 @@ async function initPMI() {
 
   if (typeof renderSidebarPMI === 'function') renderSidebarPMI();
   if (typeof renderViewPMI === 'function') renderViewPMI('home');
+  // FIX 4: fade-in dopo la decisione
+  requestAnimationFrame(function() { if (pmiApp) pmiApp.style.opacity = '1'; });
 }
 
 

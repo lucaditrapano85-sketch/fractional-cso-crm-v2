@@ -247,7 +247,8 @@ REGOLE:
 3. I dati nello shock devono essere REALISTICI per il mercato italiano.
 4. Usa il linguaggio che usa il titolare di quel settore, non termini da MBA.
 5. benchmark deve avere numeri realistici.
-    6. Ogni domanda di Fase 1 ha 3 opzioni. Le opzioni sono frasi che il titolare direbbe davvero — linguaggio suo, non da consulente. Ordinate: negativo, medio, positivo. Ogni opzione deve essere specifica per il settore e la domanda, non generica.`
+    6. Ogni domanda di Fase 1 ha 3 opzioni. Le opzioni sono frasi che il titolare direbbe davvero — linguaggio suo, non da consulente. Ordinate: negativo, medio, positivo. Ogni opzione deve essere specifica per il settore e la domanda, non generica.
+    7. Le dimensioni usate in domande_fase1 e domande_fase2 DEVONO essere esattamente queste 8, scritte esattamente così: Vendite, Marketing, Clienti, Pipeline, Pricing, Processi, Team, Digitale. Nessun'altra variante è accettata (no "Organizzazione", no "Ricavi", no "Sito Web", no "Post-vendita", no "Pipeline & CRM", no "E-commerce").`
       }]
     })
   });

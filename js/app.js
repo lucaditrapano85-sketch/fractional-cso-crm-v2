@@ -12557,9 +12557,53 @@ function _chatRadarSVG(dims) {
   '</svg>';
 }
 
+// FIX 2: auto-popola user_profiles e prospect dai dati raccolti durante il wizard
+async function _autopopolaProfiloDaDiagnosi() {
+  var nomeAzienda = window._pmiSelectedNomeDisplay || _pmiSelectedSettore || '';
+  var settore     = _pmiSelectedSettore || '';
+  var fascia      = _pmiSelectedFascia  || '';
+  var _loc        = (window._datiGenerici && window._datiGenerici.localita) || null;
+  var citta       = _loc ? (typeof _loc === 'object' ? (_loc.comune || '') : String(_loc)) : '';
+
+  // Aggiorna in memoria — non sovrascrivere company_name se già impostato
+  var upNow = window._userProfileData || {};
+  var companyToSave = upNow.company_name || nomeAzienda;
+  window._userProfileData = Object.assign({}, upNow, {
+    company_name:    companyToSave,
+    sector:          settore,
+    fascia_fatturato: fascia,
+    citta:           citta
+  });
+
+  // Salva su Supabase user_profiles
+  var uid = window._currentUserId;
+  if (uid && typeof sb !== 'undefined') {
+    try {
+      await sb.from('user_profiles').update({
+        company_name:    companyToSave,
+        sector:          settore,
+        fascia_fatturato: fascia,
+        citta:           citta
+      }).eq('user_id', uid);
+    } catch(e) { console.warn('_autopopolaProfiloDaDiagnosi user_profiles:', e); }
+  }
+
+  // Aggiorna citta sul prospect se disponibile
+  var p = window._pmiProspect;
+  if (p && p.id && citta && typeof sb !== 'undefined') {
+    try {
+      await sb.from('prospects').update({ citta: citta }).eq('id', p.id);
+      window._pmiProspect = Object.assign({}, p, { citta: citta });
+    } catch(e) {}
+  }
+}
+
 function _chatVaiHome() {
   _chatChiudiOverlay();
   renderSidebarPMI();
+
+  // FIX 2: auto-popola profilo dai dati raccolti durante il wizard
+  _autopopolaProfiloDaDiagnosi().catch(function(){});
 
   // Ricarica prospect dal DB PRIMA di renderizzare il piano
   // (diagnosi-end ha già salvato score_globale e dims su Supabase)
@@ -12591,8 +12635,13 @@ function _dopoChiudiDiagnosiPMI(pid) {
   if (p) { window._pmiProspect = p; window._userPlan = p.piano || 'self'; }
   window._pmiDiagnosiMode = false;
 
-  var DIMS_ALL   = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
-  var hasDims    = p && p.dims && DIMS_ALL.every(function(k){ return (p.dims[k] || 0) > 0; });
+  var _STD_DOPO = ['Vendite','Marketing','Clienti','Pipeline','Pricing','Processi','Team','Digitale'];
+  var hasDims = !!(p && (
+    p.diagnosi_completata === true
+    || (p.score_globale > 0)
+    || (p.dims && _STD_DOPO.filter(function(k){ return (p.dims[k]||0)>0; }).length >= 4)
+    || (p.dims && ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'].every(function(k){ return (p.dims[k]||0)>0; }))
+  ));
   var hasAnswers = Object.keys(window._diagRisposte || {}).length > 0;
   var main = document.getElementById('pmi-main');
 
@@ -12669,24 +12718,29 @@ function _renderAHAPMI(container) {
     return;
   }
 
-  var s  = calcScore(p) || (p.score_globale || 0);
+  var s = p.score_globale || calcScore(p) || 0;
+  if (!s && p.dims) {
+    var _ahaDv = ['Vendite','Marketing','Clienti','Pipeline','Pricing','Processi','Team','Digitale']
+      .map(function(k){ return p.dims[k]||0; }).filter(function(v){ return v>0; });
+    if (_ahaDv.length) s = Math.round(_ahaDv.reduce(function(a,b){return a+b;},0)/_ahaDv.length*20);
+  }
   var sc = scoreColor(s);
-  var DIMS_LIST = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
+  var DIMS_LIST = ['Vendite','Marketing','Clienti','Pipeline','Pricing','Processi','Team','Digitale'];
 
   // Dimensione col punteggio più basso (prima azione)
   var dimMinima = DIMS_LIST.reduce(function(min, d) {
     return (p.dims[d] || 0) < (p.dims[min] || 0) ? d : min;
   }, DIMS_LIST[0]);
-  var labelMin  = getDimLabel(p.settore, dimMinima);
+  var labelMin  = dimMinima; // key IS the label
   var scoreMin  = p.dims[dimMinima] || 1;
-  var stepDesc  = (typeof _getStepDesc === 'function') ? _getStepDesc(p.settore, dimMinima, scoreMin) : '';
+  var stepDesc  = '';
 
   var gridHtml = DIMS_LIST.map(function(d) {
     var v   = p.dims[d] || 0;
     var col = dimColor(v);
     var pct = (v / 5) * 100;
     return '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:12px;padding:10px 12px">' +
-      '<div style="font-size:11px;font-weight:600;color:#1a1a2e;margin-bottom:6px">' + getDimLabel(p.settore, d) + '</div>' +
+      '<div style="font-size:11px;font-weight:600;color:#1a1a2e;margin-bottom:6px">' + d + '</div>' +
       '<div style="height:5px;background:rgba(0,0,0,0.06);border-radius:3px;margin-bottom:5px"><div style="width:' + pct + '%;height:100%;background:' + col + ';border-radius:3px"></div></div>' +
       '<div style="font-size:13px;font-weight:700;color:' + col + '">' + (v || '—') + '/5</div>' +
     '</div>';
@@ -12727,14 +12781,14 @@ var AZIONI_SETTIMANALI = {
     4: {t: "Analizza il tuo tasso di chiusura: quanti preventivi hai fatto questo mese e quanti hai chiuso? Calcola la percentuale. Se è sotto il 30%, il problema è nel follow-up. Se è sopra ma il fatturato non cresce, il problema è nel numero di lead.", o: "Obiettivo: conoscere il tuo numero esatto."},
     5: {t: "Rivedi i KPI del mese: tasso di chiusura, valore medio ordine, tempo medio di chiusura. Confrontali con il mese scorso. Identifica un KPI in calo.", o: "Obiettivo: definire un'azione correttiva per la prossima settimana."}
   },
-  "Pipeline & CRM": {
+  "Pipeline": {
     1: {t: "Apri un foglio Excel o Google Sheet. Crea 5 colonne: Nome cliente, Valore preventivo, Data ultimo contatto, Prossima azione, Stato. Inserisci tutti i preventivi attivi.", o: "Obiettivo: pipeline visibile in un posto solo."},
     2: {t: "Guarda il tuo foglio pipeline. Quanti preventivi hanno la colonna 'Prossima azione' vuota? Compilala per tutti. Per ogni preventivo aperto devi sapere cosa fare dopo e quando.", o: "Obiettivo: zero preventivi senza prossima azione."},
     3: {t: "Imposta un promemoria settimanale: ogni lunedì mattina, 15 minuti per rivedere la pipeline. Se un preventivo è fermo da 45+ giorni senza risposta, segnalo come perso e chiedi il motivo.", o: "Obiettivo: pipeline pulita e aggiornata ogni lunedì."},
     4: {t: "Calcola il tuo ciclo di vendita medio: dalla prima chiamata alla chiusura, quanti giorni passano? Calcolalo sulle ultime 10 chiusure. Se è sopra 30 giorni, identifica dove si blocca.", o: "Obiettivo: conoscere il ciclo e il collo di bottiglia."},
     5: {t: "Implementa un CRM digitale (anche gratuito: HubSpot Free, Pipedrive trial). Migra i dati dal foglio. Configura i promemoria automatici per il follow-up.", o: "Obiettivo: nessun lead dimenticato, mai più."}
   },
-  "Organizzazione": {
+  "Team": {
     1: {t: "Scrivi su un foglio quanto tempo dedichi alla vendita ogni settimana — in ore reali. Includi: chiamate, preventivi, visite, follow-up. Se è meno di 10 ore su 40, stai facendo il tuttofare.", o: "Obiettivo: conoscere il tuo numero reale di ore vendita."},
     2: {t: "Identifica le 3 attività che ti rubano più tempo e che NON sono vendita. Per ognuna chiediti: posso delegarla? A chi? A quanto?", o: "Obiettivo: pianificare almeno 1 delega questa settimana."},
     3: {t: "Se hai un commerciale, fissa un incontro settimanale di 30 minuti: revisione pipeline, obiettivi della settimana, problemi aperti. Se non lo fai, il tuo commerciale vende alla cieca.", o: "Obiettivo: primo incontro commerciale strutturato."},
@@ -12748,7 +12802,7 @@ var AZIONI_SETTIMANALI = {
     4: {t: "Misura il tempo dal preventivo alla chiusura. Se è sopra 15 giorni, il cliente sta decidendo altrove. Regola: follow-up al giorno 3, 7, 14. Dopo il 14 chiedi sì o no.", o: "Obiettivo: nessun preventivo in limbo oltre 14 giorni."},
     5: {t: "Automatizza almeno 1 passaggio: promemoria automatici, email template per follow-up, o report settimanale generato automaticamente.", o: "Obiettivo: risparmiare almeno 1 ora a settimana."}
   },
-  "Ricavi": {
+  "Pricing": {
     1: {t: "Calcola quanto fatturato viene dai tuoi 3 clienti più grandi. Se è più del 40% del totale, sei a rischio. Fai una lista di 5 aziende prospect che non hai mai contattato.", o: "Obiettivo: lista di 5 prospect nuovi."},
     2: {t: "Analizza i margini per cliente o prodotto. Quale genera più margine? Quale meno? Calcolalo sui top 5 clienti.", o: "Obiettivo: conoscere il margine sui 5 clienti più grandi."},
     3: {t: "Proponi un upsell o cross-sell a 3 clienti esistenti questa settimana. Il cliente esistente compra 5x più facilmente di uno nuovo.", o: "Obiettivo: 3 proposte aggiuntive inviate."},
@@ -12762,14 +12816,14 @@ var AZIONI_SETTIMANALI = {
     4: {t: "Chiedi a 5 clienti come ti hanno trovato. Se la risposta è sempre passaparola, il marketing non funziona. Identifica un canale digitale da testare.", o: "Obiettivo: sapere come ti trovano i clienti."},
     5: {t: "Imposta un budget marketing mensile (anche €200-500). Testa un canale per 60 giorni. Misura: quanti contatti, quanti preventivi, a che costo.", o: "Obiettivo: primo test marketing con budget e misura."}
   },
-  "Sito Web": {
+  "Digitale": {
     1: {t: "Apri il tuo sito sul telefono. Si carica in meno di 3 secondi? Si legge bene? Il numero è cliccabile? Il modulo contatti funziona? Se una risposta è no, il sito ti perde clienti.", o: "Obiettivo: test mobile del tuo sito fatto."},
     2: {t: "Il sito deve avere: chi sei, cosa fai, dove sei, come contattarti, e almeno 3 foto reali. Se manca qualcosa, aggiornalo.", o: "Obiettivo: 5 informazioni base presenti e aggiornate."},
     3: {t: "Installa Google Analytics (gratuito). Dopo una settimana guarda: quante visite, da dove, quale pagina è più vista. Se non misuri, non sai se il sito funziona.", o: "Obiettivo: Analytics installato e funzionante."},
     4: {t: "Aggiungi una pagina casi di successo: 3-5 esempi con foto, problema, soluzione, risultato. Più persuasivo di qualsiasi testo commerciale.", o: "Obiettivo: almeno 3 casi pubblicati."},
     5: {t: "Ottimizza per ricerche locali: inserisci città e servizi nei titoli. 'Meccanica di precisione a Torino' non solo 'I nostri servizi'.", o: "Obiettivo: titoli pagine ottimizzati."}
   },
-  "Post-vendita": {
+  "Clienti": {
     1: {t: "Chiama 3 clienti che hanno comprato negli ultimi 6 mesi. Non per vendere — per chiedere come va. Questa telefonata vale più di qualsiasi campagna marketing.", o: "Obiettivo: 3 chiamate di follow-up fatte."},
     2: {t: "Crea un template email: 'Ciao [nome], sono passati 30 giorni dal tuo acquisto. Tutto bene? Posso aiutarti?' Inviala ai clienti degli ultimi 3 mesi.", o: "Obiettivo: template creato e prime 10 email inviate."},
     3: {t: "Definisci un calendario post-vendita: giorno 7 feedback, giorno 30 check-in, giorno 90 proposta riacquisto. Automatizzalo se possibile.", o: "Obiettivo: calendario post-vendita scritto."},
@@ -12779,32 +12833,36 @@ var AZIONI_SETTIMANALI = {
 };
 
 function generaAnalisiAI(prospect) {
-  var dims = prospect.dims;
-  var entries = Object.keys(dims).map(function(k){ return [k, dims[k]]; });
+  var dims = prospect.dims || {};
+  var scoreGlobale = prospect.scoreGlobale || 0;
+  var entries = Object.keys(dims).filter(function(k){ return dims[k] > 0; }).map(function(k){ return [k, dims[k]]; });
+  if (entries.length === 0) return {testo: '', consiglio: ''};
   var sorted = entries.slice().sort(function(a,b){ return a[1]-b[1]; });
   var debole = sorted[0];
   var forte  = sorted[sorted.length-1];
   var critiche = entries.filter(function(e){ return e[1]<=1; }).length;
-  var benchmarkMedia = 3.0;
+
+  var s100debole = Math.round(debole[1] * 20);
+  var s100forte  = Math.round(forte[1] * 20);
 
   var testo = '';
   if (debole[1] <= 1) {
-    testo = 'La tua area più critica è ' + debole[0] + ' con score ' + debole[1] + '/5 — sei ben sotto la media di settore (' + benchmarkMedia + ').';
+    testo = 'La tua area più critica è ' + debole[0] + ' con score ' + s100debole + '/100 — sei ben sotto la media di settore.';
   } else if (debole[1] <= 2) {
-    testo = debole[0] + ' (' + debole[1] + '/5) è la tua area più debole. La media del tuo settore è ' + benchmarkMedia + ' — c\'è margine di crescita significativo.';
+    testo = debole[0] + ' (' + s100debole + '/100) è la tua area più debole. C\'è margine di crescita significativo rispetto alla media del settore.';
   } else {
-    testo = 'Il tuo profilo è equilibrato. ' + debole[0] + ' (' + debole[1] + '/5) è l\'area con più margine di miglioramento.';
+    testo = 'Il tuo profilo è equilibrato. ' + debole[0] + ' (' + s100debole + '/100) è l\'area con più margine di miglioramento.';
   }
 
-  var correlazioni = {'Pipeline & CRM':'Processi','Vendite':'Organizzazione','Marketing':'Sito Web','Ricavi':'Post-vendita'};
+  var correlazioni = {'Pipeline':'Processi','Vendite':'Team','Marketing':'Digitale','Pricing':'Clienti'};
   var prereq = correlazioni[debole[0]];
   var consiglio = '';
-  if (prereq && dims[prereq] <= 2) {
-    consiglio = 'Ma prima di lavorare su ' + debole[0] + ', risolvi ' + prereq + ' (' + dims[prereq] + '/5) — è un prerequisito. Senza ' + prereq + ' strutturato, i miglioramenti su ' + debole[0] + ' non tengono.';
+  if (prereq && dims[prereq] && dims[prereq] <= 2) {
+    consiglio = 'Ma prima di lavorare su ' + debole[0] + ', risolvi ' + prereq + ' (' + Math.round((dims[prereq]||0)*20) + '/100) — è un prerequisito. Senza ' + prereq + ' strutturato, i miglioramenti su ' + debole[0] + ' non tengono.';
   } else if (critiche >= 3) {
     consiglio = 'Hai ' + critiche + ' aree critiche — concentrati su una alla volta. Parti da ' + debole[0] + '.';
   } else {
-    consiglio = 'Parti da ' + debole[0] + ' — migliorarla avrà l\'impatto maggiore sul tuo fatturato nei prossimi 90 giorni. Il tuo punto di forza è ' + forte[0] + ' (' + forte[1] + '/5).';
+    consiglio = 'Parti da ' + debole[0] + ' — migliorarla avrà l\'impatto maggiore sul tuo fatturato nei prossimi 90 giorni. Il tuo punto di forza è ' + forte[0] + ' (' + s100forte + '/100).';
   }
 
   return {testo: testo, consiglio: consiglio};
@@ -12822,35 +12880,39 @@ function renderPMIHome(container) {
   var settoreRaw = up.sector || p.settore || '';
   var settore = settoreRaw ? settoreRaw.replace(/_/g,' ').replace(/^\w/,function(c){return c.toUpperCase();}) : '';
 
-  // calcScore usa i dim keys del vecchio CRM (lowercase). Se la diagnosi nuova
-  // ha salvato dim con keys diversi (es. "Vendite"), usa score_globale come fallback.
-  var s = calcScore(p) || (p.score_globale || 0);
+  // Score: preferisce score_globale (0-100) dalla diagnosi, fallback calcScore, fallback da dims standard
+  var s = p.score_globale || calcScore(p) || 0;
+  if (!s && p.dims) {
+    var _hDv = ['Vendite','Marketing','Clienti','Pipeline','Pricing','Processi','Team','Digitale']
+      .map(function(k){ return p.dims[k]||0; }).filter(function(v){ return v>0; });
+    if (_hDv.length) s = Math.round(_hDv.reduce(function(a,b){return a+b;},0)/_hDv.length*20);
+  }
   var scoreBorder = s < 40 ? 'rgba(229,57,53,0.55)' : s < 60 ? 'rgba(175,125,0,0.55)' : 'rgba(0,130,95,0.55)';
   var scoreBg     = s < 40 ? 'rgba(229,57,53,0.04)' : s < 60 ? 'rgba(175,125,0,0.04)' : 'rgba(0,130,95,0.04)';
 
-  var dimMin   = _PMI_DIMS.reduce(function(min,k){ return (p.dims[k]||0)<(p.dims[min]||0)?k:min; }, _PMI_DIMS[0]);
+  // 8 dimensioni standard
+  var _STD_DIMS = ['Vendite','Marketing','Clienti','Pipeline','Pricing','Processi','Team','Digitale'];
+  var dimMin   = _STD_DIMS.reduce(function(min,k){ return (p.dims[k]||0)<(p.dims[min]||0)?k:min; }, _STD_DIMS[0]);
   var scoreMin = p.dims[dimMin] || 1;
-  var labelMin = getDimLabel(p.settore, dimMin);
+  var labelMin = dimMin; // key IS the label with standard names
   var stepActual = Math.max(1, Math.min(5, Math.round(scoreMin)));
   var azioneData = (AZIONI_SETTIMANALI[labelMin] && AZIONI_SETTIMANALI[labelMin][stepActual]) || null;
   var stepDesc   = azioneData ? azioneData.t : 'Concentrati sulla dimensione più debole questa settimana.';
   var stepObj    = azioneData ? azioneData.o : 'Obiettivo: completare almeno 1 azione entro venerdì.';
 
-  // Analisi AI per "Leva dice"
-  var dimsMapped = {'Vendite':p.dims.vendite||0,'Pipeline & CRM':p.dims.pipeline||0,'Organizzazione':p.dims.team||0,'Processi':p.dims.processi||0,'Ricavi':p.dims.ricavi||0,'Marketing':p.dims.marketing||0,'Sito Web':p.dims.sitoweb||0,'Post-vendita':p.dims.ecommerce||0};
-  var analisi = generaAnalisiAI({dims: dimsMapped});
+  // Analisi AI per "Leva dice" — usa p.dims direttamente con chiavi standard
+  var analisi = generaAnalisiAI({dims: p.dims, scoreGlobale: s});
 
   // Calcolo impatto economico reale
   var fatturato = p.fatturato || 1000000;
   var gapStep   = Math.min(2, 5 - scoreMin);
-  var coefficienti = {vendite:0.04,pipeline:0.035,team:0.025,processi:0.03,ricavi:0.045,marketing:0.02,sitoweb:0.015,ecommerce:0.03};
+  var coefficienti = {'Vendite':0.04,'Pipeline':0.035,'Team':0.025,'Processi':0.03,'Pricing':0.045,'Marketing':0.02,'Digitale':0.02,'Clienti':0.03};
   var coeff = coefficienti[dimMin] || 0.03;
   var impattoMensile = Math.round(fatturato * gapStep * coeff / 12);
   var impattoFmt = '€' + impattoMensile.toLocaleString('it-IT');
 
-  // {{DIMS_HTML}}
-  var dimLabels = {vendite:'Vendite',pipeline:'Pipeline & CRM',team:'Organizzazione',processi:'Processi',ricavi:'Ricavi',marketing:'Marketing',sitoweb:'Sito Web',ecommerce:'Post-vendita'};
-  var dimsHtml = _PMI_DIMS.map(function(key) {
+  // {{DIMS_HTML}} — 8 dimensioni standard, key = label
+  var dimsHtml = _STD_DIMS.map(function(key) {
     var v = p.dims[key] || 0;
     var cardBg, cardBorder, color, barColor;
     if (v < 2)      { cardBg='rgba(229,57,53,0.03)'; cardBorder='border:1px solid rgba(229,57,53,0.08);'; color='rgba(229,57,53,0.85)'; barColor='rgba(229,57,53,0.55)'; }
@@ -12859,7 +12921,7 @@ function renderPMIHome(container) {
     var pct = Math.round((v/5)*100);
     return '<div onclick="navigaAzioni(\''+key+'\')" style="flex:1;min-width:45%;padding:8px 10px;background:'+cardBg+';border-radius:8px;cursor:pointer;'+cardBorder+'">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">' +
-        '<span style="font-size:12px;color:#1a1a2e;">'+dimLabels[key]+'</span>' +
+        '<span style="font-size:12px;color:#1a1a2e;">'+key+'</span>' +
         '<span style="font-size:15px;font-weight:700;color:'+color+';">'+(v||'—')+'</span>' +
       '</div>' +
       '<div style="height:4px;background:rgba(0,0,0,0.04);border-radius:2px;">' +
@@ -13017,21 +13079,19 @@ function renderPMIScore(container) {
   var p = window._pmiProspect;
   if (!p || !p.dims) { renderPMIHome(container); return; }
 
-  var s  = calcScore(p) || (p.score_globale || 0);
+  var s  = p.score_globale || calcScore(p) || 0;
   var sc = scoreColor(s);
 
-  // Ordine alfabetico per label
-  var dimLabelsMap = {vendite:'Vendite',pipeline:'Pipeline & CRM',team:'Organizzazione',processi:'Processi',ricavi:'Ricavi',marketing:'Marketing',sitoweb:'Sito Web',ecommerce:'Post-vendita'};
-  var dimsAlpha = _PMI_DIMS.slice().sort(function(a, b) {
-    return (dimLabelsMap[a] || a).localeCompare(dimLabelsMap[b] || b, 'it');
-  });
+  // 8 dimensioni standard ordinate alfabeticamente per label (= key)
+  var _STD_DIMS_S = ['Vendite','Marketing','Clienti','Pipeline','Pricing','Processi','Team','Digitale'];
+  var dimsAlpha = _STD_DIMS_S.slice().sort(function(a, b) { return a.localeCompare(b, 'it'); });
 
   var dimsHtml = dimsAlpha.map(function(d) {
     var v   = p.dims[d] || 0;
     var col = dimColor(v);
     var pct = (v / 5) * 100;
-    var lbl = getDimLabel(p.settore, d);
-    var stepDesc = (typeof _getStepDesc === 'function' && v > 0) ? _getStepDesc(p.settore, d, Math.max(1, Math.floor(v))) : '';
+    var lbl = d; // key IS the label with standard names
+    var stepDesc = '';
     var statoLabel = v < 2 ? 'Critico' : v <= 3 ? 'In sviluppo' : 'Solido';
     var statoTxt   = v < 2 ? 'rgba(229,57,53,0.9)'  : v <= 3 ? 'rgba(175,125,0,0.85)' : 'rgba(0,130,95,0.85)';
     var statoBg    = v < 2 ? 'rgba(229,57,53,0.08)' : v <= 3 ? 'rgba(175,125,0,0.08)' : 'rgba(0,130,95,0.08)';
@@ -13538,7 +13598,11 @@ function renderPMIProfilo(container) {
   var emailVal     = pro.email || window._currentUserEmail || '';
   var telefonoVal  = pro.telefono || up.telefono || '';
 
+  // FIX 2: campi azienda disabilitati (grayed) se la diagnosi è stata completata
+  var _diagDone = !!(p && (p.diagnosi_completata === true || (p.score_globale > 0)));
   var INP = 'width:100%;box-sizing:border-box;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.08);color:#1a1a2e;border-radius:10px;padding:10px 12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;outline:none;';
+  var INP_DIS = _diagDone ? 'width:100%;box-sizing:border-box;background:rgba(0,0,0,0.03);border:1px solid rgba(0,0,0,0.05);color:rgba(26,26,46,0.4);border-radius:10px;padding:10px 12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;outline:none;cursor:not-allowed;' : INP;
+  var DIS = _diagDone ? ' disabled' : '';
   var LABEL = 'font-size:11px;font-weight:600;color:rgba(26,26,46,0.45);margin-bottom:5px;display:block;';
   var CARD = 'background:rgba(255,255,255,0.65);border:1px solid rgba(255,255,255,0.75);border-radius:14px;padding:16px;margin-bottom:14px;';
   var CARD_TTL = 'font-size:10px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:14px;';
@@ -13571,22 +13635,24 @@ function renderPMIProfilo(container) {
       '<div style="' + CARD + '">' +
         '<div style="' + CARD_TTL + '">La tua azienda</div>' +
 
+        (_diagDone ? '<div style="font-size:11px;color:rgba(61,90,254,0.7);background:rgba(61,90,254,0.05);border:1px solid rgba(61,90,254,0.12);border-radius:8px;padding:8px 12px;margin-bottom:12px;">Dati compilati automaticamente dalla diagnosi. Per modificarli rifai la diagnosi.</div>' : '') +
+
         '<div style="margin-bottom:10px"><label style="' + LABEL + '">Nome azienda</label>' +
-          '<input id="prf-nome-azienda" style="' + INP + '" value="' + _esc(nomeAzienda) + '" placeholder="Es. Rossi Srl"></div>' +
+          '<input id="prf-nome-azienda" style="' + INP_DIS + '" value="' + _esc(nomeAzienda) + '" placeholder="Es. Rossi Srl"' + DIS + '></div>' +
 
         '<div style="margin-bottom:10px"><label style="' + LABEL + '">Settore</label>' +
-          '<select id="prf-settore" style="' + INP + '" onchange="pmiProfiloOnMacroChange(this.value)">' + settoreOpts + '</select></div>' +
+          '<select id="prf-settore" style="' + INP_DIS + '" onchange="pmiProfiloOnMacroChange(this.value)"' + DIS + '>' + settoreOpts + '</select></div>' +
 
         '<div style="margin-bottom:10px" id="prf-micro-wrap"' + (settoreVal ? '' : ' style="display:none"') + '><label style="' + LABEL + '">Micro-settore</label>' +
-          '<select id="prf-micro" style="' + INP + '">' + microOpts + '</select></div>' +
+          '<select id="prf-micro" style="' + INP_DIS + '"' + DIS + '>' + microOpts + '</select></div>' +
 
         '<div style="margin-bottom:10px"><label style="' + LABEL + '">Fascia fatturato</label>' +
-          '<select id="prf-fascia" style="' + INP + '">' + fasciaOpts + '</select></div>' +
+          '<select id="prf-fascia" style="' + INP_DIS + '"' + DIS + '>' + fasciaOpts + '</select></div>' +
 
         '<div style="margin-bottom:2px"><label style="' + LABEL + '">Città</label>' +
-          '<input id="prf-citta" style="' + INP + '" value="' + _esc(cittaVal) + '" placeholder="Es. Milano"></div>' +
+          '<input id="prf-citta" style="' + INP_DIS + '" value="' + _esc(cittaVal) + '" placeholder="Es. Milano"' + DIS + '></div>' +
 
-        '<button onclick="salvaProfiloPMIAzienda()" style="' + BTN_PRI + '">Salva modifiche</button>' +
+        (!_diagDone ? '<button onclick="salvaProfiloPMIAzienda()" style="' + BTN_PRI + '">Salva modifiche</button>' : '') +
       '</div>' +
 
       // ── Card Account ────────────────────────────────────────────────────
