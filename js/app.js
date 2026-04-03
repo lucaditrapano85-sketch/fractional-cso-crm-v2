@@ -11131,15 +11131,15 @@ function _chatMostraDomanda(step) {
   if (!d) return;
   _chatAddBolla('ai', _esc(d.domanda));
 
-  var icona = { negativo: '🔴', medio: '🟡', positivo: '🟢' };
-  var opzioniHtml = (d.opzioni || []).map(function(op) {
-    var ic = icona[op.sentiment] || '•';
+  // Mescola opzioni (copia per non alterare l'array originale con i sentiment)
+  var opzioniMescolate = (d.opzioni || []).slice().sort(function() { return Math.random() - 0.5; });
+  var opzioniHtml = opzioniMescolate.map(function(op) {
     return '<button onclick="_chatSelezionaOpzione(' + JSON.stringify(op.testo) + ')" ' +
       'style="display:block;width:100%;text-align:left;padding:13px 16px;margin-bottom:8px;' +
       'background:rgba(255,255,255,0.65);border:1.5px solid rgba(255,255,255,0.7);border-radius:12px;' +
       'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;color:#1a1a2e;cursor:pointer;line-height:1.4;" ' +
       'onmouseover="this.style.background=\'rgba(255,255,255,0.9)\'" onmouseout="this.style.background=\'rgba(255,255,255,0.65)\'">' +
-      ic + ' ' + _esc(op.testo) + '</button>';
+      _esc(op.testo) + '</button>';
   }).join('');
 
   _chatSetInput(
