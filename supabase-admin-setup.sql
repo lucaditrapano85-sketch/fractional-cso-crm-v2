@@ -114,3 +114,35 @@ CREATE INDEX IF NOT EXISTS idx_profiles_is_admin ON profiles(is_admin) WHERE is_
 -- ALTER TABLE calls ADD COLUMN IF NOT EXISTS appunti text;
 -- ALTER TABLE calls ADD COLUMN IF NOT EXISTS prossimi_passi text;
 -- ALTER TABLE calls ADD COLUMN IF NOT EXISTS cso_id uuid;
+
+-- ============================================================
+-- TABELLA settori_custom (usata da api/diagnosi-start.js)
+-- ============================================================
+-- Crea la tabella se non esiste:
+CREATE TABLE IF NOT EXISTS settori_custom (
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  codice          TEXT,
+  nome            TEXT,
+  macro_settore   TEXT,
+  shock_data      JSONB DEFAULT '{}',
+  domande_fase1   JSONB DEFAULT '[]',
+  domande_fase2   JSONB DEFAULT '[]',
+  benchmark       JSONB DEFAULT '{}',
+  diagnosi_template TEXT,
+  n_diagnosi      INTEGER DEFAULT 0,
+  created_by      UUID,
+  created_at      TIMESTAMPTZ DEFAULT now(),
+  updated_at      TIMESTAMPTZ DEFAULT now()
+);
+
+-- Se la tabella esisteva già senza alcune colonne, aggiungile:
+ALTER TABLE settori_custom ADD COLUMN IF NOT EXISTS shock_data       JSONB DEFAULT '{}';
+ALTER TABLE settori_custom ADD COLUMN IF NOT EXISTS domande_fase1    JSONB DEFAULT '[]';
+ALTER TABLE settori_custom ADD COLUMN IF NOT EXISTS domande_fase2    JSONB DEFAULT '[]';
+ALTER TABLE settori_custom ADD COLUMN IF NOT EXISTS benchmark        JSONB DEFAULT '{}';
+ALTER TABLE settori_custom ADD COLUMN IF NOT EXISTS diagnosi_template TEXT;
+ALTER TABLE settori_custom ADD COLUMN IF NOT EXISTS n_diagnosi       INTEGER DEFAULT 0;
+ALTER TABLE settori_custom ADD COLUMN IF NOT EXISTS updated_at       TIMESTAMPTZ DEFAULT now();
+
+-- Nessuna RLS necessaria su settori_custom (dati pubblici di settore, non dati utente)
+-- L'endpoint usa SUPABASE_SERVICE_KEY che bypassa RLS comunque.
