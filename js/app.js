@@ -10350,13 +10350,13 @@ function renderSidebarPMI() {
 
   var navItems = [
     { id:'home',   title:'Home',
-      svg:'<svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>' },
+      svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>' },
     { id:'azioni', title:'Azioni',
-      svg:'<svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l4 4 6-7"/></svg>' },
+      svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' },
     { id:'score',  title:'Score',
-      svg:'<svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="8" cy="8" r="5.5"/><path d="M8 8l2.2-2.2" stroke-linecap="round"/><circle cx="8" cy="8" r="1.2" fill="currentColor" stroke="none"/></svg>' },
+      svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>' },
     { id:'trend',  title:'Trend',
-      svg:'<svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M3 13l3-4 3 2 4-6"/></svg>' },
+      svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>' },
   ];
 
   if (_isBase) navItems.push({ id:'piano_cso', title:'Piano CSO',
@@ -10370,9 +10370,7 @@ function renderSidebarPMI() {
       svg:'<svg width="18" height="18" viewBox="0 0 16 16" fill="none"><rect x="2" y="10" width="3" height="4" rx="1" fill="currentColor" opacity=".5"/><rect x="6.5" y="7" width="3" height="7" rx="1" fill="currentColor" opacity=".7"/><rect x="11" y="4" width="3" height="10" rx="1" fill="currentColor"/></svg>' });
   }
   navItems.push({ id:'piano',   title:'Piano',
-    svg:'<svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"><path d="M8 2l1.5 3.5 3.5.5-2.5 2.5.6 3.5L8 10.5l-3.1 1.5.6-3.5L3 6l3.5-.5z"/></svg>' });
-  navItems.push({ id:'profilo', title:'Profilo',
-    svg:'<svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="8" cy="6" r="3"/><path d="M3 15c0-2.8 2.2-5 5-5s5 2.2 5 5"/></svg>' });
+    svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M12 2l2 5.5 5.5.8-4 3.9 1 5.5L12 15l-4.5 2.7 1-5.5-4-3.9 5.5-.8z"/></svg>' });
 
   // Logo Deep Space: barra viola
   var logoHtml =
@@ -10389,6 +10387,8 @@ function renderSidebarPMI() {
   // Divider
   var divHtml = '<div style="width:32px;height:0.5px;background:rgba(255,255,255,0.05);margin:6px 0;"></div>';
 
+  var initials = ((window._userProfileData && window._userProfileData.company_name) || window._currentUserEmail || 'U')[0].toUpperCase();
+
   sidebar.innerHTML =
     logoHtml +
     navItems.map(function(item) {
@@ -10400,10 +10400,13 @@ function renderSidebarPMI() {
     }).join('') +
     '<div style="flex:1;"></div>' +
     divHtml +
-    '<div onclick="logout()" class="leva-sidebar-icon" title="Esci" style="margin-bottom:8px;">' +
-      '<svg width="16" height="16" viewBox="0 0 16 16" fill="none">' +
-        '<path d="M6 2H4a2 2 0 00-2 2v8a2 2 0 002 2h2M11 11l3-3-3-3M14 8H6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '<div class="leva-sidebar-icon" title="Chiedi a Leva" style="animation:leva-glow 3s infinite;margin-bottom:4px;">' +
+      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF6B2B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>' +
       '</svg>' +
+    '</div>' +
+    '<div onclick="showViewPMI(\'profilo\')" title="Profilo" style="width:36px;height:36px;border-radius:50%;background:#FF6B2B;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-bottom:10px;font-size:13px;font-weight:600;color:white;">' +
+      initials +
     '</div>';
 }
 
@@ -12996,7 +12999,15 @@ function generaAnalisiAI(prospect) {
 
 // ── FASE 5 — Home ─────────────────────────────────────────────────────────────
 function renderPMIHome(p) {
-  const nome = p.nome_azienda || window._userProfileData?.company_name || window._currentProspect?.nome_azienda || 'la tua azienda';
+  // Fix 3: nome fallback con email parsing
+  const _emailRaw = window._currentUserEmail || '';
+  const _emailName = _emailRaw ? _emailRaw.split('@')[0].replace(/[._-]/g, ' ') : '';
+  const nome = p.nome_azienda
+    || window._userProfileData?.company_name
+    || window._currentProspect?.nome_azienda
+    || _emailName
+    || 'Benvenuto';
+
   const score = p.score_globale || 0;
   const dims = p.dims || {};
   const STD = ['Vendite','Marketing','Clienti','Pipeline','Pricing','Processi','Team','Digitale'];
@@ -13004,31 +13015,21 @@ function renderPMIHome(p) {
   // Converti dims da scala 1-5 a scala 0-100
   const dimVal = (d) => {
     const raw = dims[d] || 0;
-    return raw <= 5 ? raw * 20 : raw; // se già su 100 non moltiplicare
+    return raw <= 5 ? raw * 20 : raw;
   };
 
-  // Colore score
   const scoreColor = score < 40 ? '#F43F5E' : score < 60 ? '#FBBF24' : '#34D399';
-
-  // Livello gamification
   const livello = score < 25 ? 'Emergenza' : score < 50 ? 'Sopravvivenza' : score < 75 ? 'Crescita' : 'Eccellenza';
   const prossimoLivello = score < 25 ? 'Sopravvivenza' : score < 50 ? 'Crescita' : score < 75 ? 'Eccellenza' : 'Master';
-
-  // Azione settimanale
   const azione = window._azioneSettimanale || 'Il tuo scontrino medio e\' €80. Nella tua zona la media e\' €95. Proponi il pacchetto manutenzione annuale a €350.';
   const azioneDim = window._azioneDimensione || 'Vendite';
-
-  // Streak (conta settimane consecutive con score_history)
   const streak = (p.score_history || []).length;
-
-  // Media settore placeholder
   const mediaSett = 60;
-
-  // Calcola azioni completate (placeholder)
   const azioniCompletate = 3;
   const azioniTotali = 5;
 
-  // Sfondo deep space
+  // Fix 1: forza sfondo deep space su body e app-pmi
+  document.body.style.background = '#06080F';
   document.getElementById('app-pmi').style.background = '#06080F';
 
   const mainEl = document.querySelector('#app-pmi .pmi-main') || document.querySelector('#app-pmi > div:last-child');
@@ -13037,41 +13038,39 @@ function renderPMIHome(p) {
   mainEl.style.overflow = 'hidden';
   mainEl.style.overflowY = 'auto';
 
-  // KPI con colori
   const kpiData = [
     { label: 'Incasso', value: '€1.850', pct: 62, color: '#7B61FF', media: '€2.950' },
     { label: 'Clienti', value: '23', pct: 45, color: '#FBBF24', media: '51' },
     { label: 'Scontrino', value: '€80', pct: 84, color: '#34D399', media: '€95' }
   ];
 
-  // Gamification: quante azioni completate su 5 per prossimo livello
+  // Fix 2: checkbox 32px
   const gamifDone = Math.min(azioniCompletate, 5);
   const gamifChecks = [1,2,3,4,5].map((n) => {
     if (n <= gamifDone) {
-      return '<div style="width:28px;height:28px;border-radius:7px;background:rgba(52,211,153,0.15);display:flex;align-items:center;justify-content:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>';
+      return '<div style="width:32px;height:32px;border-radius:7px;background:rgba(52,211,153,0.15);display:flex;align-items:center;justify-content:center;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>';
     }
-    return '<div style="width:28px;height:28px;border-radius:7px;background:rgba(255,255,255,0.03);"></div>';
+    return '<div style="width:32px;height:32px;border-radius:7px;background:rgba(255,255,255,0.03);"></div>';
   }).join('');
 
-  // Streak barrette
   const streakBars = [1,2,3,4,5].map((n) => {
     const active = n <= streak;
     return `<div style="width:18px;height:5px;border-radius:2px;background:${active ? '#FF6B2B' : 'rgba(255,255,255,0.04)'};"></div>`;
   }).join('');
 
-  // Posizionamento: solo le prime 5 dimensioni per non sovraffollare
+  // Fix 2: dim names/values 15px, bar 6px
   const posDims = STD.slice(0, 5);
   const posHTML = posDims.map(d => {
     const val = dimVal(d);
     const c = val < 40 ? '#F43F5E' : val < 60 ? '#FBBF24' : '#34D399';
     return `<div style="margin-bottom:10px;">
       <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
-        <span style="color:rgba(255,255,255,0.5);font-size:13px;font-weight:400;">${d}</span>
-        <span style="color:${c};font-size:13px;font-weight:500;">${val}</span>
+        <span style="color:rgba(255,255,255,0.5);font-size:15px;font-weight:400;">${d}</span>
+        <span style="color:${c};font-size:15px;font-weight:500;">${val}</span>
       </div>
-      <div style="height:5px;background:rgba(255,255,255,0.04);border-radius:3px;position:relative;">
+      <div style="height:6px;background:rgba(255,255,255,0.04);border-radius:3px;position:relative;">
         <div style="height:100%;width:${val}%;background:${c};border-radius:3px;"></div>
-        <div style="position:absolute;top:-2px;left:${mediaSett}%;width:1.5px;height:9px;background:rgba(255,255,255,0.15);border-radius:1px;"></div>
+        <div style="position:absolute;top:-2px;left:${mediaSett}%;width:1.5px;height:10px;background:rgba(255,255,255,0.15);border-radius:1px;"></div>
       </div>
     </div>`;
   }).join('');
@@ -13083,40 +13082,40 @@ function renderPMIHome(p) {
       <!-- HEADER -->
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;">
         <div>
-          <div style="color:rgba(255,255,255,0.4);font-size:13px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;">Buongiorno</div>
-          <div style="color:white;font-size:28px;font-weight:500;">${nome}</div>
+          <div style="color:rgba(255,255,255,0.5);font-size:14px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;">Buongiorno</div>
+          <div style="color:white;font-size:32px;font-weight:500;">${nome}</div>
         </div>
         <div style="display:flex;gap:10px;align-items:center;">
           <div style="height:9px;width:9px;border-radius:50%;background:#34D399;animation:leva-pulse 2s infinite;"></div>
-          <span style="color:rgba(255,255,255,0.4);font-size:13px;">Live</span>
-          <div style="padding:6px 14px;border-radius:20px;border:0.5px solid rgba(255,107,43,0.35);color:#FF6B2B;font-size:13px;font-weight:500;">${livello}</div>
-          <div style="padding:6px 14px;border-radius:20px;border:0.5px solid rgba(123,97,255,0.35);color:#A78BFA;font-size:13px;">Sett. 4</div>
+          <span style="color:rgba(255,255,255,0.4);font-size:14px;">Live</span>
+          <div style="padding:6px 14px;border-radius:20px;border:0.5px solid rgba(255,107,43,0.35);color:#FF6B2B;font-size:14px;font-weight:500;">${livello}</div>
+          <div style="padding:6px 14px;border-radius:20px;border:0.5px solid rgba(123,97,255,0.35);color:#A78BFA;font-size:14px;">Sett. 4</div>
         </div>
       </div>
 
       <!-- 4 METRIC CARDS -->
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-bottom:24px;">
         <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:20px;">
-          <div style="color:rgba(255,255,255,0.4);font-size:13px;margin-bottom:10px;">SCORE</div>
-          <div style="color:${scoreColor};font-size:48px;font-weight:500;line-height:1;">${score}</div>
+          <div style="color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:10px;">SCORE</div>
+          <div style="color:${scoreColor};font-size:56px;font-weight:500;line-height:1;">${score}</div>
           <div style="display:flex;align-items:center;gap:6px;margin-top:8px;">
             <span style="color:#34D399;font-size:13px;">+3</span>
-            <span style="color:rgba(255,255,255,0.25);font-size:12px;">vs sett. scorsa</span>
+            <span style="color:rgba(255,255,255,0.35);font-size:13px;">vs sett. scorsa</span>
           </div>
         </div>
         <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:20px;">
-          <div style="color:rgba(255,255,255,0.4);font-size:13px;margin-bottom:10px;">RECUPERO STIMATO</div>
-          <div style="color:#34D399;font-size:48px;font-weight:500;line-height:1;">€2.400</div>
-          <div style="color:rgba(255,255,255,0.25);font-size:12px;margin-top:8px;">questo mese</div>
+          <div style="color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:10px;">RECUPERO STIMATO</div>
+          <div style="color:#34D399;font-size:56px;font-weight:500;line-height:1;">€2.400</div>
+          <div style="color:rgba(255,255,255,0.35);font-size:13px;margin-top:8px;">questo mese</div>
         </div>
         <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:20px;">
-          <div style="color:rgba(255,255,255,0.4);font-size:13px;margin-bottom:10px;">AZIONI</div>
-          <div style="color:#7B61FF;font-size:48px;font-weight:500;line-height:1;">${azioniCompletate}<span style="font-size:20px;color:rgba(255,255,255,0.2);">/${azioniTotali}</span></div>
-          <div style="height:4px;background:rgba(255,255,255,0.04);border-radius:2px;margin-top:10px;"><div style="height:100%;width:${azioniCompletate/azioniTotali*100}%;background:#7B61FF;border-radius:2px;"></div></div>
+          <div style="color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:10px;">AZIONI</div>
+          <div style="color:#7B61FF;font-size:56px;font-weight:500;line-height:1;">${azioniCompletate}<span style="font-size:20px;color:rgba(255,255,255,0.2);">/${azioniTotali}</span></div>
+          <div style="height:6px;background:rgba(255,255,255,0.04);border-radius:3px;margin-top:10px;"><div style="height:100%;width:${azioniCompletate/azioniTotali*100}%;background:#7B61FF;border-radius:3px;"></div></div>
         </div>
         <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:20px;">
-          <div style="color:rgba(255,255,255,0.4);font-size:13px;margin-bottom:10px;">STREAK</div>
-          <div style="color:#FF6B2B;font-size:48px;font-weight:500;line-height:1;">${streak}<span style="font-size:18px;color:rgba(255,255,255,0.2);"> sett</span></div>
+          <div style="color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:10px;">STREAK</div>
+          <div style="color:#FF6B2B;font-size:56px;font-weight:500;line-height:1;">${streak}<span style="font-size:18px;color:rgba(255,255,255,0.2);"> sett</span></div>
           <div style="display:flex;gap:4px;margin-top:10px;">${streakBars}</div>
         </div>
       </div>
@@ -13130,28 +13129,28 @@ function renderPMIHome(p) {
           <div style="background:rgba(123,97,255,0.07);border:0.5px solid rgba(123,97,255,0.2);border-radius:14px;padding:24px;margin-bottom:14px;animation:leva-glow 4s infinite;">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
               <div style="width:7px;height:7px;border-radius:50%;background:#7B61FF;animation:leva-pulse 1.5s infinite;"></div>
-              <div style="color:#A78BFA;font-size:14px;font-weight:500;">Leva dice</div>
-              <div style="color:rgba(255,255,255,0.25);font-size:12px;">ora</div>
+              <div style="color:#A78BFA;font-size:16px;font-weight:500;">Leva dice</div>
+              <div style="color:rgba(255,255,255,0.25);font-size:13px;">ora</div>
             </div>
-            <div id="leva-dice-text" style="color:white;font-size:16px;line-height:1.65;min-height:52px;"></div>
+            <div id="leva-dice-text" style="color:white;font-size:18px;line-height:1.7;min-height:52px;"></div>
             <div style="margin-top:16px;display:flex;gap:10px;">
-              <div style="padding:10px 20px;border-radius:10px;background:#7B61FF;color:white;font-size:14px;font-weight:500;cursor:pointer;">Fatto</div>
-              <div style="padding:10px 20px;border-radius:10px;border:0.5px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);font-size:14px;cursor:pointer;">Dimmi di piu</div>
+              <div style="padding:12px 24px;border-radius:10px;background:#7B61FF;color:white;font-size:15px;font-weight:500;cursor:pointer;">Fatto</div>
+              <div style="padding:12px 24px;border-radius:10px;border:0.5px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);font-size:15px;cursor:pointer;">Dimmi di piu</div>
             </div>
           </div>
 
           <!-- KPI -->
           <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:24px;">
-            <div style="color:rgba(255,255,255,0.4);font-size:13px;margin-bottom:18px;">I TUOI KPI</div>
+            <div style="color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:18px;">I TUOI KPI</div>
             ${kpiData.map((k, i) => `<div style="margin-bottom:${i < kpiData.length - 1 ? '18px' : '0'};">
               <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-                <span style="color:rgba(255,255,255,0.5);font-size:14px;">${k.label}</span>
-                <span style="color:white;font-size:16px;font-weight:500;">${k.value}</span>
+                <span style="color:rgba(255,255,255,0.5);font-size:16px;">${k.label}</span>
+                <span style="color:white;font-size:18px;font-weight:500;">${k.value}</span>
               </div>
-              <div style="height:5px;background:rgba(255,255,255,0.04);border-radius:3px;">
+              <div style="height:6px;background:rgba(255,255,255,0.04);border-radius:3px;">
                 <div style="height:100%;width:${k.pct}%;background:${k.color};border-radius:3px;"></div>
               </div>
-              <div style="color:rgba(255,255,255,0.2);font-size:11px;margin-top:4px;">Media zona: ${k.media}</div>
+              <div style="color:rgba(255,255,255,0.2);font-size:12px;margin-top:4px;">Media zona: ${k.media}</div>
             </div>`).join('')}
           </div>
         </div>
@@ -13161,10 +13160,10 @@ function renderPMIHome(p) {
           <!-- GAMIFICATION -->
           <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:24px;margin-bottom:14px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-              <div style="color:rgba(255,255,255,0.4);font-size:13px;">PROSSIMO LIVELLO</div>
-              <div style="color:#FF6B2B;font-size:15px;font-weight:500;">${prossimoLivello}</div>
+              <div style="color:rgba(255,255,255,0.5);font-size:14px;">PROSSIMO LIVELLO</div>
+              <div style="color:#FF6B2B;font-size:17px;font-weight:500;">${prossimoLivello}</div>
             </div>
-            <div style="height:7px;background:rgba(255,255,255,0.04);border-radius:4px;margin-bottom:14px;">
+            <div style="height:8px;background:rgba(255,255,255,0.04);border-radius:4px;margin-bottom:14px;">
               <div style="height:100%;width:${Math.min(score / 75 * 100, 100)}%;background:#FF6B2B;border-radius:4px;"></div>
             </div>
             <div style="display:flex;gap:6px;">${gamifChecks}</div>
@@ -13172,7 +13171,7 @@ function renderPMIHome(p) {
 
           <!-- POSIZIONAMENTO -->
           <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:24px;">
-            <div style="color:rgba(255,255,255,0.4);font-size:13px;margin-bottom:16px;">POSIZIONAMENTO</div>
+            <div style="color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:16px;">POSIZIONAMENTO</div>
             ${posHTML}
             <div style="color:rgba(255,255,255,0.15);font-size:11px;margin-top:8px;">| = media settore</div>
           </div>
@@ -13182,8 +13181,8 @@ function renderPMIHome(p) {
       <!-- FOOTER BAR -->
       <div style="background:rgba(255,255,255,0.02);border:0.5px solid rgba(255,255,255,0.04);border-radius:14px;padding:18px 24px;display:flex;align-items:center;gap:14px;">
         <div style="width:7px;height:7px;border-radius:50%;background:#7B61FF;animation:leva-pulse 2s infinite;"></div>
-        <div id="leva-footer-msg" style="color:rgba(255,255,255,0.4);font-size:14px;flex:1;transition:opacity 0.3s;"></div>
-        <div style="padding:8px 18px;border-radius:10px;border:0.5px solid rgba(123,97,255,0.35);color:#A78BFA;font-size:13px;font-weight:500;cursor:pointer;">Chiedi a Leva</div>
+        <div id="leva-footer-msg" style="color:rgba(255,255,255,0.4);font-size:15px;flex:1;transition:opacity 0.3s;"></div>
+        <div style="padding:8px 18px;border-radius:10px;border:0.5px solid rgba(123,97,255,0.35);color:#A78BFA;font-size:14px;font-weight:500;cursor:pointer;">Chiedi a Leva</div>
       </div>
 
     </div>

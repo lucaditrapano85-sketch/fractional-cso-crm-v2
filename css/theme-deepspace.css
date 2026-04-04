@@ -308,3 +308,12 @@
   pointer-events: none;
   opacity: 1;
 }
+
+/* ── PMI Mode: override stili.css che forzano sfondo chiaro ── */
+body.pmi-mode {
+  background: #06080F !important;
+  color: white !important;
+}
+body.pmi-mode #pmi-main {
+  background: transparent !important;
+}
