@@ -1,0 +1,303 @@
+/* ============================================================
+   LEVA — Deep Space Design System
+   css/theme-deepspace.css
+   ============================================================ */
+
+/* ── Variabili ──────────────────────────────────────────────── */
+:root {
+  /* Sfondi */
+  --leva-bg-deep: #06080F;
+  --leva-bg-card: rgba(255,255,255,0.025);
+  --leva-bg-card-hover: rgba(255,255,255,0.04);
+  --leva-bg-sidebar: #050508;
+  --leva-border: rgba(255,255,255,0.05);
+  --leva-border-hover: rgba(255,255,255,0.1);
+
+  /* Accent */
+  --leva-accent: #7B61FF;
+  --leva-accent-light: #A78BFA;
+  --leva-accent-bg: rgba(123,97,255,0.07);
+  --leva-accent-border: rgba(123,97,255,0.18);
+  --leva-orange: #FF6B2B;
+  --leva-orange-bg: rgba(255,107,43,0.15);
+
+  /* Semantici */
+  --leva-success: #34D399;
+  --leva-success-bg: rgba(52,211,153,0.12);
+  --leva-warning: #FBBF24;
+  --leva-warning-bg: rgba(251,191,36,0.12);
+  --leva-danger: #F43F5E;
+  --leva-danger-bg: rgba(244,63,94,0.12);
+
+  /* Testo */
+  --leva-text: #FFFFFF;
+  --leva-text-secondary: rgba(255,255,255,0.4);
+  --leva-text-muted: rgba(255,255,255,0.25);
+  --leva-text-hint: rgba(255,255,255,0.15);
+
+  /* Tipografia & forma */
+  --leva-font: system-ui, -apple-system, sans-serif;
+  --leva-radius: 12px;
+  --leva-radius-sm: 8px;
+  --leva-radius-pill: 20px;
+}
+
+/* ── Card ───────────────────────────────────────────────────── */
+.leva-card {
+  background: var(--leva-bg-card);
+  border: 0.5px solid var(--leva-border);
+  border-radius: var(--leva-radius);
+  padding: 20px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.leva-card:hover {
+  background: var(--leva-bg-card-hover);
+  border-color: var(--leva-border-hover);
+}
+
+.leva-card-accent {
+  background: var(--leva-accent-bg);
+  border: 0.5px solid var(--leva-accent-border);
+  border-radius: var(--leva-radius);
+  padding: 20px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* ── Metric ─────────────────────────────────────────────────── */
+.leva-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.leva-metric__label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--leva-text-muted);
+}
+
+.leva-metric__value {
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1.1;
+  color: var(--leva-text);
+}
+
+.leva-metric__sub {
+  font-size: 11px;
+  color: var(--leva-text-hint);
+}
+
+/* ── Badge ──────────────────────────────────────────────────── */
+.leva-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  border-radius: var(--leva-radius-pill);
+  font-size: 12px;
+  font-weight: 500;
+  border: 0.5px solid transparent;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.leva-badge-danger {
+  color: var(--leva-danger);
+  border-color: rgba(244,63,94,0.3);
+  background: var(--leva-danger-bg);
+}
+
+.leva-badge-success {
+  color: var(--leva-success);
+  border-color: rgba(52,211,153,0.3);
+  background: var(--leva-success-bg);
+}
+
+.leva-badge-accent {
+  color: var(--leva-accent-light);
+  border-color: rgba(123,97,255,0.3);
+  background: var(--leva-accent-bg);
+}
+
+.leva-badge-orange {
+  color: var(--leva-orange);
+  border-color: rgba(255,107,43,0.3);
+  background: var(--leva-orange-bg);
+}
+
+.leva-badge-warning {
+  color: var(--leva-warning);
+  border-color: rgba(251,191,36,0.3);
+  background: var(--leva-warning-bg);
+}
+
+/* ── Buttons ────────────────────────────────────────────────── */
+.leva-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--leva-accent);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: var(--leva-radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.leva-btn-primary:hover {
+  opacity: 0.88;
+}
+
+.leva-btn-primary:active {
+  transform: scale(0.97);
+}
+
+.leva-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: transparent;
+  border: 0.5px solid var(--leva-border);
+  color: var(--leva-text-secondary);
+  padding: 8px 16px;
+  border-radius: var(--leva-radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.leva-btn-secondary:hover {
+  border-color: var(--leva-border-hover);
+  color: var(--leva-text);
+  background: var(--leva-bg-card-hover);
+}
+
+/* ── Progress bar ───────────────────────────────────────────── */
+.leva-progress {
+  height: 4px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 2px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.leva-progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+.leva-progress-fill--accent  { background: var(--leva-accent); }
+.leva-progress-fill--success { background: var(--leva-success); }
+.leva-progress-fill--warning { background: var(--leva-warning); }
+.leva-progress-fill--danger  { background: var(--leva-danger); }
+.leva-progress-fill--orange  { background: var(--leva-orange); }
+
+/* ── Sidebar icon ───────────────────────────────────────────── */
+.leva-sidebar-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.leva-sidebar-icon svg {
+  stroke: rgba(255,255,255,0.25);
+  transition: stroke 0.15s;
+}
+
+.leva-sidebar-icon:hover svg {
+  stroke: rgba(255,255,255,0.5);
+}
+
+.leva-sidebar-icon.active {
+  background: rgba(123,97,255,0.15);
+}
+
+.leva-sidebar-icon.active svg {
+  stroke: var(--leva-accent-light);
+}
+
+/* ── Divider ────────────────────────────────────────────────── */
+.leva-divider {
+  height: 0.5px;
+  background: var(--leva-border);
+  margin: 0;
+  border: none;
+}
+
+/* ── Section heading ────────────────────────────────────────── */
+.leva-section-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--leva-text-hint);
+  margin-bottom: 12px;
+}
+
+/* ── Animazioni ─────────────────────────────────────────────── */
+@keyframes leva-pulse {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 1; }
+}
+
+@keyframes leva-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(123,97,255,0);
+  }
+  50% {
+    box-shadow: 0 0 16px 4px rgba(123,97,255,0.22);
+  }
+}
+
+@keyframes leva-slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes leva-fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.leva-animate-pulse    { animation: leva-pulse   2s ease-in-out infinite; }
+.leva-animate-glow     { animation: leva-glow    2.5s ease-in-out infinite; }
+.leva-animate-slideUp  { animation: leva-slideUp 0.3s ease forwards; }
+.leva-animate-fadeIn   { animation: leva-fadeIn  0.25s ease forwards; }
+
+/* ── Canvas onde ────────────────────────────────────────────── */
+.leva-waves-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 1;
+}
