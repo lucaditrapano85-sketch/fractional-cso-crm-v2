@@ -13003,15 +13003,16 @@ function generaAnalisiAI(prospect) {
 
 // ── FASE 5 — Home ─────────────────────────────────────────────────────────────
 function renderPMIHome(p) {
-  // Fix 3: nome fallback con email parsing (rimuove numeri finali dall'username)
-  const _emailRaw = window._currentUserEmail || '';
-  const _emailUser = _emailRaw ? _emailRaw.split('@')[0] : '';
-  const _emailName = _emailUser ? _emailUser.replace(/\d+$/, '').replace(/[._-]/g, ' ').trim() : '';
-  const nome = p.nome_azienda
-    || window._userProfileData?.company_name
-    || window._currentProspect?.nome_azienda
-    || _emailName
-    || 'Benvenuto';
+  // Fix 1: saluto contestuale all'ora
+  const ora = new Date().getHours();
+  const saluto = ora < 13 ? 'Buongiorno' : ora < 18 ? 'Buon pomeriggio' : 'Buonasera';
+
+  // Fix 2: nome dal profilo in ordine priorità
+  const _up = window._userProfileData || {};
+  const _fullName = (_up.full_name || '').trim();
+  const _companyName = (_up.company_name || '').trim();
+  const _nomeAzienda = (p.nome_azienda || '').trim();
+  const nome = _fullName || _companyName || _nomeAzienda || null;
 
   const score = p.score_globale || 0;
   const dims = p.dims || {};
@@ -13087,8 +13088,8 @@ function renderPMIHome(p) {
       <!-- HEADER -->
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;">
         <div>
-          <div style="color:rgba(255,255,255,0.5);font-size:14px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;">Buongiorno</div>
-          <div style="color:white;font-size:32px;font-weight:500;">${nome}</div>
+          <div style="color:rgba(255,255,255,0.5);font-size:14px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;">${saluto.toUpperCase()}</div>
+          <div style="color:white;font-size:32px;font-weight:500;">${nome || '<span onclick="showViewPMI(\'profilo\')" style="color:#A78BFA;cursor:pointer;font-size:22px;font-weight:400;border-bottom:1px solid rgba(167,139,250,0.3);">Completa il tuo profilo →</span>'}</div>
         </div>
         <div style="display:flex;gap:10px;align-items:center;">
           <div style="height:9px;width:9px;border-radius:50%;background:#34D399;animation:leva-pulse 2s infinite;"></div>
@@ -13266,8 +13267,75 @@ function renderPMIHome(p) {
   }
   // Le animazioni partono dopo un breve delay per effetto "caricamento"
   // (commentate per ora — richiedono id sui numeri)
+
+  // Fix 3: onboarding tour post-diagnosi
+  setTimeout(_showLevaOnboarding, 600);
 }
 
+function _showLevaOnboarding() {
+  if (localStorage.getItem('leva_onboarding_done')) return;
+  var _p = window._pmiProspect || {};
+  if (!(_p.diagnosi_completata === true || _p.score_globale > 0)) return;
+
+  var _steps = [
+    {
+      title: 'Completa il tuo profilo',
+      text: 'Inserisci il tuo nome e quello della tua azienda per personalizzare l\'esperienza.',
+      btn: 'Vai al profilo →',
+      isFinal: false,
+      goProfile: true
+    },
+    {
+      title: 'Le tue azioni settimanali',
+      text: 'Ogni settimana riceverai un\'azione concreta. Completala per salire di livello.',
+      btn: 'Ho capito →',
+      isFinal: false,
+      goProfile: false
+    },
+    {
+      title: 'Chiedi a Leva',
+      text: 'Hai una domanda? Chiedi direttamente a Leva. Sa tutto della tua azienda.',
+      btn: 'Iniziamo! →',
+      isFinal: true,
+      goProfile: false
+    }
+  ];
+
+  function _renderStep(idx) {
+    var existing = document.getElementById('leva-onboarding-overlay');
+    if (existing) existing.remove();
+    if (idx >= _steps.length) {
+      localStorage.setItem('leva_onboarding_done', 'true');
+      return;
+    }
+    var s = _steps[idx];
+    var dots = _steps.map(function(_, i) {
+      return '<div style="width:8px;height:8px;border-radius:50%;background:' +
+        (i === idx ? '#7B61FF' : 'rgba(255,255,255,0.15)') + ';transition:background 0.2s;"></div>';
+    }).join('');
+
+    var overlay = document.createElement('div');
+    overlay.id = 'leva-onboarding-overlay';
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:9999;display:flex;align-items:center;justify-content:center;';
+    overlay.innerHTML =
+      '<div style="background:#0F1219;border:0.5px solid rgba(123,97,255,0.2);border-radius:16px;padding:28px;max-width:380px;width:90%;animation:leva-slideUp 0.3s ease;">' +
+        '<div style="font-size:20px;font-weight:500;color:white;margin-bottom:12px;">' + s.title + '</div>' +
+        '<div style="font-size:15px;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:24px;">' + s.text + '</div>' +
+        '<button id="leva-ob-btn" style="background:#7B61FF;color:white;border:none;padding:12px 24px;border-radius:10px;font-size:15px;font-weight:500;cursor:pointer;width:100%;">' + s.btn + '</button>' +
+        '<div style="display:flex;justify-content:center;gap:8px;margin-top:16px;">' + dots + '</div>' +
+      '</div>';
+    document.body.appendChild(overlay);
+
+    document.getElementById('leva-ob-btn').onclick = function() {
+      if (s.isFinal) localStorage.setItem('leva_onboarding_done', 'true');
+      overlay.remove();
+      if (s.goProfile) { showViewPMI('profilo'); return; }
+      if (!s.isFinal) _renderStep(idx + 1);
+    };
+  }
+
+  _renderStep(0);
+}
 
 function completaAzioneSettimanale() {
   // TODO Phase 10
@@ -13803,8 +13871,8 @@ function renderPMIProfilo(container) {
   // fascia: up.fascia_fatturato ha l'ID corretto; p.fatturato ha il valore numerico — non usarlo
   var fasciaVal    = up.fascia_fatturato || _pmiSelectedFascia || '';
   var cittaVal     = up.citta || (p ? p.citta : '') || '';
-  var nomeVal      = pro.nome || '';
-  var cognomeVal   = pro.cognome || '';
+  var nomeVal      = pro.nome || (up.full_name || '').split(' ')[0] || '';
+  var cognomeVal   = pro.cognome || (up.full_name || '').split(' ').slice(1).join(' ') || '';
   var emailVal     = pro.email || window._currentUserEmail || '';
   var telefonoVal  = pro.telefono || up.telefono || '';
 
@@ -14193,6 +14261,7 @@ async function salvaProfiloPMIAccount() {
   var nome     = (document.getElementById('prf-nome')     || {}).value || '';
   var cognome  = (document.getElementById('prf-cognome')  || {}).value || '';
   var telefono = (document.getElementById('prf-telefono') || {}).value || '';
+  var fullName = [nome, cognome].filter(Boolean).join(' ');
 
   var btn = document.querySelector('[onclick="salvaProfiloPMIAccount()"]');
   if (btn) { btn.disabled = true; btn.textContent = 'Salvataggio…'; }
@@ -14203,6 +14272,11 @@ async function salvaProfiloPMIAccount() {
       if (uid) {
         await sb.from('profiles').update({ nome: nome, cognome: cognome, telefono: telefono }).eq('id', uid);
         window._currentProfile = Object.assign({}, window._currentProfile, { nome: nome, cognome: cognome, telefono: telefono });
+      }
+      // Salva full_name in user_profiles per la home personalizzata
+      if (window._currentUserId && fullName) {
+        await sb.from('user_profiles').upsert({ user_id: window._currentUserId, full_name: fullName }, { onConflict: 'user_id' });
+        window._userProfileData = Object.assign({}, window._userProfileData, { full_name: fullName });
       }
     }
     showToast('Account aggiornato', 'success');
