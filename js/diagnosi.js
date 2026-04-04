@@ -564,9 +564,9 @@ async function init() {
 
   // Fase 1: Leggi ruolo da user_profiles, con fallback su user_metadata (signup)
   const { data: upData } = await sb.from('user_profiles')
-    .select('role, company_name, sector, fascia_fatturato')
+    .select('*')
     .eq('user_id', session.user.id)
-    .single();
+    .maybeSingle();
   const metaRole = session.user.user_metadata?.role || null;
   window.LEVA_USER_ROLE = upData?.role || metaRole || 'cso';
   window._userProfileData = upData || null;
@@ -752,7 +752,7 @@ async function _loadProspectsData() {
   let query = sb.from('prospects').select('*').order('created_at',{ascending:false});
   // Se admin sta visualizzando un utente specifico, filtra per user_id
   if (window._viewAsUserId) {
-    query = query.eq('user_id', window._viewAsUserId);
+    query = query.eq('owner_user_id', window._viewAsUserId);
   }
   const {data,error} = await query;
   if(error){showToast('Errore connessione database','error');console.error(error);return;}
