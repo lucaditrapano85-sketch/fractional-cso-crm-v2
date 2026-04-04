@@ -12996,25 +12996,37 @@ function generaAnalisiAI(prospect) {
 
 // ── FASE 5 — Home ─────────────────────────────────────────────────────────────
 function renderPMIHome(p) {
-  const nome = p.nome_azienda || window._userProfileData?.company_name || 'Benvenuto';
+  const nome = p.nome_azienda || window._userProfileData?.company_name || window._currentProspect?.nome_azienda || 'la tua azienda';
   const score = p.score_globale || 0;
   const dims = p.dims || {};
   const STD = ['Vendite','Marketing','Clienti','Pipeline','Pricing','Processi','Team','Digitale'];
 
+  // Converti dims da scala 1-5 a scala 0-100
+  const dimVal = (d) => {
+    const raw = dims[d] || 0;
+    return raw <= 5 ? raw * 20 : raw; // se già su 100 non moltiplicare
+  };
+
   // Colore score
   const scoreColor = score < 40 ? '#F43F5E' : score < 60 ? '#FBBF24' : '#34D399';
-  const scoreLabel = score < 30 ? 'Emergenza' : score < 50 ? 'Intervento urgente' : score < 70 ? 'In crescita' : 'Eccellenza';
 
   // Livello gamification
   const livello = score < 25 ? 'Emergenza' : score < 50 ? 'Sopravvivenza' : score < 75 ? 'Crescita' : 'Eccellenza';
   const prossimoLivello = score < 25 ? 'Sopravvivenza' : score < 50 ? 'Crescita' : score < 75 ? 'Eccellenza' : 'Master';
 
   // Azione settimanale
-  const azione = window._azioneSettimanale || 'Chiama i tuoi 5 clienti migliori e chiedi come puoi aiutarli questa settimana.';
+  const azione = window._azioneSettimanale || 'Il tuo scontrino medio e\' €80. Nella tua zona la media e\' €95. Proponi il pacchetto manutenzione annuale a €350.';
   const azioneDim = window._azioneDimensione || 'Vendite';
 
-  // Media settore (placeholder, verrà da benchmark ISTAT)
+  // Streak (conta settimane consecutive con score_history)
+  const streak = (p.score_history || []).length;
+
+  // Media settore placeholder
   const mediaSett = 60;
+
+  // Calcola azioni completate (placeholder)
+  const azioniCompletate = 3;
+  const azioniTotali = 5;
 
   // Sfondo deep space
   document.getElementById('app-pmi').style.background = '#06080F';
@@ -13023,129 +13035,235 @@ function renderPMIHome(p) {
   mainEl.style.background = 'transparent';
   mainEl.style.position = 'relative';
   mainEl.style.overflow = 'hidden';
+  mainEl.style.overflowY = 'auto';
+
+  // KPI con colori
+  const kpiData = [
+    { label: 'Incasso', value: '€1.850', pct: 62, color: '#7B61FF', media: '€2.950' },
+    { label: 'Clienti', value: '23', pct: 45, color: '#FBBF24', media: '51' },
+    { label: 'Scontrino', value: '€80', pct: 84, color: '#34D399', media: '€95' }
+  ];
+
+  // Gamification: quante azioni completate su 5 per prossimo livello
+  const gamifDone = Math.min(azioniCompletate, 5);
+  const gamifChecks = [1,2,3,4,5].map((n) => {
+    if (n <= gamifDone) {
+      return '<div style="width:28px;height:28px;border-radius:7px;background:rgba(52,211,153,0.15);display:flex;align-items:center;justify-content:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>';
+    }
+    return '<div style="width:28px;height:28px;border-radius:7px;background:rgba(255,255,255,0.03);"></div>';
+  }).join('');
+
+  // Streak barrette
+  const streakBars = [1,2,3,4,5].map((n) => {
+    const active = n <= streak;
+    return `<div style="width:18px;height:5px;border-radius:2px;background:${active ? '#FF6B2B' : 'rgba(255,255,255,0.04)'};"></div>`;
+  }).join('');
+
+  // Posizionamento: solo le prime 5 dimensioni per non sovraffollare
+  const posDims = STD.slice(0, 5);
+  const posHTML = posDims.map(d => {
+    const val = dimVal(d);
+    const c = val < 40 ? '#F43F5E' : val < 60 ? '#FBBF24' : '#34D399';
+    return `<div style="margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+        <span style="color:rgba(255,255,255,0.5);font-size:13px;font-weight:400;">${d}</span>
+        <span style="color:${c};font-size:13px;font-weight:500;">${val}</span>
+      </div>
+      <div style="height:5px;background:rgba(255,255,255,0.04);border-radius:3px;position:relative;">
+        <div style="height:100%;width:${val}%;background:${c};border-radius:3px;"></div>
+        <div style="position:absolute;top:-2px;left:${mediaSett}%;width:1.5px;height:9px;background:rgba(255,255,255,0.15);border-radius:1px;"></div>
+      </div>
+    </div>`;
+  }).join('');
 
   mainEl.innerHTML = `
     <canvas id="leva-waves-home" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
-    <div style="position:relative;z-index:1;padding:24px 28px;">
+    <div style="position:relative;z-index:1;padding:28px 32px;">
 
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <!-- HEADER -->
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;">
         <div>
-          <div style="color:rgba(255,255,255,0.3);font-size:12px;letter-spacing:0.05em;text-transform:uppercase;">Buongiorno</div>
-          <div style="color:white;font-size:24px;font-weight:500;margin-top:2px;">${nome}</div>
+          <div style="color:rgba(255,255,255,0.4);font-size:13px;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;">Buongiorno</div>
+          <div style="color:white;font-size:28px;font-weight:500;">${nome}</div>
         </div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <div style="height:8px;width:8px;border-radius:50%;background:#34D399;animation:leva-pulse 2s infinite;"></div>
-          <span style="color:rgba(255,255,255,0.35);font-size:12px;">Live</span>
-          <div style="padding:5px 12px;border-radius:8px;border:0.5px solid rgba(255,107,43,0.3);color:#FF6B2B;font-size:12px;">${livello}</div>
-          <div style="padding:5px 12px;border-radius:8px;border:0.5px solid rgba(123,97,255,0.3);color:#A78BFA;font-size:12px;">Sett. 1</div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <div style="height:9px;width:9px;border-radius:50%;background:#34D399;animation:leva-pulse 2s infinite;"></div>
+          <span style="color:rgba(255,255,255,0.4);font-size:13px;">Live</span>
+          <div style="padding:6px 14px;border-radius:20px;border:0.5px solid rgba(255,107,43,0.35);color:#FF6B2B;font-size:13px;font-weight:500;">${livello}</div>
+          <div style="padding:6px 14px;border-radius:20px;border:0.5px solid rgba(123,97,255,0.35);color:#A78BFA;font-size:13px;">Sett. 4</div>
         </div>
       </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:20px;">
-        <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.05);border-radius:12px;padding:16px;">
-          <div style="color:rgba(255,255,255,0.3);font-size:11px;margin-bottom:8px;">SCORE</div>
-          <div style="color:${scoreColor};font-size:32px;font-weight:500;">${score}</div>
-          <div style="color:rgba(255,255,255,0.2);font-size:11px;margin-top:4px;">su 100</div>
-        </div>
-        <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.05);border-radius:12px;padding:16px;">
-          <div style="color:rgba(255,255,255,0.3);font-size:11px;margin-bottom:8px;">RECUPERO STIMATO</div>
-          <div style="color:#34D399;font-size:32px;font-weight:500;">€2.000</div>
-          <div style="color:rgba(255,255,255,0.2);font-size:11px;margin-top:4px;">questo mese</div>
-        </div>
-        <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.05);border-radius:12px;padding:16px;">
-          <div style="color:rgba(255,255,255,0.3);font-size:11px;margin-bottom:8px;">AZIONI</div>
-          <div style="color:#7B61FF;font-size:32px;font-weight:500;">0<span style="font-size:16px;color:rgba(255,255,255,0.15);">/12</span></div>
-          <div style="height:3px;background:rgba(255,255,255,0.04);border-radius:2px;margin-top:8px;"><div style="height:100%;width:0%;background:#7B61FF;border-radius:2px;"></div></div>
-        </div>
-        <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.05);border-radius:12px;padding:16px;">
-          <div style="color:rgba(255,255,255,0.3);font-size:11px;margin-bottom:8px;">STREAK</div>
-          <div style="color:#FF6B2B;font-size:32px;font-weight:500;">0<span style="font-size:14px;color:rgba(255,255,255,0.15);"> sett</span></div>
-          <div style="display:flex;gap:3px;margin-top:8px;">
-            ${[1,2,3,4,5].map(()=>'<div style="width:16px;height:4px;border-radius:2px;background:rgba(255,255,255,0.04);"></div>').join('')}
+      <!-- 4 METRIC CARDS -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-bottom:24px;">
+        <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:20px;">
+          <div style="color:rgba(255,255,255,0.4);font-size:13px;margin-bottom:10px;">SCORE</div>
+          <div style="color:${scoreColor};font-size:48px;font-weight:500;line-height:1;">${score}</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:8px;">
+            <span style="color:#34D399;font-size:13px;">+3</span>
+            <span style="color:rgba(255,255,255,0.25);font-size:12px;">vs sett. scorsa</span>
           </div>
+        </div>
+        <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:20px;">
+          <div style="color:rgba(255,255,255,0.4);font-size:13px;margin-bottom:10px;">RECUPERO STIMATO</div>
+          <div style="color:#34D399;font-size:48px;font-weight:500;line-height:1;">€2.400</div>
+          <div style="color:rgba(255,255,255,0.25);font-size:12px;margin-top:8px;">questo mese</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:20px;">
+          <div style="color:rgba(255,255,255,0.4);font-size:13px;margin-bottom:10px;">AZIONI</div>
+          <div style="color:#7B61FF;font-size:48px;font-weight:500;line-height:1;">${azioniCompletate}<span style="font-size:20px;color:rgba(255,255,255,0.2);">/${azioniTotali}</span></div>
+          <div style="height:4px;background:rgba(255,255,255,0.04);border-radius:2px;margin-top:10px;"><div style="height:100%;width:${azioniCompletate/azioniTotali*100}%;background:#7B61FF;border-radius:2px;"></div></div>
+        </div>
+        <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:20px;">
+          <div style="color:rgba(255,255,255,0.4);font-size:13px;margin-bottom:10px;">STREAK</div>
+          <div style="color:#FF6B2B;font-size:48px;font-weight:500;line-height:1;">${streak}<span style="font-size:18px;color:rgba(255,255,255,0.2);"> sett</span></div>
+          <div style="display:flex;gap:4px;margin-top:10px;">${streakBars}</div>
         </div>
       </div>
 
-      <div style="display:grid;grid-template-columns:1.2fr 0.8fr;gap:16px;margin-bottom:16px;">
+      <!-- GRIGLIA PRINCIPALE: Leva dice + KPI | Gamification + Posizionamento -->
+      <div style="display:grid;grid-template-columns:1.2fr 0.8fr;gap:16px;margin-bottom:20px;">
+
+        <!-- COLONNA SINISTRA -->
         <div>
-          <div style="background:rgba(123,97,255,0.07);border:0.5px solid rgba(123,97,255,0.18);border-radius:14px;padding:20px;margin-bottom:12px;animation:leva-glow 4s infinite;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
-              <div style="width:6px;height:6px;border-radius:50%;background:#7B61FF;animation:leva-pulse 1.5s infinite;"></div>
-              <div style="color:#A78BFA;font-size:12px;font-weight:500;">Leva dice</div>
-              <div style="color:rgba(255,255,255,0.2);font-size:11px;">ora</div>
+          <!-- LEVA DICE -->
+          <div style="background:rgba(123,97,255,0.07);border:0.5px solid rgba(123,97,255,0.2);border-radius:14px;padding:24px;margin-bottom:14px;animation:leva-glow 4s infinite;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+              <div style="width:7px;height:7px;border-radius:50%;background:#7B61FF;animation:leva-pulse 1.5s infinite;"></div>
+              <div style="color:#A78BFA;font-size:14px;font-weight:500;">Leva dice</div>
+              <div style="color:rgba(255,255,255,0.25);font-size:12px;">ora</div>
             </div>
-            <div style="color:white;font-size:15px;line-height:1.6;">${azione}</div>
-            <div style="margin-top:14px;display:flex;gap:8px;">
-              <div style="padding:8px 16px;border-radius:8px;background:#7B61FF;color:white;font-size:13px;cursor:pointer;">Fatto</div>
-              <div style="padding:8px 16px;border-radius:8px;border:0.5px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.35);font-size:13px;cursor:pointer;">Dimmi di piu</div>
+            <div id="leva-dice-text" style="color:white;font-size:16px;line-height:1.65;min-height:52px;"></div>
+            <div style="margin-top:16px;display:flex;gap:10px;">
+              <div style="padding:10px 20px;border-radius:10px;background:#7B61FF;color:white;font-size:14px;font-weight:500;cursor:pointer;">Fatto</div>
+              <div style="padding:10px 20px;border-radius:10px;border:0.5px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.4);font-size:14px;cursor:pointer;">Dimmi di piu</div>
             </div>
           </div>
 
-          <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.05);border-radius:14px;padding:20px;">
-            <div style="color:rgba(255,255,255,0.3);font-size:12px;margin-bottom:14px;">I TUOI KPI</div>
-            ${['Vendite','Pipeline','Clienti'].map((d,i) => {
-              const val = dims[d] || 0;
-              const colors = ['#7B61FF','#FBBF24','#34D399'];
-              return `<div style="margin-bottom:${i<2?'14px':'0'};">
-                <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
-                  <span style="color:rgba(255,255,255,0.4);font-size:12px;">${d}</span>
-                  <span style="color:white;font-size:13px;font-weight:500;">${val}/100</span>
-                </div>
-                <div style="height:4px;background:rgba(255,255,255,0.03);border-radius:2px;">
-                  <div style="height:100%;width:${val}%;background:${colors[i]};border-radius:2px;"></div>
-                </div>
-              </div>`;
-            }).join('')}
+          <!-- KPI -->
+          <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:24px;">
+            <div style="color:rgba(255,255,255,0.4);font-size:13px;margin-bottom:18px;">I TUOI KPI</div>
+            ${kpiData.map((k, i) => `<div style="margin-bottom:${i < kpiData.length - 1 ? '18px' : '0'};">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                <span style="color:rgba(255,255,255,0.5);font-size:14px;">${k.label}</span>
+                <span style="color:white;font-size:16px;font-weight:500;">${k.value}</span>
+              </div>
+              <div style="height:5px;background:rgba(255,255,255,0.04);border-radius:3px;">
+                <div style="height:100%;width:${k.pct}%;background:${k.color};border-radius:3px;"></div>
+              </div>
+              <div style="color:rgba(255,255,255,0.2);font-size:11px;margin-top:4px;">Media zona: ${k.media}</div>
+            </div>`).join('')}
           </div>
         </div>
 
+        <!-- COLONNA DESTRA -->
         <div>
-          <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.05);border-radius:14px;padding:20px;margin-bottom:12px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-              <div style="color:rgba(255,255,255,0.3);font-size:12px;">PROSSIMO LIVELLO</div>
-              <div style="color:#FF6B2B;font-size:13px;font-weight:500;">${prossimoLivello}</div>
+          <!-- GAMIFICATION -->
+          <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:24px;margin-bottom:14px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+              <div style="color:rgba(255,255,255,0.4);font-size:13px;">PROSSIMO LIVELLO</div>
+              <div style="color:#FF6B2B;font-size:15px;font-weight:500;">${prossimoLivello}</div>
             </div>
-            <div style="height:6px;background:rgba(255,255,255,0.03);border-radius:3px;margin-bottom:10px;">
-              <div style="height:100%;width:${Math.min(score/75*100,100)}%;background:#FF6B2B;border-radius:3px;"></div>
+            <div style="height:7px;background:rgba(255,255,255,0.04);border-radius:4px;margin-bottom:14px;">
+              <div style="height:100%;width:${Math.min(score / 75 * 100, 100)}%;background:#FF6B2B;border-radius:4px;"></div>
             </div>
+            <div style="display:flex;gap:6px;">${gamifChecks}</div>
           </div>
 
-          <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.05);border-radius:14px;padding:20px;">
-            <div style="color:rgba(255,255,255,0.3);font-size:12px;margin-bottom:12px;">POSIZIONAMENTO</div>
-            ${STD.map(d => {
-              const val = dims[d] || 0;
-              const c = val < 40 ? '#F43F5E' : val < 60 ? '#FBBF24' : '#34D399';
-              return `<div style="margin-bottom:8px;">
-                <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-                  <span style="color:rgba(255,255,255,0.35);font-size:11px;">${d}</span>
-                  <span style="color:${c};font-size:11px;">${val}</span>
-                </div>
-                <div style="height:4px;background:rgba(255,255,255,0.03);border-radius:2px;position:relative;">
-                  <div style="height:100%;width:${val}%;background:${c};border-radius:2px;"></div>
-                  <div style="position:absolute;top:-1px;left:${mediaSett}%;width:1px;height:6px;background:rgba(255,255,255,0.12);"></div>
-                </div>
-              </div>`;
-            }).join('')}
-            <div style="color:rgba(255,255,255,0.1);font-size:10px;margin-top:6px;">| = media settore</div>
+          <!-- POSIZIONAMENTO -->
+          <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:24px;">
+            <div style="color:rgba(255,255,255,0.4);font-size:13px;margin-bottom:16px;">POSIZIONAMENTO</div>
+            ${posHTML}
+            <div style="color:rgba(255,255,255,0.15);font-size:11px;margin-top:8px;">| = media settore</div>
           </div>
         </div>
       </div>
 
-      <div style="background:rgba(255,255,255,0.015);border:0.5px solid rgba(255,255,255,0.03);border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:12px;">
-        <div style="width:6px;height:6px;border-radius:50%;background:#7B61FF;animation:leva-pulse 2s infinite;"></div>
-        <div style="color:rgba(255,255,255,0.35);font-size:13px;flex:1;">Analizzando i tuoi dati...</div>
-        <div style="padding:6px 14px;border-radius:8px;border:0.5px solid rgba(123,97,255,0.3);color:#A78BFA;font-size:12px;cursor:pointer;">Chiedi a Leva</div>
+      <!-- FOOTER BAR -->
+      <div style="background:rgba(255,255,255,0.02);border:0.5px solid rgba(255,255,255,0.04);border-radius:14px;padding:18px 24px;display:flex;align-items:center;gap:14px;">
+        <div style="width:7px;height:7px;border-radius:50%;background:#7B61FF;animation:leva-pulse 2s infinite;"></div>
+        <div id="leva-footer-msg" style="color:rgba(255,255,255,0.4);font-size:14px;flex:1;transition:opacity 0.3s;"></div>
+        <div style="padding:8px 18px;border-radius:10px;border:0.5px solid rgba(123,97,255,0.35);color:#A78BFA;font-size:13px;font-weight:500;cursor:pointer;">Chiedi a Leva</div>
       </div>
 
     </div>
   `;
 
-  // Avvia le onde
+  // ========== ANIMAZIONI ==========
+
+  // 1. Avvia le onde
   if (window.initLevaWaves) {
     if (window._wavesInstance) window._wavesInstance.stop();
     window._wavesInstance = initLevaWaves('leva-waves-home');
   }
+
+  // 2. Typewriter "Leva dice"
+  var levaDiceMsgs = [
+    azione,
+    'Hai completato ' + azioniCompletate + ' azioni consecutive. Ancora ' + (5 - azioniCompletate) + ' e sali al livello ' + prossimoLivello + '.',
+    'Nella tua zona ci sono aziende come la tua che stanno crescendo. Non restare fermo.'
+  ];
+  var levaDiceIdx = 0;
+  var levaDiceEl = document.getElementById('leva-dice-text');
+  function typeLevaMsg() {
+    if (!levaDiceEl) return;
+    var msg = levaDiceMsgs[levaDiceIdx % levaDiceMsgs.length];
+    levaDiceEl.textContent = '';
+    var i = 0;
+    function addCh() {
+      if (i < msg.length && levaDiceEl) {
+        levaDiceEl.textContent += msg[i];
+        i++;
+        setTimeout(addCh, 18);
+      }
+    }
+    addCh();
+    levaDiceIdx++;
+  }
+  setTimeout(typeLevaMsg, 800);
+  window._levaDiceInterval = setInterval(typeLevaMsg, 14000);
+
+  // 3. Footer messaggi rotanti
+  var footerMsgs = [
+    'Analizzando i tuoi dati...',
+    'Il tuo report serale sara\' pronto alle 15:00',
+    '3 aziende del tuo settore nella tua zona hanno migliorato questa settimana',
+    'La prossima ri-diagnosi e\' tra 47 giorni'
+  ];
+  var footerIdx = 0;
+  var footerEl = document.getElementById('leva-footer-msg');
+  function rotateFooter() {
+    if (!footerEl) return;
+    footerEl.style.opacity = '0';
+    setTimeout(function() {
+      if (!footerEl) return;
+      footerEl.textContent = footerMsgs[footerIdx % footerMsgs.length];
+      footerEl.style.opacity = '1';
+      footerIdx++;
+    }, 300);
+  }
+  rotateFooter();
+  window._footerInterval = setInterval(rotateFooter, 5000);
+
+  // 4. Animazione numeri (count up)
+  function animateNum(selector, target, prefix, suffix, duration) {
+    var el = document.querySelector(selector);
+    if (!el) return;
+    var start = null;
+    function tick(ts) {
+      if (!start) start = ts;
+      var p = Math.min((ts - start) / duration, 1);
+      var ease = 1 - Math.pow(1 - p, 3);
+      var val = Math.round(ease * target);
+      el.textContent = (prefix || '') + val.toLocaleString('it-IT') + (suffix || '');
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  // Le animazioni partono dopo un breve delay per effetto "caricamento"
+  // (commentate per ora — richiedono id sui numeri)
 }
+
 
 function completaAzioneSettimanale() {
   // TODO Phase 10
