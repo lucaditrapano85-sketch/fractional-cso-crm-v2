@@ -10884,18 +10884,41 @@ async function pmiAvviaDiagnosi() {
   if (!_pmiSelectedSettore) { if (msg) msg.textContent = 'Specifica il tuo micro-settore.'; return; }
   if (msg) msg.textContent = '';
 
-  // PRIMA COSA: lancia diagnosi-start fire-and-forget — prima di qualsiasi await
+  // PRIMA COSA: lancia diagnosi-shock + diagnosi-domande in parallelo (fire-and-forget)
   window._datiGenerici = {};
   window._generaSettoreResolved = false;
-  console.log('DIAGNOSI-START LANCIATA:', new Date().toISOString());
-  window._generaSettorePromise = fetch('/api/diagnosi-start', {
+  window._domandeResolved = false;
+  window._domandeData = null;
+  console.log('DIAGNOSI-SHOCK LANCIATA:', new Date().toISOString());
+
+  // diagnosi-shock: VELOCE (15-20s) — solo shock + benchmark
+  window._generaSettorePromise = fetch('/api/diagnosi-shock', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ settore: _pmiSelectedSettore, fascia_fatturato: 'nd', user_id: window._currentUserId || null })
+    body: JSON.stringify({ settore: _pmiSelectedSettore, user_id: window._currentUserId || null })
   }).then(function(r) { return r.json(); })
-    .then(function(data) { console.log('DIAGNOSI-START COMPLETATA:', new Date().toISOString()); return data; })
-    .finally(function() { window._generaSettoreResolved = true; });
-  window._diagnosi_start_promise = window._generaSettorePromise;
+    .then(function(data) {
+      console.log('DIAGNOSI-SHOCK COMPLETATA:', new Date().toISOString());
+      window._generaSettoreResolved = true;
+      return data;
+    });
+
+  // diagnosi-domande: IN BACKGROUND (40-60s) — domande + tips
+  window._domandePromise = fetch('/api/diagnosi-domande', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ settore: _pmiSelectedSettore, user_id: window._currentUserId || null })
+  }).then(function(r) { return r.json(); })
+    .then(function(data) {
+      console.log('DIAGNOSI-DOMANDE COMPLETATA:', new Date().toISOString());
+      window._domandeData = data;
+      window._domandeResolved = true;
+      return data;
+    })
+    .catch(function(e) {
+      console.error('diagnosi-domande:', e);
+      window._domandeResolved = true; // marca come completato anche in caso di errore
+    });
 
   var profile = window._currentProfile || {};
   var upData  = window._userProfileData || {};
@@ -11484,7 +11507,7 @@ function _wizRenderLoading() {
       '<div id="wiz-prog-text" style="font-size:12px;color:rgba(26,26,46,0.4);text-align:center;">' + _esc(statusTexts[0]) + '</div>' +
     '</div>';
 
-  // Progress bar + status text, one step every 9s (54s / 6 steps)
+  // Progress bar: 6 step da 3s ciascuno (18s totali — allineato al nuovo target 15-20s)
   var progIdx = 0;
   var _progId = setInterval(function() {
     progIdx++;
@@ -11493,20 +11516,18 @@ function _wizRenderLoading() {
     if (txt) txt.textContent = statusTexts[progIdx];
     var bar = document.getElementById('wiz-prog-bar');
     if (bar) bar.style.width = Math.min(Math.round((progIdx + 1) / statusTexts.length * 88), 88) + '%';
-  }, 9000);
+  }, 3000);
 
-  // 6 cards every 8s: card-1@8s, card-2@16s, ..., card-6@48s
-  [[8000,'wiz-card-1'],[16000,'wiz-card-2'],[24000,'wiz-card-3'],
-   [32000,'wiz-card-4'],[40000,'wiz-card-5'],[48000,'wiz-card-6']].forEach(function(c) {
+  // 6 cards ogni 3s: card-1@3s, card-2@6s, ..., card-6@18s
+  [[3000,'wiz-card-1'],[6000,'wiz-card-2'],[9000,'wiz-card-3'],
+   [12000,'wiz-card-4'],[15000,'wiz-card-5'],[18000,'wiz-card-6']].forEach(function(c) {
     setTimeout(function() {
       var el = document.getElementById(c[1]);
       if (el) { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }
     }, c[0]);
   });
 
-  // timing obbligatorio: tutte e 6 le card (min 54s)
-  var _startData   = null;
-  var _minTimeDone = false;
+  var _shockData = null;
 
   function _applyGreenUI() {
     var bar = document.getElementById('wiz-prog-bar');
@@ -11516,32 +11537,26 @@ function _wizRenderLoading() {
   }
 
   function _tryTransition() {
-    if (!_minTimeDone || _startData === null) return;
+    if (_shockData === null) return;
     clearInterval(_progId);
     _wizPassaAShock();
   }
 
-  // A 52s: checkmark verde
-  setTimeout(function() { _applyGreenUI(); }, 52000);
-
-  // A 54s: sblocca la transizione (se l'API è già pronta, parte subito)
-  setTimeout(function() {
-    _minTimeDone = true;
-    _tryTransition();
-  }, 54000);
-
-  // Poll per diagnosi-start — quando risponde, aggiorna tips e tenta transizione
+  // Poll diagnosi-shock — transizione appena risponde (nessun minimum time artificiale)
   var _pollId = setInterval(function() {
     if (!window._generaSettoreResolved) return;
     clearInterval(_pollId);
     window._generaSettorePromise.then(function(data) {
-      _startData = data || {};
-      if (data && data.tips) {
-        var sapevi = data.tips.filter(function(t) { return t.tipo === 'sapevi'; });
-        var azione = data.tips.filter(function(t) { return t.tipo === 'azione'; });
+      _shockData = data || {};
+      _applyGreenUI();
+      // Aggiorna tips se diagnosi-domande è già pronta
+      if (window._domandeResolved && window._domandeData && window._domandeData.tips) {
+        var tips = window._domandeData.tips;
+        var sapevi = tips.filter(function(t) { return t.tipo === 'sapevi'; });
+        var azione = tips.filter(function(t) { return t.tipo === 'azione'; });
         function _fadeUpdateTip(spanId, cardId, nuovoTesto) {
-          var card = document.getElementById(cardId);
           var span = document.getElementById(spanId);
+          var card = document.getElementById(cardId);
           if (!span || !nuovoTesto) return;
           if (card && card.style.opacity === '1') {
             span.style.opacity = '0';
@@ -11554,9 +11569,9 @@ function _wizRenderLoading() {
         if (sapevi[1]) _fadeUpdateTip('wiz-tip-sapevi2', 'wiz-card-4', sapevi[1].testo);
         if (azione[0]) _fadeUpdateTip('wiz-tip-azione1', 'wiz-card-6', azione[0].testo);
       }
-      _tryTransition();
+      setTimeout(function() { _tryTransition(); }, 800); // breve pausa per mostrare il verde
     }).catch(function() {
-      _startData = {};
+      _shockData = {};
       _tryTransition();
     });
   }, 400);
@@ -11565,23 +11580,30 @@ function _wizRenderLoading() {
 function _wizPassaAShock() {
   if (!_pmiSelectedFascia) _pmiSelectedFascia = '500k-2M';
   if (!window._generaSettorePromise) {
-    // fallback: fascia non raccolta (non dovrebbe accadere)
-    window._generaSettorePromise = fetch('/api/diagnosi-start', {
+    // fallback: chiama diagnosi-shock direttamente
+    window._generaSettorePromise = fetch('/api/diagnosi-shock', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ settore: _pmiSelectedSettore, fascia_fatturato: _pmiSelectedFascia, user_id: window._currentUserId || null })
+      body: JSON.stringify({ settore: _pmiSelectedSettore, user_id: window._currentUserId || null })
     }).then(function(r) { return r.json(); });
   }
-  window._generaSettorePromise.then(function(datiStart) {
-    if (!datiStart.ok) {
+  window._generaSettorePromise.then(function(shockData) {
+    if (!shockData.ok) {
       showToast('Errore nel caricamento della diagnosi. Riprova.', 'error');
       _chatChiudiOverlay();
       renderPrimoAccesso();
       return;
     }
+    // Combina shock con domande (già pronte o ancora in arrivo)
+    var domandeData = window._domandeData || {};
+    var datiStart = Object.assign({}, shockData, {
+      tips:          domandeData.tips          || [],
+      domande_fase1: domandeData.domande_fase1 || [],
+      domande_fase2: domandeData.domande_fase2 || []
+    });
     _avviaChatDiagnosi(datiStart);
   }).catch(function(e) {
-    console.error('diagnosi-start:', e);
+    console.error('diagnosi-shock:', e);
     showToast('Errore nel caricamento della diagnosi. Riprova.', 'error');
     _chatChiudiOverlay();
     renderPrimoAccesso();
@@ -11766,12 +11788,72 @@ function _chatFase0() {
 // ─── FASE 1: Wizard (una domanda per schermata) ───────────────────────────────
 
 function _chatIniziaFase1() {
+  // Se le domande non sono ancora arrivate, aspetta diagnosi-domande (max 10s)
+  if (!_dc.domande_fase1 || _dc.domande_fase1.length === 0) {
+    _chatAttendeDomande();
+    return;
+  }
   _dc.step_fase1          = 0;
   _dc.conversazione       = [];
   _dc.risposte_fase1      = [];
   _dc.risposte_accumulate = [];
   window._f1Opzioni       = [];
   _chatRenderWizardF1(0);
+}
+
+function _chatAttendeDomande() {
+  var panel = document.getElementById('leva-chat-panel');
+  if (!panel) return;
+
+  // 2-3 card di attesa, max 10 secondi
+  panel.innerHTML =
+    _chatPanelHeader('Diagnosi commerciale') +
+    '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;gap:16px;">' +
+      '<div style="width:40px;height:40px;border:3px solid #e8e8f0;border-top-color:#3D5AFE;border-radius:50%;animation:spin 0.8s linear infinite;"></div>' +
+      '<div style="font-size:16px;font-weight:600;color:#1a1a2e;text-align:center;">Sto preparando le domande\u2026</div>' +
+      '<div style="font-size:13px;color:rgba(26,26,46,0.45);text-align:center;">Solo qualche secondo</div>' +
+    '</div>';
+
+  var waited = 0;
+  var pollInterval = setInterval(function() {
+    waited += 400;
+    if (window._domandeResolved) {
+      clearInterval(pollInterval);
+      if (window._domandeData && window._domandeData.domande_fase1 && window._domandeData.domande_fase1.length > 0) {
+        _dc.domande_fase1 = window._domandeData.domande_fase1;
+        _dc.domande_fase2 = window._domandeData.domande_fase2 || [];
+      }
+      if (_dc.domande_fase1 && _dc.domande_fase1.length > 0) {
+        _dc.step_fase1          = 0;
+        _dc.conversazione       = [];
+        _dc.risposte_fase1      = [];
+        _dc.risposte_accumulate = [];
+        window._f1Opzioni       = [];
+        _chatRenderWizardF1(0);
+      } else {
+        // domande vuote anche dopo attesa: mostra errore
+        if (panel) {
+          panel.innerHTML =
+            _chatPanelHeader('Diagnosi commerciale') +
+            '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;gap:16px;">' +
+              '<div style="font-size:15px;color:rgba(26,26,46,0.6);text-align:center;">Si \u00e8 verificato un errore. Riprova.</div>' +
+              '<button onclick="_chatIniziaFase1()" style="padding:13px 28px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Riprova</button>' +
+            '</div>';
+        }
+      }
+    } else if (waited >= 10000) {
+      clearInterval(pollInterval);
+      // Timeout: mostra pulsante riprova
+      if (panel) {
+        panel.innerHTML =
+          _chatPanelHeader('Diagnosi commerciale') +
+          '<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;gap:16px;">' +
+            '<div style="font-size:15px;color:rgba(26,26,46,0.6);text-align:center;">Ci sta mettendo un po\u2019 di pi\u00f9 del solito.</div>' +
+            '<button onclick="_chatIniziaFase1()" style="padding:13px 28px;background:#3D5AFE;color:#fff;border:none;border-radius:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Riprova</button>' +
+          '</div>';
+      }
+    }
+  }, 400);
 }
 
 function _chatRenderWizardF1(idx, altroMode) {
