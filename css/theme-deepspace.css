@@ -223,11 +223,17 @@
 
 .leva-sidebar-icon svg {
   stroke: rgba(255,255,255,0.25);
-  transition: stroke 0.15s;
+  color: rgba(255,255,255,0.25);
+  transition: stroke 0.15s, color 0.15s;
+}
+
+.leva-sidebar-icon:hover {
+  background: rgba(255,255,255,0.04);
 }
 
 .leva-sidebar-icon:hover svg {
   stroke: rgba(255,255,255,0.5);
+  color: rgba(255,255,255,0.5);
 }
 
 .leva-sidebar-icon.active {
@@ -236,6 +242,7 @@
 
 .leva-sidebar-icon.active svg {
   stroke: var(--leva-accent-light);
+  color: var(--leva-accent-light);
 }
 
 /* ── Divider ────────────────────────────────────────────────── */

@@ -10325,80 +10325,92 @@ function renderSidebarPMI() {
   var sidebar = document.getElementById('pmi-sidebar');
   if (!sidebar) return;
 
-  // Forza dimensioni sidebar via inline style
-  sidebar.style.cssText = 'background:#1a1a2e;width:160px;min-width:160px;max-width:160px;height:100vh;padding:16px 0;display:flex;flex-direction:column;align-items:stretch;gap:4px;overflow:hidden;flex-shrink:0;';
+  // ── Deep Space sidebar: 64px, solo icone ─────────────────────────────────
+  sidebar.style.cssText = [
+    'background:var(--leva-bg-sidebar,#050508)',
+    'width:64px','min-width:64px','max-width:64px','height:100vh',
+    'padding:12px 0','display:flex','flex-direction:column',
+    'align-items:center','gap:2px','overflow:hidden','flex-shrink:0',
+    'border-right:0.5px solid rgba(255,255,255,0.05)',
+    'position:relative','z-index:2'
+  ].join(';');
 
-  // Forza grid 160px sul container padre
   var pmiApp = document.getElementById('app-pmi');
   if (pmiApp) {
     pmiApp.style.display = 'grid';
-    pmiApp.style.gridTemplateColumns = '160px 1fr';
+    pmiApp.style.gridTemplateColumns = '64px 1fr';
     pmiApp.style.height = '100vh';
     pmiApp.style.overflow = 'hidden';
+    pmiApp.style.position = 'relative';
   }
 
-  var pro  = window._currentProfile  || {};
-  var up   = window._userProfileData || {};
-  var nome = pro.nome || (pro.nome_completo || '').split(' ')[0] || up.nome || '';
-
-  var _plan = window._userPlan || 'self';
+  var _plan   = window._userPlan || 'self';
   var _isBase = _plan === 'guided_base' || _plan === 'guided_pro';
   var _isPro  = _plan === 'guided_pro';
 
   var navItems = [
-    { id:'home',   title:'Home',   svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" fill="currentColor" opacity=".9"/><rect x="9" y="2" width="5" height="5" rx="1" fill="currentColor" opacity=".9"/><rect x="2" y="9" width="5" height="5" rx="1" fill="currentColor" opacity=".9"/><rect x="9" y="9" width="5" height="5" rx="1" fill="currentColor" opacity=".9"/></svg>' },
-    { id:'azioni', title:'Azioni', svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-7" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>' },
-    { id:'score',  title:'Score',  svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M8 8l2.2-2.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="8" r="1.2" fill="currentColor"/></svg>' },
-    { id:'trend',  title:'Trend',  svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13l3-4 3 2 4-6" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>' },
+    { id:'home',   title:'Home',
+      svg:'<svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>' },
+    { id:'azioni', title:'Azioni',
+      svg:'<svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l4 4 6-7"/></svg>' },
+    { id:'score',  title:'Score',
+      svg:'<svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="8" cy="8" r="5.5"/><path d="M8 8l2.2-2.2" stroke-linecap="round"/><circle cx="8" cy="8" r="1.2" fill="currentColor" stroke="none"/></svg>' },
+    { id:'trend',  title:'Trend',
+      svg:'<svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"><path d="M3 13l3-4 3 2 4-6"/></svg>' },
   ];
 
-  if (_isBase) {
-    navItems.push({ id:'piano_cso', title:'Piano CSO', svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="9" height="1.5" rx=".75" fill="currentColor"/><rect x="2" y="7" width="7" height="1.5" rx=".75" fill="currentColor"/><rect x="2" y="11" width="5" height="1.5" rx=".75" fill="currentColor"/><circle cx="12" cy="11" r="2.5" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M13.8 13.8l1.5 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>' });
-  }
+  if (_isBase) navItems.push({ id:'piano_cso', title:'Piano CSO',
+    svg:'<svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="3" width="9" height="1.5" rx=".75" fill="currentColor" stroke="none"/><rect x="2" y="7" width="7" height="1.5" rx=".75" fill="currentColor" stroke="none"/><rect x="2" y="11" width="5" height="1.5" rx=".75" fill="currentColor" stroke="none"/><circle cx="12" cy="11" r="2.5"/></svg>' });
   if (_isPro) {
-    navItems.push({ id:'report',      title:'Report',      svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2.5" y="1.5" width="11" height="13" rx="2" stroke="currentColor" stroke-width="1.2" fill="none"/><rect x="5" y="5" width="6" height="1.2" rx=".6" fill="currentColor" opacity=".7"/><rect x="5" y="8" width="4" height="1.2" rx=".6" fill="currentColor" opacity=".5"/></svg>' });
-    navItems.push({ id:'simulazioni', title:'Simulaz.',    svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14l4-5 3 2 5-8" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="9" r="1.5" fill="currentColor" opacity=".6"/></svg>' });
-    navItems.push({ id:'benchmark',   title:'Benchmark',   svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="10" width="3" height="4" rx="1" fill="currentColor" opacity=".5"/><rect x="6.5" y="7" width="3" height="7" rx="1" fill="currentColor" opacity=".7"/><rect x="11" y="4" width="3" height="10" rx="1" fill="currentColor" opacity=".9"/></svg>' });
+    navItems.push({ id:'report',      title:'Report',
+      svg:'<svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2.5" y="1.5" width="11" height="13" rx="2"/><rect x="5" y="5" width="6" height="1.2" rx=".6" fill="currentColor" stroke="none" opacity=".7"/><rect x="5" y="8" width="4" height="1.2" rx=".6" fill="currentColor" stroke="none" opacity=".5"/></svg>' });
+    navItems.push({ id:'simulazioni', title:'Simulaz.',
+      svg:'<svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14l4-5 3 2 5-8"/></svg>' });
+    navItems.push({ id:'benchmark',   title:'Benchmark',
+      svg:'<svg width="18" height="18" viewBox="0 0 16 16" fill="none"><rect x="2" y="10" width="3" height="4" rx="1" fill="currentColor" opacity=".5"/><rect x="6.5" y="7" width="3" height="7" rx="1" fill="currentColor" opacity=".7"/><rect x="11" y="4" width="3" height="10" rx="1" fill="currentColor"/></svg>' });
   }
+  navItems.push({ id:'piano',   title:'Piano',
+    svg:'<svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"><path d="M8 2l1.5 3.5 3.5.5-2.5 2.5.6 3.5L8 10.5l-3.1 1.5.6-3.5L3 6l3.5-.5z"/></svg>' });
+  navItems.push({ id:'profilo', title:'Profilo',
+    svg:'<svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="8" cy="6" r="3"/><path d="M3 15c0-2.8 2.2-5 5-5s5 2.2 5 5"/></svg>' });
 
-  navItems.push({ id:'piano',  title:'Piano',  svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2l1.5 3.5 3.5.5-2.5 2.5.6 3.5L8 10.5l-3.1 1.5.6-3.5L3 6l3.5-.5z" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linejoin="round"/></svg>' });
-  navItems.push({ id:'profilo',title:'Profilo',svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="3" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M3 15c0-2.8 2.2-5 5-5s5 2.2 5 5" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>' });
-
-  // Logo
+  // Logo Deep Space: barra viola
   var logoHtml =
-    '<div style="padding:0 16px 20px;display:flex;align-items:center;gap:6px;">' +
-      '<svg width="24" height="24" viewBox="8 4 44 44" fill="none"><rect x="8" y="34" width="44" height="4.5" rx="2.25" fill="#3D5AFE"/><rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="white"/><circle cx="29.75" cy="36.25" r="6" fill="white"/><line x1="29.75" y1="36.25" x2="47" y2="22" stroke="#FF6B2B" stroke-width="3.5" stroke-linecap="round"/><circle cx="47" cy="22" r="3.5" fill="#FF6B2B"/></svg>' +
-      '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:18px;font-weight:600;color:white;letter-spacing:-0.5px;">Leva</span>' +
+    '<div style="margin-bottom:12px;padding:10px 0 6px;display:flex;justify-content:center;">' +
+      '<svg width="26" height="26" viewBox="8 4 44 44" fill="none">' +
+        '<rect x="8" y="34" width="44" height="4.5" rx="2.25" fill="#7B61FF"/>' +
+        '<rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="white"/>' +
+        '<circle cx="29.75" cy="36.25" r="6" fill="white"/>' +
+        '<line x1="29.75" y1="36.25" x2="47" y2="22" stroke="#FF6B2B" stroke-width="3.5" stroke-linecap="round"/>' +
+        '<circle cx="47" cy="22" r="3.5" fill="#FF6B2B"/>' +
+      '</svg>' +
     '</div>';
+
+  // Divider
+  var divHtml = '<div style="width:32px;height:0.5px;background:rgba(255,255,255,0.05);margin:6px 0;"></div>';
 
   sidebar.innerHTML =
     logoHtml +
     navItems.map(function(item) {
       var isActive = item.id === _pmiCurrentView;
-      var col = isActive ? 'white' : 'rgba(255,255,255,0.45)';
-      var bg  = isActive ? 'rgba(61,90,254,0.18)' : 'transparent';
-      return '<div class="pmi-nav-item" data-view="' + item.id + '" onclick="showViewPMI(\'' + item.id + '\')"' +
-        ' style="display:flex;align-items:center;gap:10px;padding:10px 16px;margin:0 8px;border-radius:10px;cursor:pointer;color:' + col + ';background:' + bg + ';">' +
+      return '<div class="leva-sidebar-icon pmi-nav-item' + (isActive ? ' active' : '') +
+        '" data-view="' + item.id + '" onclick="showViewPMI(\'' + item.id + '\')" title="' + item.title + '">' +
         item.svg +
-        '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:' + (isActive ? '600' : '500') + ';">' + item.title + '</span>' +
       '</div>';
     }).join('') +
     '<div style="flex:1;"></div>' +
-    (nome ? '<div style="padding:2px 16px 8px;font-size:11px;font-weight:600;color:white;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + nome + '</div>' : '') +
-    '<div onclick="logout()" style="display:flex;align-items:center;gap:10px;padding:10px 16px;margin:0 8px;border-radius:10px;cursor:pointer;color:rgba(255,255,255,0.3);">' +
-      '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H4a2 2 0 00-2 2v8a2 2 0 002 2h2M11 11l3-3-3-3M14 8H6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
-      '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;">Esci</span>' +
+    divHtml +
+    '<div onclick="logout()" class="leva-sidebar-icon" title="Esci" style="margin-bottom:8px;">' +
+      '<svg width="16" height="16" viewBox="0 0 16 16" fill="none">' +
+        '<path d="M6 2H4a2 2 0 00-2 2v8a2 2 0 002 2h2M11 11l3-3-3-3M14 8H6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '</svg>' +
     '</div>';
 }
 
 function showViewPMI(view) {
   _pmiCurrentView = view;
   document.querySelectorAll('#pmi-sidebar .pmi-nav-item').forEach(function(el) {
-    var isActive = el.dataset.view === view;
-    el.style.background = isActive ? 'rgba(61,90,254,0.18)' : 'transparent';
-    el.style.color = isActive ? 'white' : 'rgba(255,255,255,0.45)';
-    var span = el.querySelector('span');
-    if (span) span.style.fontWeight = isActive ? '600' : '500';
+    el.classList.toggle('active', el.dataset.view === view);
   });
   renderViewPMI(view);
 }
@@ -10417,10 +10429,34 @@ function renderViewPMI(view) {
   var main    = document.getElementById('pmi-main');
   if (!main) return;
 
+  // Ferma le onde quando si lascia la home
+  if (view !== 'home') {
+    if (window._levaWavesInstance) {
+      window._levaWavesInstance.stop();
+      window._levaWavesInstance = null;
+    }
+    var wc = document.getElementById('leva-waves-bg');
+    if (wc) wc.remove();
+  }
+
   if (sidebar) sidebar.style.display = '';
-  if (appPmi)  appPmi.style.gridTemplateColumns = '160px 1fr';
-  main.style.padding    = '28px 32px';
-  main.style.background = '#d8dbe2';
+
+  // Aggiorna il container principale con il tema Deep Space
+  if (appPmi) {
+    appPmi.style.display = 'grid';
+    appPmi.style.gridTemplateColumns = '64px 1fr';
+    appPmi.style.height = '100vh';
+    appPmi.style.overflow = 'hidden';
+    appPmi.style.position = 'relative';
+    appPmi.style.background = view === 'home' ? 'var(--leva-bg-deep,#06080F)' : '#d8dbe2';
+  }
+
+  // Home: sfondo trasparente (mostra il canvas). Altre viste: sfondo classico.
+  main.style.background = view === 'home' ? 'transparent' : '#d8dbe2';
+  main.style.padding    = view === 'home' ? '0' : '28px 32px';
+  main.style.position   = 'relative';
+  main.style.zIndex     = '1';
+
   renderSidebarPMI();
 
   if (view === 'home') {
@@ -12965,177 +13001,290 @@ function renderPMIHome(container) {
   var p = window._pmiProspect;
   if (!p || !p.dims) { container.innerHTML = ''; return; }
 
+  // ── Dati base ───────────────────────────────────────────────────────────────
   var up  = window._userProfileData || {};
   var pro = window._currentProfile  || {};
-  var nome    = pro.nome || (pro.nome_completo || '').split(' ')[0] || up.nome || 'Benvenuto';
-  var azienda = up.company_name || pro.azienda || '';
+  var nome       = pro.nome || (pro.nome_completo || '').split(' ')[0] || up.nome || 'Benvenuto';
+  var azienda    = up.company_name || pro.azienda || '';
   var settoreRaw = up.sector || p.settore || '';
-  var settore = settoreRaw ? settoreRaw.replace(/_/g,' ').replace(/^\w/,function(c){return c.toUpperCase();}) : '';
+  var settore    = settoreRaw ? settoreRaw.replace(/_/g,' ').replace(/^\w/,function(c){return c.toUpperCase();}) : '';
 
-  // Score: preferisce score_globale (0-100) dalla diagnosi, fallback calcScore, fallback da dims standard
+  var _STD_DIMS = ['Vendite','Marketing','Clienti','Pipeline','Pricing','Processi','Team','Digitale'];
+
+  // Score (0-100)
   var s = p.score_globale || calcScore(p) || 0;
   if (!s && p.dims) {
-    var _hDv = ['Vendite','Marketing','Clienti','Pipeline','Pricing','Processi','Team','Digitale']
-      .map(function(k){ return p.dims[k]||0; }).filter(function(v){ return v>0; });
-    if (_hDv.length) s = Math.round(_hDv.reduce(function(a,b){return a+b;},0)/_hDv.length*20);
+    var _dv = _STD_DIMS.map(function(k){ return p.dims[k]||0; }).filter(function(v){ return v>0; });
+    if (_dv.length) s = Math.round(_dv.reduce(function(a,b){return a+b;},0)/_dv.length*20);
   }
-  var scoreBorder = s < 40 ? 'rgba(229,57,53,0.55)' : s < 60 ? 'rgba(175,125,0,0.55)' : 'rgba(0,130,95,0.55)';
-  var scoreBg     = s < 40 ? 'rgba(229,57,53,0.04)' : s < 60 ? 'rgba(175,125,0,0.04)' : 'rgba(0,130,95,0.04)';
+  var scoreCol = s < 40 ? 'var(--leva-danger)' : s < 60 ? 'var(--leva-warning)' : 'var(--leva-success)';
+  var scoreLbl = s < 40 ? 'Critico' : s < 60 ? 'In sviluppo' : 'Buona base';
 
-  // 8 dimensioni standard
-  var _STD_DIMS = ['Vendite','Marketing','Clienti','Pipeline','Pricing','Processi','Team','Digitale'];
+  // Dimensione peggiore
   var dimMin   = _STD_DIMS.reduce(function(min,k){ return (p.dims[k]||0)<(p.dims[min]||0)?k:min; }, _STD_DIMS[0]);
   var scoreMin = p.dims[dimMin] || 1;
-  var labelMin = dimMin; // key IS the label with standard names
   var stepActual = Math.max(1, Math.min(5, Math.round(scoreMin)));
-  var azioneData = (AZIONI_SETTIMANALI[labelMin] && AZIONI_SETTIMANALI[labelMin][stepActual]) || null;
+  var azioneData = (AZIONI_SETTIMANALI[dimMin] && AZIONI_SETTIMANALI[dimMin][stepActual]) || null;
   var stepDesc   = azioneData ? azioneData.t : 'Concentrati sulla dimensione più debole questa settimana.';
   var stepObj    = azioneData ? azioneData.o : 'Obiettivo: completare almeno 1 azione entro venerdì.';
+  var analisi    = generaAnalisiAI({dims: p.dims, scoreGlobale: s});
 
-  // Analisi AI per "Leva dice" — usa p.dims direttamente con chiavi standard
-  var analisi = generaAnalisiAI({dims: p.dims, scoreGlobale: s});
-
-  // Calcolo impatto economico reale
+  // Impatto economico
   var fatturato = p.fatturato || 1000000;
   var gapStep   = Math.min(2, 5 - scoreMin);
-  var coefficienti = {'Vendite':0.04,'Pipeline':0.035,'Team':0.025,'Processi':0.03,'Pricing':0.045,'Marketing':0.02,'Digitale':0.02,'Clienti':0.03};
-  var coeff = coefficienti[dimMin] || 0.03;
+  var coeffMap  = {'Vendite':0.04,'Pipeline':0.035,'Team':0.025,'Processi':0.03,'Pricing':0.045,'Marketing':0.02,'Digitale':0.02,'Clienti':0.03};
+  var coeff         = coeffMap[dimMin] || 0.03;
   var impattoMensile = Math.round(fatturato * gapStep * coeff / 12);
-  var impattoFmt = '€' + impattoMensile.toLocaleString('it-IT');
+  var impattoFmt    = '€' + impattoMensile.toLocaleString('it-IT');
 
-  // {{DIMS_HTML}} — 8 dimensioni standard, key = label
-  var dimsHtml = _STD_DIMS.map(function(key) {
-    var v = p.dims[key] || 0;
-    var cardBg, cardBorder, color, barColor;
-    if (v < 2)      { cardBg='rgba(229,57,53,0.03)'; cardBorder='border:1px solid rgba(229,57,53,0.08);'; color='rgba(229,57,53,0.85)'; barColor='rgba(229,57,53,0.55)'; }
-    else if (v < 4) { cardBg='rgba(0,0,0,0.02)';     cardBorder='';                                       color='rgba(175,125,0,0.85)'; barColor='rgba(175,125,0,0.55)'; }
-    else            { cardBg='rgba(0,0,0,0.02)';     cardBorder='';                                       color='rgba(0,130,95,0.85)';  barColor='rgba(0,130,95,0.55)'; }
-    var pct = Math.round((v/5)*100);
-    return '<div onclick="navigaAzioni(\''+key+'\')" style="flex:1;min-width:45%;padding:8px 10px;background:'+cardBg+';border-radius:8px;cursor:pointer;'+cardBorder+'">' +
-      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">' +
-        '<span style="font-size:12px;color:#1a1a2e;">'+key+'</span>' +
-        '<span style="font-size:15px;font-weight:700;color:'+color+';">'+(v||'—')+'</span>' +
+  // Azioni completate
+  var azObj   = p.azioni_completate || {};
+  var azFatte = Object.keys(azObj).filter(function(k){return azObj[k];}).length;
+  var azTot   = Math.max(5, Object.keys(azObj).length);
+  var azPct   = Math.round((azFatte / azTot) * 100);
+
+  // Streak — ultimi 7 periodi con score
+  var scoreHistory = (p.score_history || []).slice(-7);
+  var streakCount  = scoreHistory.filter(function(x){return x && (x.score_globale||0) > 0;}).length;
+  var barreHtml = '';
+  for (var bi = 0; bi < 7; bi++) {
+    var bEntry = scoreHistory[bi] || null;
+    var bVal   = bEntry ? (bEntry.score_globale || 0) : 0;
+    var bH     = bVal > 0 ? Math.max(6, Math.round((bVal/100)*28)) : 3;
+    var bCol   = bVal > 60 ? 'var(--leva-success)' : bVal > 40 ? 'var(--leva-warning)' : bVal > 0 ? 'var(--leva-orange)' : 'rgba(255,255,255,0.06)';
+    barreHtml += '<div style="width:7px;height:'+bH+'px;background:'+bCol+';border-radius:2px;align-self:flex-end;flex-shrink:0;"></div>';
+  }
+
+  // Livello gamification
+  var livelli    = ['','Base','Struttura','Metodo','Eccellenza'];
+  var curLvl     = Math.max(1, Math.min(4, Math.round(scoreMin)));
+  var nxtLvl     = Math.min(curLvl + 1, 4);
+  var lvlProgress = Math.round(Math.max(0, Math.min(1, (scoreMin - (curLvl - 1)))) * 100);
+
+  // ── Canvas onde Deep Space ──────────────────────────────────────────────────
+  var appPmi = document.getElementById('app-pmi');
+  if (appPmi && !document.getElementById('leva-waves-bg')) {
+    var wCanvas = document.createElement('canvas');
+    wCanvas.id = 'leva-waves-bg';
+    wCanvas.className = 'leva-waves-canvas';
+    wCanvas.style.cssText = 'position:absolute;top:0;left:64px;right:0;bottom:0;width:calc(100% - 64px);height:100%;pointer-events:none;z-index:0;';
+    appPmi.insertBefore(wCanvas, appPmi.firstChild);
+  }
+  if (window._levaWavesInstance) { window._levaWavesInstance.stop(); window._levaWavesInstance = null; }
+  if (typeof initLevaWaves === 'function') { window._levaWavesInstance = initLevaWaves('leva-waves-bg'); }
+
+  // ── KPI: 3 dimensioni chiave ────────────────────────────────────────────────
+  var kpiDims = ['Vendite', 'Pipeline', 'Clienti'];
+  var kpiHtml = kpiDims.map(function(dk) {
+    var dv  = p.dims[dk] || 0;
+    var dp  = Math.round((dv / 5) * 100);
+    var dc  = dv < 2 ? 'var(--leva-danger)' : dv < 4 ? 'var(--leva-warning)' : 'var(--leva-success)';
+    var dfx = dv < 2 ? 'leva-progress-fill--danger' : dv < 4 ? 'leva-progress-fill--warning' : 'leva-progress-fill--success';
+    return '<div style="margin-bottom:14px;">' +
+      '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">' +
+        '<span style="font-size:12px;color:var(--leva-text-secondary);">' + dk + '</span>' +
+        '<span style="font-size:14px;font-weight:600;color:' + dc + ';">' + dv + '/5</span>' +
       '</div>' +
-      '<div style="height:4px;background:rgba(0,0,0,0.04);border-radius:2px;">' +
-        '<div style="height:4px;border-radius:2px;width:'+pct+'%;background:'+barColor+';"></div>' +
+      '<div class="leva-progress"><div class="leva-progress-fill ' + dfx + '" style="width:' + dp + '%;"></div></div>' +
+    '</div>';
+  }).join('');
+
+  // ── Gamification: checkbox prime 4 dimensioni ───────────────────────────────
+  var gkHtml = '';
+  _STD_DIMS.slice(0, 4).forEach(function(gk) {
+    var gv   = p.dims[gk] || 0;
+    var done = gv >= 3;
+    var dot  = done
+      ? '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="rgba(52,211,153,0.15)" stroke="var(--leva-success)" stroke-width="1.2"/><path d="M4 7l2 2 4-4" stroke="var(--leva-success)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      : '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(255,255,255,0.12)" stroke-width="1.2"/></svg>';
+    gkHtml += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">' +
+      dot + '<span style="font-size:12px;color:' + (done ? 'var(--leva-text-secondary)' : 'rgba(255,255,255,0.3)') + ';">' + gk + '</span>' +
+    '</div>';
+  });
+
+  // ── Posizionamento: 8 dimensioni con barra e linea media ────────────────────
+  var posDimsHtml = _STD_DIMS.map(function(pk) {
+    var pv  = p.dims[pk] || 0;
+    var pp  = Math.round((pv / 5) * 100);
+    var pc  = pv < 2 ? 'var(--leva-danger)' : pv < 4 ? 'var(--leva-warning)' : 'var(--leva-success)';
+    var pfx = pv < 2 ? 'leva-progress-fill--danger' : pv < 4 ? 'leva-progress-fill--warning' : 'leva-progress-fill--success';
+    return '<div style="margin-bottom:10px;" onclick="navigaAzioni(\'' + pk + '\')" style="cursor:pointer;">' +
+      '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;">' +
+        '<span style="font-size:11px;color:var(--leva-text-secondary);cursor:pointer;">' + pk + '</span>' +
+        '<span style="font-size:12px;font-weight:600;color:' + pc + ';">' + pv + '</span>' +
+      '</div>' +
+      '<div class="leva-progress" style="position:relative;">' +
+        '<div class="leva-progress-fill ' + pfx + '" style="width:' + pp + '%;"></div>' +
+        '<div style="position:absolute;top:-2px;left:60%;width:1px;height:8px;background:rgba(255,255,255,0.18);pointer-events:none;"></div>' +
       '</div>' +
     '</div>';
   }).join('');
 
-  // {{STEPS_HTML}}
-  var curStep = Math.max(1, Math.min(4, Math.round(scoreMin)));
-  var tgtStep = Math.min(curStep+1, 4);
-  var sLbl = ['','Base','Struttura','Metodo','Eccellenza'];
-  function stepState(n) { return n<curStep?'done':n===curStep?'current':n===tgtStep?'target':'future'; }
-  function stepHtml(n) {
-    var st=stepState(n);
-    var bdr=st==='done'?'rgba(0,130,95,0.85)':st==='current'?'#FF6B2B':st==='target'?'rgba(61,90,254,0.4)':'rgba(0,0,0,0.06)';
-    var bg =st==='done'?'rgba(0,130,95,0.07)':st==='current'?'rgba(255,107,43,0.06)':st==='target'?'rgba(61,90,254,0.04)':'transparent';
-    var col=st==='done'?'rgba(0,130,95,0.85)':st==='current'?'#FF6B2B':st==='target'?'#3D5AFE':'rgba(26,26,46,0.25)';
-    var lc =st==='done'?'rgba(0,130,95,0.6)':st==='current'?'#FF6B2B':st==='target'?'#3D5AFE':'rgba(26,26,46,0.30)';
-    var bs =st==='target'?'dashed':'solid';
-    return '<div style="text-align:center;"><div style="width:32px;height:32px;border-radius:50%;border:2px '+bs+' '+bdr+';background:'+bg+';display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:'+col+';">'+n+'</div><div style="font-size:7px;margin-top:2px;color:'+lc+';">'+sLbl[n]+'</div></div>';
+  // ── Badge settimana ─────────────────────────────────────────────────────────
+  var oggi  = new Date();
+  var wk    = Math.ceil(oggi.getDate() / 7);
+  var mmm   = ['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'][oggi.getMonth()];
+  var wkLbl = 'Sett. ' + wk + ' · ' + oggi.getDate() + ' ' + mmm;
+
+  // ── Card CSO / esperto ──────────────────────────────────────────────────────
+  var csoHtml = '';
+  if (window._userPlan === 'guided_base' || window._userPlan === 'guided_pro') {
+    var csoNome  = window._pmiCSONome || '';
+    var isPro    = window._userPlan === 'guided_pro';
+    var planCol  = isPro ? 'var(--leva-orange)' : 'var(--leva-accent)';
+    var planName = isPro ? 'Guided Pro' : 'Guided Base';
+    csoHtml =
+      '<div class="leva-card" style="margin-top:14px;border-left:2px solid ' + planCol + ';">' +
+        '<div style="display:flex;align-items:center;gap:12px;">' +
+          '<div style="width:40px;height:40px;border-radius:50%;background:var(--leva-accent-bg);border:1.5px solid ' + planCol + ';display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
+            '<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="7" r="3.5" stroke="' + planCol + '" stroke-width="1.3"/><path d="M3 17c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="' + planCol + '" stroke-width="1.3"/></svg>' +
+          '</div>' +
+          '<div style="flex:1;">' +
+            '<div style="font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:' + planCol + ';margin-bottom:2px;">Il tuo CSO — ' + planName + '</div>' +
+            '<div id="pmi-cso-nome-home" style="font-size:14px;font-weight:500;color:var(--leva-text);">' + (csoNome || 'CSO assegnato al tuo account') + '</div>' +
+            '<div style="font-size:11px;color:var(--leva-text-muted);margin-top:2px;">' + (isPro ? 'Call illimitate · Piano azioni · Report mensile' : '1 call/mese · Piano azioni condiviso') + '</div>' +
+          '</div>' +
+          '<button onclick="showViewPMI(\'piano_cso\')" class="leva-btn-primary" style="flex-shrink:0;">Vedi piano</button>' +
+        '</div>' +
+      '</div>';
+  } else {
+    csoHtml =
+      '<div class="leva-card" style="margin-top:14px;">' +
+        '<div style="display:flex;align-items:center;gap:12px;">' +
+          '<div style="width:40px;height:40px;border-radius:50%;background:var(--leva-accent-bg);border:0.5px solid var(--leva-accent-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
+            '<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="7" r="3.5" stroke="var(--leva-accent)" stroke-width="1.3"/><path d="M3 17c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="var(--leva-accent)" stroke-width="1.3"/></svg>' +
+          '</div>' +
+          '<div style="flex:1;">' +
+            '<div style="font-size:14px;font-weight:500;color:var(--leva-text);">Vuoi un esperto?</div>' +
+            '<div style="font-size:11px;color:var(--leva-text-muted);">€120/sessione — nessun impegno</div>' +
+          '</div>' +
+          '<button onclick="apriPrenotazioneCall()" class="leva-btn-primary">Prenota</button>' +
+        '</div>' +
+      '</div>';
   }
-  var connPct = curStep>1?100:0;
-  var stepsHtml =
-    stepHtml(1)+
-    '<div style="flex:1;display:flex;align-items:center;"><div style="height:2px;width:100%;background:rgba(0,0,0,0.06);"><div style="height:2px;width:'+connPct+'%;background:rgba(0,130,95,0.4);border-radius:1px;"></div></div></div>'+
-    stepHtml(2)+
-    '<div style="flex:1;display:flex;align-items:center;"><div style="height:2px;width:100%;background:rgba(0,0,0,0.06);"></div></div>'+
-    stepHtml(3)+
-    '<div style="flex:1;display:flex;align-items:center;"><div style="height:2px;width:100%;background:rgba(0,0,0,0.06);"></div></div>'+
-    '<div style="text-align:center;"><div style="width:32px;height:32px;border-radius:50%;border:2px solid rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:rgba(26,26,46,0.25);">4</div><div style="font-size:7px;margin-top:2px;color:rgba(26,26,46,0.30);">Eccellenza</div></div>';
 
-  var azObj   = p.azioni_completate || {};
-  var azFatte = Object.keys(azObj).filter(function(k){return azObj[k];}).length;
-
+  // ── RENDER ──────────────────────────────────────────────────────────────────
   container.innerHTML =
-        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">' +
-          '<div>' +
-            '<div style="font-size:26px;font-weight:700;color:#1a1a2e;">Buongiorno, '+nome+'</div>' +
-            '<div style="font-size:12px;color:rgba(26,26,46,0.50);">'+azienda+' — '+settore+'</div>' +
-          '</div>' +
-          '<div style="display:flex;align-items:center;gap:16px;">' +
-            '<div style="text-align:right;"><div style="font-size:9px;text-transform:uppercase;letter-spacing:0.5px;color:rgba(26,26,46,0.30);">Il tuo score</div></div>' +
-            '<div style="width:88px;height:88px;border-radius:50%;border:3px solid '+scoreBorder+';display:flex;align-items:center;justify-content:center;background:'+scoreBg+';">' +
-              '<div style="font-size:36px;font-weight:700;color:#1a1a2e;">'+s+'</div>' +
-            '</div>' +
-          '</div>' +
-        '</div>' +
-        '<div style="background:rgba(255,107,43,0.05);border:1px solid rgba(255,107,43,0.15);border-left:4px solid #FF6B2B;border-radius:0 16px 16px 0;padding:18px 20px;margin-bottom:20px;">' +
-          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">' +
-            '<div style="font-size:16px;font-weight:600;color:#1a1a2e;">La tua azione di questa settimana</div>' +
-            '<div style="padding:4px 12px;border-radius:20px;font-size:10px;font-weight:500;background:rgba(255,107,43,0.08);color:#FF6B2B;">'+labelMin+'</div>' +
-          '</div>' +
-          '<div style="font-size:14px;line-height:1.6;margin-bottom:14px;color:#1a1a2e;">'+stepDesc+' <span style="font-weight:600;">'+stepObj+'</span></div>' +
-          '<div style="display:flex;gap:8px;align-items:center;">' +
-            '<button onclick="completaAzioneSettimanale()" style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:9px 24px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;">Ho fatto</button>' +
-            '<button onclick="saltaAzioneSettimanale()" style="background:rgba(255,255,255,0.45);border:1px solid rgba(0,0,0,0.06);color:rgba(26,26,46,0.4);border-radius:10px;padding:9px 24px;font-size:12px;cursor:pointer;font-family:inherit;">Non applicabile</button>' +
-            '<div style="flex:1;"></div>' +
-            '<div style="display:flex;align-items:center;gap:8px;background:rgba(0,130,95,0.06);border:1px solid rgba(0,130,95,0.15);border-radius:12px;padding:8px 16px;">' +
-              '<div style="font-size:10px;color:rgba(0,130,95,0.70);">Impatto stimato</div>' +
-              '<div style="font-size:20px;font-weight:700;color:rgba(0,130,95,0.85);">+'+impattoFmt+'</div>' +
-              '<div style="font-size:10px;color:rgba(0,130,95,0.70);">/mese</div>' +
-            '</div>' +
-          '</div>' +
-        '</div>' +
-        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">' +
-          '<div style="background:rgba(255,255,255,0.50);border:1px solid rgba(255,255,255,0.65);border-radius:14px;padding:16px 18px;">' +
-            '<div style="font-size:14px;font-weight:600;color:#1a1a2e;margin-bottom:14px;">Il tuo profilo commerciale</div>' +
-            '<div style="display:flex;flex-wrap:wrap;gap:6px;">'+dimsHtml+'</div>' +
-          '</div>' +
-          '<div>' +
-            '<div style="background:rgba(61,90,254,0.04);border:1px solid rgba(61,90,254,0.12);border-radius:14px;padding:16px 18px;margin-bottom:12px;">' +
-              '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">' +
-                '<div style="font-size:14px;font-weight:600;color:#1a1a2e;">Leva dice</div>' +
-                '<div style="padding:3px 10px;border-radius:20px;font-size:9px;background:rgba(61,90,254,0.08);color:#3D5AFE;">AI</div>' +
-              '</div>' +
-              '<div style="font-size:12px;line-height:1.55;color:rgba(26,26,46,0.60);">'+analisi.testo+' <span style="font-weight:500;color:#1a1a2e;">'+analisi.consiglio+'</span></div>' +
-            '</div>' +
-            '<div style="background:rgba(255,255,255,0.50);border:1px solid rgba(255,255,255,0.65);border-radius:14px;padding:16px 18px;margin-bottom:12px;">' +
-              '<div style="font-size:14px;font-weight:600;color:#1a1a2e;margin-bottom:10px;">Il tuo percorso</div>' +
-              '<div style="display:flex;gap:10px;margin-bottom:12px;">'+stepsHtml+'</div>' +
-              '<div style="display:flex;justify-content:space-between;font-size:10px;">' +
-                '<span style="color:rgba(26,26,46,0.50);">'+azFatte+'/5 moduli completati</span>' +
-                '<span style="font-size:12px;font-weight:600;color:rgba(0,130,95,0.85);">+'+impattoFmt+'/mese</span>' +
-              '</div>' +
-            '</div>' +
-            (window._userPlan === 'guided_base' || window._userPlan === 'guided_pro'
-              ? '' // Hide "Vuoi un esperto?" for guided plans — CSO already assigned
-              : '<div style="background:rgba(255,255,255,0.50);border:1px solid rgba(255,255,255,0.65);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:12px;">' +
-                '<div style="width:38px;height:38px;border-radius:50%;background:rgba(61,90,254,0.06);border:1px solid rgba(61,90,254,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
-                  '<svg width="16" height="16" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="7" r="3.5" stroke="#3D5AFE" stroke-width="1.3" fill="none"/><path d="M3 16.5c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="#3D5AFE" stroke-width="1.3" fill="none"/></svg>' +
-                '</div>' +
-                '<div style="flex:1;">' +
-                  '<div style="font-size:14px;font-weight:600;color:#1a1a2e;">Vuoi un esperto?</div>' +
-                  '<div style="font-size:10px;color:rgba(26,26,46,0.50);">€120/sessione — nessun impegno</div>' +
-                '</div>' +
-                '<button onclick="apriPrenotazioneCall()" style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:7px 16px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;">Prenota</button>' +
-              '</div>'
-            ) +
-          '</div>' +
-        '</div>' +
-        // "Il tuo CSO" card — visible only for guided_base and guided_pro
-        ((window._userPlan === 'guided_base' || window._userPlan === 'guided_pro') ? (function() {
-          var p2 = window._pmiProspect || {};
-          var csoNome = window._pmiCSONome || '';
-          var isPro = window._userPlan === 'guided_pro';
-          var planCol = isPro ? '#FF6B2B' : '#3D5AFE';
-          var planName = isPro ? 'Guided Pro' : 'Guided Base';
-          return '<div style="margin-top:14px;background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-left:4px solid ' + planCol + ';border-radius:14px;padding:18px 20px;display:flex;align-items:center;gap:16px;">' +
-            '<div style="width:44px;height:44px;border-radius:50%;background:rgba(61,90,254,0.07);border:1.5px solid ' + planCol + ';display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
-              '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="8" r="4" stroke="' + planCol + '" stroke-width="1.4" fill="none"/><path d="M3 19c0-3.9 3.1-7 7-7s7 3.1 7 7" stroke="' + planCol + '" stroke-width="1.4" fill="none"/></svg>' +
-            '</div>' +
-            '<div style="flex:1;">' +
-              '<div style="font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:' + planCol + ';margin-bottom:3px;">Il tuo CSO — Piano ' + planName + '</div>' +
-              '<div id="pmi-cso-nome-home" style="font-size:15px;font-weight:600;color:#1a1a2e;">' + (csoNome || 'CSO assegnato al tuo account') + '</div>' +
-              '<div style="font-size:12px;color:rgba(26,26,46,0.45);margin-top:2px;">' + (isPro ? 'Call illimitate · Piano azioni · Report mensile' : '1 call/mese · Piano azioni condiviso') + '</div>' +
-            '</div>' +
-            '<button onclick="showViewPMI(\'piano_cso\')" style="flex-shrink:0;background:' + planCol + ';color:white;border:none;border-radius:10px;padding:8px 18px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;">Vedi piano</button>' +
-          '</div>';
-        })() : '');
+    '<div style="position:relative;z-index:1;padding:28px 32px;overflow-y:auto;height:100%;box-sizing:border-box;font-family:var(--leva-font);">' +
 
-  // Async: load CSO name if needed
+      // HEADER
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;">' +
+        '<div>' +
+          '<div style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--leva-text-muted);margin-bottom:4px;">Buongiorno</div>' +
+          '<div style="font-size:24px;font-weight:500;color:var(--leva-text);line-height:1.2;margin-bottom:10px;">' + nome + (azienda ? '<span style="color:var(--leva-text-muted);font-size:16px;font-weight:400;"> — ' + azienda + '</span>' : '') + '</div>' +
+          '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">' +
+            '<span class="leva-badge leva-badge-orange">Livello ' + livelli[curLvl] + '</span>' +
+            '<span class="leva-badge leva-badge-accent">' + wkLbl + '</span>' +
+            '<div style="display:flex;align-items:center;gap:5px;">' +
+              '<div style="width:6px;height:6px;border-radius:50%;background:var(--leva-success);animation:leva-pulse 2s infinite;"></div>' +
+              '<span style="font-size:11px;color:var(--leva-success);font-weight:500;">Live</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        (settore ? '<div style="text-align:right;padding-top:4px;"><div style="font-size:11px;color:var(--leva-text-muted);">' + settore + '</div></div>' : '') +
+      '</div>' +
+
+      // 4 METRIC CARDS
+      '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;">' +
+
+        '<div class="leva-card leva-animate-slideUp" style="animation-delay:.05s;">' +
+          '<div class="leva-metric">' +
+            '<span class="leva-metric__label">Score</span>' +
+            '<span class="leva-metric__value" style="color:' + scoreCol + ';">' + s + '</span>' +
+            '<span class="leva-metric__sub">' + scoreLbl + '</span>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="leva-card leva-animate-slideUp" style="animation-delay:.10s;">' +
+          '<div class="leva-metric">' +
+            '<span class="leva-metric__label">Recupero stimato</span>' +
+            '<span class="leva-metric__value" style="color:var(--leva-success);font-size:26px;">' + impattoFmt + '</span>' +
+            '<span class="leva-metric__sub">al mese · ' + dimMin + '</span>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="leva-card leva-animate-slideUp" style="animation-delay:.15s;">' +
+          '<div class="leva-metric" style="margin-bottom:10px;">' +
+            '<span class="leva-metric__label">Azioni</span>' +
+            '<span class="leva-metric__value" style="color:var(--leva-accent);">' + azFatte + '<span style="font-size:16px;font-weight:400;color:var(--leva-text-muted);">/' + azTot + '</span></span>' +
+            '<span class="leva-metric__sub">completate</span>' +
+          '</div>' +
+          '<div class="leva-progress"><div class="leva-progress-fill leva-progress-fill--accent" style="width:' + azPct + '%;"></div></div>' +
+        '</div>' +
+
+        '<div class="leva-card leva-animate-slideUp" style="animation-delay:.20s;">' +
+          '<div class="leva-metric" style="margin-bottom:10px;">' +
+            '<span class="leva-metric__label">Settimane attive</span>' +
+            '<span class="leva-metric__value" style="color:var(--leva-orange);">' + streakCount + '</span>' +
+            '<span class="leva-metric__sub">ultimi 7 periodi</span>' +
+          '</div>' +
+          '<div style="display:flex;gap:4px;align-items:flex-end;height:32px;">' + barreHtml + '</div>' +
+        '</div>' +
+
+      '</div>' +
+
+      // LEVA DICE (full width, accent card + glow)
+      '<div class="leva-card-accent leva-animate-slideUp" style="animation-delay:.25s;margin-bottom:16px;animation:leva-glow 3s ease-in-out infinite,leva-slideUp 0.3s ease forwards;">' +
+        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">' +
+          '<div style="width:8px;height:8px;border-radius:50%;background:var(--leva-accent);animation:leva-pulse 2s infinite;flex-shrink:0;"></div>' +
+          '<span style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--leva-accent-light);">Leva dice</span>' +
+          '<span class="leva-badge leva-badge-orange" style="margin-left:4px;">' + dimMin + '</span>' +
+          '<span style="font-size:11px;color:var(--leva-text-muted);margin-left:auto;">ora</span>' +
+        '</div>' +
+        '<div style="font-size:15px;line-height:1.65;color:var(--leva-text);margin-bottom:16px;">' + stepDesc + ' <span style="color:var(--leva-text-secondary);font-size:13px;">' + stepObj + '</span></div>' +
+        '<div style="display:flex;gap:8px;align-items:center;">' +
+          '<button onclick="completaAzioneSettimanale()" class="leva-btn-primary">Fatto</button>' +
+          '<button onclick="saltaAzioneSettimanale()" class="leva-btn-secondary">Dimmi di più</button>' +
+          '<div style="flex:1;"></div>' +
+          '<span class="leva-badge leva-badge-success">+' + impattoFmt + '/mese</span>' +
+        '</div>' +
+      '</div>' +
+
+      // KPI + Gamification (2 colonne)
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">' +
+
+        '<div class="leva-card leva-animate-slideUp" style="animation-delay:.30s;">' +
+          '<div class="leva-section-label">KPI commerciali</div>' +
+          kpiHtml +
+          '<div style="padding-top:10px;border-top:0.5px solid var(--leva-border);">' +
+            '<div style="font-size:11px;color:var(--leva-text-muted);line-height:1.5;">' + analisi.testo + '</div>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="leva-card leva-animate-slideUp" style="animation-delay:.35s;">' +
+          '<div class="leva-section-label">Progressione</div>' +
+          '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">' +
+            '<span style="font-size:13px;font-weight:500;color:var(--leva-text);">Livello ' + livelli[curLvl] + '</span>' +
+            '<span style="font-size:11px;color:var(--leva-orange);">→ ' + livelli[nxtLvl] + '</span>' +
+          '</div>' +
+          '<div class="leva-progress" style="margin-bottom:16px;"><div class="leva-progress-fill leva-progress-fill--orange" style="width:' + lvlProgress + '%;"></div></div>' +
+          gkHtml +
+        '</div>' +
+
+      '</div>' +
+
+      // POSIZIONAMENTO (8 dimensioni)
+      '<div class="leva-card leva-animate-slideUp" style="animation-delay:.40s;margin-bottom:16px;">' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">' +
+          '<div class="leva-section-label" style="margin-bottom:0;">Profilo commerciale</div>' +
+          '<div style="display:flex;align-items:center;gap:5px;">' +
+            '<div style="width:12px;height:1px;background:rgba(255,255,255,0.18);"></div>' +
+            '<span style="font-size:10px;color:var(--leva-text-hint);">media settore</span>' +
+          '</div>' +
+        '</div>' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0 32px;">' + posDimsHtml + '</div>' +
+      '</div>' +
+
+      // FOOTER
+      csoHtml +
+      '<div style="margin-top:20px;padding:16px 0;border-top:0.5px solid var(--leva-border);display:flex;justify-content:space-between;align-items:center;">' +
+        '<span style="font-size:11px;color:var(--leva-text-hint);">Leva Intelligence · dati aggiornati in tempo reale</span>' +
+        '<span style="font-size:11px;color:var(--leva-text-hint);">' + s + '/100 · ' + scoreLbl + '</span>' +
+      '</div>' +
+
+    '</div>';
+
+  // Async: carica nome CSO se mancante
   if ((window._userPlan === 'guided_base' || window._userPlan === 'guided_pro') && !window._pmiCSONome) {
     (async function() {
       var p2 = window._pmiProspect || {};
