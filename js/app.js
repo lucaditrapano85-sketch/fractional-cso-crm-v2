@@ -10325,12 +10325,12 @@ function renderSidebarPMI() {
   var sidebar = document.getElementById('pmi-sidebar');
   if (!sidebar) return;
 
-  // ── Deep Space sidebar: 64px, solo icone ─────────────────────────────────
+  // ── Deep Space sidebar: 80px, solo icone ─────────────────────────────────
   sidebar.style.cssText = [
     'background:var(--leva-bg-sidebar,#050508)',
-    'width:64px','min-width:64px','max-width:64px','height:100vh',
-    'padding:12px 0','display:flex','flex-direction:column',
-    'align-items:center','gap:2px','overflow:hidden','flex-shrink:0',
+    'width:80px','min-width:80px','max-width:80px','height:100vh',
+    'padding:20px 0','display:flex','flex-direction:column',
+    'align-items:center','gap:8px','overflow:hidden','flex-shrink:0',
     'border-right:0.5px solid rgba(255,255,255,0.05)',
     'position:relative','z-index:2'
   ].join(';');
@@ -10338,7 +10338,7 @@ function renderSidebarPMI() {
   var pmiApp = document.getElementById('app-pmi');
   if (pmiApp) {
     pmiApp.style.display = 'grid';
-    pmiApp.style.gridTemplateColumns = '64px 1fr';
+    pmiApp.style.gridTemplateColumns = '80px 1fr';
     pmiApp.style.height = '100vh';
     pmiApp.style.overflow = 'hidden';
     pmiApp.style.position = 'relative';
@@ -10350,32 +10350,32 @@ function renderSidebarPMI() {
 
   var navItems = [
     { id:'home',   title:'Home',
-      svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>' },
+      svg:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>' },
     { id:'azioni', title:'Azioni',
-      svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' },
+      svg:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' },
     { id:'score',  title:'Score',
-      svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>' },
+      svg:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>' },
     { id:'trend',  title:'Trend',
-      svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>' },
+      svg:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>' },
   ];
 
   if (_isBase) navItems.push({ id:'piano_cso', title:'Piano CSO',
-    svg:'<svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="3" width="9" height="1.5" rx=".75" fill="currentColor" stroke="none"/><rect x="2" y="7" width="7" height="1.5" rx=".75" fill="currentColor" stroke="none"/><rect x="2" y="11" width="5" height="1.5" rx=".75" fill="currentColor" stroke="none"/><circle cx="12" cy="11" r="2.5"/></svg>' });
+    svg:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="4" y1="6" x2="16" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="11" y2="18"/><circle cx="20" cy="18" r="3"/></svg>' });
   if (_isPro) {
     navItems.push({ id:'report',      title:'Report',
-      svg:'<svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2.5" y="1.5" width="11" height="13" rx="2"/><rect x="5" y="5" width="6" height="1.2" rx=".6" fill="currentColor" stroke="none" opacity=".7"/><rect x="5" y="8" width="4" height="1.2" rx=".6" fill="currentColor" stroke="none" opacity=".5"/></svg>' });
+      svg:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="13" y2="12"/></svg>' });
     navItems.push({ id:'simulazioni', title:'Simulaz.',
-      svg:'<svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14l4-5 3 2 5-8"/></svg>' });
+      svg:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20l5-6 4 3 6-10"/></svg>' });
     navItems.push({ id:'benchmark',   title:'Benchmark',
-      svg:'<svg width="18" height="18" viewBox="0 0 16 16" fill="none"><rect x="2" y="10" width="3" height="4" rx="1" fill="currentColor" opacity=".5"/><rect x="6.5" y="7" width="3" height="7" rx="1" fill="currentColor" opacity=".7"/><rect x="11" y="4" width="3" height="10" rx="1" fill="currentColor"/></svg>' });
+      svg:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="14" width="4" height="6" rx="1"/><rect x="10" y="10" width="4" height="10" rx="1"/><rect x="17" y="6" width="4" height="14" rx="1"/></svg>' });
   }
-  navItems.push({ id:'piano',   title:'Piano',
-    svg:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M12 2l2 5.5 5.5.8-4 3.9 1 5.5L12 15l-4.5 2.7 1-5.5-4-3.9 5.5-.8z"/></svg>' });
+  navItems.push({ id:'piano', title:'Piano',
+    svg:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M12 2l2 5.5 5.5.8-4 3.9 1 5.5L12 15l-4.5 2.7 1-5.5-4-3.9 5.5-.8z"/></svg>' });
 
   // Logo Deep Space: barra viola
   var logoHtml =
-    '<div style="margin-bottom:12px;padding:10px 0 6px;display:flex;justify-content:center;">' +
-      '<svg width="26" height="26" viewBox="8 4 44 44" fill="none">' +
+    '<div style="margin-bottom:8px;padding:8px 0 4px;display:flex;justify-content:center;">' +
+      '<svg width="34" height="34" viewBox="8 4 44 44" fill="none">' +
         '<rect x="8" y="34" width="44" height="4.5" rx="2.25" fill="#7B61FF"/>' +
         '<rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="white"/>' +
         '<circle cx="29.75" cy="36.25" r="6" fill="white"/>' +
@@ -10385,27 +10385,31 @@ function renderSidebarPMI() {
     '</div>';
 
   // Divider
-  var divHtml = '<div style="width:32px;height:0.5px;background:rgba(255,255,255,0.05);margin:6px 0;"></div>';
+  var divHtml = '<div style="width:40px;height:0.5px;background:rgba(255,255,255,0.05);margin:4px 0;"></div>';
 
   var initials = ((window._userProfileData && window._userProfileData.company_name) || window._currentUserEmail || 'U')[0].toUpperCase();
+
+  // Stile icona nav: 52x52, border-radius 14px
+  var iconStyle = 'width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.15s;';
 
   sidebar.innerHTML =
     logoHtml +
     navItems.map(function(item) {
       var isActive = item.id === _pmiCurrentView;
       return '<div class="leva-sidebar-icon pmi-nav-item' + (isActive ? ' active' : '') +
-        '" data-view="' + item.id + '" onclick="showViewPMI(\'' + item.id + '\')" title="' + item.title + '">' +
+        '" data-view="' + item.id + '" onclick="showViewPMI(\'' + item.id + '\')" title="' + item.title +
+        '" style="' + iconStyle + (isActive ? 'background:rgba(123,97,255,0.15);' : '') + '">' +
         item.svg +
       '</div>';
     }).join('') +
     '<div style="flex:1;"></div>' +
     divHtml +
-    '<div class="leva-sidebar-icon" title="Chiedi a Leva" style="animation:leva-glow 3s infinite;margin-bottom:4px;">' +
-      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF6B2B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' +
+    '<div class="leva-sidebar-icon" title="Chiedi a Leva" style="' + iconStyle + 'background:rgba(255,107,43,0.1);border:0.5px solid rgba(255,107,43,0.25);animation:leva-glow-orange 3s infinite;margin-bottom:4px;">' +
+      '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF6B2B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' +
         '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>' +
       '</svg>' +
     '</div>' +
-    '<div onclick="showViewPMI(\'profilo\')" title="Profilo" style="width:36px;height:36px;border-radius:50%;background:#FF6B2B;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-bottom:10px;font-size:13px;font-weight:600;color:white;">' +
+    '<div onclick="showViewPMI(\'profilo\')" title="Profilo" style="width:42px;height:42px;border-radius:50%;background:#FF6B2B;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-bottom:12px;font-size:15px;font-weight:600;color:white;">' +
       initials +
     '</div>';
 }
@@ -10445,7 +10449,7 @@ function renderViewPMI(view) {
   // Aggiorna il container principale con il tema Deep Space
   if (appPmi) {
     appPmi.style.display = 'grid';
-    appPmi.style.gridTemplateColumns = '64px 1fr';
+    appPmi.style.gridTemplateColumns = '80px 1fr';
     appPmi.style.height = '100vh';
     appPmi.style.overflow = 'hidden';
     appPmi.style.position = 'relative';
@@ -12999,9 +13003,10 @@ function generaAnalisiAI(prospect) {
 
 // ── FASE 5 — Home ─────────────────────────────────────────────────────────────
 function renderPMIHome(p) {
-  // Fix 3: nome fallback con email parsing
+  // Fix 3: nome fallback con email parsing (rimuove numeri finali dall'username)
   const _emailRaw = window._currentUserEmail || '';
-  const _emailName = _emailRaw ? _emailRaw.split('@')[0].replace(/[._-]/g, ' ') : '';
+  const _emailUser = _emailRaw ? _emailRaw.split('@')[0] : '';
+  const _emailName = _emailUser ? _emailUser.replace(/\d+$/, '').replace(/[._-]/g, ' ').trim() : '';
   const nome = p.nome_azienda
     || window._userProfileData?.company_name
     || window._currentProspect?.nome_azienda

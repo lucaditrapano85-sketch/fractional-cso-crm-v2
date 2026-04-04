@@ -278,6 +278,11 @@
   }
 }
 
+@keyframes leva-glow-orange {
+  0%, 100% { box-shadow: 0 0 8px rgba(255,107,43,0.2); }
+  50%       { box-shadow: 0 0 24px rgba(255,107,43,0.45); }
+}
+
 @keyframes leva-slideUp {
   from {
     opacity: 0;
