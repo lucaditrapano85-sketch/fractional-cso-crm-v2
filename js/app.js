@@ -10431,11 +10431,9 @@ function renderViewPMI(view) {
 
   // Ferma le onde quando si lascia la home
   if (view !== 'home') {
-    if (window._levaWavesInstance) {
-      window._levaWavesInstance.stop();
-      window._levaWavesInstance = null;
-    }
-    var wc = document.getElementById('leva-waves-bg');
+    if (window._wavesInstance) { window._wavesInstance.stop(); window._wavesInstance = null; }
+    if (window._levaWavesInstance) { window._levaWavesInstance.stop(); window._levaWavesInstance = null; }
+    var wc = document.getElementById('leva-waves-home') || document.getElementById('leva-waves-bg');
     if (wc) wc.remove();
   }
 
@@ -10460,7 +10458,7 @@ function renderViewPMI(view) {
   renderSidebarPMI();
 
   if (view === 'home') {
-    renderPMIHome(main);
+    renderPMIHome(window._pmiProspect || {});
   } else {
     switch (view) {
       case 'score':      renderPMIScore(main);      break;
@@ -12997,306 +12995,155 @@ function generaAnalisiAI(prospect) {
 }
 
 // ── FASE 5 — Home ─────────────────────────────────────────────────────────────
-function renderPMIHome(container) {
-  var p = window._pmiProspect;
-  if (!p || !p.dims) { container.innerHTML = ''; return; }
+function renderPMIHome(p) {
+  const nome = p.nome_azienda || window._userProfileData?.company_name || 'Benvenuto';
+  const score = p.score_globale || 0;
+  const dims = p.dims || {};
+  const STD = ['Vendite','Marketing','Clienti','Pipeline','Pricing','Processi','Team','Digitale'];
 
-  // ── Dati base ───────────────────────────────────────────────────────────────
-  var up  = window._userProfileData || {};
-  var pro = window._currentProfile  || {};
-  var nome       = pro.nome || (pro.nome_completo || '').split(' ')[0] || up.nome || 'Benvenuto';
-  var azienda    = up.company_name || pro.azienda || '';
-  var settoreRaw = up.sector || p.settore || '';
-  var settore    = settoreRaw ? settoreRaw.replace(/_/g,' ').replace(/^\w/,function(c){return c.toUpperCase();}) : '';
-
-  var _STD_DIMS = ['Vendite','Marketing','Clienti','Pipeline','Pricing','Processi','Team','Digitale'];
-
-  // Score (0-100)
-  var s = p.score_globale || calcScore(p) || 0;
-  if (!s && p.dims) {
-    var _dv = _STD_DIMS.map(function(k){ return p.dims[k]||0; }).filter(function(v){ return v>0; });
-    if (_dv.length) s = Math.round(_dv.reduce(function(a,b){return a+b;},0)/_dv.length*20);
-  }
-  var scoreCol = s < 40 ? 'var(--leva-danger)' : s < 60 ? 'var(--leva-warning)' : 'var(--leva-success)';
-  var scoreLbl = s < 40 ? 'Critico' : s < 60 ? 'In sviluppo' : 'Buona base';
-
-  // Dimensione peggiore
-  var dimMin   = _STD_DIMS.reduce(function(min,k){ return (p.dims[k]||0)<(p.dims[min]||0)?k:min; }, _STD_DIMS[0]);
-  var scoreMin = p.dims[dimMin] || 1;
-  var stepActual = Math.max(1, Math.min(5, Math.round(scoreMin)));
-  var azioneData = (AZIONI_SETTIMANALI[dimMin] && AZIONI_SETTIMANALI[dimMin][stepActual]) || null;
-  var stepDesc   = azioneData ? azioneData.t : 'Concentrati sulla dimensione più debole questa settimana.';
-  var stepObj    = azioneData ? azioneData.o : 'Obiettivo: completare almeno 1 azione entro venerdì.';
-  var analisi    = generaAnalisiAI({dims: p.dims, scoreGlobale: s});
-
-  // Impatto economico
-  var fatturato = p.fatturato || 1000000;
-  var gapStep   = Math.min(2, 5 - scoreMin);
-  var coeffMap  = {'Vendite':0.04,'Pipeline':0.035,'Team':0.025,'Processi':0.03,'Pricing':0.045,'Marketing':0.02,'Digitale':0.02,'Clienti':0.03};
-  var coeff         = coeffMap[dimMin] || 0.03;
-  var impattoMensile = Math.round(fatturato * gapStep * coeff / 12);
-  var impattoFmt    = '€' + impattoMensile.toLocaleString('it-IT');
-
-  // Azioni completate
-  var azObj   = p.azioni_completate || {};
-  var azFatte = Object.keys(azObj).filter(function(k){return azObj[k];}).length;
-  var azTot   = Math.max(5, Object.keys(azObj).length);
-  var azPct   = Math.round((azFatte / azTot) * 100);
-
-  // Streak — ultimi 7 periodi con score
-  var scoreHistory = (p.score_history || []).slice(-7);
-  var streakCount  = scoreHistory.filter(function(x){return x && (x.score_globale||0) > 0;}).length;
-  var barreHtml = '';
-  for (var bi = 0; bi < 7; bi++) {
-    var bEntry = scoreHistory[bi] || null;
-    var bVal   = bEntry ? (bEntry.score_globale || 0) : 0;
-    var bH     = bVal > 0 ? Math.max(6, Math.round((bVal/100)*28)) : 3;
-    var bCol   = bVal > 60 ? 'var(--leva-success)' : bVal > 40 ? 'var(--leva-warning)' : bVal > 0 ? 'var(--leva-orange)' : 'rgba(255,255,255,0.06)';
-    barreHtml += '<div style="width:7px;height:'+bH+'px;background:'+bCol+';border-radius:2px;align-self:flex-end;flex-shrink:0;"></div>';
-  }
+  // Colore score
+  const scoreColor = score < 40 ? '#F43F5E' : score < 60 ? '#FBBF24' : '#34D399';
+  const scoreLabel = score < 30 ? 'Emergenza' : score < 50 ? 'Intervento urgente' : score < 70 ? 'In crescita' : 'Eccellenza';
 
   // Livello gamification
-  var livelli    = ['','Base','Struttura','Metodo','Eccellenza'];
-  var curLvl     = Math.max(1, Math.min(4, Math.round(scoreMin)));
-  var nxtLvl     = Math.min(curLvl + 1, 4);
-  var lvlProgress = Math.round(Math.max(0, Math.min(1, (scoreMin - (curLvl - 1)))) * 100);
+  const livello = score < 25 ? 'Emergenza' : score < 50 ? 'Sopravvivenza' : score < 75 ? 'Crescita' : 'Eccellenza';
+  const prossimoLivello = score < 25 ? 'Sopravvivenza' : score < 50 ? 'Crescita' : score < 75 ? 'Eccellenza' : 'Master';
 
-  // ── Canvas onde Deep Space ──────────────────────────────────────────────────
-  var appPmi = document.getElementById('app-pmi');
-  if (appPmi && !document.getElementById('leva-waves-bg')) {
-    var wCanvas = document.createElement('canvas');
-    wCanvas.id = 'leva-waves-bg';
-    wCanvas.className = 'leva-waves-canvas';
-    wCanvas.style.cssText = 'position:absolute;top:0;left:64px;right:0;bottom:0;width:calc(100% - 64px);height:100%;pointer-events:none;z-index:0;';
-    appPmi.insertBefore(wCanvas, appPmi.firstChild);
-  }
-  if (window._levaWavesInstance) { window._levaWavesInstance.stop(); window._levaWavesInstance = null; }
-  if (typeof initLevaWaves === 'function') { window._levaWavesInstance = initLevaWaves('leva-waves-bg'); }
+  // Azione settimanale
+  const azione = window._azioneSettimanale || 'Chiama i tuoi 5 clienti migliori e chiedi come puoi aiutarli questa settimana.';
+  const azioneDim = window._azioneDimensione || 'Vendite';
 
-  // ── KPI: 3 dimensioni chiave ────────────────────────────────────────────────
-  var kpiDims = ['Vendite', 'Pipeline', 'Clienti'];
-  var kpiHtml = kpiDims.map(function(dk) {
-    var dv  = p.dims[dk] || 0;
-    var dp  = Math.round((dv / 5) * 100);
-    var dc  = dv < 2 ? 'var(--leva-danger)' : dv < 4 ? 'var(--leva-warning)' : 'var(--leva-success)';
-    var dfx = dv < 2 ? 'leva-progress-fill--danger' : dv < 4 ? 'leva-progress-fill--warning' : 'leva-progress-fill--success';
-    return '<div style="margin-bottom:14px;">' +
-      '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">' +
-        '<span style="font-size:12px;color:var(--leva-text-secondary);">' + dk + '</span>' +
-        '<span style="font-size:14px;font-weight:600;color:' + dc + ';">' + dv + '/5</span>' +
-      '</div>' +
-      '<div class="leva-progress"><div class="leva-progress-fill ' + dfx + '" style="width:' + dp + '%;"></div></div>' +
-    '</div>';
-  }).join('');
+  // Media settore (placeholder, verrà da benchmark ISTAT)
+  const mediaSett = 60;
 
-  // ── Gamification: checkbox prime 4 dimensioni ───────────────────────────────
-  var gkHtml = '';
-  _STD_DIMS.slice(0, 4).forEach(function(gk) {
-    var gv   = p.dims[gk] || 0;
-    var done = gv >= 3;
-    var dot  = done
-      ? '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" fill="rgba(52,211,153,0.15)" stroke="var(--leva-success)" stroke-width="1.2"/><path d="M4 7l2 2 4-4" stroke="var(--leva-success)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-      : '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="rgba(255,255,255,0.12)" stroke-width="1.2"/></svg>';
-    gkHtml += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">' +
-      dot + '<span style="font-size:12px;color:' + (done ? 'var(--leva-text-secondary)' : 'rgba(255,255,255,0.3)') + ';">' + gk + '</span>' +
-    '</div>';
-  });
+  // Sfondo deep space
+  document.getElementById('app-pmi').style.background = '#06080F';
 
-  // ── Posizionamento: 8 dimensioni con barra e linea media ────────────────────
-  var posDimsHtml = _STD_DIMS.map(function(pk) {
-    var pv  = p.dims[pk] || 0;
-    var pp  = Math.round((pv / 5) * 100);
-    var pc  = pv < 2 ? 'var(--leva-danger)' : pv < 4 ? 'var(--leva-warning)' : 'var(--leva-success)';
-    var pfx = pv < 2 ? 'leva-progress-fill--danger' : pv < 4 ? 'leva-progress-fill--warning' : 'leva-progress-fill--success';
-    return '<div style="margin-bottom:10px;" onclick="navigaAzioni(\'' + pk + '\')" style="cursor:pointer;">' +
-      '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;">' +
-        '<span style="font-size:11px;color:var(--leva-text-secondary);cursor:pointer;">' + pk + '</span>' +
-        '<span style="font-size:12px;font-weight:600;color:' + pc + ';">' + pv + '</span>' +
-      '</div>' +
-      '<div class="leva-progress" style="position:relative;">' +
-        '<div class="leva-progress-fill ' + pfx + '" style="width:' + pp + '%;"></div>' +
-        '<div style="position:absolute;top:-2px;left:60%;width:1px;height:8px;background:rgba(255,255,255,0.18);pointer-events:none;"></div>' +
-      '</div>' +
-    '</div>';
-  }).join('');
+  const mainEl = document.querySelector('#app-pmi .pmi-main') || document.querySelector('#app-pmi > div:last-child');
+  mainEl.style.background = 'transparent';
+  mainEl.style.position = 'relative';
+  mainEl.style.overflow = 'hidden';
 
-  // ── Badge settimana ─────────────────────────────────────────────────────────
-  var oggi  = new Date();
-  var wk    = Math.ceil(oggi.getDate() / 7);
-  var mmm   = ['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'][oggi.getMonth()];
-  var wkLbl = 'Sett. ' + wk + ' · ' + oggi.getDate() + ' ' + mmm;
+  mainEl.innerHTML = `
+    <canvas id="leva-waves-home" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+    <div style="position:relative;z-index:1;padding:24px 28px;">
 
-  // ── Card CSO / esperto ──────────────────────────────────────────────────────
-  var csoHtml = '';
-  if (window._userPlan === 'guided_base' || window._userPlan === 'guided_pro') {
-    var csoNome  = window._pmiCSONome || '';
-    var isPro    = window._userPlan === 'guided_pro';
-    var planCol  = isPro ? 'var(--leva-orange)' : 'var(--leva-accent)';
-    var planName = isPro ? 'Guided Pro' : 'Guided Base';
-    csoHtml =
-      '<div class="leva-card" style="margin-top:14px;border-left:2px solid ' + planCol + ';">' +
-        '<div style="display:flex;align-items:center;gap:12px;">' +
-          '<div style="width:40px;height:40px;border-radius:50%;background:var(--leva-accent-bg);border:1.5px solid ' + planCol + ';display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
-            '<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="7" r="3.5" stroke="' + planCol + '" stroke-width="1.3"/><path d="M3 17c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="' + planCol + '" stroke-width="1.3"/></svg>' +
-          '</div>' +
-          '<div style="flex:1;">' +
-            '<div style="font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:' + planCol + ';margin-bottom:2px;">Il tuo CSO — ' + planName + '</div>' +
-            '<div id="pmi-cso-nome-home" style="font-size:14px;font-weight:500;color:var(--leva-text);">' + (csoNome || 'CSO assegnato al tuo account') + '</div>' +
-            '<div style="font-size:11px;color:var(--leva-text-muted);margin-top:2px;">' + (isPro ? 'Call illimitate · Piano azioni · Report mensile' : '1 call/mese · Piano azioni condiviso') + '</div>' +
-          '</div>' +
-          '<button onclick="showViewPMI(\'piano_cso\')" class="leva-btn-primary" style="flex-shrink:0;">Vedi piano</button>' +
-        '</div>' +
-      '</div>';
-  } else {
-    csoHtml =
-      '<div class="leva-card" style="margin-top:14px;">' +
-        '<div style="display:flex;align-items:center;gap:12px;">' +
-          '<div style="width:40px;height:40px;border-radius:50%;background:var(--leva-accent-bg);border:0.5px solid var(--leva-accent-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
-            '<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="7" r="3.5" stroke="var(--leva-accent)" stroke-width="1.3"/><path d="M3 17c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="var(--leva-accent)" stroke-width="1.3"/></svg>' +
-          '</div>' +
-          '<div style="flex:1;">' +
-            '<div style="font-size:14px;font-weight:500;color:var(--leva-text);">Vuoi un esperto?</div>' +
-            '<div style="font-size:11px;color:var(--leva-text-muted);">€120/sessione — nessun impegno</div>' +
-          '</div>' +
-          '<button onclick="apriPrenotazioneCall()" class="leva-btn-primary">Prenota</button>' +
-        '</div>' +
-      '</div>';
-  }
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <div>
+          <div style="color:rgba(255,255,255,0.3);font-size:12px;letter-spacing:0.05em;text-transform:uppercase;">Buongiorno</div>
+          <div style="color:white;font-size:24px;font-weight:500;margin-top:2px;">${nome}</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <div style="height:8px;width:8px;border-radius:50%;background:#34D399;animation:leva-pulse 2s infinite;"></div>
+          <span style="color:rgba(255,255,255,0.35);font-size:12px;">Live</span>
+          <div style="padding:5px 12px;border-radius:8px;border:0.5px solid rgba(255,107,43,0.3);color:#FF6B2B;font-size:12px;">${livello}</div>
+          <div style="padding:5px 12px;border-radius:8px;border:0.5px solid rgba(123,97,255,0.3);color:#A78BFA;font-size:12px;">Sett. 1</div>
+        </div>
+      </div>
 
-  // ── RENDER ──────────────────────────────────────────────────────────────────
-  container.innerHTML =
-    '<div style="position:relative;z-index:1;padding:28px 32px;overflow-y:auto;height:100%;box-sizing:border-box;font-family:var(--leva-font);">' +
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:20px;">
+        <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.05);border-radius:12px;padding:16px;">
+          <div style="color:rgba(255,255,255,0.3);font-size:11px;margin-bottom:8px;">SCORE</div>
+          <div style="color:${scoreColor};font-size:32px;font-weight:500;">${score}</div>
+          <div style="color:rgba(255,255,255,0.2);font-size:11px;margin-top:4px;">su 100</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.05);border-radius:12px;padding:16px;">
+          <div style="color:rgba(255,255,255,0.3);font-size:11px;margin-bottom:8px;">RECUPERO STIMATO</div>
+          <div style="color:#34D399;font-size:32px;font-weight:500;">€2.000</div>
+          <div style="color:rgba(255,255,255,0.2);font-size:11px;margin-top:4px;">questo mese</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.05);border-radius:12px;padding:16px;">
+          <div style="color:rgba(255,255,255,0.3);font-size:11px;margin-bottom:8px;">AZIONI</div>
+          <div style="color:#7B61FF;font-size:32px;font-weight:500;">0<span style="font-size:16px;color:rgba(255,255,255,0.15);">/12</span></div>
+          <div style="height:3px;background:rgba(255,255,255,0.04);border-radius:2px;margin-top:8px;"><div style="height:100%;width:0%;background:#7B61FF;border-radius:2px;"></div></div>
+        </div>
+        <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.05);border-radius:12px;padding:16px;">
+          <div style="color:rgba(255,255,255,0.3);font-size:11px;margin-bottom:8px;">STREAK</div>
+          <div style="color:#FF6B2B;font-size:32px;font-weight:500;">0<span style="font-size:14px;color:rgba(255,255,255,0.15);"> sett</span></div>
+          <div style="display:flex;gap:3px;margin-top:8px;">
+            ${[1,2,3,4,5].map(()=>'<div style="width:16px;height:4px;border-radius:2px;background:rgba(255,255,255,0.04);"></div>').join('')}
+          </div>
+        </div>
+      </div>
 
-      // HEADER
-      '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;">' +
-        '<div>' +
-          '<div style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--leva-text-muted);margin-bottom:4px;">Buongiorno</div>' +
-          '<div style="font-size:24px;font-weight:500;color:var(--leva-text);line-height:1.2;margin-bottom:10px;">' + nome + (azienda ? '<span style="color:var(--leva-text-muted);font-size:16px;font-weight:400;"> — ' + azienda + '</span>' : '') + '</div>' +
-          '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">' +
-            '<span class="leva-badge leva-badge-orange">Livello ' + livelli[curLvl] + '</span>' +
-            '<span class="leva-badge leva-badge-accent">' + wkLbl + '</span>' +
-            '<div style="display:flex;align-items:center;gap:5px;">' +
-              '<div style="width:6px;height:6px;border-radius:50%;background:var(--leva-success);animation:leva-pulse 2s infinite;"></div>' +
-              '<span style="font-size:11px;color:var(--leva-success);font-weight:500;">Live</span>' +
-            '</div>' +
-          '</div>' +
-        '</div>' +
-        (settore ? '<div style="text-align:right;padding-top:4px;"><div style="font-size:11px;color:var(--leva-text-muted);">' + settore + '</div></div>' : '') +
-      '</div>' +
+      <div style="display:grid;grid-template-columns:1.2fr 0.8fr;gap:16px;margin-bottom:16px;">
+        <div>
+          <div style="background:rgba(123,97,255,0.07);border:0.5px solid rgba(123,97,255,0.18);border-radius:14px;padding:20px;margin-bottom:12px;animation:leva-glow 4s infinite;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+              <div style="width:6px;height:6px;border-radius:50%;background:#7B61FF;animation:leva-pulse 1.5s infinite;"></div>
+              <div style="color:#A78BFA;font-size:12px;font-weight:500;">Leva dice</div>
+              <div style="color:rgba(255,255,255,0.2);font-size:11px;">ora</div>
+            </div>
+            <div style="color:white;font-size:15px;line-height:1.6;">${azione}</div>
+            <div style="margin-top:14px;display:flex;gap:8px;">
+              <div style="padding:8px 16px;border-radius:8px;background:#7B61FF;color:white;font-size:13px;cursor:pointer;">Fatto</div>
+              <div style="padding:8px 16px;border-radius:8px;border:0.5px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.35);font-size:13px;cursor:pointer;">Dimmi di piu</div>
+            </div>
+          </div>
 
-      // 4 METRIC CARDS
-      '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;">' +
+          <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.05);border-radius:14px;padding:20px;">
+            <div style="color:rgba(255,255,255,0.3);font-size:12px;margin-bottom:14px;">I TUOI KPI</div>
+            ${['Vendite','Pipeline','Clienti'].map((d,i) => {
+              const val = dims[d] || 0;
+              const colors = ['#7B61FF','#FBBF24','#34D399'];
+              return `<div style="margin-bottom:${i<2?'14px':'0'};">
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                  <span style="color:rgba(255,255,255,0.4);font-size:12px;">${d}</span>
+                  <span style="color:white;font-size:13px;font-weight:500;">${val}/100</span>
+                </div>
+                <div style="height:4px;background:rgba(255,255,255,0.03);border-radius:2px;">
+                  <div style="height:100%;width:${val}%;background:${colors[i]};border-radius:2px;"></div>
+                </div>
+              </div>`;
+            }).join('')}
+          </div>
+        </div>
 
-        '<div class="leva-card leva-animate-slideUp" style="animation-delay:.05s;">' +
-          '<div class="leva-metric">' +
-            '<span class="leva-metric__label">Score</span>' +
-            '<span class="leva-metric__value" style="color:' + scoreCol + ';">' + s + '</span>' +
-            '<span class="leva-metric__sub">' + scoreLbl + '</span>' +
-          '</div>' +
-        '</div>' +
+        <div>
+          <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.05);border-radius:14px;padding:20px;margin-bottom:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+              <div style="color:rgba(255,255,255,0.3);font-size:12px;">PROSSIMO LIVELLO</div>
+              <div style="color:#FF6B2B;font-size:13px;font-weight:500;">${prossimoLivello}</div>
+            </div>
+            <div style="height:6px;background:rgba(255,255,255,0.03);border-radius:3px;margin-bottom:10px;">
+              <div style="height:100%;width:${Math.min(score/75*100,100)}%;background:#FF6B2B;border-radius:3px;"></div>
+            </div>
+          </div>
 
-        '<div class="leva-card leva-animate-slideUp" style="animation-delay:.10s;">' +
-          '<div class="leva-metric">' +
-            '<span class="leva-metric__label">Recupero stimato</span>' +
-            '<span class="leva-metric__value" style="color:var(--leva-success);font-size:26px;">' + impattoFmt + '</span>' +
-            '<span class="leva-metric__sub">al mese · ' + dimMin + '</span>' +
-          '</div>' +
-        '</div>' +
+          <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.05);border-radius:14px;padding:20px;">
+            <div style="color:rgba(255,255,255,0.3);font-size:12px;margin-bottom:12px;">POSIZIONAMENTO</div>
+            ${STD.map(d => {
+              const val = dims[d] || 0;
+              const c = val < 40 ? '#F43F5E' : val < 60 ? '#FBBF24' : '#34D399';
+              return `<div style="margin-bottom:8px;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+                  <span style="color:rgba(255,255,255,0.35);font-size:11px;">${d}</span>
+                  <span style="color:${c};font-size:11px;">${val}</span>
+                </div>
+                <div style="height:4px;background:rgba(255,255,255,0.03);border-radius:2px;position:relative;">
+                  <div style="height:100%;width:${val}%;background:${c};border-radius:2px;"></div>
+                  <div style="position:absolute;top:-1px;left:${mediaSett}%;width:1px;height:6px;background:rgba(255,255,255,0.12);"></div>
+                </div>
+              </div>`;
+            }).join('')}
+            <div style="color:rgba(255,255,255,0.1);font-size:10px;margin-top:6px;">| = media settore</div>
+          </div>
+        </div>
+      </div>
 
-        '<div class="leva-card leva-animate-slideUp" style="animation-delay:.15s;">' +
-          '<div class="leva-metric" style="margin-bottom:10px;">' +
-            '<span class="leva-metric__label">Azioni</span>' +
-            '<span class="leva-metric__value" style="color:var(--leva-accent);">' + azFatte + '<span style="font-size:16px;font-weight:400;color:var(--leva-text-muted);">/' + azTot + '</span></span>' +
-            '<span class="leva-metric__sub">completate</span>' +
-          '</div>' +
-          '<div class="leva-progress"><div class="leva-progress-fill leva-progress-fill--accent" style="width:' + azPct + '%;"></div></div>' +
-        '</div>' +
+      <div style="background:rgba(255,255,255,0.015);border:0.5px solid rgba(255,255,255,0.03);border-radius:14px;padding:16px 20px;display:flex;align-items:center;gap:12px;">
+        <div style="width:6px;height:6px;border-radius:50%;background:#7B61FF;animation:leva-pulse 2s infinite;"></div>
+        <div style="color:rgba(255,255,255,0.35);font-size:13px;flex:1;">Analizzando i tuoi dati...</div>
+        <div style="padding:6px 14px;border-radius:8px;border:0.5px solid rgba(123,97,255,0.3);color:#A78BFA;font-size:12px;cursor:pointer;">Chiedi a Leva</div>
+      </div>
 
-        '<div class="leva-card leva-animate-slideUp" style="animation-delay:.20s;">' +
-          '<div class="leva-metric" style="margin-bottom:10px;">' +
-            '<span class="leva-metric__label">Settimane attive</span>' +
-            '<span class="leva-metric__value" style="color:var(--leva-orange);">' + streakCount + '</span>' +
-            '<span class="leva-metric__sub">ultimi 7 periodi</span>' +
-          '</div>' +
-          '<div style="display:flex;gap:4px;align-items:flex-end;height:32px;">' + barreHtml + '</div>' +
-        '</div>' +
+    </div>
+  `;
 
-      '</div>' +
-
-      // LEVA DICE (full width, accent card + glow)
-      '<div class="leva-card-accent leva-animate-slideUp" style="animation-delay:.25s;margin-bottom:16px;animation:leva-glow 3s ease-in-out infinite,leva-slideUp 0.3s ease forwards;">' +
-        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">' +
-          '<div style="width:8px;height:8px;border-radius:50%;background:var(--leva-accent);animation:leva-pulse 2s infinite;flex-shrink:0;"></div>' +
-          '<span style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--leva-accent-light);">Leva dice</span>' +
-          '<span class="leva-badge leva-badge-orange" style="margin-left:4px;">' + dimMin + '</span>' +
-          '<span style="font-size:11px;color:var(--leva-text-muted);margin-left:auto;">ora</span>' +
-        '</div>' +
-        '<div style="font-size:15px;line-height:1.65;color:var(--leva-text);margin-bottom:16px;">' + stepDesc + ' <span style="color:var(--leva-text-secondary);font-size:13px;">' + stepObj + '</span></div>' +
-        '<div style="display:flex;gap:8px;align-items:center;">' +
-          '<button onclick="completaAzioneSettimanale()" class="leva-btn-primary">Fatto</button>' +
-          '<button onclick="saltaAzioneSettimanale()" class="leva-btn-secondary">Dimmi di più</button>' +
-          '<div style="flex:1;"></div>' +
-          '<span class="leva-badge leva-badge-success">+' + impattoFmt + '/mese</span>' +
-        '</div>' +
-      '</div>' +
-
-      // KPI + Gamification (2 colonne)
-      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">' +
-
-        '<div class="leva-card leva-animate-slideUp" style="animation-delay:.30s;">' +
-          '<div class="leva-section-label">KPI commerciali</div>' +
-          kpiHtml +
-          '<div style="padding-top:10px;border-top:0.5px solid var(--leva-border);">' +
-            '<div style="font-size:11px;color:var(--leva-text-muted);line-height:1.5;">' + analisi.testo + '</div>' +
-          '</div>' +
-        '</div>' +
-
-        '<div class="leva-card leva-animate-slideUp" style="animation-delay:.35s;">' +
-          '<div class="leva-section-label">Progressione</div>' +
-          '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;">' +
-            '<span style="font-size:13px;font-weight:500;color:var(--leva-text);">Livello ' + livelli[curLvl] + '</span>' +
-            '<span style="font-size:11px;color:var(--leva-orange);">→ ' + livelli[nxtLvl] + '</span>' +
-          '</div>' +
-          '<div class="leva-progress" style="margin-bottom:16px;"><div class="leva-progress-fill leva-progress-fill--orange" style="width:' + lvlProgress + '%;"></div></div>' +
-          gkHtml +
-        '</div>' +
-
-      '</div>' +
-
-      // POSIZIONAMENTO (8 dimensioni)
-      '<div class="leva-card leva-animate-slideUp" style="animation-delay:.40s;margin-bottom:16px;">' +
-        '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">' +
-          '<div class="leva-section-label" style="margin-bottom:0;">Profilo commerciale</div>' +
-          '<div style="display:flex;align-items:center;gap:5px;">' +
-            '<div style="width:12px;height:1px;background:rgba(255,255,255,0.18);"></div>' +
-            '<span style="font-size:10px;color:var(--leva-text-hint);">media settore</span>' +
-          '</div>' +
-        '</div>' +
-        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0 32px;">' + posDimsHtml + '</div>' +
-      '</div>' +
-
-      // FOOTER
-      csoHtml +
-      '<div style="margin-top:20px;padding:16px 0;border-top:0.5px solid var(--leva-border);display:flex;justify-content:space-between;align-items:center;">' +
-        '<span style="font-size:11px;color:var(--leva-text-hint);">Leva Intelligence · dati aggiornati in tempo reale</span>' +
-        '<span style="font-size:11px;color:var(--leva-text-hint);">' + s + '/100 · ' + scoreLbl + '</span>' +
-      '</div>' +
-
-    '</div>';
-
-  // Async: carica nome CSO se mancante
-  if ((window._userPlan === 'guided_base' || window._userPlan === 'guided_pro') && !window._pmiCSONome) {
-    (async function() {
-      var p2 = window._pmiProspect || {};
-      if (p2.cso_id && typeof sb !== 'undefined') {
-        var res = await sb.from('profiles').select('nome, cognome').eq('id', p2.cso_id).maybeSingle();
-        if (res && res.data) {
-          window._pmiCSONome = ((res.data.nome || '') + ' ' + (res.data.cognome || '')).trim();
-          var el = document.getElementById('pmi-cso-nome-home');
-          if (el && window._pmiCSONome) el.textContent = window._pmiCSONome;
-        }
-      }
-    })();
+  // Avvia le onde
+  if (window.initLevaWaves) {
+    if (window._wavesInstance) window._wavesInstance.stop();
+    window._wavesInstance = initLevaWaves('leva-waves-home');
   }
 }
 
