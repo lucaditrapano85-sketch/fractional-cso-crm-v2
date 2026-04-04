@@ -199,7 +199,7 @@ REGOLE:
 - azioni_immediate: 3 azioni che il titolare può fare QUESTA SETTIMANA senza investimento.
 - La diagnosi NON deve sembrare generata da un'AI. Deve sembrare scritta da un direttore commerciale che ha passato 2 ore con il titolare.
 - Usa il linguaggio del settore "${settore}", non termini generici.
-- Se sono presenti dati ISTAT, DEVI citarli nella diagnosi narrativa con il posizionamento percentuale reale calcolato. NON inventare numeri — usa solo quelli forniti sopra.
+- Se sono presenti dati di mercato, DEVI usarli nella diagnosi narrativa con il posizionamento percentuale reale calcolato. NON citare fonti o ISTAT — parla come se conoscessi il mercato direttamente. NON inventare numeri non derivanti da questi dati.
 - Quando menzioni gli anni di attività del titolare, usa SEMPRE il range dichiarato (es. 'con oltre 15 anni di esperienza' o 'con anni di esperienza nel settore'). MAI inventare un numero preciso (es. '16 anni', '12 anni'). Non hai il dato esatto.`;
 
   const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -230,23 +230,33 @@ function buildIstatSectionEnd(benchmark, regione, ctx) {
   const fatturato = ctx && ctx.fatturato_anno_scorso ? Number(ctx.fatturato_anno_scorso) : null;
 
   let section = `
-DATI ISTAT REALI — ${benchmark.settore_trovato} (${reg}):
-- Fatturato medio ISTAT per azienda: ${fmt(benchmark.fatturato_medio)}
+DATI DI MERCATO REALI — ${benchmark.settore_trovato} (${reg}):
+- Fatturato medio per azienda nel settore: ${fmt(benchmark.fatturato_medio)}
 - Margine operativo medio: ${fmtPct(benchmark.margine_operativo_pct)}
-- Numero imprese nel settore: ${Number(benchmark.numero_imprese).toLocaleString('it-IT')}
-- Fonte: ISTAT 2023`;
+- Numero di aziende nel settore: ${Number(benchmark.numero_imprese).toLocaleString('it-IT')}`;
 
   if (fatturato && benchmark.fatturato_medio) {
     const gap = benchmark.fatturato_medio - fatturato;
     const posizionePct = Math.round((fatturato / benchmark.fatturato_medio) * 100);
-    const verso = gap > 0 ? 'sotto' : 'sopra';
     section += `
-- Il titolare fattura ${fmt(fatturato)}: si posiziona al ${posizionePct}% rispetto alla media ISTAT (${fmt(benchmark.fatturato_medio)}).
-- Gap vs media ISTAT: ${fmt(Math.abs(gap))} ${gap > 0 ? '(sotto media)' : '(sopra media)'}
-
-REGOLA: Nella diagnosi narrativa DEVI includere: 'La tua azienda si posiziona al ${posizionePct}% rispetto alla media ISTAT 2023 del tuo settore in ${reg}.'
-Usa i dati benchmark forniti sopra, non inventarne altri.`;
+- Il titolare fattura ${fmt(fatturato)}: è al ${posizionePct}% rispetto alla media del settore (${fmt(benchmark.fatturato_medio)}).
+- Gap vs media: ${fmt(Math.abs(gap))} ${gap > 0 ? '(sotto media)' : '(sopra media)'}`;
   }
+
+  section += `
+
+Hai accesso a dati di mercato reali. Usali come se fossero la tua conoscenza diretta del settore. NON citare fonti, NON dire "secondo i dati" o "da fonti ufficiali" o "ISTAT". Parla come un direttore commerciale esperto che CONOSCE il mercato.
+
+CORRETTO: 'Le aziende del tuo settore nella tua zona fatturano in media ${fmt(benchmark.fatturato_medio)}. Tu sei a ${fatturato ? fmt(fatturato) : 'meno'}.'
+CORRETTO: 'Nella tua regione ci sono ${Number(benchmark.numero_imprese).toLocaleString('it-IT')} aziende come la tua. La maggior parte fattura il doppio di te.'
+CORRETTO: 'Il margine medio nel tuo settore è del ${fmtPct(benchmark.margine_operativo_pct)}. Se il tuo è più basso, stai regalando soldi.'
+
+SBAGLIATO: 'Secondo dati ISTAT 2023...'
+SBAGLIATO: 'Da fonti ufficiali risulta che...'
+SBAGLIATO: 'I dati di mercato indicano...'
+
+Parla in prima persona come se conoscessi il mercato per esperienza diretta. I numeri sono reali — usali con sicurezza.
+${fatturato && benchmark.fatturato_medio ? `REGOLA DIAGNOSI NARRATIVA: DEVI includere il posizionamento del titolare rispetto alla media di settore — '${Math.round((fatturato / benchmark.fatturato_medio) * 100)}% rispetto alla media del settore in ${reg}' — senza citare fonti o ISTAT. Parla come se lo sapessi tu.` : ''}`;
 
   return section;
 }

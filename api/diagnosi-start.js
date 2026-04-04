@@ -267,26 +267,33 @@ REGOLE:
   return JSON.parse(text);
 }
 
-// ============ ISTAT Benchmark ============
+// ============ Benchmark Section Builder ============
 function buildIstatSection(benchmark, settore) {
   if (!benchmark) return '';
-  const fmt = n => n ? '€\u00a0' + Number(n).toLocaleString('it-IT') : 'N/D';
+  const fmt = n => n ? '\u20ac\u00a0' + Number(n).toLocaleString('it-IT') : 'N/D';
   const fmtPct = n => (n !== null && n !== undefined) ? n + '%' : 'N/D';
   const trendStr = benchmark.trend !== null && benchmark.trend !== undefined
-    ? `\n- Trend fatturato vs anno precedente: ${benchmark.trend > 0 ? '+' : ''}${benchmark.trend}%`
+    ? `\n- Tendenza fatturato rispetto all'anno precedente: ${benchmark.trend > 0 ? '+' : ''}${benchmark.trend}%`
     : '';
   return `
-DATI ISTAT REALI — ${settore} (${benchmark.regione_usata}):
-- Settore ISTAT trovato: ${benchmark.settore_trovato}
-- Numero imprese nel settore: ${Number(benchmark.numero_imprese).toLocaleString('it-IT')}
+DATI DI MERCATO REALI — ${settore} (${benchmark.regione_usata}):
+- Settore: ${benchmark.settore_trovato}
+- Numero di aziende nel settore: ${Number(benchmark.numero_imprese).toLocaleString('it-IT')}
 - Fatturato medio per azienda: ${fmt(benchmark.fatturato_medio)}
 - Margine operativo medio: ${fmtPct(benchmark.margine_operativo_pct)}
 - Valore aggiunto medio per azienda: ${fmt(benchmark.valore_aggiunto_medio)}${trendStr}
-- Fonte: ISTAT 2023
 
-REGOLA ISTAT: USA questi dati nello shock e nel collegamento. Non inventare numeri — cita ISTAT.
-Esempio shock: 'Le ${Number(benchmark.numero_imprese).toLocaleString('it-IT')} aziende del tuo settore fatturano in media ${fmt(benchmark.fatturato_medio)}.'
-NON inventare percentuali o numeri che non derivano dai dati ISTAT forniti sopra.`;
+Hai accesso a dati di mercato reali. Usali come se fossero la tua conoscenza diretta del settore. NON citare fonti, NON dire "secondo i dati" o "da fonti ufficiali" o "ISTAT". Parla come un direttore commerciale esperto che CONOSCE il mercato.
+
+CORRETTO: 'Le aziende del tuo settore in ${benchmark.regione_usata} fatturano in media ${fmt(benchmark.fatturato_medio)}.'
+CORRETTO: 'Nella tua regione ci sono ${Number(benchmark.numero_imprese).toLocaleString('it-IT')} aziende come la tua.'
+CORRETTO: 'Il margine medio nel tuo settore è del ${fmtPct(benchmark.margine_operativo_pct)}.'
+
+SBAGLIATO: 'Secondo dati ISTAT 2023...'
+SBAGLIATO: 'Da fonti ufficiali risulta che...'
+SBAGLIATO: 'I dati di mercato indicano...'
+
+Parla in prima persona come se conoscessi il mercato per esperienza diretta. I numeri sono reali — usali con sicurezza.`;
 }
 
 async function fetchBenchmarkISTAT(settore, regione) {

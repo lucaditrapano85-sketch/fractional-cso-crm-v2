@@ -187,7 +187,7 @@ REGOLE:
 - stima_perdita.totale_annuo_min è la somma esatta degli importi nel breakdown.
 - stima_perdita.totale_annuo_max è totale_annuo_min × 1.3-1.5 (margine di miglioramento extra realizzabile).
 - Usa il fatturato dichiarato (${ctx.fatturato_anno_scorso ? '€' + ctx.fatturato_anno_scorso.toLocaleString('it-IT') : 'non dichiarato'}) come base per i calcoli percentuali.
-- Se sono presenti dati ISTAT, la stima perdita DEVE riferirsi al gap reale tra fatturato dichiarato e media ISTAT. Non inventare numeri che non derivano da questi dati.`;
+- Se sono presenti dati di mercato, la stima perdita DEVE riferirsi al gap reale tra fatturato dichiarato e media di settore. Non citare fonti o ISTAT. Non inventare numeri che non derivano da questi dati.`;
 }
 
 // Prompt singola risposta (backward compat)
@@ -276,25 +276,34 @@ function buildIstatSectionChat(benchmark, regione, fatturato) {
   const reg = regione || benchmark.regione_usata || 'Italia';
 
   let section = `
-DATI ISTAT REALI — ${benchmark.settore_trovato} (${reg}):
-- Fatturato medio ISTAT per azienda nel settore: ${fmt(benchmark.fatturato_medio)}
+DATI DI MERCATO REALI — ${benchmark.settore_trovato} (${reg}):
+- Fatturato medio per azienda nel settore: ${fmt(benchmark.fatturato_medio)}
 - Margine operativo medio: ${fmtPct(benchmark.margine_operativo_pct)}
-- Numero imprese nel settore: ${Number(benchmark.numero_imprese).toLocaleString('it-IT')}
-- Fonte: ISTAT 2023`;
+- Numero di aziende nel settore: ${Number(benchmark.numero_imprese).toLocaleString('it-IT')}`;
 
   if (fatturato && benchmark.fatturato_medio) {
     const gap = benchmark.fatturato_medio - fatturato;
     const gapPct = Math.round((Math.abs(gap) / benchmark.fatturato_medio) * 100);
     const verso = gap > 0 ? 'sotto' : 'sopra';
     section += `
-- Il titolare fattura ${fmt(fatturato)}: è il ${gapPct}% ${verso} la media ISTAT (${fmt(benchmark.fatturato_medio)}).
-- Gap fatturato vs media ISTAT: ${fmt(Math.abs(gap))}${gap > 0 ? ' (sotto media — potenziale non sfruttato)' : ' (sopra media — posizione di forza)'}
-
-REGOLA STIMA PERDITA: La stima perdita DEVE essere basata su questo gap reale ISTAT di ${fmt(Math.abs(gap))}.
-Il titolare fattura ${fmt(fatturato)}. La media ISTAT del settore nella sua regione è ${fmt(benchmark.fatturato_medio)}.
-Il gap è ${fmt(Math.abs(gap))}. Usa questo come base per quantificare la perdita per dimensione.
-NON inventare numeri — usa i dati ISTAT forniti sopra.`;
+- Il titolare fattura ${fmt(fatturato)}: è il ${gapPct}% ${verso} la media di settore (${fmt(benchmark.fatturato_medio)}).
+- Gap fatturato vs media: ${fmt(Math.abs(gap))}${gap > 0 ? ' (potenziale non sfruttato)' : ' (posizione di forza)'}`;
   }
+
+  section += `
+
+Hai accesso a dati di mercato reali. Usali come se fossero la tua conoscenza diretta del settore. NON citare fonti, NON dire "secondo i dati" o "da fonti ufficiali" o "ISTAT". Parla come un direttore commerciale esperto che CONOSCE il mercato.
+
+CORRETTO: 'Le aziende del tuo settore nella tua zona fatturano in media ${fmt(benchmark.fatturato_medio)}. Tu sei a ${fatturato ? fmt(fatturato) : 'meno'}.'
+CORRETTO: 'Nella tua regione ci sono ${Number(benchmark.numero_imprese).toLocaleString('it-IT')} aziende come la tua. La maggior parte fattura il doppio di te.'
+CORRETTO: 'Il margine medio nel tuo settore è del ${fmtPct(benchmark.margine_operativo_pct)}. Se il tuo è più basso, stai regalando soldi.'
+
+SBAGLIATO: 'Secondo dati ISTAT 2023...'
+SBAGLIATO: 'Da fonti ufficiali risulta che...'
+SBAGLIATO: 'I dati di mercato indicano...'
+
+Parla in prima persona come se conoscessi il mercato per esperienza diretta. I numeri sono reali — usali con sicurezza.
+${fatturato && benchmark.fatturato_medio ? `REGOLA STIMA PERDITA: Il gap reale tra fatturato dichiarato e media di settore è ${fmt(Math.abs(benchmark.fatturato_medio - fatturato))}. La stima perdita DEVE essere ancorata a questo numero — non inventare importi che non derivano da questi dati.` : ''}`;
 
   return section;
 }
