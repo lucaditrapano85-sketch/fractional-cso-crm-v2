@@ -21,7 +21,9 @@ module.exports = async function handler(req, res) {
       fascia_fatturato,
       shock,
       contesto_titolare,
-      risposte_accumulate
+      risposte_accumulate,
+      benchmark_istat,
+      regione
     } = req.body;
 
     if (step === undefined || !risposta_titolare || !domande_fase1) {
@@ -51,7 +53,9 @@ module.exports = async function handler(req, res) {
         storicoCompleto,
         domande_fase1,
         contesto_titolare: contesto_titolare || {},
-        risposte_accumulate
+        risposte_accumulate,
+        benchmark_istat: benchmark_istat || null,
+        regione: regione || 'Italia'
       });
     } else {
       // Modalità singola (backward compat)
@@ -120,7 +124,7 @@ module.exports = async function handler(req, res) {
 };
 
 // Prompt batch: tutte e 5 le risposte in un colpo solo
-function buildPromptBatch({ settore, fascia_fatturato, shock, storicoCompleto, domande_fase1, contesto_titolare, risposte_accumulate }) {
+function buildPromptBatch({ settore, fascia_fatturato, shock, storicoCompleto, domande_fase1, contesto_titolare, risposte_accumulate, benchmark_istat, regione }) {
   const ctx = contesto_titolare || {};
   const contesLines = [
     ctx.nome ? `Nome: ${ctx.nome}` : '',
@@ -132,6 +136,7 @@ function buildPromptBatch({ settore, fascia_fatturato, shock, storicoCompleto, d
   ].filter(Boolean).join('\n');
 
   const tutteLeD = [...new Set(domande_fase1.map(d => d.dimensione))];
+  const istatSection = buildIstatSectionChat(benchmark_istat, regione, ctx.fatturato_anno_scorso);
 
   return `RUOLO:
 Sei il direttore commerciale che ha appena completato un colloquio diagnostico con un titolare di "${settore}" (fatturato ${fascia_fatturato}).
@@ -147,7 +152,7 @@ APERTURA SHOCK USATA:
 
 COLLOQUIO COMPLETO (5 domande + risposte del titolare):
 ${storicoCompleto}
-
+${istatSection}
 COMPITO:
 Hai appena sentito tutte le risposte. Ora genera la chiusura della Fase 1.
 
@@ -181,7 +186,8 @@ REGOLE:
 - MAI sovrastimare: meglio €10.000 reali che €20.000 gonfiati.
 - stima_perdita.totale_annuo_min è la somma esatta degli importi nel breakdown.
 - stima_perdita.totale_annuo_max è totale_annuo_min × 1.3-1.5 (margine di miglioramento extra realizzabile).
-- Usa il fatturato dichiarato (${ctx.fatturato_anno_scorso ? '€' + ctx.fatturato_anno_scorso.toLocaleString('it-IT') : 'non dichiarato'}) come base per i calcoli percentuali.`;
+- Usa il fatturato dichiarato (${ctx.fatturato_anno_scorso ? '€' + ctx.fatturato_anno_scorso.toLocaleString('it-IT') : 'non dichiarato'}) come base per i calcoli percentuali.
+- Se sono presenti dati ISTAT, la stima perdita DEVE riferirsi al gap reale tra fatturato dichiarato e media ISTAT. Non inventare numeri che non derivano da questi dati.`;
 }
 
 // Prompt singola risposta (backward compat)
@@ -260,4 +266,35 @@ REGOLE:
 - Max 4 frasi totali tra reazione e transizione.
 - Quando menzioni gli anni di attività del titolare, usa SEMPRE il range dichiarato (es. 'con oltre 15 anni di esperienza' o 'con anni di esperienza nel settore'). MAI inventare un numero preciso (es. '16 anni', '12 anni'). Non hai il dato esatto.`;
   }
+}
+
+// ============ ISTAT Section Builder ============
+function buildIstatSectionChat(benchmark, regione, fatturato) {
+  if (!benchmark) return '';
+  const fmt = n => n ? '\u20ac\u00a0' + Number(n).toLocaleString('it-IT') : 'N/D';
+  const fmtPct = n => (n !== null && n !== undefined) ? n + '%' : 'N/D';
+  const reg = regione || benchmark.regione_usata || 'Italia';
+
+  let section = `
+DATI ISTAT REALI — ${benchmark.settore_trovato} (${reg}):
+- Fatturato medio ISTAT per azienda nel settore: ${fmt(benchmark.fatturato_medio)}
+- Margine operativo medio: ${fmtPct(benchmark.margine_operativo_pct)}
+- Numero imprese nel settore: ${Number(benchmark.numero_imprese).toLocaleString('it-IT')}
+- Fonte: ISTAT 2023`;
+
+  if (fatturato && benchmark.fatturato_medio) {
+    const gap = benchmark.fatturato_medio - fatturato;
+    const gapPct = Math.round((Math.abs(gap) / benchmark.fatturato_medio) * 100);
+    const verso = gap > 0 ? 'sotto' : 'sopra';
+    section += `
+- Il titolare fattura ${fmt(fatturato)}: è il ${gapPct}% ${verso} la media ISTAT (${fmt(benchmark.fatturato_medio)}).
+- Gap fatturato vs media ISTAT: ${fmt(Math.abs(gap))}${gap > 0 ? ' (sotto media — potenziale non sfruttato)' : ' (sopra media — posizione di forza)'}
+
+REGOLA STIMA PERDITA: La stima perdita DEVE essere basata su questo gap reale ISTAT di ${fmt(Math.abs(gap))}.
+Il titolare fattura ${fmt(fatturato)}. La media ISTAT del settore nella sua regione è ${fmt(benchmark.fatturato_medio)}.
+Il gap è ${fmt(Math.abs(gap))}. Usa questo come base per quantificare la perdita per dimensione.
+NON inventare numeri — usa i dati ISTAT forniti sopra.`;
+  }
+
+  return section;
 }

@@ -11610,7 +11610,9 @@ function _avviaChatDiagnosi(datiStart) {
     step_fase1:          0,
     risposte_fase2:      [],
     dimensioni_critiche: [],
-    sintesi_fase1:       ''
+    sintesi_fase1:       '',
+    benchmark_istat:     datiStart.benchmark_istat || null,
+    regione:             (window._datiGenerici && window._datiGenerici.localita && window._datiGenerici.localita.regione) || 'Italia'
   };
 
   // Riutilizza overlay esistente (wizard) se presente, altrimenti crea nuovo
@@ -12037,7 +12039,9 @@ async function _chatFase1Batch() {
         fascia_fatturato:    _dc.fascia,
         shock:               _dc.shock,
         contesto_titolare:   window._datiGenerici || {},
-        risposte_accumulate: _dc.risposte_accumulate
+        risposte_accumulate: _dc.risposte_accumulate,
+        benchmark_istat:     _dc.benchmark_istat || null,
+        regione:             _dc.regione || 'Italia'
       })
     });
     var data = await res.json();
@@ -12255,7 +12259,10 @@ function _chatTermina() {
       domande_fase2:       _dc.domande_fase2,
       sintesi_fase1:       _dc.sintesi_fase1,
       dimensioni_critiche: _dc.dimensioni_critiche,
-      shock:               _dc.shock
+      shock:               _dc.shock,
+      benchmark_istat:     _dc.benchmark_istat || null,
+      regione:             _dc.regione || 'Italia',
+      contesto_titolare:   window._datiGenerici || {}
     })
   }).then(function(r) { return r.json(); })
     .then(function(data) {

@@ -16,8 +16,9 @@ module.exports = async function handler(req, res) {
   try {
     if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-    const { settore, fascia_fatturato, user_id } = req.body;
+    const { settore, fascia_fatturato, user_id, regione } = req.body;
     if (!settore) return res.status(400).json({ error: 'Missing settore' });
+    const regioneEffettiva = regione || 'Italia';
     const fasciaEffettiva = fascia_fatturato || 'nd';
 
     // STEP 1: Cerca se il settore esiste già nel database
@@ -34,8 +35,11 @@ module.exports = async function handler(req, res) {
 
     // STEP 2: Se il settore esiste E ha già shock per questa fascia, usa il cached
     if (settoreData && settoreData.shock_data && settoreData.shock_data[fasciaEffettiva]) {
-      // Genera solo i tips con Sonnet (veloce)
-      const tips = await callSonnet(settore, fasciaEffettiva);
+      // Genera tips e benchmark in parallelo
+      const [tips, benchmarkIstat] = await Promise.all([
+        callSonnet(settore, fasciaEffettiva),
+        fetchBenchmarkISTAT(settore, regioneEffettiva)
+      ]);
 
       // Incrementa contatore diagnosi
       await supabase
@@ -52,15 +56,17 @@ module.exports = async function handler(req, res) {
         collegamento: settoreData.shock_data[fasciaEffettiva].collegamento,
         aggancio: settoreData.shock_data[fasciaEffettiva].aggancio,
         domande_fase1: settoreData.domande_fase1,
-        domande_fase2: settoreData.domande_fase2
+        domande_fase2: settoreData.domande_fase2,
+        benchmark_istat: benchmarkIstat
       });
     }
 
-    // STEP 3: Settore nuovo — lancia Sonnet e Opus in PARALLELO
-    const [tips, opusResult] = await Promise.all([
+    // STEP 3: Settore nuovo — fetch benchmark + Sonnet in parallelo, poi Opus con benchmark
+    const [tips, benchmarkIstat] = await Promise.all([
       callSonnet(settore, fasciaEffettiva),
-      callOpus(settore, fasciaEffettiva)
+      fetchBenchmarkISTAT(settore, regioneEffettiva)
     ]);
+    const opusResult = await callOpus(settore, fasciaEffettiva, benchmarkIstat);
 
     // STEP 4: Salva il settore nel database
     const shockData = {};
@@ -124,7 +130,8 @@ module.exports = async function handler(req, res) {
       collegamento: opusResult.collegamento,
       aggancio: opusResult.aggancio,
       domande_fase1: opusResult.domande_fase1,
-      domande_fase2: opusResult.domande_fase2
+      domande_fase2: opusResult.domande_fase2,
+      benchmark_istat: benchmarkIstat
     });
 
   } catch (err) {
@@ -177,7 +184,9 @@ Rispondi SOLO in JSON, niente altro:
 }
 
 // ============ OPUS — Apertura killer + domande (profondo) ============
-async function callOpus(settore, fascia) {
+async function callOpus(settore, fascia, benchmark) {
+  const istatSection = buildIstatSection(benchmark, settore);
+
   const response = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
@@ -195,7 +204,7 @@ Sei il direttore commerciale più esperto d'Italia. 20 anni di esperienza trasve
 
 CONTESTO:
 Un titolare di "${settore}" sta per fare una diagnosi commerciale. Non ti conosce. Non si fida. Ha 7 secondi prima di chiudere tutto.
-
+${istatSection}
 IL TUO OBIETTIVO:
 Colpirlo con un'affermazione che dimostra che conosci il suo business meglio di lui. Non fare domande. AFFERMA. Usa un dato reale, specifico, verificabile sul suo settore nel mercato italiano.
 
@@ -256,4 +265,110 @@ REGOLE:
   const data = await response.json();
   const text = data.content[0].text.replace(/```json|```/g, '').trim();
   return JSON.parse(text);
+}
+
+// ============ ISTAT Benchmark ============
+function buildIstatSection(benchmark, settore) {
+  if (!benchmark) return '';
+  const fmt = n => n ? '€\u00a0' + Number(n).toLocaleString('it-IT') : 'N/D';
+  const fmtPct = n => (n !== null && n !== undefined) ? n + '%' : 'N/D';
+  const trendStr = benchmark.trend !== null && benchmark.trend !== undefined
+    ? `\n- Trend fatturato vs anno precedente: ${benchmark.trend > 0 ? '+' : ''}${benchmark.trend}%`
+    : '';
+  return `
+DATI ISTAT REALI — ${settore} (${benchmark.regione_usata}):
+- Settore ISTAT trovato: ${benchmark.settore_trovato}
+- Numero imprese nel settore: ${Number(benchmark.numero_imprese).toLocaleString('it-IT')}
+- Fatturato medio per azienda: ${fmt(benchmark.fatturato_medio)}
+- Margine operativo medio: ${fmtPct(benchmark.margine_operativo_pct)}
+- Valore aggiunto medio per azienda: ${fmt(benchmark.valore_aggiunto_medio)}${trendStr}
+- Fonte: ISTAT 2023
+
+REGOLA ISTAT: USA questi dati nello shock e nel collegamento. Non inventare numeri — cita ISTAT.
+Esempio shock: 'Le ${Number(benchmark.numero_imprese).toLocaleString('it-IT')} aziende del tuo settore fatturano in media ${fmt(benchmark.fatturato_medio)}.'
+NON inventare percentuali o numeri che non derivano dai dati ISTAT forniti sopra.`;
+}
+
+async function fetchBenchmarkISTAT(settore, regione) {
+  if (!settore) return null;
+  try {
+    const anno = 2023;
+    const regioneUsata = regione && regione !== '' ? regione : 'Italia';
+    const searchTerm = settore.replace(/[%_]/g, '').substring(0, 40);
+
+    let rows = null;
+
+    // Step 1: cerca per regione specifica + anno 2023
+    if (regioneUsata !== 'Italia') {
+      const { data } = await supabase
+        .from('benchmark_imprese')
+        .select('*')
+        .ilike('descrizione_settore', `%${searchTerm}%`)
+        .eq('regione', regioneUsata)
+        .eq('anno', anno)
+        .limit(30);
+      if (data && data.length > 0) rows = data;
+    }
+
+    // Step 2: fallback Italia
+    if (!rows || rows.length === 0) {
+      const { data } = await supabase
+        .from('benchmark_imprese')
+        .select('*')
+        .ilike('descrizione_settore', `%${searchTerm}%`)
+        .eq('anno', anno)
+        .limit(30);
+      if (data && data.length > 0) rows = data;
+    }
+
+    if (!rows || rows.length === 0) return null;
+
+    // Aggrega tutte le classi di addetti
+    const totFatturato = rows.reduce((s, r) => s + (Number(r.fatturato_migliaia_euro) || 0), 0);
+    const totMargine   = rows.reduce((s, r) => s + (Number(r.margine_operativo_migliaia_euro) || 0), 0);
+    const totVA        = rows.reduce((s, r) => s + (Number(r.valore_aggiunto_migliaia_euro) || 0), 0);
+    const totImprese   = rows.reduce((s, r) => s + (Number(r.numero_imprese) || 0), 0);
+
+    if (totImprese === 0) return null;
+
+    const fatturatoMedio = Math.round((totFatturato / totImprese) * 1000);
+    const marginePct     = totFatturato > 0
+      ? Math.round((totMargine / totFatturato) * 1000) / 10
+      : null;
+    const vaMedio        = Math.round((totVA / totImprese) * 1000);
+
+    // Trend: confronto anno precedente
+    let trend = null;
+    const regioneRows = rows[0].regione;
+    const { data: rowsPrev } = await supabase
+      .from('benchmark_imprese')
+      .select('fatturato_migliaia_euro, numero_imprese')
+      .ilike('descrizione_settore', `%${searchTerm}%`)
+      .eq('regione', regioneRows)
+      .eq('anno', 2022)
+      .limit(30);
+
+    if (rowsPrev && rowsPrev.length > 0) {
+      const totFatPrev = rowsPrev.reduce((s, r) => s + (Number(r.fatturato_migliaia_euro) || 0), 0);
+      const totImpPrev = rowsPrev.reduce((s, r) => s + (Number(r.numero_imprese) || 0), 0);
+      if (totImpPrev > 0 && fatturatoMedio > 0) {
+        const fattPrev = Math.round((totFatPrev / totImpPrev) * 1000);
+        if (fattPrev > 0) trend = Math.round(((fatturatoMedio - fattPrev) / fattPrev) * 1000) / 10;
+      }
+    }
+
+    return {
+      numero_imprese:        totImprese,
+      fatturato_medio:       fatturatoMedio,
+      margine_operativo_pct: marginePct,
+      valore_aggiunto_medio: vaMedio,
+      trend:                 trend,
+      regione_usata:         regioneRows,
+      settore_trovato:       rows[0].descrizione_settore,
+      fonte:                 'ISTAT 2023'
+    };
+  } catch (err) {
+    console.error('fetchBenchmarkISTAT error:', err.message);
+    return null;
+  }
 }

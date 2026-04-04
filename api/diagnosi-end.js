@@ -25,7 +25,10 @@ module.exports = async function handler(req, res) {
       domande_fase2,
       sintesi_fase1,
       dimensioni_critiche,
-      shock
+      shock,
+      benchmark_istat,
+      regione,
+      contesto_titolare
     } = req.body;
 
     if (!risposte_fase2 || !domande_fase2) {
@@ -60,7 +63,10 @@ module.exports = async function handler(req, res) {
         risposte_fase1,
         sintesi_fase1,
         dimensioni_critiche,
-        shock
+        shock,
+        benchmark_istat: benchmark_istat || null,
+        regione: regione || 'Italia',
+        contesto_titolare: contesto_titolare || {}
       })
     ]);
 
@@ -141,11 +147,13 @@ module.exports = async function handler(req, res) {
   }
 };
 
-async function callOpusDiagnosi({ settore, fascia_fatturato, dims, risposte_fase1, sintesi_fase1, dimensioni_critiche, shock }) {
+async function callOpusDiagnosi({ settore, fascia_fatturato, dims, risposte_fase1, sintesi_fase1, dimensioni_critiche, shock, benchmark_istat, regione, contesto_titolare }) {
 
   const dimReport = Object.entries(dims)
     .map(([dim, score]) => `- ${dim}: ${score}/5`)
     .join('\n');
+
+  const istatSection = buildIstatSectionEnd(benchmark_istat, regione, contesto_titolare);
 
   const prompt = `RUOLO:
 Sei il direttore commerciale che ha appena completato la diagnosi di un'azienda nel settore "${settore}" (fatturato ${fascia_fatturato}).
@@ -162,13 +170,13 @@ Sintesi conversazione Fase 1: ${sintesi_fase1 || 'non disponibile'}
 Shock iniziale: ${shock || 'non disponibile'}
 
 Risposte conversazionali del titolare: ${risposte_fase1 ? JSON.stringify(risposte_fase1) : 'non disponibili'}
-
+${istatSection}
 COMPITO:
 Genera la diagnosi finale. Non è un report — è un messaggio diretto al titolare. Deve sentirsi capito, non giudicato. E deve capire esattamente cosa fare.
 
 Rispondi SOLO in JSON valido:
 {
-    "diagnosi": "Diagnosi narrativa in 6-8 frasi. Parti da quello che funziona (breve). Poi vai dritto ai problemi — con numeri specifici. Chiudi con l'opportunità concreta in euro. Linguaggio diretto, specifico per il settore.",
+    "diagnosi": "Diagnosi narrativa in 6-8 frasi. Parti da quello che funziona (breve). Poi vai dritto ai problemi — con numeri specifici. Includi il posizionamento ISTAT se disponibile: 'La tua azienda si posiziona al X% rispetto alla media ISTAT 2023 del tuo settore in [regione].' Chiudi con l'opportunità concreta in euro. Linguaggio diretto, specifico per il settore.",
 
     "priorita": [
         {
@@ -191,6 +199,7 @@ REGOLE:
 - azioni_immediate: 3 azioni che il titolare può fare QUESTA SETTIMANA senza investimento.
 - La diagnosi NON deve sembrare generata da un'AI. Deve sembrare scritta da un direttore commerciale che ha passato 2 ore con il titolare.
 - Usa il linguaggio del settore "${settore}", non termini generici.
+- Se sono presenti dati ISTAT, DEVI citarli nella diagnosi narrativa con il posizionamento percentuale reale calcolato. NON inventare numeri — usa solo quelli forniti sopra.
 - Quando menzioni gli anni di attività del titolare, usa SEMPRE il range dichiarato (es. 'con oltre 15 anni di esperienza' o 'con anni di esperienza nel settore'). MAI inventare un numero preciso (es. '16 anni', '12 anni'). Non hai il dato esatto.`;
 
   const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -210,4 +219,34 @@ REGOLE:
   const data = await response.json();
   const text = data.content[0].text.replace(/```json|```/g, '').trim();
   return JSON.parse(text);
+}
+
+// ============ ISTAT Section Builder (diagnosi-end) ============
+function buildIstatSectionEnd(benchmark, regione, ctx) {
+  if (!benchmark) return '';
+  const fmt = n => n ? '\u20ac\u00a0' + Number(n).toLocaleString('it-IT') : 'N/D';
+  const fmtPct = n => (n !== null && n !== undefined) ? n + '%' : 'N/D';
+  const reg = regione || benchmark.regione_usata || 'Italia';
+  const fatturato = ctx && ctx.fatturato_anno_scorso ? Number(ctx.fatturato_anno_scorso) : null;
+
+  let section = `
+DATI ISTAT REALI — ${benchmark.settore_trovato} (${reg}):
+- Fatturato medio ISTAT per azienda: ${fmt(benchmark.fatturato_medio)}
+- Margine operativo medio: ${fmtPct(benchmark.margine_operativo_pct)}
+- Numero imprese nel settore: ${Number(benchmark.numero_imprese).toLocaleString('it-IT')}
+- Fonte: ISTAT 2023`;
+
+  if (fatturato && benchmark.fatturato_medio) {
+    const gap = benchmark.fatturato_medio - fatturato;
+    const posizionePct = Math.round((fatturato / benchmark.fatturato_medio) * 100);
+    const verso = gap > 0 ? 'sotto' : 'sopra';
+    section += `
+- Il titolare fattura ${fmt(fatturato)}: si posiziona al ${posizionePct}% rispetto alla media ISTAT (${fmt(benchmark.fatturato_medio)}).
+- Gap vs media ISTAT: ${fmt(Math.abs(gap))} ${gap > 0 ? '(sotto media)' : '(sopra media)'}
+
+REGOLA: Nella diagnosi narrativa DEVI includere: 'La tua azienda si posiziona al ${posizionePct}% rispetto alla media ISTAT 2023 del tuo settore in ${reg}.'
+Usa i dati benchmark forniti sopra, non inventarne altri.`;
+  }
+
+  return section;
 }
