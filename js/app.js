@@ -1510,9 +1510,11 @@ async function inviaInvitoNuovoCliente() {
       email:        email,
       piano:        piano,
       stato:        'in_attesa',
-      cso_id:       csoId,
-      invite_token: inviteToken,
-      created_at:   new Date().toISOString(),
+      cso_id:        csoId,
+      invite_token:  inviteToken,
+      created_at:    new Date().toISOString(),
+      owner_user_id: window._currentUserId || null,
+      user_id:       window._currentUserId || null,
     };
     console.log('Step 1: salvataggio prospect', payload);
 
@@ -3201,7 +3203,9 @@ async function saveProspect() {
     telefono: _val('f-tel'),
     sede_legale: _val('f-sede'),
     note: _val('f-note'),
-    color: editingId ? (prospects.find(function(x){return x.id===editingId;})?.color || assignNextColor()) : assignNextColor(),
+    color:         editingId ? (prospects.find(function(x){return x.id===editingId;})?.color || assignNextColor()) : assignNextColor(),
+    owner_user_id: window._currentUserId || null,
+    user_id:       window._currentUserId || null,
   };
 
   var btn = document.getElementById('btn-save-prospect');
@@ -10924,6 +10928,7 @@ async function pmiAvviaDiagnosi() {
       stato:         'lead',
       piano:         'free',
       owner_user_id: window._currentUserId,
+      user_id:       window._currentUserId,
       dims:          {},
       targets:       {},
     }).select().single();
