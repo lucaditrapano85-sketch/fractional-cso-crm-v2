@@ -14093,21 +14093,56 @@ function renderPMITrend(container) {
 
   var canvasId = 'pmi-trend-chart';
 
+  // ── Stat cards ────────────────────────────────────────────────────────────
+  function _statCard(label, value, valueColor) {
+    return '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:16px;padding:16px 18px;">' +
+      '<div style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">' + label + '</div>' +
+      '<div style="font-size:24px;font-weight:700;color:' + (valueColor || 'white') + ';">' + value + '</div>' +
+    '</div>';
+  }
+
+  var scoreNowCol = scoreNow >= 70 ? '#34D399' : scoreNow >= 45 ? '#FBBF24' : '#F43F5E';
+  var statCardsHtml;
+  if (!isSinglePoint) {
+    var scoreOld2 = scores[0];
+    var scoreNew2 = scores[scores.length - 1];
+    var delta2    = scoreNew2 - scoreOld2;
+    var deltaStr2 = (delta2 >= 0 ? '+' : '') + delta2;
+    var deltaCol2 = delta2 > 0 ? '#34D399' : delta2 < 0 ? '#F43F5E' : 'rgba(255,255,255,0.4)';
+    statCardsHtml =
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">' +
+        _statCard('Score attuale', scoreNow + '/100', scoreNowCol) +
+        _statCard('Variazione', deltaStr2 + ' pt', deltaCol2) +
+        _statCard('Azioni completate', totalAzioni, '#7B61FF') +
+        _statCard('Giorni alla ri-diagnosi', giorniRimanenti + 'g', 'rgba(255,255,255,0.6)') +
+      '</div>';
+  } else {
+    statCardsHtml =
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">' +
+        _statCard('Score attuale', scoreNow + '/100', scoreNowCol) +
+        _statCard('Azioni completate', totalAzioni, '#7B61FF') +
+        _statCard('Giorni alla ri-diagnosi', giorniRimanenti + 'g', 'rgba(255,255,255,0.6)') +
+        _statCard('Storico', '1 punto', 'rgba(255,255,255,0.4)') +
+      '</div>';
+  }
+
   container.innerHTML =
     _DS_CANVAS +
-    '<div style="position:relative;z-index:1;max-width:580px;margin:0 auto;padding:40px 28px">' +
-      '<h1 style="font-size:28px;font-weight:700;color:white;margin-bottom:4px">Il tuo andamento</h1>' +
-      '<p style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:24px">L\'evoluzione del tuo score nel tempo.</p>' +
+    '<div style="position:relative;z-index:1;max-width:580px;margin:0 auto;padding:40px 28px 60px;">' +
+      '<h1 style="font-size:28px;font-weight:700;color:white;margin:0 0 4px;">Il tuo andamento</h1>' +
+      '<p style="font-size:13px;color:rgba(255,255,255,0.4);margin:0 0 24px;">L\'evoluzione del tuo score nel tempo.</p>' +
 
-      '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.15);border-radius:16px;padding:20px 20px 16px;margin-bottom:16px">' +
-        '<div style="position:relative;height:200px">' +
+      statCardsHtml +
+
+      '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:16px;padding:20px 20px 16px;margin-bottom:16px;">' +
+        '<div style="position:relative;height:200px;">' +
           '<canvas id="' + canvasId + '"></canvas>' +
         '</div>' +
       '</div>' +
 
       singleMsgHtml +
 
-      '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(52,211,153,0.2);border-radius:14px;padding:14px 16px">' +
+      '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:16px;padding:16px 18px;">' +
         progressiHtml +
       '</div>' +
     '</div>';
@@ -14121,6 +14156,12 @@ function renderPMITrend(container) {
     var existing = Chart.getChart(canvasId);
     if (existing) existing.destroy();
 
+    // Gradient fill
+    var chartCtx = ctx.getContext('2d');
+    var gradient = chartCtx.createLinearGradient(0, 0, 0, 200);
+    gradient.addColorStop(0,   'rgba(123,97,255,0.15)');
+    gradient.addColorStop(1,   'rgba(123,97,255,0)');
+
     new Chart(ctx, {
       type: 'line',
       data: {
@@ -14129,16 +14170,17 @@ function renderPMITrend(container) {
           data: scores,
           borderColor: '#7B61FF',
           borderWidth: 2,
-          backgroundColor: 'rgba(123,97,255,0.1)',
+          backgroundColor: gradient,
           fill: true,
-          tension: 0.35,
-          pointRadius: 5,
-          pointBackgroundColor: '#06080F',
+          tension: 0.4,
+          pointRadius: 4,
+          pointBackgroundColor: '#7B61FF',
           pointBorderColor: '#7B61FF',
-          pointBorderWidth: 2,
-          pointHoverRadius: 7,
+          pointBorderWidth: 0,
+          pointHoverRadius: 6,
           pointHoverBackgroundColor: '#7B61FF',
           pointHoverBorderColor: '#ffffff',
+          pointHoverBorderWidth: 2,
         }]
       },
       options: {
@@ -14147,7 +14189,7 @@ function renderPMITrend(container) {
         plugins: {
           legend: { display: false },
           tooltip: {
-            backgroundColor: 'rgba(15,18,25,0.95)',
+            backgroundColor: 'rgba(6,8,15,0.9)',
             borderColor: 'rgba(123,97,255,0.3)',
             borderWidth: 1,
             titleColor: 'white',
@@ -14160,14 +14202,14 @@ function renderPMITrend(container) {
         },
         scales: {
           x: {
-            grid: { color: 'rgba(255,255,255,0.05)', lineWidth: 0.5 },
+            grid: { color: 'rgba(255,255,255,0.04)', lineWidth: 0.5 },
             border: { display: false },
             ticks: { color: 'rgba(255,255,255,0.35)', font: { size: 11 } }
           },
           y: {
             min: 0,
             max: 100,
-            grid: { color: 'rgba(255,255,255,0.05)', lineWidth: 0.5 },
+            grid: { color: 'rgba(255,255,255,0.04)', lineWidth: 0.5 },
             border: { display: false },
             ticks: { color: 'rgba(255,255,255,0.35)', font: { size: 11 }, stepSize: 25 }
           }
