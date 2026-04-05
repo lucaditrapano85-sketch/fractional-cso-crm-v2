@@ -10677,12 +10677,14 @@ function _richiediCambioCSO() {
     var motivo = (document.getElementById('cambio-cso-motivo').value || '').trim();
     if (motivo.length < 20) { showToast('Scrivi almeno 20 caratteri di motivazione', 'error'); return; }
     var prospectId = window._pmiProspect && window._pmiProspect.id;
-    if (prospectId) {
-      await sb.from('prospects').update({
-        richiesta_cambio_cso: motivo,
-        richiesta_cambio_cso_data: new Date().toISOString()
-      }).eq('id', prospectId);
-    }
+    var csoId = window._pmiProspect && window._pmiProspect.cso_id;
+    var { error: insErr } = await sb.from('richieste_cambio_cso').insert({
+      prospect_id:    prospectId,
+      cso_attuale_id: csoId || null,
+      motivazione:    motivo,
+      stato:          'pending'
+    });
+    if (insErr) { showToast('Errore: ' + insErr.message, 'error'); return; }
     overlay.remove();
     showToast('Richiesta inviata! Il team Leva ti contatterà entro 48 ore.', 'success');
   };
