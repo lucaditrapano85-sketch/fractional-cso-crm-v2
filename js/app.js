@@ -14406,7 +14406,7 @@ function _pianoCell(colId, pianoAttuale) {
   }
 
   const btnColor = colId === 'guided_pro' ? '#FF6B2B' : '#7B61FF';
-  const btnLabel = colRank > attualeRank ? 'Attiva ' + labelMap[colId] : 'Passa a ' + labelMap[colId];
+  const btnLabel = 'Attiva ' + labelMap[colId];
 
   return `<button onclick="_attivaPiano('${colId}')" style="background:${btnColor};color:white;border:none;padding:10px 24px;border-radius:12px;font-weight:700;font-size:13px;cursor:pointer;transition:filter 0.2s;width:100%" onmouseover="this.style.filter='brightness(1.2)'" onmouseout="this.style.filter='none'">${btnLabel}</button>`;
 }
