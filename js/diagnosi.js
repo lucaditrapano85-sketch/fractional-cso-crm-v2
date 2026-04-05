@@ -615,6 +615,8 @@ async function initCSO() {
     const adminBtn = document.getElementById('admin-btn');
     if (adminBtn) adminBtn.style.display = '';
   }
+
+  setTimeout(function() { if (typeof _showCSOTour === 'function') _showCSOTour(); }, 800);
 }
 
 // ── PMI (Fasi 4-12) ──────────────────────────────────────────────────────────

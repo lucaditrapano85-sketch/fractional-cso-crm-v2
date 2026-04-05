@@ -13604,6 +13604,65 @@ function _showLevaOnboarding() {
   _renderStep(0);
 }
 
+function _showCSOTour() {
+  if (localStorage.getItem('cso_tour_done')) return;
+
+  var _steps = [
+    { title: 'Dashboard', text: 'Qui trovi il riepilogo dei tuoi clienti e le attività da fare oggi.' },
+    { title: 'I miei clienti', text: 'Gestisci clienti, score e azioni commerciali in un\'unica schermata.' },
+    { title: 'Calendario', text: 'Call programmate, scadenze e appuntamenti con i tuoi clienti.' },
+    { title: 'I miei guadagni', text: 'Monitora i guadagni mensili e annuali da clienti attivi.' },
+    { title: 'Nuovo cliente', text: 'Invita un nuovo cliente sulla piattaforma e assegnagli un piano.' }
+  ];
+
+  function _closeCSOTour() {
+    localStorage.setItem('cso_tour_done', 'true');
+    var el = document.getElementById('cso-tour-overlay');
+    if (el) el.remove();
+  }
+
+  function _renderCSOStep(idx) {
+    var el = document.getElementById('cso-tour-overlay');
+    if (el) el.remove();
+    if (idx >= _steps.length) { localStorage.setItem('cso_tour_done', 'true'); return; }
+
+    var s = _steps[idx];
+    var dots = _steps.map(function(_, i) {
+      return '<div style="width:8px;height:8px;border-radius:50%;background:' +
+        (i === idx ? '#7B61FF' : 'rgba(255,255,255,0.15)') + ';transition:background 0.2s;"></div>';
+    }).join('');
+
+    var overlay = document.createElement('div');
+    overlay.id = 'cso-tour-overlay';
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(6,8,15,0.75);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:9999;display:flex;align-items:center;justify-content:center;';
+    overlay.innerHTML =
+      '<div id="cso-tour-box" style="position:relative;background:#0F1219;border:0.5px solid rgba(123,97,255,0.2);border-radius:16px;padding:28px;max-width:380px;width:90%;text-align:center;">' +
+        '<span style="position:absolute;top:8px;right:12px;font-size:18px;color:rgba(255,255,255,0.5);cursor:pointer;line-height:1;" onclick="_showCSOTour._close()" onmouseenter="this.style.color=\'white\'" onmouseleave="this.style.color=\'rgba(255,255,255,0.5)\'">&#x2715;</span>' +
+        '<div style="font-size:13px;font-weight:600;color:#7B61FF;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;">' + (idx + 1) + ' di ' + _steps.length + '</div>' +
+        '<div style="font-size:19px;font-weight:700;color:white;margin-bottom:10px;">' + s.title + '</div>' +
+        '<div style="font-size:14px;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:24px;">' + s.text + '</div>' +
+        '<button id="cso-tour-btn" style="background:#7B61FF;color:white;border:none;padding:12px 24px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;width:100%;">' +
+          (idx < _steps.length - 1 ? 'Avanti →' : 'Iniziamo! →') +
+        '</button>' +
+        '<div style="display:flex;justify-content:center;gap:8px;margin-top:16px;">' + dots + '</div>' +
+      '</div>';
+    document.body.appendChild(overlay);
+
+    _showCSOTour._close = _closeCSOTour;
+
+    document.getElementById('cso-tour-btn').onclick = function() {
+      overlay.remove();
+      if (idx < _steps.length - 1) { _renderCSOStep(idx + 1); }
+      else { localStorage.setItem('cso_tour_done', 'true'); }
+    };
+    overlay.addEventListener('click', function(e) {
+      if (!document.getElementById('cso-tour-box').contains(e.target)) _closeCSOTour();
+    });
+  }
+
+  _renderCSOStep(0);
+}
+
 function completaAzioneSettimanale() {
   // TODO Phase 10
   alert('Ottimo! Azione registrata come completata.');
