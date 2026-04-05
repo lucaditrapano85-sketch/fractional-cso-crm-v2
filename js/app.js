@@ -1153,6 +1153,13 @@ async function reinviaInvito(prospectId) {
 }
 
 // -- DASHBOARD ---------------------------------------------
+function _scoreColor(s) {
+  if (s <= 30) return '#FF4444';
+  if (s <= 50) return '#FF6B2B';
+  if (s <= 70) return '#FBBF24';
+  return '#00C853';
+}
+
 function _calcolaPriorita() {
   const priorita = [];
   const oggi = new Date();
@@ -1318,6 +1325,83 @@ async function renderDashboard() {
       </div>
     </div>
   `;
+
+  // ── Tabella clienti ──────────────────────────────────────────────────────────
+  const _statiColors = {in_attesa:'#FFB800', ingaggiato:'#7B61FF', in_diagnosi:'#9C27B0', attivo:'#00C853', archiviato:'rgba(255,255,255,0.3)'};
+  const _statiLabels = {in_attesa:'In attesa', ingaggiato:'Ingaggiato', in_diagnosi:'In diagnosi', attivo:'Attivo', archiviato:'Archiviato'};
+  const _pianiLabels = {free:'Free', self:'Self', guided_base:'GB', guided_pro:'GP'};
+  const _pianiColors = {free:'rgba(255,255,255,0.5)', self:'#7B61FF', guided_base:'#7B61FF', guided_pro:'#FF6B2B'};
+
+  const _sorted = [...prospects].sort((a, b) => {
+    const gA = a.ultimo_contatto ? Math.floor((oggi - new Date(a.ultimo_contatto))/(1000*60*60*24)) : 999;
+    const gB = b.ultimo_contatto ? Math.floor((oggi - new Date(b.ultimo_contatto))/(1000*60*60*24)) : 999;
+    return gB - gA;
+  });
+
+  if (prospects.length > 0) {
+    kpiGrid.innerHTML += '<div style="margin-top:24px">' +
+      '<div style="color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:14px;text-transform:uppercase;letter-spacing:0.08em">I TUOI CLIENTI</div>' +
+      '<div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;overflow:hidden">' +
+        '<table style="width:100%;border-collapse:collapse">' +
+          '<thead><tr>' +
+            ['Cliente','Azienda','Piano','Score','Stato','Ultima call'].map(function(h) {
+              return '<th style="text-align:left;padding:12px 14px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:rgba(255,255,255,0.35);border-bottom:1px solid rgba(255,255,255,0.06);font-weight:500">' + h + '</th>';
+            }).join('') +
+          '</tr></thead>' +
+          '<tbody>' +
+            _sorted.map(function(p) {
+              const nome = ((p.nome||'') + ' ' + (p.cognome||'')).trim() || '—';
+              const azienda = p.azienda || '—';
+              const piano = _pianiLabels[p.piano] || 'Free';
+              const pianoColor = _pianiColors[p.piano] || 'rgba(255,255,255,0.5)';
+              const score = p.score_globale || p.score || 0;
+              const stato = p.stato || 'in_attesa';
+              const giorni = p.ultimo_contatto ? Math.floor((oggi - new Date(p.ultimo_contatto))/(1000*60*60*24)) : null;
+              const ultimaCall = giorni !== null ? giorni + 'gg fa' : 'Mai';
+              const ultimaCallColor = giorni !== null && giorni > 14 ? '#F43F5E' : giorni !== null && giorni > 7 ? '#FBBF24' : 'rgba(255,255,255,0.6)';
+              return '<tr onclick="renderProspectDetail(\'' + p.id + '\')" style="cursor:pointer;transition:background 0.15s" onmouseenter="this.style.background=\'rgba(123,97,255,0.06)\'" onmouseleave="this.style.background=\'transparent\'">' +
+                '<td style="padding:12px 14px;color:white;font-weight:500;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.04)">' + nome + '</td>' +
+                '<td style="padding:12px 14px;color:rgba(255,255,255,0.6);font-size:13px;border-bottom:1px solid rgba(255,255,255,0.04)">' + azienda + '</td>' +
+                '<td style="padding:12px 14px;border-bottom:1px solid rgba(255,255,255,0.04)"><span style="color:' + pianoColor + ';font-size:12px;font-weight:600">' + piano + '</span></td>' +
+                '<td style="padding:12px 14px;border-bottom:1px solid rgba(255,255,255,0.04)"><span style="color:' + _scoreColor(score) + ';font-weight:700;font-size:14px">' + score + '</span></td>' +
+                '<td style="padding:12px 14px;border-bottom:1px solid rgba(255,255,255,0.04)"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:7px;height:7px;border-radius:50%;background:' + (_statiColors[stato]||'#fff') + '"></span><span style="color:rgba(255,255,255,0.6);font-size:12px">' + (_statiLabels[stato]||stato) + '</span></span></td>' +
+                '<td style="padding:12px 14px;color:' + ultimaCallColor + ';font-size:13px;border-bottom:1px solid rgba(255,255,255,0.04)">' + ultimaCall + '</td>' +
+              '</tr>';
+            }).join('') +
+          '</tbody>' +
+        '</table>' +
+      '</div>' +
+    '</div>';
+  }
+
+  // ── Metriche aggregate ────────────────────────────────────────────────────────
+  if (prospects.length > 0) {
+    const _distPiani = {free:0, self:0, guided_base:0, guided_pro:0};
+    prospects.forEach(function(p) { _distPiani[p.piano || 'free']++; });
+
+    kpiGrid.innerHTML += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px">' +
+      '<div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:20px">' +
+        '<div style="color:rgba(255,255,255,0.5);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px">Distribuzione piani</div>' +
+        '<div style="display:flex;gap:20px;flex-wrap:wrap">' +
+          [
+            {label:'Free',    count:_distPiani.free,         color:'rgba(255,255,255,0.5)'},
+            {label:'Self',    count:_distPiani.self,         color:'#7B61FF'},
+            {label:'G. Base', count:_distPiani.guided_base,  color:'#7B61FF'},
+            {label:'G. Pro',  count:_distPiani.guided_pro,   color:'#FF6B2B'}
+          ].map(function(d) {
+            return '<div style="text-align:center">' +
+              '<div style="color:' + d.color + ';font-size:28px;font-weight:700">' + d.count + '</div>' +
+              '<div style="color:rgba(255,255,255,0.4);font-size:11px;margin-top:2px">' + d.label + '</div>' +
+            '</div>';
+          }).join('') +
+        '</div>' +
+      '</div>' +
+      '<div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:20px">' +
+        '<div style="color:rgba(255,255,255,0.5);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px">Trend complessivo</div>' +
+        '<div style="color:rgba(255,255,255,0.25);font-size:14px;text-align:center;padding:20px 0">Disponibile dopo la prima ri-diagnosi</div>' +
+      '</div>' +
+    '</div>';
+  }
 
   // Svuota tutti gli altri container
   ['alert-scadenze','guadagni-dashboard','da-fare-oggi','status-summary','pipeline-grid','richiede-attenzione'].forEach(id => {
