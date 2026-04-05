@@ -1544,7 +1544,7 @@ function apriModaleNuovoCliente() {
 
   var overlay = document.createElement('div');
   overlay.id = 'cso-modal-overlay';
-  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.35);z-index:9000;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:20px 0;box-sizing:border-box;';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(6,8,15,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:9000;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:20px 0;box-sizing:border-box;';
 
   var box = document.createElement('div');
   box.id = 'cso-modal-box';
@@ -1564,13 +1564,13 @@ function apriModaleNuovoCliente() {
     '<label style="' + LS + '">Nome azienda</label>' +
     '<input id="nc-azienda" type="text" autocomplete="organization" style="' + IS + '" oninput="_ncValidate()" onfocus="this.style.borderColor=\'rgba(123,97,255,0.5)\'" onblur="this.style.borderColor=\'rgba(123,97,255,0.2)\'">' +
 
-    // P.IVA
-    '<label style="' + LS + '">P.IVA</label>' +
-    '<input id="nc-piva" type="text" placeholder="IT01234567890" style="' + IS + '" oninput="_ncValidate()" onfocus="this.style.borderColor=\'rgba(123,97,255,0.5)\'" onblur="this.style.borderColor=\'rgba(123,97,255,0.2)\'">' +
+    // P.IVA (opzionale)
+    '<label style="' + LS + '">P.IVA <span style="color:rgba(255,255,255,0.25);font-size:11px;">(opzionale)</span></label>' +
+    '<input id="nc-piva" type="text" placeholder="IT01234567890" style="' + IS + '" onfocus="this.style.borderColor=\'rgba(123,97,255,0.5)\'" onblur="this.style.borderColor=\'rgba(123,97,255,0.2)\'">' +
 
     // Telefono + Email
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">' +
-      '<div><label style="' + LS + '">Telefono</label><input id="nc-tel" type="tel" placeholder="+39 333 1234567" autocomplete="tel" style="' + IS + '" oninput="_ncValidate()" onfocus="this.style.borderColor=\'rgba(123,97,255,0.5)\'" onblur="this.style.borderColor=\'rgba(123,97,255,0.2)\'"></div>' +
+      '<div><label style="' + LS + '">Telefono <span style="color:rgba(255,255,255,0.25);font-size:11px;">(opzionale)</span></label><input id="nc-tel" type="tel" placeholder="+39 333 1234567" autocomplete="tel" style="' + IS + '" onfocus="this.style.borderColor=\'rgba(123,97,255,0.5)\'" onblur="this.style.borderColor=\'rgba(123,97,255,0.2)\'"></div>' +
       '<div><label style="' + LS + '">Email</label><input id="nc-email" type="email" placeholder="titolare@azienda.it" autocomplete="email" style="' + IS + '" oninput="_ncValidate()" onfocus="this.style.borderColor=\'rgba(123,97,255,0.5)\'" onblur="this.style.borderColor=\'rgba(123,97,255,0.2)\'"></div>' +
     '</div>' +
 
@@ -1653,8 +1653,6 @@ function _ncValidate() {
     (document.getElementById('nc-nome')?.value.trim()) &&
     (document.getElementById('nc-cognome')?.value.trim()) &&
     (document.getElementById('nc-azienda')?.value.trim()) &&
-    (document.getElementById('nc-piva')?.value.trim()) &&
-    (document.getElementById('nc-tel')?.value.trim()) &&
     (document.getElementById('nc-email')?.value.trim());
   btn.disabled    = !ok;
   btn.style.opacity = ok ? '1' : '0.4';
