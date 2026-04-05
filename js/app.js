@@ -1121,15 +1121,21 @@ function openProspect(id) {
 }
 
 // -- PROFILO CSO -------------------------------------------
-function renderCSoProfilo() {
-  var p = window._currentProfile || {};
+async function renderCSoProfilo() {
+  var userId = window._currentProfile && window._currentProfile.id;
+  if (!userId) return;
+
   var container = document.getElementById('view-profilo-cso');
   if (!container) return;
+
+  var { data: csoP } = await sb.from('cso_profiles').select('*').eq('user_id', userId).maybeSingle();
+  var p = Object.assign({}, window._currentProfile || {}, csoP || {});
 
   var IS = 'width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:white;padding:12px;border-radius:10px;font-size:14px;font-family:\'Plus Jakarta Sans\',sans-serif;box-sizing:border-box;outline:none;transition:border-color .15s;';
   var LS = 'color:rgba(255,255,255,0.4);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px;';
   var CARD = 'background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:16px;padding:24px;margin-bottom:16px;';
   var SEC = 'color:#7B61FF;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;font-weight:700;';
+  var FO = 'onfocus="this.style.borderColor=\'#7B61FF\'" onblur="this.style.borderColor=\'rgba(255,255,255,0.1)\'"';
 
   container.innerHTML =
     '<div style="padding:28px 32px;max-width:700px">' +
@@ -1139,22 +1145,18 @@ function renderCSoProfilo() {
       '<div style="' + CARD + '">' +
         '<div style="' + SEC + '">Informazioni personali</div>' +
         '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">' +
-          '<div>' +
-            '<label style="' + LS + '">Nome</label>' +
-            '<input id="cso-nome" value="' + (p.nome || '').replace(/"/g, '&quot;') + '" style="' + IS + '" onfocus="this.style.borderColor=\'#7B61FF\'" onblur="this.style.borderColor=\'rgba(255,255,255,0.1)\'" />' +
-          '</div>' +
-          '<div>' +
-            '<label style="' + LS + '">Cognome</label>' +
-            '<input id="cso-cognome" value="' + (p.cognome || '').replace(/"/g, '&quot;') + '" style="' + IS + '" onfocus="this.style.borderColor=\'#7B61FF\'" onblur="this.style.borderColor=\'rgba(255,255,255,0.1)\'" />' +
-          '</div>' +
-          '<div>' +
-            '<label style="' + LS + '">Città</label>' +
-            '<input id="cso-citta" value="' + (p.citta || '').replace(/"/g, '&quot;') + '" placeholder="es. Milano" style="' + IS + '" onfocus="this.style.borderColor=\'#7B61FF\'" onblur="this.style.borderColor=\'rgba(255,255,255,0.1)\'" />' +
-          '</div>' +
-          '<div>' +
-            '<label style="' + LS + '">Anni di esperienza</label>' +
-            '<input id="cso-anni" type="number" value="' + (p.anni_esperienza || '') + '" placeholder="es. 10" style="' + IS + '" onfocus="this.style.borderColor=\'#7B61FF\'" onblur="this.style.borderColor=\'rgba(255,255,255,0.1)\'" />' +
-          '</div>' +
+          '<div><label style="' + LS + '">Nome</label>' +
+            '<input id="cso-nome" value="' + (p.nome || '').replace(/"/g, '&quot;') + '" style="' + IS + '" ' + FO + ' /></div>' +
+          '<div><label style="' + LS + '">Cognome</label>' +
+            '<input id="cso-cognome" value="' + (p.cognome || '').replace(/"/g, '&quot;') + '" style="' + IS + '" ' + FO + ' /></div>' +
+          '<div><label style="' + LS + '">Città</label>' +
+            '<input id="cso-citta" value="' + (p.citta || '').replace(/"/g, '&quot;') + '" placeholder="es. Milano" style="' + IS + '" ' + FO + ' /></div>' +
+          '<div><label style="' + LS + '">Anni di esperienza</label>' +
+            '<input id="cso-anni" type="number" value="' + (p.anni_esperienza || '') + '" placeholder="es. 10" style="' + IS + '" ' + FO + ' /></div>' +
+          '<div><label style="' + LS + '">Professione</label>' +
+            '<input id="cso-professione" value="' + (p.professione || '').replace(/"/g, '&quot;') + '" placeholder="es. Consulente commerciale" style="' + IS + '" ' + FO + ' /></div>' +
+          '<div><label style="' + LS + '">Titolo di studio</label>' +
+            '<input id="cso-titolo-studio" value="' + (p.titolo_studio || '').replace(/"/g, '&quot;') + '" placeholder="es. Laurea in Economia" style="' + IS + '" ' + FO + ' /></div>' +
         '</div>' +
       '</div>' +
 
@@ -1164,10 +1166,8 @@ function renderCSoProfilo() {
           '<label style="' + LS + '">Bio</label>' +
           '<textarea id="cso-bio" rows="3" placeholder="Descrivi brevemente la tua esperienza e specializzazione..." style="' + IS + 'resize:vertical;">' + (p.bio || '') + '</textarea>' +
         '</div>' +
-        '<div>' +
-          '<label style="' + LS + '">LinkedIn</label>' +
-          '<input id="cso-linkedin" value="' + (p.linkedin_url || '').replace(/"/g, '&quot;') + '" placeholder="https://linkedin.com/in/..." style="' + IS + '" onfocus="this.style.borderColor=\'#7B61FF\'" onblur="this.style.borderColor=\'rgba(255,255,255,0.1)\'" />' +
-        '</div>' +
+        '<div><label style="' + LS + '">LinkedIn</label>' +
+          '<input id="cso-linkedin" value="' + (p.linkedin_url || '').replace(/"/g, '&quot;') + '" placeholder="https://linkedin.com/in/..." style="' + IS + '" ' + FO + ' /></div>' +
       '</div>' +
 
       '<button id="cso-profilo-save-btn" onclick="_salvaProfiloCSO()" style="background:#7B61FF;color:white;border:none;padding:14px 28px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;width:100%;font-family:\'Plus Jakarta Sans\',sans-serif;transition:filter .2s" onmouseover="this.style.filter=\'brightness(1.15)\'" onmouseout="this.style.filter=\'none\'">Salva profilo</button>' +
@@ -1175,22 +1175,32 @@ function renderCSoProfilo() {
 }
 
 async function _salvaProfiloCSO() {
+  var userId = window._currentProfile && window._currentProfile.id;
+  if (!userId) return;
+
   var btn = document.getElementById('cso-profilo-save-btn');
   if (btn) { btn.disabled = true; btn.textContent = 'Salvataggio...'; }
 
   var updates = {
-    nome:             (document.getElementById('cso-nome')?.value || '').trim(),
-    cognome:          (document.getElementById('cso-cognome')?.value || '').trim(),
-    citta:            (document.getElementById('cso-citta')?.value || '').trim(),
-    anni_esperienza:  parseInt(document.getElementById('cso-anni')?.value) || null,
-    bio:              (document.getElementById('cso-bio')?.value || '').trim(),
-    linkedin_url:     (document.getElementById('cso-linkedin')?.value || '').trim()
+    user_id:        userId,
+    bio:            (document.getElementById('cso-bio')?.value || '').trim() || null,
+    linkedin_url:   (document.getElementById('cso-linkedin')?.value || '').trim() || null,
+    anni_esperienza: parseInt(document.getElementById('cso-anni')?.value) || null,
+    citta:          (document.getElementById('cso-citta')?.value || '').trim() || null,
+    professione:    (document.getElementById('cso-professione')?.value || '').trim() || null,
+    titolo_studio:  (document.getElementById('cso-titolo-studio')?.value || '').trim() || null,
+    updated_at:     new Date().toISOString()
   };
 
   try {
-    var { error } = await sb.from('profiles').update(updates).eq('id', window._currentProfile.id);
+    var { error } = await sb.from('cso_profiles').upsert(updates, { onConflict: 'user_id' });
     if (error) throw error;
-    Object.assign(window._currentProfile, updates);
+
+    var nome    = (document.getElementById('cso-nome')?.value || '').trim() || null;
+    var cognome = (document.getElementById('cso-cognome')?.value || '').trim() || null;
+    await sb.from('profiles').update({ nome: nome, cognome: cognome }).eq('id', userId);
+    Object.assign(window._currentProfile, { nome: nome, cognome: cognome });
+
     showToast('Profilo salvato!', 'success');
   } catch(e) {
     showToast('Errore: ' + e.message, 'error');
