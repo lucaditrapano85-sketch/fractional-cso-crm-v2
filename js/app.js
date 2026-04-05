@@ -2052,7 +2052,32 @@ function renderTabPanoramica(p, calls) {
   var CARD2 = 'background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:12px;padding:16px;';
   var kpiBorderStyle = 'border-radius:0 14px 14px 0;';
 
+  var pianoLabels = {free:'Free', self:'Self', guided_base:'Guided Base', guided_pro:'Guided Pro'};
+  var datiClienteHtml = [
+    {label: 'Nome',            value: ((p.nome||'') + ' ' + (p.cognome||'')).trim() || '—'},
+    {label: 'Azienda',         value: p.azienda || '—'},
+    {label: 'P.IVA',           value: p.piva || '—'},
+    {label: 'Email',           value: p.email || '—'},
+    {label: 'Telefono',        value: p.telefono || '—'},
+    {label: 'Indirizzo',       value: ((p.indirizzo||'') + (p.cap ? ', '+p.cap : '') + (p.citta ? ' '+p.citta : '')).trim() || '—'},
+    {label: 'Settore',         value: (p.settore||'—').replace(/_/g,' ')},
+    {label: 'Micro-settore',   value: (p.micro_settore||'—').replace(/_/g,' ')},
+    {label: 'Fascia fatturato',value: p.fascia_fatturato || '—'},
+    {label: 'Piano',           value: pianoLabels[p.piano] || 'Free'},
+  ].map(function(d) {
+    return '<div>' +
+      '<div style="color:rgba(255,255,255,0.4);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">' + d.label + '</div>' +
+      '<div style="color:' + (d.value === '—' ? 'rgba(255,255,255,0.2)' : 'white') + ';font-size:14px;font-weight:' + (d.value === '—' ? '400' : '500') + '">' + d.value + '</div>' +
+    '</div>';
+  }).join('');
+
   c.innerHTML =
+    // Card Dati cliente
+    '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:16px;padding:20px;margin-bottom:16px">' +
+      '<div style="color:#7B61FF;font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px">Dati cliente</div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">' + datiClienteHtml + '</div>' +
+    '</div>' +
+
     // 4 mini KPI
     '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">' +
       '<div class="kpi-card" style="' + kpiBorderStyle + 'border-left:3px solid ' + sc.text + ';">' +
@@ -2099,16 +2124,6 @@ function renderTabPanoramica(p, calls) {
 
       // Colonna destra
       '<div style="display:flex;flex-direction:column;gap:12px;">' +
-        '<div style="' + CARD2 + '">' +
-          '<div style="font-size:11px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;font-weight:600;">Dati azienda</div>' +
-          '<div style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.8;">' +
-            '<div><b>' + (p.nome || '—') + '</b></div>' +
-            (p.referente ? '<div>' + p.referente + '</div>' : '') +
-            (p.settore ? '<div style="color:rgba(255,255,255,0.4);">' + (p.settore.replace(/_/g,' ')) + '</div>' : '') +
-            (p.fatturato ? '<div style="color:rgba(255,255,255,0.4);">' + p.fatturato + '</div>' : '') +
-            (p.piva ? '<div style="color:rgba(255,255,255,0.3);font-size:12px;">P.IVA ' + p.piva + '</div>' : '') +
-          '</div>' +
-        '</div>' +
         '<button onclick="showView(\'calendario\')" style="width:100%;padding:12px;border-radius:12px;background:#3D5AFE;color:white;border:none;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">📅 Programma call</button>' +
         '<button onclick="aggiungiNotaCSO(\'' + p.id + '\')" style="width:100%;padding:12px;border-radius:12px;background:rgba(123,97,255,0.12);border:1px solid rgba(123,97,255,0.2);color:#A78BFA;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:500;cursor:pointer;">📝 Aggiungi nota</button>' +
       '</div>' +
