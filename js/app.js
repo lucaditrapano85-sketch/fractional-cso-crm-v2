@@ -3400,15 +3400,44 @@ async function saveProspect() {
   }
 }
 
-async function deleteProspect() {
-  if(!confirm('Eliminare questo prospect e tutte le sue call?')) return;
-  const {error}=await sb.from('prospects').delete().eq('id',currentId);
-  if(error){showToast('Errore eliminazione','error');return;}
-  prospects=prospects.filter(x=>x.id!==currentId);
-  window._allProspects = prospects;
-  showToast('Prospect eliminato');
-  renderSidebar();
-  showView('dashboard');
+function deleteProspect() {
+  var p = prospects.find(x => x.id === currentId) || {};
+  var nomeAzienda = p.azienda || p.nome || 'questo cliente';
+
+  var existing = document.getElementById('cso-del-overlay');
+  if (existing) existing.remove();
+
+  var overlay = document.createElement('div');
+  overlay.id = 'cso-del-overlay';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(6,8,15,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:9999;display:flex;align-items:center;justify-content:center;';
+
+  var modal = document.createElement('div');
+  modal.style.cssText = 'background:#0a0c14;border:1px solid rgba(255,68,68,0.3);border-radius:20px;padding:28px;max-width:400px;width:90%;text-align:center;';
+  modal.innerHTML =
+    '<div style="font-size:40px;margin-bottom:16px;">⚠️</div>' +
+    '<div style="font-size:18px;font-weight:700;color:white;margin-bottom:10px;">Eliminare questo cliente?</div>' +
+    '<div style="font-size:14px;color:rgba(255,255,255,0.6);line-height:1.5;margin-bottom:24px;">Questa azione è irreversibile. Tutti i dati di <strong style="color:rgba(255,255,255,0.85);">' + nomeAzienda + '</strong> verranno eliminati.</div>' +
+    '<div style="display:flex;flex-direction:column;gap:10px;">' +
+      '<button id="cso-del-confirm" style="background:#FF4444;color:white;border:none;border-radius:12px;padding:12px 24px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Elimina definitivamente</button>' +
+      '<button id="cso-del-cancel" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:white;border-radius:12px;padding:12px 24px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;cursor:pointer;">Annulla</button>' +
+    '</div>';
+
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
+
+  document.getElementById('cso-del-cancel').onclick = function() { overlay.remove(); };
+  overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
+
+  document.getElementById('cso-del-confirm').onclick = async function() {
+    overlay.remove();
+    const {error} = await sb.from('prospects').delete().eq('id', currentId);
+    if (error) { showToast('Errore eliminazione', 'error'); return; }
+    prospects = prospects.filter(x => x.id !== currentId);
+    window._allProspects = prospects;
+    showToast('Cliente eliminato');
+    renderSidebar();
+    showView('dashboard');
+  };
 }
 
 function openAddCall() {
