@@ -10453,6 +10453,8 @@ function renderSidebarPMI() {
 
   if (_isBase) navItems.push({ id:'piano_cso', title:'Piano CSO',
     svg:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="4" y1="6" x2="16" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="11" y2="18"/><circle cx="20" cy="18" r="3"/></svg>' });
+  if (_isBase) navItems.push({ id:'il_tuo_cso', title:'Il tuo CSO',
+    svg:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/><circle cx="19" cy="8" r="3" fill="rgba(123,97,255,0.3)" stroke="#7B61FF" stroke-width="1.5"/><text x="19" y="12" text-anchor="middle" fill="#7B61FF" font-size="7" font-weight="700">★</text></svg>' });
   if (_isPro) {
     navItems.push({ id:'report',      title:'Report',
       svg:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="13" y2="12"/></svg>' });
@@ -10577,11 +10579,113 @@ function renderViewPMI(view) {
       case 'piano':      renderPMIPiano(main);      break;
       case 'profilo':    renderPMIProfilo(main);    break;
       case 'piano_cso':  renderPMIPianoCSO(main);   break;
+      case 'il_tuo_cso': renderIlTuoCSO(main);      break;
       case 'report':     renderPMIReport(main);     break;
       case 'simulazioni':renderPMISimulazioni(main);break;
       case 'benchmark':  renderPMIBenchmark(main);  break;
     }
   }
+}
+
+// ── Il tuo CSO (vista PMI Guided) ─────────────────────────────────────────────
+async function renderIlTuoCSO(main) {
+  if (!main) main = document.getElementById('pmi-main');
+  if (!main) return;
+
+  main.innerHTML = '<div style="padding:40px;text-align:center;color:rgba(255,255,255,0.4)">Caricamento...</div>';
+
+  var csoId = window._pmiProspect && window._pmiProspect.cso_id;
+  if (!csoId) {
+    main.innerHTML = '<div style="padding:40px;text-align:center;color:rgba(255,255,255,0.4)">Nessun CSO assegnato al tuo account. Contatta il supporto.</div>';
+    return;
+  }
+
+  var profBaseRes = await sb.from('profiles').select('*').eq('id', csoId).maybeSingle();
+  var profExtRes  = await sb.from('cso_profiles').select('*').eq('user_id', csoId).maybeSingle();
+  var cso = Object.assign({}, profBaseRes.data || {}, profExtRes.data || {});
+
+  var countRes = await sb.from('prospects').select('id', { count: 'exact', head: true })
+    .eq('cso_id', csoId).in('stato', ['attivo','ingaggiato','in_diagnosi']);
+  var nClienti = countRes.count || 0;
+
+  var initials = ((cso.nome || '?')[0] + (cso.cognome || '')[0]).toUpperCase();
+
+  main.innerHTML =
+    '<div style="padding:28px 32px;max-width:700px">' +
+      '<div style="color:white;font-size:28px;font-weight:700;margin-bottom:28px">Il tuo CSO</div>' +
+
+      '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:16px;padding:28px;margin-bottom:16px">' +
+
+        '<div style="display:flex;align-items:center;gap:20px;margin-bottom:20px">' +
+          '<div style="width:64px;height:64px;border-radius:50%;background:#7B61FF;display:flex;align-items:center;justify-content:center;color:white;font-size:24px;font-weight:700;flex-shrink:0">' + initials + '</div>' +
+          '<div>' +
+            '<div style="color:white;font-size:22px;font-weight:700">' + (cso.nome || '') + ' ' + (cso.cognome || '') + '</div>' +
+            '<div style="color:#7B61FF;font-size:14px;margin-top:2px">' + (cso.professione || 'CSO Professionista') + '</div>' +
+            (cso.citta ? '<div style="color:rgba(255,255,255,0.4);font-size:13px;margin-top:2px">📍 ' + cso.citta + '</div>' : '') +
+          '</div>' +
+        '</div>' +
+
+        (cso.bio ? '<div style="color:rgba(255,255,255,0.7);font-size:14px;line-height:1.6;margin-bottom:16px">' + cso.bio + '</div>' : '') +
+
+        '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">' +
+          '<div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:14px;text-align:center">' +
+            '<div style="color:white;font-size:24px;font-weight:700">' + (cso.anni_esperienza || '—') + '</div>' +
+            '<div style="color:rgba(255,255,255,0.4);font-size:11px;margin-top:2px">Anni esperienza</div>' +
+          '</div>' +
+          '<div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:14px;text-align:center">' +
+            '<div style="color:white;font-size:24px;font-weight:700">' + nClienti + '</div>' +
+            '<div style="color:rgba(255,255,255,0.4);font-size:11px;margin-top:2px">Clienti su Leva</div>' +
+          '</div>' +
+          '<div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:14px;text-align:center">' +
+            '<div style="color:#FBBF24;font-size:24px;font-weight:700">—</div>' +
+            '<div style="color:rgba(255,255,255,0.4);font-size:11px;margin-top:2px">Valutazione</div>' +
+          '</div>' +
+        '</div>' +
+
+        (cso.titolo_studio ? '<div style="color:rgba(255,255,255,0.4);font-size:12px;margin-bottom:4px"><span style="color:rgba(255,255,255,0.6)">📚 ' + cso.titolo_studio + '</span></div>' : '') +
+        (cso.linkedin_url ? '<div style="margin-top:8px"><a href="' + cso.linkedin_url + '" target="_blank" style="color:#7B61FF;font-size:13px;text-decoration:none">LinkedIn ↗</a></div>' : '') +
+
+      '</div>' +
+
+      '<div style="background:rgba(244,63,94,0.04);border:1px solid rgba(244,63,94,0.12);border-radius:16px;padding:20px">' +
+        '<div style="color:rgba(255,255,255,0.5);font-size:13px;margin-bottom:12px">Non ti trovi bene con il tuo CSO?</div>' +
+        '<button onclick="_richiediCambioCSO()" style="background:transparent;border:1px solid rgba(244,63,94,0.3);color:#F43F5E;padding:10px 20px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif">Chiedi cambio CSO</button>' +
+      '</div>' +
+    '</div>';
+}
+
+function _richiediCambioCSO() {
+  var overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(6,8,15,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box';
+  overlay.innerHTML =
+    '<div style="background:#0a0c14;border:1px solid rgba(123,97,255,0.15);border-radius:20px;padding:28px;max-width:440px;width:100%">' +
+      '<div style="color:white;font-weight:700;font-size:18px;margin-bottom:8px">Richiedi cambio CSO</div>' +
+      '<div style="color:rgba(255,255,255,0.5);font-size:13px;margin-bottom:16px">Il team Leva valuterà la tua richiesta e ti contatterà entro 48 ore.</div>' +
+      '<div style="margin-bottom:16px">' +
+        '<label style="color:rgba(255,255,255,0.4);font-size:11px;text-transform:uppercase;display:block;margin-bottom:4px">Motivazione</label>' +
+        '<textarea id="cambio-cso-motivo" rows="4" placeholder="Descrivi brevemente perché vorresti cambiare CSO (min. 20 caratteri)..." style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:white;padding:12px;border-radius:10px;font-size:14px;resize:vertical;font-family:\'Plus Jakarta Sans\',sans-serif;box-sizing:border-box;outline:none"></textarea>' +
+      '</div>' +
+      '<div style="display:flex;gap:12px">' +
+        '<button id="btn-cancel-cambio" style="flex:1;background:transparent;border:1px solid rgba(255,255,255,0.15);color:white;padding:10px;border-radius:12px;cursor:pointer;font-weight:600;font-family:\'Plus Jakarta Sans\',sans-serif">Annulla</button>' +
+        '<button id="btn-confirm-cambio" style="flex:1;background:#7B61FF;border:none;color:white;padding:10px;border-radius:12px;cursor:pointer;font-weight:600;font-family:\'Plus Jakarta Sans\',sans-serif">Invia richiesta</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+
+  document.getElementById('btn-cancel-cambio').onclick = function() { overlay.remove(); };
+  document.getElementById('btn-confirm-cambio').onclick = async function() {
+    var motivo = (document.getElementById('cambio-cso-motivo').value || '').trim();
+    if (motivo.length < 20) { showToast('Scrivi almeno 20 caratteri di motivazione', 'error'); return; }
+    var prospectId = window._pmiProspect && window._pmiProspect.id;
+    if (prospectId) {
+      await sb.from('prospects').update({
+        richiesta_cambio_cso: motivo,
+        richiesta_cambio_cso_data: new Date().toISOString()
+      }).eq('id', prospectId);
+    }
+    overlay.remove();
+    showToast('Richiesta inviata! Il team Leva ti contatterà entro 48 ore.', 'success');
+  };
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
