@@ -602,6 +602,7 @@ async function init() {
 
 // ── CSO (comportamento invariato rispetto all'originale) ──────────────────────
 async function initCSO() {
+  _initCSODS();
   document.getElementById('dash-date').textContent = new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 
   await _loadProspectsData();
