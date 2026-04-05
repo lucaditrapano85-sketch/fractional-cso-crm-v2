@@ -11069,6 +11069,7 @@ async function pmiAvviaDiagnosi() {
       nome:          nomePMI,
       settore:       _pmiSelectedSettore,
       stato:         'lead',
+      piano:         'free',
       owner_user_id: window._currentUserId,
       dims:          {},
       targets:       {},
@@ -11083,7 +11084,7 @@ async function pmiAvviaDiagnosi() {
   }
 
   window._pmiProspect = nuovoP;
-  window._userPlan = nuovoP.piano || 'self';
+  window._userPlan = nuovoP.piano || 'free';
   if (!prospects.find(function(x){ return x.id === nuovoP.id; })) prospects.push(nuovoP);
   currentId = nuovoP.id;
 
@@ -14413,22 +14414,157 @@ function _pianoCell(colId, pianoAttuale) {
   return `<button onclick="_attivaPiano('${colId}')" style="background:${btnColor};color:white;border:none;padding:10px 24px;border-radius:12px;font-weight:700;font-size:13px;cursor:pointer;transition:filter 0.2s;width:100%" onmouseover="this.style.filter='brightness(1.2)'" onmouseout="this.style.filter='none'">${btnLabel}</button>`;
 }
 
+function _mostraPopupDatiPagamento(nuovoPiano, onConfirm) {
+  var p = window._pmiProspect || {};
+  var labelMap = { self: 'Self', guided_base: 'Guided Base', guided_pro: 'Guided Pro' };
+  var prezzoMap = { self: 199, guided_base: 399, guided_pro: 599 };
+  var btnColor = nuovoPiano === 'guided_pro' ? '#FF6B2B' : '#7B61FF';
+  var planLabel = labelMap[nuovoPiano] || nuovoPiano;
+  var prezzo = prezzoMap[nuovoPiano] || 199;
+
+  var IS = 'width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:white;border-radius:10px;padding:12px 14px;font-size:14px;font-family:\'Plus Jakarta Sans\',sans-serif;box-sizing:border-box;outline:none;transition:border-color .15s;';
+  var LS = 'display:block;font-size:11px;font-weight:700;color:#7B61FF;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;margin-top:14px;';
+
+  var overlay = document.createElement('div');
+  overlay.id = 'piano-dati-overlay';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(6,8,15,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:9100;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;';
+
+  var box = document.createElement('div');
+  box.style.cssText = 'width:100%;max-width:500px;background:#0a0c14;border:1px solid rgba(123,97,255,0.15);border-radius:20px;padding:32px;box-shadow:0 24px 64px rgba(0,0,0,0.7);max-height:90vh;overflow-y:auto;';
+
+  box.innerHTML =
+    '<div style="font-size:20px;font-weight:700;color:white;margin-bottom:6px;">Completa i tuoi dati</div>' +
+    '<div style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:4px;">Per attivare il piano <strong style="color:' + btnColor + ';">' + planLabel + '</strong> abbiamo bisogno di:</div>' +
+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">' +
+      '<div>' +
+        '<label style="' + LS + 'margin-top:20px;">Nome</label>' +
+        '<input id="pd-nome" type="text" value="' + (p.nome || '').replace(/"/g,'&quot;') + '" placeholder="Mario" style="' + IS + '" ' +
+          'onfocus="this.style.borderColor=\'#7B61FF\'" onblur="this.style.borderColor=\'rgba(255,255,255,0.1)\'">' +
+        '<div id="pd-err-nome" style="color:#FF4444;font-size:12px;margin-top:4px;display:none;">Campo obbligatorio</div>' +
+      '</div>' +
+      '<div>' +
+        '<label style="' + LS + 'margin-top:20px;">Cognome</label>' +
+        '<input id="pd-cognome" type="text" value="' + (p.cognome || '').replace(/"/g,'&quot;') + '" placeholder="Rossi" style="' + IS + '" ' +
+          'onfocus="this.style.borderColor=\'#7B61FF\'" onblur="this.style.borderColor=\'rgba(255,255,255,0.1)\'">' +
+        '<div id="pd-err-cognome" style="color:#FF4444;font-size:12px;margin-top:4px;display:none;">Campo obbligatorio</div>' +
+      '</div>' +
+    '</div>' +
+
+    '<label style="' + LS + '">Nome azienda</label>' +
+    '<input id="pd-azienda" type="text" value="' + (p.azienda || p.nome || '').replace(/"/g,'&quot;') + '" placeholder="Rossi Srl" style="' + IS + '" ' +
+      'onfocus="this.style.borderColor=\'#7B61FF\'" onblur="this.style.borderColor=\'rgba(255,255,255,0.1)\'">' +
+    '<div id="pd-err-azienda" style="color:#FF4444;font-size:12px;margin-top:4px;display:none;">Campo obbligatorio</div>' +
+
+    '<label style="' + LS + '">P.IVA</label>' +
+    '<input id="pd-piva" type="text" value="' + (p.piva || '').replace(/"/g,'&quot;') + '" placeholder="12345678901" maxlength="11" style="' + IS + '" ' +
+      'onfocus="this.style.borderColor=\'#7B61FF\'" onblur="this.style.borderColor=\'rgba(255,255,255,0.1)\'">' +
+    '<div id="pd-err-piva" style="color:#FF4444;font-size:12px;margin-top:4px;display:none;">P.IVA deve essere 11 cifre</div>' +
+
+    '<label style="' + LS + '">Indirizzo con civico</label>' +
+    '<input id="pd-indirizzo" type="text" value="' + (p.indirizzo || '').replace(/"/g,'&quot;') + '" placeholder="Via Roma 1" style="' + IS + '" ' +
+      'onfocus="this.style.borderColor=\'#7B61FF\'" onblur="this.style.borderColor=\'rgba(255,255,255,0.1)\'">' +
+    '<div id="pd-err-indirizzo" style="color:#FF4444;font-size:12px;margin-top:4px;display:none;">Campo obbligatorio</div>' +
+
+    '<div style="display:grid;grid-template-columns:120px 1fr;gap:12px;">' +
+      '<div>' +
+        '<label style="' + LS + '">CAP</label>' +
+        '<input id="pd-cap" type="text" value="' + (p.cap || '').replace(/"/g,'&quot;') + '" placeholder="10100" maxlength="5" style="' + IS + '" ' +
+          'onfocus="this.style.borderColor=\'#7B61FF\'" onblur="this.style.borderColor=\'rgba(255,255,255,0.1)\'">' +
+        '<div id="pd-err-cap" style="color:#FF4444;font-size:12px;margin-top:4px;display:none;">CAP: 5 cifre</div>' +
+      '</div>' +
+      '<div>' +
+        '<label style="' + LS + '">Città</label>' +
+        '<input id="pd-citta" type="text" value="' + (p.citta || '').replace(/"/g,'&quot;') + '" placeholder="Torino" style="' + IS + '" ' +
+          'onfocus="this.style.borderColor=\'#7B61FF\'" onblur="this.style.borderColor=\'rgba(255,255,255,0.1)\'">' +
+        '<div id="pd-err-citta" style="color:#FF4444;font-size:12px;margin-top:4px;display:none;">Campo obbligatorio</div>' +
+      '</div>' +
+    '</div>' +
+
+    '<div style="display:flex;flex-direction:column;gap:10px;margin-top:28px;">' +
+      '<button onclick="_pdConferma()" style="width:100%;padding:14px;background:' + btnColor + ';color:white;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;transition:filter .15s;" ' +
+        'onmouseover="this.style.filter=\'brightness(1.15)\'" onmouseout="this.style.filter=\'none\'">Attiva ' + planLabel + ' — €' + prezzo + '/mese</button>' +
+      '<button onclick="document.getElementById(\'piano-dati-overlay\').remove()" style="width:100%;padding:14px;background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);border-radius:12px;font-size:14px;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;">Annulla</button>' +
+    '</div>';
+
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+
+  window._pdOnConfirm = onConfirm;
+}
+
+async function _pdConferma() {
+  var nome     = (document.getElementById('pd-nome')     || {}).value?.trim() || '';
+  var cognome  = (document.getElementById('pd-cognome')  || {}).value?.trim() || '';
+  var azienda  = (document.getElementById('pd-azienda')  || {}).value?.trim() || '';
+  var piva     = (document.getElementById('pd-piva')     || {}).value?.trim() || '';
+  var indirizzo= (document.getElementById('pd-indirizzo')|| {}).value?.trim() || '';
+  var cap      = (document.getElementById('pd-cap')      || {}).value?.trim() || '';
+  var citta    = (document.getElementById('pd-citta')    || {}).value?.trim() || '';
+
+  var ok = true;
+  function setErr(id, errId, cond, msg) {
+    var el = document.getElementById(errId);
+    var inp = document.getElementById(id);
+    if (!cond) { if (el) { el.textContent = msg; el.style.display = 'block'; } if (inp) inp.style.borderColor = '#FF4444'; ok = false; }
+    else { if (el) el.style.display = 'none'; if (inp) inp.style.borderColor = 'rgba(255,255,255,0.1)'; }
+  }
+
+  setErr('pd-nome',     'pd-err-nome',     nome.length > 0,               'Campo obbligatorio');
+  setErr('pd-cognome',  'pd-err-cognome',  cognome.length > 0,            'Campo obbligatorio');
+  setErr('pd-azienda',  'pd-err-azienda',  azienda.length > 0,            'Campo obbligatorio');
+  setErr('pd-piva',     'pd-err-piva',     /^\d{11}$/.test(piva),         'P.IVA deve essere 11 cifre');
+  setErr('pd-indirizzo','pd-err-indirizzo',indirizzo.length > 0,           'Campo obbligatorio');
+  setErr('pd-cap',      'pd-err-cap',      /^\d{5}$/.test(cap),           'CAP: 5 cifre');
+  setErr('pd-citta',    'pd-err-citta',    citta.length > 0,              'Campo obbligatorio');
+
+  if (!ok) return;
+
+  var overlay = document.getElementById('piano-dati-overlay');
+  if (overlay) overlay.remove();
+
+  if (typeof window._pdOnConfirm === 'function') {
+    window._pdOnConfirm({ nome, cognome, azienda, piva, indirizzo, cap, citta });
+    window._pdOnConfirm = null;
+  }
+}
+
 async function _attivaPiano(nuovoPiano) {
   // ID prospect: nel contesto PMI usa _pmiProspect.id, nel contesto CSO usa currentId
   const prospectId = (window._pmiProspect && window._pmiProspect.id) || currentId;
   if (!prospectId) { showToast('Errore: nessun prospect selezionato', 'error'); return; }
 
+  // Piani a pagamento: mostra popup dati se non già completi
+  const pianiPagamento = ['self', 'guided_base', 'guided_pro'];
+  if (pianiPagamento.includes(nuovoPiano)) {
+    const p = window._pmiProspect || prospects.find(x => x.id === prospectId) || {};
+    const datiCompleti = p.nome && p.cognome && p.azienda && p.piva && p.indirizzo && p.cap && p.citta;
+    if (!datiCompleti) {
+      _mostraPopupDatiPagamento(nuovoPiano, async function(dati) {
+        await _eseguiAttivaPiano(nuovoPiano, prospectId, dati);
+      });
+      return;
+    }
+  }
+
+  await _eseguiAttivaPiano(nuovoPiano, prospectId, null);
+}
+
+async function _eseguiAttivaPiano(nuovoPiano, prospectId, datiExtra) {
   try {
-    const { error } = await sb.from('prospects').update({ piano: nuovoPiano }).eq('id', prospectId);
+    var update = { piano: nuovoPiano };
+    if (datiExtra) Object.assign(update, datiExtra);
+
+    const { error } = await sb.from('prospects').update(update).eq('id', prospectId);
     if (error) throw error;
 
     // Aggiorna il prospect locale
     const idx = prospects.findIndex(p => p.id === prospectId);
-    if (idx !== -1) prospects[idx].piano = nuovoPiano;
-    if (window._pmiProspect) window._pmiProspect.piano = nuovoPiano;
+    if (idx !== -1) { prospects[idx].piano = nuovoPiano; if (datiExtra) Object.assign(prospects[idx], datiExtra); }
+    if (window._pmiProspect) { window._pmiProspect.piano = nuovoPiano; if (datiExtra) Object.assign(window._pmiProspect, datiExtra); }
     window._userPlan = nuovoPiano;
 
-    console.log('[_attivaPiano] Piano salvato su Supabase:', nuovoPiano, '| prospect id:', prospectId);
+    console.log('[_eseguiAttivaPiano] Piano salvato su Supabase:', nuovoPiano, '| prospect id:', prospectId);
 
     // Aggiorna in-place le 4 celle bottone
     ['free', 'self', 'guided_base', 'guided_pro'].forEach(col => {
