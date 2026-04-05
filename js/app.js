@@ -13586,51 +13586,153 @@ function renderPMIScore(container) {
   _levaSetDSBg(container);
 
   var s  = p.score_globale || calcScore(p) || 0;
-  var sc = scoreColor(s);
+  var dims = p.dims || {};
+  var isFree = (window._userPlan || 'free') === 'free';
+  var stimaPerdita = p.stima_perdita_annua || 15600;
 
   var _STD_DIMS_S = ['Vendite','Marketing','Clienti','Pipeline','Pricing','Processi','Team','Digitale'];
-  var dimsAlpha = _STD_DIMS_S.slice().sort(function(a, b) { return a.localeCompare(b, 'it'); });
 
+  // Convert raw dim value (1-5) to 0-100
+  function _dimPct(d) {
+    var raw = dims[d] || 0;
+    return raw <= 5 ? Math.round(raw * 20) : raw;
+  }
+
+  // Semaforo color based on 0-100
+  function _dimColDS(pct) {
+    if (pct >= 71) return '#00C853';
+    if (pct >= 51) return '#FFB800';
+    if (pct >= 31) return '#FF6B2B';
+    return '#FF4444';
+  }
+
+  // Ring color
+  var scoreCol = s >= 71 ? '#00C853' : s >= 51 ? '#FFB800' : s >= 31 ? '#FF6B2B' : '#FF4444';
+  var circumference = +(2 * Math.PI * 68).toFixed(1);
+  var dashOffset     = +((1 - s / 100) * circumference).toFixed(1);
+
+  // Top 3 critiche (sorted by pct asc)
+  var dimsByPct = _STD_DIMS_S.slice().sort(function(a, b) { return _dimPct(a) - _dimPct(b); });
+  var top3Names = dimsByPct.slice(0, 3).join(', ');
+
+  // Locked card helper
+  function _lockedCard(innerHtml, label, sublabel) {
+    return '<div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:16px;padding:24px;position:relative;overflow:hidden;">' +
+      '<div style="filter:blur(6px);opacity:0.25;pointer-events:none;">' + innerHtml + '</div>' +
+      '<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(6,8,15,0.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);">' +
+        '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>' +
+        '<div style="color:rgba(255,255,255,0.4);font-size:14px;margin-top:10px;font-weight:500;">' + label + '</div>' +
+        '<div style="color:rgba(255,255,255,0.25);font-size:12px;margin-top:3px;">' + sublabel + '</div>' +
+        '<div onclick="showViewPMI(\'piano\')" style="margin-top:14px;padding:8px 22px;border-radius:10px;background:#7B61FF;color:white;font-size:13px;font-weight:500;cursor:pointer;">Sblocca \u2192</div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  // 8-dim cards HTML
+  var dimsAlpha = _STD_DIMS_S.slice().sort(function(a, b) { return a.localeCompare(b, 'it'); });
   var dimsHtml = dimsAlpha.map(function(d) {
-    var v   = p.dims[d] || 0;
-    var col = dimColor(v);
-    var pct = (v / 5) * 100;
-    var statoLabel = v < 2 ? 'Critico' : v <= 3 ? 'In sviluppo' : 'Solido';
-    var statoTxt   = v < 2 ? '#F43F5E' : v <= 3 ? '#FBBF24' : '#34D399';
-    var statoBg    = v < 2 ? 'rgba(244,63,94,0.12)' : v <= 3 ? 'rgba(251,191,36,0.12)' : 'rgba(52,211,153,0.12)';
-    return '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.15);border-radius:14px;padding:14px 16px;margin-bottom:10px">' +
+    var pct = _dimPct(d);
+    var col = _dimColDS(pct);
+    var statoLabel = pct <= 30 ? 'Critico' : pct <= 50 ? 'In sviluppo' : pct <= 70 ? 'Medio' : 'Solido';
+    var statoTxt   = pct <= 30 ? '#F43F5E' : pct <= 50 ? '#FF6B2B' : pct <= 70 ? '#FFB800' : '#34D399';
+    var statoBg    = pct <= 30 ? 'rgba(244,63,94,0.12)' : pct <= 50 ? 'rgba(255,107,43,0.12)' : pct <= 70 ? 'rgba(255,184,0,0.12)' : 'rgba(52,211,153,0.12)';
+    return '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:16px;padding:14px 16px;margin-bottom:10px">' +
       '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
         '<div style="display:flex;align-items:center;gap:8px;">' +
-          '<div style="font-size:13px;font-weight:700;color:white">' + d + '</div>' +
-          '<span style="font-size:9px;font-weight:600;color:' + statoTxt + ';background:' + statoBg + ';padding:1px 6px;border-radius:4px;">' + statoLabel + '</span>' +
+          '<div style="font-size:13px;font-weight:600;color:white">' + d + '</div>' +
+          '<span style="font-size:9px;font-weight:600;color:' + statoTxt + ';background:' + statoBg + ';padding:2px 7px;border-radius:5px;">' + statoLabel + '</span>' +
         '</div>' +
-        '<div style="font-size:15px;font-weight:700;color:' + col + '">' + (v > 0 ? v + '/5' : '—') + '</div>' +
+        '<div style="font-size:18px;font-weight:700;color:' + col + '">' + (dims[d] > 0 ? pct : '—') + '</div>' +
       '</div>' +
-      '<div style="height:5px;background:rgba(255,255,255,0.06);border-radius:4px;margin-bottom:8px">' +
+      '<div style="height:5px;background:rgba(255,255,255,0.06);border-radius:4px">' +
         '<div style="width:' + pct + '%;height:100%;background:' + col + ';border-radius:4px;transition:width .4s"></div>' +
       '</div>' +
-      '<div style="font-size:10px;color:rgba(255,255,255,0.2);border-top:1px solid rgba(255,255,255,0.06);padding-top:8px">Media settore: <strong style="color:rgba(255,255,255,0.3)">—</strong></div>' +
     '</div>';
   }).join('');
 
+  // Benchmark placeholder (for locked section)
+  var benchmarkBlurHtml =
+    '<div style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;">Benchmark settore</div>' +
+    _STD_DIMS_S.slice(0,5).map(function(d) {
+      return '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">' +
+        '<span style="color:rgba(255,255,255,0.5);font-size:13px;">' + d + '</span>' +
+        '<div style="display:flex;align-items:center;gap:8px;">' +
+          '<span style="color:rgba(255,255,255,0.5);font-size:12px;">Tu: ' + _dimPct(d) + '</span>' +
+          '<span style="color:rgba(255,107,43,0.7);font-size:12px;">Media: 55</span>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+
   container.innerHTML =
     _DS_CANVAS +
-    '<div style="position:relative;z-index:1;max-width:580px;margin:0 auto;padding:40px 28px">' +
-      '<h1 style="font-size:28px;font-weight:700;color:white;margin-bottom:4px">Analisi dettagliata</h1>' +
-      '<p style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:28px">Il tuo profilo commerciale confrontato con il settore.</p>' +
+    '<div style="position:relative;z-index:1;max-width:580px;margin:0 auto;padding:40px 28px 60px;">' +
 
-      '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.15);border-radius:16px;padding:22px 24px;display:flex;align-items:center;gap:20px;margin-bottom:24px">' +
-        '<div style="display:flex;align-items:center;justify-content:center;width:76px;height:76px;border-radius:50%;border:3px solid ' + sc.text + ';background:rgba(255,255,255,0.04);flex-shrink:0">' +
-          '<span style="font-size:28px;font-weight:700;color:' + sc.text + '">' + s + '</span>' +
-        '</div>' +
-        '<div>' +
-          '<div style="font-size:22px;font-weight:700;color:' + sc.text + '">' + sc.label + '</div>' +
-          '<div style="font-size:13px;color:rgba(255,255,255,0.4);margin-top:3px">Punteggio complessivo: <strong style="color:rgba(255,255,255,0.8)">' + s + '/100</strong></div>' +
+      // Header
+      '<h1 style="font-size:28px;font-weight:700;color:white;margin:0 0 4px;">Score commerciale</h1>' +
+      '<p style="font-size:13px;color:rgba(255,255,255,0.4);margin:0 0 32px;">Analisi dettagliata del tuo profilo commerciale.</p>' +
+
+      // ── Score ring ──
+      '<div style="display:flex;flex-direction:column;align-items:center;margin-bottom:28px;">' +
+        '<div style="position:relative;width:180px;height:180px;">' +
+          '<svg width="180" height="180" viewBox="0 0 160 160" style="position:absolute;top:10px;left:10px;">' +
+            '<circle cx="80" cy="80" r="68" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8"/>' +
+            '<circle cx="80" cy="80" r="68" fill="none" stroke="' + scoreCol + '" stroke-width="8" stroke-linecap="round" ' +
+              'stroke-dasharray="' + circumference + '" stroke-dashoffset="' + dashOffset + '" ' +
+              'transform="rotate(-90 80 80)" style="transition:stroke-dashoffset .6s ease;"/>' +
+          '</svg>' +
+          '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;">' +
+            '<div style="font-size:72px;font-weight:800;color:white;line-height:1;">' + s + '</div>' +
+            '<div style="font-size:20px;color:rgba(255,255,255,0.35);margin-top:2px;">su 100</div>' +
+          '</div>' +
         '</div>' +
       '</div>' +
 
-      '<div style="font-size:11px;font-weight:600;color:#7B61FF;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Dimensioni — ordine alfabetico</div>' +
+      // ── Stai perdendo ──
+      '<div style="background:rgba(255,107,43,0.08);border:1px solid rgba(255,107,43,0.2);border-radius:16px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;">' +
+        '<div>' +
+          '<div style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Stai perdendo</div>' +
+          '<div style="font-size:36px;font-weight:800;color:#FF6B2B;line-height:1;">\u20ac' + stimaPerdita.toLocaleString('it-IT') + '</div>' +
+          '<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:5px;">ogni anno</div>' +
+        '</div>' +
+        (isFree
+          ? '<div onclick="showViewPMI(\'piano\')" style="padding:10px 20px;background:#7B61FF;color:white;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;flex-shrink:0;">Sblocca \u2192</div>'
+          : '') +
+      '</div>' +
+
+      // ── Leva dice ──
+      '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:16px;padding:20px;margin-bottom:28px;">' +
+        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">' +
+          '<div style="width:7px;height:7px;border-radius:50%;background:#7B61FF;animation:leva-pulse 1.5s infinite;flex-shrink:0;"></div>' +
+          '<div style="font-size:13px;font-weight:700;color:#7B61FF;">Leva dice</div>' +
+          '<div style="font-size:12px;color:rgba(255,255,255,0.3);">ora</div>' +
+        '</div>' +
+        '<div style="font-size:14px;color:rgba(255,255,255,0.8);line-height:1.6;">Le tue aree pi\u00f9 critiche sono <strong style="color:white;">' + top3Names + '</strong>. Intervieni su queste per recuperare fatturato.</div>' +
+      '</div>' +
+
+      // ── 8 Dimensioni ──
+      '<div style="font-size:11px;font-weight:600;color:#7B61FF;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;">Le tue 8 dimensioni</div>' +
       dimsHtml +
+
+      // ── Benchmark (locked for free) ──
+      '<div style="margin-top:20px;">' +
+        (isFree
+          ? _lockedCard(benchmarkBlurHtml, 'Benchmark settore', 'Disponibile con piano Self')
+          : '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:16px;padding:20px;">' +
+              '<div style="font-size:11px;font-weight:600;color:#7B61FF;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;">Benchmark settore</div>' +
+              _STD_DIMS_S.map(function(d) {
+                var pct = _dimPct(d);
+                var col = _dimColDS(pct);
+                return '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">' +
+                  '<span style="color:rgba(255,255,255,0.6);font-size:13px;">' + d + '</span>' +
+                  '<div style="display:flex;align-items:center;gap:8px;">' +
+                    '<span style="font-size:13px;font-weight:600;color:' + col + ';">Tu: ' + pct + '</span>' +
+                    '<span style="color:rgba(255,255,255,0.2);font-size:13px;">Media: 55</span>' +
+                  '</div>' +
+                '</div>';
+              }).join('') +
+            '</div>') +
+      '</div>' +
+
     '</div>';
 
   _levaStartWaves('leva-waves-view');
