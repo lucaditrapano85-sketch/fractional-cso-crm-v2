@@ -566,24 +566,47 @@ body.cso-mode .btn-admin {
 
 /* ── Dashboard Deep Space ─────────────────────────────────────────────────── */
 
+/* Tutti i container intermedi trasparenti — eliminano lo sfondo bianco */
+body.cso-mode .main {
+  background: transparent !important;
+}
+body.cso-mode .view {
+  background: transparent !important;
+}
+body.cso-mode #view-dashboard {
+  background: transparent !important;
+}
+body.cso-mode .kpi-grid {
+  background: transparent !important;
+}
+body.cso-mode #guadagni-dashboard {
+  background: transparent !important;
+}
+body.cso-mode #da-fare-oggi {
+  background: transparent !important;
+}
+body.cso-mode #alert-scadenze {
+  background: transparent !important;
+}
+
+/* KPI cards — sfondo scuro, no blur (il blur blura lo sfondo bianco di .main) */
 body.cso-mode .kpi-card {
   background: rgba(255,255,255,0.04) !important;
-  border: 1px solid rgba(123,97,255,0.1) !important;
   border-top: 1px solid rgba(123,97,255,0.1) !important;
+  border-right: 1px solid rgba(123,97,255,0.1) !important;
+  border-bottom: 1px solid rgba(123,97,255,0.1) !important;
+  /* border-left lasciato agli stili inline colorati */
   border-radius: 16px !important;
   box-shadow: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
+  transform: none !important;
 }
 
 body.cso-mode .kpi-card:hover {
   background: rgba(255,255,255,0.06) !important;
-  border-color: rgba(123,97,255,0.2) !important;
-}
-
-/* override per le kpi-card con border-left colorato (overridden inline ma border-radius no) */
-body.cso-mode .kpi-card[style*="border-left"] {
-  border-radius: 0 16px 16px 0 !important;
+  transform: none !important;
+  box-shadow: none !important;
 }
 
 body.cso-mode .kpi-label {
@@ -596,7 +619,6 @@ body.cso-mode .kpi-label {
 body.cso-mode .kpi-val {
   color: white !important;
   font-weight: 700 !important;
-  font-size: 28px !important;
 }
 
 body.cso-mode .kpi-sub {
@@ -621,9 +643,8 @@ body.cso-mode .dash-section-label {
 }
 
 /* Status summary bar */
-body.cso-mode .status-summary-item {
-  background: rgba(255,255,255,0.04) !important;
-  border: 1px solid rgba(123,97,255,0.1) !important;
+body.cso-mode .status-summary {
+  background: transparent !important;
 }
 
 /* Dash header */
