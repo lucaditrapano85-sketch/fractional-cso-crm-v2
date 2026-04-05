@@ -14490,31 +14490,35 @@ function renderPMIPiano(container) {
 
   // ── Headers ───────────────────────────────────────────────────────────────
   var headerFree =
-    '<div style="position:relative;min-height:90px;background:rgba(255,255,255,0.04);border-radius:14px 14px 0 0;border-top:3px solid rgba(255,255,255,0.12);padding:22px 14px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
+    '<div style="position:relative;min-height:110px;background:rgba(255,255,255,0.04);border-radius:14px 14px 0 0;border-top:3px solid rgba(255,255,255,0.12);padding:26px 14px 16px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
       headerBadgeWrap('free') +
-      '<div style="font-size:17px;font-weight:600;color:white;">Free</div>' +
-      '<div style="font-size:13px;color:rgba(255,255,255,0.4);margin-top:3px;">€0</div>' +
+      '<div style="font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.5);">Free</div>' +
+      '<div style="font-size:32px;font-weight:800;color:white;margin:4px 0 2px;">€0</div>' +
+      '<div style="font-size:13px;color:rgba(255,255,255,0.3);">per sempre</div>' +
     '</div>';
 
   var headerSelf =
-    '<div style="position:relative;min-height:90px;background:rgba(255,255,255,0.04);border-radius:14px 14px 0 0;border-top:3px solid rgba(123,97,255,0.5);padding:22px 14px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
+    '<div style="position:relative;min-height:110px;background:rgba(255,255,255,0.04);border-radius:14px 14px 0 0;border-top:3px solid rgba(123,97,255,0.5);padding:26px 14px 16px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
       headerBadgeWrap('self') +
-      '<div style="font-size:17px;font-weight:600;color:white;">Self</div>' +
-      '<div style="font-size:13px;color:rgba(255,255,255,0.4);margin-top:3px;">€199/mese</div>' +
+      '<div style="font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#7B61FF;">Self</div>' +
+      '<div style="font-size:32px;font-weight:800;color:white;margin:4px 0 2px;">€199</div>' +
+      '<div style="font-size:13px;color:rgba(255,255,255,0.4);">/mese</div>' +
     '</div>';
 
   var headerBase =
-    '<div style="position:relative;min-height:90px;background:rgba(123,97,255,0.08);border-radius:14px 14px 0 0;border-top:3px solid #7B61FF;padding:22px 14px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
+    '<div style="position:relative;min-height:110px;background:rgba(123,97,255,0.08);border-radius:14px 14px 0 0;border-top:3px solid #7B61FF;padding:26px 14px 16px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
       headerBadgeWrap('guided_base') +
-      '<div style="font-size:17px;font-weight:600;color:#A78BFA;">Guided Base</div>' +
-      '<div style="font-size:13px;color:rgba(167,139,250,0.6);margin-top:3px;">€399/mese</div>' +
+      '<div style="font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#7B61FF;">Guided Base</div>' +
+      '<div style="font-size:32px;font-weight:800;color:white;margin:4px 0 2px;">€399</div>' +
+      '<div style="font-size:13px;color:rgba(255,255,255,0.4);">/mese</div>' +
     '</div>';
 
   var headerPro =
-    '<div style="position:relative;min-height:90px;background:rgba(255,107,43,0.08);border-radius:14px 14px 0 0;border-top:3px solid #FF6B2B;padding:22px 14px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
+    '<div style="position:relative;min-height:110px;background:rgba(255,107,43,0.08);border-radius:14px 14px 0 0;border-top:3px solid #FF6B2B;padding:26px 14px 16px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
       headerBadgeWrap('guided_pro') +
-      '<div style="font-size:17px;font-weight:600;color:#FF6B2B;">Guided Pro</div>' +
-      '<div style="font-size:13px;color:rgba(255,107,43,0.5);margin-top:3px;">€599/mese</div>' +
+      '<div style="font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#FF6B2B;">Guided Pro</div>' +
+      '<div style="font-size:32px;font-weight:800;color:white;margin:4px 0 2px;">€599</div>' +
+      '<div style="font-size:13px;color:rgba(255,255,255,0.4);">/mese</div>' +
     '</div>';
 
   // ── Feature rows ──────────────────────────────────────────────────────────
