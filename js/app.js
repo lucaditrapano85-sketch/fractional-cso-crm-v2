@@ -14368,139 +14368,137 @@ async function salvaProfiloPMI() {
 
 function renderPMIPiano(container) {
   var p = window._pmiProspect || {};
-  var pianoCorrente = p.piano || 'self';
+  var pianoCorrente = p.piano || 'free';
 
   _levaSetDSBg(container);
 
-  var CHECK = '<div style="width:20px;height:20px;border-radius:50%;background:rgba(52,211,153,0.15);display:inline-flex;align-items:center;justify-content:center;">' +
-    '<svg width="11" height="8" viewBox="0 0 11 8" fill="none"><path d="M1 4L4 7L10 1" stroke="#34D399" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
-    '</div>';
-  var DASH = '<div style="width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.04);display:inline-flex;align-items:center;justify-content:center;">' +
-    '<div style="width:8px;height:1.5px;background:rgba(255,255,255,0.15);border-radius:2px;"></div>' +
-    '</div>';
+  var CHECK = '<span style="font-size:16px;color:#00C853;line-height:1;font-weight:700;">✓</span>';
+  var DASH  = '<span style="font-size:14px;color:rgba(255,255,255,0.15);line-height:1;">—</span>';
 
-  // [label, self, guided_base, guided_pro]
+  // [label, free, self, guided_base, guided_pro]
   var features = [
-    ['Diagnosi 8 dimensioni',      CHECK, CHECK, CHECK],
-    ['Score e semafori',            CHECK, CHECK, CHECK],
-    ['1 azione AI / settimana',     CHECK, CHECK, CHECK],
-    ['Ri-diagnosi trimestrale',     CHECK, CHECK, CHECK],
-    ['Benchmark di settore base',   CHECK, CHECK, CHECK],
-    ['Controfattuale trimestrale',  CHECK, CHECK, CHECK],
-    ['1 call CSO al mese',          DASH,  CHECK, CHECK],
-    ['Piano azioni con CSO',        DASH,  CHECK, CHECK],
-    ['Report PDF mensile',          DASH,  DASH,  CHECK],
-    ['Simulazioni what-if',         DASH,  DASH,  CHECK],
-    ['Benchmark peer dettagliato',  DASH,  DASH,  CHECK],
-    ['Call CSO illimitate',         DASH,  DASH,  CHECK],
+    ['Diagnosi 8 dimensioni',      CHECK, CHECK, CHECK, CHECK],
+    ['Score e semafori',            CHECK, CHECK, CHECK, CHECK],
+    ['3 aree critiche',             CHECK, CHECK, CHECK, CHECK],
+    ['1 azione AI / settimana',     DASH,  CHECK, CHECK, CHECK],
+    ['Ri-diagnosi trimestrale',     DASH,  CHECK, CHECK, CHECK],
+    ['Benchmark di settore base',   DASH,  CHECK, CHECK, CHECK],
+    ['Controfattuale trimestrale',  DASH,  CHECK, CHECK, CHECK],
+    ['1 call CSO al mese',          DASH,  DASH,  CHECK, CHECK],
+    ['Piano azioni con CSO',        DASH,  DASH,  CHECK, CHECK],
+    ['Report PDF mensile',          DASH,  DASH,  DASH,  CHECK],
+    ['Simulazioni what-if',         DASH,  DASH,  DASH,  CHECK],
+    ['Benchmark peer dettagliato',  DASH,  DASH,  DASH,  CHECK],
+    ['Call CSO illimitate',         DASH,  DASH,  DASH,  CHECK],
   ];
 
-  function mkBtn(id, labelAttivo, labelDefault, bg, color, border) {
-    var isCurrent = pianoCorrente === id;
-    var label  = isCurrent ? labelAttivo : labelDefault;
-    var bBg    = isCurrent ? 'rgba(255,255,255,0.04)' : bg;
-    var bColor = isCurrent ? 'rgba(255,255,255,0.25)' : color;
-    var bBord  = isCurrent ? '1px solid rgba(255,255,255,0.08)' : border;
-    var oc     = isCurrent ? '' : ' onclick="aggiornaPiano(\'' + id + '\')"';
-    return '<button' + oc + (isCurrent ? ' disabled' : '') +
-      ' style="width:80%;padding:10px 0;background:' + bBg + ';color:' + bColor +
-      ';border:' + bBord + ';border-radius:10px;' +
-      'font-size:13px;font-weight:500;cursor:' + (isCurrent ? 'default' : 'pointer') +
-      ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + label + '</button>';
+  function mkBtn(planId, upgradeLbl, bg, textColor) {
+    var isCurrent = pianoCorrente === planId;
+    // Free: no upgrade button (can't downgrade), only show "Piano attuale" if current
+    if (planId === 'free') {
+      if (isCurrent) {
+        return '<button disabled style="width:80%;padding:9px 0;background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.08);border-radius:10px;font-size:12px;font-weight:500;cursor:default;">Piano attuale</button>';
+      }
+      return '';
+    }
+    if (isCurrent) {
+      return '<button disabled style="width:80%;padding:9px 0;background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.08);border-radius:10px;font-size:12px;font-weight:500;cursor:default;">Piano attuale</button>';
+    }
+    return '<button onclick="aggiornaPiano(\'' + planId + '\')" style="width:80%;padding:9px 0;background:' + bg + ';color:' + textColor + ';border:none;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;transition:opacity .15s;" onmouseover="this.style.opacity=\'0.85\'" onmouseout="this.style.opacity=\'1\'">' + upgradeLbl + '</button>';
   }
 
-  // Header cards HTML
-  var selfIsCurrent  = pianoCorrente === 'self';
-  var baseIsCurrent  = pianoCorrente === 'guided_base';
-  var proIsCurrent   = pianoCorrente === 'guided_pro';
-
-  function currentLabel(id) {
-    if (pianoCorrente !== id) return '';
-    var c = id === 'guided_pro' ? '#FF6B2B' : '#7B61FF';
-    return '<div style="font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:' + c + ';margin-bottom:4px;">Il tuo piano</div>';
+  function currentBadge(planId) {
+    if (pianoCorrente !== planId) return '';
+    var c = planId === 'guided_pro' ? '#FF6B2B' : '#7B61FF';
+    return '<div style="font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:' + c + ';margin-bottom:4px;">Il tuo piano</div>';
   }
+
+  // ── Headers ───────────────────────────────────────────────────────────────
+  var headerFree =
+    '<div style="position:relative;height:90px;background:rgba(255,255,255,0.04);border-radius:14px 14px 0 0;border-top:3px solid rgba(255,255,255,0.12);padding:14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
+      currentBadge('free') +
+      '<div style="font-size:17px;font-weight:600;color:white;">Free</div>' +
+      '<div style="font-size:13px;color:rgba(255,255,255,0.4);margin-top:3px;">€0</div>' +
+    '</div>';
 
   var headerSelf =
-    '<div style="height:90px;background:rgba(255,255,255,0.04);border-radius:14px 14px 0 0;border-top:3px solid rgba(255,255,255,0.15);padding:16px;text-align:center;display:flex;flex-direction:column;justify-content:center;">' +
-      currentLabel('self') +
-      '<div style="font-size:18px;font-weight:600;color:white;">Self</div>' +
-      '<div style="font-size:13px;color:rgba(255,255,255,0.4);margin-top:4px;">€199/mese</div>' +
+    '<div style="position:relative;height:90px;background:rgba(255,255,255,0.04);border-radius:14px 14px 0 0;border-top:3px solid rgba(123,97,255,0.5);padding:14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
+      currentBadge('self') +
+      '<div style="font-size:17px;font-weight:600;color:white;">Self</div>' +
+      '<div style="font-size:13px;color:rgba(255,255,255,0.4);margin-top:3px;">€199/mese</div>' +
     '</div>';
 
   var headerBase =
-    '<div style="position:relative;height:90px;background:rgba(123,97,255,0.08);border-radius:14px 14px 0 0;border-top:3px solid #7B61FF;padding:16px;text-align:center;display:flex;flex-direction:column;justify-content:center;">' +
-      (baseIsCurrent ? currentLabel('guided_base') : '<span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#7B61FF;color:white;font-size:10px;font-weight:600;padding:3px 12px;border-radius:10px;white-space:nowrap;">Consigliato</span>') +
-      '<div style="font-size:18px;font-weight:600;color:#A78BFA;">Guided Base</div>' +
-      '<div style="font-size:13px;color:rgba(167,139,250,0.6);margin-top:4px;">€399/mese</div>' +
+    '<div style="position:relative;height:90px;background:rgba(123,97,255,0.08);border-radius:14px 14px 0 0;border-top:3px solid #7B61FF;padding:14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
+      (pianoCorrente === 'guided_base'
+        ? currentBadge('guided_base')
+        : '<span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#7B61FF;color:white;font-size:10px;font-weight:600;padding:3px 12px;border-radius:10px;white-space:nowrap;">Consigliato</span>') +
+      '<div style="font-size:17px;font-weight:600;color:#A78BFA;">Guided Base</div>' +
+      '<div style="font-size:13px;color:rgba(167,139,250,0.6);margin-top:3px;">€399/mese</div>' +
     '</div>';
 
   var headerPro =
-    '<div style="height:90px;background:rgba(255,107,43,0.08);border-radius:14px 14px 0 0;border-top:3px solid #FF6B2B;padding:16px;text-align:center;display:flex;flex-direction:column;justify-content:center;">' +
-      currentLabel('guided_pro') +
-      '<div style="font-size:18px;font-weight:600;color:#FF6B2B;">Guided Pro</div>' +
-      '<div style="font-size:13px;color:rgba(255,107,43,0.5);margin-top:4px;">€599/mese</div>' +
+    '<div style="position:relative;height:90px;background:rgba(255,107,43,0.08);border-radius:14px 14px 0 0;border-top:3px solid #FF6B2B;padding:14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
+      currentBadge('guided_pro') +
+      '<div style="font-size:17px;font-weight:600;color:#FF6B2B;">Guided Pro</div>' +
+      '<div style="font-size:13px;color:rgba(255,107,43,0.5);margin-top:3px;">€599/mese</div>' +
     '</div>';
 
+  // ── Table rows ────────────────────────────────────────────────────────────
   var rowsHtml = features.map(function(row, i) {
     var alt = i % 2 === 0 ? 'rgba(255,255,255,0.02)' : 'transparent';
     return '<tr style="background:' + alt + ';">' +
-      '<td style="padding:10px 12px 10px 20px;font-size:13px;color:rgba(255,255,255,0.7);line-height:1.35;min-width:200px;">' + row[0] + '</td>' +
-      '<td style="text-align:center;padding:10px 8px;width:20%;">' + row[1] + '</td>' +
-      '<td style="text-align:center;padding:10px 8px;width:20%;">' + row[2] + '</td>' +
-      '<td style="text-align:center;padding:10px 8px;width:20%;">' + row[3] + '</td>' +
+      '<td style="padding:9px 10px 9px 14px;font-size:12px;color:rgba(255,255,255,0.7);line-height:1.35;">' + row[0] + '</td>' +
+      '<td style="text-align:center;padding:9px 4px;">' + row[1] + '</td>' +
+      '<td style="text-align:center;padding:9px 4px;">' + row[2] + '</td>' +
+      '<td style="text-align:center;padding:9px 4px;">' + row[3] + '</td>' +
+      '<td style="text-align:center;padding:9px 4px;">' + row[4] + '</td>' +
     '</tr>';
   }).join('');
 
   var btnRowHtml =
     '<tr>' +
-      '<td style="padding:16px 12px 20px 20px;"></td>' +
-      '<td style="text-align:center;padding:16px 8px 20px;">' +
-        mkBtn('self', 'Piano attuale', 'Attiva Self', 'transparent', '#1a1a2e', '1.5px solid rgba(26,26,46,0.15)') +
-      '</td>' +
-      '<td style="text-align:center;padding:16px 8px 20px;">' +
-        mkBtn('guided_base', 'Piano attuale', 'Attiva Base', '#7B61FF', 'white', 'none') +
-      '</td>' +
-      '<td style="text-align:center;padding:16px 8px 20px;">' +
-        mkBtn('guided_pro', 'Piano attuale', 'Attiva Pro', '#FF6B2B', 'white', 'none') +
-      '</td>' +
+      '<td style="padding:14px 10px 18px 14px;"></td>' +
+      '<td style="text-align:center;padding:14px 4px 18px;">' + mkBtn('free', '', '', '') + '</td>' +
+      '<td style="text-align:center;padding:14px 4px 18px;">' + mkBtn('self', 'Attiva Self', '#7B61FF', 'white') + '</td>' +
+      '<td style="text-align:center;padding:14px 4px 18px;">' + mkBtn('guided_base', 'Attiva Base', '#7B61FF', 'white') + '</td>' +
+      '<td style="text-align:center;padding:14px 4px 18px;">' + mkBtn('guided_pro', 'Attiva Pro', '#FF6B2B', 'white') + '</td>' +
     '</tr>';
 
+  // label 28%, 4 piani 18% cad.
   var tableHtml =
     '<table style="width:100%;border-collapse:collapse;">' +
-      '<colgroup>' +
-        '<col style="width:40%">' +
-        '<col style="width:20%">' +
-        '<col style="width:20%">' +
-        '<col style="width:20%">' +
-      '</colgroup>' +
+      '<colgroup><col style="width:28%"><col style="width:18%"><col style="width:18%"><col style="width:18%"><col style="width:18%"></colgroup>' +
       '<tbody>' + rowsHtml + btnRowHtml + '</tbody>' +
     '</table>';
 
   container.innerHTML =
     _DS_CANVAS +
-    '<div style="position:relative;z-index:1;max-width:820px;margin:0 auto;padding:40px 28px">' +
-      '<h1 style="font-size:28px;font-weight:700;color:white;margin-bottom:6px">Il tuo piano</h1>' +
-      '<p style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:28px">Scegli il livello di supporto per la tua azienda.</p>' +
+    '<div style="position:relative;z-index:1;max-width:900px;margin:0 auto;padding:40px 20px 60px;">' +
+      '<h1 style="font-size:28px;font-weight:700;color:white;margin:0 0 6px;">Il tuo piano</h1>' +
+      '<p style="font-size:13px;color:rgba(255,255,255,0.4);margin:0 0 28px;">Scegli il livello di supporto per la tua azienda.</p>' +
 
-      // Header cards row
-      '<div style="display:grid;grid-template-columns:40% 20% 20% 20%;margin-bottom:0;">' +
-        '<div></div>' +
-        '<div style="padding:0 4px 0 0;">' + headerSelf + '</div>' +
-        '<div style="padding:0 4px;">' + headerBase + '</div>' +
-        '<div style="padding:0 0 0 4px;">' + headerPro + '</div>' +
-      '</div>' +
-
-      '<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(123,97,255,0.12);border-radius:0 0 14px 14px;overflow:hidden;">' +
-        tableHtml +
+      '<div style="overflow-x:auto;">' +
+        // Header row
+        '<div style="display:grid;grid-template-columns:28% 18% 18% 18% 18%;min-width:620px;margin-bottom:0;">' +
+          '<div></div>' +
+          '<div style="padding:0 3px 0 0;">' + headerFree + '</div>' +
+          '<div style="padding:0 3px;">' + headerSelf + '</div>' +
+          '<div style="padding:0 3px;">' + headerBase + '</div>' +
+          '<div style="padding:0 0 0 3px;">' + headerPro + '</div>' +
+        '</div>' +
+        '<div style="min-width:620px;background:rgba(255,255,255,0.03);border:1px solid rgba(123,97,255,0.12);border-top:none;border-radius:0 0 14px 14px;overflow:hidden;">' +
+          tableHtml +
+        '</div>' +
       '</div>' +
 
       '<p style="font-size:11px;color:rgba(255,255,255,0.2);text-align:center;margin-top:10px;">Ogni piano include il precedente. Puoi cambiare in qualsiasi momento.</p>' +
-      '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,107,43,0.2);border-radius:14px;padding:16px 20px;margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:16px;">' +
-        '<div>' +
-          '<div style="font-size:15px;font-weight:700;color:white;margin-bottom:4px;">Non sei ancora sicuro?</div>' +
-          '<div style="font-size:13px;color:rgba(255,255,255,0.4);">Parla con un esperto. 45 minuti, zero impegno, zero sorprese.</div>' +
-        '</div>' +
-        '<button onclick="prenotaCallSingola()" style="flex-shrink:0;padding:10px 24px;background:#FF6B2B;color:white;border:none;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;">Prenota una call — €120</button>' +
+
+      '<div style="text-align:center;margin-top:20px;">' +
+        '<span onclick="prenotaCallSingola()" style="font-size:14px;color:#FF6B2B;cursor:pointer;" ' +
+          'onmouseover="this.style.textDecoration=\'underline\'" onmouseout="this.style.textDecoration=\'none\'">' +
+          'Oppure prenota una call singola — €120' +
+        '</span>' +
       '</div>' +
     '</div>';
 
@@ -14516,7 +14514,7 @@ async function aggiornaPiano(nuovoPiano) {
     window._userPlan = nuovoPiano;
     var idx = prospects.findIndex(function(x){ return x.id === p.id; });
     if (idx >= 0) prospects[idx] = window._pmiProspect;
-    var nomiPiano = { self: 'Self', guided_base: 'Guided Base', guided_pro: 'Guided Pro' };
+    var nomiPiano = { free: 'Free', self: 'Self', guided_base: 'Guided Base', guided_pro: 'Guided Pro' };
     showToast('Piano ' + (nomiPiano[nuovoPiano] || nuovoPiano) + ' attivato!', 'success');
     // Re-render full view so sidebar nav updates too
     renderViewPMI('piano');
@@ -14536,33 +14534,35 @@ function prenotaCallSingola() {
   var old = document.getElementById('_leva_call_modal');
   if (old && old.parentNode) old.parentNode.removeChild(old);
 
-  var INP   = 'width:100%;box-sizing:border-box;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.08);color:#1a1a2e;border-radius:10px;padding:10px 12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;outline:none;margin-bottom:14px;';
-  var INP_RO = INP + 'background:rgba(0,0,0,0.03);color:rgba(26,26,46,0.4);';
-  var LABEL = 'font-size:11px;font-weight:600;color:rgba(26,26,46,0.45);margin-bottom:5px;display:block;';
+  var INP    = 'width:100%;box-sizing:border-box;background:rgba(255,255,255,0.06);border:1px solid rgba(123,97,255,0.2);color:white;border-radius:10px;padding:10px 12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;outline:none;margin-bottom:14px;';
+  var INP_RO = 'width:100%;box-sizing:border-box;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.35);border-radius:10px;padding:10px 12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;outline:none;margin-bottom:14px;';
+  var LABEL  = 'font-size:11px;font-weight:600;color:rgba(255,255,255,0.4);margin-bottom:5px;display:block;letter-spacing:0.04em;text-transform:uppercase;';
 
   var overlay = document.createElement('div');
   overlay.id = '_leva_call_modal';
-  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.3);z-index:9999;display:flex;align-items:center;justify-content:center;';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(6,8,15,0.8);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:9999;display:flex;align-items:center;justify-content:center;';
   overlay.onclick = function(e) { if (e.target === overlay) overlay.parentNode.removeChild(overlay); };
 
   overlay.innerHTML =
-    '<div style="background:#d8dbe2;border-radius:16px;max-width:420px;width:90%;padding:24px;position:relative;">' +
-      '<button onclick="document.getElementById(\'_leva_call_modal\').remove()" style="position:absolute;top:14px;right:14px;background:none;border:none;font-size:18px;cursor:pointer;color:rgba(26,26,46,0.4);line-height:1;">✕</button>' +
-      '<h2 style="font-size:16px;font-weight:700;color:#1a1a2e;margin-bottom:6px;margin-right:24px;">Prenota una call con un esperto</h2>' +
-      '<p style="font-size:12px;color:rgba(26,26,46,0.5);margin-bottom:20px;">Un consulente commerciale ti contatterà per fissare la sessione.</p>' +
+    '<div style="background:#0a0c14;border:1px solid rgba(123,97,255,0.15);border-radius:20px;max-width:420px;width:90%;padding:28px;position:relative;">' +
+      '<button onclick="document.getElementById(\'_leva_call_modal\').remove()" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:18px;cursor:pointer;color:rgba(255,255,255,0.3);line-height:1;" onmouseover="this.style.color=\'white\'" onmouseout="this.style.color=\'rgba(255,255,255,0.3)\'">✕</button>' +
+      '<h2 style="font-size:17px;font-weight:700;color:white;margin:0 24px 6px 0;">Prenota una call con un esperto</h2>' +
+      '<p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:22px;line-height:1.5;">Un consulente commerciale ti contatterà per fissare la sessione.</p>' +
       '<label style="' + LABEL + '">Nome</label>' +
       '<input style="' + INP_RO + '" value="' + _esc(nomeCompleto) + '" readonly>' +
       '<label style="' + LABEL + '">Email</label>' +
       '<input style="' + INP_RO + '" value="' + _esc(emailVal) + '" readonly>' +
       '<label style="' + LABEL + '">Telefono</label>' +
-      '<input id="_leva_call_tel" style="' + INP + '" value="' + _esc(telefonoVal) + '" placeholder="+39 333 1234567" type="tel">' +
+      '<input id="_leva_call_tel" style="' + INP + '" value="' + _esc(telefonoVal) + '" placeholder="+39 333 1234567" type="tel" ' +
+        'onfocus="this.style.borderColor=\'#7B61FF\';this.style.boxShadow=\'0 0 0 3px rgba(123,97,255,0.12)\'" ' +
+        'onblur="this.style.borderColor=\'rgba(123,97,255,0.2)\';this.style.boxShadow=\'none\'">' +
       '<label style="' + LABEL + '">Preferenza oraria</label>' +
-      '<select id="_leva_call_orario" style="' + INP + '">' +
-        '<option value="mattina">Mattina (9-12)</option>' +
-        '<option value="pomeriggio">Pomeriggio (14-17)</option>' +
-        '<option value="sera">Sera (17-19)</option>' +
+      '<select id="_leva_call_orario" style="' + INP + 'appearance:none;-webkit-appearance:none;">' +
+        '<option value="mattina" style="background:#0a0c14;">Mattina (9-12)</option>' +
+        '<option value="pomeriggio" style="background:#0a0c14;">Pomeriggio (14-17)</option>' +
+        '<option value="sera" style="background:#0a0c14;">Sera (17-19)</option>' +
       '</select>' +
-      '<button onclick="inviaRichiestaCall()" style="width:100%;padding:12px;background:#3D5AFE;color:white;border:none;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Invia richiesta</button>' +
+      '<button onclick="inviaRichiestaCall()" style="width:100%;padding:12px;background:#7B61FF;color:white;border:none;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s;" onmouseover="this.style.opacity=\'0.88\'" onmouseout="this.style.opacity=\'1\'">Invia richiesta</button>' +
     '</div>';
 
   document.body.appendChild(overlay);
