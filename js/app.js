@@ -1153,6 +1153,36 @@ async function reinviaInvito(prospectId) {
 }
 
 // -- DASHBOARD ---------------------------------------------
+function _calcolaPriorita() {
+  const priorita = [];
+  const oggi = new Date();
+
+  prospects.filter(p => p.stato === 'attivo' || p.stato === 'ingaggiato').forEach(p => {
+    const ultimo = p.ultimo_contatto ? new Date(p.ultimo_contatto) : null;
+    const giorni = ultimo ? Math.floor((oggi - ultimo)/(1000*60*60*24)) : 999;
+    if (giorni > 14) {
+      priorita.push({
+        tipo: 'urgente', color: '#F43F5E', bgColor: 'rgba(244,63,94,0.12)', label: 'Urgente',
+        testo: 'Chiama ' + (p.nome||'') + ' ' + (p.cognome||'') + ' — rischio churn',
+        sub: (p.azienda||'N/A') + ' | Score ' + (p.score||0) + ' | Ultima call: ' + giorni + ' giorni fa',
+        peso: giorni
+      });
+    }
+  });
+
+  prospects.filter(p => p.stato === 'attivo' && (p.score||0) > 60 && p.piano !== 'guided_pro').forEach(p => {
+    priorita.push({
+      tipo: 'opportunita', color: '#34D399', bgColor: 'rgba(52,211,153,0.12)', label: 'Opportunità',
+      testo: 'Proponi upgrade ' + (p.piano === 'guided_base' ? 'Pro' : 'Base') + ' a ' + (p.nome||'') + ' ' + (p.cognome||''),
+      sub: (p.azienda||'N/A') + ' | Score ' + (p.score||0),
+      peso: p.score||0
+    });
+  });
+
+  priorita.sort((a,b) => a.tipo === 'urgente' ? -1 : b.tipo === 'urgente' ? 1 : b.peso - a.peso);
+  return priorita.slice(0, 3);
+}
+
 async function renderDashboard() {
   // Nascondi il vecchio dash-header (rimpiazzato dal nuovo header inline)
   const _dashHeader = document.querySelector('#view-dashboard .dash-header');
@@ -1160,7 +1190,6 @@ async function renderDashboard() {
 
   // === CALCOLI ===
   const ora = new Date().getHours();
-  const saluto = ora < 13 ? 'Buongiorno' : ora < 18 ? 'Buon pomeriggio' : 'Buonasera';
   const _profile = window._csoProfile || window._currentProfile || {};
   const nomeCso = (_profile.nome || localStorage.getItem('cso_nome') || (_profile.email || '').split('@')[0] || 'CSO').split(' ')[0];
   const dataStr = new Date().toLocaleDateString('it-IT', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
@@ -1172,18 +1201,40 @@ async function renderDashboard() {
   const guadagnoMese = (guidedBase * 200) + (guidedPro * 320);
   const callMese = window._callsThisWeek || 0;
   const scoreMedio = attiviCount > 0 ? Math.round(attivi.reduce((s, p) => s + calcScore(p), 0) / attiviCount) : 0;
+  const oggi = new Date();
 
   // Allarme churn
-  const oggi = new Date();
   const churnRischio = prospects.filter(p => {
     if (p.stato !== 'attivo' && p.stato !== 'ingaggiato') return false;
     const ultimo = p.ultimo_contatto ? new Date(p.ultimo_contatto) : null;
     return !ultimo || ((oggi - ultimo) / (1000*60*60*24)) > 14;
   });
 
-  // === HEADER + KPI ===
+  // Priorità e stati pipeline
+  const priorita = _calcolaPriorita();
+  const _stati = {in_attesa:{color:'#FFB800',label:'In attesa'}, ingaggiato:{color:'#7B61FF',label:'Ingaggiato'}, in_diagnosi:{color:'#9C27B0',label:'In diagnosi'}, attivo:{color:'#00C853',label:'Attivo'}, archiviato:{color:'rgba(255,255,255,0.3)',label:'Archiviato'}};
+  const _conteggi = {};
+  Object.keys(_stati).forEach(s => _conteggi[s] = prospects.filter(p => p.stato === s).length);
+
   const kpiGrid = document.getElementById('kpi-grid');
-  if (kpiGrid) kpiGrid.innerHTML = `
+  if (!kpiGrid) return;
+
+  // Stato vuoto
+  if (prospects.length === 0) {
+    kpiGrid.innerHTML = `
+      <div style="text-align:center;padding:60px 20px">
+        <div style="color:rgba(255,255,255,0.15);font-size:48px;margin-bottom:16px">👋</div>
+        <div style="color:white;font-size:20px;font-weight:600;margin-bottom:8px">Benvenuto su Leva</div>
+        <div style="color:rgba(255,255,255,0.4);font-size:15px;margin-bottom:24px">Invita il tuo primo cliente per iniziare</div>
+        <button onclick="apriModaleNuovoCliente()" style="background:#7B61FF;color:white;border:none;padding:12px 28px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer">Nuovo cliente →</button>
+      </div>`;
+    ['alert-scadenze','guadagni-dashboard','da-fare-oggi','status-summary','pipeline-grid','richiede-attenzione'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.innerHTML = '';
+    });
+    return;
+  }
+
+  kpiGrid.innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
       <div>
         <div style="color:rgba(255,255,255,0.5);font-size:14px;letter-spacing:0.08em;text-transform:uppercase">Da fare oggi</div>
@@ -1191,6 +1242,7 @@ async function renderDashboard() {
       </div>
       <div style="color:rgba(255,255,255,0.35);font-size:14px">${dataStr}</div>
     </div>
+
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-bottom:24px">
       <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:20px">
         <div style="color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:8px">CLIENTI ATTIVI</div>
@@ -1209,6 +1261,7 @@ async function renderDashboard() {
         <div style="color:#FBBF24;font-size:48px;font-weight:500">${scoreMedio}</div>
       </div>
     </div>
+
     ${churnRischio.length > 0 ? `
     <div style="background:rgba(244,63,94,0.06);border:0.5px solid rgba(244,63,94,0.2);border-radius:14px;padding:20px;margin-bottom:16px">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
@@ -1218,165 +1271,44 @@ async function renderDashboard() {
       ${churnRischio.map(p => {
         const giorni = p.ultimo_contatto ? Math.floor((oggi - new Date(p.ultimo_contatto))/(1000*60*60*24)) : '∞';
         return `<div style="color:rgba(255,255,255,0.7);font-size:15px;line-height:1.65;margin-bottom:8px">
-          <span style="color:white;font-weight:500">${p.nome || ''} ${p.cognome || ''} (${p.azienda || 'N/A'})</span> — ultimo contatto: ${giorni} giorni fa
+          <span style="color:white;font-weight:500">${p.nome||''} ${p.cognome||''} (${p.azienda||'N/A'})</span> — ultimo contatto: ${giorni} giorni fa
         </div>`;
       }).join('')}
     </div>` : ''}
-  `;
 
-  // Sezioni non più usate in dashboard
-  const alertContainer = document.getElementById('alert-scadenze');
-  if (alertContainer) alertContainer.innerHTML = '';
-  const gContainer = document.getElementById('guadagni-dashboard');
-  if (gContainer) gContainer.innerHTML = '';
+    ${priorita.length > 0 ? `
+    <div style="color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:14px">LE TUE ${priorita.length} PRIORITÀ</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+      ${priorita.map((p, i) => `
+        <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:12px;padding:18px 20px;display:flex;align-items:center;justify-content:space-between">
+          <div style="display:flex;align-items:center;gap:14px">
+            <div style="width:32px;height:32px;border-radius:50%;background:${p.bgColor};display:flex;align-items:center;justify-content:center;color:${p.color};font-size:14px;font-weight:500">${i+1}</div>
+            <div>
+              <div style="color:white;font-size:15px">${p.testo}</div>
+              <div style="color:rgba(255,255,255,0.35);font-size:13px;margin-top:2px">${p.sub}</div>
+            </div>
+          </div>
+          <div style="padding:5px 12px;border-radius:8px;background:${p.bgColor};color:${p.color};font-size:12px;font-weight:500;white-space:nowrap;margin-left:16px">${p.label}</div>
+        </div>
+      `).join('')}
+    </div>` : ''}
 
-  // Variabili per alert logic
-  const attiviBase = attivi.filter(p => p.piano === 'guided_base');
-  const sectionLabel = 'class="dash-section-label" style="font-size:14px;font-weight:700;color:white;margin:28px 0 12px;font-family:\'Plus Jakarta Sans\',sans-serif;"';
+    ${attiviCount > 0 ? `
+    <div style="background:rgba(123,97,255,0.06);border:0.5px solid rgba(123,97,255,0.15);border-radius:14px;padding:20px;animation:cglow 4s infinite;margin-bottom:20px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        <div style="width:7px;height:7px;border-radius:50%;background:#7B61FF;animation:cpulse 1.5s infinite"></div>
+        <div style="color:#A78BFA;font-size:14px;font-weight:500">Briefing AI</div>
+      </div>
+      <div style="color:white;font-size:15px;line-height:1.65">Il briefing AI sarà disponibile quando programmi la tua prossima call. <span style="color:#7B61FF;cursor:pointer" onclick="showView('calendario')">Programma una call →</span></div>
+    </div>` : ''}
 
-  // ── SEZIONE: DA FARE OGGI ─────────────────────────────────
-  var oggiStr = new Date().toISOString().split('T')[0];
-  var domaniStr = new Date(Date.now() + 86400000).toISOString().split('T')[0];
-  var oggiMs  = Date.now();
-  var alerts  = [];
-
-  // Alert 1 — ROSSO: cliente attivo non aggiornato da 14+ giorni
-  attivi.forEach(function(p) {
-    var updatedAt = p.updated_at || p.created_at;
-    if (!updatedAt) return;
-    var giorni = Math.round((oggiMs - new Date(updatedAt)) / 86400000);
-    if (giorni >= 14) {
-      alerts.push({
-        tipo: 1, colore: '#FF4444', urgenza: 1,
-        testo: (p.nome || p.azienda || '—') + ' \u2014 inattivo da ' + giorni + ' giorni',
-        dettaglio: 'Ultimo aggiornamento: ' + new Date(updatedAt).toLocaleDateString('it-IT') + '. Rischio churn.',
-        btnLabel: 'Programma call',
-        btnAction: 'showView(\'calendario\')',
-        id: p.id
-      });
-    }
-  });
-
-  // Alert 2 — ARANCIONE: in_attesa da 7+ giorni
-  prospects.filter(function(p){ return p.stato === 'in_attesa'; }).forEach(function(p) {
-    var ref = p.invite_sent_at || p.created_at;
-    if (!ref) return;
-    var giorni = Math.round((oggiMs - new Date(ref)) / 86400000);
-    if (giorni >= 7) {
-      alerts.push({
-        tipo: 2, colore: '#FF6B2B', urgenza: 2,
-        testo: (p.nome || p.azienda || '—') + ' \u2014 invito non confermato da ' + giorni + ' giorni',
-        dettaglio: 'Email inviata il ' + new Date(ref).toLocaleDateString('it-IT') + '. Considera un sollecito.',
-        btnLabel: 'Reinvia invito',
-        btnAction: 'reinviaInvito(\'' + p.id + '\')',
-        id: p.id
-      });
-    }
-  });
-
-  // Alert 3 — BLU: call in programma oggi o domani
-  allEventi.filter(function(e){ return e.data === oggiStr || e.data === domaniStr; }).forEach(function(e) {
-    var quando = e.data === oggiStr ? 'oggi' : 'domani';
-    var ora    = e.ora || '';
-    var pNome  = (e.prospects && e.prospects.nome) || e.nome_custom || '—';
-    var pObj   = prospects.find(function(p){ return p.id === e.prospect_id; });
-    var score  = pObj ? calcScore(pObj) : '—';
-    var piano  = pObj && pObj.piano === 'guided_pro' ? 'Pro' : pObj && pObj.piano === 'guided_base' ? 'Base' : '—';
-    alerts.push({
-      tipo: 3, colore: '#7B61FF', urgenza: 3,
-      testo: 'Call con ' + pNome + ' \u2014 ' + quando + (ora ? ' alle ' + ora : ''),
-      dettaglio: 'Piano: ' + piano + '. Score attuale: ' + score + '/100',
-      btnLabel: 'Vedi scheda',
-      btnAction: e.prospect_id ? 'openProspect(\'' + e.prospect_id + '\')' : 'showView(\'calendario\')',
-      id: e.id
-    });
-  });
-
-  // Alert 4 — VERDE: Base con score ≥ 70 (candidato upgrade)
-  attiviBase.filter(function(p){ return calcScore(p) >= 70; }).forEach(function(p) {
-    var score = calcScore(p);
-    alerts.push({
-      tipo: 4, colore: '#00C853', urgenza: 4,
-      testo: (p.nome || p.azienda || '—') + ' \u2014 score ' + score + '/100 \u2014 pronto per upgrade',
-      dettaglio: 'Considera proposta upgrade a Pro per massimizzare il potenziale.',
-      btnLabel: 'Vedi trend',
-      btnAction: 'openProspect(\'' + p.id + '\')',
-      id: p.id
-    });
-  });
-
-  // Alert 5 — VIOLA: attivo da 90+ giorni (ri-diagnosi)
-  attivi.forEach(function(p) {
-    var ref = p.created_at;
-    if (!ref) return;
-    var giorni = Math.round((oggiMs - new Date(ref)) / 86400000);
-    if (giorni >= 90) {
-      alerts.push({
-        tipo: 5, colore: '#9C27B0', urgenza: 5,
-        testo: (p.nome || p.azienda || '—') + ' \u2014 ri-diagnosi disponibile',
-        dettaglio: 'Attivo dal ' + new Date(ref).toLocaleDateString('it-IT') + '. Sono passati ' + giorni + ' giorni.',
-        btnLabel: 'Avvia ri-diagnosi',
-        btnAction: 'openProspect(\'' + p.id + '\')',
-        id: p.id
-      });
-    }
-  });
-
-  // Ordina per urgenza
-  alerts.sort(function(a, b){ return a.urgenza - b.urgenza; });
-
-  var dContainer = document.getElementById('da-fare-oggi');
-  if (dContainer) {
-    var alertCardHtml = '';
-    var visible = alerts.slice(0, 5);
-    var extra   = alerts.length - 5;
-    if (visible.length === 0) {
-      alertCardHtml = '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.08);border-radius:16px;padding:24px;text-align:center">' +
-        '<div style="color:rgba(255,255,255,0.15);font-size:32px;margin-bottom:8px">✓</div>' +
-        '<div style="color:rgba(255,255,255,0.4);font-size:14px">Nessuna azione urgente.</div>' +
-        '<div style="color:#7B61FF;font-size:13px;margin-top:8px;cursor:pointer" onclick="apriModaleNuovoCliente()">Invita un cliente o programma una call →</div>' +
-        '</div>';
-    } else {
-      alertCardHtml = visible.map(function(a) {
-        return '<div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-left:3px solid ' + a.colore + ';border-radius:0 12px 12px 0;padding:14px 16px;margin-bottom:8px;">' +
-          '<div style="display:flex;align-items:center;gap:12px;flex:1;min-width:0;">' +
-            '<div style="width:32px;height:32px;border-radius:50%;background:' + a.colore + '22;display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
-              '<div style="width:10px;height:10px;border-radius:50%;background:' + a.colore + ';"></div>' +
-            '</div>' +
-            '<div style="min-width:0;">' +
-              '<div style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + a.testo + '</div>' +
-              '<div style="font-size:12px;color:rgba(255,255,255,0.35);margin-top:2px;">' + a.dettaglio + '</div>' +
-            '</div>' +
-          '</div>' +
-          '<button onclick="' + a.btnAction + '" style="flex-shrink:0;margin-left:16px;font-size:12px;padding:6px 14px;border-radius:8px;background:' + a.colore + '22;color:' + a.colore + ';border:1px solid ' + a.colore + '44;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;font-weight:600;white-space:nowrap;" onmouseover="this.style.background=\'' + a.colore + '44\'" onmouseout="this.style.background=\'' + a.colore + '22\'">' + a.btnLabel + '</button>' +
-        '</div>';
-      }).join('');
-      if (extra > 0) {
-        alertCardHtml += '<div onclick="_espandiDaFareOggi()" style="text-align:center;padding:10px;font-size:12px;color:rgba(255,255,255,0.3);cursor:pointer;font-weight:500;">Vedi tutti (' + alerts.length + ') \u25be</div>';
-      }
-    }
-    dContainer.innerHTML =
-      '<div ' + sectionLabel + '>Da fare oggi</div>' +
-      '<div id="da-fare-oggi-list">' + alertCardHtml + '</div>';
-  }
-
-  window._dashAlerts = alerts;
-
-  // === PIPELINE COMPATTA ===
-  const _statiColor = {in_attesa:'#FFB800', ingaggiato:'#7B61FF', in_diagnosi:'#9C27B0', attivo:'#00C853', archiviato:'rgba(255,255,255,0.3)'};
-  const _statiLabel = {in_attesa:'In attesa', ingaggiato:'Ingaggiato', in_diagnosi:'In diagnosi', attivo:'Attivo', archiviato:'Archiviato'};
-  const _conteggi = {};
-  Object.keys(_statiColor).forEach(s => _conteggi[s] = prospects.filter(p => p.stato === s).length);
-
-  const statusSummary = document.getElementById('status-summary');
-  if (statusSummary) statusSummary.innerHTML = `
-    <div onclick="renderProspectsView()" style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:16px;padding:20px;cursor:pointer;margin-top:20px;transition:border-color 0.2s" onmouseenter="this.style.borderColor='rgba(123,97,255,0.3)'" onmouseleave="this.style.borderColor='rgba(123,97,255,0.1)'">
-      <div style="color:white;font-weight:700;font-size:15px;margin-bottom:12px">Pipeline commerciale →</div>
+    <div onclick="showView('prospects')" style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:20px;cursor:pointer;transition:border-color 0.2s" onmouseenter="this.style.borderColor='rgba(123,97,255,0.2)'" onmouseleave="this.style.borderColor='rgba(255,255,255,0.06)'">
+      <div style="color:white;font-weight:600;font-size:15px;margin-bottom:12px">Pipeline commerciale →</div>
       <div style="display:flex;gap:20px;flex-wrap:wrap">
-        ${Object.entries(_statiColor).map(([key, color]) => `
+        ${Object.entries(_stati).map(([key,s]) => `
           <div style="display:flex;align-items:center;gap:6px">
-            <span style="width:8px;height:8px;border-radius:50%;background:${color};display:inline-block"></span>
-            <span style="color:rgba(255,255,255,0.5);font-size:12px">${_statiLabel[key]}:</span>
+            <span style="width:8px;height:8px;border-radius:50%;background:${s.color};display:inline-block"></span>
+            <span style="color:rgba(255,255,255,0.5);font-size:12px">${s.label}:</span>
             <span style="color:white;font-weight:700;font-size:13px">${_conteggi[key]}</span>
           </div>
         `).join('')}
@@ -1384,10 +1316,12 @@ async function renderDashboard() {
     </div>
   `;
 
-  const pipelineGrid = document.getElementById('pipeline-grid');
-  if (pipelineGrid) pipelineGrid.innerHTML = '';
-  const riechiede = document.getElementById('richiede-attenzione');
-  if (riechiede) riechiede.innerHTML = '';
+  // Svuota tutti gli altri container
+  ['alert-scadenze','guadagni-dashboard','da-fare-oggi','status-summary','pipeline-grid','richiede-attenzione'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.innerHTML = '';
+  });
+
+  window._dashAlerts = [];
 }
 
 // -- SEZIONE PROSPECT --------------------------------------
