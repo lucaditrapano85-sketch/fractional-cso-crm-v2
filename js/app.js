@@ -494,7 +494,7 @@ function _risorsaTab(tab) {
     if (!btn) return;
     var active = t === tab;
     btn.style.borderBottomColor = active ? '#3D5AFE' : 'transparent';
-    btn.style.color = active ? '#3D5AFE' : 'rgba(26,26,46,0.4)';
+    btn.style.color = active ? '#7B61FF' : 'rgba(255,255,255,0.3)';
     btn.style.fontWeight = active ? '600' : '400';
   });
   var body = document.getElementById('risorse-body');
@@ -1183,7 +1183,7 @@ async function renderDashboard() {
   document.getElementById('kpi-grid').innerHTML = [
     { label: 'Clienti attivi',  val: attivi.length,     filter: 'attivo',    border: '#00825F' },
     { label: 'In attesa/onboarding', val: inAttesa.length, filter: 'in_attesa', border: '#AF7D00' },
-    { label: 'Archiviati',      val: archiviati.length, filter: 'archiviato',border: 'rgba(26,26,46,0.3)' },
+    { label: 'Archiviati',      val: archiviati.length, filter: 'archiviato',border: 'rgba(255,255,255,0.15)' },
     { label: 'Score medio',     val: scoreMedia + '/100',filter: 'attivo',   border: '#7B61FF' },
   ].map(k => `<div class="kpi-card" onclick="showView('prospects');setProspectFilter('${k.filter}')" style="cursor:pointer;border-left:3px solid ${k.border};${kpiBorderStyle}" title="Clicca per filtrare">
     <div class="kpi-label">${k.label}</div>
@@ -1625,21 +1625,21 @@ function _ncSelPiano(piano) {
     if (piano === 'guided_base') {
       cardBase.style.border  = '2px solid #3D5AFE';
       cardBase.style.background = 'rgba(61,90,254,0.04)';
-      cardPro.style.border   = '2px solid rgba(26,26,46,0.08)';
+      cardPro.style.border   = '2px solid rgba(255,255,255,0.08)';
       cardPro.style.background  = 'transparent';
       radioBase.style.background = '#3D5AFE';
       radioBase.style.border     = '2px solid #3D5AFE';
       radioPro.style.background  = 'transparent';
-      radioPro.style.border      = '2px solid rgba(26,26,46,0.2)';
+      radioPro.style.border      = '2px solid rgba(255,255,255,0.15)';
     } else {
       cardPro.style.border   = '2px solid #FF6B2B';
       cardPro.style.background  = 'rgba(255,107,43,0.04)';
-      cardBase.style.border  = '2px solid rgba(26,26,46,0.08)';
+      cardBase.style.border  = '2px solid rgba(255,255,255,0.08)';
       cardBase.style.background = 'transparent';
       radioPro.style.background  = '#FF6B2B';
       radioPro.style.border      = '2px solid #FF6B2B';
       radioBase.style.background = 'transparent';
-      radioBase.style.border     = '2px solid rgba(26,26,46,0.2)';
+      radioBase.style.border     = '2px solid rgba(255,255,255,0.15)';
     }
   }
   _ncValidate();
@@ -2004,7 +2004,7 @@ async function renderProspectDetail(id) {
     const label = getDimLabel(p.settore, d.id);
     return `\x3cdiv class="dim-row" style="margin-bottom:10px">
       \x3cdiv style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
-        \x3cdiv class="dim-label" style="color:#1a1a2e;font-weight:600">${label}\x3c/div>
+        \x3cdiv class="dim-label" style="color:white;font-weight:600">${label}\x3c/div>
         \x3cspan style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;background:${colBg};color:${col};border:1px solid ${col}33">${v}/5\x3c/span>
       \x3c/div>
       \x3cdiv class="dim-bar-bg" onclick="showDimPopup(event,'${label.replace(/'/g,"\\'")}','${desc.replace(/'/g,"\\'").replace(/\n/g,' ')}','${col}')">\x3cdiv class="dim-bar-fill" style="width:${pct}%;background:${col}">\x3c/div>\x3c/div>
@@ -2195,7 +2195,7 @@ function renderTabPanoramica(p, calls) {
   var sc    = scoreColor(score);
   var piano = p.piano || 'self';
   var pianoLabel = piano === 'guided_pro' ? 'Guided Pro' : piano === 'guided_base' ? 'Guided Base' : 'Self';
-  var pianoColor = piano === 'guided_pro' ? '#FF6B2B' : piano === 'guided_base' ? '#3D5AFE' : 'rgba(26,26,46,0.4)';
+  var pianoColor = piano === 'guided_pro' ? '#FF6B2B' : piano === 'guided_base' ? '#7B61FF' : 'rgba(255,255,255,0.3)';
 
   // Cliente da X mesi
   var mesiCliente = 0;
@@ -2562,8 +2562,8 @@ function _selCallTipo(tipo) {
       btn.style.fontWeight = '600';
     } else {
       btn.style.background = 'none';
-      btn.style.color = 'rgba(26,26,46,0.5)';
-      btn.style.borderColor = 'rgba(0,0,0,0.1)';
+      btn.style.color = 'rgba(255,255,255,0.4)';
+      btn.style.borderColor = 'rgba(255,255,255,0.1)';
       btn.style.fontWeight = '400';
     }
   });
@@ -2919,8 +2919,8 @@ function _apriModaleCSO(opts) {
     var ta = document.getElementById('cso-modal-ta');
     if (ta) {
       ta.focus();
-      ta.addEventListener('focus', function() { ta.style.borderColor = 'rgba(61,90,254,0.4)'; });
-      ta.addEventListener('blur',  function() { ta.style.borderColor = 'rgba(26,26,46,0.1)'; });
+      ta.addEventListener('focus', function() { ta.style.borderColor = 'rgba(123,97,255,0.5)'; });
+      ta.addEventListener('blur',  function() { ta.style.borderColor = 'rgba(123,97,255,0.2)'; });
     }
   }, 50);
 }
