@@ -1626,3 +1626,6 @@ label{color:var(--gray2)}
 .bg-green    { background: rgba(0,130,95,0.65); }
 .bg-amber    { background: rgba(175,125,0,0.65); }
 .bg-red      { background: rgba(229,57,53,0.65); }
+
+@keyframes cpulse{0%,100%{opacity:0.6}50%{opacity:1}}
+@keyframes cglow{0%,100%{box-shadow:0 0 8px rgba(123,97,255,0.15)}50%{box-shadow:0 0 20px rgba(123,97,255,0.3)}}

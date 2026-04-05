@@ -1154,66 +1154,77 @@ async function reinviaInvito(prospectId) {
 
 // -- DASHBOARD ---------------------------------------------
 async function renderDashboard() {
-  // === HEADER ===
-  const _profile = window._currentProfile || {};
-  const _nomeCso = (_profile.nome || _profile.nome_completo || (_profile.email || '').split('@')[0] || '').split(' ')[0];
-  const _ora = new Date().getHours();
-  const _saluto = _ora < 13 ? 'Buongiorno' : _ora < 18 ? 'Buon pomeriggio' : 'Buonasera';
-  const _h1 = document.querySelector('#view-dashboard .dash-header h1');
-  if (_h1) _h1.textContent = _nomeCso ? _saluto + ', ' + _nomeCso : _saluto;
-  const _dashDate = document.getElementById('dash-date');
-  if (_dashDate) _dashDate.textContent = new Date().toLocaleDateString('it-IT', {weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  // Nascondi il vecchio dash-header (rimpiazzato dal nuovo header inline)
+  const _dashHeader = document.querySelector('#view-dashboard .dash-header');
+  if (_dashHeader) _dashHeader.style.display = 'none';
+
+  // === CALCOLI ===
+  const ora = new Date().getHours();
+  const saluto = ora < 13 ? 'Buongiorno' : ora < 18 ? 'Buon pomeriggio' : 'Buonasera';
+  const _profile = window._csoProfile || window._currentProfile || {};
+  const nomeCso = (_profile.nome || localStorage.getItem('cso_nome') || (_profile.email || '').split('@')[0] || 'CSO').split(' ')[0];
+  const dataStr = new Date().toLocaleDateString('it-IT', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
 
   const attivi = prospects.filter(p => p.stato === 'attivo');
   const attiviCount = attivi.length;
-  const inAttesaCount = prospects.filter(p => p.stato === 'in_attesa').length;
-  const inDiagnosiCount = prospects.filter(p => p.stato === 'in_diagnosi').length;
-  const archiviatiCount = prospects.filter(p => p.stato === 'archiviato').length;
-  const totClienti = prospects.length;
-  const tassoAtt = totClienti > 0 ? Math.round(attiviCount / totClienti * 100) : 0;
+  const guidedBase = prospects.filter(p => p.piano === 'guided_base' && p.stato === 'attivo').length;
+  const guidedPro  = prospects.filter(p => p.piano === 'guided_pro'  && p.stato === 'attivo').length;
+  const guadagnoMese = (guidedBase * 200) + (guidedPro * 320);
+  const callMese = window._callsThisWeek || 0;
   const scoreMedio = attiviCount > 0 ? Math.round(attivi.reduce((s, p) => s + calcScore(p), 0) / attiviCount) : 0;
-  const fatGestito = attivi.filter(p => p.fatturato_anno_1).reduce((s, p) => s + (p.fatturato_anno_1 || 0), 0);
-  const fmtK = v => v >= 1000000 ? (v/1000000).toFixed(1)+'M€' : v >= 1000 ? Math.round(v/1000)+'k€' : v+'€';
 
+  // Allarme churn
+  const oggi = new Date();
+  const churnRischio = prospects.filter(p => {
+    if (p.stato !== 'attivo' && p.stato !== 'ingaggiato') return false;
+    const ultimo = p.ultimo_contatto ? new Date(p.ultimo_contatto) : null;
+    return !ultimo || ((oggi - ultimo) / (1000*60*60*24)) > 14;
+  });
+
+  // === HEADER + KPI ===
   const kpiGrid = document.getElementById('kpi-grid');
   if (kpiGrid) kpiGrid.innerHTML = `
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
-      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:20px;padding:28px">
-        <div style="color:rgba(255,255,255,0.4);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Clienti attivi</div>
-        ${attiviCount > 0
-          ? `<div style="color:white;font-size:48px;font-weight:800">${attiviCount}</div>
-             <div style="color:rgba(255,255,255,0.35);font-size:13px;margin-top:4px">${inAttesaCount} in attesa · ${inDiagnosiCount} in diagnosi</div>`
-          : `<div style="color:rgba(255,255,255,0.2);font-size:48px;font-weight:800">0</div>
-             <div style="color:#7B61FF;font-size:14px;margin-top:8px;cursor:pointer" onclick="apriModaleNuovoCliente()">Invita il tuo primo cliente →</div>`
-        }
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+      <div>
+        <div style="color:rgba(255,255,255,0.5);font-size:14px;letter-spacing:0.08em;text-transform:uppercase">Da fare oggi</div>
+        <div style="color:white;font-size:28px;font-weight:500;margin-top:4px">${nomeCso} <span style="font-size:14px;color:rgba(123,97,255,0.6);font-weight:400;margin-left:8px">CSO Professionista</span></div>
       </div>
-      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:20px;padding:28px">
-        <div style="color:rgba(255,255,255,0.4);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Score medio</div>
-        ${scoreMedio > 0
-          ? `<div style="color:#7B61FF;font-size:48px;font-weight:800">${scoreMedio}<span style="font-size:20px;color:rgba(255,255,255,0.35)">/100</span></div>
-             <div style="color:rgba(255,255,255,0.35);font-size:13px;margin-top:4px">dei tuoi clienti attivi</div>`
-          : `<div style="color:rgba(255,255,255,0.2);font-size:48px;font-weight:800">0<span style="font-size:20px">/100</span></div>
-             <div style="color:rgba(255,255,255,0.25);font-size:13px;margin-top:4px">Nessun cliente con diagnosi completata</div>`
-        }
+      <div style="color:rgba(255,255,255,0.35);font-size:14px">${dataStr}</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-bottom:24px">
+      <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:20px">
+        <div style="color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:8px">CLIENTI ATTIVI</div>
+        <div style="color:white;font-size:48px;font-weight:500">${attiviCount}</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:20px">
+        <div style="color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:8px">GUADAGNO MESE</div>
+        <div style="color:#34D399;font-size:48px;font-weight:500">€${guadagnoMese.toLocaleString('it-IT')}</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:20px">
+        <div style="color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:8px">CALL SETTIMANA</div>
+        <div style="color:#7B61FF;font-size:48px;font-weight:500">${callMese}</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:20px">
+        <div style="color:rgba(255,255,255,0.5);font-size:14px;margin-bottom:8px">SCORE MEDIO</div>
+        <div style="color:#FBBF24;font-size:48px;font-weight:500">${scoreMedio}</div>
       </div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
-      ${[
-        {label:'Fatturato gestito', value: fatGestito > 0 ? fmtK(fatGestito) : '0€', color:'white'},
-        {label:'Potenziale crescita 12m', value: '+0k€', color:'#00C853'},
-        {label:'Tot. clienti', value: totClienti, sub: archiviatiCount > 0 ? 'inclusi '+archiviatiCount+' archiviati' : '', color:'white'},
-        {label:'Tasso attivazione', value: tassoAtt+'%', color:'white'}
-      ].map(k => `
-        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.08);border-radius:16px;padding:20px">
-          <div style="color:rgba(255,255,255,0.4);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">${k.label}</div>
-          <div style="color:${['0€','0','0%'].includes(String(k.value)) ? 'rgba(255,255,255,0.2)' : k.color};font-size:24px;font-weight:700">${k.value}</div>
-          ${k.sub ? `<div style="color:rgba(255,255,255,0.3);font-size:12px;margin-top:2px">${k.sub}</div>` : ''}
-        </div>
-      `).join('')}
-    </div>
+    ${churnRischio.length > 0 ? `
+    <div style="background:rgba(244,63,94,0.06);border:0.5px solid rgba(244,63,94,0.2);border-radius:14px;padding:20px;margin-bottom:16px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <div style="width:9px;height:9px;border-radius:50%;background:#F43F5E;animation:cpulse 1.5s infinite"></div>
+        <div style="color:#F43F5E;font-size:15px;font-weight:500">Allarme churn</div>
+      </div>
+      ${churnRischio.map(p => {
+        const giorni = p.ultimo_contatto ? Math.floor((oggi - new Date(p.ultimo_contatto))/(1000*60*60*24)) : '∞';
+        return `<div style="color:rgba(255,255,255,0.7);font-size:15px;line-height:1.65;margin-bottom:8px">
+          <span style="color:white;font-weight:500">${p.nome || ''} ${p.cognome || ''} (${p.azienda || 'N/A'})</span> — ultimo contatto: ${giorni} giorni fa
+        </div>`;
+      }).join('')}
+    </div>` : ''}
   `;
 
-  // Cleared: alert-scadenze e guadagni-dashboard rimossi dalla dashboard
+  // Sezioni non più usate in dashboard
   const alertContainer = document.getElementById('alert-scadenze');
   if (alertContainer) alertContainer.innerHTML = '';
   const gContainer = document.getElementById('guadagni-dashboard');
