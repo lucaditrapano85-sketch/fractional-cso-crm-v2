@@ -415,3 +415,151 @@ body.pmi-mode .diagnosi-footer .leva-btn-secondary:hover {
   border-color: rgba(255,255,255,0.25) !important;
   color: white !important;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   CSO MODE — Deep Space Sfondo + Sidebar
+   ═══════════════════════════════════════════════════════════ */
+
+/* Sfondo globale */
+body.cso-mode {
+  background: #06080F !important;
+  color: white;
+}
+
+/* Il canvas onde è fixed, le view stanno sopra con z-index */
+body.cso-mode .app {
+  background: transparent;
+  position: relative;
+  z-index: 1;
+}
+
+body.cso-mode .main {
+  background: transparent;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Sidebar ───────────────────────────────────────────── */
+body.cso-mode .sidebar {
+  width: 100px !important;
+  min-width: 100px !important;
+  max-width: 100px !important;
+  background: rgba(6,8,15,0.95) !important;
+  border-right: 1px solid rgba(123,97,255,0.1) !important;
+  box-shadow: none !important;
+  align-items: center;
+  padding: 12px 0;
+  gap: 0;
+  overflow: visible !important; /* allow tooltip to overflow */
+  z-index: 100;
+}
+
+/* Logo area: compact in 100px */
+body.cso-mode #cso-logo-area {
+  padding: 12px 8px 8px !important;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+body.cso-mode #cso-logo-wrap {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 6px !important;
+  border-radius: 12px !important;
+  gap: 0 !important;
+}
+
+body.cso-mode #cso-logo-eva {
+  display: none !important;
+}
+
+body.cso-mode #cso-logo-tagline {
+  display: none !important;
+}
+
+body.cso-mode #cso-logo-bar {
+  fill: #7B61FF !important;
+}
+
+body.cso-mode #cso-logo-wrap svg {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+/* Nav border separator */
+body.cso-mode .sidebar > div:nth-child(2) {
+  width: 100%;
+  border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+}
+
+/* ── Nav items ─────────────────────────────────────────── */
+body.cso-mode .nav-item {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 13px 8px !important;
+  margin: 1px 6px !important;
+  border-radius: 10px !important;
+  gap: 0 !important;
+  color: rgba(255,255,255,0.4) !important;
+  transition: background 0.15s, color 0.15s !important;
+  width: calc(100% - 12px) !important;
+  border-left: none !important;
+}
+
+/* Hide text labels; keep SVG */
+body.cso-mode .cso-nav-label {
+  display: none !important;
+}
+
+body.cso-mode .nav-item svg {
+  width: 24px !important;
+  height: 24px !important;
+  flex-shrink: 0 !important;
+  stroke: rgba(255,255,255,0.4) !important;
+  transition: stroke 0.15s !important;
+}
+
+body.cso-mode .nav-item:hover {
+  background: rgba(123,97,255,0.06) !important;
+  color: #7B61FF !important;
+}
+
+body.cso-mode .nav-item:hover svg {
+  stroke: #7B61FF !important;
+}
+
+body.cso-mode .nav-item.active {
+  background: rgba(123,97,255,0.1) !important;
+  color: #7B61FF !important;
+  border-left: none !important;
+  margin-left: 6px !important;
+  padding-left: 8px !important;
+}
+
+body.cso-mode .nav-item.active svg {
+  stroke: #7B61FF !important;
+}
+
+/* ── Sidebar logout ────────────────────────────────────── */
+body.cso-mode .sidebar-logout {
+  border-top: 1px solid rgba(255,255,255,0.05) !important;
+  padding: 6px !important;
+  width: 100%;
+}
+
+body.cso-mode .btn-logout {
+  background: rgba(244,63,94,0.08) !important;
+  border: 1px solid rgba(244,63,94,0.2) !important;
+  color: rgba(244,63,94,0.6) !important;
+  font-size: 10px !important;
+  padding: 5px !important;
+}
+
+body.cso-mode .btn-admin {
+  display: none !important;
+}

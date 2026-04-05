@@ -16,38 +16,38 @@
 
 <div class="app">
   <div class="sidebar">
-    <div style="padding:16px 16px 14px;">
-      <div onclick="showView('dashboard')" style="display:inline-flex;align-items:flex-start;gap:2px;background:#1a1a2e;border:1px solid rgba(255,255,255,0.14);border-radius:18px;padding:10px 15px 10px 10px;box-shadow:0 2px 12px rgba(0,0,0,0.35);cursor:pointer;">
-        <svg width="52" height="52" viewBox="8 4 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-top:-1px;flex-shrink:0;"><rect x="8" y="34" width="44" height="4.5" rx="2.25" fill="#3D5AFE"/><rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="white"/><circle cx="29.75" cy="36.25" r="6" fill="white"/><line x1="29.75" y1="36.25" x2="47" y2="22" stroke="#FF6B2B" stroke-width="3.5" stroke-linecap="round"/><circle cx="47" cy="22" r="3.5" fill="#FF6B2B"/></svg>
-        <span style="font-family:'Plus Jakarta Sans',sans-serif;font-size:44px;font-weight:700;color:white;line-height:1;letter-spacing:-1px;">eva</span>
+    <div id="cso-logo-area" style="padding:16px 16px 14px;">
+      <div id="cso-logo-wrap" onclick="showView('dashboard')" style="display:inline-flex;align-items:flex-start;gap:2px;background:#1a1a2e;border:1px solid rgba(255,255,255,0.14);border-radius:18px;padding:10px 15px 10px 10px;box-shadow:0 2px 12px rgba(0,0,0,0.35);cursor:pointer;">
+        <svg width="52" height="52" viewBox="8 4 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-top:-1px;flex-shrink:0;"><rect id="cso-logo-bar" x="8" y="34" width="44" height="4.5" rx="2.25" fill="#3D5AFE"/><rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="white"/><circle cx="29.75" cy="36.25" r="6" fill="white"/><line x1="29.75" y1="36.25" x2="47" y2="22" stroke="#FF6B2B" stroke-width="3.5" stroke-linecap="round"/><circle cx="47" cy="22" r="3.5" fill="#FF6B2B"/></svg>
+        <span id="cso-logo-eva" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:44px;font-weight:700;color:white;line-height:1;letter-spacing:-1px;">eva</span>
       </div>
-      <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:700;color:#1a1a2e;letter-spacing:0.6px;text-transform:uppercase;margin-top:6px;">Intelligence commerciale</div>
+      <div id="cso-logo-tagline" style="font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:700;color:#1a1a2e;letter-spacing:0.6px;text-transform:uppercase;margin-top:6px;">Intelligence commerciale</div>
     </div>
     <div style="border-bottom:1px solid rgba(255,255,255,0.08)">
-      <div class="nav-item active" onclick="showView('dashboard')">
+      <div class="nav-item active" onclick="showView('dashboard')" onmouseenter="_levaTipShow(this,'Dashboard')" onmouseleave="_levaTipHide()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-        Dashboard
+        <span class="cso-nav-label">Dashboard</span>
       </div>
-      <div class="nav-item" onclick="showView('prospects')" id="nav-prospects">
+      <div class="nav-item" onclick="showView('prospects')" id="nav-prospects" onmouseenter="_levaTipShow(this,'I miei clienti')" onmouseleave="_levaTipHide()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-        I miei clienti
+        <span class="cso-nav-label">I miei clienti</span>
       </div>
-      <div class="nav-item" onclick="showView('calendario')">
+      <div class="nav-item" onclick="showView('calendario')" onmouseenter="_levaTipShow(this,'Calendario')" onmouseleave="_levaTipHide()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        Calendario
+        <span class="cso-nav-label">Calendario</span>
       </div>
-      <div class="nav-item" onclick="showView('guadagni')">
+      <div class="nav-item" onclick="showView('guadagni')" onmouseenter="_levaTipShow(this,'I miei guadagni')" onmouseleave="_levaTipHide()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-        I miei guadagni
+        <span class="cso-nav-label">I miei guadagni</span>
       </div>
-        <div class="nav-item" onclick="showView('risorse')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-          Risorse
-        </div>
+      <div class="nav-item" onclick="showView('risorse')" onmouseenter="_levaTipShow(this,'Risorse')" onmouseleave="_levaTipHide()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span class="cso-nav-label">Risorse</span>
+      </div>
       <div style="border-top:1px solid rgba(255,255,255,0.1);margin:8px 0;"></div>
-      <div class="nav-item" onclick="apriModaleNuovoCliente()">
+      <div class="nav-item" onclick="apriModaleNuovoCliente()" onmouseenter="_levaTipShow(this,'Nuovo cliente')" onmouseleave="_levaTipHide()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-        Nuovo cliente
+        <span class="cso-nav-label">Nuovo cliente</span>
       </div>
 
   </div>

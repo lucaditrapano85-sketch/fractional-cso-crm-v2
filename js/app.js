@@ -1061,7 +1061,33 @@ function genField(label,val) {
 }
 
 // -- NAVIGATION --------------------------------------------
+// ── CSO Deep Space: sfondo + onde ────────────────────────────────────────────
+function _initCSODS() {
+  document.body.classList.add('cso-mode');
+  document.body.style.background = '#06080F';
+
+  var canvasId = 'leva-waves-cso';
+  if (!document.getElementById(canvasId)) {
+    var canvas = document.createElement('canvas');
+    canvas.id = canvasId;
+    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.35;';
+    document.body.appendChild(canvas);
+  }
+  if (!window._csoWavesInstance && window.initLevaWaves) {
+    window._csoWavesInstance = initLevaWaves(canvasId);
+  }
+}
+
+function _stopCSODS() {
+  document.body.classList.remove('cso-mode');
+  document.body.style.background = '';
+  if (window._csoWavesInstance) { window._csoWavesInstance.stop(); window._csoWavesInstance = null; }
+  var canvas = document.getElementById('leva-waves-cso');
+  if (canvas) canvas.remove();
+}
+
 function showView(name) {
+  _initCSODS();
   // Rimuovi pannello admin se presente
   const adminPanel = document.getElementById('view-admin');
   if (adminPanel) adminPanel.remove();
@@ -1083,6 +1109,7 @@ function showView(name) {
 }
 
 function openProspect(id) {
+  _initCSODS();
   if (currentId !== id) _activeProspectTab = 'panoramica';
   currentId = id;
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
@@ -10484,7 +10511,8 @@ function renderViewPMI(view) {
   var main    = document.getElementById('pmi-main');
   if (!main) return;
 
-  // Ferma onde precedenti (ogni render function ne avvia di proprie)
+  // Ferma onde CSO e precedenti (ogni PMI render function ne avvia di proprie)
+  _stopCSODS();
   if (window._wavesInstance) { window._wavesInstance.stop(); window._wavesInstance = null; }
   if (window._levaWavesInstance) { window._levaWavesInstance.stop(); window._levaWavesInstance = null; }
 
@@ -14407,39 +14435,45 @@ function renderPMIPiano(container) {
     return '<button onclick="aggiornaPiano(\'' + planId + '\')" style="width:80%;padding:9px 0;background:' + bg + ';color:' + textColor + ';border:none;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;transition:opacity .15s;" onmouseover="this.style.opacity=\'0.85\'" onmouseout="this.style.opacity=\'1\'">' + upgradeLbl + '</button>';
   }
 
-  function currentBadge(planId) {
-    if (pianoCorrente !== planId) return '';
-    var c = planId === 'guided_pro' ? '#FF6B2B' : '#7B61FF';
-    return '<div style="font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:' + c + ';margin-bottom:4px;">Il tuo piano</div>';
+  // Floating badge (chip sopra la card) — per "Il tuo piano" e "Consigliato"
+  function floatingBadge(text, bg, textColor) {
+    return '<span style="position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:' + bg + ';color:' + textColor + ';font-size:10px;font-weight:700;padding:3px 12px;border-radius:10px;white-space:nowrap;letter-spacing:.3px;">' + text + '</span>';
   }
 
-  // ── Headers ───────────────────────────────────────────────────────────────
+  function headerBadge(planId) {
+    if (pianoCorrente === planId) {
+      var bg = planId === 'guided_pro' ? '#FF6B2B' : '#7B61FF';
+      return floatingBadge('Il tuo piano', bg, 'white');
+    }
+    if (planId === 'guided_base') return floatingBadge('Consigliato', '#7B61FF', 'white');
+    return '';
+  }
+
+  // ── Headers (padding-top:22px per dare spazio al badge floating) ──────────
   var headerFree =
-    '<div style="position:relative;height:90px;background:rgba(255,255,255,0.04);border-radius:14px 14px 0 0;border-top:3px solid rgba(255,255,255,0.12);padding:14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
-      currentBadge('free') +
+    '<div style="position:relative;min-height:90px;background:rgba(255,255,255,0.04);border-radius:14px 14px 0 0;border-top:3px solid rgba(255,255,255,0.12);padding:22px 14px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
+      headerBadge('free') +
       '<div style="font-size:17px;font-weight:600;color:white;">Free</div>' +
       '<div style="font-size:13px;color:rgba(255,255,255,0.4);margin-top:3px;">€0</div>' +
     '</div>';
 
   var headerSelf =
-    '<div style="position:relative;height:90px;background:rgba(255,255,255,0.04);border-radius:14px 14px 0 0;border-top:3px solid rgba(123,97,255,0.5);padding:14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
-      currentBadge('self') +
+    '<div style="position:relative;min-height:90px;background:rgba(255,255,255,0.04);border-radius:14px 14px 0 0;border-top:3px solid rgba(123,97,255,0.5);padding:22px 14px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
+      headerBadge('self') +
       '<div style="font-size:17px;font-weight:600;color:white;">Self</div>' +
       '<div style="font-size:13px;color:rgba(255,255,255,0.4);margin-top:3px;">€199/mese</div>' +
     '</div>';
 
   var headerBase =
-    '<div style="position:relative;height:90px;background:rgba(123,97,255,0.08);border-radius:14px 14px 0 0;border-top:3px solid #7B61FF;padding:14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
-      (pianoCorrente === 'guided_base'
-        ? currentBadge('guided_base')
-        : '<span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#7B61FF;color:white;font-size:10px;font-weight:600;padding:3px 12px;border-radius:10px;white-space:nowrap;">Consigliato</span>') +
+    '<div style="position:relative;min-height:90px;background:rgba(123,97,255,0.08);border-radius:14px 14px 0 0;border-top:3px solid #7B61FF;padding:22px 14px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
+      headerBadge('guided_base') +
       '<div style="font-size:17px;font-weight:600;color:#A78BFA;">Guided Base</div>' +
       '<div style="font-size:13px;color:rgba(167,139,250,0.6);margin-top:3px;">€399/mese</div>' +
     '</div>';
 
   var headerPro =
-    '<div style="position:relative;height:90px;background:rgba(255,107,43,0.08);border-radius:14px 14px 0 0;border-top:3px solid #FF6B2B;padding:14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
-      currentBadge('guided_pro') +
+    '<div style="position:relative;min-height:90px;background:rgba(255,107,43,0.08);border-radius:14px 14px 0 0;border-top:3px solid #FF6B2B;padding:22px 14px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
+      headerBadge('guided_pro') +
       '<div style="font-size:17px;font-weight:600;color:#FF6B2B;">Guided Pro</div>' +
       '<div style="font-size:13px;color:rgba(255,107,43,0.5);margin-top:3px;">€599/mese</div>' +
     '</div>';
