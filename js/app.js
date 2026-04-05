@@ -12934,6 +12934,29 @@ function generaAnalisiAI(prospect) {
   return {testo: testo, consiglio: consiglio};
 }
 
+// ── Calcolo stima perdita annua ───────────────────────────────────────────────
+function _calcolaStimaPerdita(p) {
+  if (p.stima_perdita_annua && p.stima_perdita_annua > 0) return p.stima_perdita_annua;
+
+  var score = p.score_globale || 0;
+  if (score === 0) return 0;
+
+  var fasciaMap = {
+    'sotto_500k':    350000,
+    'Sotto 500k\u20ac': 350000,
+    '500k_2m':       1000000,
+    '500k\u20ac - 2M\u20ac': 1000000,
+    '2m_5m':         3000000,
+    '2M\u20ac - 5M\u20ac':   3000000,
+    'oltre_5m':      7000000,
+    'Oltre 5M\u20ac':   7000000
+  };
+  var fatturato = p.fatturato_anno_1 || fasciaMap[p.fascia_fatturato] || 500000;
+  var gap = (100 - score) / 100;
+  var potenziale = fatturato * 0.10;
+  return Math.round(potenziale * gap / 100) * 100;
+}
+
 // ── FASE 5 — Home ─────────────────────────────────────────────────────────────
 function renderPMIHome(p) {
   // ── Saluto contestuale ──
@@ -12972,7 +12995,7 @@ function renderPMIHome(p) {
   const mediaSett = 60;
 
   // ── Stima perdita (da diagnosi-end o calcolata) ──
-  const stimaPerdita = p.stima_perdita_annua || 15600;
+  const stimaPerdita = _calcolaStimaPerdita(p);
   const stimaRecupero = Math.round(stimaPerdita * 1.35);
 
   // ── Trova le 3 dimensioni peggiori ──
@@ -13535,7 +13558,7 @@ function renderPMIScore(container) {
   var s  = p.score_globale || calcScore(p) || 0;
   var dims = p.dims || {};
   var isFree = (window._userPlan || 'free') === 'free';
-  var stimaPerdita = p.stima_perdita_annua || 15600;
+  var stimaPerdita = _calcolaStimaPerdita(p);
 
   var _STD_DIMS_S = ['Vendite','Marketing','Clienti','Pipeline','Pricing','Processi','Team','Digitale'];
 
