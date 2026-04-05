@@ -1154,136 +1154,74 @@ async function reinviaInvito(prospectId) {
 
 // -- DASHBOARD ---------------------------------------------
 async function renderDashboard() {
-  // Saluto personalizzato
-  (function() {
-    var profile = window._currentProfile;
-    var nome = (profile && (profile.nome || profile.nome_completo)) || '';
-    if (!nome && profile) nome = (profile.email || '').split('@')[0];
-    var ora = new Date().getHours();
-    var saluto = ora < 13 ? 'Buongiorno' : ora < 18 ? 'Buon pomeriggio' : 'Buonasera';
-    var h1 = document.querySelector('#view-dashboard .dash-header h1');
-    if (h1) h1.textContent = nome ? saluto + ', ' + nome.split(' ')[0] : saluto;
-  })();
+  // === HEADER ===
+  const _profile = window._currentProfile || {};
+  const _nomeCso = (_profile.nome || _profile.nome_completo || (_profile.email || '').split('@')[0] || '').split(' ')[0];
+  const _ora = new Date().getHours();
+  const _saluto = _ora < 13 ? 'Buongiorno' : _ora < 18 ? 'Buon pomeriggio' : 'Buonasera';
+  const _h1 = document.querySelector('#view-dashboard .dash-header h1');
+  if (_h1) _h1.textContent = _nomeCso ? _saluto + ', ' + _nomeCso : _saluto;
+  const _dashDate = document.getElementById('dash-date');
+  if (_dashDate) _dashDate.textContent = new Date().toLocaleDateString('it-IT', {weekday:'long',day:'numeric',month:'long',year:'numeric'});
 
-  var attivi    = prospects.filter(function(p){ return p.stato === 'attivo'; });
-  var inAttesa  = prospects.filter(function(p){ return p.stato === 'in_attesa' || p.stato === 'ingaggiato' || p.stato === 'in_diagnosi' || p.stato === 'pending_confirmation'; });
-  var archiviati= prospects.filter(function(p){ return p.stato === 'archiviato' || p.stato === 'chiuso'; });
+  const attivi = prospects.filter(p => p.stato === 'attivo');
+  const attiviCount = attivi.length;
+  const inAttesaCount = prospects.filter(p => p.stato === 'in_attesa').length;
+  const inDiagnosiCount = prospects.filter(p => p.stato === 'in_diagnosi').length;
+  const archiviatiCount = prospects.filter(p => p.stato === 'archiviato').length;
+  const totClienti = prospects.length;
+  const tassoAtt = totClienti > 0 ? Math.round(attiviCount / totClienti * 100) : 0;
+  const scoreMedio = attiviCount > 0 ? Math.round(attivi.reduce((s, p) => s + calcScore(p), 0) / attiviCount) : 0;
+  const fatGestito = attivi.filter(p => p.fatturato_anno_1).reduce((s, p) => s + (p.fatturato_anno_1 || 0), 0);
+  const fmtK = v => v >= 1000000 ? (v/1000000).toFixed(1)+'M€' : v >= 1000 ? Math.round(v/1000)+'k€' : v+'€';
 
-  var fatTotale = 0, fatPotenziale = 0, scoreMedia = 0, conFatturato = 0;
-  attivi.forEach(function(p) {
-    if (p.fatturato_anno_1) { fatTotale += p.fatturato_anno_1; conFatturato++; }
-    var ic = _calcolaImpattoCumulativo(p);
-    if (ic && ic.fat12) fatPotenziale += ic.fat12[1] - (p.fatturato_anno_1 || 0);
-    scoreMedia += calcScore(p);
-  });
-  scoreMedia = attivi.length > 0 ? Math.round(scoreMedia / attivi.length) : 0;
-  var fmtK = function(v) { return v >= 1000000 ? (v/1000000).toFixed(1) + 'M' : Math.round(v/1000) + 'k'; };
+  const kpiGrid = document.getElementById('kpi-grid');
+  if (kpiGrid) kpiGrid.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:20px;padding:28px">
+        <div style="color:rgba(255,255,255,0.4);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Clienti attivi</div>
+        ${attiviCount > 0
+          ? `<div style="color:white;font-size:48px;font-weight:800">${attiviCount}</div>
+             <div style="color:rgba(255,255,255,0.35);font-size:13px;margin-top:4px">${inAttesaCount} in attesa · ${inDiagnosiCount} in diagnosi</div>`
+          : `<div style="color:rgba(255,255,255,0.2);font-size:48px;font-weight:800">0</div>
+             <div style="color:#7B61FF;font-size:14px;margin-top:8px;cursor:pointer" onclick="apriModaleNuovoCliente()">Invita il tuo primo cliente →</div>`
+        }
+      </div>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:20px;padding:28px">
+        <div style="color:rgba(255,255,255,0.4);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Score medio</div>
+        ${scoreMedio > 0
+          ? `<div style="color:#7B61FF;font-size:48px;font-weight:800">${scoreMedio}<span style="font-size:20px;color:rgba(255,255,255,0.35)">/100</span></div>
+             <div style="color:rgba(255,255,255,0.35);font-size:13px;margin-top:4px">dei tuoi clienti attivi</div>`
+          : `<div style="color:rgba(255,255,255,0.2);font-size:48px;font-weight:800">0<span style="font-size:20px">/100</span></div>
+             <div style="color:rgba(255,255,255,0.25);font-size:13px;margin-top:4px">Nessun cliente con diagnosi completata</div>`
+        }
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+      ${[
+        {label:'Fatturato gestito', value: fatGestito > 0 ? fmtK(fatGestito) : '0€', color:'white'},
+        {label:'Potenziale crescita 12m', value: '+0k€', color:'#00C853'},
+        {label:'Tot. clienti', value: totClienti, sub: archiviatiCount > 0 ? 'inclusi '+archiviatiCount+' archiviati' : '', color:'white'},
+        {label:'Tasso attivazione', value: tassoAtt+'%', color:'white'}
+      ].map(k => `
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.08);border-radius:16px;padding:20px">
+          <div style="color:rgba(255,255,255,0.4);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">${k.label}</div>
+          <div style="color:${['0€','0','0%'].includes(String(k.value)) ? 'rgba(255,255,255,0.2)' : k.color};font-size:24px;font-weight:700">${k.value}</div>
+          ${k.sub ? `<div style="color:rgba(255,255,255,0.3);font-size:12px;margin-top:2px">${k.sub}</div>` : ''}
+        </div>
+      `).join('')}
+    </div>
+  `;
 
-  var kpiBorderStyle = 'border-radius:0 14px 14px 0;';
-  document.getElementById('kpi-grid').innerHTML = [
-    { label: 'Clienti attivi',  val: attivi.length,     filter: 'attivo',    border: '#00825F' },
-    { label: 'In attesa/onboarding', val: inAttesa.length, filter: 'in_attesa', border: '#AF7D00' },
-    { label: 'Archiviati',      val: archiviati.length, filter: 'archiviato',border: 'rgba(255,255,255,0.15)' },
-    { label: 'Score medio',     val: scoreMedia + '/100',filter: 'attivo',   border: '#7B61FF' },
-  ].map(k => `<div class="kpi-card" onclick="showView('prospects');setProspectFilter('${k.filter}')" style="cursor:pointer;border-left:3px solid ${k.border};${kpiBorderStyle}" title="Clicca per filtrare">
-    <div class="kpi-label">${k.label}</div>
-    <div class="kpi-val">${k.val}</div>
-  </div>`).join('') +
-  '<div style="grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:14px">' +
-    '<div class="kpi-card" style="border-left:3px solid #3D5AFE;'+kpiBorderStyle+'"><div class="kpi-label">Fatturato gestito</div><div class="kpi-val" style="font-size:22px">' + fmtK(fatTotale) + '\u20AC</div><div class="kpi-sub">' + conFatturato + ' clienti attivi con fatturato</div></div>' +
-    '<div class="kpi-card" style="border-left:3px solid rgba(0,130,95,0.85);'+kpiBorderStyle+'"><div class="kpi-label">Potenziale crescita 12m</div><div class="kpi-val tl-green" style="font-size:22px">+' + fmtK(fatPotenziale) + '\u20AC</div><div class="kpi-sub">proiezioni clienti attivi</div></div>' +
-    '<div class="kpi-card" style="border-left:3px solid rgba(175,125,0,0.85);'+kpiBorderStyle+'"><div class="kpi-label">Tot. clienti</div><div class="kpi-val" style="font-size:22px">' + prospects.length + '</div><div class="kpi-sub">inclusi archiviati</div></div>' +
-    '<div class="kpi-card" style="border-left:3px solid #FF6B2B;'+kpiBorderStyle+'"><div class="kpi-label">Tasso attivazione</div><div class="kpi-val" style="font-size:22px">' + (prospects.length > 0 ? Math.round(attivi.length / prospects.length * 100) : 0) + '%</div><div class="kpi-sub">attivi / totali</div></div>' +
-  '</div>';
+  // Cleared: alert-scadenze e guadagni-dashboard rimossi dalla dashboard
+  const alertContainer = document.getElementById('alert-scadenze');
+  if (alertContainer) alertContainer.innerHTML = '';
+  const gContainer = document.getElementById('guadagni-dashboard');
+  if (gContainer) gContainer.innerHTML = '';
 
-  // Alert scadenze in avvicinamento
-  var alertHtml = '';
-  var scadenze = [];
-  prospects.forEach(function(p) {
-    if (!p.target_scadenze || !p.targets) return;
-    var DIMS_IDS = ['vendite','pipeline','team','processi','ricavi','marketing','sitoweb','ecommerce'];
-    DIMS_IDS.forEach(function(dimId) {
-      var scad = p.target_scadenze[dimId];
-      var tgt = p.targets[dimId] || 0;
-      var cur = (p.dims && p.dims[dimId]) || 0;
-      if (!scad || tgt <= cur) return;
-      var giorni = Math.round((new Date(scad) - new Date()) / 86400000);
-      if (giorni <= 30) scadenze.push({ nome: p.nome, id: p.id, dim: getDimLabel(p.settore, dimId), giorni: giorni, scaduto: giorni < 0 });
-
-      // Milestone intermedie
-      var dimMilestones = (p.target_milestones || {})[dimId] || {};
-      var sc = (p.step_completamenti || {})[dimId] || {};
-      Object.keys(dimMilestones).forEach(function(step) {
-        if (sc[step]) return; // step già completato
-        if (parseInt(step) <= cur) return;
-        var gm = Math.round((new Date(dimMilestones[step]) - new Date()) / 86400000);
-        if (gm <= 30) scadenze.push({ nome: p.nome, id: p.id, dim: getDimLabel(p.settore, dimId) + ' step ' + step, giorni: gm, scaduto: gm < 0 });
-      });
-    });
-  });
-  scadenze.sort(function(a,b) { return a.giorni - b.giorni; });
-  if (scadenze.length > 0) {
-    alertHtml = '<div style="margin-bottom:16px;padding:12px 16px;background:rgba(229,57,53,0.06);border:1px solid rgba(229,57,53,0.15);border-radius:12px">' +
-      '<div style="font-size:11px;font-weight:700;color:rgba(229,57,53,0.8);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">\u26A0 Scadenze in avvicinamento (' + scadenze.length + ')</div>' +
-      scadenze.slice(0, 5).map(function(s) {
-        var col = s.scaduto ? 'rgba(229,57,53,0.8)' : s.giorni <= 7 ? 'rgba(229,57,53,0.7)' : 'rgba(61,90,254,0.7)';
-        var label = s.scaduto ? 'Scaduto' : s.giorni + ' giorni';
-        return '<div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;cursor:pointer" onclick="openProspect(\'' + s.id + '\')">' +
-          '<div style="font-size:12px;color:var(--text)"><strong>' + s.nome + '</strong> \u00B7 ' + s.dim + '</div>' +
-          '<div style="font-size:11px;font-weight:600;color:' + col + '">' + label + '</div>' +
-        '</div>';
-      }).join('') +
-    '</div>';
-  }
-  var alertContainer = document.getElementById('alert-scadenze');
-  if (alertContainer) alertContainer.innerHTML = alertHtml;
-
-  // ── SEZIONE: I MIEI GUADAGNI ──────────────────────────────
-  var attiviBase = attivi.filter(function(p){ return p.piano === 'guided_base'; });
-  var attiviPro  = attivi.filter(function(p){ return p.piano === 'guided_pro'; });
-  var guadagnoMensile = (attiviBase.length * 200) + (attiviPro.length * 320);
-  var guadagnoAnnuo   = guadagnoMensile * 12;
-
-  // Calls questo mese — conteggio asincrono con fallback a 0
-  var callsQuest = 0;
-  try {
-    var prospectIds = prospects.map(function(p){ return p.id; });
-    if (prospectIds.length > 0) {
-      var meseStart = new Date(); meseStart.setDate(1); meseStart.setHours(0,0,0,0);
-      var meseEnd   = new Date(); meseEnd.setMonth(meseEnd.getMonth()+1,0); meseEnd.setHours(23,59,59,999);
-      var { data: callsRows } = await sb.from('calls').select('id')
-        .in('prospect_id', prospectIds)
-        .gte('data', meseStart.toISOString().split('T')[0])
-        .lte('data', meseEnd.toISOString().split('T')[0]);
-      callsQuest = (callsRows || []).length;
-    }
-  } catch(e) {}
-
-  var fmtEur = function(v){ return '\u20AC' + v.toLocaleString('it-IT'); };
-  var sectionLabel = 'class="dash-section-label" style="font-size:14px;font-weight:700;color:white;margin:28px 0 12px;font-family:\'Plus Jakarta Sans\',sans-serif;"';
-  var kpiGreen = 'border-radius:0 16px 16px 0;border-left:3px solid #FF6B2B;';
-  var gContainer = document.getElementById('guadagni-dashboard');
-  if (gContainer) {
-    gContainer.innerHTML =
-      '<div ' + sectionLabel + '>I miei guadagni</div>' +
-      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;">' +
-        '<div class="kpi-card" style="' + kpiGreen + '">' +
-          '<div class="kpi-label">Guadagno mensile</div>' +
-          '<div class="kpi-val" style="font-size:28px;color:#FF6B2B;">' + fmtEur(guadagnoMensile) + '</div>' +
-          '<div class="kpi-sub">' + attiviBase.length + ' Base \xd7 \u20AC200 + ' + attiviPro.length + ' Pro \xd7 \u20AC320</div>' +
-        '</div>' +
-        '<div class="kpi-card" style="border-radius:0 16px 16px 0;border-left:3px solid rgba(255,107,43,0.5);">' +
-          '<div class="kpi-label">Guadagno annuo proiettato</div>' +
-          '<div class="kpi-val" style="font-size:28px;color:#FF6B2B;">' + fmtEur(guadagnoAnnuo) + '</div>' +
-          '<div class="kpi-sub">mensile \xd7 12</div>' +
-        '</div>' +
-        '<div class="kpi-card" style="border-radius:0 16px 16px 0;border-left:3px solid #7B61FF;">' +
-          '<div class="kpi-label">Call questo mese</div>' +
-          '<div class="kpi-val" style="font-size:28px;color:#7B61FF;">' + callsQuest + ' call</div>' +
-          '<div class="kpi-sub" style="color:rgba(123,97,255,0.7);">' + fmtEur(callsQuest * 90) + ' di consulenza</div>' +
-        '</div>' +
-      '</div>';
-  }
+  // Variabili per alert logic
+  const attiviBase = attivi.filter(p => p.piano === 'guided_base');
+  const sectionLabel = 'class="dash-section-label" style="font-size:14px;font-weight:700;color:white;margin:28px 0 12px;font-family:\'Plus Jakarta Sans\',sans-serif;"';
 
   // ── SEZIONE: DA FARE OGGI ─────────────────────────────────
   var oggiStr = new Date().toISOString().split('T')[0];
@@ -1382,9 +1320,10 @@ async function renderDashboard() {
     var visible = alerts.slice(0, 5);
     var extra   = alerts.length - 5;
     if (visible.length === 0) {
-      alertCardHtml = '<div style="text-align:center;padding:28px;color:rgba(255,255,255,0.4);font-size:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:12px;">' +
-        '<div style="font-size:28px;margin-bottom:8px;">✓</div>' +
-        'Tutto in ordine! Nessuna azione urgente per oggi.' +
+      alertCardHtml = '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.08);border-radius:16px;padding:24px;text-align:center">' +
+        '<div style="color:rgba(255,255,255,0.15);font-size:32px;margin-bottom:8px">✓</div>' +
+        '<div style="color:rgba(255,255,255,0.4);font-size:14px">Nessuna azione urgente.</div>' +
+        '<div style="color:#7B61FF;font-size:13px;margin-top:8px;cursor:pointer" onclick="apriModaleNuovoCliente()">Invita un cliente o programma una call →</div>' +
         '</div>';
     } else {
       alertCardHtml = visible.map(function(a) {
@@ -1412,101 +1351,32 @@ async function renderDashboard() {
 
   window._dashAlerts = alerts;
 
-  const allCols=['in_attesa','ingaggiato','in_diagnosi','attivo','archiviato'];
+  // === PIPELINE COMPATTA ===
+  const _statiColor = {in_attesa:'#FFB800', ingaggiato:'#7B61FF', in_diagnosi:'#9C27B0', attivo:'#00C853', archiviato:'rgba(255,255,255,0.3)'};
+  const _statiLabel = {in_attesa:'In attesa', ingaggiato:'Ingaggiato', in_diagnosi:'In diagnosi', attivo:'Attivo', archiviato:'Archiviato'};
+  const _conteggi = {};
+  Object.keys(_statiColor).forEach(s => _conteggi[s] = prospects.filter(p => p.stato === s).length);
 
-  // Status summary bar
-  document.getElementById('status-summary').innerHTML=allCols.map(stato=>{
-    const items=prospects.filter(p=>p.stato===stato);
-    const col=STATUS_COLORS[stato]||'#888';
-    const totFat=items.reduce((acc,p)=>acc+(p.fatturato_anno_1||0),0);
-    const avgScore=items.length?Math.round(items.reduce((a,p)=>a+calcScore(p),0)/items.length):0;
-    const fatStr=totFat>=1000000
-      ?'EUR'+(totFat/1000000).toFixed(1)+'M'
-      :totFat>=1000?'EUR'+(totFat/1000).toFixed(0)+'k':'--';
-    const sc=avgScore>=70?'var(--green)':avgScore>=45?'var(--gold)':'var(--gray)';
-    return `\x3cdiv class="status-kpi" style="border-top-color:${col}">
-      \x3cdiv class="status-kpi-label">
-        \x3cdiv class="status-dot" style="background:${col}">\x3c/div>
-        \x3cspan style="color:${col}">${STATUS_LABELS[stato]}\x3c/span>
-      \x3c/div>
-      \x3cdiv class="status-kpi-count">${items.length}\x3c/div>
-      \x3cdiv class="status-kpi-fat">Fat. tot: ${fatStr}\x3c/div>
-      ${avgScore?`\x3cdiv class="status-kpi-score" style="color:${sc}">Score medio: ${avgScore}\x3c/div>`:''}
-    \x3c/div>`;
-  }).join('');
+  const statusSummary = document.getElementById('status-summary');
+  if (statusSummary) statusSummary.innerHTML = `
+    <div onclick="renderProspectsView()" style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:16px;padding:20px;cursor:pointer;margin-top:20px;transition:border-color 0.2s" onmouseenter="this.style.borderColor='rgba(123,97,255,0.3)'" onmouseleave="this.style.borderColor='rgba(123,97,255,0.1)'">
+      <div style="color:white;font-weight:700;font-size:15px;margin-bottom:12px">Pipeline commerciale →</div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap">
+        ${Object.entries(_statiColor).map(([key, color]) => `
+          <div style="display:flex;align-items:center;gap:6px">
+            <span style="width:8px;height:8px;border-radius:50%;background:${color};display:inline-block"></span>
+            <span style="color:rgba(255,255,255,0.5);font-size:12px">${_statiLabel[key]}:</span>
+            <span style="color:white;font-weight:700;font-size:13px">${_conteggi[key]}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
 
-  // Pipeline columns
-  document.getElementById('pipeline-grid').innerHTML=allCols.map(stato=>{
-    const items=prospects.filter(p=>p.stato===stato);
-    const colBorder=STATUS_COLORS[stato]||'#888';
-    const cards=items.length===0
-      ?'\x3cdiv style="font-size:11px;color:var(--gray2);padding:6px 0">Nessuno\x3c/div>'
-      :items.map(p=>{
-          const s=calcScore(p),c=scoreColor(s);
-          const pipeCol=getProspectColor(p);
-          const fatStr=p.fatturato_anno_1
-            ?'\x3cspan style="font-size:10px;color:var(--gray);margin-left:4px">'+
-              (p.fatturato_anno_1>=1000000?'EUR'+(p.fatturato_anno_1/1000000).toFixed(1)+'M':'EUR'+(p.fatturato_anno_1/1000).toFixed(0)+'k')+'\x3c/span>'
-            :'';
-          return `\x3cdiv class="pipe-card" onclick="openProspect('${p.id}')" style="border-left:3px solid ${pipeCol}">
-            \x3cdiv class="pc-name" style="display:flex;align-items:center;gap:6px">
-              \x3cdiv style="width:7px;height:7px;border-radius:50%;background:${pipeCol};flex-shrink:0">\x3c/div>
-              ${p.nome}${fatStr}
-            \x3c/div>
-            \x3cdiv class="pc-meta">${MARKET[p.settore]?.label?.split('/')[0]?.trim()||p.settore||'--'} . ${p.dipendenti||'--'} dip.\x3c/div>
-            \x3cdiv class="score-pill" style="background:${c.bg};color:${c.text}">${s}/100 . ${c.label}\x3c/div>
-          \x3c/div>`;
-        }).join('');
-    return `\x3cdiv class="pipe-col" style="border-top:2px solid ${colBorder}">
-      \x3cdiv class="pipe-col-title">${STATUS_LABELS[stato]}\x3cspan class="pipe-count">${items.length}\x3c/span>\x3c/div>
-      \x3cdiv class="pipe-col-scroll">${cards}\x3c/div>
-    \x3c/div>`;
-  }).join('');
-
-  // Sezione "Richiede Attenzione"
-  var oggi = new Date();
-  var problematici = prospects.filter(function(p) {
-    if (p.stato === 'archiviato' || p.stato === 'chiuso') return false;
-    // Score critico
-    var s = calcScore(p);
-    if (s < 30 && s > 0) return true;
-    // Nessuna interazione da 30+ giorni in stato "in_attesa"
-    if (p.stato === 'in_attesa' || p.stato === 'pending_confirmation') {
-      var created = p.created_at ? new Date(p.created_at) : null;
-      if (created && (oggi - created) / 86400000 > 30) return true;
-    }
-    // Score in calo (score_history)
-    if (p.score_history && p.score_history.length >= 2) {
-      var last = p.score_history[p.score_history.length - 1];
-      var prev = p.score_history[p.score_history.length - 2];
-      if (last && prev && (last.score || 0) < (prev.score || 0) - 10) return true;
-    }
-    return false;
-  });
-
-  var attContainer = document.getElementById('richiede-attenzione');
-  if (attContainer) {
-    if (problematici.length === 0) {
-      attContainer.innerHTML = '';
-    } else {
-      attContainer.innerHTML = '<div class="section-title" style="margin-top:24px;margin-bottom:12px">\u26A0 Richiede attenzione (' + problematici.length + ')</div>' +
-        '<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:24px">' +
-        problematici.map(function(p) {
-          var s = calcScore(p);
-          var motivo = s < 30 && s > 0 ? 'Score critico: ' + s + '/100' :
-            p.stato === 'nuovo' ? 'Nessuna interazione da ' + Math.floor((oggi - new Date(p.created_at)) / 86400000) + ' giorni' :
-            'Score in calo';
-          return '<div onclick="openProspect(\'' + p.id + '\')" style="cursor:pointer;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-left:3px solid #FF4444;border-radius:0 12px 12px 0;padding:12px 16px;display:flex;align-items:center;justify-content:space-between">' +
-            '<div>' +
-              '<div style="font-size:13px;font-weight:600;color:white">' + p.nome + '</div>' +
-              '<div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:2px">' + (p.settore || '--') + '</div>' +
-            '</div>' +
-            '<div style="font-size:12px;font-weight:600;color:#FF4444">' + motivo + '</div>' +
-          '</div>';
-        }).join('') +
-        '</div>';
-    }
-  }
+  const pipelineGrid = document.getElementById('pipeline-grid');
+  if (pipelineGrid) pipelineGrid.innerHTML = '';
+  const riechiede = document.getElementById('richiede-attenzione');
+  if (riechiede) riechiede.innerHTML = '';
 }
 
 // -- SEZIONE PROSPECT --------------------------------------
