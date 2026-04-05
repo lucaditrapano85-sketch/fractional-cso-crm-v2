@@ -14001,115 +14001,130 @@ function renderPMIProfilo(container) {
   var up  = window._userProfileData || {};
   var pro = window._currentProfile  || {};
 
-  var nomeAzienda  = up.company_name || (p ? p.nome : '') || '';
+  // Tema Deep Space
+  document.body.style.background = '#06080F';
+  container.style.background = 'transparent';
+  container.style.overflowY  = 'auto';
 
-  // settore: p.settore può essere micro (es. "manifatturiero_meccanica") → risali al macro
+  var nomeAzienda = up.company_name || (p ? (p.nome_azienda || p.nome) : '') || '';
+
   var _settoreRaw = (p ? p.settore : '') || up.sector || _pmiSelectedSettore || '';
   var settoreVal  = (function(raw) {
     if (!raw) return '';
-    // già macro?
     if (PMI_MACRO_SETTORI.find(function(m){ return m.id === raw; })) return raw;
-    // cerca il macro che contiene questo micro
     for (var macroId in PMI_MICRO_SETTORI) {
       if ((PMI_MICRO_SETTORI[macroId] || []).find(function(m){ return m.id === raw; })) return macroId;
     }
     return raw;
   })(_settoreRaw);
 
-  // fascia: up.fascia_fatturato ha l'ID corretto; p.fatturato ha il valore numerico — non usarlo
-  var fasciaVal    = up.fascia_fatturato || _pmiSelectedFascia || '';
-  var cittaVal     = up.citta || (p ? p.citta : '') || '';
-  var nomeVal      = pro.nome || (up.full_name || '').split(' ')[0] || '';
-  var cognomeVal   = pro.cognome || (up.full_name || '').split(' ').slice(1).join(' ') || '';
-  var emailVal     = pro.email || window._currentUserEmail || '';
-  var telefonoVal  = pro.telefono || up.telefono || '';
+  var fasciaVal  = up.fascia_fatturato || _pmiSelectedFascia || '';
+  var cittaVal   = up.citta || (p ? p.citta : '') || '';
+  var nomeVal    = pro.nome    || (up.full_name || '').split(' ')[0]              || '';
+  var cognomeVal = pro.cognome || (up.full_name || '').split(' ').slice(1).join(' ') || '';
+  var emailVal   = pro.email || window._currentUserEmail || '';
+  var microVal   = _settoreRaw !== settoreVal ? _settoreRaw : (up.microsector || '');
 
-  // FIX 2: campi azienda disabilitati (grayed) se la diagnosi è stata completata
-  var _diagDone = !!(p && (p.diagnosi_completata === true || (p.score_globale > 0)));
-  var INP = 'width:100%;box-sizing:border-box;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.08);color:#1a1a2e;border-radius:10px;padding:10px 12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;outline:none;';
-  var INP_DIS = _diagDone ? 'width:100%;box-sizing:border-box;background:rgba(0,0,0,0.03);border:1px solid rgba(0,0,0,0.05);color:rgba(26,26,46,0.4);border-radius:10px;padding:10px 12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;outline:none;cursor:not-allowed;' : INP;
-  var DIS = _diagDone ? ' disabled' : '';
-  var LABEL = 'font-size:11px;font-weight:600;color:rgba(26,26,46,0.45);margin-bottom:5px;display:block;';
-  var CARD = 'background:rgba(255,255,255,0.65);border:1px solid rgba(255,255,255,0.75);border-radius:14px;padding:16px;margin-bottom:14px;';
-  var CARD_TTL = 'font-size:10px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:14px;';
-  var BTN_PRI = 'width:100%;margin-top:14px;padding:10px 14px;background:#3D5AFE;color:#fff;border:none;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:600;cursor:pointer;';
-  var BTN_GHO = 'padding:12px 18px;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.1);border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;color:rgba(26,26,46,0.65);cursor:pointer;flex:1;';
+  // ── Deep Space styles ────────────────────────────────────────────────────
+  var INP     = 'width:100%;box-sizing:border-box;background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);color:white;border-radius:10px;padding:12px 16px;font-size:15px;outline:none;font-family:inherit;';
+  var INP_DIS = 'width:100%;box-sizing:border-box;background:rgba(255,255,255,0.02);border:0.5px solid rgba(255,255,255,0.04);color:rgba(255,255,255,0.25);border-radius:10px;padding:12px 16px;font-size:15px;outline:none;cursor:not-allowed;font-family:inherit;';
+  var LABEL   = 'font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:6px;display:block;';
+  var CARD    = 'background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:24px;margin-bottom:16px;';
+  var SECT    = 'font-size:11px;font-weight:600;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px;';
 
-  // micro-settore corrente (es. "manifatturiero_meccanica")
-  var microVal = _settoreRaw !== settoreVal ? _settoreRaw : (up.microsector || '');
-
-  // ── Opzioni settore ──────────────────────────────────────────────────────
-  var settoreOpts = '<option value="">— Seleziona settore —</option>' +
+  var settoreOpts = '<option value="">— Settore —</option>' +
     PMI_MACRO_SETTORI.map(function(s) {
       return '<option value="' + s.id + '"' + (settoreVal === s.id ? ' selected' : '') + '>' + s.icon + ' ' + s.label + '</option>';
     }).join('');
 
-  // ── Opzioni micro-settore (macro attuale) ────────────────────────────────
-  var microOpts = _buildMicroOpts(settoreVal, microVal);
-
-  // ── Opzioni fascia fatturato ─────────────────────────────────────────────
-  var fasciaOpts = '<option value="">— Seleziona fascia —</option>' +
+  var microOpts  = _buildMicroOpts(settoreVal, microVal);
+  var fasciaOpts = '<option value="">— Fascia —</option>' +
     PMI_FASCE_FATTURATO.map(function(f) {
       return '<option value="' + f.id + '"' + (fasciaVal === f.id ? ' selected' : '') + '>' + f.label + '</option>';
     }).join('');
 
   container.innerHTML =
-    '<div style="max-width:560px;margin:0 auto;padding:40px 28px">' +
-      '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:24px">Il tuo profilo</h1>' +
+    '<div style="max-width:560px;margin:0 auto;padding:32px 28px;">' +
+      '<h1 style="font-size:24px;font-weight:500;color:white;margin-bottom:28px;">Il tuo profilo</h1>' +
 
-      // ── Card Azienda ────────────────────────────────────────────────────
+      // ── Card identità (editabile) ───────────────────────────────────────
       '<div style="' + CARD + '">' +
-        '<div style="' + CARD_TTL + '">La tua azienda</div>' +
-
-        (_diagDone ? '<div style="font-size:11px;color:rgba(61,90,254,0.7);background:rgba(61,90,254,0.05);border:1px solid rgba(61,90,254,0.12);border-radius:8px;padding:8px 12px;margin-bottom:12px;">Dati compilati automaticamente dalla diagnosi. Per modificarli rifai la diagnosi.</div>' : '') +
-
-        '<div style="margin-bottom:10px"><label style="' + LABEL + '">Nome azienda</label>' +
-          '<input id="prf-nome-azienda" style="' + INP_DIS + '" value="' + _esc(nomeAzienda) + '" placeholder="Es. Rossi Srl"' + DIS + '></div>' +
-
-        '<div style="margin-bottom:10px"><label style="' + LABEL + '">Settore</label>' +
-          '<select id="prf-settore" style="' + INP_DIS + '" onchange="pmiProfiloOnMacroChange(this.value)"' + DIS + '>' + settoreOpts + '</select></div>' +
-
-        '<div style="margin-bottom:10px" id="prf-micro-wrap"' + (settoreVal ? '' : ' style="display:none"') + '><label style="' + LABEL + '">Micro-settore</label>' +
-          '<select id="prf-micro" style="' + INP_DIS + '"' + DIS + '>' + microOpts + '</select></div>' +
-
-        '<div style="margin-bottom:10px"><label style="' + LABEL + '">Fascia fatturato</label>' +
-          '<select id="prf-fascia" style="' + INP_DIS + '"' + DIS + '>' + fasciaOpts + '</select></div>' +
-
-        '<div style="margin-bottom:2px"><label style="' + LABEL + '">Città</label>' +
-          '<input id="prf-citta" style="' + INP_DIS + '" value="' + _esc(cittaVal) + '" placeholder="Es. Milano"' + DIS + '></div>' +
-
-        (!_diagDone ? '<button onclick="salvaProfiloPMIAzienda()" style="' + BTN_PRI + '">Salva modifiche</button>' : '') +
-      '</div>' +
-
-      // ── Card Account ────────────────────────────────────────────────────
-      '<div style="' + CARD + '">' +
-        '<div style="' + CARD_TTL + '">Il tuo account</div>' +
-
-        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">' +
+        '<div style="' + SECT + '">La tua identità</div>' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">' +
           '<div><label style="' + LABEL + '">Nome</label>' +
             '<input id="prf-nome" style="' + INP + '" value="' + _esc(nomeVal) + '" placeholder="Mario"></div>' +
           '<div><label style="' + LABEL + '">Cognome</label>' +
             '<input id="prf-cognome" style="' + INP + '" value="' + _esc(cognomeVal) + '" placeholder="Rossi"></div>' +
         '</div>' +
-
-        '<div style="margin-bottom:10px"><label style="' + LABEL + '">Email</label>' +
-          '<input style="' + INP + 'background:rgba(0,0,0,0.03);color:rgba(26,26,46,0.4);" value="' + _esc(emailVal) + '" readonly></div>' +
-
-        '<div style="margin-bottom:2px"><label style="' + LABEL + '">Telefono</label>' +
-          '<input id="prf-telefono" style="' + INP + '" value="' + _esc(telefonoVal) + '" placeholder="+39 333 1234567" type="tel"></div>' +
-
-        '<button onclick="salvaProfiloPMIAccount()" style="' + BTN_PRI + '">Salva</button>' +
+        '<div style="margin-bottom:14px;"><label style="' + LABEL + '">Nome azienda</label>' +
+          '<input id="prf-nome-azienda" style="' + INP + '" value="' + _esc(nomeAzienda) + '" placeholder="Es. Rossi Srl"></div>' +
+        '<div><label style="' + LABEL + '">Email</label>' +
+          '<input style="' + INP_DIS + '" value="' + _esc(emailVal) + '" readonly disabled></div>' +
       '</div>' +
+
+      // ── Card dati diagnosi (sola lettura) ───────────────────────────────
+      '<div style="' + CARD + '">' +
+        '<div style="' + SECT + '">Dati dalla diagnosi</div>' +
+        '<div style="font-size:12px;color:rgba(255,255,255,0.25);background:rgba(255,255,255,0.02);border:0.5px solid rgba(255,255,255,0.05);border-radius:8px;padding:8px 12px;margin-bottom:16px;">Compilati automaticamente. Per modificarli rifai la diagnosi.</div>' +
+        '<div style="margin-bottom:14px;"><label style="' + LABEL + '">Settore</label>' +
+          '<select id="prf-settore" style="' + INP_DIS + '" disabled>' + settoreOpts + '</select></div>' +
+        (settoreVal ?
+          '<div style="margin-bottom:14px;" id="prf-micro-wrap"><label style="' + LABEL + '">Micro-settore</label>' +
+            '<select id="prf-micro" style="' + INP_DIS + '" disabled>' + microOpts + '</select></div>'
+        : '') +
+        '<div style="margin-bottom:14px;"><label style="' + LABEL + '">Fascia fatturato</label>' +
+          '<select id="prf-fascia" style="' + INP_DIS + '" disabled>' + fasciaOpts + '</select></div>' +
+        '<div><label style="' + LABEL + '">Città</label>' +
+          '<input style="' + INP_DIS + '" value="' + _esc(cittaVal) + '" disabled></div>' +
+      '</div>' +
+
+      // ── Bottone salva ───────────────────────────────────────────────────
+      '<button id="prf-salva-btn" onclick="salvaProfiloPMI()" style="width:100%;padding:12px 24px;background:#7B61FF;color:white;border:none;border-radius:10px;font-size:15px;font-weight:500;cursor:pointer;margin-bottom:16px;">Salva profilo</button>' +
 
       // ── Azioni rapide ───────────────────────────────────────────────────
-      '<div style="display:flex;gap:10px;margin-bottom:16px">' +
-        '<button onclick="renderPrimoAccesso()" style="' + BTN_GHO + '">Rifai la diagnosi</button>' +
-        '<button onclick="prenotaCallSingola()" style="flex:1;padding:12px 18px;background:#3D5AFE;color:#fff;border:none;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Prenota una call — €120</button>' +
+      '<div style="display:flex;gap:10px;margin-bottom:14px;">' +
+        '<button onclick="renderPrimoAccesso()" style="flex:1;padding:12px 18px;background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;">Rifai la diagnosi</button>' +
+        '<button onclick="prenotaCallSingola()" style="flex:1;padding:12px 18px;background:rgba(123,97,255,0.12);border:0.5px solid rgba(123,97,255,0.25);color:#A78BFA;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;">Prenota una call — \u20ac120</button>' +
       '</div>' +
 
-      // ── Logout ──────────────────────────────────────────────────────────
-      '<button onclick="logout()" style="width:100%;padding:11px 16px;background:rgba(229,57,53,0.05);border:1px solid rgba(229,57,53,0.2);color:#E53935;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Esci</button>' +
+      // ── Logout ───────────────────────────────────────────────────────────
+      '<button onclick="logout()" style="width:100%;padding:12px 16px;background:rgba(244,63,94,0.06);border:0.5px solid rgba(244,63,94,0.2);color:#F43F5E;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;">Esci</button>' +
     '</div>';
+}
+
+async function salvaProfiloPMI() {
+  var nome   = (document.getElementById('prf-nome')         || {}).value || '';
+  var cognome = (document.getElementById('prf-cognome')      || {}).value || '';
+  var nomeAz  = (document.getElementById('prf-nome-azienda') || {}).value || '';
+  var fullName = [nome, cognome].filter(Boolean).join(' ');
+
+  var btn = document.getElementById('prf-salva-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Salvataggio...'; }
+
+  try {
+    if (typeof sb !== 'undefined' && window._currentUserId) {
+      await sb.from('user_profiles').upsert({
+        user_id:      window._currentUserId,
+        full_name:    fullName,
+        company_name: nomeAz
+      }, { onConflict: 'user_id' });
+
+      window._userProfileData = Object.assign({}, window._userProfileData, {
+        full_name:    fullName,
+        company_name: nomeAz
+      });
+      if (window._currentProfile) {
+        window._currentProfile.nome    = nome;
+        window._currentProfile.cognome = cognome;
+      }
+    }
+    showToast('Profilo salvato', 'success');
+  } catch(e) {
+    showToast('Errore nel salvataggio', 'error');
+    console.error(e);
+  }
+
+  if (btn) { btn.disabled = false; btn.textContent = 'Salva profilo'; }
 }
 
 // ── Il tuo piano ─────────────────────────────────────────────────────────────
