@@ -322,3 +322,96 @@ body.pmi-mode {
 body.pmi-mode #pmi-main {
   background: transparent !important;
 }
+
+/* ── PMI Mode: quiz / diagnosi overlay ──────────────────────── */
+body.pmi-mode .diagnosi-overlay {
+  background: rgba(6,8,15,0.75) !important;
+}
+body.pmi-mode .diagnosi-panel {
+  background: rgba(10,12,20,0.97) !important;
+  border: 1px solid rgba(123,97,255,0.18) !important;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.5) !important;
+}
+body.pmi-mode .diagnosi-header {
+  border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+}
+body.pmi-mode .diagnosi-body {
+  background: transparent !important;
+}
+body.pmi-mode .diagnosi-footer {
+  background: rgba(255,255,255,0.02) !important;
+  border-top: 1px solid rgba(255,255,255,0.06) !important;
+}
+body.pmi-mode .diagnosi-progress {
+  background: rgba(255,255,255,0.06) !important;
+}
+body.pmi-mode .diagnosi-progress-fill {
+  background: linear-gradient(90deg, #7B61FF, #FF6B2B) !important;
+}
+
+/* quiz option buttons */
+body.pmi-mode .diag-opt-btn {
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  color: rgba(255,255,255,0.8) !important;
+}
+body.pmi-mode .diag-opt-btn:hover {
+  background: rgba(123,97,255,0.1) !important;
+  border-color: rgba(123,97,255,0.35) !important;
+  color: white !important;
+}
+body.pmi-mode .diag-opt-btn.selected {
+  background: rgba(123,97,255,0.12) !important;
+  border-color: rgba(123,97,255,0.55) !important;
+  color: #A78BFA !important;
+}
+
+/* yes/no buttons */
+body.pmi-mode .diag-yn-btn {
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  color: rgba(255,255,255,0.8) !important;
+}
+body.pmi-mode .diag-yn-btn:hover {
+  background: rgba(255,255,255,0.08) !important;
+  border-color: rgba(255,255,255,0.2) !important;
+  color: white !important;
+}
+body.pmi-mode .diag-yn-btn.si.selected {
+  background: rgba(52,211,153,0.12) !important;
+  border-color: rgba(52,211,153,0.5) !important;
+  color: #34D399 !important;
+}
+body.pmi-mode .diag-yn-btn.no.selected {
+  background: rgba(244,63,94,0.12) !important;
+  border-color: rgba(244,63,94,0.5) !important;
+  color: #F43F5E !important;
+}
+
+/* fascia/select cards */
+body.pmi-mode .pmi-select-card {
+  background: rgba(255,255,255,0.03) !important;
+  border: 1.5px solid rgba(255,255,255,0.08) !important;
+  color: rgba(255,255,255,0.7) !important;
+}
+body.pmi-mode .pmi-select-card:hover {
+  background: rgba(123,97,255,0.08) !important;
+  border-color: rgba(123,97,255,0.3) !important;
+  color: white !important;
+}
+body.pmi-mode .pmi-select-card.selected {
+  background: rgba(123,97,255,0.12) !important;
+  border-color: #7B61FF !important;
+  color: #A78BFA !important;
+  box-shadow: 0 0 0 3px rgba(123,97,255,0.12) !important;
+}
+
+/* nav buttons in quiz footer */
+body.pmi-mode .diagnosi-footer .leva-btn-secondary {
+  border-color: rgba(255,255,255,0.12) !important;
+  color: rgba(255,255,255,0.5) !important;
+}
+body.pmi-mode .diagnosi-footer .leva-btn-secondary:hover {
+  border-color: rgba(255,255,255,0.25) !important;
+  color: white !important;
+}

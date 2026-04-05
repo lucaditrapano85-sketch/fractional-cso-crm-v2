@@ -10628,7 +10628,7 @@ function pmiClickTag(tag) {
     _pmiSelectedMacro   = staticMatch.macro;
     _pmiUpdateAvviaBtn();
     var msg = document.getElementById('pmi-ai-msg');
-    if (msg) msg.innerHTML = '<span style="color:rgba(0,130,95,0.85);font-weight:600">✓ ' + _esc(tag) + ' selezionato</span>';
+    if (msg) msg.innerHTML = '<span style="color:#34D399;font-weight:600">✓ ' + _esc(tag) + ' selezionato</span>';
     var op = document.getElementById('pmi-ai-opzioni');
     if (op) op.style.display = 'none';
   } else {
@@ -10643,70 +10643,72 @@ function _renderSelezioneSetting(container) {
 
   var FF = window.PMI_FASCE_FATTURATO || [];
 
+  _levaSetDSBg(container);
+
   container.innerHTML =
-    '<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 20px;box-sizing:border-box;background:#d8dbe2;position:relative;">' +
-      '<div onclick="logout()" style="position:fixed;bottom:16px;left:16px;display:flex;align-items:center;gap:10px;padding:10px 16px;margin:0 8px;border-radius:10px;cursor:pointer;color:rgba(26,26,46,0.3);z-index:10;">' +
+    _DS_CANVAS +
+    '<div style="position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 20px;box-sizing:border-box;">' +
+      '<div onclick="logout()" style="position:fixed;bottom:16px;left:16px;display:flex;align-items:center;gap:10px;padding:10px 16px;margin:0 8px;border-radius:10px;cursor:pointer;color:rgba(255,255,255,0.3);z-index:10;">' +
         '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 2H4a2 2 0 00-2 2v8a2 2 0 002 2h2M11 11l3-3-3-3M14 8H6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
-        '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;">Esci</span>' +
+        '<span style="font-size:13px;">Esci</span>' +
       '</div>' +
 
       // Logo
       '<div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:16px">' +
         '<svg width="90" height="90" viewBox="8 4 44 44" fill="none">' +
-          '<rect x="8" y="34" width="44" height="4.5" rx="2.25" fill="#3D5AFE"/>' +
-          '<rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="#1a1a2e"/>' +
-          '<circle cx="29.75" cy="36.25" r="6" fill="#1a1a2e"/>' +
+          '<rect x="8" y="34" width="44" height="4.5" rx="2.25" fill="#7B61FF"/>' +
+          '<rect x="27.5" y="10" width="4.5" height="25" rx="2.25" fill="white"/>' +
+          '<circle cx="29.75" cy="36.25" r="6" fill="white"/>' +
           '<line x1="29.75" y1="36.25" x2="47" y2="22" stroke="#FF6B2B" stroke-width="3.5" stroke-linecap="round"/>' +
           '<circle cx="47" cy="22" r="3.5" fill="#FF6B2B"/>' +
         '</svg>' +
-        '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:56px;font-weight:700;color:#1a1a2e;letter-spacing:-2px;line-height:1">eva</span>' +
+        '<span style="font-size:56px;font-weight:700;color:white;letter-spacing:-2px;line-height:1">eva</span>' +
       '</div>' +
 
       // Claim
-      '<p style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:24px;font-weight:700;color:#1a1a2e;text-align:center;letter-spacing:-0.3px;margin:0 0 10px;">Il <span style="color:#FF6B2B">Direttore Commerciale</span> che non hai mai assunto.</p>' +
-      '<p style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:15px;font-weight:400;color:rgba(26,26,46,0.45);text-align:center;margin:0 0 36px;">Scopri quanto fatturato stai lasciando sul tavolo.</p>' +
+      '<p style="font-size:24px;font-weight:700;color:white;text-align:center;letter-spacing:-0.3px;margin:0 0 10px;">Il <span style="color:#FF6B2B">Direttore Commerciale</span> che non hai mai assunto.</p>' +
+      '<p style="font-size:15px;color:rgba(255,255,255,0.4);text-align:center;margin:0 0 36px;">Scopri quanto fatturato stai lasciando sul tavolo.</p>' +
 
       '<div style="width:100%;max-width:560px">' +
 
-        // Titolo
-        '<h1 style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:32px;font-weight:500;color:#1a1a2e;margin:0 0 10px;text-align:center">Cosa fa la tua azienda?</h1>' +
-        '<p style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:15px;color:rgba(26,26,46,0.45);text-align:center;margin:0 0 36px;line-height:1.55">Scrivi il tuo settore e Leva costruirà una diagnosi commerciale su misura per te.</p>' +
+        '<h1 style="font-size:32px;font-weight:700;color:white;margin:0 0 10px;text-align:center">Cosa fa la tua azienda?</h1>' +
+        '<p style="font-size:15px;color:rgba(255,255,255,0.35);text-align:center;margin:0 0 36px;line-height:1.55">Scrivi il tuo settore e Leva costruirà una diagnosi commerciale su misura per te.</p>' +
 
         // Barra di ricerca
         '<div id="pmi-search-wrap" style="position:relative;margin-bottom:10px;opacity:0;transform:translateY(10px);transition:opacity 0.5s ease,transform 0.5s ease;">' +
           '<svg style="position:absolute;left:22px;top:50%;transform:translateY(-50%);pointer-events:none;z-index:1" width="20" height="20" viewBox="0 0 20 20" fill="none">' +
-            '<circle cx="8.5" cy="8.5" r="6" stroke="rgba(61,90,254,0.5)" stroke-width="1.8"/>' +
-            '<line x1="13" y1="13" x2="18" y2="18" stroke="rgba(61,90,254,0.5)" stroke-width="1.8" stroke-linecap="round"/>' +
+            '<circle cx="8.5" cy="8.5" r="6" stroke="rgba(167,139,250,0.6)" stroke-width="1.8"/>' +
+            '<line x1="13" y1="13" x2="18" y2="18" stroke="rgba(167,139,250,0.6)" stroke-width="1.8" stroke-linecap="round"/>' +
           '</svg>' +
           '<input id="pmi-ai-input" oninput="pmiAiOnInput()" onkeydown="if(event.key===\'Enter\'&&!this.disabled)pmiSuggerisciSettori()" ' +
-            'style="width:100%;box-sizing:border-box;height:60px;background:#fff;border:2px solid rgba(255,255,255,0.9);border-radius:16px;padding:0 0 0 58px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:18px;color:#1a1a2e;outline:none;transition:border-color .2s,box-shadow .2s;box-shadow:0 4px 20px rgba(0,0,0,0.08);" ' +
+            'style="width:100%;box-sizing:border-box;height:60px;background:rgba(255,255,255,0.06);border:1px solid rgba(123,97,255,0.2);border-radius:14px;padding:0 140px 0 58px;font-size:18px;color:white;outline:none;transition:border-color .2s,box-shadow .2s;" ' +
             'placeholder="Scrivi cosa fa la tua azienda..." ' +
-            'onfocus="this.style.borderColor=\'#3D5AFE\';this.style.boxShadow=\'0 4px 20px rgba(61,90,254,0.2)\'" ' +
-            'onblur="this.style.borderColor=\'rgba(255,255,255,0.9)\';this.style.boxShadow=\'0 4px 20px rgba(0,0,0,0.08)\'">' +
+            'onfocus="this.style.borderColor=\'#7B61FF\';this.style.boxShadow=\'0 0 12px rgba(123,97,255,0.15)\'" ' +
+            'onblur="this.style.borderColor=\'rgba(123,97,255,0.2)\';this.style.boxShadow=\'none\'">' +
           '<button id="pmi-ai-btn" onclick="pmiSuggerisciSettori()" disabled ' +
-            'style="position:absolute;right:0;top:0;bottom:0;padding:0 28px;background:#3D5AFE;color:#fff;border:none;border-radius:0 16px 16px 0;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:15px;font-weight:600;cursor:pointer;opacity:0.4;transition:opacity .15s;white-space:nowrap">' +
+            'style="position:absolute;right:0;top:0;bottom:0;padding:0 28px;background:#7B61FF;color:#fff;border:none;border-radius:0 14px 14px 0;font-size:15px;font-weight:600;cursor:pointer;opacity:0.4;transition:opacity .15s;white-space:nowrap">' +
             'Cerca' +
           '</button>' +
         '</div>' +
 
         // Dropdown opzioni AI
-        '<div id="pmi-ai-opzioni" style="display:none;margin-bottom:8px;background:rgba(255,255,255,0.55);border:1.5px solid rgba(255,255,255,0.7);border-radius:14px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08)"></div>' +
-        '<div id="pmi-ai-msg" style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;min-height:20px;margin-bottom:20px;line-height:1.5;padding:0 4px"></div>' +
+        '<div id="pmi-ai-opzioni" style="display:none;margin-bottom:8px;background:rgba(10,12,20,0.95);border:1px solid rgba(123,97,255,0.15);border-radius:14px;overflow:hidden;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);"></div>' +
+        '<div id="pmi-ai-msg" style="font-size:13px;min-height:20px;margin-bottom:20px;line-height:1.5;padding:0 4px;color:rgba(255,255,255,0.5)"></div>' +
 
-        // Messaggio errore
-        '<p id="pmi-inizio-msg" style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:12px;color:#E53935;min-height:18px;margin-bottom:14px;text-align:center"></p>' +
+        '<p id="pmi-inizio-msg" style="font-size:12px;color:#F43F5E;min-height:18px;margin-bottom:14px;text-align:center"></p>' +
 
         // CTA
         '<div style="display:flex;justify-content:center;margin-bottom:20px">' +
           '<button id="pmi-avvia-btn" onclick="pmiAvviaDiagnosi()" disabled ' +
-            'style="width:100%;max-width:400px;padding:16px;background:#3D5AFE;color:#fff;border:none;border-radius:14px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:16px;font-weight:700;cursor:not-allowed;opacity:0.4;transition:opacity .15s">' +
+            'style="width:100%;max-width:400px;padding:16px;background:#7B61FF;color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:700;cursor:not-allowed;opacity:0.4;transition:opacity .15s">' +
             'Inizia la diagnosi gratuita →' +
           '</button>' +
         '</div>' +
 
-
       '</div>' +
     '</div>';
+
+  _levaStartWaves('leva-waves-view');
 
   // Fade-in animation per la barra di ricerca
   requestAnimationFrame(function() {
@@ -10780,9 +10782,9 @@ function pmiSelFascia(id) {
   var c = document.getElementById('pmi-f-' + id);
   if (c) {
     c.classList.add('selected');
-    c.style.borderColor = '#3D5AFE';
-    c.style.color       = '#3D5AFE';
-    c.style.background  = 'rgba(61,90,254,0.06)';
+    c.style.borderColor = '#7B61FF';
+    c.style.color       = '#A78BFA';
+    c.style.background  = 'rgba(123,97,255,0.08)';
   }
 }
 
@@ -10856,12 +10858,12 @@ async function pmiSuggerisciSettori() {
       var nome  = _esc(s.nome || s.nome_display || s.codice);
       var desc  = _esc(s.descrizione || '');
       var macro = _macroLabel[(s.codice || '').split('_')[0]] || '';
-      return '<div onclick="pmiSelezionaESuggerisci(' + i + ')" style="padding:14px 16px;cursor:pointer;border-bottom:1px solid rgba(0,0,0,0.04);display:flex;align-items:center;justify-content:space-between;gap:12px;transition:background .12s" onmouseover="this.style.background=\'rgba(61,90,254,0.04)\'" onmouseout="this.style.background=\'\'">' +
+      return '<div onclick="pmiSelezionaESuggerisci(' + i + ')" style="padding:14px 16px;cursor:pointer;border-bottom:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between;gap:12px;transition:background .12s" onmouseover="this.style.background=\'rgba(123,97,255,0.1)\'" onmouseout="this.style.background=\'\'">' +
         '<div>' +
-          '<div style="font-size:15px;font-weight:500;color:#1a1a2e">' + nome + '</div>' +
-          (desc ? '<div style="font-size:12px;color:rgba(26,26,46,0.4);margin-top:3px">' + desc + '</div>' : '') +
+          '<div style="font-size:15px;font-weight:500;color:white">' + nome + '</div>' +
+          (desc ? '<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:3px">' + desc + '</div>' : '') +
         '</div>' +
-        (macro ? '<span style="flex-shrink:0;font-size:11px;font-weight:600;color:#3D5AFE;background:rgba(61,90,254,0.06);padding:3px 10px;border-radius:20px;white-space:nowrap">' + macro + '</span>' : '') +
+        (macro ? '<span style="flex-shrink:0;font-size:11px;font-weight:600;color:#A78BFA;background:rgba(123,97,255,0.1);padding:3px 10px;border-radius:20px;white-space:nowrap">' + macro + '</span>' : '') +
       '</div>';
     }).join('');
     opzioni.style.display = 'block';
@@ -10913,8 +10915,8 @@ function pmiSelezionaESuggerisci(idx) {
   _pmiUpdateAvviaBtn();
 
   if (msg) msg.innerHTML =
-    '<span style="color:rgba(0,130,95,0.85);font-weight:600">✓ ' + _esc(nomeScelta) + ' selezionato!</span>' +
-    '<br><span style="color:rgba(26,26,46,0.55)">Clicca qui sotto per iniziare la tua diagnosi gratuita</span>';
+    '<span style="color:#34D399;font-weight:600">✓ ' + _esc(nomeScelta) + ' selezionato!</span>' +
+    '<br><span style="color:rgba(255,255,255,0.5)">Clicca qui sotto per iniziare la tua diagnosi gratuita</span>';
 
   // Genera struttura in background
   window._generaSettoreNome     = nomeScelta;

@@ -361,37 +361,37 @@ function mostraPopupTransizione(callback) {
   if (old && old.parentNode) old.parentNode.removeChild(old);
 
   var tips = [
-    { label: 'Lo sapevi?',    color: '#3D5AFE',              testo: 'Il 73% delle PMI italiane non ha un processo di follow-up strutturato.' },
-    { label: 'Azione rapida', color: 'rgba(0,130,95,0.85)',  testo: 'Hai preventivi aperti da più di 30 giorni? Richiamali — il 40% si chiude con una telefonata.' },
-    { label: 'Lo sapevi?',    color: '#3D5AFE',              testo: 'Le aziende che misurano il close rate vendono in media il 35% in più.' },
-    { label: 'Azione rapida', color: 'rgba(0,130,95,0.85)',  testo: "Fai una lista dei tuoi 10 migliori clienti. Li hai sentiti nell'ultimo mese?" },
-    { label: 'Lo sapevi?',    color: '#3D5AFE',              testo: 'Solo il 12% delle PMI usa un CRM. Il resto perde contatti ogni giorno.' },
-    { label: 'Azione rapida', color: 'rgba(0,130,95,0.85)',  testo: 'Chiedi a 3 clienti soddisfatti una recensione Google questa settimana.' },
+    { label: 'Lo sapevi?',    color: '#A78BFA',  testo: 'Il 73% delle PMI italiane non ha un processo di follow-up strutturato.' },
+    { label: 'Azione rapida', color: '#34D399',  testo: 'Hai preventivi aperti da più di 30 giorni? Richiamali — il 40% si chiude con una telefonata.' },
+    { label: 'Lo sapevi?',    color: '#A78BFA',  testo: 'Le aziende che misurano il close rate vendono in media il 35% in più.' },
+    { label: 'Azione rapida', color: '#34D399',  testo: "Fai una lista dei tuoi 10 migliori clienti. Li hai sentiti nell'ultimo mese?" },
+    { label: 'Lo sapevi?',    color: '#A78BFA',  testo: 'Solo il 12% delle PMI usa un CRM. Il resto perde contatti ogni giorno.' },
+    { label: 'Azione rapida', color: '#34D399',  testo: 'Chiedi a 3 clienti soddisfatti una recensione Google questa settimana.' },
   ];
 
   // ── DOM ────────────────────────────────────────────────────────────────────
   var overlay = document.createElement('div');
   overlay.id = 'leva-attesa-popup';
-  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.35);z-index:99999;display:flex;align-items:center;justify-content:center;';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(6,8,15,0.85);z-index:99999;display:flex;align-items:center;justify-content:center;';
 
   var card = document.createElement('div');
-  card.style.cssText = "font-family:'Plus Jakarta Sans',sans-serif;background:#d8dbe2;border-radius:20px;max-width:420px;width:90%;padding:28px;text-align:center;";
+  card.style.cssText = "font-family:'Plus Jakarta Sans',sans-serif;background:rgba(6,8,15,0.97);border:1px solid rgba(123,97,255,0.15);border-radius:20px;max-width:420px;width:90%;padding:28px;text-align:center;";
 
   var spinner = document.createElement('div');
-  spinner.style.cssText = 'width:48px;height:48px;border:4px solid rgba(61,90,254,0.15);border-top-color:#3D5AFE;border-radius:50%;animation:spin 1.5s linear infinite;margin:0 auto 20px;';
+  spinner.style.cssText = 'width:48px;height:48px;border:4px solid rgba(255,107,43,0.2);border-top-color:#FF6B2B;border-radius:50%;animation:spin 1.5s linear infinite;margin:0 auto 20px;';
 
   var titleEl = document.createElement('div');
-  titleEl.style.cssText = 'font-size:16px;font-weight:500;color:#1a1a2e;margin-bottom:20px;';
+  titleEl.style.cssText = 'font-size:16px;font-weight:500;color:white;margin-bottom:20px;';
   titleEl.textContent = 'Stiamo preparando la tua diagnosi';
 
   var tipCard = document.createElement('div');
-  tipCard.style.cssText = 'background:rgba(255,255,255,0.65);border:1px solid rgba(255,255,255,0.8);border-radius:14px;padding:20px;min-height:100px;margin-bottom:20px;transition:opacity 0.3s ease;text-align:left;';
+  tipCard.style.cssText = 'background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:20px;min-height:100px;margin-bottom:20px;transition:opacity 0.3s ease;text-align:left;';
 
   var tipLabel = document.createElement('div');
   tipLabel.style.cssText = 'font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;';
 
   var tipText = document.createElement('div');
-  tipText.style.cssText = 'font-size:14px;color:#1a1a2e;line-height:1.5;';
+  tipText.style.cssText = 'font-size:14px;color:rgba(255,255,255,0.7);line-height:1.5;';
 
   tipCard.appendChild(tipLabel);
   tipCard.appendChild(tipText);
@@ -400,21 +400,21 @@ function mostraPopupTransizione(callback) {
   progRow.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;';
 
   var progLbl = document.createElement('div');
-  progLbl.style.cssText = 'font-size:11px;color:rgba(26,26,46,0.5);';
+  progLbl.style.cssText = 'font-size:11px;color:rgba(255,255,255,0.4);';
   progLbl.textContent = 'Analisi mercato...';
 
   var progPct = document.createElement('div');
-  progPct.style.cssText = 'font-size:11px;font-weight:600;color:#3D5AFE;';
+  progPct.style.cssText = 'font-size:11px;font-weight:600;color:#A78BFA;';
   progPct.textContent = '0%';
 
   progRow.appendChild(progLbl);
   progRow.appendChild(progPct);
 
   var progWrap = document.createElement('div');
-  progWrap.style.cssText = 'height:6px;background:rgba(0,0,0,0.06);border-radius:3px;overflow:hidden;';
+  progWrap.style.cssText = 'height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;';
 
   var progFill = document.createElement('div');
-  progFill.style.cssText = 'height:100%;background:#3D5AFE;border-radius:3px;width:0%;transition:width 0.4s ease;';
+  progFill.style.cssText = 'height:100%;background:linear-gradient(90deg,#7B61FF,#FF6B2B);border-radius:3px;width:0%;transition:width 0.4s ease;';
 
   progWrap.appendChild(progFill);
   card.appendChild(spinner);
