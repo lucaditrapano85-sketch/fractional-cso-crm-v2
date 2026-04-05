@@ -1359,7 +1359,7 @@ async function renderDashboard() {
               const giorni = p.ultimo_contatto ? Math.floor((oggi - new Date(p.ultimo_contatto))/(1000*60*60*24)) : null;
               const ultimaCall = giorni !== null ? giorni + 'gg fa' : 'Mai';
               const ultimaCallColor = giorni !== null && giorni > 14 ? '#F43F5E' : giorni !== null && giorni > 7 ? '#FBBF24' : 'rgba(255,255,255,0.6)';
-              return '<tr onclick="currentId=\'' + p.id + '\';showView(\'prospects\');setTimeout(function(){renderProspectDetail(\'' + p.id + '\')},150)" style="cursor:pointer;transition:background 0.15s" onmouseenter="this.style.background=\'rgba(123,97,255,0.06)\'" onmouseleave="this.style.background=\'transparent\'">' +
+              return '<tr onclick="openProspect(\'' + p.id + '\')" style="cursor:pointer;transition:background 0.15s" onmouseenter="this.style.background=\'rgba(123,97,255,0.06)\'" onmouseleave="this.style.background=\'transparent\'">' +
                 '<td style="padding:12px 14px;color:white;font-weight:500;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.04)">' + nome + '</td>' +
                 '<td style="padding:12px 14px;color:rgba(255,255,255,0.6);font-size:13px;border-bottom:1px solid rgba(255,255,255,0.04)">' + azienda + '</td>' +
                 '<td style="padding:12px 14px;border-bottom:1px solid rgba(255,255,255,0.04)"><span style="color:' + pianoColor + ';font-size:12px;font-weight:600">' + piano + '</span></td>' +
