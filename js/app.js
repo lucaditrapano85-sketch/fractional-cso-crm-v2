@@ -14397,18 +14397,26 @@ async function salvaProfiloPMI() {
 function _pianoCell(colId, pianoAttuale) {
   const rankMap  = { free: 0, self: 1, guided_base: 2, guided_pro: 3 };
   const labelMap = { free: 'Free', self: 'Self', guided_base: 'Base', guided_pro: 'Pro' };
-  const colorMap = { free: '#7B61FF', self: '#7B61FF', guided_base: '#7B61FF', guided_pro: '#FF6B2B' };
 
   const colRank     = rankMap[colId] ?? 0;
   const attualeRank = rankMap[pianoAttuale] ?? 0;
 
+  // Piano attuale → scritta "Il tuo piano"
   if (colRank === attualeRank) {
     return '<span style="color:#7B61FF;font-weight:700;font-size:14px">Il tuo piano</span>';
-  } else if (colRank > attualeRank) {
-    return `<button onclick="_attivaPiano('${colId}')" style="background:${colorMap[colId]};color:white;border:none;padding:10px 24px;border-radius:12px;font-weight:700;font-size:13px;cursor:pointer;transition:filter 0.2s;width:100%" onmouseover="this.style.filter='brightness(1.2)'" onmouseout="this.style.filter='none'">Attiva ${labelMap[colId]}</button>`;
-  } else {
+  }
+
+  // Free non ha mai bottone (non si torna a free)
+  if (colId === 'free') {
     return '';
   }
+
+  // Tutti gli altri piani (self, guided_base, guided_pro) hanno bottone se non sono il piano attuale
+  const isUpgrade = colRank > attualeRank;
+  const btnColor  = colId === 'guided_pro' ? '#FF6B2B' : '#7B61FF';
+  const btnLabel  = isUpgrade ? 'Attiva ' + labelMap[colId] : 'Passa a ' + labelMap[colId];
+
+  return `<button onclick="_attivaPiano('${colId}')" style="background:${btnColor};color:white;border:none;padding:10px 24px;border-radius:12px;font-weight:700;font-size:13px;cursor:pointer;transition:filter 0.2s;width:100%" onmouseover="this.style.filter='brightness(1.2)'" onmouseout="this.style.filter='none'">${btnLabel}</button>`;
 }
 
 async function _attivaPiano(nuovoPiano) {
