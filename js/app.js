@@ -14544,20 +14544,40 @@ function renderPMIPiano(container) {
 
 async function aggiornaPiano(nuovoPiano) {
   var p = window._pmiProspect;
-  if (!p || !p.id) return;
+  if (!p || !p.id) { showToast('Errore: nessun prospect selezionato', 'error'); return; }
+
+  var nomiPiano = { free: 'Free', self: 'Self', guided_base: 'Guided Base', guided_pro: 'Guided Pro' };
+
+  var result;
   try {
-    await sb.from('prospects').update({ piano: nuovoPiano }).eq('id', p.id);
-    window._pmiProspect = Object.assign({}, p, { piano: nuovoPiano });
-    window._userPlan = nuovoPiano;
-    var idx = prospects.findIndex(function(x){ return x.id === p.id; });
-    if (idx >= 0) prospects[idx] = window._pmiProspect;
-    var nomiPiano = { free: 'Free', self: 'Self', guided_base: 'Guided Base', guided_pro: 'Guided Pro' };
-    showToast('Piano ' + (nomiPiano[nuovoPiano] || nuovoPiano) + ' attivato!', 'success');
-    // Re-render full view so sidebar nav updates too
-    renderViewPMI('piano');
+    result = await sb.from('prospects').update({ piano: nuovoPiano }).eq('id', p.id).select();
   } catch(e) {
-    showToast('Errore aggiornamento piano: ' + e.message, 'error');
+    showToast('Errore di rete: ' + e.message, 'error');
+    return;
   }
+
+  if (result && result.error) {
+    var errMsg = result.error.message || '';
+    console.error('[aggiornaPiano] Supabase error:', result.error);
+    if (errMsg.toLowerCase().indexOf('column') !== -1 || errMsg.toLowerCase().indexOf('piano') !== -1) {
+      showToast('Errore: aggiorna la tabella prospects su Supabase aggiungendo la colonna piano (varchar, default free)', 'error');
+    } else {
+      showToast('Errore aggiornamento piano: ' + errMsg, 'error');
+    }
+    return;
+  }
+
+  // Successo — aggiorna stato locale
+  window._pmiProspect = Object.assign({}, p, { piano: nuovoPiano });
+  window._userPlan = nuovoPiano;
+  var idx = prospects.findIndex(function(x){ return x.id === p.id; });
+  if (idx >= 0) prospects[idx] = window._pmiProspect;
+
+  console.log('[aggiornaPiano] Piano salvato su Supabase:', nuovoPiano, '| prospect id:', p.id);
+  showToast('Piano aggiornato a ' + (nomiPiano[nuovoPiano] || nuovoPiano) + '!', 'success');
+
+  // Re-render pagina piani con il nuovo stato
+  renderViewPMI('piano');
 }
 
 function prenotaCallSingola() {
