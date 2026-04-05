@@ -14394,9 +14394,63 @@ async function salvaProfiloPMI() {
 
 // ── Il tuo piano ─────────────────────────────────────────────────────────────
 
+// Ordine piano: free=0, self=1, guided_base=2, guided_pro=3
+var _PIANO_ORDER = {free: 0, self: 1, guided_base: 2, guided_pro: 3};
+var _PIANO_NOMI  = {free: 'Free', self: 'Self', guided_base: 'Guided Base', guided_pro: 'Guided Pro'};
+
+// Restituisce il contenuto della cella bottone per una colonna dato il piano attuale
+function _pianoCell(colId, pianoAttuale) {
+  var colRank     = _PIANO_ORDER[colId];
+  var attualeRank = _PIANO_ORDER[pianoAttuale] !== undefined ? _PIANO_ORDER[pianoAttuale] : 0;
+
+  // Colonna = piano attuale → scritta "Il tuo piano"
+  if (colRank === attualeRank) {
+    return '<div style="color:#7B61FF;font-weight:700;font-size:14px;text-align:center;padding:9px 0;">Il tuo piano</div>';
+  }
+  // Colonna superiore al piano attuale → bottone "Attiva"
+  if (colRank > attualeRank) {
+    var labels = {free: 'Attiva Free', self: 'Attiva Self', guided_base: 'Attiva Base', guided_pro: 'Attiva Pro'};
+    var bg     = colId === 'guided_pro' ? '#FF6B2B' : '#7B61FF';
+    return '<button onclick="aggiornaPiano(\'' + colId + '\')" ' +
+      'style="width:80%;padding:9px 0;background:' + bg + ';color:white;border:none;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;transition:opacity .15s;" ' +
+      'onmouseover="this.style.opacity=\'0.85\'" onmouseout="this.style.opacity=\'1\'">' +
+      labels[colId] + '</button>';
+  }
+  // Colonna inferiore → spazio vuoto (niente downgrade)
+  return '';
+}
+
+// Aggiorna in-place solo le celle bottone e i badge header (senza re-render della pagina)
+function _refreshPianoCells(pianoAttuale) {
+  var cols = ['free', 'self', 'guided_base', 'guided_pro'];
+  var attualeRank = _PIANO_ORDER[pianoAttuale] !== undefined ? _PIANO_ORDER[pianoAttuale] : 0;
+
+  cols.forEach(function(colId) {
+    // Aggiorna cella bottone
+    var cell = document.getElementById('piano-btn-' + colId);
+    if (cell) cell.innerHTML = _pianoCell(colId, pianoAttuale);
+
+    // Aggiorna badge header
+    var badge = document.getElementById('piano-badge-' + colId);
+    if (badge) {
+      var colRank = _PIANO_ORDER[colId];
+      if (colRank === attualeRank) {
+        // Piano attuale → badge "IL TUO PIANO"
+        var bg = colId === 'guided_pro' ? '#FF6B2B' : '#7B61FF';
+        badge.innerHTML = '<span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:' + bg + ';color:white;font-size:11px;font-weight:700;padding:4px 12px;border-radius:8px;white-space:nowrap;letter-spacing:.3px;z-index:10;">IL TUO PIANO</span>';
+      } else if (colId === 'guided_base' && attualeRank < _PIANO_ORDER['guided_base']) {
+        // Consigliato su GB solo se utente è sotto
+        badge.innerHTML = '<span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#FF6B2B;color:white;font-size:11px;font-weight:700;padding:4px 12px;border-radius:8px;white-space:nowrap;letter-spacing:.3px;z-index:10;">Consigliato</span>';
+      } else {
+        badge.innerHTML = '';
+      }
+    }
+  });
+}
+
 function renderPMIPiano(container) {
   var p = window._pmiProspect || {};
-  var pianoCorrente = p.piano || 'free';
+  var pianoAttuale = p.piano || 'free';
 
   _levaSetDSBg(container);
 
@@ -14420,68 +14474,41 @@ function renderPMIPiano(container) {
     ['Call CSO illimitate',         DASH,  DASH,  DASH,  CHECK],
   ];
 
-  var planOrder = {free: 0, self: 1, guided_base: 2, guided_pro: 3};
-
-  function mkBtn(planId, upgradeLbl, bg, textColor) {
-    var isCurrent = pianoCorrente === planId;
-    // Current plan: show label text instead of button
-    if (isCurrent) {
-      return '<div style="color:#7B61FF;font-weight:700;font-size:14px;text-align:center;padding:9px 0;">Il tuo piano</div>';
-    }
-    // No downgrade buttons
-    if (planOrder[planId] < planOrder[pianoCorrente]) {
-      return '';
-    }
-    return '<button onclick="aggiornaPiano(\'' + planId + '\')" style="width:80%;padding:9px 0;background:' + bg + ';color:' + textColor + ';border:none;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;transition:opacity .15s;" onmouseover="this.style.opacity=\'0.85\'" onmouseout="this.style.opacity=\'1\'">' + upgradeLbl + '</button>';
+  // Badge floating header — wrapper con ID per aggiornamento in-place
+  function headerBadgeWrap(planId) {
+    return '<span id="piano-badge-' + planId + '" style="position:absolute;top:0;left:0;width:100%;height:0;pointer-events:none;"></span>';
   }
 
-  // Floating badge (chip sopra la card) — per "Il tuo piano" e "Consigliato"
-  function floatingBadge(text, bg, textColor) {
-    return '<span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:' + bg + ';color:' + textColor + ';font-size:11px;font-weight:700;padding:4px 12px;border-radius:8px;white-space:nowrap;letter-spacing:.3px;z-index:10;">' + text + '</span>';
-  }
-
-  function headerBadge(planId) {
-    if (pianoCorrente === planId) {
-      var bg = planId === 'guided_pro' ? '#FF6B2B' : '#7B61FF';
-      return floatingBadge('IL TUO PIANO', bg, 'white');
-    }
-    // "Consigliato" solo se l'utente non ha già quel piano o superiore
-    if (planId === 'guided_base' && planOrder[pianoCorrente] < planOrder['guided_base']) {
-      return floatingBadge('Consigliato', '#FF6B2B', 'white');
-    }
-    return '';
-  }
-
-  // ── Headers (padding-top:22px per dare spazio al badge floating) ──────────
+  // ── Headers ───────────────────────────────────────────────────────────────
   var headerFree =
     '<div style="position:relative;min-height:90px;background:rgba(255,255,255,0.04);border-radius:14px 14px 0 0;border-top:3px solid rgba(255,255,255,0.12);padding:22px 14px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
-      headerBadge('free') +
+      headerBadgeWrap('free') +
       '<div style="font-size:17px;font-weight:600;color:white;">Free</div>' +
       '<div style="font-size:13px;color:rgba(255,255,255,0.4);margin-top:3px;">€0</div>' +
     '</div>';
 
   var headerSelf =
     '<div style="position:relative;min-height:90px;background:rgba(255,255,255,0.04);border-radius:14px 14px 0 0;border-top:3px solid rgba(123,97,255,0.5);padding:22px 14px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
-      headerBadge('self') +
+      headerBadgeWrap('self') +
       '<div style="font-size:17px;font-weight:600;color:white;">Self</div>' +
       '<div style="font-size:13px;color:rgba(255,255,255,0.4);margin-top:3px;">€199/mese</div>' +
     '</div>';
 
   var headerBase =
     '<div style="position:relative;min-height:90px;background:rgba(123,97,255,0.08);border-radius:14px 14px 0 0;border-top:3px solid #7B61FF;padding:22px 14px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
-      headerBadge('guided_base') +
+      headerBadgeWrap('guided_base') +
       '<div style="font-size:17px;font-weight:600;color:#A78BFA;">Guided Base</div>' +
       '<div style="font-size:13px;color:rgba(167,139,250,0.6);margin-top:3px;">€399/mese</div>' +
     '</div>';
 
   var headerPro =
     '<div style="position:relative;min-height:90px;background:rgba(255,107,43,0.08);border-radius:14px 14px 0 0;border-top:3px solid #FF6B2B;padding:22px 14px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
-      headerBadge('guided_pro') +
+      headerBadgeWrap('guided_pro') +
       '<div style="font-size:17px;font-weight:600;color:#FF6B2B;">Guided Pro</div>' +
       '<div style="font-size:13px;color:rgba(255,107,43,0.5);margin-top:3px;">€599/mese</div>' +
     '</div>';
 
-  // ── Table rows ────────────────────────────────────────────────────────────
+  // ── Feature rows ──────────────────────────────────────────────────────────
   var rowsHtml = features.map(function(row, i) {
     var alt = i % 2 === 0 ? 'rgba(255,255,255,0.02)' : 'transparent';
     return '<tr style="background:' + alt + ';">' +
@@ -14493,16 +14520,16 @@ function renderPMIPiano(container) {
     '</tr>';
   }).join('');
 
+  // Riga bottoni — celle con ID per aggiornamento in-place
   var btnRowHtml =
     '<tr>' +
       '<td style="padding:14px 10px 18px 14px;"></td>' +
-      '<td style="text-align:center;padding:14px 4px 18px;">' + mkBtn('free', '', '', '') + '</td>' +
-      '<td style="text-align:center;padding:14px 4px 18px;">' + mkBtn('self', 'Attiva Self', '#7B61FF', 'white') + '</td>' +
-      '<td style="text-align:center;padding:14px 4px 18px;">' + mkBtn('guided_base', 'Attiva Base', '#7B61FF', 'white') + '</td>' +
-      '<td style="text-align:center;padding:14px 4px 18px;">' + mkBtn('guided_pro', 'Attiva Pro', '#FF6B2B', 'white') + '</td>' +
+      '<td id="piano-btn-free"         style="text-align:center;padding:14px 4px 18px;">' + _pianoCell('free',         pianoAttuale) + '</td>' +
+      '<td id="piano-btn-self"         style="text-align:center;padding:14px 4px 18px;">' + _pianoCell('self',         pianoAttuale) + '</td>' +
+      '<td id="piano-btn-guided_base"  style="text-align:center;padding:14px 4px 18px;">' + _pianoCell('guided_base',  pianoAttuale) + '</td>' +
+      '<td id="piano-btn-guided_pro"   style="text-align:center;padding:14px 4px 18px;">' + _pianoCell('guided_pro',   pianoAttuale) + '</td>' +
     '</tr>';
 
-  // label 28%, 4 piani 18% cad.
   var tableHtml =
     '<table style="width:100%;border-collapse:collapse;">' +
       '<colgroup><col style="width:28%"><col style="width:18%"><col style="width:18%"><col style="width:18%"><col style="width:18%"></colgroup>' +
@@ -14516,7 +14543,6 @@ function renderPMIPiano(container) {
       '<p style="font-size:13px;color:rgba(255,255,255,0.4);margin:0 0 28px;">Scegli il livello di supporto per la tua azienda.</p>' +
 
       '<div style="overflow-x:auto;overflow-y:visible;">' +
-        // Header row — overflow:visible su tutto per badge floating
         '<div style="display:grid;grid-template-columns:28% 18% 18% 18% 18%;min-width:620px;margin-bottom:0;overflow:visible;padding-top:16px;">' +
           '<div></div>' +
           '<div style="padding:0 3px 0 0;overflow:visible;position:relative;">' + headerFree + '</div>' +
@@ -14540,6 +14566,9 @@ function renderPMIPiano(container) {
     '</div>';
 
   _levaStartWaves('leva-waves-view');
+
+  // Popola i badge header con il piano attuale corretto
+  _refreshPianoCells(pianoAttuale);
 }
 
 async function aggiornaPiano(nuovoPiano) {
@@ -14574,10 +14603,10 @@ async function aggiornaPiano(nuovoPiano) {
   if (idx >= 0) prospects[idx] = window._pmiProspect;
 
   console.log('[aggiornaPiano] Piano salvato su Supabase:', nuovoPiano, '| prospect id:', p.id);
-  showToast('Piano aggiornato a ' + (nomiPiano[nuovoPiano] || nuovoPiano) + '!', 'success');
+  showToast('Piano aggiornato!', 'success');
 
-  // Re-render pagina piani con il nuovo stato
-  renderViewPMI('piano');
+  // Aggiorna in-place solo bottoni e badge — senza re-render della pagina
+  _refreshPianoCells(nuovoPiano);
 }
 
 function prenotaCallSingola() {
