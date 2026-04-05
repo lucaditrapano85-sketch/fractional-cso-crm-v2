@@ -44,6 +44,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
         <span class="cso-nav-label">Risorse</span>
       </div>
+      <div class="nav-item" onclick="showView('profilo-cso')" onmouseenter="_levaTipShow(this,'Il mio profilo')" onmouseleave="_levaTipHide()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span class="cso-nav-label">Il mio profilo</span>
+      </div>
       <div style="border-top:1px solid rgba(255,255,255,0.1);margin:8px 0;"></div>
       <div class="nav-item" onclick="apriModaleNuovoCliente()" onmouseenter="_levaTipShow(this,'Nuovo cliente')" onmouseleave="_levaTipHide()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
@@ -317,6 +321,7 @@
   </div>
   <div id="prospects-list-view" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px"></div>
 </div>
+<div id="view-profilo-cso" class="view"></div>
 <div id="view-glossario" class="view"></div>
 <div id="view-guadagni" class="view"></div>
 <div id="view-risorse" class="view"></div>
@@ -428,7 +433,7 @@
 <script src="js/data/azioni-listino.js"></script>
 <script src="js/data/step-detail.js?v=2"></script>
 <script src="js/data/diagnosi-data.js"></script>
-<script src="js/app.js?v=20260405r"></script>
+<script src="js/app.js?v=20260405s"></script>
 <script src="js/diagnosi.js?v=20260405c"></script>
 
 
