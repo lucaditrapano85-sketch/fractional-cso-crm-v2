@@ -14394,62 +14394,61 @@ async function salvaProfiloPMI() {
 
 // ── Il tuo piano ─────────────────────────────────────────────────────────────
 
-// Ordine piano: free=0, self=1, guided_base=2, guided_pro=3
-var _PIANO_ORDER = {free: 0, self: 1, guided_base: 2, guided_pro: 3};
-var _PIANO_NOMI  = {free: 'Free', self: 'Self', guided_base: 'Guided Base', guided_pro: 'Guided Pro'};
-
-// Restituisce il contenuto della cella bottone per una colonna dato il piano attuale
 function _pianoCell(colId, pianoAttuale) {
-  var colRank     = _PIANO_ORDER[colId];
-  var attualeRank = _PIANO_ORDER[pianoAttuale] !== undefined ? _PIANO_ORDER[pianoAttuale] : 0;
+  const rankMap  = { free: 0, self: 1, guided_base: 2, guided_pro: 3 };
+  const labelMap = { free: 'Free', self: 'Self', guided_base: 'Base', guided_pro: 'Pro' };
+  const colorMap = { free: '#7B61FF', self: '#7B61FF', guided_base: '#7B61FF', guided_pro: '#FF6B2B' };
 
-  // Colonna = piano attuale → scritta "Il tuo piano"
+  const colRank     = rankMap[colId] ?? 0;
+  const attualeRank = rankMap[pianoAttuale] ?? 0;
+
   if (colRank === attualeRank) {
-    return '<div style="color:#7B61FF;font-weight:700;font-size:14px;text-align:center;padding:9px 0;">Il tuo piano</div>';
+    return '<span style="color:#7B61FF;font-weight:700;font-size:14px">Il tuo piano</span>';
+  } else if (colRank > attualeRank) {
+    return `<button onclick="_attivaPiano('${colId}')" style="background:${colorMap[colId]};color:white;border:none;padding:10px 24px;border-radius:12px;font-weight:700;font-size:13px;cursor:pointer;transition:filter 0.2s;width:100%" onmouseover="this.style.filter='brightness(1.2)'" onmouseout="this.style.filter='none'">Attiva ${labelMap[colId]}</button>`;
+  } else {
+    return '';
   }
-  // Colonna superiore al piano attuale → bottone "Attiva"
-  if (colRank > attualeRank) {
-    var labels = {free: 'Attiva Free', self: 'Attiva Self', guided_base: 'Attiva Base', guided_pro: 'Attiva Pro'};
-    var bg     = colId === 'guided_pro' ? '#FF6B2B' : '#7B61FF';
-    return '<button onclick="aggiornaPiano(\'' + colId + '\')" ' +
-      'style="width:80%;padding:9px 0;background:' + bg + ';color:white;border:none;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;transition:opacity .15s;" ' +
-      'onmouseover="this.style.opacity=\'0.85\'" onmouseout="this.style.opacity=\'1\'">' +
-      labels[colId] + '</button>';
-  }
-  // Colonna inferiore → spazio vuoto (niente downgrade)
-  return '';
 }
 
-// Aggiorna in-place solo le celle bottone e i badge header (senza re-render della pagina)
-function _refreshPianoCells(pianoAttuale) {
-  var cols = ['free', 'self', 'guided_base', 'guided_pro'];
-  var attualeRank = _PIANO_ORDER[pianoAttuale] !== undefined ? _PIANO_ORDER[pianoAttuale] : 0;
+async function _attivaPiano(nuovoPiano) {
+  try {
+    const { error } = await sb.from('prospects').update({ piano: nuovoPiano }).eq('id', currentId);
+    if (error) throw error;
 
-  cols.forEach(function(colId) {
-    // Aggiorna cella bottone
-    var cell = document.getElementById('piano-btn-' + colId);
-    if (cell) cell.innerHTML = _pianoCell(colId, pianoAttuale);
+    // Aggiorna il prospect locale
+    const idx = prospects.findIndex(p => p.id === currentId);
+    if (idx !== -1) prospects[idx].piano = nuovoPiano;
+    if (window._pmiProspect) window._pmiProspect.piano = nuovoPiano;
+    window._userPlan = nuovoPiano;
 
-    // Aggiorna badge header
-    var badge = document.getElementById('piano-badge-' + colId);
-    if (badge) {
-      var colRank = _PIANO_ORDER[colId];
-      if (colRank === attualeRank) {
-        // Piano attuale → badge "IL TUO PIANO"
-        var bg = colId === 'guided_pro' ? '#FF6B2B' : '#7B61FF';
-        badge.innerHTML = '<span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:' + bg + ';color:white;font-size:11px;font-weight:700;padding:4px 12px;border-radius:8px;white-space:nowrap;letter-spacing:.3px;z-index:10;">IL TUO PIANO</span>';
-      } else if (colId === 'guided_base' && attualeRank < _PIANO_ORDER['guided_base']) {
-        // Consigliato su GB solo se utente è sotto
-        badge.innerHTML = '<span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#FF6B2B;color:white;font-size:11px;font-weight:700;padding:4px 12px;border-radius:8px;white-space:nowrap;letter-spacing:.3px;z-index:10;">Consigliato</span>';
-      } else {
-        badge.innerHTML = '';
-      }
+    console.log('[_attivaPiano] Piano salvato su Supabase:', nuovoPiano, '| prospect id:', currentId);
+
+    // Aggiorna in-place le 4 celle bottone
+    ['free', 'self', 'guided_base', 'guided_pro'].forEach(col => {
+      const el = document.getElementById('piano-btn-' + col);
+      if (el) el.innerHTML = _pianoCell(col, nuovoPiano);
+    });
+
+    // Aggiorna i 4 badge header
+    ['free', 'self', 'guided_base', 'guided_pro'].forEach(col => {
+      const badge = document.getElementById('piano-badge-' + col);
+      if (badge) badge.style.display = (col === nuovoPiano) ? 'block' : 'none';
+    });
+
+    showToast('Piano aggiornato a ' + nuovoPiano.replace('_', ' ') + '!');
+  } catch (e) {
+    console.error('Errore aggiornamento piano:', e);
+    if (e.message && (e.message.toLowerCase().includes('column') || e.message.toLowerCase().includes('piano'))) {
+      showToast('Errore: aggiorna la tabella prospects su Supabase aggiungendo la colonna piano (varchar, default free)', 'error');
+    } else {
+      showToast('Errore: ' + e.message, 'error');
     }
-  });
+  }
 }
 
 function renderPMIPiano(container) {
-  var p = window._pmiProspect || {};
+  var p = (currentId ? prospects.find(function(x){ return x.id === currentId; }) : null) || window._pmiProspect || {};
   var pianoAttuale = p.piano || 'free';
 
   _levaSetDSBg(container);
@@ -14474,9 +14473,14 @@ function renderPMIPiano(container) {
     ['Call CSO illimitate',         DASH,  DASH,  DASH,  CHECK],
   ];
 
-  // Badge floating header — wrapper con ID per aggiornamento in-place
+  // Badge "IL TUO PIANO" per ogni header — visibile solo se è il piano attuale
+  // display:block/none viene gestito da _attivaPiano in-place
   function headerBadgeWrap(planId) {
-    return '<span id="piano-badge-' + planId + '" style="position:absolute;top:0;left:0;width:100%;height:0;pointer-events:none;"></span>';
+    var isActive = planId === pianoAttuale;
+    var bg = planId === 'guided_pro' ? '#FF6B2B' : '#7B61FF';
+    return '<div id="piano-badge-' + planId + '" style="display:' + (isActive ? 'block' : 'none') + ';position:absolute;top:-12px;left:0;width:100%;text-align:center;pointer-events:none;z-index:10;">' +
+      '<span style="background:' + bg + ';color:white;font-size:11px;font-weight:700;padding:4px 12px;border-radius:8px;white-space:nowrap;letter-spacing:.3px;">IL TUO PIANO</span>' +
+    '</div>';
   }
 
   // ── Headers ───────────────────────────────────────────────────────────────
@@ -14566,48 +14570,10 @@ function renderPMIPiano(container) {
     '</div>';
 
   _levaStartWaves('leva-waves-view');
-
-  // Popola i badge header con il piano attuale corretto
-  _refreshPianoCells(pianoAttuale);
 }
 
-async function aggiornaPiano(nuovoPiano) {
-  var p = window._pmiProspect;
-  if (!p || !p.id) { showToast('Errore: nessun prospect selezionato', 'error'); return; }
-
-  var nomiPiano = { free: 'Free', self: 'Self', guided_base: 'Guided Base', guided_pro: 'Guided Pro' };
-
-  var result;
-  try {
-    result = await sb.from('prospects').update({ piano: nuovoPiano }).eq('id', p.id).select();
-  } catch(e) {
-    showToast('Errore di rete: ' + e.message, 'error');
-    return;
-  }
-
-  if (result && result.error) {
-    var errMsg = result.error.message || '';
-    console.error('[aggiornaPiano] Supabase error:', result.error);
-    if (errMsg.toLowerCase().indexOf('column') !== -1 || errMsg.toLowerCase().indexOf('piano') !== -1) {
-      showToast('Errore: aggiorna la tabella prospects su Supabase aggiungendo la colonna piano (varchar, default free)', 'error');
-    } else {
-      showToast('Errore aggiornamento piano: ' + errMsg, 'error');
-    }
-    return;
-  }
-
-  // Successo — aggiorna stato locale
-  window._pmiProspect = Object.assign({}, p, { piano: nuovoPiano });
-  window._userPlan = nuovoPiano;
-  var idx = prospects.findIndex(function(x){ return x.id === p.id; });
-  if (idx >= 0) prospects[idx] = window._pmiProspect;
-
-  console.log('[aggiornaPiano] Piano salvato su Supabase:', nuovoPiano, '| prospect id:', p.id);
-  showToast('Piano aggiornato!', 'success');
-
-  // Aggiorna in-place solo bottoni e badge — senza re-render della pagina
-  _refreshPianoCells(nuovoPiano);
-}
+// Alias mantenuto per compatibilità con eventuali chiamate precedenti
+function aggiornaPiano(nuovoPiano) { _attivaPiano(nuovoPiano); }
 
 function prenotaCallSingola() {
   var pro = window._currentProfile  || {};
