@@ -14412,17 +14412,21 @@ function _pianoCell(colId, pianoAttuale) {
 }
 
 async function _attivaPiano(nuovoPiano) {
+  // ID prospect: nel contesto PMI usa _pmiProspect.id, nel contesto CSO usa currentId
+  const prospectId = (window._pmiProspect && window._pmiProspect.id) || currentId;
+  if (!prospectId) { showToast('Errore: nessun prospect selezionato', 'error'); return; }
+
   try {
-    const { error } = await sb.from('prospects').update({ piano: nuovoPiano }).eq('id', currentId);
+    const { error } = await sb.from('prospects').update({ piano: nuovoPiano }).eq('id', prospectId);
     if (error) throw error;
 
     // Aggiorna il prospect locale
-    const idx = prospects.findIndex(p => p.id === currentId);
+    const idx = prospects.findIndex(p => p.id === prospectId);
     if (idx !== -1) prospects[idx].piano = nuovoPiano;
     if (window._pmiProspect) window._pmiProspect.piano = nuovoPiano;
     window._userPlan = nuovoPiano;
 
-    console.log('[_attivaPiano] Piano salvato su Supabase:', nuovoPiano, '| prospect id:', currentId);
+    console.log('[_attivaPiano] Piano salvato su Supabase:', nuovoPiano, '| prospect id:', prospectId);
 
     // Aggiorna in-place le 4 celle bottone
     ['free', 'self', 'guided_base', 'guided_pro'].forEach(col => {
