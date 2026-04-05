@@ -465,9 +465,9 @@ function renderGuadagni() {
   var c = document.getElementById('view-guadagni');
   if (!c) return;
   c.innerHTML = '<div style="padding:40px 32px;font-family:\'Plus Jakarta Sans\',sans-serif;">' +
-    '<h2 style="font-size:22px;font-weight:700;color:#1a1a2e;margin-bottom:8px;">I miei guadagni</h2>' +
-    '<p style="font-size:14px;color:rgba(26,26,46,0.4);margin-bottom:32px;">Riepilogo compensi e fatturato da clienti attivi. Disponibile a breve.</p>' +
-    '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:48px 32px;text-align:center;color:rgba(26,26,46,0.25);font-size:14px;">' +
+    '<h2 style="font-size:22px;font-weight:700;color:white;margin-bottom:8px;">I miei guadagni</h2>' +
+    '<p style="font-size:14px;color:rgba(255,255,255,0.4);margin-bottom:32px;">Riepilogo compensi e fatturato da clienti attivi. Disponibile a breve.</p>' +
+    '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:14px;padding:48px 32px;text-align:center;color:rgba(255,255,255,0.25);font-size:14px;">' +
     'Funzionalità in arrivo' +
     '</div>' +
   '</div>';
@@ -478,10 +478,10 @@ function renderRisorse() {
   if (!c) return;
   // Render tabs: Glossario | Listino
   c.innerHTML = '<div style="padding:32px 32px 0;font-family:\'Plus Jakarta Sans\',sans-serif;">' +
-    '<h2 style="font-size:22px;font-weight:700;color:#1a1a2e;margin-bottom:20px;">Risorse</h2>' +
-    '<div style="display:flex;gap:0;border-bottom:1px solid rgba(0,0,0,0.08);margin-bottom:24px;">' +
-      '<button onclick="_risorsaTab(\'glossario\')" id="rtab-glossario" style="background:none;border:none;border-bottom:2px solid #3D5AFE;padding:8px 20px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:600;color:#3D5AFE;cursor:pointer;">Glossario</button>' +
-      '<button onclick="_risorsaTab(\'listino\')" id="rtab-listino" style="background:none;border:none;border-bottom:2px solid transparent;padding:8px 20px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:400;color:rgba(26,26,46,0.4);cursor:pointer;">Listino Servizi</button>' +
+    '<h2 style="font-size:22px;font-weight:700;color:white;margin-bottom:20px;">Risorse</h2>' +
+    '<div style="display:flex;gap:0;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:24px;">' +
+      '<button onclick="_risorsaTab(\'glossario\')" id="rtab-glossario" style="background:none;border:none;border-bottom:2px solid #7B61FF;padding:8px 20px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:600;color:#7B61FF;cursor:pointer;">Glossario</button>' +
+      '<button onclick="_risorsaTab(\'listino\')" id="rtab-listino" style="background:none;border:none;border-bottom:2px solid transparent;padding:8px 20px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:400;color:rgba(255,255,255,0.4);cursor:pointer;">Listino Servizi</button>' +
     '</div>' +
     '<div id="risorse-body"></div>' +
   '</div>';
@@ -1129,17 +1129,17 @@ function _espandiDaFareOggi() {
   var c = document.getElementById('da-fare-oggi-list');
   if (!c || !window._dashAlerts) return;
   c.innerHTML = window._dashAlerts.map(function(a) {
-    return '<div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-left:3px solid ' + a.colore + ';border-radius:0 12px 12px 0;padding:14px 16px;margin-bottom:8px;">' +
+    return '<div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-left:3px solid ' + a.colore + ';border-radius:0 12px 12px 0;padding:14px 16px;margin-bottom:8px;">' +
       '<div style="display:flex;align-items:center;gap:12px;flex:1;min-width:0;">' +
-        '<div style="width:32px;height:32px;border-radius:50%;background:' + a.colore + '1a;display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
+        '<div style="width:32px;height:32px;border-radius:50%;background:' + a.colore + '22;display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
           '<div style="width:10px;height:10px;border-radius:50%;background:' + a.colore + ';"></div>' +
         '</div>' +
         '<div style="min-width:0;">' +
-          '<div style="font-size:13px;font-weight:600;color:#1a1a2e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + a.testo + '</div>' +
-          '<div style="font-size:12px;color:rgba(26,26,46,0.4);margin-top:2px;">' + a.dettaglio + '</div>' +
+          '<div style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + a.testo + '</div>' +
+          '<div style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:2px;">' + a.dettaglio + '</div>' +
         '</div>' +
       '</div>' +
-      '<button onclick="' + a.btnAction + '" style="flex-shrink:0;margin-left:16px;font-size:12px;padding:6px 14px;border-radius:8px;background:' + a.colore + '14;color:' + a.colore + ';border:none;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;font-weight:500;white-space:nowrap;" onmouseover="this.style.background=\'' + a.colore + '26\'" onmouseout="this.style.background=\'' + a.colore + '14\'">' + a.btnLabel + '</button>' +
+      '<button onclick="' + a.btnAction + '" style="flex-shrink:0;margin-left:16px;font-size:12px;padding:6px 14px;border-radius:8px;background:' + a.colore + '22;color:' + a.colore + ';border:1px solid ' + a.colore + '44;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;font-weight:600;white-space:nowrap;" onmouseover="this.style.background=\'' + a.colore + '44\'" onmouseout="this.style.background=\'' + a.colore + '22\'">' + a.btnLabel + '</button>' +
     '</div>';
   }).join('');
 }
@@ -1496,12 +1496,12 @@ async function renderDashboard() {
           var motivo = s < 30 && s > 0 ? 'Score critico: ' + s + '/100' :
             p.stato === 'nuovo' ? 'Nessuna interazione da ' + Math.floor((oggi - new Date(p.created_at)) / 86400000) + ' giorni' :
             'Score in calo';
-          return '<div onclick="openProspect(\'' + p.id + '\')" style="cursor:pointer;background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-left:3px solid #E53935;border-radius:0 12px 12px 0;padding:12px 16px;display:flex;align-items:center;justify-content:space-between">' +
+          return '<div onclick="openProspect(\'' + p.id + '\')" style="cursor:pointer;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-left:3px solid #FF4444;border-radius:0 12px 12px 0;padding:12px 16px;display:flex;align-items:center;justify-content:space-between">' +
             '<div>' +
-              '<div style="font-size:13px;font-weight:600;color:#1a1a2e">' + p.nome + '</div>' +
-              '<div style="font-size:11px;color:rgba(26,26,46,0.5);margin-top:2px">' + (p.settore || '--') + '</div>' +
+              '<div style="font-size:13px;font-weight:600;color:white">' + p.nome + '</div>' +
+              '<div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:2px">' + (p.settore || '--') + '</div>' +
             '</div>' +
-            '<div style="font-size:12px;font-weight:600;color:#E53935">' + motivo + '</div>' +
+            '<div style="font-size:12px;font-weight:600;color:#FF4444">' + motivo + '</div>' +
           '</div>';
         }).join('') +
         '</div>';
@@ -1539,8 +1539,8 @@ function apriModaleNuovoCliente() {
   var existing = document.getElementById('cso-modal-overlay');
   if (existing) existing.remove();
 
-  var IS = 'width:100%;background:rgba(255,255,255,0.6);border:1px solid rgba(26,26,46,0.1);border-radius:10px;padding:12px 14px;font-size:14px;color:#1a1a2e;font-family:\'Plus Jakarta Sans\',sans-serif;box-sizing:border-box;outline:none;transition:border-color .15s;';
-  var LS = 'display:block;font-size:12px;color:rgba(26,26,46,0.4);margin-bottom:4px;margin-top:14px;';
+  var IS = 'width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(123,97,255,0.2);border-radius:10px;padding:12px 14px;font-size:14px;color:white;font-family:\'Plus Jakarta Sans\',sans-serif;box-sizing:border-box;outline:none;transition:border-color .15s;';
+  var LS = 'display:block;font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:4px;margin-top:14px;';
 
   var overlay = document.createElement('div');
   overlay.id = 'cso-modal-overlay';
@@ -1548,52 +1548,52 @@ function apriModaleNuovoCliente() {
 
   var box = document.createElement('div');
   box.id = 'cso-modal-box';
-  box.style.cssText = 'width:520px;max-width:90vw;background:rgba(255,255,255,0.92);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.8);border-radius:20px;padding:28px;box-shadow:0 8px 32px rgba(0,0,0,0.12);transform:scale(0.95);opacity:0;transition:transform 200ms ease-out,opacity 200ms ease-out;';
+  box.style.cssText = 'width:520px;max-width:90vw;background:#12122a;border:1px solid rgba(123,97,255,0.2);border-radius:20px;padding:28px;box-shadow:0 8px 32px rgba(0,0,0,0.5);transform:scale(0.95);opacity:0;transition:transform 200ms ease-out,opacity 200ms ease-out;';
 
   box.innerHTML =
-    '<div style="font-size:20px;font-weight:600;color:#1a1a2e;margin-bottom:4px;">Registra nuovo cliente</div>' +
-    '<div style="font-size:12px;color:rgba(26,26,46,0.4);margin-bottom:20px;">Il cliente riceverà un\'email per completare la registrazione.</div>' +
+    '<div style="font-size:20px;font-weight:600;color:white;margin-bottom:4px;">Registra nuovo cliente</div>' +
+    '<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:20px;">Il cliente riceverà un\'email per completare la registrazione.</div>' +
 
     // Nome + Cognome
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">' +
-      '<div><label style="' + LS + 'margin-top:0;">Nome</label><input id="nc-nome" type="text" autocomplete="given-name" style="' + IS + '" oninput="_ncValidate()" onfocus="this.style.borderColor=\'rgba(61,90,254,0.4)\'" onblur="this.style.borderColor=\'rgba(26,26,46,0.1)\'"></div>' +
-      '<div><label style="' + LS + 'margin-top:0;">Cognome</label><input id="nc-cognome" type="text" autocomplete="family-name" style="' + IS + '" oninput="_ncValidate()" onfocus="this.style.borderColor=\'rgba(61,90,254,0.4)\'" onblur="this.style.borderColor=\'rgba(26,26,46,0.1)\'"></div>' +
+      '<div><label style="' + LS + 'margin-top:0;">Nome</label><input id="nc-nome" type="text" autocomplete="given-name" style="' + IS + '" oninput="_ncValidate()" onfocus="this.style.borderColor=\'rgba(123,97,255,0.5)\'" onblur="this.style.borderColor=\'rgba(123,97,255,0.2)\'"></div>' +
+      '<div><label style="' + LS + 'margin-top:0;">Cognome</label><input id="nc-cognome" type="text" autocomplete="family-name" style="' + IS + '" oninput="_ncValidate()" onfocus="this.style.borderColor=\'rgba(123,97,255,0.5)\'" onblur="this.style.borderColor=\'rgba(123,97,255,0.2)\'"></div>' +
     '</div>' +
 
     // Azienda
     '<label style="' + LS + '">Nome azienda</label>' +
-    '<input id="nc-azienda" type="text" autocomplete="organization" style="' + IS + '" oninput="_ncValidate()" onfocus="this.style.borderColor=\'rgba(61,90,254,0.4)\'" onblur="this.style.borderColor=\'rgba(26,26,46,0.1)\'">' +
+    '<input id="nc-azienda" type="text" autocomplete="organization" style="' + IS + '" oninput="_ncValidate()" onfocus="this.style.borderColor=\'rgba(123,97,255,0.5)\'" onblur="this.style.borderColor=\'rgba(123,97,255,0.2)\'">' +
 
     // P.IVA
     '<label style="' + LS + '">P.IVA</label>' +
-    '<input id="nc-piva" type="text" placeholder="IT01234567890" style="' + IS + '" oninput="_ncValidate()" onfocus="this.style.borderColor=\'rgba(61,90,254,0.4)\'" onblur="this.style.borderColor=\'rgba(26,26,46,0.1)\'">' +
+    '<input id="nc-piva" type="text" placeholder="IT01234567890" style="' + IS + '" oninput="_ncValidate()" onfocus="this.style.borderColor=\'rgba(123,97,255,0.5)\'" onblur="this.style.borderColor=\'rgba(123,97,255,0.2)\'">' +
 
     // Telefono + Email
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">' +
-      '<div><label style="' + LS + '">Telefono</label><input id="nc-tel" type="tel" placeholder="+39 333 1234567" autocomplete="tel" style="' + IS + '" oninput="_ncValidate()" onfocus="this.style.borderColor=\'rgba(61,90,254,0.4)\'" onblur="this.style.borderColor=\'rgba(26,26,46,0.1)\'"></div>' +
-      '<div><label style="' + LS + '">Email</label><input id="nc-email" type="email" placeholder="titolare@azienda.it" autocomplete="email" style="' + IS + '" oninput="_ncValidate()" onfocus="this.style.borderColor=\'rgba(61,90,254,0.4)\'" onblur="this.style.borderColor=\'rgba(26,26,46,0.1)\'"></div>' +
+      '<div><label style="' + LS + '">Telefono</label><input id="nc-tel" type="tel" placeholder="+39 333 1234567" autocomplete="tel" style="' + IS + '" oninput="_ncValidate()" onfocus="this.style.borderColor=\'rgba(123,97,255,0.5)\'" onblur="this.style.borderColor=\'rgba(123,97,255,0.2)\'"></div>' +
+      '<div><label style="' + LS + '">Email</label><input id="nc-email" type="email" placeholder="titolare@azienda.it" autocomplete="email" style="' + IS + '" oninput="_ncValidate()" onfocus="this.style.borderColor=\'rgba(123,97,255,0.5)\'" onblur="this.style.borderColor=\'rgba(123,97,255,0.2)\'"></div>' +
     '</div>' +
 
     // Pacchetto
     '<label style="' + LS + '">Pacchetto</label>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">' +
-      '<div id="nc-card-base" onclick="_ncSelPiano(\'guided_base\')" style="border:2px solid rgba(26,26,46,0.08);border-radius:12px;padding:14px;cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;gap:10px;">' +
-        '<div id="nc-radio-base" style="width:16px;height:16px;border-radius:50%;border:2px solid rgba(26,26,46,0.2);flex-shrink:0;margin-top:2px;transition:all .15s;"></div>' +
-        '<div><div style="font-size:15px;font-weight:600;color:#3D5AFE;">Guided Base</div>' +
-        '<div style="font-size:12px;color:rgba(61,90,254,0.5);margin-top:2px;">€399/mese</div>' +
-        '<div style="font-size:11px;color:rgba(26,26,46,0.35);margin-top:4px;">1 call/mese + piano condiviso</div></div>' +
+      '<div id="nc-card-base" onclick="_ncSelPiano(\'guided_base\')" style="border:2px solid rgba(123,97,255,0.15);border-radius:12px;padding:14px;cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;gap:10px;background:rgba(255,255,255,0.03);">' +
+        '<div id="nc-radio-base" style="width:16px;height:16px;border-radius:50%;border:2px solid rgba(123,97,255,0.3);flex-shrink:0;margin-top:2px;transition:all .15s;"></div>' +
+        '<div><div style="font-size:15px;font-weight:600;color:#7B61FF;">Guided Base</div>' +
+        '<div style="font-size:12px;color:rgba(123,97,255,0.6);margin-top:2px;">€399/mese</div>' +
+        '<div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:4px;">1 call/mese + piano condiviso</div></div>' +
       '</div>' +
-      '<div id="nc-card-pro" onclick="_ncSelPiano(\'guided_pro\')" style="border:2px solid rgba(26,26,46,0.08);border-radius:12px;padding:14px;cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;gap:10px;">' +
-        '<div id="nc-radio-pro" style="width:16px;height:16px;border-radius:50%;border:2px solid rgba(26,26,46,0.2);flex-shrink:0;margin-top:2px;transition:all .15s;"></div>' +
+      '<div id="nc-card-pro" onclick="_ncSelPiano(\'guided_pro\')" style="border:2px solid rgba(255,107,43,0.15);border-radius:12px;padding:14px;cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;gap:10px;background:rgba(255,255,255,0.03);">' +
+        '<div id="nc-radio-pro" style="width:16px;height:16px;border-radius:50%;border:2px solid rgba(255,107,43,0.3);flex-shrink:0;margin-top:2px;transition:all .15s;"></div>' +
         '<div><div style="font-size:15px;font-weight:600;color:#FF6B2B;">Guided Pro</div>' +
-        '<div style="font-size:12px;color:rgba(255,107,43,0.5);margin-top:2px;">€599/mese</div>' +
-        '<div style="font-size:11px;color:rgba(26,26,46,0.35);margin-top:4px;">Report + what-if + benchmark + call illimitate</div></div>' +
+        '<div style="font-size:12px;color:rgba(255,107,43,0.6);margin-top:2px;">€599/mese</div>' +
+        '<div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:4px;">Report + what-if + benchmark + call illimitate</div></div>' +
       '</div>' +
     '</div>' +
 
     // Bottoni
     '<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:24px;">' +
-      '<button onclick="_chiudiModaleCSO()" style="background:transparent;border:1px solid rgba(26,26,46,0.12);color:rgba(26,26,46,0.5);border-radius:10px;padding:10px 24px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;cursor:pointer;">Annulla</button>' +
+      '<button onclick="_chiudiModaleCSO()" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);border-radius:10px;padding:10px 24px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;cursor:pointer;">Annulla</button>' +
       '<button id="nc-submit" onclick="inviaInvitoNuovoCliente()" disabled style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:10px 24px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:500;cursor:default;opacity:0.4;transition:opacity .15s;">Invia invito</button>' +
     '</div>';
 
@@ -1708,7 +1708,7 @@ async function inviaInvitoNuovoCliente() {
         '<div style="text-align:center;padding:16px 0;">' +
           '<div style="font-size:36px;margin-bottom:12px;">❌</div>' +
           '<div style="font-size:16px;font-weight:600;color:#E53935;margin-bottom:8px;">Errore salvataggio</div>' +
-          '<div style="font-size:12px;color:rgba(26,26,46,0.5);margin-bottom:20px;word-break:break-all;">' + insErr.message + '</div>' +
+          '<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:20px;word-break:break-all;">' + insErr.message + '</div>' +
           '<button onclick="_chiudiModaleCSO()" style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:10px 28px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;cursor:pointer;">Chiudi</button>' +
         '</div>';
       return;
@@ -1736,8 +1736,8 @@ async function inviaInvitoNuovoCliente() {
         '<div style="width:48px;height:48px;border-radius:50%;background:#00825F;display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px;">' +
           '<svg width="22" height="16" viewBox="0 0 22 16" fill="none"><path d="M1 8L8 15L21 1" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
         '</div>' +
-        '<div style="font-size:18px;font-weight:600;color:#1a1a2e;margin-bottom:8px;">Invito inviato!</div>' +
-        '<div style="font-size:13px;color:rgba(26,26,46,0.4);line-height:1.6;margin-bottom:24px;">Email inviata a <strong>' + email + '</strong>.<br>Il cliente completerà la registrazione dal link.</div>' +
+        '<div style="font-size:18px;font-weight:600;color:white;margin-bottom:8px;">Invito inviato!</div>' +
+        '<div style="font-size:13px;color:rgba(255,255,255,0.4);line-height:1.6;margin-bottom:24px;">Email inviata a <strong>' + email + '</strong>.<br>Il cliente completerà la registrazione dal link.</div>' +
         '<button onclick="_chiudiModaleCSO();renderProspects();" style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:10px 32px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:500;cursor:pointer;">Chiudi</button>' +
       '</div>';
 
@@ -1747,8 +1747,8 @@ async function inviaInvitoNuovoCliente() {
         '<div style="width:48px;height:48px;border-radius:50%;background:#e74c3c;display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px;">' +
           '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4v8M10 14v2" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>' +
         '</div>' +
-        '<div style="font-size:18px;font-weight:600;color:#1a1a2e;margin-bottom:8px;">Errore nell\'invio</div>' +
-        '<div style="font-size:13px;color:rgba(26,26,46,0.4);margin-bottom:24px;">' + e.message + '</div>' +
+        '<div style="font-size:18px;font-weight:600;color:white;margin-bottom:8px;">Errore nell\'invio</div>' +
+        '<div style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:24px;">' + e.message + '</div>' +
         '<button onclick="_chiudiModaleCSO()" style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:10px 32px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:500;cursor:pointer;">Riprova</button>' +
       '</div>';
   }
@@ -2228,12 +2228,12 @@ function renderTabPanoramica(p, calls) {
     var trendColor = delta >= 0 ? '#00825F' : '#E53935';
     var trendArrow = delta >= 0 ? '↑' : '↓';
     trendHtml = '<span style="color:' + trendColor + ';font-weight:700;font-size:16px;">' + trendArrow + ' ' + Math.abs(delta) + ' pt</span>' +
-      '<span style="font-size:12px;color:rgba(26,26,46,0.4);margin-left:6px;">dalla prima diagnosi</span>';
+      '<span style="font-size:12px;color:rgba(255,255,255,0.3);margin-left:6px;">dalla prima diagnosi</span>';
   } else {
-    trendHtml = '<span style="font-size:12px;color:rgba(26,26,46,0.4);">Dati insufficienti per il trend</span>';
+    trendHtml = '<span style="font-size:12px;color:rgba(255,255,255,0.3);">Dati insufficienti per il trend</span>';
   }
 
-  var CARD2 = 'background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:12px;padding:16px;';
+  var CARD2 = 'background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:12px;padding:16px;';
   var kpiBorderStyle = 'border-radius:0 14px 14px 0;';
 
   c.innerHTML =
@@ -2265,18 +2265,18 @@ function renderTabPanoramica(p, calls) {
       // Colonna sinistra
       '<div style="display:flex;flex-direction:column;gap:12px;">' +
         '<div style="' + CARD2 + '">' +
-          '<div style="font-size:11px;color:rgba(26,26,46,0.35);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;font-weight:600;">Ultimo contatto</div>' +
-          '<div style="font-size:15px;font-weight:600;color:#1a1a2e;">' + ultimoContatto + '</div>' +
-          (ultimoContattoGiorni ? '<div style="font-size:12px;color:rgba(26,26,46,0.4);margin-top:2px;">' + ultimoContattoGiorni + '</div>' : '') +
+          '<div style="font-size:11px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;font-weight:600;">Ultimo contatto</div>' +
+          '<div style="font-size:15px;font-weight:600;color:white;">' + ultimoContatto + '</div>' +
+          (ultimoContattoGiorni ? '<div style="font-size:12px;color:rgba(255,255,255,0.3);margin-top:2px;">' + ultimoContattoGiorni + '</div>' : '') +
         '</div>' +
         '<div style="' + CARD2 + '">' +
-          '<div style="font-size:11px;color:rgba(26,26,46,0.35);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;font-weight:600;">Prossima azione</div>' +
+          '<div style="font-size:11px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;font-weight:600;">Prossima azione</div>' +
           (prossimaAzione
-            ? '<div style="font-size:13px;font-weight:600;color:#1a1a2e;">' + (prossimaAzione.testo || '').replace(/</g,'&lt;') + '</div>'
-            : '<div style="font-size:13px;color:rgba(26,26,46,0.35);">Nessuna azione in sospeso</div>') +
+            ? '<div style="font-size:13px;font-weight:600;color:white;">' + (prossimaAzione.testo || '').replace(/</g,'&lt;') + '</div>'
+            : '<div style="font-size:13px;color:rgba(255,255,255,0.3);">Nessuna azione in sospeso</div>') +
         '</div>' +
         '<div style="' + CARD2 + '">' +
-          '<div style="font-size:11px;color:rgba(26,26,46,0.35);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;font-weight:600;">Trend score</div>' +
+          '<div style="font-size:11px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;font-weight:600;">Trend score</div>' +
           '<div style="display:flex;align-items:center;gap:8px;">' + trendHtml + '</div>' +
         '</div>' +
       '</div>' +
@@ -2284,17 +2284,17 @@ function renderTabPanoramica(p, calls) {
       // Colonna destra
       '<div style="display:flex;flex-direction:column;gap:12px;">' +
         '<div style="' + CARD2 + '">' +
-          '<div style="font-size:11px;color:rgba(26,26,46,0.35);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;font-weight:600;">Dati azienda</div>' +
-          '<div style="font-size:13px;color:#1a1a2e;line-height:1.8;">' +
+          '<div style="font-size:11px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;font-weight:600;">Dati azienda</div>' +
+          '<div style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.8;">' +
             '<div><b>' + (p.nome || '—') + '</b></div>' +
             (p.referente ? '<div>' + p.referente + '</div>' : '') +
-            (p.settore ? '<div style="color:rgba(26,26,46,0.5);">' + (p.settore.replace(/_/g,' ')) + '</div>' : '') +
-            (p.fatturato ? '<div style="color:rgba(26,26,46,0.5);">' + p.fatturato + '</div>' : '') +
-            (p.piva ? '<div style="color:rgba(26,26,46,0.4);font-size:12px;">P.IVA ' + p.piva + '</div>' : '') +
+            (p.settore ? '<div style="color:rgba(255,255,255,0.4);">' + (p.settore.replace(/_/g,' ')) + '</div>' : '') +
+            (p.fatturato ? '<div style="color:rgba(255,255,255,0.4);">' + p.fatturato + '</div>' : '') +
+            (p.piva ? '<div style="color:rgba(255,255,255,0.3);font-size:12px;">P.IVA ' + p.piva + '</div>' : '') +
           '</div>' +
         '</div>' +
         '<button onclick="showView(\'calendario\')" style="width:100%;padding:12px;border-radius:12px;background:#3D5AFE;color:white;border:none;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">📅 Programma call</button>' +
-        '<button onclick="aggiungiNotaCSO(\'' + p.id + '\')" style="width:100%;padding:12px;border-radius:12px;background:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.9);color:#1a1a2e;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:500;cursor:pointer;">📝 Aggiungi nota</button>' +
+        '<button onclick="aggiungiNotaCSO(\'' + p.id + '\')" style="width:100%;padding:12px;border-radius:12px;background:rgba(123,97,255,0.12);border:1px solid rgba(123,97,255,0.2);color:#A78BFA;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:500;cursor:pointer;">📝 Aggiungi nota</button>' +
       '</div>' +
     '</div>';
 }
@@ -2306,7 +2306,7 @@ function renderCSOAzioniSection(p, calls) {
   var piano = p.piano || 'self';
   var isBase = piano === 'guided_base' || piano === 'guided_pro';
   var isPro  = piano === 'guided_pro';
-  var CARD = 'background:rgba(255,255,255,0.45);border:1px solid rgba(255,255,255,0.6);border-radius:12px;padding:12px;margin-bottom:8px;';
+  var CARD = 'background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:12px;padding:12px;margin-bottom:8px;';
 
   var html = '';
 
@@ -2329,15 +2329,15 @@ function renderCSOAzioniSection(p, calls) {
   // Piano azioni condiviso (checkbox list)
   var azioni = Array.isArray(p.piano_azioni_cso) ? p.piano_azioni_cso : [];
   var azioniHtml = azioni.length === 0
-    ? '<div style="font-size:12px;color:rgba(26,26,46,0.35);padding:8px 0;">Nessuna azione pianificata.</div>'
+    ? '<div style="font-size:12px;color:rgba(255,255,255,0.3);padding:8px 0;">Nessuna azione pianificata.</div>'
     : azioni.map(function(a) {
         var checked = a.completata ? 'checked' : '';
-        var style   = a.completata ? 'text-decoration:line-through;color:rgba(26,26,46,0.35);' : 'color:#1a1a2e;';
-        return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.04);">' +
-          '<input type="checkbox" ' + checked + ' onchange="toggleAzioneCSOPiano(\'' + p.id + '\',\'' + a.id + '\')" style="width:16px;height:16px;cursor:pointer;accent-color:#3D5AFE;">' +
+        var style   = a.completata ? 'text-decoration:line-through;color:rgba(255,255,255,0.3);' : 'color:rgba(255,255,255,0.8);';
+        return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);">' +
+          '<input type="checkbox" ' + checked + ' onchange="toggleAzioneCSOPiano(\'' + p.id + '\',\'' + a.id + '\')" style="width:16px;height:16px;cursor:pointer;accent-color:#7B61FF;">' +
           '<span style="font-size:13px;flex:1;' + style + '">' + (a.testo || '').replace(/</g,'&lt;') + '</span>' +
           (a.manual ? '<span style="font-size:10px;padding:2px 6px;border-radius:6px;background:rgba(123,97,255,0.1);color:#7B61FF;flex-shrink:0;">CSO</span>' : '') +
-          '<button onclick="eliminaAzioneCSOPiano(\'' + p.id + '\',\'' + a.id + '\')" style="background:none;border:none;cursor:pointer;font-size:16px;color:rgba(26,26,46,0.2);padding:0 4px;" title="Elimina">×</button>' +
+          '<button onclick="eliminaAzioneCSOPiano(\'' + p.id + '\',\'' + a.id + '\')" style="background:none;border:none;cursor:pointer;font-size:16px;color:rgba(255,255,255,0.2);padding:0 4px;" title="Elimina">×</button>' +
         '</div>';
       }).join('');
 
@@ -2361,8 +2361,8 @@ function renderCSOAzioniSection(p, calls) {
         'Piano condiviso con il cliente' +
         '<button onclick="salvaPianoCondiviso(\'' + p.id + '\')" class="btn btn-primary" style="font-size:12px;">Salva</button>' +
       '</div>' +
-      '<div style="font-size:12px;color:rgba(26,26,46,0.4);margin-bottom:10px;">Questo testo sarà visibile al cliente dalla sua app nella sezione Piano.</div>' +
-      '<textarea id="shared-plan-textarea" style="width:100%;min-height:120px;border:1px solid rgba(0,0,0,0.1);border-radius:10px;padding:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;color:#1a1a2e;resize:vertical;background:rgba(255,255,255,0.6);" placeholder="Scrivi il piano strutturato per il cliente...">' + pianoCondiviso.replace(/</g,'&lt;') + '</textarea>' +
+      '<div style="font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:10px;">Questo testo sarà visibile al cliente dalla sua app nella sezione Piano.</div>' +
+      '<textarea id="shared-plan-textarea" style="width:100%;min-height:120px;border:1px solid rgba(123,97,255,0.2);border-radius:10px;padding:12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;color:white;resize:vertical;background:rgba(255,255,255,0.06);" placeholder="Scrivi il piano strutturato per il cliente...">' + pianoCondiviso.replace(/</g,'&lt;') + '</textarea>' +
     '</div>';
 
   // Pro: what-if e benchmark
@@ -2376,7 +2376,7 @@ function renderCSOAzioniSection(p, calls) {
         '<div class="card-title" style="display:flex;align-items:center;justify-content:space-between;">Report PDF' +
           '<button onclick="generaReportProPDF(\'' + p.id + '\')" class="btn btn-primary" style="font-size:12px;">Genera PDF</button>' +
         '</div>' +
-        '<div style="font-size:12px;color:rgba(26,26,46,0.45);">Report completo con score, analisi e piano azioni per ' + (p.nome || 'il cliente') + '.</div>' +
+        '<div style="font-size:12px;color:rgba(255,255,255,0.35);">Report completo con score, analisi e piano azioni per ' + (p.nome || 'il cliente') + '.</div>' +
       '</div>';
   }
 
@@ -2387,16 +2387,16 @@ function renderCSONoteSection(p) {
   var c = document.getElementById('cso-note-container');
   if (!c) return;
 
-  var CARD = 'background:rgba(255,255,255,0.45);border:1px solid rgba(255,255,255,0.6);border-radius:12px;padding:12px;margin-bottom:8px;';
+  var CARD = 'background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:12px;padding:12px;margin-bottom:8px;';
   var notesList = Array.isArray(p.notes_cso) ? p.notes_cso : [];
   var notesHtml = notesList.length === 0
-    ? '<div style="font-size:12px;color:rgba(26,26,46,0.35);padding:8px 0;">Nessuna nota ancora.</div>'
+    ? '<div style="font-size:12px;color:rgba(255,255,255,0.3);padding:8px 0;">Nessuna nota ancora.</div>'
     : notesList.slice().reverse().slice(0, 5).map(function(n) {
         var d = new Date(n.ts);
         var data = d.toLocaleDateString('it-IT', { day:'2-digit', month:'short', year:'numeric' });
         return '<div style="' + CARD + '">' +
-          '<div style="font-size:10px;color:rgba(26,26,46,0.35);margin-bottom:4px;">' + data + '</div>' +
-          '<div style="font-size:13px;color:#1a1a2e;line-height:1.5;">' + (n.text || '').replace(/</g,'&lt;') + '</div>' +
+          '<div style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:4px;">' + data + '</div>' +
+          '<div style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.5;">' + (n.text || '').replace(/</g,'&lt;') + '</div>' +
         '</div>';
       }).join('');
 
@@ -2414,7 +2414,7 @@ function renderTabCallNote(p, calls) {
   var c = document.getElementById('calls-list-container');
   if (!c) return;
 
-  var CARD = 'background:rgba(255,255,255,0.45);border:1px solid rgba(255,255,255,0.6);border-radius:12px;padding:12px;margin-bottom:8px;';
+  var CARD = 'background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:12px;padding:12px;margin-bottom:8px;';
   var callsHtml = (calls && calls.length > 0)
     ? calls.map(function(call) {
         var d = new Date(call.data).toLocaleDateString('it-IT', { day:'2-digit', month:'short', year:'numeric' });
@@ -2423,16 +2423,16 @@ function renderTabCallNote(p, calls) {
         return '<div style="' + CARD + '">' +
           '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">' +
             '<div style="display:flex;align-items:center;gap:8px;">' +
-              '<span style="font-size:13px;font-weight:600;color:#1a1a2e;">' + d + '</span>' +
-              '<span style="font-size:11px;padding:2px 8px;border-radius:6px;background:' + tipoColor + '1a;color:' + tipoColor + ';font-weight:600;">' + tipoLabel + '</span>' +
+              '<span style="font-size:13px;font-weight:600;color:white;">' + d + '</span>' +
+              '<span style="font-size:11px;padding:2px 8px;border-radius:6px;background:' + tipoColor + '22;color:' + tipoColor + ';font-weight:600;">' + tipoLabel + '</span>' +
             '</div>' +
-            (call.durata_min ? '<span style="font-size:12px;color:rgba(26,26,46,0.4);">' + call.durata_min + ' min</span>' : '') +
+            (call.durata_min ? '<span style="font-size:12px;color:rgba(255,255,255,0.3);">' + call.durata_min + ' min</span>' : '') +
           '</div>' +
-          (call.appunti ? '<div style="font-size:12px;color:rgba(26,26,46,0.6);line-height:1.5;margin-bottom:4px;">' + call.appunti.replace(/</g,'&lt;') + '</div>' : '') +
-          (call.prossimi_passi ? '<div style="font-size:11px;color:#3D5AFE;margin-top:4px;">→ ' + call.prossimi_passi.replace(/</g,'&lt;') + '</div>' : '') +
+          (call.appunti ? '<div style="font-size:12px;color:rgba(255,255,255,0.5);line-height:1.5;margin-bottom:4px;">' + call.appunti.replace(/</g,'&lt;') + '</div>' : '') +
+          (call.prossimi_passi ? '<div style="font-size:11px;color:#7B61FF;margin-top:4px;">→ ' + call.prossimi_passi.replace(/</g,'&lt;') + '</div>' : '') +
         '</div>';
       }).join('')
-    : '<div style="font-size:12px;color:rgba(26,26,46,0.35);padding:8px 0;">Nessuna call registrata.</div>';
+    : '<div style="font-size:12px;color:rgba(255,255,255,0.3);padding:8px 0;">Nessuna call registrata.</div>';
 
   c.innerHTML =
     '<div class="card" style="margin-top:12px;">' +
@@ -2465,18 +2465,18 @@ function renderTabFinanziaria(p) {
       var label  = dimId.replace(/_/g,' ').replace(/\b\w/g,function(l){return l.toUpperCase();});
       return '<div style="margin-bottom:10px;">' +
         '<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;">' +
-          '<span style="color:#1a1a2e;">' + label + '</span>' +
+          '<span style="color:rgba(255,255,255,0.8);">' + label + '</span>' +
           '<span style="color:' + diffColor + ';font-weight:600;">' + diffStr + ' vs peer</span>' +
         '</div>' +
-        '<div style="position:relative;height:6px;background:rgba(0,0,0,0.07);border-radius:4px;">' +
-          '<div style="position:absolute;left:0;top:0;height:100%;width:' + (myVal/5*100).toFixed(0) + '%;background:#3D5AFE;border-radius:4px;opacity:0.7;"></div>' +
-          '<div style="position:absolute;left:0;top:0;height:100%;width:' + (peerAvg/5*100).toFixed(0) + '%;background:rgba(0,0,0,0.2);border-radius:4px;border:1px dashed rgba(0,0,0,0.3);"></div>' +
+        '<div style="position:relative;height:6px;background:rgba(255,255,255,0.07);border-radius:4px;">' +
+          '<div style="position:absolute;left:0;top:0;height:100%;width:' + (myVal/5*100).toFixed(0) + '%;background:#7B61FF;border-radius:4px;opacity:0.7;"></div>' +
+          '<div style="position:absolute;left:0;top:0;height:100%;width:' + (peerAvg/5*100).toFixed(0) + '%;background:rgba(255,255,255,0.2);border-radius:4px;border:1px dashed rgba(255,255,255,0.3);"></div>' +
         '</div>' +
-        '<div style="font-size:10px;color:rgba(26,26,46,0.4);">' + myVal.toFixed(1) + '/5 · media: ' + peerAvg.toFixed(1) + ' (' + peers.length + ' aziende)</div>' +
+        '<div style="font-size:10px;color:rgba(255,255,255,0.3);">' + myVal.toFixed(1) + '/5 · media: ' + peerAvg.toFixed(1) + ' (' + peers.length + ' aziende)</div>' +
       '</div>';
     }).join('');
   } else {
-    benchHtml = '<div style="font-size:12px;color:rgba(26,26,46,0.35);">Nessun peer trovato per questo settore.</div>';
+    benchHtml = '<div style="font-size:12px;color:rgba(255,255,255,0.3);">Nessun peer trovato per questo settore.</div>';
   }
 
   // What-if slider
@@ -2485,8 +2485,8 @@ function renderTabFinanziaria(p) {
     var cur  = dims[dimId] || 0;
     var label = dimId.replace(/_/g,' ').replace(/\b\w/g,function(l){return l.toUpperCase();});
     return '<div style="margin-bottom:8px;display:flex;align-items:center;gap:10px;">' +
-      '<span style="font-size:12px;color:#1a1a2e;width:130px;flex-shrink:0;">' + label + '</span>' +
-      '<input type="range" min="1" max="5" step="1" value="' + cur + '" style="flex:1;accent-color:#3D5AFE;" oninput="aggiornaWhatif(\'' + p.id + '\',\'' + dimId + '\',this.value)">' +
+      '<span style="font-size:12px;color:rgba(255,255,255,0.8);width:130px;flex-shrink:0;">' + label + '</span>' +
+      '<input type="range" min="1" max="5" step="1" value="' + cur + '" style="flex:1;accent-color:#7B61FF;" oninput="aggiornaWhatif(\'' + p.id + '\',\'' + dimId + '\',this.value)">' +
       '<span id="wi-val-' + dimId + '" style="font-size:12px;font-weight:600;color:#3D5AFE;width:28px;text-align:right;">' + cur + '/5</span>' +
     '</div>';
   }).join('');
@@ -2494,15 +2494,15 @@ function renderTabFinanziaria(p) {
   c.innerHTML =
     '<div class="card" style="margin-top:12px;">' +
       '<div class="card-title">Benchmark peer — ' + (macro ? macro.charAt(0).toUpperCase()+macro.slice(1) : '') + '</div>' +
-      '<div style="font-size:11px;color:rgba(26,26,46,0.4);margin-bottom:12px;">Blu = cliente · grigio = media peer</div>' +
+      '<div style="font-size:11px;color:rgba(255,255,255,0.3);margin-bottom:12px;">Viola = cliente · grigio = media peer</div>' +
       benchHtml +
     '</div>' +
     '<div class="card" style="margin-top:12px;">' +
       '<div class="card-title">Simulazione what-if</div>' +
-      '<div style="font-size:12px;color:rgba(26,26,46,0.45);margin-bottom:12px;">Sposta i cursori per simulare l\'impatto sul score.</div>' +
+      '<div style="font-size:12px;color:rgba(255,255,255,0.35);margin-bottom:12px;">Sposta i cursori per simulare l\'impatto sul score.</div>' +
       whatifsHtml +
-      '<div style="margin-top:12px;padding:12px;background:rgba(61,90,254,0.06);border-radius:10px;text-align:center;">' +
-        '<div style="font-size:11px;color:rgba(26,26,46,0.4);margin-bottom:2px;">Score simulato</div>' +
+      '<div style="margin-top:12px;padding:12px;background:rgba(123,97,255,0.06);border-radius:10px;text-align:center;">' +
+        '<div style="font-size:11px;color:rgba(255,255,255,0.3);margin-bottom:2px;">Score simulato</div>' +
         '<div id="whatif-score-display" style="font-size:28px;font-weight:700;color:#3D5AFE;">' + calcScore(p) + '</div>' +
       '</div>' +
     '</div>';
@@ -2518,29 +2518,29 @@ function apriModaleRegistraCall(prospectId) {
       '<div style="display:flex;flex-direction:column;gap:12px;">' +
         '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">' +
           '<div>' +
-            '<label style="font-size:12px;color:rgba(26,26,46,0.5);display:block;margin-bottom:4px;">Data</label>' +
-            '<input type="date" id="call-data" value="' + oggi + '" style="width:100%;border:1px solid rgba(0,0,0,0.1);border-radius:8px;padding:8px 12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;">' +
+            '<label style="font-size:12px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px;">Data</label>' +
+            '<input type="date" id="call-data" value="' + oggi + '" style="width:100%;border:1px solid rgba(123,97,255,0.2);border-radius:8px;padding:8px 12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;background:rgba(255,255,255,0.06);color:white;">' +
           '</div>' +
           '<div>' +
-            '<label style="font-size:12px;color:rgba(26,26,46,0.5);display:block;margin-bottom:4px;">Durata (min)</label>' +
-            '<input type="number" id="call-durata" placeholder="60" min="1" style="width:100%;border:1px solid rgba(0,0,0,0.1);border-radius:8px;padding:8px 12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;">' +
+            '<label style="font-size:12px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px;">Durata (min)</label>' +
+            '<input type="number" id="call-durata" placeholder="60" min="1" style="width:100%;border:1px solid rgba(123,97,255,0.2);border-radius:8px;padding:8px 12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;background:rgba(255,255,255,0.06);color:white;">' +
           '</div>' +
         '</div>' +
         '<div>' +
-          '<label style="font-size:12px;color:rgba(26,26,46,0.5);display:block;margin-bottom:6px;">Tipo</label>' +
+          '<label style="font-size:12px;color:rgba(255,255,255,0.4);display:block;margin-bottom:6px;">Tipo</label>' +
           '<div style="display:flex;gap:6px;" id="call-tipo-btns">' +
-            '<button onclick="_selCallTipo(\'follow_up\')" id="ctype-follow_up" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,0.1);background:rgba(123,97,255,0.1);color:#7B61FF;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">Follow-up</button>' +
-            '<button onclick="_selCallTipo(\'strategica\')" id="ctype-strategica" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,0.1);background:none;color:rgba(26,26,46,0.5);font-family:\'Plus Jakarta Sans\',sans-serif;font-size:12px;cursor:pointer;">Strategica</button>' +
-            '<button onclick="_selCallTipo(\'emergenza\')" id="ctype-emergenza" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,0.1);background:none;color:rgba(26,26,46,0.5);font-family:\'Plus Jakarta Sans\',sans-serif;font-size:12px;cursor:pointer;">Emergenza</button>' +
+            '<button onclick="_selCallTipo(\'follow_up\')" id="ctype-follow_up" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(123,97,255,0.3);background:rgba(123,97,255,0.15);color:#7B61FF;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">Follow-up</button>' +
+            '<button onclick="_selCallTipo(\'strategica\')" id="ctype-strategica" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:none;color:rgba(255,255,255,0.4);font-family:\'Plus Jakarta Sans\',sans-serif;font-size:12px;cursor:pointer;">Strategica</button>' +
+            '<button onclick="_selCallTipo(\'emergenza\')" id="ctype-emergenza" style="flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:none;color:rgba(255,255,255,0.4);font-family:\'Plus Jakarta Sans\',sans-serif;font-size:12px;cursor:pointer;">Emergenza</button>' +
           '</div>' +
         '</div>' +
         '<div>' +
-          '<label style="font-size:12px;color:rgba(26,26,46,0.5);display:block;margin-bottom:4px;">Appunti</label>' +
-          '<textarea id="call-appunti" placeholder="Note della call..." style="width:100%;min-height:80px;border:1px solid rgba(0,0,0,0.1);border-radius:8px;padding:8px 12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;resize:vertical;"></textarea>' +
+          '<label style="font-size:12px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px;">Appunti</label>' +
+          '<textarea id="call-appunti" placeholder="Note della call..." style="width:100%;min-height:80px;border:1px solid rgba(123,97,255,0.2);border-radius:8px;padding:8px 12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;resize:vertical;background:rgba(255,255,255,0.06);color:white;"></textarea>' +
         '</div>' +
         '<div>' +
-          '<label style="font-size:12px;color:rgba(26,26,46,0.5);display:block;margin-bottom:4px;">Prossimi passi</label>' +
-          '<textarea id="call-passi" placeholder="Cosa fare entro la prossima call..." style="width:100%;min-height:60px;border:1px solid rgba(0,0,0,0.1);border-radius:8px;padding:8px 12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;resize:vertical;"></textarea>' +
+          '<label style="font-size:12px;color:rgba(255,255,255,0.4);display:block;margin-bottom:4px;">Prossimi passi</label>' +
+          '<textarea id="call-passi" placeholder="Cosa fare entro la prossima call..." style="width:100%;min-height:60px;border:1px solid rgba(123,97,255,0.2);border-radius:8px;padding:8px 12px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;resize:vertical;background:rgba(255,255,255,0.06);color:white;"></textarea>' +
         '</div>' +
       '</div>',
     btnLabel: 'Salva call',
@@ -2645,18 +2645,18 @@ function renderCSOPianoSections(p, calls) {
   var piano   = p.piano || 'self';
   var isBase  = piano === 'guided_base' || piano === 'guided_pro';
   var isPro   = piano === 'guided_pro';
-  var CARD    = 'background:rgba(255,255,255,0.45);border:1px solid rgba(255,255,255,0.6);border-radius:12px;padding:12px;margin-bottom:8px;';
+  var CARD    = 'background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:12px;padding:12px;margin-bottom:8px;';
 
   // ── NOTE CSO (tutti i piani) ─────────────────────────────
   var notesList = Array.isArray(p.notes_cso) ? p.notes_cso : [];
   var notesHtml = notesList.length === 0
-    ? '<div style="font-size:12px;color:rgba(26,26,46,0.35);padding:8px 0;">Nessuna nota ancora.</div>'
+    ? '<div style="font-size:12px;color:rgba(255,255,255,0.3);padding:8px 0;">Nessuna nota ancora.</div>'
     : notesList.slice().reverse().slice(0, 5).map(function(n) {
         var d = new Date(n.ts);
         var data = d.toLocaleDateString('it-IT', { day:'2-digit', month:'short', year:'numeric' });
         return '<div style="' + CARD + '">' +
-          '<div style="font-size:10px;color:rgba(26,26,46,0.35);margin-bottom:4px;">' + data + '</div>' +
-          '<div style="font-size:13px;color:#1a1a2e;line-height:1.5;">' + (n.text || '').replace(/</g,'&lt;') + '</div>' +
+          '<div style="font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:4px;">' + data + '</div>' +
+          '<div style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.5;">' + (n.text || '').replace(/</g,'&lt;') + '</div>' +
         '</div>';
       }).join('');
 
@@ -2678,31 +2678,31 @@ function renderCSOPianoSections(p, calls) {
       var lastCall = new Date(calls[0].data);
       var diffDays = Math.floor((Date.now() - lastCall.getTime()) / (1000 * 60 * 60 * 24));
       if (diffDays > 14) {
-        alertHtml = '<div style="background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.4);border-radius:10px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px;">' +
+        alertHtml = '<div style="background:rgba(251,191,36,0.10);border:1px solid rgba(251,191,36,0.3);border-radius:10px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px;">' +
           '<span style="font-size:18px;">⚠️</span>' +
-          '<div><div style="font-size:13px;font-weight:600;color:#92400e;">Inattivo da ' + diffDays + ' giorni</div>' +
-          '<div style="font-size:12px;color:rgba(146,64,14,0.7);">Nessuna call negli ultimi ' + diffDays + ' giorni — considera di contattare il cliente.</div></div>' +
+          '<div><div style="font-size:13px;font-weight:600;color:#FFB800;">Inattivo da ' + diffDays + ' giorni</div>' +
+          '<div style="font-size:12px;color:rgba(255,184,0,0.7);">Nessuna call negli ultimi ' + diffDays + ' giorni — considera di contattare il cliente.</div></div>' +
         '</div>';
       }
     } else {
       alertHtml = '<div style="background:rgba(251,191,36,0.10);border:1px solid rgba(251,191,36,0.3);border-radius:10px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px;">' +
         '<span style="font-size:18px;">⚠️</span>' +
-        '<div><div style="font-size:13px;font-weight:600;color:#92400e;">Nessuna call registrata</div>' +
-        '<div style="font-size:12px;color:rgba(146,64,14,0.7);">Pianifica la prima call con il cliente.</div></div>' +
+        '<div><div style="font-size:13px;font-weight:600;color:#FFB800;">Nessuna call registrata</div>' +
+        '<div style="font-size:12px;color:rgba(255,184,0,0.7);">Pianifica la prima call con il cliente.</div></div>' +
       '</div>';
     }
 
     // Piano azioni condiviso
     var azioni = Array.isArray(p.piano_azioni_cso) ? p.piano_azioni_cso : [];
     var azioniHtml = azioni.length === 0
-      ? '<div style="font-size:12px;color:rgba(26,26,46,0.35);padding:8px 0;">Nessuna azione pianificata.</div>'
+      ? '<div style="font-size:12px;color:rgba(255,255,255,0.3);padding:8px 0;">Nessuna azione pianificata.</div>'
       : azioni.map(function(a) {
           var checked = a.completata ? 'checked' : '';
-          var style   = a.completata ? 'text-decoration:line-through;color:rgba(26,26,46,0.35);' : 'color:#1a1a2e;';
-          return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.04);">' +
-            '<input type="checkbox" ' + checked + ' onchange="toggleAzioneCSOPiano(\'' + p.id + '\',\'' + a.id + '\')" style="width:16px;height:16px;cursor:pointer;accent-color:#3D5AFE;">' +
+          var style   = a.completata ? 'text-decoration:line-through;color:rgba(255,255,255,0.3);' : 'color:rgba(255,255,255,0.8);';
+          return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);">' +
+            '<input type="checkbox" ' + checked + ' onchange="toggleAzioneCSOPiano(\'' + p.id + '\',\'' + a.id + '\')" style="width:16px;height:16px;cursor:pointer;accent-color:#7B61FF;">' +
             '<span style="font-size:13px;flex:1;' + style + '">' + (a.testo || '').replace(/</g,'&lt;') + '</span>' +
-            '<button onclick="eliminaAzioneCSOPiano(\'' + p.id + '\',\'' + a.id + '\')" style="background:none;border:none;cursor:pointer;font-size:16px;color:rgba(26,26,46,0.2);padding:0 4px;" title="Elimina">×</button>' +
+            '<button onclick="eliminaAzioneCSOPiano(\'' + p.id + '\',\'' + a.id + '\')" style="background:none;border:none;cursor:pointer;font-size:16px;color:rgba(255,255,255,0.2);padding:0 4px;" title="Elimina">×</button>' +
           '</div>';
         }).join('');
 
@@ -2712,13 +2712,13 @@ function renderCSOPianoSections(p, calls) {
           var d = new Date(c.data).toLocaleDateString('it-IT', { day:'2-digit', month:'short', year:'numeric' });
           return '<div style="' + CARD + '">' +
             '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">' +
-              '<span style="font-size:12px;font-weight:600;color:#1a1a2e;">' + d + '</span>' +
-              (c.durata ? '<span style="font-size:11px;color:rgba(26,26,46,0.4);">' + c.durata + ' min</span>' : '') +
+              '<span style="font-size:12px;font-weight:600;color:white;">' + d + '</span>' +
+              (c.durata ? '<span style="font-size:11px;color:rgba(255,255,255,0.3);">' + c.durata + ' min</span>' : '') +
             '</div>' +
-            (c.note ? '<div style="font-size:12px;color:rgba(26,26,46,0.6);line-height:1.5;">' + c.note.replace(/</g,'&lt;') + '</div>' : '') +
+            (c.note ? '<div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.5;">' + c.note.replace(/</g,'&lt;') + '</div>' : '') +
           '</div>';
         }).join('')
-      : '<div style="font-size:12px;color:rgba(26,26,46,0.35);padding:8px 0;">Nessuna call registrata.</div>';
+      : '<div style="font-size:12px;color:rgba(255,255,255,0.3);padding:8px 0;">Nessuna call registrata.</div>';
 
     baseProSections =
       '<div class="card" style="margin-top:12px;">' +
@@ -2755,18 +2755,18 @@ function renderCSOPianoSections(p, calls) {
         var avgW   = (peerAvg / 5 * 100).toFixed(0) + '%';
         return '<div style="margin-bottom:10px;">' +
           '<div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px;">' +
-            '<span style="color:#1a1a2e;">' + label + '</span>' +
+            '<span style="color:rgba(255,255,255,0.8);">' + label + '</span>' +
             '<span style="color:' + diffColor + ';font-weight:600;">' + diffStr + ' vs peer</span>' +
           '</div>' +
-          '<div style="position:relative;height:6px;background:rgba(0,0,0,0.07);border-radius:4px;margin-bottom:2px;">' +
-            '<div style="position:absolute;left:0;top:0;height:100%;width:' + barW + ';background:#3D5AFE;border-radius:4px;opacity:0.7;"></div>' +
-            '<div style="position:absolute;left:0;top:0;height:100%;width:' + avgW + ';background:rgba(0,0,0,0.2);border-radius:4px;border:1px dashed rgba(0,0,0,0.3);"></div>' +
+          '<div style="position:relative;height:6px;background:rgba(255,255,255,0.07);border-radius:4px;margin-bottom:2px;">' +
+            '<div style="position:absolute;left:0;top:0;height:100%;width:' + barW + ';background:#7B61FF;border-radius:4px;opacity:0.7;"></div>' +
+            '<div style="position:absolute;left:0;top:0;height:100%;width:' + avgW + ';background:rgba(255,255,255,0.2);border-radius:4px;border:1px dashed rgba(255,255,255,0.3);"></div>' +
           '</div>' +
-          '<div style="font-size:10px;color:rgba(26,26,46,0.4);">' + myVal.toFixed(1) + '/5 · media peer: ' + peerAvg.toFixed(1) + ' (' + peers.length + ' aziende)</div>' +
+          '<div style="font-size:10px;color:rgba(255,255,255,0.3);">' + myVal.toFixed(1) + '/5 · media peer: ' + peerAvg.toFixed(1) + ' (' + peers.length + ' aziende)</div>' +
         '</div>';
       }).join('');
     } else {
-      benchPeerHtml = '<div style="font-size:12px;color:rgba(26,26,46,0.35);">Nessun peer dello stesso macro-settore trovato.</div>';
+      benchPeerHtml = '<div style="font-size:12px;color:rgba(255,255,255,0.3);">Nessun peer dello stesso macro-settore trovato.</div>';
     }
 
     // Correlazioni: calcola Pearson tra coppie di dims
@@ -2795,12 +2795,12 @@ function renderCSOPianoSections(p, calls) {
         var sign  = pair.r > 0 ? 'correlazione positiva' : 'correlazione negativa';
         var col   = pair.r > 0 ? '#00825F' : '#e74c3c';
         return '<div style="' + CARD + 'display:flex;align-items:center;justify-content:space-between;">' +
-          '<div style="font-size:12px;color:#1a1a2e;text-transform:capitalize;">' + label + '</div>' +
+          '<div style="font-size:12px;color:rgba(255,255,255,0.8);text-transform:capitalize;">' + label + '</div>' +
           '<div style="font-size:11px;color:' + col + ';font-weight:600;">' + (pair.r*100).toFixed(0) + '% · ' + sign + '</div>' +
         '</div>';
-      }).join('') || '<div style="font-size:12px;color:rgba(26,26,46,0.35);">Dati insufficienti per le correlazioni.</div>';
+      }).join('') || '<div style="font-size:12px;color:rgba(255,255,255,0.3);">Dati insufficienti per le correlazioni.</div>';
     } else {
-      corrHtml = '<div style="font-size:12px;color:rgba(26,26,46,0.35);">Servono almeno 5 prospect per calcolare le correlazioni.</div>';
+      corrHtml = '<div style="font-size:12px;color:rgba(255,255,255,0.3);">Servono almeno 5 prospect per calcolare le correlazioni.</div>';
     }
 
     // What-if slider
@@ -2809,7 +2809,7 @@ function renderCSOPianoSections(p, calls) {
       var cur  = dims[dimId] || 0;
       var label = dimId.replace(/_/g,' ').replace(/\b\w/g,function(l){return l.toUpperCase();});
       return '<div style="margin-bottom:8px;display:flex;align-items:center;gap:10px;">' +
-        '<span style="font-size:12px;color:#1a1a2e;width:130px;flex-shrink:0;">' + label + '</span>' +
+        '<span style="font-size:12px;color:rgba(255,255,255,0.8);width:130px;flex-shrink:0;">' + label + '</span>' +
         '<input type="range" min="1" max="5" step="1" value="' + cur + '" style="flex:1;accent-color:#3D5AFE;" ' +
           'oninput="aggiornaWhatif(\'' + p.id + '\',\'' + dimId + '\',this.value)">' +
         '<span id="wi-val-' + dimId + '" style="font-size:12px;font-weight:600;color:#3D5AFE;width:28px;text-align:right;">' + cur + '/5</span>' +
@@ -2822,25 +2822,25 @@ function renderCSOPianoSections(p, calls) {
           'Report PDF' +
           '<button onclick="generaReportProPDF(\'' + p.id + '\')" class="btn btn-primary" style="font-size:12px;">Genera report PDF</button>' +
         '</div>' +
-        '<div style="font-size:12px;color:rgba(26,26,46,0.45);">Genera un report completo con score, analisi e piano azioni per ' + (p.nome || 'il cliente') + '.</div>' +
+        '<div style="font-size:12px;color:rgba(255,255,255,0.35);">Genera un report completo con score, analisi e piano azioni per ' + (p.nome || 'il cliente') + '.</div>' +
       '</div>' +
       '<div class="card" style="margin-top:12px;">' +
         '<div class="card-title">Benchmark peer — ' + (macro ? macro.charAt(0).toUpperCase()+macro.slice(1) : '') + '</div>' +
-        '<div style="font-size:11px;color:rgba(26,26,46,0.4);margin-bottom:12px;">Linea blu = cliente · linea grigia = media peer</div>' +
+        '<div style="font-size:11px;color:rgba(255,255,255,0.3);margin-bottom:12px;">Linea viola = cliente · linea grigia = media peer</div>' +
         benchPeerHtml +
       '</div>' +
       '<div class="card" style="margin-top:12px;">' +
         '<div class="card-title">Simulazione what-if</div>' +
-        '<div style="font-size:12px;color:rgba(26,26,46,0.45);margin-bottom:12px;">Sposta i cursori per simulare l\'impatto sul score globale.</div>' +
+        '<div style="font-size:12px;color:rgba(255,255,255,0.35);margin-bottom:12px;">Sposta i cursori per simulare l\'impatto sul score globale.</div>' +
         whatifsHtml +
-        '<div style="margin-top:12px;padding:12px;background:rgba(61,90,254,0.06);border-radius:10px;text-align:center;">' +
-          '<div style="font-size:11px;color:rgba(26,26,46,0.4);margin-bottom:2px;">Score simulato</div>' +
+        '<div style="margin-top:12px;padding:12px;background:rgba(123,97,255,0.06);border-radius:10px;text-align:center;">' +
+          '<div style="font-size:11px;color:rgba(255,255,255,0.3);margin-bottom:2px;">Score simulato</div>' +
           '<div id="whatif-score-display" style="font-size:28px;font-weight:700;color:#3D5AFE;">' + calcScore(p) + '</div>' +
         '</div>' +
       '</div>' +
       '<div class="card" style="margin-top:12px;">' +
         '<div class="card-title">Correlazioni tra dimensioni</div>' +
-        '<div style="font-size:11px;color:rgba(26,26,46,0.4);margin-bottom:12px;">Calcolate su ' + prospects.length + ' prospect nel sistema.</div>' +
+        '<div style="font-size:11px;color:rgba(255,255,255,0.3);margin-bottom:12px;">Calcolate su ' + prospects.length + ' prospect nel sistema.</div>' +
         corrHtml +
       '</div>';
   }
@@ -2865,17 +2865,17 @@ function _apriModaleCSO(opts) {
 
   var box = document.createElement('div');
   box.id = 'cso-modal-box';
-  box.style.cssText = 'width:480px;max-width:90vw;background:rgba(255,255,255,0.92);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.8);border-radius:20px;padding:28px;box-shadow:0 8px 32px rgba(0,0,0,0.12);transform:scale(0.95);opacity:0;transition:transform 200ms ease-out,opacity 200ms ease-out;';
+  box.style.cssText = 'width:480px;max-width:90vw;background:#12122a;border:1px solid rgba(123,97,255,0.2);border-radius:20px;padding:28px;box-shadow:0 8px 32px rgba(0,0,0,0.5);transform:scale(0.95);opacity:0;transition:transform 200ms ease-out,opacity 200ms ease-out;';
 
   var bodyHtml = opts.customBody
     ? opts.customBody
     : '<div style="position:relative;">' +
         '<textarea id="cso-modal-ta" maxlength="' + maxLen + '" placeholder="' + (opts.placeholder || 'Scrivi...') + '" ' +
-          'style="width:100%;height:120px;background:rgba(255,255,255,0.6);border:1px solid rgba(26,26,46,0.1);border-radius:12px;padding:14px;font-size:14px;color:#1a1a2e;font-family:\'Plus Jakarta Sans\',sans-serif;resize:vertical;box-sizing:border-box;outline:none;transition:border-color .15s;" ' +
+          'style="width:100%;height:120px;background:rgba(255,255,255,0.06);border:1px solid rgba(123,97,255,0.2);border-radius:12px;padding:14px;font-size:14px;color:white;font-family:\'Plus Jakarta Sans\',sans-serif;resize:vertical;box-sizing:border-box;outline:none;transition:border-color .15s;" ' +
           'oninput="_csoModalInput(this,' + maxLen + ')"' +
           'onkeydown="_csoModalKeydown(event)">' +
         '</textarea>' +
-        '<div id="cso-modal-count" style="position:absolute;bottom:10px;right:12px;font-size:11px;color:rgba(26,26,46,0.25);pointer-events:none;">0/' + maxLen + '</div>' +
+        '<div id="cso-modal-count" style="position:absolute;bottom:10px;right:12px;font-size:11px;color:rgba(255,255,255,0.2);pointer-events:none;">0/' + maxLen + '</div>' +
       '</div>';
 
   var saveDisabled = opts.customBody ? '' : 'disabled';
@@ -2883,11 +2883,11 @@ function _apriModaleCSO(opts) {
   var saveCursor   = opts.customBody ? 'pointer' : 'pointer';
 
   box.innerHTML =
-    '<div style="font-size:18px;font-weight:600;color:#1a1a2e;margin-bottom:4px;">' + (opts.titolo || 'Nuova nota') + '</div>' +
-    (opts.sottotitolo ? '<div style="font-size:13px;color:rgba(26,26,46,0.4);margin-bottom:18px;">' + opts.sottotitolo + '</div>' : '<div style="margin-bottom:18px;"></div>') +
+    '<div style="font-size:18px;font-weight:600;color:white;margin-bottom:4px;">' + (opts.titolo || 'Nuova nota') + '</div>' +
+    (opts.sottotitolo ? '<div style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:18px;">' + opts.sottotitolo + '</div>' : '<div style="margin-bottom:18px;"></div>') +
     bodyHtml +
     '<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:16px;">' +
-      '<button onclick="_chiudiModaleCSO()" style="background:transparent;border:1px solid rgba(26,26,46,0.12);color:rgba(26,26,46,0.5);border-radius:10px;padding:10px 24px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;cursor:pointer;">Annulla</button>' +
+      '<button onclick="_chiudiModaleCSO()" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);border-radius:10px;padding:10px 24px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;cursor:pointer;">Annulla</button>' +
       '<button id="cso-modal-save" onclick="_salvaModaleCSO()" ' + saveDisabled + ' style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:10px 24px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:500;cursor:pointer;opacity:' + saveOpacity + ';transition:opacity .15s;">' + btnLabel + '</button>' +
     '</div>';
 
@@ -2987,13 +2987,13 @@ function _apriModaleModuloCSO(onSalva) {
 
   var box = document.createElement('div');
   box.id = 'cso-modal-box';
-  box.style.cssText = 'width:480px;max-width:90vw;background:rgba(255,255,255,0.92);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.8);border-radius:20px;padding:28px;box-shadow:0 8px 32px rgba(0,0,0,0.12);transform:scale(0.95);opacity:0;transition:transform 200ms ease-out,opacity 200ms ease-out;';
+  box.style.cssText = 'width:480px;max-width:90vw;background:#12122a;border:1px solid rgba(123,97,255,0.2);border-radius:20px;padding:28px;box-shadow:0 8px 32px rgba(0,0,0,0.5);transform:scale(0.95);opacity:0;transition:transform 200ms ease-out,opacity 200ms ease-out;';
 
-  var fieldStyle = 'width:100%;background:rgba(255,255,255,0.6);border:1px solid rgba(26,26,46,0.1);border-radius:10px;padding:10px 14px;font-size:14px;color:#1a1a2e;font-family:\'Plus Jakarta Sans\',sans-serif;box-sizing:border-box;outline:none;';
-  var labelStyle = 'display:block;font-size:12px;font-weight:500;color:rgba(26,26,46,0.5);margin-bottom:5px;margin-top:14px;';
+  var fieldStyle = 'width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(123,97,255,0.2);border-radius:10px;padding:10px 14px;font-size:14px;color:white;font-family:\'Plus Jakarta Sans\',sans-serif;box-sizing:border-box;outline:none;';
+  var labelStyle = 'display:block;font-size:12px;font-weight:500;color:rgba(255,255,255,0.4);margin-bottom:5px;margin-top:14px;';
 
   box.innerHTML =
-    '<div style="font-size:18px;font-weight:600;color:#1a1a2e;margin-bottom:18px;">Nuovo modulo personalizzato</div>' +
+    '<div style="font-size:18px;font-weight:600;color:white;margin-bottom:18px;">Nuovo modulo personalizzato</div>' +
     '<label style="' + labelStyle + 'margin-top:0;">Nome voce</label>' +
     '<input id="csom-nome" type="text" placeholder="Es: Software gestionale" style="' + fieldStyle + '">' +
     '<label style="' + labelStyle + '">Costo mensile (€)</label>' +
@@ -3007,7 +3007,7 @@ function _apriModaleModuloCSO(onSalva) {
       '<option value="0.9">Alto</option>' +
     '</select>' +
     '<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:22px;">' +
-      '<button onclick="_chiudiModaleCSO()" style="background:transparent;border:1px solid rgba(26,26,46,0.12);color:rgba(26,26,46,0.5);border-radius:10px;padding:10px 24px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;cursor:pointer;">Annulla</button>' +
+      '<button onclick="_chiudiModaleCSO()" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);border-radius:10px;padding:10px 24px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;cursor:pointer;">Annulla</button>' +
       '<button onclick="_salvaModuloCSO()" style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:10px 24px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:500;cursor:pointer;">Aggiungi</button>' +
     '</div>';
 
