@@ -886,7 +886,7 @@ label{color:var(--gray2)}
 .pmi-nav-item:hover{color:#fff;background:rgba(255,255,255,0.08)}
 .pmi-nav-item.active{color:#fff;background:rgba(61,90,254,0.15);border-left:3px solid #3D5AFE;margin-left:5px;padding-left:11px}
 .pmi-nav-icon{width:15px;height:15px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.pmi-nav-icon svg{width:50px;height:50px;stroke:rgba(255,255,255,0.35)}
+.pmi-nav-icon svg{width:42px;height:42px;stroke:rgba(255,255,255,0.35)}
 .pmi-nav-item:hover .pmi-nav-icon svg{stroke:rgba(255,255,255,0.7)}
 .pmi-nav-item.active .pmi-nav-icon svg{stroke:#3D5AFE}
 .pmi-select-card{padding:16px 14px;border:1.5px solid rgba(0,0,0,0.08);border-radius:12px;cursor:pointer;background:rgba(255,255,255,0.55);transition:all .15s;user-select:none}
@@ -1576,8 +1576,8 @@ label{color:var(--gray2)}
   color: white;
 }
 .pmi-nav-item svg {
-  width: 50px;
-  height: 50px;
+  width: 42px;
+  height: 42px;
   flex-shrink: 0;
 }
 .pmi-sidebar-footer {
