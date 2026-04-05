@@ -14258,6 +14258,36 @@ function renderPMIProfilo(container) {
 
       // ── Logout ───────────────────────────────────────────────────────────
       '<button onclick="logout()" style="width:100%;padding:12px 16px;background:rgba(244,63,94,0.06);border:0.5px solid rgba(244,63,94,0.2);color:#F43F5E;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;">Esci</button>' +
+
+      // ── Gestione account ─────────────────────────────────────────────────
+      (function() {
+        var piano = (window._pmiProspect && window._pmiProspect.piano) || 'free';
+        var pianoLabelMap = {self:'Self', guided_base:'Guided Base', guided_pro:'Guided Pro'};
+        var html = '<div style="margin-top:40px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.06)">' +
+          '<div style="color:rgba(255,255,255,0.3);font-size:11px;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px">Gestione account</div>';
+
+        if (piano !== 'free') {
+          var dataAtt = window._pmiProspect && (window._pmiProspect.piano_attivato_il || window._pmiProspect.created_at);
+          var scad = dataAtt ? new Date(new Date(dataAtt).getTime() + 30*24*60*60*1000) : null;
+          var scadStr = scad ? scad.toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'}) : 'N/A';
+          var giorniRim = scad ? Math.max(0, Math.ceil((scad - new Date())/(1000*60*60*24))) : 0;
+          html += '<div style="background:rgba(244,63,94,0.04);border:1px solid rgba(244,63,94,0.12);border-radius:16px;padding:20px;margin-bottom:16px">' +
+            '<div style="color:white;font-size:15px;font-weight:600;margin-bottom:8px">Disdici abbonamento</div>' +
+            '<div style="color:rgba(255,255,255,0.5);font-size:13px;line-height:1.6;margin-bottom:16px">Il tuo piano <span style="color:#7B61FF;font-weight:600">' + (pianoLabelMap[piano]||piano) + '</span> resterà attivo fino al <span style="color:white;font-weight:500">' + scadStr + '</span> (' + giorniRim + ' giorni). Dopo la scadenza il tuo account verrà disattivato e non potrai più accedere all\'app.</div>' +
+            '<button onclick="_confermaDisdetta()" style="background:transparent;border:1px solid rgba(244,63,94,0.3);color:#F43F5E;padding:10px 20px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s" onmouseenter="this.style.background=\'rgba(244,63,94,0.1)\'" onmouseleave="this.style.background=\'transparent\'">Disdici abbonamento</button>' +
+          '</div>';
+        }
+
+        html += '<div style="background:rgba(244,63,94,0.04);border:1px solid rgba(244,63,94,0.12);border-radius:16px;padding:20px">' +
+          '<div style="color:white;font-size:15px;font-weight:600;margin-bottom:8px">Elimina account</div>' +
+          '<div style="color:rgba(255,255,255,0.5);font-size:13px;line-height:1.6;margin-bottom:16px">Tutti i tuoi dati verranno eliminati permanentemente: diagnosi, score, azioni, storico. Questa azione è <span style="color:#F43F5E;font-weight:600">irreversibile</span>.</div>' +
+          '<button onclick="_confermaEliminaAccount()" style="background:transparent;border:1px solid rgba(244,63,94,0.3);color:#F43F5E;padding:10px 20px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s" onmouseenter="this.style.background=\'rgba(244,63,94,0.1)\'" onmouseleave="this.style.background=\'transparent\'">Elimina account definitivamente</button>' +
+        '</div>';
+
+        html += '</div>';
+        return html;
+      })() +
+
     '</div>';
 
   // Focus accent on editable inputs
@@ -14304,6 +14334,73 @@ async function salvaProfiloPMI() {
   }
 
   if (btn) { btn.disabled = false; btn.textContent = 'Salva profilo'; }
+}
+
+// === FUNZIONE DISDETTA ===
+function _confermaDisdetta() {
+  var overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(6,8,15,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;';
+  overlay.innerHTML =
+    '<div style="width:100%;max-width:420px;background:#0a0c14;border:1px solid rgba(251,191,36,0.2);border-radius:20px;padding:32px;box-shadow:0 24px 64px rgba(0,0,0,0.7);">' +
+      '<div style="font-size:28px;text-align:center;margin-bottom:12px;">⚠️</div>' +
+      '<div style="font-size:20px;font-weight:700;color:white;text-align:center;margin-bottom:8px;">Disdici abbonamento</div>' +
+      '<div style="font-size:14px;color:rgba(255,255,255,0.55);text-align:center;line-height:1.6;margin-bottom:24px;">Il tuo piano resterà attivo fino alla scadenza del periodo già pagato. Dopo, tornerai al piano Free.</div>' +
+      '<div style="display:flex;gap:12px;">' +
+        '<button id="btn-cancel-disdetta" style="flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);padding:14px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;">Annulla</button>' +
+        '<button id="btn-confirm-disdetta" style="flex:1;background:#F59E0B;border:none;color:white;padding:14px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;">Sì, disdici</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+  document.getElementById('btn-cancel-disdetta').onclick = function() { overlay.remove(); };
+  document.getElementById('btn-confirm-disdetta').onclick = async function() {
+    document.getElementById('btn-confirm-disdetta').textContent = 'Attendere...';
+    document.getElementById('btn-confirm-disdetta').disabled = true;
+    try {
+      if (typeof sb !== 'undefined' && window._currentUserId) {
+        await sb.from('user_profiles').update({ cancellation_requested: true }).eq('user_id', window._currentUserId);
+      }
+      overlay.remove();
+      showToast('Disdetta registrata. Il piano resta attivo fino a scadenza.', 'success');
+    } catch(e) {
+      overlay.remove();
+      showToast('Errore nella disdetta. Riprova.', 'error');
+      console.error(e);
+    }
+  };
+}
+
+// === FUNZIONE ELIMINA ACCOUNT ===
+function _confermaEliminaAccount() {
+  var overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(6,8,15,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;';
+  overlay.innerHTML =
+    '<div style="width:100%;max-width:420px;background:#0a0c14;border:1px solid rgba(244,63,94,0.25);border-radius:20px;padding:32px;box-shadow:0 24px 64px rgba(0,0,0,0.7);">' +
+      '<div style="font-size:28px;text-align:center;margin-bottom:12px;">🗑️</div>' +
+      '<div style="font-size:20px;font-weight:700;color:white;text-align:center;margin-bottom:8px;">Elimina account</div>' +
+      '<div style="font-size:14px;color:rgba(255,255,255,0.55);text-align:center;line-height:1.6;margin-bottom:24px;">Questa azione è <strong style="color:#F43F5E;">irreversibile</strong>. Tutti i tuoi dati verranno cancellati permanentemente.</div>' +
+      '<div style="display:flex;gap:12px;">' +
+        '<button id="btn-cancel-elimina" style="flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);padding:14px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;">Annulla</button>' +
+        '<button id="btn-confirm-elimina" style="flex:1;background:#F43F5E;border:none;color:white;padding:14px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;">Elimina tutto</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(overlay);
+  document.getElementById('btn-cancel-elimina').onclick = function() { overlay.remove(); };
+  document.getElementById('btn-confirm-elimina').onclick = async function() {
+    document.getElementById('btn-confirm-elimina').textContent = 'Eliminazione...';
+    document.getElementById('btn-confirm-elimina').disabled = true;
+    try {
+      if (typeof sb !== 'undefined' && window._currentUserId) {
+        await sb.from('user_profiles').delete().eq('user_id', window._currentUserId);
+        await sb.auth.signOut();
+      }
+      overlay.remove();
+      window.location.reload();
+    } catch(e) {
+      overlay.remove();
+      showToast('Errore nell\'eliminazione. Contatta il supporto.', 'error');
+      console.error(e);
+    }
+  };
 }
 
 // ── Il tuo piano ─────────────────────────────────────────────────────────────
