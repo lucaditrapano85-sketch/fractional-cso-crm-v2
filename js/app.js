@@ -14420,32 +14420,35 @@ function renderPMIPiano(container) {
     ['Call CSO illimitate',         DASH,  DASH,  DASH,  CHECK],
   ];
 
+  var planOrder = {free: 0, self: 1, guided_base: 2, guided_pro: 3};
+
   function mkBtn(planId, upgradeLbl, bg, textColor) {
     var isCurrent = pianoCorrente === planId;
-    // Free: no upgrade button (can't downgrade), only show "Piano attuale" if current
-    if (planId === 'free') {
-      if (isCurrent) {
-        return '<button disabled style="width:80%;padding:9px 0;background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.08);border-radius:10px;font-size:12px;font-weight:500;cursor:default;">Piano attuale</button>';
-      }
-      return '';
-    }
+    // Current plan: show label text instead of button
     if (isCurrent) {
-      return '<button disabled style="width:80%;padding:9px 0;background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.08);border-radius:10px;font-size:12px;font-weight:500;cursor:default;">Piano attuale</button>';
+      return '<div style="color:#7B61FF;font-weight:700;font-size:14px;text-align:center;padding:9px 0;">Il tuo piano</div>';
+    }
+    // No downgrade buttons
+    if (planOrder[planId] < planOrder[pianoCorrente]) {
+      return '';
     }
     return '<button onclick="aggiornaPiano(\'' + planId + '\')" style="width:80%;padding:9px 0;background:' + bg + ';color:' + textColor + ';border:none;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;transition:opacity .15s;" onmouseover="this.style.opacity=\'0.85\'" onmouseout="this.style.opacity=\'1\'">' + upgradeLbl + '</button>';
   }
 
   // Floating badge (chip sopra la card) — per "Il tuo piano" e "Consigliato"
   function floatingBadge(text, bg, textColor) {
-    return '<span style="position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:' + bg + ';color:' + textColor + ';font-size:10px;font-weight:700;padding:3px 12px;border-radius:10px;white-space:nowrap;letter-spacing:.3px;">' + text + '</span>';
+    return '<span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:' + bg + ';color:' + textColor + ';font-size:11px;font-weight:700;padding:4px 12px;border-radius:8px;white-space:nowrap;letter-spacing:.3px;z-index:10;">' + text + '</span>';
   }
 
   function headerBadge(planId) {
     if (pianoCorrente === planId) {
       var bg = planId === 'guided_pro' ? '#FF6B2B' : '#7B61FF';
-      return floatingBadge('Il tuo piano', bg, 'white');
+      return floatingBadge('IL TUO PIANO', bg, 'white');
     }
-    if (planId === 'guided_base') return floatingBadge('Consigliato', '#7B61FF', 'white');
+    // "Consigliato" solo se l'utente non ha già quel piano o superiore
+    if (planId === 'guided_base' && planOrder[pianoCorrente] < planOrder['guided_base']) {
+      return floatingBadge('Consigliato', '#FF6B2B', 'white');
+    }
     return '';
   }
 
@@ -14512,14 +14515,14 @@ function renderPMIPiano(container) {
       '<h1 style="font-size:28px;font-weight:700;color:white;margin:0 0 6px;">Il tuo piano</h1>' +
       '<p style="font-size:13px;color:rgba(255,255,255,0.4);margin:0 0 28px;">Scegli il livello di supporto per la tua azienda.</p>' +
 
-      '<div style="overflow-x:auto;">' +
-        // Header row
-        '<div style="display:grid;grid-template-columns:28% 18% 18% 18% 18%;min-width:620px;margin-bottom:0;">' +
+      '<div style="overflow-x:auto;overflow-y:visible;">' +
+        // Header row — overflow:visible su tutto per badge floating
+        '<div style="display:grid;grid-template-columns:28% 18% 18% 18% 18%;min-width:620px;margin-bottom:0;overflow:visible;padding-top:16px;">' +
           '<div></div>' +
-          '<div style="padding:0 3px 0 0;">' + headerFree + '</div>' +
-          '<div style="padding:0 3px;">' + headerSelf + '</div>' +
-          '<div style="padding:0 3px;">' + headerBase + '</div>' +
-          '<div style="padding:0 0 0 3px;">' + headerPro + '</div>' +
+          '<div style="padding:0 3px 0 0;overflow:visible;position:relative;">' + headerFree + '</div>' +
+          '<div style="padding:0 3px;overflow:visible;position:relative;">' + headerSelf + '</div>' +
+          '<div style="padding:0 3px;overflow:visible;position:relative;">' + headerBase + '</div>' +
+          '<div style="padding:0 0 0 3px;overflow:visible;position:relative;">' + headerPro + '</div>' +
         '</div>' +
         '<div style="min-width:620px;background:rgba(255,255,255,0.03);border:1px solid rgba(123,97,255,0.12);border-top:none;border-radius:0 0 14px 14px;overflow:hidden;">' +
           tableHtml +
