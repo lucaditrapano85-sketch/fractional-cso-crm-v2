@@ -634,3 +634,181 @@ body.cso-mode .dash-header h1 {
 body.cso-mode .dash-header p {
   color: rgba(255,255,255,0.4) !important;
 }
+
+/* ── Lista Clienti (Kanban) Deep Space ────────────────────────────────────── */
+
+body.cso-mode .pk-col {
+  background: rgba(255,255,255,0.03) !important;
+  border: 1px solid rgba(123,97,255,0.1) !important;
+}
+
+body.cso-mode .pk-col-count {
+  background: rgba(255,255,255,0.1) !important;
+}
+
+body.cso-mode .pk-col-body {
+  background: transparent !important;
+}
+
+body.cso-mode .pk-empty {
+  color: rgba(255,255,255,0.2) !important;
+}
+
+body.cso-mode .prospect-kanban-card {
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.06) !important;
+  box-shadow: none !important;
+}
+
+body.cso-mode .prospect-kanban-card:hover {
+  background: rgba(123,97,255,0.08) !important;
+  border-color: rgba(123,97,255,0.2) !important;
+  transform: translateY(-1px);
+}
+
+body.cso-mode .pkc-nome {
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+body.cso-mode .pkc-settore {
+  color: rgba(255,255,255,0.4) !important;
+}
+
+body.cso-mode .pkc-footer {
+  color: rgba(255,255,255,0.35) !important;
+}
+
+body.cso-mode .pkc-fatturato {
+  color: rgba(255,255,255,0.6) !important;
+}
+
+body.cso-mode .pkc-score-bar-bg {
+  background: rgba(255,255,255,0.06) !important;
+}
+
+/* Pills stato (header) */
+body.cso-mode .ps-pill {
+  background: transparent !important;
+}
+
+/* Barra ricerca + select */
+body.cso-mode .prospects-search-wrap {
+  background: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.1) !important;
+}
+
+body.cso-mode .prospects-search {
+  color: white !important;
+}
+
+body.cso-mode .prospects-search::placeholder {
+  color: rgba(255,255,255,0.3) !important;
+}
+
+body.cso-mode .prospects-sort {
+  background: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.1) !important;
+  color: white !important;
+}
+
+/* Header title */
+body.cso-mode .prospects-title h2 {
+  color: white !important;
+}
+
+/* Bottone "Nuovo cliente" */
+body.cso-mode .prospects-controls button[onclick*="apriModale"] {
+  background: #7B61FF !important;
+}
+
+/* Barre filtro stato/piano */
+body.cso-mode #view-prospects [style*="border-bottom:1px solid rgba(0,0,0"] {
+  border-bottom-color: rgba(255,255,255,0.06) !important;
+}
+
+/* ── Scheda Cliente (tab) Deep Space ──────────────────────────────────────── */
+
+/* Tab nav border */
+body.cso-mode #prospect-tab-nav {
+  border-bottom-color: rgba(255,255,255,0.06) !important;
+}
+
+/* Tab buttons */
+body.cso-mode .ptab-btn {
+  color: rgba(255,255,255,0.4) !important;
+}
+
+body.cso-mode .ptab-btn:hover {
+  color: rgba(255,255,255,0.7) !important;
+}
+
+body.cso-mode .ptab-btn.active {
+  color: white !important;
+  border-bottom-color: #7B61FF !important;
+  font-weight: 600 !important;
+}
+
+/* Info label chips */
+body.cso-mode .det-label {
+  background: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.08) !important;
+  color: rgba(255,255,255,0.5) !important;
+}
+
+body.cso-mode .det-label strong {
+  color: rgba(255,255,255,0.8) !important;
+}
+
+/* Scheda cliente — fin-tabs (tab interni sezioni) */
+body.cso-mode .fin-tabs {
+  border-bottom-color: rgba(255,255,255,0.06) !important;
+  background: transparent !important;
+}
+
+body.cso-mode .fin-tab {
+  color: rgba(255,255,255,0.4) !important;
+}
+
+body.cso-mode .fin-tab:hover {
+  color: rgba(255,255,255,0.7) !important;
+}
+
+body.cso-mode .fin-tab.active {
+  color: white !important;
+  border-bottom-color: #7B61FF !important;
+  font-weight: 600 !important;
+  background: transparent !important;
+}
+
+/* Card contenuto scheda cliente */
+body.cso-mode #ptab-panoramica .card,
+body.cso-mode #ptab-diagnosi .card,
+body.cso-mode #ptab-azioni .card,
+body.cso-mode #ptab-finanziaria .card,
+body.cso-mode #ptab-callnote .card {
+  background: rgba(255,255,255,0.04) !important;
+  border-color: rgba(123,97,255,0.1) !important;
+  box-shadow: none !important;
+}
+
+/* Status badge top right */
+body.cso-mode #det-status-badge {
+  background: rgba(255,255,255,0.06) !important;
+  color: rgba(255,255,255,0.7) !important;
+}
+
+/* Det company name */
+body.cso-mode #det-company-name {
+  color: white !important;
+}
+
+/* Bottone Modifica */
+body.cso-mode .det-label[onclick*="openEdit"] {
+  background: rgba(123,97,255,0.1) !important;
+  border-color: rgba(123,97,255,0.2) !important;
+}
+
+body.cso-mode .det-label[onclick*="openEdit"] strong {
+  color: #7B61FF !important;
+}

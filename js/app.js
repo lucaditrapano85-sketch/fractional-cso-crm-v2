@@ -1526,9 +1526,9 @@ function setPianoFilter(piano) {
 }
 
 function _pianoBadge(piano) {
-  if (piano === 'guided_pro')  return '<span style="display:inline-block;font-size:10px;padding:2px 9px;border-radius:8px;background:rgba(255,107,43,0.10);color:#FF6B2B;font-weight:600;margin-left:6px;vertical-align:middle;line-height:1.4">Pro</span>';
-  if (piano === 'guided_base') return '<span style="display:inline-block;font-size:10px;padding:2px 9px;border-radius:8px;background:rgba(61,90,254,0.09);color:#3D5AFE;font-weight:600;margin-left:6px;vertical-align:middle;line-height:1.4">Base</span>';
-  return '<span style="display:inline-block;font-size:10px;padding:2px 9px;border-radius:8px;background:rgba(26,26,46,0.07);color:rgba(26,26,46,0.45);font-weight:600;margin-left:6px;vertical-align:middle;line-height:1.4">Self</span>';
+  if (piano === 'guided_pro')  return '<span style="display:inline-block;font-size:10px;padding:2px 9px;border-radius:8px;background:rgba(255,107,43,0.15);color:#FF6B2B;font-weight:600;margin-left:6px;vertical-align:middle;line-height:1.4">Pro</span>';
+  if (piano === 'guided_base') return '<span style="display:inline-block;font-size:10px;padding:2px 9px;border-radius:8px;background:rgba(123,97,255,0.15);color:#7B61FF;font-weight:600;margin-left:6px;vertical-align:middle;line-height:1.4">Base</span>';
+  return '<span style="display:inline-block;font-size:10px;padding:2px 9px;border-radius:8px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);font-weight:600;margin-left:6px;vertical-align:middle;line-height:1.4">Self</span>';
 }
 
 function renderProspectsView() { renderProspects(); }
@@ -1760,7 +1760,7 @@ function renderProspects() {
 
   const STATI = ['in_attesa','ingaggiato','in_diagnosi','attivo','archiviato'];
   const STATI_LABEL = { in_attesa:'In attesa', ingaggiato:'Ingaggiato', in_diagnosi:'In diagnosi', attivo:'Attivo', archiviato:'Archiviato' };
-  const STATI_COLOR = { in_attesa:'#AF7D00', ingaggiato:'#3D5AFE', in_diagnosi:'#7B61FF', attivo:'#00825F', archiviato:'rgba(26,26,46,0.3)' };
+  const STATI_COLOR = { in_attesa:'#FFB800', ingaggiato:'#7B61FF', in_diagnosi:'#9C27B0', attivo:'#00C853', archiviato:'rgba(255,255,255,0.3)' };
 
   // Filtra prospect
   let lista = prospects.filter(function(p) {
@@ -1806,7 +1806,7 @@ function renderProspects() {
       '<div class="pkc-header">' +
         '<div class="pkc-color" style="background:' + (p.color||statoColor) + '"></div>' +
         '<div class="pkc-nome">' + (p.nome || '\u2014') +
-          (STATI_LABEL[p.stato] ? '<span style="display:inline-block;font-size:10px;padding:2px 8px;border-radius:6px;background:' + (STATI_COLOR[p.stato]||'#888') + '1a;color:' + (STATI_COLOR[p.stato]||'#888') + ';font-weight:600;margin-left:6px;vertical-align:middle;line-height:1.4">' + STATI_LABEL[p.stato] + '</span>' : '') +
+          (STATI_LABEL[p.stato] ? '<span style="display:inline-block;font-size:10px;padding:2px 8px;border-radius:6px;background:' + (STATI_COLOR[p.stato]||'#888') + '22;color:' + (STATI_COLOR[p.stato]||'#888') + ';font-weight:600;margin-left:6px;vertical-align:middle;line-height:1.4">' + STATI_LABEL[p.stato] + '</span>' : '') +
           _pianoBadge(p.piano) +
         '</div>' +
       '</div>' +
@@ -1857,14 +1857,15 @@ function renderProspects() {
   var filterBtns = ['tutti','in_attesa','ingaggiato','in_diagnosi','attivo','archiviato','score'].map(function(f) {
     var active = _prospectFilter === f;
     var label  = f === 'tutti' ? 'Tutti' : f === 'score' ? 'Score alto' : STATI_LABEL[f];
-    var color  = f === 'score' ? '#f39c12' : (STATI_COLOR[f] || '#3D5AFE');
-    return '<button onclick="setProspectFilter(\'' + f + '\')" style="background:none;border:none;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:' + (active?'600':'400') + ';color:' + (active?color:'rgba(26,26,46,0.45)') + ';padding:4px 8px;border-bottom:2px solid ' + (active?color:'transparent') + ';transition:all .15s;">' + label + '</button>';
+    var color  = f === 'score' ? '#FFB800' : (STATI_COLOR[f] || '#7B61FF');
+    return '<button onclick="setProspectFilter(\'' + f + '\')" style="background:none;border:none;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:' + (active?'600':'400') + ';color:' + (active?color:'rgba(255,255,255,0.35)') + ';padding:4px 8px;border-bottom:2px solid ' + (active?color:'transparent') + ';transition:all .15s;">' + label + '</button>';
   }).join('');
 
   var pianoFilterBtns = ['tutti','self','guided_base','guided_pro'].map(function(f) {
     var active = _csoFilterPiano === f;
     var label = f === 'tutti' ? 'Tutti' : f === 'self' ? 'Self' : f === 'guided_base' ? 'Base' : 'Pro';
-    return '<button onclick="setPianoFilter(\'' + f + '\')" style="background:none;border:none;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:' + (active?'600':'400') + ';color:' + (active?'#3D5AFE':'rgba(26,26,46,0.45)') + ';padding:4px 8px;border-bottom:2px solid ' + (active?'#3D5AFE':'transparent') + ';transition:all .15s;">' + label + '</button>';
+    var color = f === 'guided_pro' ? '#FF6B2B' : '#7B61FF';
+    return '<button onclick="setPianoFilter(\'' + f + '\')" style="background:none;border:none;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:' + (active?'600':'400') + ';color:' + (active?color:'rgba(255,255,255,0.35)') + ';padding:4px 8px;border-bottom:2px solid ' + (active?color:'transparent') + ';transition:all .15s;">' + label + '</button>';
   }).join('');
 
   container.innerHTML =
@@ -1883,14 +1884,14 @@ function renderProspects() {
           '<option value="data"' + (_prospectSort==='data'?' selected':'') + '>Ordina: Data</option>' +
           '<option value="nome"' + (_prospectSort==='nome'?' selected':'') + '>Ordina: Nome</option>' +
         '</select>' +
-        '<button onclick="apriModaleNuovoCliente()" style="background:#3D5AFE;color:white;border:none;border-radius:10px;padding:10px 20px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;">+ Nuovo cliente</button>' +
+        '<button onclick="apriModaleNuovoCliente()" style="background:#7B61FF;color:white;border:none;border-radius:10px;padding:10px 20px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;">+ Nuovo cliente</button>' +
       '</div>' +
-      '<div style="display:flex;align-items:center;gap:0;padding:6px 0 2px;border-bottom:1px solid rgba(0,0,0,0.06);margin-bottom:0;">' +
-        '<span style="font-size:11px;color:rgba(26,26,46,0.35);margin-right:10px;font-weight:500;">Stato:</span>' +
+      '<div style="display:flex;align-items:center;gap:0;padding:6px 0 2px;border-bottom:1px solid rgba(255,255,255,0.06);margin-bottom:0;">' +
+        '<span style="font-size:11px;color:rgba(255,255,255,0.3);margin-right:10px;font-weight:500;">Stato:</span>' +
         filterBtns +
       '</div>' +
-      '<div style="display:flex;align-items:center;gap:0;padding:6px 0 2px;border-bottom:1px solid rgba(0,0,0,0.06);margin-bottom:4px;">' +
-        '<span style="font-size:11px;color:rgba(26,26,46,0.35);margin-right:10px;font-weight:500;">Piano:</span>' +
+      '<div style="display:flex;align-items:center;gap:0;padding:6px 0 2px;border-bottom:1px solid rgba(255,255,255,0.06);margin-bottom:4px;">' +
+        '<span style="font-size:11px;color:rgba(255,255,255,0.3);margin-right:10px;font-weight:500;">Piano:</span>' +
         pianoFilterBtns +
       '</div>' +
     '</div>' +
