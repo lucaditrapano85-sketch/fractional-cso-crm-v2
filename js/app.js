@@ -1219,6 +1219,9 @@ async function renderDashboard() {
   const kpiGrid = document.getElementById('kpi-grid');
   if (!kpiGrid) return;
 
+  // Reset layout: la classe kpi-grid ha display:grid che rompe il layout verticale
+  kpiGrid.style.cssText = 'display:block;margin-bottom:0;gap:0;grid-template-columns:none;';
+
   // Stato vuoto
   if (prospects.length === 0) {
     kpiGrid.innerHTML = `
