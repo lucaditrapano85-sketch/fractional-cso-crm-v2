@@ -10436,13 +10436,9 @@ function renderViewPMI(view) {
   var main    = document.getElementById('pmi-main');
   if (!main) return;
 
-  // Ferma le onde quando si lascia la home
-  if (view !== 'home') {
-    if (window._wavesInstance) { window._wavesInstance.stop(); window._wavesInstance = null; }
-    if (window._levaWavesInstance) { window._levaWavesInstance.stop(); window._levaWavesInstance = null; }
-    var wc = document.getElementById('leva-waves-home') || document.getElementById('leva-waves-bg');
-    if (wc) wc.remove();
-  }
+  // Ferma onde precedenti (ogni render function ne avvia di proprie)
+  if (window._wavesInstance) { window._wavesInstance.stop(); window._wavesInstance = null; }
+  if (window._levaWavesInstance) { window._levaWavesInstance.stop(); window._levaWavesInstance = null; }
 
   if (sidebar) sidebar.style.display = '';
 
@@ -10453,12 +10449,11 @@ function renderViewPMI(view) {
     appPmi.style.height = '100vh';
     appPmi.style.overflow = 'hidden';
     appPmi.style.position = 'relative';
-    appPmi.style.background = view === 'home' ? 'var(--leva-bg-deep,#06080F)' : '#d8dbe2';
+    appPmi.style.background = '#06080F';
   }
 
-  // Home: sfondo trasparente (mostra il canvas). Altre viste: sfondo classico.
-  main.style.background = view === 'home' ? 'transparent' : '#d8dbe2';
-  main.style.padding    = view === 'home' ? '0' : '28px 32px';
+  main.style.background = 'transparent';
+  main.style.padding    = '0';
   main.style.position   = 'relative';
   main.style.zIndex     = '1';
 
@@ -13518,14 +13513,31 @@ function apriPrenotazioneCall() {
 }
 
 // ── FASE 6 — Score ────────────────────────────────────────────────────────────
+/* Shared DS setup — call BEFORE setting container.innerHTML */
+function _levaSetDSBg(container) {
+  document.body.style.background = '#06080F';
+  container.style.background = 'transparent';
+  container.style.position   = 'relative';
+  container.style.overflowY  = 'auto';
+}
+/* Shared DS wave start — call AFTER container.innerHTML */
+function _levaStartWaves(canvasId) {
+  if (window.initLevaWaves) {
+    if (window._wavesInstance) window._wavesInstance.stop();
+    window._wavesInstance = initLevaWaves(canvasId);
+  }
+}
+var _DS_CANVAS = '<canvas id="leva-waves-view" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.45;"></canvas>';
+
 function renderPMIScore(container) {
   var p = window._pmiProspect;
   if (!p || !p.dims) { renderPMIHome(container); return; }
 
+  _levaSetDSBg(container);
+
   var s  = p.score_globale || calcScore(p) || 0;
   var sc = scoreColor(s);
 
-  // 8 dimensioni standard ordinate alfabeticamente per label (= key)
   var _STD_DIMS_S = ['Vendite','Marketing','Clienti','Pipeline','Pricing','Processi','Team','Digitale'];
   var dimsAlpha = _STD_DIMS_S.slice().sort(function(a, b) { return a.localeCompare(b, 'it'); });
 
@@ -13533,49 +13545,45 @@ function renderPMIScore(container) {
     var v   = p.dims[d] || 0;
     var col = dimColor(v);
     var pct = (v / 5) * 100;
-    var lbl = d; // key IS the label with standard names
-    var stepDesc = '';
     var statoLabel = v < 2 ? 'Critico' : v <= 3 ? 'In sviluppo' : 'Solido';
-    var statoTxt   = v < 2 ? 'rgba(229,57,53,0.9)'  : v <= 3 ? 'rgba(175,125,0,0.85)' : 'rgba(0,130,95,0.85)';
-    var statoBg    = v < 2 ? 'rgba(229,57,53,0.08)' : v <= 3 ? 'rgba(175,125,0,0.08)' : 'rgba(0,130,95,0.08)';
-    return '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:14px 16px;margin-bottom:10px">' +
+    var statoTxt   = v < 2 ? '#F43F5E' : v <= 3 ? '#FBBF24' : '#34D399';
+    var statoBg    = v < 2 ? 'rgba(244,63,94,0.12)' : v <= 3 ? 'rgba(251,191,36,0.12)' : 'rgba(52,211,153,0.12)';
+    return '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.15);border-radius:14px;padding:14px 16px;margin-bottom:10px">' +
       '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
         '<div style="display:flex;align-items:center;gap:8px;">' +
-          '<div style="font-size:13px;font-weight:700;color:#1a1a2e">' + lbl + '</div>' +
+          '<div style="font-size:13px;font-weight:700;color:white">' + d + '</div>' +
           '<span style="font-size:9px;font-weight:600;color:' + statoTxt + ';background:' + statoBg + ';padding:1px 6px;border-radius:4px;">' + statoLabel + '</span>' +
         '</div>' +
         '<div style="font-size:15px;font-weight:700;color:' + col + '">' + (v > 0 ? v + '/5' : '—') + '</div>' +
       '</div>' +
-      '<div style="height:5px;background:rgba(0,0,0,0.06);border-radius:4px;margin-bottom:' + (stepDesc && stepDesc !== '—' ? '10' : '8') + 'px">' +
+      '<div style="height:5px;background:rgba(255,255,255,0.06);border-radius:4px;margin-bottom:8px">' +
         '<div style="width:' + pct + '%;height:100%;background:' + col + ';border-radius:4px;transition:width .4s"></div>' +
       '</div>' +
-      (stepDesc && stepDesc !== '—'
-        ? '<div style="font-size:11px;color:rgba(26,26,46,0.60);line-height:1.6;margin-bottom:10px">' + stepDesc + '</div>'
-        : '') +
-      '<div style="font-size:10px;color:rgba(26,26,46,0.35);border-top:1px solid rgba(0,0,0,0.05);padding-top:8px">Media settore: <strong style="color:rgba(26,26,46,0.5)">—</strong></div>' +
+      '<div style="font-size:10px;color:rgba(255,255,255,0.2);border-top:1px solid rgba(255,255,255,0.06);padding-top:8px">Media settore: <strong style="color:rgba(255,255,255,0.3)">—</strong></div>' +
     '</div>';
   }).join('');
 
   container.innerHTML =
-    '<div style="max-width:580px;margin:0 auto;padding:40px 28px">' +
-      '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:4px">Analisi dettagliata</h1>' +
-      '<p style="font-size:13px;color:rgba(26,26,46,0.45);margin-bottom:28px">Il tuo profilo commerciale confrontato con il settore.</p>' +
+    _DS_CANVAS +
+    '<div style="position:relative;z-index:1;max-width:580px;margin:0 auto;padding:40px 28px">' +
+      '<h1 style="font-size:28px;font-weight:700;color:white;margin-bottom:4px">Analisi dettagliata</h1>' +
+      '<p style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:28px">Il tuo profilo commerciale confrontato con il settore.</p>' +
 
-      // Score globale
-      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:16px;padding:22px 24px;display:flex;align-items:center;gap:20px;margin-bottom:24px">' +
-        '<div style="display:flex;align-items:center;justify-content:center;width:76px;height:76px;border-radius:50%;border:3px solid ' + sc.text + ';background:' + sc.bg + ';flex-shrink:0">' +
+      '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.15);border-radius:16px;padding:22px 24px;display:flex;align-items:center;gap:20px;margin-bottom:24px">' +
+        '<div style="display:flex;align-items:center;justify-content:center;width:76px;height:76px;border-radius:50%;border:3px solid ' + sc.text + ';background:rgba(255,255,255,0.04);flex-shrink:0">' +
           '<span style="font-size:28px;font-weight:700;color:' + sc.text + '">' + s + '</span>' +
         '</div>' +
         '<div>' +
           '<div style="font-size:22px;font-weight:700;color:' + sc.text + '">' + sc.label + '</div>' +
-          '<div style="font-size:13px;color:rgba(26,26,46,0.45);margin-top:3px">Punteggio complessivo: <strong>' + s + '/100</strong></div>' +
+          '<div style="font-size:13px;color:rgba(255,255,255,0.4);margin-top:3px">Punteggio complessivo: <strong style="color:rgba(255,255,255,0.8)">' + s + '/100</strong></div>' +
         '</div>' +
       '</div>' +
 
-      // Dettaglio dimensioni (alfabetico)
-      '<div style="font-size:10px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:12px">Dimensioni — ordine alfabetico</div>' +
+      '<div style="font-size:11px;font-weight:600;color:#7B61FF;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px">Dimensioni — ordine alfabetico</div>' +
       dimsHtml +
     '</div>';
+
+  _levaStartWaves('leva-waves-view');
 }
 
 // ── FASE 7 — Azioni ───────────────────────────────────────────────────────────
@@ -13583,7 +13591,8 @@ function renderPMIAzioni(container) {
   var p = window._pmiProspect;
   if (!p || !p.dims) { renderPMIHome(container); return; }
 
-  // Ordina dimensioni dal punteggio più basso al più alto (priorità decrescente)
+  _levaSetDSBg(container);
+
   var dimsSorted = _PMI_DIMS.slice().sort(function(a, b) {
     return (p.dims[a] || 0) - (p.dims[b] || 0);
   });
@@ -13594,35 +13603,38 @@ function renderPMIAzioni(container) {
     var lbl  = getDimLabel(p.settore, d);
     var desc = (typeof _getStepDesc === 'function') ? _getStepDesc(p.settore, d, v || 1) : '';
     var urgenza = v < 2 ? 'Alta priorità' : v <= 3 ? 'Sviluppabile' : 'Ottimo';
-    var urgCol  = v < 2 ? '#E53935' : v <= 3 ? 'rgba(175,125,0,0.85)' : 'rgba(0,130,95,0.85)';
-    var urgBg   = v < 2 ? 'rgba(229,57,53,0.08)' : v <= 3 ? 'rgba(175,125,0,0.08)' : 'rgba(0,130,95,0.08)';
+    var urgCol  = v < 2 ? '#F43F5E' : v <= 3 ? '#FBBF24' : '#34D399';
+    var urgBg   = v < 2 ? 'rgba(244,63,94,0.12)' : v <= 3 ? 'rgba(251,191,36,0.12)' : 'rgba(52,211,153,0.12)';
     var stepActual = Math.max(1, Math.min(5, Math.round(v || 1)));
     var stepTarget = Math.min(stepActual + 2, 5);
-    return '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:14px 16px;margin-bottom:10px">' +
+    return '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.15);border-radius:14px;padding:14px 16px;margin-bottom:10px">' +
       '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px">' +
-        '<div style="font-size:13px;font-weight:700;color:#1a1a2e">' + lbl + '</div>' +
+        '<div style="font-size:13px;font-weight:700;color:white">' + lbl + '</div>' +
         '<div style="display:flex;align-items:center;gap:6px;flex-shrink:0">' +
           '<span style="font-size:10px;font-weight:700;color:' + urgCol + ';background:' + urgBg + ';padding:2px 8px;border-radius:6px;white-space:nowrap">' + urgenza + '</span>' +
           '<span style="font-size:12px;font-weight:700;color:' + col + '">' + (v > 0 ? v + '/5' : '—') + '</span>' +
         '</div>' +
       '</div>' +
       (desc && desc !== '—'
-        ? '<div style="font-size:12px;color:rgba(26,26,46,0.6);line-height:1.6;border-top:1px solid rgba(0,0,0,0.05);padding-top:8px;margin-top:6px;margin-bottom:10px">' + desc + '</div>'
+        ? '<div style="font-size:12px;color:rgba(255,255,255,0.5);line-height:1.6;border-top:1px solid rgba(255,255,255,0.06);padding-top:8px;margin-top:6px;margin-bottom:10px">' + desc + '</div>'
         : '<div style="margin-top:8px;margin-bottom:10px;"></div>') +
       '<div style="display:flex;align-items:center;justify-content:space-between;">' +
-        '<button id="pmi-mod-btn-' + d + '" onclick="togglePMIModuli(\'' + d + '\')" style="background:rgba(61,90,254,0.07);border:1px solid rgba(61,90,254,0.18);color:#3D5AFE;border-radius:8px;padding:6px 14px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:11px;font-weight:600;cursor:pointer;">Vedi moduli →</button>' +
-        '<span style="font-size:10px;color:rgba(26,26,46,0.4);">Step attuale: <strong style="color:#1a1a2e">' + stepActual + '</strong> → Target: <strong style="color:#3D5AFE">' + stepTarget + '</strong></span>' +
+        '<button id="pmi-mod-btn-' + d + '" onclick="togglePMIModuli(\'' + d + '\')" style="background:rgba(123,97,255,0.1);border:1px solid rgba(123,97,255,0.25);color:#A78BFA;border-radius:8px;padding:6px 14px;font-size:11px;font-weight:600;cursor:pointer;">Vedi moduli →</button>' +
+        '<span style="font-size:10px;color:rgba(255,255,255,0.3);">Step attuale: <strong style="color:rgba(255,255,255,0.7)">' + stepActual + '</strong> → Target: <strong style="color:#7B61FF">' + stepTarget + '</strong></span>' +
       '</div>' +
       '<div id="pmi-mod-panel-' + d + '" style="display:none;"></div>' +
     '</div>';
   }).join('');
 
   container.innerHTML =
-    '<div style="max-width:580px;margin:0 auto;padding:40px 28px">' +
-      '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:4px">Il tuo piano d\'azione</h1>' +
-      '<p style="font-size:13px;color:rgba(26,26,46,0.45);margin-bottom:28px">Le azioni sono ordinate per priorità, dalla dimensione più critica.</p>' +
+    _DS_CANVAS +
+    '<div style="position:relative;z-index:1;max-width:580px;margin:0 auto;padding:40px 28px">' +
+      '<h1 style="font-size:28px;font-weight:700;color:white;margin-bottom:4px">Il tuo piano d\'azione</h1>' +
+      '<p style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:28px">Le azioni sono ordinate per priorità, dalla dimensione più critica.</p>' +
       azioniHtml +
     '</div>';
+
+  _levaStartWaves('leva-waves-view');
 }
 
 // ── PMI: espandi/collassa moduli per dimensione ───────────────────────────────
@@ -13653,12 +13665,11 @@ function _buildModuliPanelContent(dimId) {
   var stepNext    = Math.min(stepCurrent + 1, 5);
   var stepTarget  = Math.min(stepCurrent + 2, 5);
 
-  // Score 5 = eccellenza raggiunta
   if (stepCurrent >= 5) {
-    return '<div style="border-top:1px solid rgba(0,0,0,0.06);margin-top:14px;padding-top:14px;text-align:center;padding-bottom:8px;">' +
+    return '<div style="border-top:1px solid rgba(255,255,255,0.06);margin-top:14px;padding-top:14px;text-align:center;padding-bottom:8px;">' +
       '<div style="font-size:22px;margin-bottom:8px;">🏆</div>' +
-      '<div style="font-size:13px;font-weight:700;color:rgba(0,130,95,0.85);">Eccellenza raggiunta</div>' +
-      '<div style="font-size:11px;color:rgba(26,26,46,0.45);margin-top:4px;">Questa dimensione è al massimo livello.</div>' +
+      '<div style="font-size:13px;font-weight:700;color:#34D399;">Eccellenza raggiunta</div>' +
+      '<div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:4px;">Questa dimensione è al massimo livello.</div>' +
     '</div>';
   }
 
@@ -13672,9 +13683,9 @@ function _buildModuliPanelContent(dimId) {
   }
   function dotHtml(n) {
     var st  = dotState(n);
-    var bdr = st==='done'?'rgba(0,130,95,0.85)':st==='current'?'#FF6B2B':st==='target'?'rgba(61,90,254,0.55)':'rgba(0,0,0,0.10)';
-    var bg  = st==='done'?'rgba(0,130,95,0.12)':st==='current'?'rgba(255,107,43,0.10)':st==='target'?'rgba(61,90,254,0.07)':'transparent';
-    var col = st==='done'?'rgba(0,130,95,0.85)':st==='current'?'#FF6B2B':st==='target'?'#3D5AFE':'rgba(26,26,46,0.2)';
+    var bdr = st==='done'?'#34D399':st==='current'?'#FF6B2B':st==='target'?'rgba(123,97,255,0.55)':'rgba(255,255,255,0.12)';
+    var bg  = st==='done'?'rgba(52,211,153,0.12)':st==='current'?'rgba(255,107,43,0.12)':st==='target'?'rgba(123,97,255,0.08)':'transparent';
+    var col = st==='done'?'#34D399':st==='current'?'#FF6B2B':st==='target'?'#A78BFA':'rgba(255,255,255,0.2)';
     var bs  = st==='target'?'dashed':'solid';
     return '<div style="text-align:center;flex-shrink:0;">' +
       '<div style="width:30px;height:30px;border-radius:50%;border:2px '+bs+' '+bdr+';background:'+bg+';display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:'+col+';margin:0 auto;">' + (st==='done'?'✓':String(n)) + '</div>' +
@@ -13683,12 +13694,12 @@ function _buildModuliPanelContent(dimId) {
   }
   function connHtml(n) {
     return '<div style="flex:1;display:flex;align-items:center;padding-bottom:14px;">' +
-      '<div style="height:2px;width:100%;background:rgba(0,0,0,0.06);">' +
-        (n < stepCurrent ? '<div style="height:2px;width:100%;background:rgba(0,130,95,0.4);border-radius:1px;"></div>' : '') +
+      '<div style="height:2px;width:100%;background:rgba(255,255,255,0.06);">' +
+        (n < stepCurrent ? '<div style="height:2px;width:100%;background:rgba(52,211,153,0.4);border-radius:1px;"></div>' : '') +
       '</div></div>';
   }
   var trackHtml =
-    '<div style="font-size:10px;font-weight:700;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:12px;">Track step</div>' +
+    '<div style="font-size:10px;font-weight:700;color:#7B61FF;text-transform:uppercase;letter-spacing:0.7px;margin-bottom:12px;">Track step</div>' +
     '<div style="display:flex;align-items:flex-start;gap:0;margin-bottom:18px;padding:0 4px;">' +
       dotHtml(1)+connHtml(1)+dotHtml(2)+connHtml(2)+dotHtml(3)+connHtml(3)+dotHtml(4)+connHtml(4)+dotHtml(5) +
     '</div>';
@@ -13739,13 +13750,13 @@ function _buildModuliPanelContent(dimId) {
       : 0);
     totalCostoMensile += mc;
     var nomeEsc = m.nome.replace(/'/g, "\\'");
-    return '<div id="pmi-mod-row-' + key + '" style="display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.05);">' +
-      '<input type="checkbox" id="pmi-chk-' + key + '"' + (isDone?' checked':'') + ' onchange="toggleModuloCompletatoPMI(\'' + key + '\',\'' + dimId + '\',' + stepNext + ',\'' + nomeEsc + '\',\'' + dimLabel + '\',' + moduli.length + ')" style="margin-top:3px;cursor:pointer;accent-color:#3D5AFE;width:14px;height:14px;flex-shrink:0;">' +
+    return '<div id="pmi-mod-row-' + key + '" style="display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">' +
+      '<input type="checkbox" id="pmi-chk-' + key + '"' + (isDone?' checked':'') + ' onchange="toggleModuloCompletatoPMI(\'' + key + '\',\'' + dimId + '\',' + stepNext + ',\'' + nomeEsc + '\',\'' + dimLabel + '\',' + moduli.length + ')" style="margin-top:3px;cursor:pointer;accent-color:#7B61FF;width:14px;height:14px;flex-shrink:0;">' +
       '<div style="flex:1;min-width:0;">' +
-        '<div style="font-size:12px;font-weight:500;color:#1a1a2e;line-height:1.4;">' + m.nome + '</div>' +
-        (desc ? '<div style="font-size:11px;color:rgba(26,26,46,0.55);margin-top:2px;line-height:1.4;">' + desc + '</div>' : '') +
+        '<div style="font-size:12px;font-weight:500;color:rgba(255,255,255,0.85);line-height:1.4;">' + m.nome + '</div>' +
+        (desc ? '<div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px;line-height:1.4;">' + desc + '</div>' : '') +
       '</div>' +
-      '<span class="pmi-mod-badge" style="font-size:9px;font-weight:600;color:' + (isDone?'rgba(0,130,95,0.85)':'rgba(26,26,46,0.4)') + ';background:' + (isDone?'rgba(0,130,95,0.08)':'rgba(0,0,0,0.05)') + ';padding:2px 7px;border-radius:4px;white-space:nowrap;flex-shrink:0;">' + (isDone?'Completato':'Da fare') + '</span>' +
+      '<span class="pmi-mod-badge" style="font-size:9px;font-weight:600;color:' + (isDone?'#34D399':'rgba(255,255,255,0.3)') + ';background:' + (isDone?'rgba(52,211,153,0.1)':'rgba(255,255,255,0.04)') + ';padding:2px 7px;border-radius:4px;white-space:nowrap;flex-shrink:0;">' + (isDone?'Completato':'Da fare') + '</span>' +
     '</div>';
   }).join('');
 
@@ -13758,18 +13769,18 @@ function _buildModuliPanelContent(dimId) {
   var costoFmt       = totalCostoMensile > 0 ? '€' + totalCostoMensile.toLocaleString('it-IT') + '/mese' : '—';
   var roi            = totalCostoMensile > 0 ? Math.round(impattoMensile * 12 / totalCostoMensile) + 'x/anno' : '—';
   function metricBox(lbl, val) {
-    return '<div style="flex:1;text-align:center;padding:10px 6px;background:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.8);border-radius:10px;">' +
-      '<div style="font-size:9px;color:rgba(26,26,46,0.4);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">' + lbl + '</div>' +
-      '<div style="font-size:13px;font-weight:700;color:#1a1a2e;">' + val + '</div>' +
+    return '<div style="flex:1;text-align:center;padding:10px 6px;background:rgba(123,97,255,0.06);border:1px solid rgba(123,97,255,0.15);border-radius:10px;">' +
+      '<div style="font-size:9px;color:#7B61FF;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">' + lbl + '</div>' +
+      '<div style="font-size:13px;font-weight:700;color:white;">' + val + '</div>' +
     '</div>';
   }
 
   var doneCnt = pmiAzioni.filter(function(a) { return a._key && a._key.startsWith('pmi_' + dimId + '_' + stepNext + '_'); }).length;
 
-  return '<div style="border-top:1px solid rgba(0,0,0,0.06);margin-top:14px;padding-top:14px;">' +
+  return '<div style="border-top:1px solid rgba(255,255,255,0.06);margin-top:14px;padding-top:14px;">' +
     trackHtml +
-    '<div style="font-size:12px;font-weight:600;color:#1a1a2e;margin-bottom:2px;">Per passare da step ' + stepCurrent + ' a step ' + stepNext + '</div>' +
-    '<div id="pmi-mod-count-' + dimId + '" style="font-size:11px;color:rgba(26,26,46,0.45);margin-bottom:12px;">' + doneCnt + '/' + moduli.length + ' moduli completati</div>' +
+    '<div style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.85);margin-bottom:2px;">Per passare da step ' + stepCurrent + ' a step ' + stepNext + '</div>' +
+    '<div id="pmi-mod-count-' + dimId + '" style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:12px;">' + doneCnt + '/' + moduli.length + ' moduli completati</div>' +
     moduliHtml +
     '<div style="display:flex;gap:8px;margin-top:16px;">' +
       metricBox('Impatto/mese', '+€' + impattoMensile.toLocaleString('it-IT')) +
@@ -13806,8 +13817,8 @@ async function toggleModuloCompletatoPMI(key, dimId, stepNum, moduloNome, dimLab
     var badge = row.querySelector('.pmi-mod-badge');
     if (badge) {
       badge.textContent      = completed ? 'Completato' : 'Da fare';
-      badge.style.color      = completed ? 'rgba(0,130,95,0.85)' : 'rgba(26,26,46,0.4)';
-      badge.style.background = completed ? 'rgba(0,130,95,0.08)' : 'rgba(0,0,0,0.05)';
+      badge.style.color      = completed ? '#34D399' : 'rgba(255,255,255,0.3)';
+      badge.style.background = completed ? 'rgba(52,211,153,0.1)' : 'rgba(255,255,255,0.04)';
     }
   }
 
@@ -13866,18 +13877,21 @@ function renderPMITrend(container) {
   var giorniDaDiagnosi = Math.floor((oggi - dataInizio) / (1000 * 60 * 60 * 24));
   var giorniRimanenti  = Math.max(0, 90 - giorniDaDiagnosi);
 
-  // ── CASO: nessun dato ──────────────────────────────────────────────────────
+  _levaSetDSBg(container);
+
   if (!points.length) {
     container.innerHTML =
-      '<div style="max-width:580px;margin:0 auto;padding:40px 28px">' +
-        '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:4px">Il tuo andamento</h1>' +
-        '<p style="font-size:13px;color:rgba(26,26,46,0.45);margin-bottom:28px">L\'evoluzione del tuo score nel tempo.</p>' +
-        '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:16px;padding:36px 28px;text-align:center">' +
+      _DS_CANVAS +
+      '<div style="position:relative;z-index:1;max-width:580px;margin:0 auto;padding:40px 28px">' +
+        '<h1 style="font-size:28px;font-weight:700;color:white;margin-bottom:4px">Il tuo andamento</h1>' +
+        '<p style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:28px">L\'evoluzione del tuo score nel tempo.</p>' +
+        '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.15);border-radius:16px;padding:36px 28px;text-align:center">' +
           '<div style="font-size:32px;margin-bottom:12px">📊</div>' +
-          '<div style="font-size:14px;font-weight:600;color:#1a1a2e;margin-bottom:6px">Nessun dato disponibile</div>' +
-          '<div style="font-size:13px;color:rgba(26,26,46,0.45);line-height:1.6">Completa la diagnosi per iniziare a tracciare i tuoi progressi.</div>' +
+          '<div style="font-size:14px;font-weight:600;color:white;margin-bottom:6px">Nessun dato disponibile</div>' +
+          '<div style="font-size:13px;color:rgba(255,255,255,0.4);line-height:1.6">Completa la diagnosi per iniziare a tracciare i tuoi progressi.</div>' +
         '</div>' +
       '</div>';
+    _levaStartWaves('leva-waves-view');
     return;
   }
 
@@ -13895,31 +13909,31 @@ function renderPMITrend(container) {
     var scoreNew  = scores[scores.length - 1];
     var delta     = scoreNew - scoreOld;
     var deltaStr  = (delta >= 0 ? '+' : '') + delta;
-    var deltaCol  = delta > 0 ? 'rgba(0,130,95,0.85)' : delta < 0 ? '#E53935' : 'rgba(26,26,46,0.45)';
+    var deltaCol  = delta > 0 ? '#34D399' : delta < 0 ? '#F43F5E' : 'rgba(255,255,255,0.4)';
     var mesiRaw   = (oggi - dataInizio) / (1000 * 60 * 60 * 24 * 30);
     var mesiStr   = mesiRaw < 1 ? 'Meno di 1 mese' : Math.round(mesiRaw) + (Math.round(mesiRaw) === 1 ? ' mese' : ' mesi');
     progressiHtml =
-      '<div style="font-size:13px;color:rgba(26,26,46,0.7);line-height:1.7">' +
-        mesiStr + ' fa eri a <strong>' + scoreOld + '/100</strong>. ' +
-        'Oggi sei a <strong>' + scoreNew + '/100</strong>. ' +
+      '<div style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.7">' +
+        mesiStr + ' fa eri a <strong style="color:white">' + scoreOld + '/100</strong>. ' +
+        'Oggi sei a <strong style="color:white">' + scoreNew + '/100</strong>. ' +
         '<strong style="color:' + deltaCol + '">' + deltaStr + ' punti</strong> ' +
-        'grazie a <strong>' + totalAzioni + '</strong> ' + (totalAzioni === 1 ? 'azione completata.' : 'azioni completate.') +
+        'grazie a <strong style="color:white">' + totalAzioni + '</strong> ' + (totalAzioni === 1 ? 'azione completata.' : 'azioni completate.') +
       '</div>';
   } else {
     progressiHtml =
-      '<div style="font-size:13px;color:rgba(26,26,46,0.7);line-height:1.7">' +
-        'Il tuo score attuale è <strong>' + scoreNow + '/100</strong>. ' +
-        'Tra <strong>' + giorniRimanenti + '</strong> ' + (giorniRimanenti === 1 ? 'giorno' : 'giorni') +
+      '<div style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.7">' +
+        'Il tuo score attuale è <strong style="color:white">' + scoreNow + '/100</strong>. ' +
+        'Tra <strong style="color:white">' + giorniRimanenti + '</strong> ' + (giorniRimanenti === 1 ? 'giorno' : 'giorni') +
         ' potrai vedere i tuoi progressi con la ri-diagnosi.' +
       '</div>';
   }
 
   // ── MESSAGGIO SOTTO GRAFICO (solo per punto singolo) ──────────────────────
   var singleMsgHtml = isSinglePoint
-    ? '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:14px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px">' +
+    ? '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.15);border-radius:14px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px">' +
         '<div style="font-size:22px;flex-shrink:0">📅</div>' +
-        '<div style="font-size:13px;color:rgba(26,26,46,0.65);line-height:1.6">' +
-          'Completa la ri-diagnosi tra <strong>' + giorniRimanenti + '</strong> ' +
+        '<div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.6">' +
+          'Completa la ri-diagnosi tra <strong style="color:white">' + giorniRimanenti + '</strong> ' +
           (giorniRimanenti === 1 ? 'giorno' : 'giorni') + ' per vedere il tuo trend.' +
         '</div>' +
       '</div>'
@@ -13928,12 +13942,12 @@ function renderPMITrend(container) {
   var canvasId = 'pmi-trend-chart';
 
   container.innerHTML =
-    '<div style="max-width:580px;margin:0 auto;padding:40px 28px">' +
-      '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:4px">Il tuo andamento</h1>' +
-      '<p style="font-size:13px;color:rgba(26,26,46,0.45);margin-bottom:24px">L\'evoluzione del tuo score nel tempo.</p>' +
+    _DS_CANVAS +
+    '<div style="position:relative;z-index:1;max-width:580px;margin:0 auto;padding:40px 28px">' +
+      '<h1 style="font-size:28px;font-weight:700;color:white;margin-bottom:4px">Il tuo andamento</h1>' +
+      '<p style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:24px">L\'evoluzione del tuo score nel tempo.</p>' +
 
-      // Grafico
-      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:16px;padding:20px 20px 16px;margin-bottom:16px">' +
+      '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.15);border-radius:16px;padding:20px 20px 16px;margin-bottom:16px">' +
         '<div style="position:relative;height:200px">' +
           '<canvas id="' + canvasId + '"></canvas>' +
         '</div>' +
@@ -13941,8 +13955,7 @@ function renderPMITrend(container) {
 
       singleMsgHtml +
 
-      // Card progressi
-      '<div style="background:rgba(255,255,255,0.55);border:1.5px solid rgba(0,130,95,0.15);border-radius:14px;padding:14px 16px">' +
+      '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(52,211,153,0.2);border-radius:14px;padding:14px 16px">' +
         progressiHtml +
       '</div>' +
     '</div>';
@@ -13962,17 +13975,17 @@ function renderPMITrend(container) {
         labels: labels,
         datasets: [{
           data: scores,
-          borderColor: '#3D5AFE',
+          borderColor: '#7B61FF',
           borderWidth: 2,
-          backgroundColor: 'rgba(61,90,254,0.08)',
+          backgroundColor: 'rgba(123,97,255,0.1)',
           fill: true,
           tension: 0.35,
           pointRadius: 5,
-          pointBackgroundColor: '#ffffff',
-          pointBorderColor: '#3D5AFE',
+          pointBackgroundColor: '#06080F',
+          pointBorderColor: '#7B61FF',
           pointBorderWidth: 2,
           pointHoverRadius: 7,
-          pointHoverBackgroundColor: '#3D5AFE',
+          pointHoverBackgroundColor: '#7B61FF',
           pointHoverBorderColor: '#ffffff',
         }]
       },
@@ -13982,11 +13995,11 @@ function renderPMITrend(container) {
         plugins: {
           legend: { display: false },
           tooltip: {
-            backgroundColor: 'rgba(255,255,255,0.9)',
-            borderColor: 'rgba(0,0,0,0.08)',
+            backgroundColor: 'rgba(15,18,25,0.95)',
+            borderColor: 'rgba(123,97,255,0.3)',
             borderWidth: 1,
-            titleColor: '#1a1a2e',
-            bodyColor: 'rgba(26,26,46,0.55)',
+            titleColor: 'white',
+            bodyColor: 'rgba(255,255,255,0.55)',
             padding: 10,
             callbacks: {
               label: function(ctx) { return ' Score: ' + ctx.raw + '/100'; }
@@ -13995,20 +14008,21 @@ function renderPMITrend(container) {
         },
         scales: {
           x: {
-            grid: { color: 'rgba(0,0,0,0.06)', lineWidth: 0.5 },
+            grid: { color: 'rgba(255,255,255,0.05)', lineWidth: 0.5 },
             border: { display: false },
-            ticks: { color: 'rgba(26,26,46,0.45)', font: { size: 11 } }
+            ticks: { color: 'rgba(255,255,255,0.35)', font: { size: 11 } }
           },
           y: {
             min: 0,
             max: 100,
-            grid: { color: 'rgba(0,0,0,0.06)', lineWidth: 0.5 },
+            grid: { color: 'rgba(255,255,255,0.05)', lineWidth: 0.5 },
             border: { display: false },
-            ticks: { color: 'rgba(26,26,46,0.45)', font: { size: 11 }, stepSize: 25 }
+            ticks: { color: 'rgba(255,255,255,0.35)', font: { size: 11 }, stepSize: 25 }
           }
         }
       }
     });
+    _levaStartWaves('leva-waves-view');
   }, 50);
 }
 
@@ -14043,26 +14057,28 @@ function renderPMIProfilo(container) {
   var microVal   = _settoreRaw !== settoreVal ? _settoreRaw : (up.microsector || '');
 
   // ── Deep Space styles ────────────────────────────────────────────────────
-  var INP     = 'width:100%;box-sizing:border-box;background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);color:white;border-radius:10px;padding:12px 16px;font-size:15px;outline:none;font-family:inherit;';
-  var INP_DIS = 'width:100%;box-sizing:border-box;background:rgba(255,255,255,0.02);border:0.5px solid rgba(255,255,255,0.04);color:rgba(255,255,255,0.25);border-radius:10px;padding:12px 16px;font-size:15px;outline:none;cursor:not-allowed;font-family:inherit;';
-  var LABEL   = 'font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:6px;display:block;';
-  var CARD    = 'background:rgba(255,255,255,0.025);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:24px;margin-bottom:16px;';
-  var SECT    = 'font-size:11px;font-weight:600;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px;';
+  var INP     = 'width:100%;box-sizing:border-box;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:white;border-radius:10px;padding:12px 16px;font-size:15px;outline:none;font-family:inherit;transition:border-color 0.15s;';
+  var INP_DIS = 'width:100%;box-sizing:border-box;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);color:rgba(255,255,255,0.4);border-radius:10px;padding:12px 16px;font-size:15px;outline:none;cursor:not-allowed;font-family:inherit;opacity:0.4;';
+  var LABEL   = 'font-size:11px;font-weight:600;color:#7B61FF;margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;';
+  var CARD    = 'background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.15);border-radius:16px;padding:24px;margin-bottom:16px;';
+  var SECT    = 'font-size:11px;font-weight:600;color:#7B61FF;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px;';
 
-  var settoreOpts = '<option value="">— Settore —</option>' +
+  var _OPT = ' style="background:#0a0c14;color:rgba(255,255,255,0.7);"';
+  var settoreOpts = '<option value=""' + _OPT + '>— Settore —</option>' +
     PMI_MACRO_SETTORI.map(function(s) {
-      return '<option value="' + s.id + '"' + (settoreVal === s.id ? ' selected' : '') + '>' + s.icon + ' ' + s.label + '</option>';
+      return '<option value="' + s.id + '"' + (settoreVal === s.id ? ' selected' : '') + _OPT + '>' + s.icon + ' ' + s.label + '</option>';
     }).join('');
 
   var microOpts  = _buildMicroOpts(settoreVal, microVal);
-  var fasciaOpts = '<option value="">— Fascia —</option>' +
+  var fasciaOpts = '<option value=""' + _OPT + '>— Fascia —</option>' +
     PMI_FASCE_FATTURATO.map(function(f) {
-      return '<option value="' + f.id + '"' + (fasciaVal === f.id ? ' selected' : '') + '>' + f.label + '</option>';
+      return '<option value="' + f.id + '"' + (fasciaVal === f.id ? ' selected' : '') + _OPT + '>' + f.label + '</option>';
     }).join('');
 
   container.innerHTML =
-    '<div style="max-width:560px;margin:0 auto;padding:32px 28px;">' +
-      '<h1 style="font-size:24px;font-weight:500;color:white;margin-bottom:28px;">Il tuo profilo</h1>' +
+    _DS_CANVAS +
+    '<div style="position:relative;z-index:1;max-width:560px;margin:0 auto;padding:32px 28px;">' +
+      '<h1 style="font-size:28px;font-weight:700;color:white;margin-bottom:28px;">Il tuo profilo</h1>' +
 
       // ── Card identità (editabile) ───────────────────────────────────────
       '<div style="' + CARD + '">' +
@@ -14107,6 +14123,16 @@ function renderPMIProfilo(container) {
       // ── Logout ───────────────────────────────────────────────────────────
       '<button onclick="logout()" style="width:100%;padding:12px 16px;background:rgba(244,63,94,0.06);border:0.5px solid rgba(244,63,94,0.2);color:#F43F5E;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;">Esci</button>' +
     '</div>';
+
+  // Focus accent on editable inputs
+  ['prf-nome','prf-cognome','prf-nome-azienda'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('focus', function() { el.style.borderColor = '#7B61FF'; });
+    el.addEventListener('blur',  function() { el.style.borderColor = 'rgba(255,255,255,0.1)'; });
+  });
+
+  _levaStartWaves('leva-waves-view');
 }
 
 async function salvaProfiloPMI() {
@@ -14150,11 +14176,13 @@ function renderPMIPiano(container) {
   var p = window._pmiProspect || {};
   var pianoCorrente = p.piano || 'self';
 
-  var CHECK = '<div style="width:20px;height:20px;border-radius:50%;background:#00825F;display:inline-flex;align-items:center;justify-content:center;">' +
-    '<svg width="11" height="8" viewBox="0 0 11 8" fill="none"><path d="M1 4L4 7L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+  _levaSetDSBg(container);
+
+  var CHECK = '<div style="width:20px;height:20px;border-radius:50%;background:rgba(52,211,153,0.15);display:inline-flex;align-items:center;justify-content:center;">' +
+    '<svg width="11" height="8" viewBox="0 0 11 8" fill="none"><path d="M1 4L4 7L10 1" stroke="#34D399" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
     '</div>';
-  var DASH = '<div style="width:20px;height:20px;border-radius:50%;background:rgba(26,26,46,0.06);display:inline-flex;align-items:center;justify-content:center;">' +
-    '<div style="width:8px;height:1.5px;background:rgba(26,26,46,0.25);border-radius:2px;"></div>' +
+  var DASH = '<div style="width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.04);display:inline-flex;align-items:center;justify-content:center;">' +
+    '<div style="width:8px;height:1.5px;background:rgba(255,255,255,0.15);border-radius:2px;"></div>' +
     '</div>';
 
   // [label, self, guided_base, guided_pro]
@@ -14176,13 +14204,13 @@ function renderPMIPiano(container) {
   function mkBtn(id, labelAttivo, labelDefault, bg, color, border) {
     var isCurrent = pianoCorrente === id;
     var label  = isCurrent ? labelAttivo : labelDefault;
-    var bBg    = isCurrent ? 'rgba(26,26,46,0.07)' : bg;
-    var bColor = isCurrent ? 'rgba(26,26,46,0.35)' : color;
-    var bBord  = isCurrent ? '1.5px solid rgba(26,26,46,0.10)' : border;
+    var bBg    = isCurrent ? 'rgba(255,255,255,0.04)' : bg;
+    var bColor = isCurrent ? 'rgba(255,255,255,0.25)' : color;
+    var bBord  = isCurrent ? '1px solid rgba(255,255,255,0.08)' : border;
     var oc     = isCurrent ? '' : ' onclick="aggiornaPiano(\'' + id + '\')"';
     return '<button' + oc + (isCurrent ? ' disabled' : '') +
       ' style="width:80%;padding:10px 0;background:' + bBg + ';color:' + bColor +
-      ';border:' + bBord + ';border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;' +
+      ';border:' + bBord + ';border-radius:10px;' +
       'font-size:13px;font-weight:500;cursor:' + (isCurrent ? 'default' : 'pointer') +
       ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + label + '</button>';
   }
@@ -14194,35 +14222,35 @@ function renderPMIPiano(container) {
 
   function currentLabel(id) {
     if (pianoCorrente !== id) return '';
-    var c = id === 'guided_pro' ? '#FF6B2B' : '#3D5AFE';
+    var c = id === 'guided_pro' ? '#FF6B2B' : '#7B61FF';
     return '<div style="font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:' + c + ';margin-bottom:4px;">Il tuo piano</div>';
   }
 
   var headerSelf =
-    '<div style="height:90px;background:rgba(255,255,255,0.55);border-radius:14px 14px 0 0;padding:16px;text-align:center;display:flex;flex-direction:column;justify-content:center;">' +
+    '<div style="height:90px;background:rgba(255,255,255,0.04);border-radius:14px 14px 0 0;border-top:3px solid rgba(255,255,255,0.15);padding:16px;text-align:center;display:flex;flex-direction:column;justify-content:center;">' +
       currentLabel('self') +
-      '<div style="font-size:18px;font-weight:600;color:#1a1a2e;">Self</div>' +
-      '<div style="font-size:13px;color:rgba(26,26,46,0.45);margin-top:4px;">€199/mese</div>' +
+      '<div style="font-size:18px;font-weight:600;color:white;">Self</div>' +
+      '<div style="font-size:13px;color:rgba(255,255,255,0.4);margin-top:4px;">€199/mese</div>' +
     '</div>';
 
   var headerBase =
-    '<div style="position:relative;height:90px;background:rgba(61,90,254,0.08);border-radius:14px 14px 0 0;border-top:3px solid #3D5AFE;padding:16px;text-align:center;display:flex;flex-direction:column;justify-content:center;">' +
-      (baseIsCurrent ? currentLabel('guided_base') : '<span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#3D5AFE;color:white;font-size:10px;font-weight:600;padding:3px 12px;border-radius:10px;white-space:nowrap;">Consigliato</span>') +
-      '<div style="font-size:18px;font-weight:600;color:#3D5AFE;">Guided Base</div>' +
-      '<div style="font-size:13px;color:rgba(61,90,254,0.5);margin-top:4px;">€399/mese</div>' +
+    '<div style="position:relative;height:90px;background:rgba(123,97,255,0.08);border-radius:14px 14px 0 0;border-top:3px solid #7B61FF;padding:16px;text-align:center;display:flex;flex-direction:column;justify-content:center;">' +
+      (baseIsCurrent ? currentLabel('guided_base') : '<span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#7B61FF;color:white;font-size:10px;font-weight:600;padding:3px 12px;border-radius:10px;white-space:nowrap;">Consigliato</span>') +
+      '<div style="font-size:18px;font-weight:600;color:#A78BFA;">Guided Base</div>' +
+      '<div style="font-size:13px;color:rgba(167,139,250,0.6);margin-top:4px;">€399/mese</div>' +
     '</div>';
 
   var headerPro =
-    '<div style="height:90px;background:rgba(255,107,43,0.06);border-radius:14px 14px 0 0;border-top:3px solid #FF6B2B;padding:16px;text-align:center;display:flex;flex-direction:column;justify-content:center;">' +
+    '<div style="height:90px;background:rgba(255,107,43,0.08);border-radius:14px 14px 0 0;border-top:3px solid #FF6B2B;padding:16px;text-align:center;display:flex;flex-direction:column;justify-content:center;">' +
       currentLabel('guided_pro') +
       '<div style="font-size:18px;font-weight:600;color:#FF6B2B;">Guided Pro</div>' +
       '<div style="font-size:13px;color:rgba(255,107,43,0.5);margin-top:4px;">€599/mese</div>' +
     '</div>';
 
   var rowsHtml = features.map(function(row, i) {
-    var alt = i % 2 === 0 ? 'rgba(0,0,0,0.025)' : 'transparent';
+    var alt = i % 2 === 0 ? 'rgba(255,255,255,0.02)' : 'transparent';
     return '<tr style="background:' + alt + ';">' +
-      '<td style="padding:10px 12px 10px 20px;font-size:13px;color:#1a1a2e;line-height:1.35;min-width:200px;">' + row[0] + '</td>' +
+      '<td style="padding:10px 12px 10px 20px;font-size:13px;color:rgba(255,255,255,0.7);line-height:1.35;min-width:200px;">' + row[0] + '</td>' +
       '<td style="text-align:center;padding:10px 8px;width:20%;">' + row[1] + '</td>' +
       '<td style="text-align:center;padding:10px 8px;width:20%;">' + row[2] + '</td>' +
       '<td style="text-align:center;padding:10px 8px;width:20%;">' + row[3] + '</td>' +
@@ -14236,7 +14264,7 @@ function renderPMIPiano(container) {
         mkBtn('self', 'Piano attuale', 'Attiva Self', 'transparent', '#1a1a2e', '1.5px solid rgba(26,26,46,0.15)') +
       '</td>' +
       '<td style="text-align:center;padding:16px 8px 20px;">' +
-        mkBtn('guided_base', 'Piano attuale', 'Attiva Base', '#3D5AFE', 'white', 'none') +
+        mkBtn('guided_base', 'Piano attuale', 'Attiva Base', '#7B61FF', 'white', 'none') +
       '</td>' +
       '<td style="text-align:center;padding:16px 8px 20px;">' +
         mkBtn('guided_pro', 'Piano attuale', 'Attiva Pro', '#FF6B2B', 'white', 'none') +
@@ -14255,9 +14283,10 @@ function renderPMIPiano(container) {
     '</table>';
 
   container.innerHTML =
-    '<div style="max-width:820px;margin:0 auto;padding:40px 28px">' +
-      '<h1 style="font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:6px">Il tuo piano</h1>' +
-      '<p style="font-size:13px;color:rgba(26,26,46,0.5);margin-bottom:28px">Scegli il livello di supporto per la tua azienda.</p>' +
+    _DS_CANVAS +
+    '<div style="position:relative;z-index:1;max-width:820px;margin:0 auto;padding:40px 28px">' +
+      '<h1 style="font-size:28px;font-weight:700;color:white;margin-bottom:6px">Il tuo piano</h1>' +
+      '<p style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:28px">Scegli il livello di supporto per la tua azienda.</p>' +
 
       // Header cards row
       '<div style="display:grid;grid-template-columns:40% 20% 20% 20%;margin-bottom:0;">' +
@@ -14267,20 +14296,21 @@ function renderPMIPiano(container) {
         '<div style="padding:0 0 0 4px;">' + headerPro + '</div>' +
       '</div>' +
 
-      // Table body
-      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:0 0 14px 14px;overflow:hidden;">' +
+      '<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(123,97,255,0.12);border-radius:0 0 14px 14px;overflow:hidden;">' +
         tableHtml +
       '</div>' +
 
-      '<p style="font-size:11px;color:rgba(26,26,46,0.35);text-align:center;margin-top:10px;">Ogni piano include il precedente. Puoi cambiare in qualsiasi momento.</p>' +
-      '<div style="background:rgba(255,255,255,0.55);border:1px solid rgba(0,0,0,0.08);border-radius:14px;padding:16px 20px;margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:16px;">' +
+      '<p style="font-size:11px;color:rgba(255,255,255,0.2);text-align:center;margin-top:10px;">Ogni piano include il precedente. Puoi cambiare in qualsiasi momento.</p>' +
+      '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,107,43,0.2);border-radius:14px;padding:16px 20px;margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:16px;">' +
         '<div>' +
-          '<div style="font-size:15px;font-weight:700;color:#1a1a2e;margin-bottom:4px;">Non sei ancora sicuro?</div>' +
-          '<div style="font-size:13px;color:rgba(26,26,46,0.45);">Parla con un esperto. 45 minuti, zero impegno, zero sorprese.</div>' +
+          '<div style="font-size:15px;font-weight:700;color:white;margin-bottom:4px;">Non sei ancora sicuro?</div>' +
+          '<div style="font-size:13px;color:rgba(255,255,255,0.4);">Parla con un esperto. 45 minuti, zero impegno, zero sorprese.</div>' +
         '</div>' +
-        '<button onclick="prenotaCallSingola()" style="flex-shrink:0;padding:10px 24px;background:#3D5AFE;color:white;border:none;border-radius:10px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;">Prenota una call — €120</button>' +
+        '<button onclick="prenotaCallSingola()" style="flex-shrink:0;padding:10px 24px;background:#FF6B2B;color:white;border:none;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;">Prenota una call — €120</button>' +
       '</div>' +
     '</div>';
+
+  _levaStartWaves('leva-waves-view');
 }
 
 async function aggiornaPiano(nuovoPiano) {
