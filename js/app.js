@@ -13449,6 +13449,12 @@ function _showLevaOnboarding() {
     }
   ];
 
+  function _closeTour() {
+    localStorage.setItem('leva_onboarding_done', 'true');
+    var existing = document.getElementById('leva-onboarding-overlay');
+    if (existing) existing.remove();
+  }
+
   function _renderStep(idx) {
     var existing = document.getElementById('leva-onboarding-overlay');
     if (existing) existing.remove();
@@ -13466,13 +13472,24 @@ function _showLevaOnboarding() {
     overlay.id = 'leva-onboarding-overlay';
     overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:9999;display:flex;align-items:center;justify-content:center;';
     overlay.innerHTML =
-      '<div style="background:#0F1219;border:0.5px solid rgba(123,97,255,0.2);border-radius:16px;padding:28px;max-width:380px;width:90%;animation:leva-slideUp 0.3s ease;">' +
+      '<div id="leva-ob-box" style="position:relative;background:#0F1219;border:0.5px solid rgba(123,97,255,0.2);border-radius:16px;padding:28px;max-width:380px;width:90%;animation:leva-slideUp 0.3s ease;">' +
+        '<span id="leva-ob-close" style="position:absolute;top:8px;right:12px;font-size:18px;color:rgba(255,255,255,0.5);cursor:pointer;line-height:1;" onmouseenter="this.style.color=\'white\'" onmouseleave="this.style.color=\'rgba(255,255,255,0.5)\'">&#x2715;</span>' +
         '<div style="font-size:20px;font-weight:500;color:white;margin-bottom:12px;">' + s.title + '</div>' +
         '<div style="font-size:15px;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:24px;">' + s.text + '</div>' +
         '<button id="leva-ob-btn" style="background:#7B61FF;color:white;border:none;padding:12px 24px;border-radius:10px;font-size:15px;font-weight:500;cursor:pointer;width:100%;">' + s.btn + '</button>' +
         '<div style="display:flex;justify-content:center;gap:8px;margin-top:16px;">' + dots + '</div>' +
       '</div>';
     document.body.appendChild(overlay);
+
+    document.getElementById('leva-ob-close').onclick = function() {
+      _closeTour();
+    };
+
+    overlay.addEventListener('click', function(e) {
+      if (!document.getElementById('leva-ob-box').contains(e.target)) {
+        _closeTour();
+      }
+    });
 
     document.getElementById('leva-ob-btn').onclick = function() {
       if (s.isFinal) localStorage.setItem('leva_onboarding_done', 'true');
