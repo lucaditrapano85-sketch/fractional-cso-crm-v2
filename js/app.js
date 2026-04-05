@@ -14405,8 +14405,9 @@ function _pianoCell(colId, pianoAttuale) {
     return '<span style="color:#7B61FF;font-weight:700;font-size:14px">Il tuo piano</span>';
   }
 
-  const btnColor = colId === 'guided_pro' ? '#FF6B2B' : '#7B61FF';
-  const btnLabel = 'Attiva ' + labelMap[colId];
+  const isUpgrade = colRank > attualeRank;
+  const btnColor  = colId === 'guided_pro' ? '#FF6B2B' : '#7B61FF';
+  const btnLabel  = isUpgrade ? 'Attiva ' + labelMap[colId] : 'Torna a ' + labelMap[colId];
 
   return `<button onclick="_attivaPiano('${colId}')" style="background:${btnColor};color:white;border:none;padding:10px 24px;border-radius:12px;font-weight:700;font-size:13px;cursor:pointer;transition:filter 0.2s;width:100%" onmouseover="this.style.filter='brightness(1.2)'" onmouseout="this.style.filter='none'">${btnLabel}</button>`;
 }
