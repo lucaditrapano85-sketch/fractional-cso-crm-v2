@@ -1260,27 +1260,27 @@ async function renderDashboard() {
   } catch(e) {}
 
   var fmtEur = function(v){ return '\u20AC' + v.toLocaleString('it-IT'); };
-  var sectionLabel = 'font-size:13px;color:rgba(26,26,46,0.35);text-transform:uppercase;letter-spacing:1px;font-weight:600;margin:24px 0 10px;font-family:\'Plus Jakarta Sans\',sans-serif;';
-  var kpiGreen = 'border-radius:0 14px 14px 0;border-left:3px solid #00825F;';
+  var sectionLabel = 'class="dash-section-label" style="font-size:14px;font-weight:700;color:white;margin:28px 0 12px;font-family:\'Plus Jakarta Sans\',sans-serif;"';
+  var kpiGreen = 'border-radius:0 16px 16px 0;border-left:3px solid #FF6B2B;';
   var gContainer = document.getElementById('guadagni-dashboard');
   if (gContainer) {
     gContainer.innerHTML =
-      '<div style="' + sectionLabel + '">I miei guadagni</div>' +
+      '<div ' + sectionLabel + '>I miei guadagni</div>' +
       '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;">' +
         '<div class="kpi-card" style="' + kpiGreen + '">' +
           '<div class="kpi-label">Guadagno mensile</div>' +
-          '<div class="kpi-val" style="font-size:28px;color:#00825F;">' + fmtEur(guadagnoMensile) + '</div>' +
+          '<div class="kpi-val" style="font-size:28px;color:#FF6B2B;">' + fmtEur(guadagnoMensile) + '</div>' +
           '<div class="kpi-sub">' + attiviBase.length + ' Base \xd7 \u20AC200 + ' + attiviPro.length + ' Pro \xd7 \u20AC320</div>' +
         '</div>' +
-        '<div class="kpi-card" style="border-radius:0 14px 14px 0;border-left:3px solid rgba(0,130,95,0.6);">' +
+        '<div class="kpi-card" style="border-radius:0 16px 16px 0;border-left:3px solid rgba(255,107,43,0.5);">' +
           '<div class="kpi-label">Guadagno annuo proiettato</div>' +
-          '<div class="kpi-val" style="font-size:28px;color:#00825F;">' + fmtEur(guadagnoAnnuo) + '</div>' +
+          '<div class="kpi-val" style="font-size:28px;color:#FF6B2B;">' + fmtEur(guadagnoAnnuo) + '</div>' +
           '<div class="kpi-sub">mensile \xd7 12</div>' +
         '</div>' +
-        '<div class="kpi-card" style="border-radius:0 14px 14px 0;border-left:3px solid #7B61FF;">' +
+        '<div class="kpi-card" style="border-radius:0 16px 16px 0;border-left:3px solid #7B61FF;">' +
           '<div class="kpi-label">Call questo mese</div>' +
           '<div class="kpi-val" style="font-size:28px;color:#7B61FF;">' + callsQuest + ' call</div>' +
-          '<div class="kpi-sub" style="color:#7B61FF;">' + fmtEur(callsQuest * 90) + ' di consulenza</div>' +
+          '<div class="kpi-sub" style="color:rgba(123,97,255,0.7);">' + fmtEur(callsQuest * 90) + ' di consulenza</div>' +
         '</div>' +
       '</div>';
   }
@@ -1298,7 +1298,7 @@ async function renderDashboard() {
     var giorni = Math.round((oggiMs - new Date(updatedAt)) / 86400000);
     if (giorni >= 14) {
       alerts.push({
-        tipo: 1, colore: '#E53935', urgenza: 1,
+        tipo: 1, colore: '#FF4444', urgenza: 1,
         testo: (p.nome || p.azienda || '—') + ' \u2014 inattivo da ' + giorni + ' giorni',
         dettaglio: 'Ultimo aggiornamento: ' + new Date(updatedAt).toLocaleDateString('it-IT') + '. Rischio churn.',
         btnLabel: 'Programma call',
@@ -1334,7 +1334,7 @@ async function renderDashboard() {
     var score  = pObj ? calcScore(pObj) : '—';
     var piano  = pObj && pObj.piano === 'guided_pro' ? 'Pro' : pObj && pObj.piano === 'guided_base' ? 'Base' : '—';
     alerts.push({
-      tipo: 3, colore: '#3D5AFE', urgenza: 3,
+      tipo: 3, colore: '#7B61FF', urgenza: 3,
       testo: 'Call con ' + pNome + ' \u2014 ' + quando + (ora ? ' alle ' + ora : ''),
       dettaglio: 'Piano: ' + piano + '. Score attuale: ' + score + '/100',
       btnLabel: 'Vedi scheda',
@@ -1347,7 +1347,7 @@ async function renderDashboard() {
   attiviBase.filter(function(p){ return calcScore(p) >= 70; }).forEach(function(p) {
     var score = calcScore(p);
     alerts.push({
-      tipo: 4, colore: '#00825F', urgenza: 4,
+      tipo: 4, colore: '#00C853', urgenza: 4,
       testo: (p.nome || p.azienda || '—') + ' \u2014 score ' + score + '/100 \u2014 pronto per upgrade',
       dettaglio: 'Considera proposta upgrade a Pro per massimizzare il potenziale.',
       btnLabel: 'Vedi trend',
@@ -1363,7 +1363,7 @@ async function renderDashboard() {
     var giorni = Math.round((oggiMs - new Date(ref)) / 86400000);
     if (giorni >= 90) {
       alerts.push({
-        tipo: 5, colore: '#7B61FF', urgenza: 5,
+        tipo: 5, colore: '#9C27B0', urgenza: 5,
         testo: (p.nome || p.azienda || '—') + ' \u2014 ri-diagnosi disponibile',
         dettaglio: 'Attivo dal ' + new Date(ref).toLocaleDateString('it-IT') + '. Sono passati ' + giorni + ' giorni.',
         btnLabel: 'Avvia ri-diagnosi',
@@ -1382,31 +1382,31 @@ async function renderDashboard() {
     var visible = alerts.slice(0, 5);
     var extra   = alerts.length - 5;
     if (visible.length === 0) {
-      alertCardHtml = '<div style="text-align:center;padding:28px;color:rgba(26,26,46,0.35);font-size:14px;background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-radius:12px;">' +
+      alertCardHtml = '<div style="text-align:center;padding:28px;color:rgba(255,255,255,0.4);font-size:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(123,97,255,0.1);border-radius:12px;">' +
         '<div style="font-size:28px;margin-bottom:8px;">✓</div>' +
         'Tutto in ordine! Nessuna azione urgente per oggi.' +
         '</div>';
     } else {
       alertCardHtml = visible.map(function(a) {
-        return '<div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.7);border-left:3px solid ' + a.colore + ';border-radius:0 12px 12px 0;padding:14px 16px;margin-bottom:8px;">' +
+        return '<div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-left:3px solid ' + a.colore + ';border-radius:0 12px 12px 0;padding:14px 16px;margin-bottom:8px;">' +
           '<div style="display:flex;align-items:center;gap:12px;flex:1;min-width:0;">' +
-            '<div style="width:32px;height:32px;border-radius:50%;background:' + a.colore + '1a;display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
+            '<div style="width:32px;height:32px;border-radius:50%;background:' + a.colore + '22;display:flex;align-items:center;justify-content:center;flex-shrink:0;">' +
               '<div style="width:10px;height:10px;border-radius:50%;background:' + a.colore + ';"></div>' +
             '</div>' +
             '<div style="min-width:0;">' +
-              '<div style="font-size:13px;font-weight:600;color:#1a1a2e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + a.testo + '</div>' +
-              '<div style="font-size:12px;color:rgba(26,26,46,0.4);margin-top:2px;">' + a.dettaglio + '</div>' +
+              '<div style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + a.testo + '</div>' +
+              '<div style="font-size:12px;color:rgba(255,255,255,0.35);margin-top:2px;">' + a.dettaglio + '</div>' +
             '</div>' +
           '</div>' +
-          '<button onclick="' + a.btnAction + '" style="flex-shrink:0;margin-left:16px;font-size:12px;padding:6px 14px;border-radius:8px;background:' + a.colore + '14;color:' + a.colore + ';border:none;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;font-weight:500;white-space:nowrap;" onmouseover="this.style.background=\'' + a.colore + '26\'" onmouseout="this.style.background=\'' + a.colore + '14\'">' + a.btnLabel + '</button>' +
+          '<button onclick="' + a.btnAction + '" style="flex-shrink:0;margin-left:16px;font-size:12px;padding:6px 14px;border-radius:8px;background:' + a.colore + '22;color:' + a.colore + ';border:1px solid ' + a.colore + '44;cursor:pointer;font-family:\'Plus Jakarta Sans\',sans-serif;font-weight:600;white-space:nowrap;" onmouseover="this.style.background=\'' + a.colore + '44\'" onmouseout="this.style.background=\'' + a.colore + '22\'">' + a.btnLabel + '</button>' +
         '</div>';
       }).join('');
       if (extra > 0) {
-        alertCardHtml += '<div onclick="_espandiDaFareOggi()" style="text-align:center;padding:10px;font-size:12px;color:rgba(26,26,46,0.4);cursor:pointer;font-weight:500;">Vedi tutti (' + alerts.length + ') \u25be</div>';
+        alertCardHtml += '<div onclick="_espandiDaFareOggi()" style="text-align:center;padding:10px;font-size:12px;color:rgba(255,255,255,0.3);cursor:pointer;font-weight:500;">Vedi tutti (' + alerts.length + ') \u25be</div>';
       }
     }
     dContainer.innerHTML =
-      '<div style="' + sectionLabel + '">Da fare oggi</div>' +
+      '<div ' + sectionLabel + '>Da fare oggi</div>' +
       '<div id="da-fare-oggi-list">' + alertCardHtml + '</div>';
   }
 

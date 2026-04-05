@@ -563,3 +563,74 @@ body.cso-mode .btn-logout {
 body.cso-mode .btn-admin {
   display: none !important;
 }
+
+/* ── Dashboard Deep Space ─────────────────────────────────────────────────── */
+
+body.cso-mode .kpi-card {
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(123,97,255,0.1) !important;
+  border-top: 1px solid rgba(123,97,255,0.1) !important;
+  border-radius: 16px !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+body.cso-mode .kpi-card:hover {
+  background: rgba(255,255,255,0.06) !important;
+  border-color: rgba(123,97,255,0.2) !important;
+}
+
+/* override per le kpi-card con border-left colorato (overridden inline ma border-radius no) */
+body.cso-mode .kpi-card[style*="border-left"] {
+  border-radius: 0 16px 16px 0 !important;
+}
+
+body.cso-mode .kpi-label {
+  font-size: 11px !important;
+  color: rgba(255,255,255,0.4) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+}
+
+body.cso-mode .kpi-val {
+  color: white !important;
+  font-weight: 700 !important;
+  font-size: 28px !important;
+}
+
+body.cso-mode .kpi-sub {
+  font-size: 11px !important;
+  color: rgba(255,255,255,0.3) !important;
+  margin-top: 4px !important;
+}
+
+/* Valori monetari (guadagni) in arancio */
+body.cso-mode .kpi-val.tl-green {
+  color: #FF6B2B !important;
+}
+
+/* Section labels (titoli sezione: "Da fare oggi", "I miei guadagni") */
+body.cso-mode .dash-section-label {
+  color: white !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  margin: 28px 0 12px !important;
+}
+
+/* Status summary bar */
+body.cso-mode .status-summary-item {
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(123,97,255,0.1) !important;
+}
+
+/* Dash header */
+body.cso-mode .dash-header h1 {
+  color: white !important;
+}
+
+body.cso-mode .dash-header p {
+  color: rgba(255,255,255,0.4) !important;
+}
