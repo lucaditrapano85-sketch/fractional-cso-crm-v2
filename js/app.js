@@ -3401,34 +3401,27 @@ async function saveProspect() {
 }
 
 function deleteProspect() {
-  var p = prospects.find(x => x.id === currentId) || {};
-  var nomeAzienda = p.azienda || p.nome || 'questo cliente';
+  const prospect = prospects.find(p => p.id === currentId);
+  const nomeAzienda = prospect?.azienda || prospect?.nome || 'questo cliente';
 
-  var existing = document.getElementById('cso-del-overlay');
-  if (existing) existing.remove();
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(6,8,15,0.85);backdrop-filter:blur(12px);z-index:10000;display:flex;align-items:center;justify-content:center';
 
-  var overlay = document.createElement('div');
-  overlay.id = 'cso-del-overlay';
-  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(6,8,15,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:9999;display:flex;align-items:center;justify-content:center;';
+  overlay.innerHTML = `
+    <div style="background:#0a0c14;border:1px solid rgba(255,68,68,0.3);border-radius:20px;padding:28px;max-width:400px;text-align:center">
+      <div style="font-size:40px;margin-bottom:12px">⚠️</div>
+      <div style="color:white;font-weight:700;font-size:18px;margin-bottom:8px">Eliminare questo cliente?</div>
+      <div style="color:rgba(255,255,255,0.6);font-size:14px;margin-bottom:24px">Questa azione è irreversibile. Tutti i dati di ${nomeAzienda} verranno eliminati.</div>
+      <div style="display:flex;gap:12px;justify-content:center">
+        <button id="btn-cancel-delete" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:white;padding:10px 24px;border-radius:12px;cursor:pointer;font-weight:600">Annulla</button>
+        <button id="btn-confirm-delete" style="background:#FF4444;border:none;color:white;padding:10px 24px;border-radius:12px;cursor:pointer;font-weight:600">Elimina definitivamente</button>
+      </div>
+    </div>
+  `;
 
-  var modal = document.createElement('div');
-  modal.style.cssText = 'background:#0a0c14;border:1px solid rgba(255,68,68,0.3);border-radius:20px;padding:28px;max-width:400px;width:90%;text-align:center;';
-  modal.innerHTML =
-    '<div style="font-size:40px;margin-bottom:16px;">⚠️</div>' +
-    '<div style="font-size:18px;font-weight:700;color:white;margin-bottom:10px;">Eliminare questo cliente?</div>' +
-    '<div style="font-size:14px;color:rgba(255,255,255,0.6);line-height:1.5;margin-bottom:24px;">Questa azione è irreversibile. Tutti i dati di <strong style="color:rgba(255,255,255,0.85);">' + nomeAzienda + '</strong> verranno eliminati.</div>' +
-    '<div style="display:flex;flex-direction:column;gap:10px;">' +
-      '<button id="cso-del-confirm" style="background:#FF4444;color:white;border:none;border-radius:12px;padding:12px 24px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Elimina definitivamente</button>' +
-      '<button id="cso-del-cancel" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:white;border-radius:12px;padding:12px 24px;font-family:\'Plus Jakarta Sans\',sans-serif;font-size:14px;cursor:pointer;">Annulla</button>' +
-    '</div>';
-
-  overlay.appendChild(modal);
   document.body.appendChild(overlay);
-
-  document.getElementById('cso-del-cancel').onclick = function() { overlay.remove(); };
-  overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
-
-  document.getElementById('cso-del-confirm').onclick = async function() {
+  document.getElementById('btn-cancel-delete').onclick = () => overlay.remove();
+  document.getElementById('btn-confirm-delete').onclick = async () => {
     overlay.remove();
     const {error} = await sb.from('prospects').delete().eq('id', currentId);
     if (error) { showToast('Errore eliminazione', 'error'); return; }
