@@ -10321,6 +10321,39 @@ async function saveBenchModal() {
 
 var _pmiCurrentView = 'home';
 
+/* ── Sidebar tooltip ──────────────────────────────────────────────────────── */
+function _levaTipShow(el, text) {
+  clearTimeout(window._levaTipTimer);
+  window._levaTipTimer = setTimeout(function() {
+    var tip = document.getElementById('leva-sidebar-tip');
+    if (!tip) {
+      tip = document.createElement('div');
+      tip.id = 'leva-sidebar-tip';
+      document.body.appendChild(tip);
+    }
+    tip.innerHTML =
+      '<div style="position:absolute;left:-5px;top:50%;transform:translateY(-50%);width:0;height:0;' +
+        'border-top:5px solid transparent;border-bottom:5px solid transparent;' +
+        'border-right:5px solid rgba(123,97,255,0.92);"></div>' + text;
+    tip.style.cssText =
+      'position:fixed;z-index:99999;background:rgba(123,97,255,0.92);color:white;' +
+      'font-size:12px;font-weight:600;padding:6px 12px 6px 14px;border-radius:8px;' +
+      'white-space:nowrap;pointer-events:none;opacity:0;transition:opacity 0.15s;';
+    var rect = el.getBoundingClientRect();
+    tip.style.left  = (rect.right + 8) + 'px';
+    tip.style.top   = (rect.top + rect.height / 2) + 'px';
+    tip.style.transform = 'translateY(-50%)';
+    // Force reflow then fade in
+    tip.offsetHeight;
+    tip.style.opacity = '1';
+  }, 200);
+}
+function _levaTipHide() {
+  clearTimeout(window._levaTipTimer);
+  var tip = document.getElementById('leva-sidebar-tip');
+  if (tip) { tip.style.opacity = '0'; }
+}
+
 function renderSidebarPMI() {
   var sidebar = document.getElementById('pmi-sidebar');
   if (!sidebar) return;
@@ -10351,7 +10384,7 @@ function renderSidebarPMI() {
   var navItems = [
     { id:'home',   title:'Home',
       svg:'<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>' },
-    { id:'azioni', title:'Azioni',
+    { id:'azioni', title:'Dashboard',
       svg:'<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' },
     { id:'score',  title:'Score',
       svg:'<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>' },
@@ -10369,7 +10402,7 @@ function renderSidebarPMI() {
     navItems.push({ id:'benchmark',   title:'Benchmark',
       svg:'<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="14" width="4" height="6" rx="1"/><rect x="10" y="10" width="4" height="10" rx="1"/><rect x="17" y="6" width="4" height="14" rx="1"/></svg>' });
   }
-  navItems.push({ id:'piano', title:'Piano',
+  navItems.push({ id:'piano', title:'Il tuo piano',
     svg:'<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M12 2l2 5.5 5.5.8-4 3.9 1 5.5L12 15l-4.5 2.7 1-5.5-4-3.9 5.5-.8z"/></svg>' });
 
   // Logo Deep Space: barra viola
@@ -10387,7 +10420,20 @@ function renderSidebarPMI() {
   // Divider
   var divHtml = '<div style="width:40px;height:0.5px;background:rgba(255,255,255,0.05);margin:4px 0;"></div>';
 
-  var initials = ((window._userProfileData && window._userProfileData.company_name) || window._currentUserEmail || 'U')[0].toUpperCase();
+  var _up = window._userProfileData || {};
+  var _pro = window._currentProfile || {};
+  var _fullName = (_up.full_name || '').trim();
+  var _nome = (_pro.nome || '').trim();
+  var _cognome = (_pro.cognome || '').trim();
+  var initials;
+  if (_fullName) {
+    var _parts = _fullName.split(/\s+/);
+    initials = _parts[0][0].toUpperCase() + (_parts.length > 1 ? _parts[_parts.length - 1][0].toUpperCase() : '');
+  } else if (_nome) {
+    initials = _nome[0].toUpperCase() + (_cognome ? _cognome[0].toUpperCase() : '');
+  } else {
+    initials = '?';
+  }
 
   // Stile icona nav: 64x64, border-radius 14px
   var iconStyle = 'width:64px;height:64px;border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.15s;';
@@ -10396,20 +10442,22 @@ function renderSidebarPMI() {
     logoHtml +
     navItems.map(function(item) {
       var isActive = item.id === _pmiCurrentView;
+      var tip = item.title.replace(/'/g, '&#39;');
       return '<div class="leva-sidebar-icon pmi-nav-item' + (isActive ? ' active' : '') +
-        '" data-view="' + item.id + '" onclick="showViewPMI(\'' + item.id + '\')" title="' + item.title +
-        '" style="' + iconStyle + (isActive ? 'background:rgba(123,97,255,0.15);' : '') + '">' +
+        '" data-view="' + item.id + '" onclick="showViewPMI(\'' + item.id + '\')"' +
+        ' onmouseenter="_levaTipShow(this,\'' + tip + '\')" onmouseleave="_levaTipHide()"' +
+        ' style="' + iconStyle + (isActive ? 'background:rgba(123,97,255,0.15);' : '') + '">' +
         item.svg +
       '</div>';
     }).join('') +
     '<div style="flex:1;"></div>' +
     divHtml +
-    '<div class="leva-sidebar-icon" title="Chiedi a Leva" style="' + iconStyle + 'background:rgba(255,107,43,0.1);border:0.5px solid rgba(255,107,43,0.25);animation:leva-glow-orange 3s infinite;margin-bottom:4px;">' +
-      '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FF6B2B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' +
+    '<div class="leva-sidebar-icon" title="Chiedi a Leva" style="' + iconStyle + 'background:rgba(255,107,43,0.1);border:0.5px solid rgba(255,107,43,0.25);animation:leva-glow-orange 3s infinite;margin-bottom:16px;">' +
+      '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF6B2B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' +
         '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>' +
       '</svg>' +
     '</div>' +
-    '<div onclick="showViewPMI(\'profilo\')" title="Profilo" style="width:50px;height:50px;border-radius:50%;background:#FF6B2B;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-bottom:12px;font-size:17px;font-weight:600;color:white;">' +
+    '<div onclick="showViewPMI(\'profilo\')" title="Profilo" style="width:50px;height:50px;border-radius:50%;background:#FF6B2B;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-bottom:12px;font-size:14px;font-weight:700;color:white;text-transform:uppercase;letter-spacing:0.5px;">' +
       initials +
     '</div>';
 }
