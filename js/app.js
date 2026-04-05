@@ -7833,7 +7833,7 @@ function renderTimelineUnificata(p, calls) {
 
       html += '<div style="display:flex;gap:10px;padding:10px 8px;border-radius:8px;margin:4px 0;background:' + cfg.bg + '">';
       // Icona
-      html += '<div style="width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">' + cfg.icon + '</div>';
+      html += '<div style="width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0">' + cfg.icon + '</div>';
       // Contenuto
       html += '<div style="flex:1;min-width:0">';
       html += '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">';
@@ -8528,7 +8528,7 @@ function _buildGraficoTimeline_OLD(p) {
   return metriche +
     '<div class="tl-section-title" style="margin-top:16px">Progressione score e fatturato nel tempo</div>' +
     '<div style="display:flex;gap:12px;margin-bottom:6px;font-size:11px;color:#888;flex-wrap:wrap">' +
-      '<span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:3px;background:#2c3e50;display:inline-block;border-radius:2px"></span>Score reale</span>' +
+      '<span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:3px;background:rgba(123,97,255,0.15);display:inline-block;border-radius:2px"></span>Score reale</span>' +
       '<span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:2px;border-top:2px dashed #185FA5;display:inline-block"></span>Proiezione score</span>' +
       fatLegend +
     '</div>' +
@@ -8692,7 +8692,7 @@ function renderTargetEditor(p) {
     const tgtPct = (tgt/5)*100;
     return `\x3cdiv style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid rgba(0,0,0,0.06)">
       \x3cdiv style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-        \x3cdiv style="font-size:12px;font-weight:600;color:#1a1a2e">${getDimLabel(settore, d.id)}\x3c/div>
+        \x3cdiv style="font-size:12px;font-weight:600;color:white">${getDimLabel(settore, d.id)}\x3c/div>
         \x3cspan id="tsem-${d.id}" style="font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;background:${chipBg};color:${chipCol};border:1px solid ${chipBorder}">${chipText}${scad ? ' ' + calcolaSemaforo(scad, d.id) : ''}\x3c/span>
       \x3c/div>
       \x3cdiv onclick="showTargetPopup(event,'${d.id}')"
@@ -8709,7 +8709,7 @@ function renderTargetEditor(p) {
         \x3c/div>
         \x3cinput type="date" id="tscad-${d.id}" value="${scad}"
           onchange="aggiornaSemaforo('${d.id}');aggiornaAzioni('${d.id}')"
-          style="padding:4px 8px;background:rgba(255,255,255,0.6);border:1px solid rgba(26,26,46,0.15);border-radius:6px;color:#1a1a2e;font-size:11px;font-family:inherit;width:100%">
+          style="padding:4px 8px;background:rgba(255,255,255,0.06);border:1px solid rgba(123,97,255,0.2);border-radius:6px;color:white;font-size:11px;font-family:inherit;width:100%">
       \x3c/div>
       \x3cdiv id="tdesc-${d.id}" style="display:none">${tgtDesc}\x3c/div>
       ${warningTetto}
